@@ -101,21 +101,20 @@ Based on those values, you can customize your camera and quality settings.</p>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MixedRealityCameraProfile : BaseMixedRealityProfile</code></pre>
+    <pre><code class="lang-csharp hljs">[MixedRealityServiceProfile(typeof(IMixedRealityCameraSystem))]
+public class MixedRealityCameraProfile : BaseMixedRealityProfile</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_IsCameraPersistent_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.IsCameraPersistent*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_IsCameraPersistent" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.IsCameraPersistent">IsCameraPersistent</h4>
-  <div class="markdown level1 summary"><p>Should the camera be reused in each scene?
-If so, then the camera's root will be flagged so it is not destroyed when the scene is unloaded.</p>
-</div>
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_BackgroundColorOpaqueDisplay_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.BackgroundColorOpaqueDisplay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_BackgroundColorOpaqueDisplay" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.BackgroundColorOpaqueDisplay">BackgroundColorOpaqueDisplay</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsCameraPersistent { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Color BackgroundColorOpaqueDisplay { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -127,21 +126,20 @@ If so, then the camera's root will be flagged so it is not destroyed when the sc
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">Color</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_IsOpaque_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.IsOpaque*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_IsOpaque" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.IsOpaque">IsOpaque</h4>
-  <div class="markdown level1 summary"><p>Is the current camera displaying on an Opaque (AR) device or a VR / immersive device</p>
-</div>
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_BackgroundColorTransparentDisplay_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.BackgroundColorTransparentDisplay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_BackgroundColorTransparentDisplay" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.BackgroundColorTransparentDisplay">BackgroundColorTransparentDisplay</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsOpaque { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Color BackgroundColorTransparentDisplay { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -153,33 +151,161 @@ If so, then the camera's root will be flagged so it is not destroyed when the sc
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">Color</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_ApplySettingsForOpaqueDisplay_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.ApplySettingsForOpaqueDisplay*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_ApplySettingsForOpaqueDisplay" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.ApplySettingsForOpaqueDisplay">ApplySettingsForOpaqueDisplay()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_CameraClearFlagsOpaqueDisplay_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.CameraClearFlagsOpaqueDisplay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_CameraClearFlagsOpaqueDisplay" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.CameraClearFlagsOpaqueDisplay">CameraClearFlagsOpaqueDisplay</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ApplySettingsForOpaqueDisplay()</code></pre>
+    <pre><code class="lang-csharp hljs">public CameraClearFlags CameraClearFlagsOpaqueDisplay { get; }</code></pre>
   </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CameraClearFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_ApplySettingsForTransparentDisplay_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.ApplySettingsForTransparentDisplay*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_ApplySettingsForTransparentDisplay" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.ApplySettingsForTransparentDisplay">ApplySettingsForTransparentDisplay()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_CameraClearFlagsTransparentDisplay_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.CameraClearFlagsTransparentDisplay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_CameraClearFlagsTransparentDisplay" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.CameraClearFlagsTransparentDisplay">CameraClearFlagsTransparentDisplay</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ApplySettingsForTransparentDisplay()</code></pre>
+    <pre><code class="lang-csharp hljs">public CameraClearFlags CameraClearFlagsTransparentDisplay { get; }</code></pre>
   </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CameraClearFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_HoloLensQualityLevel_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.HoloLensQualityLevel*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_HoloLensQualityLevel" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.HoloLensQualityLevel">HoloLensQualityLevel</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int HoloLensQualityLevel { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_NearClipPlaneOpaqueDisplay_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.NearClipPlaneOpaqueDisplay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_NearClipPlaneOpaqueDisplay" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.NearClipPlaneOpaqueDisplay">NearClipPlaneOpaqueDisplay</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float NearClipPlaneOpaqueDisplay { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_NearClipPlaneTransparentDisplay_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.NearClipPlaneTransparentDisplay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_NearClipPlaneTransparentDisplay" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.NearClipPlaneTransparentDisplay">NearClipPlaneTransparentDisplay</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float NearClipPlaneTransparentDisplay { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_OpaqueQualityLevel_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.OpaqueQualityLevel*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityCameraProfile_OpaqueQualityLevel" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.OpaqueQualityLevel">OpaqueQualityLevel</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int OpaqueQualityLevel { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

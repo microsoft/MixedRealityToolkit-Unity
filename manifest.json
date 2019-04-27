@@ -3935,7 +3935,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseCoreSystem.html",
-          "hash": "jC767xMKjAB3U9L8dCQaPg=="
+          "hash": "pLMS9RXNmMeviMU3Xxc+8A=="
         }
       },
       "is_incremental": false,
@@ -4284,6 +4284,42 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraExtensions.html",
           "hash": "RhnoFjIfN0R89XimbaD8zQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSystem.html",
+          "hash": "7ZABUpKRouUHLkAMcpzDpw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.MixedRealityCameraSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.MixedRealityCameraSystem.html",
+          "hash": "xPEN2cW6whhziql/RIr6MQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.html",
+          "hash": "LDviM8yWNo+FTEe2vw54jw=="
         }
       },
       "is_incremental": false,
@@ -8759,7 +8795,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.html",
-          "hash": "m1sGDH19eJTEtMkcgknHqw=="
+          "hash": "pNpvx5NobBaGqAtorCqQ/A=="
         }
       },
       "is_incremental": false,
@@ -8831,7 +8867,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html",
-          "hash": "gu7sKK5ma1bGSwwV9n83+A=="
+          "hash": "D8E1CIVEl4MxalY9hAY7vQ=="
         }
       },
       "is_incremental": false,
@@ -8843,7 +8879,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile.html",
-          "hash": "lK8FtUelTypMCljXrCzzHg=="
+          "hash": "BczigCocVJdXETl+D03VzQ=="
         }
       },
       "is_incremental": false,
@@ -14195,7 +14231,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "8W2niEva8U0D+nQLkIzXsQ=="
+          "hash": "O0ooA6e1r0lEmhHtm6swfQ=="
         }
       },
       "is_incremental": false,
@@ -14254,11 +14290,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 866,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -14267,10 +14302,11 @@
           "total_file_count": 90,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 863,
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
