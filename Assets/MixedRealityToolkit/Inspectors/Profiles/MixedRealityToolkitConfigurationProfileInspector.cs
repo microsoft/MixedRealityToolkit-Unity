@@ -117,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
                     var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;
+                    UnityEditor.Undo.RecordObject(MixedRealityToolkit.Instance, "Create new profiles");
                     MixedRealityToolkit.Instance.ActiveProfile = newProfile;
                     Selection.activeObject = newProfile;
                 }
