@@ -20,57 +20,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             get
             {
-                var mainCamera = cachedCamera == null ? Refresh(Camera.main) : cachedCamera;
-
-                if (mainCamera == null)
+                if (cachedCamera != null)
                 {
-                    // No camera in the scene tagged as main. Let's search the scene for a GameObject named Main Camera
-                    var cameras = Object.FindObjectsOfType<Camera>();
-
-                    switch (cameras.Length)
-                    {
-                        case 0:
-                            return null;
-                        case 1:
-                            mainCamera = Refresh(cameras[0]);
-                            break;
-                        default:
-                            // Search for main camera by name.
-                            for (int i = 0; i < cameras.Length; i++)
-                            {
-                                if (cameras[i].name == "Main Camera")
-                                {
-                                    mainCamera = Refresh(cameras[i]);
-                                    break;
-                                }
-                            }
-
-                            // If we still didn't find it, just set the first camera.
-                            if (mainCamera == null)
-                            {
-                                Debug.LogWarning($"No main camera found. The Mixed Reality Toolkit used {cameras[0].name} as your main.");
-                                mainCamera = Refresh(cameras[0]);
-                            }
-
-                            break;
-                    }
+                    return cachedCamera;
                 }
 
-                return mainCamera;
-            }
-        }
+                // If the cached camera is null, search for main
+                var mainCamera = Camera.main;
 
-        /// <summary>
-        /// Set the cached camera to a new reference and return it
-        /// </summary>
-        /// <param name="newMain">New main camera to cache</param>
-        public static Camera Refresh(Camera newMain)
-        {
-            if (newMain == null)
-            {
-                Debug.LogWarning("A null camera was passed into CameraCache.Refresh()");
+                if (mainCamera == null)
+                {   // If no main camera was found, create it now
+                    Debug.LogWarning("No main camera found. The Mixed Reality Toolkit requires at least one camera in the scene. One will be generated now.");
+                    mainCamera = new GameObject("Main Camera", typeof(Camera)) { tag = "MainCamera" }.GetComponent<Camera>();
+                }
+
+                // Cache the main camera
+                cachedCamera = mainCamera;
+
+                return cachedCamera;
             }
-            return cachedCamera = newMain;
         }
     }
 }

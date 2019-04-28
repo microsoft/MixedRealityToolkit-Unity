@@ -1,14 +1,10 @@
 - name: About MRTK
   items:
-  - name: MRTK v2
-    href: README.md
   - name: Authors
     href: Authors.md
 - name: Getting Started with MRTK
   href: GettingStartedWithTheMRTK.md
   items:
-  - name: Downloading MRTK
-    href: DownloadingTheMRTK.md
   - name: Upgrading from the HoloToolkit (HTK)
     href: HTKToMRTKPortingGuide.md
 - name: Feature Overviews

@@ -92,7 +92,7 @@ Events can be placed on an object to monitor a separate interactable. Use `Inter
 <img src="../Documentation/Images/Interactable/InteractableReceiver.png" width="450">
 *Example of InteractableReceiver existing on a separate gameObject from the Interactable, referencing the Interactable for event and state updates*
 
-"Search Scope" provides a preferred path to search for an Iiteractable if one is not explicitly assigned.
+"Search Scope" provides a preferred path to search for an Interactable if one is not explicitly assigned.
 
 ## States ##
 States are a list of terms that can be used to define interactions phases, like press or observed.
