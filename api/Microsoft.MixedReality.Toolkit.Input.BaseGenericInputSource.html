@@ -86,9 +86,7 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Input_BaseGenericInputSource" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseGenericInputSource" class="text-break">Class BaseGenericInputSource
   </h1>
-  <div class="markdown level0 summary"><p>Base class for input sources that don't inherit from MonoBehaviour.
-<remarks>This base class does not support adding or removing pointers, because many will never
-pass pointers in their constructors and will fall back to either the Gaze or Mouse Pointer.</remarks></p>
+  <div class="markdown level0 summary"><p>Base class for input sources that don't inherit from MonoBehaviour.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -127,6 +125,10 @@ pass pointers in their constructors and will fall back to either the Gaze or Mou
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class BaseGenericInputSource : IMixedRealityInputSource, IMixedRealityEventSource, IEqualityComparer, IDisposable</code></pre>
   </div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_BaseGenericInputSource_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>This base class does not support adding or removing pointers, because many will never
+pass pointers in their constructors and will fall back to either the Gaze or Mouse Pointer.</p>
+</div>
   <h3 id="constructors">Constructors
   </h3>
   

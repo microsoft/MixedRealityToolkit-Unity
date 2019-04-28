@@ -464,7 +464,6 @@
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_GenerateNewSourceId_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.GenerateNewSourceId*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_GenerateNewSourceId" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.GenerateNewSourceId">GenerateNewSourceId()</h4>
   <div class="markdown level1 summary"><p>Generates a new unique input source id.<p>
-<remarks>All Input Sources are required to call this method in their constructor or initialization.</remarks></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -487,6 +486,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_GenerateNewSourceId_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>All Input Sources are required to call this method in their constructor or initialization.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_HandleEvent_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.HandleEvent*"></a>
@@ -1984,8 +1986,7 @@ on the game object are given priority to input events before any focused objects
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_RaisePreFocusChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.RaisePreFocusChanged*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_RaisePreFocusChanged_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_GameObject_GameObject_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.RaisePreFocusChanged(Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer,GameObject,GameObject)">RaisePreFocusChanged(IMixedRealityPointer, GameObject, GameObject)</h4>
-  <div class="markdown level1 summary"><p>Raise the pre-focus changed event.
-<remarks>This event is useful for doing logic before the focus changed event.</remarks></p>
+  <div class="markdown level1 summary"><p>Raise the pre-focus changed event.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2022,6 +2023,9 @@ on the game object are given priority to input events before any focused objects
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_RaisePreFocusChanged_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_GameObject_GameObject__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This event is useful for doing logic before the focus changed event.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_RaiseRotationInputChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.RaiseRotationInputChanged*"></a>
@@ -2375,8 +2379,7 @@ on the game object are given priority to input events before any focused objects
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_Register_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.Register*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_Register_GameObject_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.Register(GameObject)">Register(GameObject)</h4>
   <div class="markdown level1 summary"><p>Register a <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> to listen to events that will receive all input events, regardless
-of which other <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a>s might have handled the event beforehand.
-<remarks>Useful for listening to events when the <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> is currently not being raycasted against by the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.html#Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_FocusProvider">FocusProvider</a>.</remarks></p>
+of which other <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a>s might have handled the event beforehand.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2403,6 +2406,9 @@ of which other <a href="https://docs.unity3d.com/ScriptReference/GameObject.html
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_Register_GameObject_">BaseEventSystem.Register(GameObject)</a></div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_Register_GameObject__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Useful for listening to events when the <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> is currently not being raycasted against by the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.html#Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_FocusProvider">FocusProvider</a>.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_RequestNewGenericInputSource_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.RequestNewGenericInputSource*"></a>
