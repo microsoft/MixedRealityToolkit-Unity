@@ -117,7 +117,7 @@
   items:
   - name: How to setup global voice commands 
     href: TODO.md
-  - name: How to setup a scene to be used for both HoloLens and VR with proper camera and scene content height
+  - name: How to setup a scene for Mixed Reality
     href: TODO.md
   - name: How to trigger an action using MRTK button
     href: TODO.md
