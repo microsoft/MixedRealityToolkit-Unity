@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
@@ -230,6 +231,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(serviceType))
                 {
                     SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("spatialAwarenessSystemProfile");
+                    BaseMixedRealityProfileInspector.RenderReadOnlyProfile(serviceProfileProp);
+                    EditorGUILayout.Space();
+                    foundAndDrewProfile = true;
+                }
+                else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(serviceType))
+                {
+                    SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("cameraProfile");
                     BaseMixedRealityProfileInspector.RenderReadOnlyProfile(serviceProfileProp);
                     EditorGUILayout.Space();
                     foundAndDrewProfile = true;
