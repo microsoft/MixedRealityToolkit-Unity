@@ -315,8 +315,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        // Initial origin of the current pointer
-        private Vector3 initialPointerPosition;
+        // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
+        private Vector3 grabPointInPointer;
 
         private CardinalAxisType[] edgeAxes;
         private int[] flattenedHandles;
@@ -503,7 +503,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (currentHandleType != HandleType.None)
             {
                 Vector3 prevGrabPoint = currentGrabPoint;
-                currentGrabPoint = initialGrabPoint + currentPointer.Position - initialPointerPosition;
+                currentGrabPoint = (currentPointer.Rotation * grabPointInPointer) + currentPointer.Position;
 
                 if (currentHandleType == HandleType.Rotation)
                 {
@@ -1455,7 +1455,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            if (currentPointer != null && eventData.SourceId == currentPointer.InputSourceParent.SourceId)
+            if (currentPointer != null && eventData.Pointer == currentPointer)
             {
                 DropController();
 
@@ -1495,9 +1495,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     currentPointer = eventData.Pointer;
                     initialGrabPoint = currentPointer.Result.Details.Point;
                     currentGrabPoint = initialGrabPoint;
-                    initialPointerPosition = eventData.Pointer.Position;
                     initialScale = Target.transform.localScale;
                     initialPosition = Target.transform.position;
+                    grabPointInPointer = Quaternion.Inverse(eventData.Pointer.Rotation) * (initialGrabPoint - currentPointer.Position);
 
                     SetHighlighted(grabbedHandleTransform);
 
