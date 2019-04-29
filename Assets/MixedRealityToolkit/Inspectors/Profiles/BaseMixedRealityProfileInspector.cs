@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
         /// <param name="guiContent">The GUIContent for the field.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
-        /// <param name="serviceType"></param>Optional service type to limit available profile types.
+        /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
         public static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true, Type serviceType = null)
         {
