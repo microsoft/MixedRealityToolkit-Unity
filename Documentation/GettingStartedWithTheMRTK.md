@@ -18,7 +18,7 @@ To get started with the Mixed Reality Toolkit you will need:
 1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
 2. Under Assets, download both `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` and `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
 
-The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will be available via the Unity package manager.
+For additional delivery mechanisms, please see [Downloading the MRTK](DownloadingTheMRTK.md).
 
 ## Import MRTK packages into your Unity project
 1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.
@@ -119,7 +119,7 @@ Here are some suggested next steps:
 * Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
 * Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md).
 
-## Building blocks for UI and Interactions
+## Building blocks for UI and interactions
 |  [![Button](../Documentation/Images/Button/MRTK_Button_Main.png)](README_Button.md) [Button](README_Button.md) | [![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)](README_BoundingBox.md) [Bounding Box](README_BoundingBox.md) | [![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)](README_ManipulationHandler.md) [Manipulation Handler](README_ManipulationHandler.md) |
 |:--- | :--- | :--- |
 | A button control which supports various input methods including HoloLens2's articulated hand | Standard UI for manipulating objects in 3D space | Script for manipulating objects with one or two hands |

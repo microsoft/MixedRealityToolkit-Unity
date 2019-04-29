@@ -13,8 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// The focus provider handles the focused objects per input source.
-    /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
+    /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider
     {
         public FocusProvider(
@@ -131,8 +131,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Cached <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> reference to the new raycast position.
-        /// <remarks>Only used to update UI raycast results.</remarks>
         /// </summary>
+        /// <remarks>Only used to update UI raycast results.</remarks>
         private Vector3 newUiRaycastPosition = Vector3.zero;
 
         /// <summary>
