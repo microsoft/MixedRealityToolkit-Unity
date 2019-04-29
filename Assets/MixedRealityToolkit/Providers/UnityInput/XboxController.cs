@@ -25,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public XboxController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            poseInViewport.position.Set(0.5f, 0.5f, 0);
         }
 
         /// <summary>
@@ -59,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         }
 
         // Controller pose in camera space
-        private Pose poseInViewport;
+        private Pose controllerPoseLocal = Pose.identity;
 
         private float movementSpeed = 0.01f;
         private float rotationSpeed = 1.0f;
@@ -68,25 +67,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             if (Enabled)
             {
-                var camera = CameraCache.Main;
+                float h = UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_1);
+                float v = UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_2);
+                controllerPoseLocal.position += new Vector3(h, v, 0) * movementSpeed;
 
-                float newX = Mathf.Clamp01(poseInViewport.position.x + UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_1) * movementSpeed);
-                float newY = Mathf.Clamp01(poseInViewport.position.y + UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_2) * movementSpeed);
-                poseInViewport.position = new Vector3(newX, newY, camera.nearClipPlane);
-
-                //float yaw = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_4);
-                //float pitch = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_5);
-                //poseInViewport.rotation *= Quaternion.AngleAxis(yaw, Vector3.up);
+                float yaw = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_4);
+                float pitch = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_5);
+                controllerPoseLocal.rotation *= Quaternion.AngleAxis(yaw, Vector3.up);
                 //controllerPoseLocal.rotation *= Quaternion.AngleAxis(pitch, Vector3.right);
 
-                //Pose controllerPose = poseInViewport.GetTransformedBy(CameraCache.Main.transform);
-                var ray = camera.ViewportPointToRay(poseInViewport.position);
-                CurrentControllerPosition = ray.origin;
+                Pose controllerPose = controllerPoseLocal.GetTransformedBy(CameraCache.Main.transform);
+                CurrentControllerPosition = controllerPose.position;
                 CurrentControllerPose.Position = CurrentControllerPosition;
-                CurrentControllerRotation = Quaternion.LookRotation(ray.direction);
+                CurrentControllerRotation = controllerPose.rotation;
                 CurrentControllerPose.Rotation = CurrentControllerRotation;
-
-                Debug.DrawRay(CurrentControllerPosition, CurrentControllerRotation * Vector3.forward, Color.yellow);
 
                 base.UpdateController();
             }
