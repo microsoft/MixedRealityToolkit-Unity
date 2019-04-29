@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Renders a non-ediable object field and an editable dropdown of a profile.
+        /// Renders a non-editable object field and an editable dropdown of a profile.
         /// </summary>
         /// <param name="property"></param>
         /// <returns></returns>
