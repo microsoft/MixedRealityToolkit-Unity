@@ -209,6 +209,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             EditorGUILayout.Space();
 
+// XXX Reloading the scene is currently not supported,
+// due to the life cycle of the MRTK "instance" object.
+// Enable the button below once scene reloading is supported!
+#if false
+            GUI.enabled = isGUIEnabled && Application.isPlaying;
+            bool reloadScene = GUILayout.Button("Reload Scene");
+            if (reloadScene)
+            {
+                Scene activeScene = SceneManager.GetActiveScene();
+                if (activeScene.IsValid())
+                {
+                    SceneManager.LoadScene(activeScene.name);
+                    return;
+                }
+            }
+            GUI.enabled = isGUIEnabled;
+#endif
+
+            EditorGUILayout.Space();
+
             DrawMarkersGUI();
 
             DrawTestTemplateGUI();
@@ -355,7 +375,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void DrawTestTemplateGUI()
         {
-            testTemplateFoldout = EditorGUILayout.Foldout(testTemplateFoldout, "Template");
+            testTemplateFoldout = EditorGUILayout.Foldout(testTemplateFoldout, "Test Template");
             if (!testTemplateFoldout)
             {
                 return;
