@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
+        [SerializeField]
         private float duration = 0.0f;
         public float Duration => duration;
 
