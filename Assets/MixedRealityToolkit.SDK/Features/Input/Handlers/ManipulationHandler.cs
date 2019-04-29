@@ -227,21 +227,31 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 GetPointersVelocity()
         {
             Vector3 sum = Vector3.zero;
+            int numControllers = 0;
             foreach (var p in pointerIdToPointerMap.Values)
             {
-                sum += p.Controller.Velocity;
+                if (p.Controller != null)
+                {
+                    numControllers++;
+                    sum += p.Controller.Velocity;
+                }
             }
-            return sum / Math.Max(1, pointerIdToPointerMap.Count);
+            return sum / Math.Max(1, numControllers);
         }
 
         private Vector3 GetPointersAngularVelocity()
         {
             Vector3 sum = Vector3.zero;
+            int numControllers = 0;
             foreach (var p in pointerIdToPointerMap.Values)
             {
-                sum += p.Controller.AngularVelocity;
+                if (p.Controller != null)
+                {
+                    numControllers++;
+                    sum += p.Controller.AngularVelocity;
+                }
             }
-            return sum / Math.Max(1, pointerIdToPointerMap.Count);
+            return sum / Math.Max(1, numControllers);
         }
 
         private bool IsNearManipulation()
