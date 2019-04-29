@@ -106,9 +106,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                     facade.CheckIfStillValid();
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                e = null;
                 Debug.LogWarning("Service Facades should remain parented under the MixedRealityToolkit instance.");
             }
         }
