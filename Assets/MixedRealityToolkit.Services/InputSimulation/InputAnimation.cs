@@ -205,16 +205,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Keys are only added if the value changes sufficiently
         private static int AddFloatKeyFiltered(AnimationCurve curve, float time, float value, float epsilon)
         {
-            // TODO float filtering is not working well, can cause drifting and ignoring
-            // large changes when they accumulate. Disabled for now.
-            // int insertAfter = FindKeyframeInterval(curve, time);
-            // if (insertAfter >= 0 && Mathf.Abs(curve.keys[insertAfter].value - value) < epsilon)
-            // {
-            //     // Value unchanged from previous key, ignore
-            //     return -1;
-            // }
+            int insertAfter = FindKeyframeInterval(curve, time);
+            if (insertAfter >= 0 && Mathf.Abs(curve.keys[insertAfter].value - value) < epsilon)
+            {
+                // Value unchanged from previous key, ignore
+                return -1;
+            }
 
-            return curve.AddKey(time, value);
+            // TODO make use of Bezier interpolation to allow more aggressive compression
+            // and use tangents and weights to accurately merge adjacent splines.
+            // Use linear interpolation to avoid overshooting from bezier tangents
+            var keyframe = new Keyframe(time, value, 0.0f, 0.0f, 0.0f, 0.0f);
+            keyframe.weightedMode = WeightedMode.Both;
+
+            return curve.AddKey(keyframe);
         }
 
         /// Utility function that creates a non-interpolated keyframe suitable for boolean values

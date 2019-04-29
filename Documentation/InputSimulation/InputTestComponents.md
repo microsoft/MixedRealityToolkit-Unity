@@ -5,6 +5,7 @@ DEVICES:
 * Right Hand
 
 INTERACTIONS:
+* Gaze
 * Near
 * Far
 
