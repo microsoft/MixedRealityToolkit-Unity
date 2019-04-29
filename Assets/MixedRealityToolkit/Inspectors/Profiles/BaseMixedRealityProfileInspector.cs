@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Type profileType = null;
             if (serviceType != null)
             {
-                // If profileTypes has a count greater than one, then it won't be possible to use
+                // If GetProfileTypesForService has a count greater than one, then it won't be possible to use
                 // EditorGUILayout.ObjectField to restrict the set of profiles to a single type - in this
                 // case all profiles of BaseMixedRealityProfile will be visible in the picker.
                 // 
