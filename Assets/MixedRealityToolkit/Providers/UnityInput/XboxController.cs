@@ -48,12 +48,42 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             new MixedRealityInteractionMapping(13, "B", AxisType.Digital, DeviceInputType.ButtonPress,KeyCode.JoystickButton1),
             new MixedRealityInteractionMapping(14, "X", AxisType.Digital, DeviceInputType.ButtonPress,KeyCode.JoystickButton2),
             new MixedRealityInteractionMapping(15, "Y", AxisType.Digital, DeviceInputType.ButtonPress,KeyCode.JoystickButton3),
+            new MixedRealityInteractionMapping(16, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None)
         };
 
         /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
             AssignControllerMappings(DefaultInteractions);
+        }
+
+        // Controller pose in camera space
+        private Pose controllerPoseLocal = Pose.identity;
+
+        private float movementSpeed = 0.01f;
+        private float rotationSpeed = 1.0f;
+
+        public override void UpdateController()
+        {
+            if (Enabled)
+            {
+                float h = UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_1);
+                float v = UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_2);
+                controllerPoseLocal.position += new Vector3(h, v, 0) * movementSpeed;
+
+                float yaw = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_4);
+                float pitch = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_5);
+                controllerPoseLocal.rotation *= Quaternion.AngleAxis(yaw, Vector3.up);
+                //controllerPoseLocal.rotation *= Quaternion.AngleAxis(pitch, Vector3.right);
+
+                Pose controllerPose = controllerPoseLocal.GetTransformedBy(CameraCache.Main.transform);
+                CurrentControllerPosition = controllerPose.position;
+                CurrentControllerPose.Position = CurrentControllerPosition;
+                CurrentControllerRotation = controllerPose.rotation;
+                CurrentControllerPose.Rotation = CurrentControllerRotation;
+
+                base.UpdateController();
+            }
         }
     }
 }
