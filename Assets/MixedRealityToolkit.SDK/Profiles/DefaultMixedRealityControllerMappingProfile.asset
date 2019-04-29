@@ -1090,6 +1090,19 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
+    - id: 16
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.OculusRemoteController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR

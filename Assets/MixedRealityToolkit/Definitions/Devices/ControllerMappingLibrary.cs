@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Oculus Touch Controller: Axis2D.SecondaryThumbstick Horizontal Movement<para/>
         /// Valve Knuckles Controller: Right Controller Trackpad Horizontal Movement<para/>
         /// Windows Mixed Reality Motion Controller: Right Thumbstick Horizontal Movement<para/>
-        /// Xbox Controller: Right Thumbstick Vertical Movement<para/>
+        /// Xbox Controller: Right Thumbstick Horizontal Movement<para/>
         /// </summary>
         public const string AXIS_4 = "AXIS_4";
 

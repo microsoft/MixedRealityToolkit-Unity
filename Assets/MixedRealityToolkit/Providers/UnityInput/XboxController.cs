@@ -58,28 +58,27 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         }
 
         // Controller pose in camera space
-        private Pose controllerPoseLocal = Pose.identity;
-
-        private float movementSpeed = 0.01f;
-        private float rotationSpeed = 1.0f;
+        private Pose poseInCamera = Pose.identity;
 
         public override void UpdateController()
         {
             if (Enabled)
             {
+                float movementSpeed = 0.01f;
                 float h = UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_1);
                 float v = UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_2);
-                controllerPoseLocal.position += new Vector3(h, v, 0) * movementSpeed;
+                poseInCamera.position += new Vector3(h, -v, 0) * movementSpeed;
 
+                float rotationSpeed = 1.0f;
                 float yaw = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_4);
                 float pitch = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_5);
-                controllerPoseLocal.rotation *= Quaternion.AngleAxis(yaw, Vector3.up);
-                //controllerPoseLocal.rotation *= Quaternion.AngleAxis(pitch, Vector3.right);
+                poseInCamera.rotation *= Quaternion.AngleAxis(yaw, Vector3.up);
+                poseInCamera.rotation *= Quaternion.AngleAxis(pitch, Vector3.right);
 
-                Pose controllerPose = controllerPoseLocal.GetTransformedBy(CameraCache.Main.transform);
-                CurrentControllerPosition = controllerPose.position;
+                Pose pose = poseInCamera.GetTransformedBy(CameraCache.Main.transform);
+                CurrentControllerPosition = pose.position;
                 CurrentControllerPose.Position = CurrentControllerPosition;
-                CurrentControllerRotation = controllerPose.rotation;
+                CurrentControllerRotation = pose.rotation;
                 CurrentControllerPose.Rotation = CurrentControllerRotation;
 
                 base.UpdateController();
