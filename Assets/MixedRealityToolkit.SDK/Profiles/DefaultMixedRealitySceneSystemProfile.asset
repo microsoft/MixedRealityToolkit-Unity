@@ -16,3 +16,7 @@ MonoBehaviour:
   useManagerScene: 1
   managerSceneObject: {fileID: 102900000, guid: ae7bb08d297fb69408695d8de0962524,
     type: 3}
+  useLightingScene: 1
+  lightingSceneObject: {fileID: 102900000, guid: 7e54e36c44f826c438c95da79f8de638,
+    type: 3}
+  manageActiveScene: 0
