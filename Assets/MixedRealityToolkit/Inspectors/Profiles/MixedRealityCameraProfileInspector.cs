@@ -10,9 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomEditor(typeof(MixedRealityCameraProfile))]
     public class MixedRealityCameraProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private static bool showGeneralProperties = true;
-        private SerializedProperty isCameraPersistent;
-
         private static bool showOpaqueProperties = true;
         private SerializedProperty opaqueNearClip;
         private SerializedProperty opaqueClearFlags;
@@ -37,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            isCameraPersistent = serializedObject.FindProperty("isCameraPersistent");
             opaqueNearClip = serializedObject.FindProperty("nearClipPlaneOpaqueDisplay");
             opaqueClearFlags = serializedObject.FindProperty("cameraClearFlagsOpaqueDisplay");
             opaqueBackgroundColor = serializedObject.FindProperty("backgroundColorOpaqueDisplay");
@@ -69,17 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             CheckProfileLock(target);
 
             serializedObject.Update();
-
-            EditorGUILayout.Space();
-            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
-            if (showGeneralProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(isCameraPersistent);
-                }
-            }
-            
+          
             EditorGUILayout.Space();
             showOpaqueProperties = EditorGUILayout.Foldout(showOpaqueProperties, "Opaque Display Settings", true);
             if (showOpaqueProperties)

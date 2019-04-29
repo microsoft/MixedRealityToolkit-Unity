@@ -20,7 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty targetExperienceScale;
         // Camera properties
         private static bool showCameraProperties = true;
-        private SerializedProperty enableCameraProfile;
+        private SerializedProperty enableCameraSystem;
+        private SerializedProperty cameraSystemType;
         private SerializedProperty cameraProfile;
         // Input system properties
         private static bool showInputProperties = true;
@@ -70,7 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Experience configuration
             targetExperienceScale = serializedObject.FindProperty("targetExperienceScale");
             // Camera configuration
-            enableCameraProfile = serializedObject.FindProperty("enableCameraProfile");
+            enableCameraSystem = serializedObject.FindProperty("enableCameraSystem");
+            cameraSystemType = serializedObject.FindProperty("cameraSystemType");
             cameraProfile = serializedObject.FindProperty("cameraProfile");
             // Input system configuration
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
@@ -194,7 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    EditorGUILayout.PropertyField(enableCameraProfile);
+                    EditorGUILayout.PropertyField(enableCameraSystem);
+                    EditorGUILayout.PropertyField(cameraSystemType);
                     changed |= RenderProfile(cameraProfile);
                 }
             }
