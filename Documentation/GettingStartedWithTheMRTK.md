@@ -20,6 +20,16 @@ To get started with the Mixed Reality Toolkit you will need:
 
 For additional delivery mechanisms, please see [Downloading the MRTK](DownloadingTheMRTK.md).
 
+## Switch your Unity project to the target platform
+The next step **Import MRTK packages into your Unity project** will apply changes to your project specifically for the platform that is selected in the project at that moment you import them. 
+
+You should make sure that you select the correct platform before following the next step.
+
+For instance, if you want to create a HoloLens application, switch to Universal Windows Platform:
+- Open menu : File > Build Settings
+- Select **Universal Windows Platform** in the **Platform** list
+- Click on the **Switch Platform** button
+
 ## Import MRTK packages into your Unity project
 1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.
 
