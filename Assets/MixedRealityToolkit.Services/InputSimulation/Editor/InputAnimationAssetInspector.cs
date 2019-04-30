@@ -186,6 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnInspectorGUI()
         {
+            GUI.enabled = true;
             bool isGUIEnabled = GUI.enabled;
 
             UpdateSceneObjects();

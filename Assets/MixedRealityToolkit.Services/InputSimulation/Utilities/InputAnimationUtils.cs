@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -81,6 +82,47 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     CameraCache.Main.transform.SetPositionAndRotation(cameraPose.Position, cameraPose.Rotation);
                 }
             }
+        }
+
+        public static void SerializeAnimationCurve(BinaryWriter writer, AnimationCurve curve)
+        {
+            writer.Write((int)curve.preWrapMode);
+            writer.Write((int)curve.postWrapMode);
+
+            writer.Write(curve.length);
+            for (int i = 0; i < curve.length; ++i)
+            {
+                var keyframe = curve.keys[i];
+                writer.Write(keyframe.time);
+                writer.Write(keyframe.value);
+                writer.Write(keyframe.inTangent);
+                writer.Write(keyframe.outTangent);
+                writer.Write(keyframe.inWeight);
+                writer.Write(keyframe.outWeight);
+                writer.Write((int)keyframe.weightedMode);
+            }
+        }
+
+        public static void DeserializeAnimationCurve(BinaryReader reader, AnimationCurve curve)
+        {
+            curve.preWrapMode = (WrapMode)reader.ReadInt32();
+            curve.postWrapMode = (WrapMode)reader.ReadInt32();
+
+            int keyframeCount = reader.ReadInt32();
+
+            Keyframe[] keys = new Keyframe[keyframeCount];
+            for (int i = 0; i < keyframeCount; ++i)
+            {
+                keys[i].time = reader.ReadSingle();
+                keys[i].value = reader.ReadSingle();
+                keys[i].inTangent = reader.ReadSingle();
+                keys[i].outTangent = reader.ReadSingle();
+                keys[i].inWeight = reader.ReadSingle();
+                keys[i].outWeight = reader.ReadSingle();
+                keys[i].weightedMode = (WeightedMode)reader.ReadInt32();
+            }
+
+            curve.keys = keys;
         }
     }
 }

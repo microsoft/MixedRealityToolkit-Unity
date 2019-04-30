@@ -6,7 +6,9 @@ using UnityEngine;
 using UnityEngine.Playables;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -409,6 +411,69 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void SortMarkers()
         {
             markers.Sort(new CompareMarkers());
+        }
+
+        public void ToStream(Stream stream)
+        {
+            var writer = new BinaryWriter(stream);
+            var formatter = new BinaryFormatter();
+
+            WriteAnimationCurve(writer, handTrackedCurveLeft);
+            WriteAnimationCurve(writer, handTrackedCurveRight);
+            WriteAnimationCurve(writer, handPinchCurveLeft);
+            WriteAnimationCurve(writer, handPinchCurveRight);
+            WriteAnimationCurveArray(writer, handJointCurvesLeft);
+            WriteAnimationCurveArray(writer, handJointCurvesRight);
+            WriteAnimationCurveArray(writer, cameraPositionCurves);
+            WriteAnimationCurveArray(writer, cameraRotationCurves);
+
+            formatter.Serialize(stream, markers);
+        }
+
+        public void FromStream(Stream stream)
+        {
+            var reader = new BinaryReader(stream);
+            var formatter = new BinaryFormatter();
+
+            duration = 0.0f;
+            ReadAnimationCurve(reader, handTrackedCurveLeft);
+            ReadAnimationCurve(reader, handTrackedCurveRight);
+            ReadAnimationCurve(reader, handPinchCurveLeft);
+            ReadAnimationCurve(reader, handPinchCurveRight);
+            ReadAnimationCurveArray(reader, handJointCurvesLeft);
+            ReadAnimationCurveArray(reader, handJointCurvesRight);
+            ReadAnimationCurveArray(reader, cameraPositionCurves);
+            ReadAnimationCurveArray(reader, cameraRotationCurves);
+
+            markers = (List<InputAnimationMarker>)formatter.Deserialize(stream);
+        }
+
+        private void WriteAnimationCurve(BinaryWriter writer, AnimationCurve curve)
+        {
+            InputAnimationUtils.SerializeAnimationCurve(writer, curve);
+        }
+
+        private void WriteAnimationCurveArray(BinaryWriter writer, AnimationCurve[] curves)
+        {
+            foreach (AnimationCurve curve in curves)
+            {
+                WriteAnimationCurve(writer, curve);
+            }
+        }
+
+        private void ReadAnimationCurve(BinaryReader reader, AnimationCurve curve)
+        {
+            InputAnimationUtils.DeserializeAnimationCurve(reader, curve);
+
+            duration = Mathf.Max(duration, curve.Duration());
+        }
+
+        private void ReadAnimationCurveArray(BinaryReader reader, AnimationCurve[] curves)
+        {
+            foreach (AnimationCurve curve in curves)
+            {
+                ReadAnimationCurve(reader, curve);
+            }
         }
     }
 }
