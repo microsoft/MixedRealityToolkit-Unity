@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
-        /// <param name="serviceType"></param>Optional service type to limit available profile types.
+        /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
         /// </summary>
         protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, Type serviceType = null)
