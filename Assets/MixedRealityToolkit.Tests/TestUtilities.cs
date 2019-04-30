@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -164,6 +166,84 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public WaitForPlayableEnded(PlayableDirector director)
         {
             this.director = director;
+        }
+    }
+
+    public class ComponentTester<T> where T : MonoBehaviour
+    {
+        private T component;
+        public T Component => component;
+
+        public ComponentTester(string objectName)
+        {
+            var ob = GameObject.Find(objectName);
+            Assert.IsNotNull(ob, $"Could not find object {objectName}");
+
+            component = ob.GetComponent<T>();
+            Assert.IsNotNull(component, $"Could not find {typeof(T).Name} component in object {objectName}");
+        }
+    }
+
+    public class InteractableTester : ComponentTester<Interactable>
+    {
+        public InteractableTester(string objectName)
+            : base(objectName)
+        {
+        }
+
+        public void TestState(bool expectFocus, bool expectPress)
+        {
+            Assert.IsTrue(Component.HasFocus == expectFocus, $"{Component.gameObject.name}: Expected Interactable focus to be {expectFocus}, but is {Component.HasFocus}");
+            Assert.IsTrue(Component.HasPress == expectPress, $"{Component.gameObject.name}: Expected Interactable press to be {expectPress}, but is {Component.HasPress}");
+        }
+    }
+
+    public class ManipulationHandlerTester : ComponentTester<ManipulationHandler>
+    {
+        private bool isHovered;
+        private bool isManipulating;
+
+        public ManipulationHandlerTester(string objectName)
+            : base(objectName)
+        {
+            Component.OnHoverEntered.AddListener(OnHoverEntered);
+            Component.OnHoverExited.AddListener(OnHoverExited);
+            Component.OnManipulationStarted.AddListener(OnManipulationStarted);
+            Component.OnManipulationEnded.AddListener(OnManipulationEnded);
+        }
+
+        ~ManipulationHandlerTester()
+        {
+            Component.OnHoverEntered.RemoveListener(OnHoverEntered);
+            Component.OnHoverExited.RemoveListener(OnHoverExited);
+            Component.OnManipulationStarted.RemoveListener(OnManipulationStarted);
+            Component.OnManipulationEnded.RemoveListener(OnManipulationEnded);
+        }
+
+        public void TestState(bool expectHovered, bool expectManipulating)
+        {
+            Assert.IsTrue(isHovered == expectHovered, $"{Component.gameObject.name}: Expected ManipulationHandler hovered state to be {expectHovered}, but is {isHovered}");
+            Assert.IsTrue(isManipulating == expectManipulating, $"{Component.gameObject.name}: Expected ManipulationHandler manipulation state to be {expectManipulating}, but is {isManipulating}");
+        }
+
+        private void OnHoverEntered(ManipulationEventData evt)
+        {
+            isHovered = true;
+        }
+
+        private void OnHoverExited(ManipulationEventData evt)
+        {
+            isHovered = false;
+        }
+
+        private void OnManipulationStarted(ManipulationEventData evt)
+        {
+            isManipulating = true;
+        }
+
+        private void OnManipulationEnded(ManipulationEventData evt)
+        {
+            isManipulating = false;
         }
     }
 }
