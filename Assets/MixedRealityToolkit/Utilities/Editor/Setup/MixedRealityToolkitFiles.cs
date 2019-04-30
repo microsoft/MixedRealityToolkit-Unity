@@ -54,6 +54,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private const string MixedRealityToolkitDirectory = "MixedRealityToolkit";
 
+        // This alternate path is used if above isn't found. This is to work around long paths issue with NuGetForUnity
+        // https://github.com/GlitchEnzo/NuGetForUnity/issues/246
+        private const string AlternateMixedRealityToolkitDirectory = "MRTK";
+
         private readonly static HashSet<string> mrtkFolders = new HashSet<string>();
         private readonly static Task searchForFoldersTask;
 
@@ -82,8 +86,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static void SearchForFoldersAsync(string rootPath)
         {
-            IEnumerable<string> directories = Directory.GetDirectories(rootPath, MixedRealityToolkitDirectory, SearchOption.AllDirectories)
-                .Select(NormalizeSeparators);
+            IEnumerable<string> directories = Directory.GetDirectories(rootPath, MixedRealityToolkitDirectory, SearchOption.AllDirectories);
+
+            if (directories.Count() == 0)
+            {
+                directories = Directory.GetDirectories(rootPath, AlternateMixedRealityToolkitDirectory, SearchOption.AllDirectories);
+            }
+
+            directories = directories.Select(NormalizeSeparators);
 
             foreach (string s in directories)
             {

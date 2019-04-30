@@ -124,6 +124,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Initialize();
             UpdateRenderers();
             ToggleClippingFeature(true);
+
+            if (useOnPreRender)
+            {
+                cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
+                cameraMethods.OnCameraPreRender += OnCameraPreRender;
+            }
         }
 
         protected void OnDisable()

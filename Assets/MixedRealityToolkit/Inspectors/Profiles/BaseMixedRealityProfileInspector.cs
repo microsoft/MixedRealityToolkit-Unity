@@ -186,6 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // Sub-profiles are easy to update in the master configuration inspector.
                 if (MixedRealityToolkit.Instance.ActiveProfile.GetType() == profile.GetType())
                 {
+                    UnityEditor.Undo.RecordObject(MixedRealityToolkit.Instance, "Copy & Customize Profile");
                     MixedRealityToolkit.Instance.ActiveProfile = profile as MixedRealityToolkitConfigurationProfile;
                 }
             }

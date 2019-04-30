@@ -49,6 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private static void CheckMixedRealityToolkitScene()
         {
+            // If building, don't perform this check
+            if (BuildPipeline.isBuildingPlayer)
+            {
+                return;
+            }
+
             // Create The MR Manager if none exists.
             if (!MixedRealityToolkit.IsInitialized)
             {
