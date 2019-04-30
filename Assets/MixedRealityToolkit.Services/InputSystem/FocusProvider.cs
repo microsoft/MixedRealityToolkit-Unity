@@ -452,7 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (!IsSetupValid) { return; }
 
             UpdatePointers();
-            UpdateFocusedObjects(pointers);
+            UpdateFocusedObjects();
         }
 
         #endregion IMixedRealityService Implementation
@@ -497,9 +497,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var newId = (uint)UnityEngine.Random.Range(1, int.MaxValue);
 
-            foreach (var pointer in pointers)
+            foreach (var pointerData in pointers)
             {
-                if (pointer.Pointer.PointerId == newId)
+                if (pointerData.Pointer.PointerId == newId)
                 {
                     return GenerateNewPointerId();
                 }
@@ -667,11 +667,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>Pointer Data if the pointing source is registered.</returns>
         private bool TryGetPointerData(IMixedRealityPointer pointer, out PointerData data)
         {
-            foreach (var p in pointers)
+            foreach (var pointerData in pointers)
             {
-                if (p.Pointer.PointerId == pointer.PointerId)
+                if (pointerData.Pointer.PointerId == pointer.PointerId)
                 {
-                    data = p;
+                    data = pointerData;
                     return true;
                 }
             }
@@ -1021,7 +1021,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Raises the Focus Events to the Input Manger if needed.
         /// </summary>
-        private void UpdateFocusedObjects(HashSet<PointerData> pointers)
+        private void UpdateFocusedObjects()
         {
             Debug.Assert(pendingPointerSpecificFocusChange.Count == 0);
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
