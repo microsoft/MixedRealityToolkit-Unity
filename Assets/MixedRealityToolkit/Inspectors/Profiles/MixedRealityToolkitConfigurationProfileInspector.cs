@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -10,9 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomEditor(typeof(MixedRealityToolkitConfigurationProfile))]
     public class MixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        const string HideNoActiveToolkitWarningKey = "MRTK_HideNoActiveToolkitWarningKey";
-        private static bool HideNoActiveToolkitWarning = true;
-
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
 
         // Experience properties
@@ -20,7 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty targetExperienceScale;
         // Camera properties
         private static bool showCameraProperties = true;
-        private SerializedProperty enableCameraProfile;
+        private SerializedProperty enableCameraSystem;
+        private SerializedProperty cameraSystemType;
         private SerializedProperty cameraProfile;
         // Input system properties
         private static bool showInputProperties = true;
@@ -51,6 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool showRegisteredServiceProperties = true;
         private SerializedProperty registeredServiceProvidersProfile;
 
+        // Editor settings
+        private static bool showEditorSettings = true;
+        private SerializedProperty useServiceInspectors;
+
         private MixedRealityToolkitConfigurationProfile configurationProfile;
 
         protected override void OnEnable()
@@ -63,39 +68,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            configurationProfile = target as MixedRealityToolkitConfigurationProfile;
-
-            // Create The MR Manager if none exists.
-            if (!MixedRealityToolkit.IsInitialized)
-            {
-                // Search the scene for one, in case we've just hot reloaded the assembly.
-                var managerSearch = FindObjectsOfType<MixedRealityToolkit>();
-
-                if (managerSearch.Length == 0)
-                {
-                    HideNoActiveToolkitWarning = SessionState.GetBool(HideNoActiveToolkitWarningKey, false);
-                    if (!HideNoActiveToolkitWarning)
-                    {
-                        NoActiveToolkitWarning.OpenWindow(configurationProfile);
-                    }
-                    return; 
-                }
-            }
-
-            if (!MixedRealityToolkit.ConfirmInitialized())
-            {
-                return;
-            }
-
-            if (!MixedRealityToolkit.Instance.HasActiveProfile)
-            {
-                return;
-            }
-
             // Experience configuration
             targetExperienceScale = serializedObject.FindProperty("targetExperienceScale");
             // Camera configuration
-            enableCameraProfile = serializedObject.FindProperty("enableCameraProfile");
+            enableCameraSystem = serializedObject.FindProperty("enableCameraSystem");
+            cameraSystemType = serializedObject.FindProperty("cameraSystemType");
             cameraProfile = serializedObject.FindProperty("cameraProfile");
             // Input system configuration
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
@@ -119,10 +96,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Additional registered components configuration
             registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
+
+            // Editor settings
+            useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
         }
 
         public override void OnInspectorGUI()
         {
+            var configurationProfile = (MixedRealityToolkitConfigurationProfile)target;
+
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
 
@@ -147,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
                     var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;
+                    UnityEditor.Undo.RecordObject(MixedRealityToolkit.Instance, "Create new profiles");
                     MixedRealityToolkit.Instance.ActiveProfile = newProfile;
                     Selection.activeObject = newProfile;
                 }
@@ -214,7 +197,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    EditorGUILayout.PropertyField(enableCameraProfile);
+                    EditorGUILayout.PropertyField(enableCameraSystem);
+                    EditorGUILayout.PropertyField(cameraSystemType);
                     changed |= RenderProfile(cameraProfile);
                 }
             }
@@ -228,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.PropertyField(enableInputSystem);
                     EditorGUILayout.PropertyField(inputSystemType);
-                    changed |= RenderProfile(inputSystemProfile);
+                    changed |= RenderProfile(inputSystemProfile, true, typeof(IMixedRealityInputSystem));
                 }
             }
 
@@ -248,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                     EditorGUILayout.PropertyField(enableBoundarySystem);
                     EditorGUILayout.PropertyField(boundarySystemType);
-                    changed |= RenderProfile(boundaryVisualizationProfile);
+                    changed |= RenderProfile(boundaryVisualizationProfile, true, typeof(IMixedRealityBoundarySystem));
                 }
             }
 
@@ -274,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
                     EditorGUILayout.PropertyField(spatialAwarenessSystemType);
                     EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
-                    changed |= RenderProfile(spatialAwarenessSystemProfile);
+                    changed |= RenderProfile(spatialAwarenessSystemProfile, true, typeof(IMixedRealitySpatialAwarenessSystem));
                 }
             }
 
@@ -303,6 +287,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
+            // Editor settings
+            EditorGUILayout.Space();
+            showEditorSettings = EditorGUILayout.Foldout(showEditorSettings, "Editor Settings", true);
+            if (showEditorSettings)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(useServiceInspectors);
+                }
+            }
+
             if (!changed)
             {
                 changed |= EditorGUI.EndChangeCheck();
@@ -314,53 +309,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (changed)
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(configurationProfile);
-            }
-        }
-
-        private class NoActiveToolkitWarning : EditorWindow
-        {
-            private static NoActiveToolkitWarning activeWindow;
-            private MixedRealityToolkitConfigurationProfile configurationProfile;
-            private bool hideWarning = false;
-
-            public static void OpenWindow(MixedRealityToolkitConfigurationProfile configurationProfile)
-            {
-                // If we already have an active window, bail
-                if (activeWindow != null)
-                    return;
-
-                activeWindow = EditorWindow.GetWindow<NoActiveToolkitWarning>();
-                activeWindow.configurationProfile = configurationProfile;
-                activeWindow.maxSize = new Vector2(400, 80);
-                activeWindow.minSize = new Vector2(400, 80);
-                activeWindow.titleContent = new GUIContent("No Active Toolkit Found");
-
-                activeWindow.Show(true); 
-            }
-
-            private void OnGUI()
-            {
-                EditorGUILayout.HelpBox("There is no active Mixed Reality Toolkit in your scene. Would you like to create one now?", MessageType.Warning);
-
-                hideWarning = EditorGUILayout.Toggle("Don't show this again", hideWarning);
-
-                EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button("Yes"))
-                {
-                    var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-                    Debug.Assert(playspace != null);
-                    MixedRealityToolkit.Instance.ActiveProfile = configurationProfile;
-
-                    SessionState.SetBool(HideNoActiveToolkitWarningKey, hideWarning);
-                    Close();
-                }
-
-                if (GUILayout.Button("No"))
-                {
-                    SessionState.SetBool(HideNoActiveToolkitWarningKey, hideWarning);
-                    Close();
-                }
-                EditorGUILayout.EndHorizontal();
             }
         }
     }

@@ -19,8 +19,8 @@ namespace Microsoft.MixedReality.Toolkit
 
         /// <summary>
         /// The main function for handling and forwarding all events to their intended recipients.
-        /// <para><remarks>See: https://docs.unity3d.com/Manual/MessagingSystem.html </remarks></para>
         /// </summary>
+        /// <remarks>See: https://docs.unity3d.com/Manual/MessagingSystem.html </remarks>
         /// <typeparam name="T">Event Handler Interface Type</typeparam>
         /// <param name="eventData">Event Data</param>
         /// <param name="eventHandler">Event Handler delegate</param>

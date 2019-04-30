@@ -13,8 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// The focus provider handles the focused objects per input source.
-    /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
+    /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
     public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider
     {
         public FocusProvider(
@@ -131,8 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Cached <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> reference to the new raycast position.
-        /// <remarks>Only used to update UI raycast results.</remarks>
         /// </summary>
+        /// <remarks>Only used to update UI raycast results.</remarks>
         private Vector3 newUiRaycastPosition = Vector3.zero;
 
         /// <summary>
@@ -271,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Pointer.OnPreCurrentPointerTargetChange();
 
                     // Set to default:
-                    Pointer.IsTargetPositionLockedOnFocusLock = true; 
+                    Pointer.IsTargetPositionLockedOnFocusLock = true;
                 }
 
                 PreviousPointerTarget = CurrentPointerTarget;
@@ -312,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (hitResult.hitObject != null)
                 {
                     focusDetails.PointLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Point);
-                    focusDetails.NormalLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Normal);
+                    focusDetails.NormalLocalSpace = hitResult.hitObject.transform.InverseTransformDirection(focusDetails.Normal);
                 }
                 else
                 {
@@ -320,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     focusDetails.NormalLocalSpace = Vector3.zero;
                 }
             }
-            
+
             /// <summary>
             /// Update focus information while focus is locked. If the object is moving,
             /// this updates the hit point to its new world transform.
@@ -335,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     focusDetails.Point = focusDetails.Object.transform.TransformPoint(focusDetails.PointLocalSpace);
                     focusDetails.Normal = focusDetails.Object.transform.TransformDirection(focusDetails.NormalLocalSpace);
                     focusDetails.PointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Point);
-                    focusDetails.NormalLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Normal);
+                    focusDetails.NormalLocalSpace = focusDetails.Object.transform.InverseTransformDirection(focusDetails.Normal);
                 }
 
                 StartPoint = Pointer.Rays[0].Origin;
@@ -582,7 +583,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 mediator = Activator.CreateInstance(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
             }
-            
+
             if (mediator != null)
             {
                 mediator.RegisterPointers(inputSource.Pointers);
@@ -829,7 +830,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                     }
                 }
-                // The gaze cursor's visibility is controlled by IsInteractionEnabled 
+                // The gaze cursor's visibility is controlled by IsInteractionEnabled
                 // Show the gaze cursor if there are no other pointers that are showing a cursor
                 gazePointer.IsInteractionEnabled = numFarCursors == 1 && numNearPointersActive == 0;
             }
@@ -896,7 +897,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 // Policy: in order for an collider to be near interactable it must have
                                 // a NearInteractionGrabbable component on it.
-                                // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap, 
+                                // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap,
                                 //        but there may be other pointers using the same query type which have different semantics.
                                 if (collider.GetComponent<NearInteractionGrabbable>() == null)
                                 {

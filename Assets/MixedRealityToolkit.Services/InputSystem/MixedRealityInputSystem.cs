@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/>
     /// </summary>
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
     public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem
     {
         public MixedRealityInputSystem(
@@ -418,8 +419,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Register a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen to events that will receive all input events, regardless
         /// of which other <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s might have handled the event beforehand.
-        /// <remarks>Useful for listening to events when the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is currently not being raycasted against by the <see cref="FocusProvider"/>.</remarks>
         /// </summary>
+        /// <remarks>Useful for listening to events when the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is currently not being raycasted against by the <see cref="FocusProvider"/>.</remarks>
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)
         {
@@ -876,6 +877,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion Pointer Down
+
+        #region Pointer Dragged
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerDraggedEventHandler =
+            delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<MixedRealityPointerEventData>(eventData);
+                handler.OnPointerDragged(casted);
+            };
+
+        /// <inheritdoc />
+        public void RaisePointerDragged(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
+        {
+            pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+
+            HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler);
+        }
+
+        #endregion Pointer Dragged
 
         #region Pointer Click
 

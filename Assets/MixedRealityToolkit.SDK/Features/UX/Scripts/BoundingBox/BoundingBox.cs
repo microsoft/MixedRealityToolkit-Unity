@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Renderers,
             MeshFilters
         }
-        private enum BoundingBoxActivationType
+        public enum BoundingBoxActivationType
         {
             ActivateOnStart = 0,
             ActivateByProximity,
@@ -110,6 +110,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Header("Behavior")]
         [SerializeField]
         private BoundingBoxActivationType activation = BoundingBoxActivationType.ActivateManually;
+        public BoundingBoxActivationType BoundingBoxActivation
+        {
+            get { return activation; }
+            set
+            {
+                if (activation != value)
+                {
+                    activation = value;
+                    ResetHandleVisibility();
+                }
+            }
+        }
 
         [SerializeField]
         [Tooltip("Maximum scaling allowed relative to the initial size")]
@@ -1538,6 +1550,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 eventData.Use();
             }
         }
+
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {

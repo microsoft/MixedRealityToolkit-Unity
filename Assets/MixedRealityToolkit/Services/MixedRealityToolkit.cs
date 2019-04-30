@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
@@ -350,23 +351,6 @@ namespace Microsoft.MixedReality.Toolkit
             ClearCoreSystemCache();
             EnsureMixedRealityRequirements();
 
-            if (ActiveProfile.IsCameraProfileEnabled)
-            {
-                if (ActiveProfile.CameraProfile.IsCameraPersistent)
-                {
-                    CameraCache.Main.transform.root.DontDestroyOnLoad();
-                }
-
-                if (ActiveProfile.CameraProfile.IsOpaque)
-                {
-                    ActiveProfile.CameraProfile.ApplySettingsForOpaqueDisplay();
-                }
-                else
-                {
-                    ActiveProfile.CameraProfile.ApplySettingsForTransparentDisplay();
-                }
-            }
-
 #region Services Registration
 
             // If the Input system has been selected for initialization in the Active profile, enable it in the project
@@ -404,6 +388,16 @@ namespace Microsoft.MixedReality.Toolkit
                 if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType, args: args) || BoundarySystem == null)
                 {
                     Debug.LogError("Failed to start the Boundary System!");
+                }
+            }
+
+            // If the Camera system has been selected for initialization in the Active profile, enable it in the project
+            if (ActiveProfile.IsCameraSystemEnabled)
+            {
+                object[] args = { this, ActiveProfile.CameraProfile };
+                if (!RegisterService<IMixedRealityCameraSystem>(ActiveProfile.CameraSystemType, args: args) || CameraSystem == null)
+                {
+                    Debug.LogError("Failed to start the Camera System!");
                 }
             }
 
@@ -485,6 +479,11 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void EnsureMixedRealityRequirements()
         {
+            if (MixedRealityPlayspace == null)
+            {
+                Debug.LogError("Failed to generate a MixedRealityPlayspace.");
+            }
+
             // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
             // We'll enforce that here, then tracking can update it to the appropriate position later.
             CameraCache.Main.transform.position = Vector3.zero;
@@ -557,6 +556,14 @@ namespace Microsoft.MixedReality.Toolkit
                 switch (objects.Length)
                 {
                     case 0:
+#if UNITY_EDITOR
+                        // Generating a new instance during app shutdown in the editor allows instances to persist into edit mode, which may cause unwanted behavior
+                        if (isApplicationQuitting)
+                        {
+                            Debug.LogWarning("Trying to find instance during application shutdown.");
+                            return null;
+                        }
+#endif
                         Debug.Assert(!newInstanceBeingInitialized, "We shouldn't be initializing another MixedRealityToolkit unless we errored on the previous.");
                         newInstanceBeingInitialized = true;
                         newInstance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();
@@ -640,7 +647,6 @@ namespace Microsoft.MixedReality.Toolkit
                     if (instance != null)
                     {
                         Debug.Assert(instance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
-                        Debug.Assert(instance.transform.childCount == 0, "The MixedRealityToolkit should not have GameObject children!");
                     }
                 };
 #endif // UNITY_EDITOR
@@ -1027,6 +1033,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             return typeof(IMixedRealityInputSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityCameraSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityFocusProvider).IsAssignableFrom(type) ||
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
@@ -1037,6 +1044,7 @@ namespace Microsoft.MixedReality.Toolkit
         private void ClearCoreSystemCache()
         {
             inputSystem = null;
+            cameraSystem = null;
             teleportSystem = null;
             boundarySystem = null;
             spatialAwarenessSystem = null;
@@ -1243,6 +1251,35 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         private static bool logBoundarySystem = true;
+
+        private static IMixedRealityCameraSystem cameraSystem = null;
+
+        /// <summary>
+        /// The current Camera System registered with the Mixed Reality Toolkit.
+        /// </summary>
+        public static IMixedRealityCameraSystem CameraSystem
+        {
+            get
+            {
+                if (isApplicationQuitting)
+                {
+                    return null;
+                }
+
+                if (cameraSystem != null)
+                {
+                    return cameraSystem;
+                }
+
+                cameraSystem = Instance.GetService<IMixedRealityCameraSystem>(showLogs: logCameraSystem);
+                // If we found a valid system, then we turn logging back on for the next time we need to search.
+                // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
+                logCameraSystem = cameraSystem != null;
+                return cameraSystem;
+            }
+        }
+
+        private static bool logCameraSystem = true;
 
         private static IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
