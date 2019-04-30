@@ -815,18 +815,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 int numFarCursors = 0;
                 int numNearPointersActive = 0;
-                foreach (var pointer in pointers)
+                foreach (var p in pointers)
                 {
-                    if (pointer.Pointer != null)
+                    if (p.Pointer != null)
                     {
-                        if (pointer.Pointer is IMixedRealityNearPointer)
+                        if (p.Pointer is IMixedRealityNearPointer)
                         {
-                            if (pointer.Pointer.IsInteractionEnabled)
+                            if (p.Pointer.IsInteractionEnabled)
                             {
                                 numNearPointersActive++;
                             }
                         }
-                        else if (pointer.Pointer.BaseCursor != null)
+                        else if (p.Pointer.BaseCursor != null)
                         {
                             numFarCursors++;
                         }
