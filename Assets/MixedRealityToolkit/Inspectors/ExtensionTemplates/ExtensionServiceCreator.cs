@@ -49,9 +49,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             public string ServiceName;
             public bool UsesProfile;
+            public bool UsesInspector;
             public SupportedPlatforms Platforms;
             public CreationStage Stage;
             public string ServiceFolderPath;
+            public string InspectorFolderPath;
             public string InterfaceFolderPath;
             public string ProfileFolderPath;
             public string ProfileAssetFolderPath;
@@ -67,11 +69,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly string DefaultExtensionsFolder = "Assets/MixedRealityToolkit.Extensions";
         private static readonly string DefaultExtensionsFolderName = "MixedRealityToolkit.Extensions";
         private static readonly string ServiceTemplatePath = "ExtensionTemplates/ExtensionScriptTemplate.txt";
+        private static readonly string InspectorTemplatePath = "ExtensionTemplates/ExtensionInspectorTemplate.txt";
         private static readonly string InterfaceTemplatePath = "ExtensionTemplates/ExtensionInterfaceTemplate.txt";
         private static readonly string ProfileTemplatePath = "ExtensionTemplates/ExtensionProfileTemplate.txt";
         private static readonly string ScriptExtension = ".cs";
         private static readonly string ProfileExtension = ".asset";
         private static readonly string ServiceNameSearchString = "#SERVICE_NAME#";
+        private static readonly string InspectorNameSearchString = "#INSPECTOR_NAME#";
         private static readonly string InterfaceNameSearchString = "#INTERFACE_NAME#";
         private static readonly string ProfileNameSearchString = "#PROFILE_NAME#";
         private static readonly string ProfileFieldNameSearchString = "#PROFILE_FIELD_NAME#";
@@ -93,6 +97,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             get { return state.UsesProfile; }
             set { state.UsesProfile = value; }
+        }
+
+        public bool UsesInspector
+        {
+            get { return state.UsesInspector; }
+            set { state.UsesInspector = value; }
         }
 
         public SupportedPlatforms Platforms
@@ -117,11 +127,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public CreateResult Result { get; private set; } = CreateResult.None;
         public string InterfaceName { get { return "I" + ServiceName; } }
         public string ProfileName { get { return ServiceName + "Profile"; } }
+        public string InspectorName { get { return ServiceName + "Inspector"; } }
         public string ServiceFieldName { get { return Char.ToLowerInvariant(ServiceName[0]) + ServiceName.Substring(1); } }
         public string ProfileFieldName { get { return Char.ToLowerInvariant(ProfileName[0]) + ProfileName.Substring(1); } }
         public string ProfileAssetName { get { return "Default" + ProfileName; } }
 
         public UnityEngine.Object ServiceFolderObject { get; set; }
+        public UnityEngine.Object InspectorFolderObject { get; set; }
         public UnityEngine.Object InterfaceFolderObject { get; set; }
         public UnityEngine.Object ProfileFolderObject { get; set; }
         public UnityEngine.Object ProfileAssetFolderObject { get; set; }
@@ -137,6 +149,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             get { return state.ServiceFolderPath; }
             set { state.ServiceFolderPath = value; }
+        }
+
+        private string InspectorFolderPath
+        {
+            get { return state.InspectorFolderPath; }
+            set { state.InspectorFolderPath = value; }
         }
 
         private string InterfaceFolderPath
@@ -169,6 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         private string ServiceTemplate;
+        private string InspectorTemplate;
         private string InterfaceTemplate;
         private string ProfileTemplate;
 
@@ -229,6 +248,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!ReadTemplate(ServiceTemplatePath, ref ServiceTemplate))
                     errors.Add("Script template not found in " + ServiceTemplatePath);             
+            }
+
+            if (InspectorTemplate == null)
+            {
+                if (!ReadTemplate(InspectorTemplatePath, ref InspectorTemplate))
+                    errors.Add("Inspector template not found in " + InspectorTemplatePath);
             }
 
             if (InterfaceTemplate == null)
@@ -300,6 +325,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (ServiceFolderObject == null)
                 ServiceFolderObject = (UnityEngine.Object)AssetDatabase.LoadAssetAtPath(DefaultExtensionsFolder, typeof(UnityEngine.Object));
 
+            if (InspectorFolderObject == null && ServiceFolderObject != null)
+                InspectorFolderObject = ServiceFolderObject;
+
             if (InterfaceFolderObject == null && ServiceFolderObject != null)
                 InterfaceFolderObject = ServiceFolderObject;
 
@@ -310,6 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 ProfileAssetFolderObject = ServiceFolderObject;
 
             ServiceFolderPath = ServiceFolderObject != null ? AssetDatabase.GetAssetPath(ServiceFolderObject) : string.Empty;
+            InspectorFolderPath = InspectorFolderObject != null ? AssetDatabase.GetAssetPath(InspectorFolderObject) : string.Empty;
             InterfaceFolderPath = InterfaceFolderObject != null ? AssetDatabase.GetAssetPath(InterfaceFolderObject) : string.Empty;
             ProfileFolderPath = ProfileFolderObject != null ? AssetDatabase.GetAssetPath(ProfileFolderObject) : string.Empty;
             ProfileAssetFolderPath = ProfileAssetFolderObject != null ? AssetDatabase.GetAssetPath(ProfileAssetFolderObject) : string.Empty;
@@ -317,6 +346,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Make sure the folders exist and aren't other assets
             if (!AssetDatabase.IsValidFolder(ServiceFolderPath))
                 errors.Add("Service folder is not valid.");
+
+            if (!AssetDatabase.IsValidFolder(InspectorFolderPath))
+                errors.Add("Inspector folder is not valid.");
 
             if (!AssetDatabase.IsValidFolder(InterfaceFolderPath))
                 errors.Add("Interface folder is not valid.");
@@ -330,6 +362,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Make sure there aren't already assets with the same name
             if (AssetExists(ServiceFolderPath, ServiceName, ScriptExtension))
                 errors.Add("Service script asset already exists. Delete it or choose a different service name to continue.");
+
+            if (AssetExists(InspectorFolderPath, InspectorName, ScriptExtension))
+                errors.Add("Inspector script asset already exists. Delete it or choose a different service name to continue.");
 
             if (AssetExists(InterfaceFolderPath, InterfaceName, ScriptExtension))
                 errors.Add("Interface script asset already exists. Delete it or choose a different service name to continue.");
@@ -371,6 +406,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 errors.Add("The type '" + ServiceName + "' already exists in this namespace.");
             }
 
+            Type inspectorType = Type.GetType(Namespace + ".Editor." + InspectorName);
+            if (serviceType != null)
+            {
+                errors.Add("The type '" + InspectorName + "' already exists in this namespace.");
+            }
+
             Type interfaceType = Type.GetType(Namespace + "." + InterfaceName);
             if (interfaceType != null)
             {
@@ -398,6 +439,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             string serviceAsset = CreateTextAssetFromTemplate(ServiceTemplate);
             WriteTextAssetToDisk(serviceAsset, ServiceName, ServiceFolderPath);
+            if (Result == CreateResult.Error)
+                return;
+
+            await Task.Delay(100);
+            string inspectorAsset = CreateTextAssetFromTemplate(InspectorTemplate);
+            WriteTextAssetToDisk(inspectorAsset, InspectorName, InspectorFolderPath);
             if (Result == CreateResult.Error)
                 return;
 
@@ -517,6 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             state = new PersistentState();
             state.ServiceName = "NewService";
             state.UsesProfile = true;
+            state.UsesInspector = true;
             state.Stage = CreationStage.SelectNameAndPlatform;
             state.Platforms = SupportedPlatforms.LinuxStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal;
         }
@@ -532,6 +580,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             string scriptContents = templateText;
             scriptContents = scriptContents.Replace(ServiceNameSearchString, ServiceName);
+            scriptContents = scriptContents.Replace(InspectorNameSearchString, InspectorName);
             scriptContents = scriptContents.Replace(InterfaceNameSearchString, InterfaceName);
             scriptContents = scriptContents.Replace(ProfileNameSearchString, ProfileName);
             scriptContents = scriptContents.Replace(ProfileFieldNameSearchString, ProfileFieldName);
@@ -557,8 +606,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void WriteTextAssetToDisk(string contents, string assetName, string folderPath)
         {
             string localPath = folderPath + "/" + assetName + ScriptExtension;
-            string absolutePath = System.IO.Path.Combine(Application.dataPath, localPath);
-            creationLog.Add("Creating " + absolutePath);
+            creationLog.Add("Creating " + localPath);
             try
             {
                 System.IO.File.WriteAllText(localPath, contents);
