@@ -629,14 +629,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
+                MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+
                 if (!objectIsStillFocusedByOtherPointer)
                 {
-                    MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
                     // Policy: only raise focus exit if no other pointers are still focusing the object
                     MixedRealityToolkit.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
-
-                    MixedRealityToolkit.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
                 }
+
+                MixedRealityToolkit.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
