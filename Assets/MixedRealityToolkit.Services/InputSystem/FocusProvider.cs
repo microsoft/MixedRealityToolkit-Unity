@@ -617,8 +617,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Raise focus events if needed.
             if (pointerData.CurrentPointerTarget != null)
             {
-                pendingOverallFocusExitSet.Add(pointerData, pointerData.CurrentPointerTarget);
-                RaiseFocusEvents(pointerData, pointerData.CurrentPointerTarget, null);
+                GameObject unfocusedObject = pointerData.CurrentPointerTarget;
+                bool objectIsStillFocusedByOtherPointer = false;
+
+                foreach (var otherPointer in pointers)
+                {
+                    if (otherPointer.Pointer != pointer && otherPointer.CurrentPointerTarget == unfocusedObject)
+                    {
+                        objectIsStillFocusedByOtherPointer = true;
+                        break;
+                    }
+                }
+
+                if (!objectIsStillFocusedByOtherPointer)
+                {
+                    MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+                    // Policy: only raise focus exit if no other pointers are still focusing the object
+                    MixedRealityToolkit.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
+
+                    MixedRealityToolkit.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
+                }
             }
 
             pointers.Remove(pointerData);
@@ -1056,15 +1074,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Finally execute the actual events
             foreach (var pointer in pendingPointerSpecificFocusChange)
             {
-                RaiseFocusEvents(pointer, pointer.PreviousPointerTarget, pointer.CurrentPointerTarget);
+                RaiseFocusEvents(pointer);
             }
 
+            Debug.Assert(pendingOverallFocusExitSet.Count == 0);
+            Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
             pendingPointerSpecificFocusChange.Clear();
         }
 
-        private void RaiseFocusEvents(PointerData pointer, GameObject pendingUnfocusObject, GameObject pendingFocusObject)
+        private void RaiseFocusEvents(PointerData pointer)
         {
             IMixedRealityPointer currentPointer = pointer.Pointer;
+            GameObject pendingUnfocusObject = pointer.PreviousPointerTarget;
+            GameObject pendingFocusObject = pointer.CurrentPointerTarget;
 
             MixedRealityToolkit.InputSystem.RaisePreFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
 
