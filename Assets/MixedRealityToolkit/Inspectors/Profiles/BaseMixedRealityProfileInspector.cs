@@ -113,7 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
-        /// </summary>
         protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, Type serviceType = null)
         {
             return RenderProfileInternal(property, null, showAddButton, serviceType);
