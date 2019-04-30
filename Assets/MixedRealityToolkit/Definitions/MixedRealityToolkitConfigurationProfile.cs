@@ -277,6 +277,14 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public MixedRealityRegisteredServiceProvidersProfile RegisteredServiceProvidersProfile => registeredServiceProvidersProfile;
 
+        public bool UseServiceInspectors
+        {
+            get { return useServiceInspectors; }
+        }
+        [SerializeField]
+        [Tooltip("If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.")]
+        private bool useServiceInspectors = false;
+
         #endregion Mixed Reality Toolkit configurable properties
     }
 }

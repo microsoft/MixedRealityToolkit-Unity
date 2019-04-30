@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     /// <summary>
     /// The Camera system controls the settings of the main camera.
     /// </summary>
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera")]
     public class MixedRealityCameraSystem : BaseCoreSystem, IMixedRealityCameraSystem
     {
         private enum DisplayType
