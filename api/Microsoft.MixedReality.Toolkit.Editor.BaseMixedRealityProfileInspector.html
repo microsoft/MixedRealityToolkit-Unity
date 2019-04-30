@@ -132,7 +132,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true, Type serviceType = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true, Type serviceType = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -165,7 +165,8 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">serviceType</span></td>
-        <td></td>
+        <td><p>Optional service type to limit available profile types.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -221,7 +222,8 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">serviceType</span></td>
-        <td></td>
+        <td><p>Optional service type to limit available profile types.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -238,6 +240,34 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><p>True, if the profile changed.</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderReadOnlyProfile_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderReadOnlyProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderReadOnlyProfile_SerializedProperty_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderReadOnlyProfile(SerializedProperty)">RenderReadOnlyProfile(SerializedProperty)</h4>
+  <div class="markdown level1 summary"><p>Renders a non-editable object field and an editable dropdown of a profile.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void RenderReadOnlyProfile(SerializedProperty property)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
