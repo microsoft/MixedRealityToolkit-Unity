@@ -34,6 +34,6 @@ You can directly move the starting and end points of the slider by moving the ha
 
 You can also specify the axis (in local space) of the slider via the _Slider Axis_ field
 
-If you cannot use the handles, you can instead specify the start and end points of the slider via the _Slider Start Distance_ and _Slider End Distance_ fields. These specify start / end position of slider as a distance from the slider's center, in local coordinates. This means that once you set the slider start and end distaces as you want them, you can scale the slider to be smaller or larger without needing to update the start and end distances.
+If you cannot use the handles, you can instead specify the start and end points of the slider via the _Slider Start Distance_ and _Slider End Distance_ fields. These specify start / end position of slider as a distance from the slider's center, in local coordinates. This means that once you set the slider start and end distances as you want them, you can scale the slider to be smaller or larger without needing to update the start and end distances.
 
 

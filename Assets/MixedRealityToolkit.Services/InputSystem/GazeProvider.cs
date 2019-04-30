@@ -353,7 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Start();
 
-            await WaitUntilInputSystemValid;
+            await EnsureInputSystemValid();
 
             if (this == null)
             {
@@ -486,7 +486,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private async void RaiseSourceDetected()
         {
-            await WaitUntilInputSystemValid;
+            await EnsureInputSystemValid();
+
             if (this == null)
             {
                 // We've been destroyed during the await.

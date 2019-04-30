@@ -123,7 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedControllerElement: 0
   handedness: 1
   trackedObjectToReference: 3
   trackedHandJoint: 5

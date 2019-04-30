@@ -132,8 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         /// <summary>
         /// Returns true the first time it is called within this editor session, and false for all subsequent calls.
-        /// <remarks>A new session is also true if the editor build target group is changed.</remarks>
         /// </summary>
+        /// <remarks>A new session is also true if the editor build target group is changed.</remarks>
         private static bool IsNewSession
         {
             get

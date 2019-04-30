@@ -84,11 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Geometry")]
         [SerializeField]
         [Tooltip("If affordace geometry is desired to emphasize the touch points(leftPoint and rightPoint) and the center point between them (reticle), assign them here.")]
-        private GameObject reticle;
+        private GameObject reticle = null;
         [SerializeField]
-        private GameObject leftPoint;
+        private GameObject leftPoint = null;
         [SerializeField]
-        private GameObject rightPoint;
+        private GameObject rightPoint = null;
 
         [SerializeField]
         [Tooltip("Current scale value. 1 is the original 100%.")]
