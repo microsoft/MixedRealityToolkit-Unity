@@ -1061,7 +1061,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             foreach (var pointer in pointers)
             {
-                pendingOverallFocusExitSet.Remove(pointer.CurrentPointerTarget);
+                if (pointer.CurrentPointerTarget != null)
+                {
+                    pendingOverallFocusExitSet.Remove(pointer.CurrentPointerTarget);
+                }
                 pendingOverallFocusEnterSet.Remove(pointer.PreviousPointerTarget);
             }
 
