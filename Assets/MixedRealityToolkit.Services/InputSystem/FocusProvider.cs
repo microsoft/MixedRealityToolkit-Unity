@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
-        private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
+        private readonly Dictionary<GameObject, int> pendingOverallFocusExitSet = new Dictionary<GameObject, int>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
@@ -1039,7 +1039,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (pointer.PreviousPointerTarget != null)
                     {
-                        pendingOverallFocusExitSet.Add(pointer.PreviousPointerTarget);
+                        int numExits;
+                        if (pendingOverallFocusExitSet.TryGetValue(pointer.PreviousPointerTarget, out numExits))
+                        {
+                            pendingOverallFocusExitSet[pointer.PreviousPointerTarget] = numExits + 1;
+                        }
+                        else
+                        {
+                            pendingOverallFocusExitSet.Add(pointer.PreviousPointerTarget, 1);
+                        }
                     }
 
                     if (pointer.CurrentPointerTarget != null)
@@ -1066,10 +1074,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 MixedRealityToolkit.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
-                if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
+                int numExits;
+                if (pendingOverallFocusExitSet.TryGetValue(pendingUnfocusObject, out numExits))
                 {
-                    MixedRealityToolkit.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
-                    pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
+                    if (numExits > 1)
+                    {
+                        pendingOverallFocusExitSet[pendingUnfocusObject] = numExits - 1;
+                    }
+                    else
+                    {
+                        MixedRealityToolkit.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
+                        pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
+                    }
                 }
 
                 if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
