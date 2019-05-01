@@ -14,7 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// Utility class for checking if a scene has been properly set up for use with MixedRealityToolkit
     /// </summary>
-    [InitializeOnLoad]
+    
+    // TEMPORARILY DISABLING THIS WHILE WE LOOK FOR OTHER SOLUTIONS
+
+    /*[InitializeOnLoad]
     public class MixedRealityToolkitSceneChecker
     {
         const string HideNoActiveToolkitWarningKey = "MRTK_HideNoActiveToolkitWarningKey";
@@ -130,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 EditorGUILayout.EndHorizontal();
             }
         }
-    }
+    }*/
 }
 
 #endif
