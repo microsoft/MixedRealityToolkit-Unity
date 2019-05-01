@@ -3,8 +3,6 @@
 
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Linq;
 using System;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
@@ -53,13 +51,15 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         {
 #if UNITY_EDITOR
             // Subscribe to editor events
-            EditorApplication.playModeStateChanged += playModeStateChanged;
-            EditorApplication.projectChanged += projectChanged;
-            EditorApplication.hierarchyChanged += heirarcyChanged;
-            EditorSceneManager.newSceneCreated += newSceneCreated;
-            EditorSceneManager.sceneOpened += sceneOpened;
-            EditorSceneManager.sceneClosed += sceneClosed;
-            EditorSceneManager.activeSceneChangedInEditMode += activeSceneChangedInEditMode;
+            EditorApplication.playModeStateChanged += EditorApplicationPlayModeStateChanged;
+            EditorApplication.projectChanged += EditorApplicationProjectChanged;
+            EditorApplication.hierarchyChanged += EditorApplicationHeirarcyChanged;
+            EditorApplication.update += EditorApplicationUpdate;
+
+            EditorSceneManager.newSceneCreated += EditorSceneManagerNewSceneCreated;
+            EditorSceneManager.sceneOpened += EditorSceneManagerSceneOpened;
+            EditorSceneManager.sceneClosed += EditorSceneManagerSceneClosed;
+            EditorSceneManager.activeSceneChangedInEditMode += EditorSceneManagerActiveSceneChangedInEditMode;
 
             UpdateBuildSettings();
 #endif
@@ -67,19 +67,20 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         public override void Update()
         {
-            Debug.Log("Updating MixedRealitySceneSystem");
-#if UNITY_EDITOR
-            UpdateBuildSettings();
-#endif
-        }
 
+        }
 
 #if UNITY_EDITOR
         private bool updatingSettingsOnEditorChanged = false;
+        private const float lightingUpdateInterval = 5f;
+        private const float editorSettingsUpdateInterval = 2.5f;
+        private float timeSinceLastEditorSettingsUpdate = 0;
+        private float timeSinceLastLightingUpdate = 0;
+        private List<string> sceneNamesInBuildSettings = new List<string>();
 
         #region update triggers from editor events
 
-        private void playModeStateChanged(PlayModeStateChange change)
+        private void EditorApplicationPlayModeStateChanged(PlayModeStateChange change)
         {
             switch (change)
             {
@@ -90,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
-        private void activeSceneChangedInEditMode(Scene prevActiveScene, Scene newActiveScene)
+        private void EditorSceneManagerActiveSceneChangedInEditMode(Scene prevActiveScene, Scene newActiveScene)
         {
             // Don't change the active scene in this case.
             // Otherwise we may usurp the creation of a new scene
@@ -98,27 +99,36 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             UpdateSettingsOnEditorChanged(false);
         }
 
-        private void heirarcyChanged()
+        private void EditorApplicationHeirarcyChanged()
         {
             UpdateSettingsOnEditorChanged(true);
         }
 
-        private void projectChanged()
+        private void EditorApplicationProjectChanged()
         {
             UpdateSettingsOnEditorChanged(true);
         }
 
-        private void sceneClosed(Scene scene)
+        private void EditorApplicationUpdate()
+        {
+            if (Time.realtimeSinceStartup - timeSinceLastEditorSettingsUpdate > editorSettingsUpdateInterval)
+            {
+                timeSinceLastEditorSettingsUpdate = Time.realtimeSinceStartup;
+                UpdateSettingsOnEditorChanged(true);
+            }
+        }
+
+        private void EditorSceneManagerSceneClosed(Scene scene)
         {
             UpdateSettingsOnEditorChanged(true);
         }
 
-        private void sceneOpened(Scene scene, OpenSceneMode mode)
+        private void EditorSceneManagerSceneOpened(Scene scene, OpenSceneMode mode)
         {
             UpdateSettingsOnEditorChanged(true);
         }
 
-        private void newSceneCreated(Scene scene, NewSceneSetup setup, NewSceneMode mode)
+        private void EditorSceneManagerNewSceneCreated(Scene scene, NewSceneSetup setup, NewSceneMode mode)
         {
             UpdateSettingsOnEditorChanged(true);
         }
@@ -128,35 +138,40 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private void UpdateSettingsOnEditorChanged(bool updateActiveScene = true)
         {
             if (updatingSettingsOnEditorChanged || EditorApplication.isPlaying || EditorApplication.isCompiling)
-            {
+            {   // Make sure we don't double up on our updates via events we trigger during updates
                 return;
             }
 
             updatingSettingsOnEditorChanged = true;
 
             UpdateBuildSettings();
-            UpdateManagerScene(updateActiveScene);
+            UpdateManagerScene();
             UpdateLightingScene(updateActiveScene);
 
             updatingSettingsOnEditorChanged = false;
         }
 
-        private void UpdateManagerScene(bool updateActiveScene = true)
+        private void UpdateManagerScene()
         {
-            if (profile.ManageActiveScene)
+            if (profile.UseManagerScene)
             {
-                LoadSceneInEditor(profile.ManagerSceneObject, true, updateActiveScene && profile.ManageActiveScene && profile.ActiveSceneObject == profile.ManagerSceneObject, out Scene scene);
+                LoadSceneInEditor(profile.ManagerSceneObject, true, out Scene scene);
             }
         }
 
-        private void UpdateLightingScene(bool updateActiveScene = true)
+        private void UpdateLightingScene(bool updateActiveScene)
         {
-            if (profile.UseLightingScene)
+            if (profile.UseLightingScene && updateActiveScene)
             {
-                Scene lightingScene;
-                if (LoadSceneInEditor(profile.LightingSceneObject, false, updateActiveScene && profile.ManageActiveScene && profile.ActiveSceneObject == profile.LightingSceneObject, out lightingScene))
+                // Only update this once in a while to avoid being obnoxious
+                if (Time.realtimeSinceStartup - timeSinceLastLightingUpdate > lightingUpdateInterval)
                 {
-                    CopyLightingSettings(lightingScene);
+                    timeSinceLastLightingUpdate = Time.realtimeSinceStartup;
+                    Scene contentScene;
+                    if (LoadSceneInEditor(profile.LightingSceneObject, false, out contentScene))
+                    {
+                        CopyLightingSettingsToActiveScene(contentScene);
+                    }
                 }
             }
         }
@@ -172,8 +187,42 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             {
                 AddSceneToBuildSettings(profile.LightingSceneObject, false);
             }
+
+            CheckBuildSettings();
         }
 
+        /// <summary>
+        /// Checks build settings for possible errors and displays warnings.
+        /// Also modifies current profile's scene names property.
+        /// </summary>
+        private void CheckBuildSettings()
+        {
+            // Make sure our profile's build scene names are accurate
+            SerializedObject profileObject = new SerializedObject(profile);
+            SerializedProperty buildSceneNamesProperty = profileObject.FindProperty("buildSceneNames");
+
+            GetSceneNamesFromBuildSettings(sceneNamesInBuildSettings);
+
+            // Make sure the array size is correct before proceeding
+            if (buildSceneNamesProperty.arraySize != sceneNamesInBuildSettings.Count)
+            {
+                buildSceneNamesProperty.arraySize = sceneNamesInBuildSettings.Count;
+                profileObject.ApplyModifiedProperties();
+            }
+
+            for (int i = 0; i < sceneNamesInBuildSettings.Count; i++)
+            {
+                SerializedProperty element = buildSceneNamesProperty.GetArrayElementAtIndex(i);
+                element.stringValue = sceneNamesInBuildSettings[i];
+            }
+            profileObject.ApplyModifiedProperties();
+        }
+
+        /// <summary>
+        /// Adds scene to build settings.
+        /// </summary>
+        /// <param name="sceneObject">Scene object reference.</param>
+        /// <param name="setAsFirst">Sets as first scene to be loaded.</param>
         private static void AddSceneToBuildSettings(UnityEngine.Object sceneObject, bool setAsFirst = false)
         {
             long localID;
@@ -222,7 +271,14 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
-        private static bool LoadSceneInEditor(UnityEngine.Object sceneObject, bool setAsFirst, bool setActive, out Scene editorScene)
+        /// <summary>
+        /// Attempts to load scene in editor using a scene object reference.
+        /// </summary>
+        /// <param name="sceneObject">Scene object reference.</param>
+        /// <param name="setAsFirst">Whether to set first in the heirarchy window.</param>
+        /// <param name="editorScene">The loaded scene.</param>
+        /// <returns>True if successful.</returns>
+        private static bool LoadSceneInEditor(UnityEngine.Object sceneObject, bool setAsFirst, out Scene editorScene)
         {
             editorScene = default(Scene);
 
@@ -240,11 +296,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     Scene nextScene = EditorSceneManager.GetSceneAt(0);
                     EditorSceneManager.MoveSceneBefore(editorScene, nextScene);
                 }
-
-                if (setActive)
-                {   // Set this scene to the active scene
-                    EditorSceneManager.SetActiveScene(editorScene);
-                }
             }
             catch (InvalidOperationException)
             {
@@ -260,52 +311,73 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             return true;
         }
 
-        private static void CopyLightingSettings(Scene lightingScene)
+        /// <summary>
+        /// Copies the lighting settings from the lighting scene to the active scene
+        /// </summary>
+        /// <param name="lightingScene"></param>
+        private static void CopyLightingSettingsToActiveScene(Scene lightingScene)
         {
             // Store the active scene on entry
             Scene activeSceneOnEnter = EditorSceneManager.GetActiveScene();
 
-            // For all loaded scenes, copy and paste the lighting settings from the light scene
-            // Store the settings in serialized objects
+            // No need to do anything
+            if (activeSceneOnEnter == lightingScene)
+                return;
+
             SerializedObject sourceLightmapSettings;
             SerializedObject sourceRenderSettings;
 
-            // Set the active scene to the lighting scene
-            EditorSceneManager.SetActiveScene(lightingScene);
-            // If we can't get the source settings for some reason, abort
-            if (!GetLightmapAndRenderSettings(out sourceLightmapSettings, out sourceRenderSettings))
+            try
             {
+                // Set the active scene to the lighting scene
+                EditorSceneManager.SetActiveScene(lightingScene);
+                // If we can't get the source settings for some reason, abort
+                if (!GetLightmapAndRenderSettings(out sourceLightmapSettings, out sourceRenderSettings))
+                {
+                    return;
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // This can happen if the lighting scene is invalid
                 return;
             }
 
-            for (int i = 0; i < EditorSceneManager.sceneCount; i++)
+            bool madeChanges = false;
+
+            try
             {
-                Scene otherScene = EditorSceneManager.GetSceneAt(i);
-                if (otherScene.name == lightingScene.name)
-                {
-                    continue;
-                }
-
-                // Set the scene to active so the static methods now point to this scene, not the lighting scene
-                EditorSceneManager.SetActiveScene(otherScene);
-
+                // Set active scene back to the active scene on enter
+                EditorSceneManager.SetActiveScene(activeSceneOnEnter);
                 SerializedObject targetLightmapSettings;
                 SerializedObject targetRenderSettings;
-                bool madeChanges = false;
+               
                 if (GetLightmapAndRenderSettings(out targetLightmapSettings, out targetRenderSettings))
                 {
                     madeChanges |= CopySerializedObject(sourceLightmapSettings, targetLightmapSettings);
                     madeChanges |= CopySerializedObject(sourceRenderSettings, targetRenderSettings);
                 }
-
-                if (madeChanges)
-                {
-                    Debug.LogWarning("Changed lighting settings in scene " + otherScene.name + " to match lighting scene " + lightingScene.name);
-                }
+            }
+            catch (InvalidOperationException)
+            {
+                // This can happen if the current active scene is invalid
+                return;
             }
 
-            // Set active scene back to the lighting scene
-            EditorSceneManager.SetActiveScene(activeSceneOnEnter);
+            if (madeChanges)
+            {
+                Debug.LogWarning("Changed lighting settings in scene " + activeSceneOnEnter.name + " to match lighting scene " + lightingScene.name);
+                EditorSceneManager.MarkSceneDirty(activeSceneOnEnter);
+            }
+        }
+
+        private static void GetSceneNamesFromBuildSettings(List<string> sceneNames)
+        {
+            sceneNames.Clear();
+            for (int i = 0; i < EditorSceneManager.sceneCountInBuildSettings; i++)
+            {
+                sceneNames.Add(GetSceneNameFromScenePath(SceneUtility.GetScenePathByBuildIndex(i)));
+            }
         }
 
         private static bool GetLightmapAndRenderSettings(out SerializedObject lightmapSettings, out SerializedObject renderSettings)
@@ -352,10 +424,21 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private static bool CopySerializedObject(SerializedObject source, SerializedObject target)
         {
             bool madeChanges = false;
-            SerializedProperty prop = source.GetIterator();
-            while (prop.Next(true))
+            SerializedProperty sourceProp = source.GetIterator();
+            while (sourceProp.NextVisible(true))
             {
-                madeChanges |= target.CopyFromSerializedPropertyIfDifferent(prop);
+                switch (sourceProp.name)
+                {
+                    // This is an odd case where the value is constantly modified, resulting in constant changes.
+                    // It's not apparent how this affects rendering.
+                    case "m_IndirectSpecularColor":
+                        continue;
+
+                    default:
+                        break;
+                }
+
+                madeChanges |= target.CopyFromSerializedPropertyIfDifferent(sourceProp);
             }
 
             if (madeChanges)
@@ -366,5 +449,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             return madeChanges;
         }
 #endif
+
+        private static string GetSceneNameFromScenePath(string scenePath)
+        {
+            return System.IO.Path.GetFileNameWithoutExtension(scenePath);
+        }
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,35 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     [MixedRealityServiceProfile(typeof(IMixedRealitySceneSystem))]
     public class MixedRealitySceneSystemProfile : BaseMixedRealityProfile
     {
-        /// <summary>
-        /// The active scene determines which lighting settings are used and where objects are instantiated.
-        /// If a lighting scene is used, that will be the active scene. Otherwise the manager scene will be used.
-        /// If neither are used, active scene management will be left up to Unity.
-        /// </summary>
-        public bool ManageActiveScene
-        {
-            get
-            {
-                return manageActiveScene && (UseLightingScene || UseManagerScene);
-            }
-        }
-
-        public UnityEngine.Object ActiveSceneObject
-        {
-            get
-            {
-                if (UseLightingScene)
-                {
-                    return LightingSceneObject;
-                }
-                if (UseManagerScene)
-                {
-                    return managerSceneObject;
-                }
-                return null;
-            }
-        }
-
         public bool UseManagerScene { get { return useManagerScene && managerSceneObject != null; } }
 
         public bool UseLightingScene { get { return useLightingScene && lightingSceneObject != null; } }
@@ -64,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private UnityEngine.Object managerSceneObject = null;
 
         [SerializeField]
-        [Tooltip("Using a lighting scene ensures that the same lighting settings will be enforced across all loaded scenes.")]
+        [Tooltip("Using a content scene ensures that the same lighting settings will be enforced across all loaded scenes.")]
         private bool useLightingScene = true;
 
         [SerializeField]
@@ -72,8 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         [SceneAssetReference]
 #endif
         private UnityEngine.Object lightingSceneObject = null;
-
+        
         [SerializeField]
-        private bool manageActiveScene = true;
+        [Tooltip("The scene names in your build settings, in load order. These will be managed by the service.")]
+        private string[] buildSceneNames;
     }
 }
