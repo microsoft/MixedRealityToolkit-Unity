@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void DestroyAllChildren()
         {
-            if (MixedRealityToolkit.IsInitialized)
+            if (!MixedRealityToolkit.IsInitialized)
             {   // Nothing to do here.
                 return;
             }
