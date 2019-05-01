@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006b19a3d56ab0d468466cdb4fad3027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panComponent: {fileID: 7779420038095343084}
+  panComponent: {fileID: 0}
 --- !u!114 &7779420037177669562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,8 +331,8 @@ GameObject:
   - component: {fileID: 7779420038095343091}
   - component: {fileID: 7779420038095343090}
   - component: {fileID: 7779420038095343085}
-  - component: {fileID: 7779420038095343084}
   - component: {fileID: 7779420038095343089}
+  - component: {fileID: 6478522880476602763}
   m_Layer: 0
   m_Name: ContentQuad
   m_TagString: Untagged
@@ -410,8 +410,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.99999946, z: 0.52428865}
-  m_Center: {x: -0.000000034743024, y: -0.00000047640293, z: 0.21497777}
+  m_Size: {x: 1, y: 0.99999946, z: 0.6223597}
+  m_Center: {x: -0.00000003580839, y: -0.00000047640293, z: 0.16594146}
 --- !u!114 &7779420038095343085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,29 +425,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manipulatorToDisable: {fileID: 7779420037177669562}
---- !u!114 &7779420038095343084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7779420038095343086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0d3fa6d0a45d1046aa0f0a2f2a93923, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  focusEnabled: 1
-  touchType: 0
-  panEventReceivers: []
-  lockHorizontal: 1
-  lockVertical: 0
-  wrapTexture: 1
-  velocityActive: 1
-  velocityDamping: {x: 0.9, y: 0.9}
-  springActive: 0
-  isEnabled: 1
-  touchVisual: {fileID: 0}
 --- !u!114 &7779420038095343089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -460,13 +437,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localForward: {x: 0, y: 0, z: 1}
+  localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: -0.000000034743024, y: -0.00000047640293, z: 0.4771221}
+  localCenter: {x: -0.00000003580839, y: -0.00000047640293, z: -0.14523838}
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 1, y: 0.99999946}
   touchableCollider: {fileID: 7779420038095343090}
+--- !u!114 &6478522880476602763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7779420038095343086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef1a57c42d928dc49b7c947623b2b2ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  focusEnabled: 1
+  isEnabled: 1
+  enableZoom: 1
+  lockHorizontal: 1
+  lockVertical: 0
+  wrapTexture: 1
+  velocityActive: 1
+  velocityDampingX: 0.9
+  velocityDampingY: 0.9
+  panZoomSmoothing: 80
+  panEventReceivers: []
+  reticle: {fileID: 0}
+  leftPoint: {fileID: 0}
+  rightPoint: {fileID: 0}
 --- !u!1 &7779420038487776842
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,6 +1023,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2034987663884019302, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: localCenter.z
+      value: -0.008
+      objectReference: {fileID: 0}
+    - target: {fileID: 2034987663884019302, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: localCenter.z
+      value: -0.008
+      objectReference: {fileID: 0}
     - target: {fileID: 2406973081839446391, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
       propertyPath: m_Mesh
@@ -1061,16 +1074,6 @@ PrefabInstance:
     - target: {fileID: 247466359, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2034987663884019302, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: localCenter.z
-      value: -0.008
-      objectReference: {fileID: 0}
-    - target: {fileID: 2034987663884019302, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: localCenter.z
-      value: -0.008
       objectReference: {fileID: 0}
     - target: {fileID: 2951882602880698967, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
@@ -1180,6 +1183,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2034987663884019302, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: localCenter.z
+      value: -0.008
+      objectReference: {fileID: 0}
+    - target: {fileID: 2034987663884019302, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: localCenter.z
+      value: -0.008
+      objectReference: {fileID: 0}
     - target: {fileID: 2406973081839446391, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
       propertyPath: m_Mesh
@@ -1216,16 +1229,6 @@ PrefabInstance:
     - target: {fileID: 247466359, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2034987663884019302, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: localCenter.z
-      value: -0.008
-      objectReference: {fileID: 0}
-    - target: {fileID: 2034987663884019302, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: localCenter.z
-      value: -0.008
       objectReference: {fileID: 0}
     - target: {fileID: 2951882602880698967, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}

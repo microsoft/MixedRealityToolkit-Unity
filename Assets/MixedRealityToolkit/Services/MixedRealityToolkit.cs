@@ -56,6 +56,8 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        private bool HasProfileAndIsInitialized => activeProfile != null && IsInitialized;
+
         /// <summary>
         /// The active profile of the Mixed Reality Toolkit which controls which services are active and their initial configuration.
         /// *Note configuration is used on project initialization or replacement, changes to properties while it is running has no effect.
@@ -149,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool RegisterService<T>(T serviceInstance) where T : IMixedRealityService
         {
-            return RegisterServiceInternal<T>(serviceInstance);
+            return RegisterServiceInternal(serviceInstance);
         }
 
         /// <inheritdoc />
@@ -483,6 +485,11 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void EnsureMixedRealityRequirements()
         {
+            if (MixedRealityPlayspace == null)
+            {
+                Debug.LogError("Failed to generate a MixedRealityPlayspace.");
+            }
+
             // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
             // We'll enforce that here, then tracking can update it to the appropriate position later.
             CameraCache.Main.transform.position = Vector3.zero;
@@ -555,6 +562,14 @@ namespace Microsoft.MixedReality.Toolkit
                 switch (objects.Length)
                 {
                     case 0:
+#if UNITY_EDITOR
+                        // Generating a new instance during app shutdown in the editor allows instances to persist into edit mode, which may cause unwanted behavior
+                        if (isApplicationQuitting)
+                        {
+                            Debug.LogWarning("Trying to find instance during application shutdown.");
+                            return null;
+                        }
+#endif
                         Debug.Assert(!newInstanceBeingInitialized, "We shouldn't be initializing another MixedRealityToolkit unless we errored on the previous.");
                         newInstanceBeingInitialized = true;
                         newInstance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();
@@ -922,83 +937,26 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void InitializeAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
             // Initialize all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Initialize();
-            }
-
-            // Initialize all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.Initialize();
-            }
+            ExecuteOnAllServices(service => service.Initialize());
         }
 
         private void ResetAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
             // Reset all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Reset();
-            }
-
-            // Reset all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.Reset();
-            }
+            ExecuteOnAllServices(service => service.Reset());
         }
 
         private void EnableAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
             // Enable all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Enable();
-            }
-
-            // Reset all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.Enable();
-            }
+            ExecuteOnAllServices(service => service.Enable());
         }
 
         private void UpdateAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
             // Update all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Update();
-            }
-
-            // Update all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.Update();
-            }
+            ExecuteOnAllServices(service => service.Update());
         }
 
         private void LateUpdateAllServices()
@@ -1024,48 +982,34 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void DisableAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
             // Disable all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Disable();
-            }
-
-            // Disable all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.Disable();
-            }
+            ExecuteOnAllServices(service => service.Disable());
         }
 
         private void DestroyAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
-            // Destroy all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Destroy();
-            }
+            if (!ExecuteOnAllServices(service => service.Destroy())) { return; }
 
             activeSystems.Clear();
+            registeredMixedRealityServices.Clear();
+        }
 
-            // Destroy all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
+        private bool ExecuteOnAllServices(Action<IMixedRealityService> execute)
+        {
+            // If the Mixed Reality Toolkit is not configured, stop.
+            if (!HasProfileAndIsInitialized) { return false; }
+
+            foreach (var system in activeSystems)
             {
-                service.Item2.Destroy();
+                execute(system.Value);
             }
 
-            registeredMixedRealityServices.Clear();
+            foreach (var service in registeredMixedRealityServices)
+            {
+                execute(service.Item2);
+            }
+
+            return true;
         }
 
 #endregion Multiple Service Management
@@ -1116,10 +1060,9 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (!CanGetService(interfaceType)) { return null; }
 
-            IMixedRealityService serviceInstance = null;
-
             if (IsCoreSystem(interfaceType))
             {
+                IMixedRealityService serviceInstance;
                 if (activeSystems.TryGetValue(interfaceType, out serviceInstance))
                 {
                     if (CheckServiceMatch(interfaceType, serviceName, interfaceType, serviceInstance))

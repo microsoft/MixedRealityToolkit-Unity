@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Inspectors.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CustomEditor(typeof(SpherePointer))]
     public class SpherePointerInspector : BaseControllerPointerInspector

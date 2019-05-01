@@ -261,6 +261,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
 
+        /// <inheritdoc />
+        public bool IsTargetPositionLockedOnFocusLock { get; set; }
+
         [SerializeField]
         private bool overrideGlobalPointerExtent = false;
 
@@ -342,7 +345,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual void OnPreSceneQuery() { }
 
         /// <inheritdoc />
-        public virtual void OnPostSceneQuery() { }
+        public virtual void OnPostSceneQuery()
+        {
+            if (IsSelectPressed)
+            {
+                MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+            }
+        }
 
         ///  <inheritdoc />
         public virtual void OnPreCurrentPointerTargetChange() { }

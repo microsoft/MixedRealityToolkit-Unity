@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             lineBase.UpdateMatrix();
 
             // Set our first and last points
-            if (IsFocusLocked && Result?.Details != null)
+            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock && Result != null)
             {
                 // Make the final point 'stick' to the target at the distance of the target
                 SetLinePoints(Position, Result.Details.Point, Result.Details.RayDistance);
@@ -143,6 +143,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
+            base.OnPostSceneQuery();
+
             Gradient lineColor = LineColorNoTarget;
 
             if (!IsActive)
@@ -191,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // If focus is locked, we're sticking to the target
             // So don't clamp the world length
-            if (IsFocusLocked)
+            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock)
             {
                 float cursorOffsetLocalLength = LineBase.GetNormalizedLengthFromWorldLength(cursorOffsetWorldLength);
                 LineBase.LineEndClamp = 1 - cursorOffsetLocalLength;

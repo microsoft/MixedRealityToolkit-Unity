@@ -40,6 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
+            if (IsSelectPressed)
+            {
+                MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+            }
+
             Gradient lineColor = LineColorNoTarget;
             BaseMixedRealityLineRenderer contextRenderer = null;
 
@@ -98,9 +103,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 lineRenderer.LineColor = lineColor;
             }
 
-            // If focus is locked, we're sticking to the target
+            // If focus and target point is locked, we're sticking to the target
             // So don't clamp the world length
-            if (IsFocusLocked)
+            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock)
             {
                 float cursorOffsetLocalLength = LineBase.GetNormalizedLengthFromWorldLength(cursorOffsetWorldLength);
                 LineBase.LineEndClamp = 1 - cursorOffsetLocalLength;
@@ -118,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             LineBase.FirstPoint = startPoint;
             LineBase.LastPoint = endPoint;
 
-            if (IsFocusLocked)
+            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock)
             {
                 inertia.enabled = false;
                 // Project forward based on pointer direction to get an 'expected' position of the first control point

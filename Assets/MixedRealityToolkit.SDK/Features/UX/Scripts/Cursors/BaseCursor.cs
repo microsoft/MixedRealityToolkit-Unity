@@ -264,6 +264,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
+        public virtual void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
+        /// <inheritdoc />
         public virtual void OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         /// <inheritdoc />

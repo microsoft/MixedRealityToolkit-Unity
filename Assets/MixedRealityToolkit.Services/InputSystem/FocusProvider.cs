@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
@@ -150,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public Vector3 hitNormalOnObject = Vector3.zero;
 
             public RayStep ray;
-            public int rayStepIndex;
+            public int rayStepIndex = -1;
             public float rayDistance;
 
             public void Clear()
@@ -163,14 +162,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 hitNormalOnObject = Vector3.zero;
 
                 ray = default(RayStep);
-                rayStepIndex = 0;
+                rayStepIndex = -1;
                 rayDistance = 0.0f;
             }
 
             /// <summary>
             /// Set hit focus information from a closest-colliders-to pointer check.
             /// </summary>
-            public void Set(GameObject hitObject, in Vector3 hitPointOnObject, in Vector4 hitNormalOnObject, in RayStep ray, int rayStepIndex, float rayDistance)
+            public void Set(GameObject hitObject, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = default(RaycastHit);
                 graphicsRaycastResult = default(RaycastResult);
@@ -187,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Set hit focus information from a physics raycast.
             /// </summary>
-            public void Set(in RaycastHit hit, in RayStep ray, int rayStepIndex, float rayDistance)
+            public void Set(RaycastHit hit, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = hit;
                 graphicsRaycastResult = default(RaycastResult);
@@ -204,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Set hit information from a canvas raycast.
             /// </summary>
-            public void Set(in RaycastResult result, in Vector3 hitPointOnObject, in Vector4 hitNormalOnObject, in RayStep ray, int rayStepIndex, float rayDistance)
+            public void Set(RaycastResult result, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = default(RaycastHit);
                 graphicsRaycastResult = result;
@@ -270,26 +269,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (hitResult.hitObject != CurrentPointerTarget)
                 {
                     Pointer.OnPreCurrentPointerTargetChange();
+
+                    // Set to default:
+                    Pointer.IsTargetPositionLockedOnFocusLock = true; 
                 }
 
                 PreviousPointerTarget = CurrentPointerTarget;
 
-                if (hitResult.hitObject != null)
+                focusDetails.Object = hitResult.hitObject;
+                focusDetails.LastRaycastHit = hitResult.raycastHit;
+                focusDetails.LastGraphicsRaycastResult = hitResult.graphicsRaycastResult;
+
+                if (hitResult.rayStepIndex >= 0)
                 {
                     RayStepIndex = hitResult.rayStepIndex;
                     StartPoint = hitResult.ray.Origin;
 
-                    focusDetails.LastRaycastHit = hitResult.raycastHit;
-                    focusDetails.LastGraphicsRaycastResult = hitResult.graphicsRaycastResult;
-                    focusDetails.Object = hitResult.hitObject;
                     focusDetails.RayDistance = hitResult.rayDistance;
                     focusDetails.Point = hitResult.hitPointOnObject;
                     focusDetails.Normal = hitResult.hitNormalOnObject;
-                    focusDetails.PointLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Point);
-                    focusDetails.NormalLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Normal);
                 }
                 else
                 {
+                    // If we don't have a valid ray cast, use the whole pointer ray.
                     RayStep firstStep = Pointer.Rays[0];
                     RayStep finalStep = Pointer.Rays[Pointer.Rays.Length - 1];
                     RayStepIndex = 0;
@@ -302,12 +304,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         rayDist += Pointer.Rays[i].Length;
                     }
 
-                    focusDetails.LastRaycastHit = default(RaycastHit);
-                    focusDetails.LastGraphicsRaycastResult = default(RaycastResult);
-                    focusDetails.Object = null;
                     focusDetails.RayDistance = rayDist;
                     focusDetails.Point = finalStep.Terminus;
                     focusDetails.Normal = -finalStep.Direction;
+                }
+
+                if (hitResult.hitObject != null)
+                {
+                    focusDetails.PointLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Point);
+                    focusDetails.NormalLocalSpace = hitResult.hitObject.transform.InverseTransformDirection(focusDetails.Normal);
+                }
+                else
+                {
                     focusDetails.PointLocalSpace = Vector3.zero;
                     focusDetails.NormalLocalSpace = Vector3.zero;
                 }
@@ -326,6 +334,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // In case the focused object is moving, we need to update the focus point based on the object's new transform.
                     focusDetails.Point = focusDetails.Object.transform.TransformPoint(focusDetails.PointLocalSpace);
                     focusDetails.Normal = focusDetails.Object.transform.TransformDirection(focusDetails.NormalLocalSpace);
+                    focusDetails.PointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Point);
+                    focusDetails.NormalLocalSpace = focusDetails.Object.transform.InverseTransformDirection(focusDetails.Normal);
                 }
 
                 StartPoint = Pointer.Rays[0].Origin;
@@ -722,13 +732,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                // If the pointer is locked
-                // Keep the focus objects the same
+                // If the pointer is locked, keep the focused object the same.
                 // This will ensure that we execute events on those objects
-                // even if the pointer isn't pointing at them
-                if (!pointer.Pointer.IsFocusLocked)
+                // even if the pointer isn't pointing at them.
+                if (pointer.Pointer.IsFocusLocked && pointer.Pointer.IsTargetPositionLockedOnFocusLock)
                 {
-                    // Otherwise, continue
+                    pointer.UpdateFocusLockedHit();
+                }
+                else
+                {
                     LayerMask[] prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
 
                     // Perform raycast to determine focused object
@@ -746,15 +758,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         hit = GetPrioritizedHitResult(hit, hitResultUi, prioritizedLayerMasks);
                     }
 
+                    // Make sure to keep focus on the previous object if focus is locked (no target position lock here).
+                    if (pointer.Pointer.IsFocusLocked && pointer.Pointer.Result?.CurrentPointerTarget != null)
+                    {
+                        hit.hitObject = pointer.Pointer.Result.CurrentPointerTarget;
+                    }
+
                     // Apply the hit result only now so changes in the current target are detected only once per frame.
                     pointer.UpdateHit(hit);
 
                     // Set the pointer's result last
                     pointer.Pointer.Result = pointer;
-                }
-                else
-                {
-                    pointer.UpdateFocusLockedHit();
                 }
             }
 
@@ -933,6 +947,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void RaycastGraphics(IMixedRealityPointer pointer, PointerEventData graphicEventData, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
         {
             Debug.Assert(UIRaycastCamera != null, "Missing UIRaycastCamera!");
+            Debug.Assert(UIRaycastCamera.nearClipPlane == 0, "Near plane must be zero for raycast distances to be correct");
 
             RaycastResult raycastResult = default(RaycastResult);
 

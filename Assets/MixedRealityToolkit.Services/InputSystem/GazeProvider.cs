@@ -203,6 +203,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 set { pointerExtent = value; }
             }
 
+            // Is the pointer currently down
+            private bool isDown = false;
+
+            // Input source that raised pointer down
+            private IMixedRealityInputSource currentInputSource;
+
+            // Handedness of the input source that raised pointer down
+            private Handedness currentHandedness = Handedness.None;
+
             /// <summary>
             /// Only for use when initializing Gaze Pointer on startup.
             /// </summary>
@@ -259,6 +268,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         gazeProvider.HitNormal = Result.Details.Normal;
                     }
                 }
+
+                if (isDown)
+                {
+                    MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
+                }
             }
 
             public override void OnPreCurrentPointerTargetChange()
@@ -293,6 +307,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="inputSource"></param>
             public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
+                isDown = true;
+                currentHandedness = handedness;
+                currentInputSource = inputSource;
                 gazeProvider.InputSystem?.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
             }
 
@@ -304,6 +321,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="inputSource"></param>
             public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
+                isDown = false;
+                currentHandedness = Handedness.None;
+                currentInputSource = null;
                 gazeProvider.InputSystem?.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);
                 gazeProvider.InputSystem?.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
             }
@@ -359,7 +379,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
             // but don't touch the visibility when not active or not flagged.
-            if (setCursorInvisibleWhenFocusLocked && (GazePointer?.IsInteractionEnabled ?? false) && GazePointer?.IsFocusLocked == GazeCursor?.IsVisible)
+            if (setCursorInvisibleWhenFocusLocked && GazePointer != null && 
+                GazePointer.IsInteractionEnabled && GazePointer.IsFocusLocked  == GazeCursor.IsVisible)
             {
                 GazeCursor.SetVisibility(!GazePointer.IsFocusLocked);
             }

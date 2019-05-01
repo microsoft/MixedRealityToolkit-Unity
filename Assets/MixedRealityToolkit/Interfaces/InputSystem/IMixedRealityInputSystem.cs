@@ -228,6 +228,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion Pointer Down
 
+        #region Pointer Dragged
+
+        /// <summary>
+        /// Raise the pointer dragged event.
+        /// </summary>
+        /// <param name="pointer">The pointer where the event originates.</param>
+        /// <param name="inputAction"></param>
+        /// <param name="handedness"></param>
+        /// <param name="inputSource"></param>
+        void RaisePointerDragged(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null);
+
+        #endregion Pointer Dragged
+
         #region Pointer Click
 
         /// <summary>

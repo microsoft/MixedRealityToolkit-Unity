@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         public override HandSimulationMode SimulationMode => HandSimulationMode.Gestures;
 
+        private bool initializedFromProfile = false;
         private MixedRealityInputAction holdAction = MixedRealityInputAction.None;
         private MixedRealityInputAction navigationAction = MixedRealityInputAction.None;
         private MixedRealityInputAction manipulationAction = MixedRealityInputAction.None;
@@ -25,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool holdInProgress = false;
         private Vector3 currentRailsUsed = Vector3.one;
         private Vector3 currentPosition = Vector3.zero;
-        private Vector3 lastPosition = Vector3.zero;
         private Vector3 cumulativeDelta = Vector3.zero;
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
@@ -41,13 +41,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public SimulatedGestureHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public SimulatedGestureHand(
+            TrackingState trackingState, 
+            Handedness controllerHandedness, 
+            IMixedRealityInputSource inputSource = null, 
+            MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }
 
-        void Awake()
-        { 
+        /// Lazy-init settings based on profile.
+        /// This cannot happen in the constructor because the profile may not exist yet.
+        private void EnsureProfileSettings()
+        {
+            if (initializedFromProfile)
+            {
+                return;
+            }
+            initializedFromProfile = true;
+
             var gestureProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.GesturesProfile;
             if (gestureProfile != null)
             {
@@ -71,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 useRailsNavigation = gestureProfile.UseRailsNavigation;
             }
 
-            var inputSimProfile = MixedRealityToolkit.Instance?.GetService<InputSimulationService>()?.GetInputSimulationProfile();
+            var inputSimProfile = MixedRealityToolkit.Instance?.GetService<IInputSimulationService>()?.InputSimulationProfile;
             if (inputSimProfile != null)
             {
                 holdStartDuration = inputSimProfile.HoldStartDuration;
@@ -96,9 +108,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected override void UpdateInteractions(SimulatedHandData handData)
         {
-            lastPosition = currentPosition;
+            EnsureProfileSettings();
+
+            Vector3 lastPosition = currentPosition;
             currentPosition = jointPositions[(int)TrackedHandJoint.IndexTip];
+            cumulativeDelta += currentPosition - lastPosition;
             currentGripPose.Position = currentPosition;
+
             if (lastPosition != currentPosition)
             {
                 MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, currentPosition);
@@ -139,12 +155,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         else if (Interactions[i].BoolData)
                         {
-                            // For convenience of simulating in Unity Editor, make the ray use the index
-                            // finger position instead of knuckle, since the index finger doesn't move when we press.
-                            Vector3 newPosition = jointPositions[(int)TrackedHandJoint.IndexTip];
-                            cumulativeDelta += newPosition - currentPosition;
-                            currentPosition = newPosition;
-
                             if (!manipulationInProgress)
                             {
                                 if (cumulativeDelta.magnitude > manipulationStartThreshold)
