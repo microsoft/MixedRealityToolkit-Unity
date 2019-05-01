@@ -767,7 +767,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             GUIStyle box = InspectorUIUtility.Box(0);
             if (themeObj != null)
             {
-                box = InspectorUIUtility.Box(30);
+                box = InspectorUIUtility.Box(34);
                 themeObj.Update();
             }
 

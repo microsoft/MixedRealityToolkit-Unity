@@ -318,6 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     for (int t = 0; t < themes.arraySize; t++)
                     {
                         SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
+                        EditorGUI.indentLevel = indentOnSectionStart + 2;
                         EditorGUILayout.PropertyField(themeItem, new GUIContent("Theme", "Theme properties for interaction feedback"));
 
                         // TODO: we need the theme and target in order to figure out what properties to expose in the list
@@ -338,11 +339,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                             SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
                             hadDefault.boolValue = true;
-                            EditorGUI.indentLevel = indentOnSectionStart + 2;
+                            EditorGUI.indentLevel = indentOnSectionStart + 3;
 
                             string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
                             bool showSettings = EditorPrefs.GetBool(prefKey);
-
+                            
                             InspectorUIUtility.ListSettings settings = listSettings[i];
                             bool show = InspectorUIUtility.DrawSectionStart(themeItem.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 3, showSettings, FontStyle.Normal, false);
 
