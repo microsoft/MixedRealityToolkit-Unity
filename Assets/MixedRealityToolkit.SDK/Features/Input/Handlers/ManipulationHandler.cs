@@ -230,6 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             int numControllers = 0;
             foreach (var p in pointerIdToPointerMap.Values)
             {
+                // Check pointer has a valid controller (e.g. gaze pointer doesn't)
                 if (p.Controller != null)
                 {
                     numControllers++;
@@ -245,6 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             int numControllers = 0;
             foreach (var p in pointerIdToPointerMap.Values)
             {
+                // Check pointer has a valid controller (e.g. gaze pointer doesn't)
                 if (p.Controller != null)
                 {
                     numControllers++;
