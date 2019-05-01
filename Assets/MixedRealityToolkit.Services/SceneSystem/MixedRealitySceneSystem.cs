@@ -44,18 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public override void Initialize()
         {
 #if UNITY_EDITOR
-            // Subscribe to editor events
-            EditorApplication.playModeStateChanged += EditorApplicationPlayModeStateChanged;
-            EditorApplication.projectChanged += EditorApplicationProjectChanged;
-            EditorApplication.hierarchyChanged += EditorApplicationHeirarcyChanged;
-            EditorApplication.update += EditorApplicationUpdate;
-
-            EditorSceneManager.newSceneCreated += EditorSceneManagerNewSceneCreated;
-            EditorSceneManager.sceneOpened += EditorSceneManagerSceneOpened;
-            EditorSceneManager.sceneClosed += EditorSceneManagerSceneClosed;
-            EditorSceneManager.activeSceneChangedInEditMode += EditorSceneManagerActiveSceneChangedInEditMode;
-
-            UpdateBuildSettings();
+            OnEditorInitialize();
 #endif
         }
 

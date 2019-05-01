@@ -27,6 +27,22 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private float timeSinceLastLightingUpdate = 0;
         private List<string> buildSceneNames = new List<string>();
 
+        private void OnEditorInitialize()
+        {
+            // Subscribe to editor events
+            EditorApplication.playModeStateChanged += EditorApplicationPlayModeStateChanged;
+            EditorApplication.projectChanged += EditorApplicationProjectChanged;
+            EditorApplication.hierarchyChanged += EditorApplicationHeirarcyChanged;
+            EditorApplication.update += EditorApplicationUpdate;
+
+            EditorSceneManager.newSceneCreated += EditorSceneManagerNewSceneCreated;
+            EditorSceneManager.sceneOpened += EditorSceneManagerSceneOpened;
+            EditorSceneManager.sceneClosed += EditorSceneManagerSceneClosed;
+            EditorSceneManager.activeSceneChangedInEditMode += EditorSceneManagerActiveSceneChangedInEditMode;
+
+            UpdateBuildSettings();
+        }
+
         #region update triggers from editor events
 
         private void EditorApplicationPlayModeStateChanged(PlayModeStateChange change)
