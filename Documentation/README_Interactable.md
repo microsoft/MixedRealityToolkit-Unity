@@ -72,12 +72,27 @@ The best way to save a profile of a button, with all the themes and targets setu
 _Note: Themes that effect mesh objects (Color or Shader Themes) are able to detect the shader properties in the material assigned to the target object. A drop down list of shader properties will define how the values of the theme are applied and is a convenience of this ability. Conflicts can arise if the same theme is used on objects that do not share the same material shader setting. Best practice is to create a separate theme for objects with different shaders; this is not an issue when using the same Color Theme on a text object and a mesh object, because all the shader properties are ignored on text objects._
 
 ### Creating Toggles
-Toggle or multi-step buttons can be created in the Profile using the Dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the Dimensions value is increased, slots for additional themes are provided for each item in the Profile. This allows for a Normal Theme and a Toggled Theme to be used depending if the Interactable is toggled or not. 
+Toggle or multi-step buttons can be created in the Profile using the Dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the Dimensions value is increased, slots for additional themes are provided for each Target in the Profile. This allows for a Normal Theme and a Toggled Theme to be used depending if the Interactable is toggled or not. 
 
 <img src="../External/ReadMeImages/Interactable/Profile_toggle.png" width="450">
 
 
 With Dimensions being a numeric value, the options for adding themes or steps is endless. An example of a multi-step button with 3 dimensions is one that controls speed. We may only want to have the option for 3 values, Fast (1x), Faster (2x) or Fastest (3x). Using Dimensions we could control the text or texture of the button for each step using 3 different themes. **Developers can assess the DimensionIndex to determine which dimension is currently active.**
+
+```
+//Access the current DimensionIndex
+GetDimensionIndex();
+
+//Set the DimensionIndex - toggled
+SetDimensionIndex(1);
+
+//Set the DimensinIndex - Untoggled
+SetDimensionIndex(0);
+```
+
+Every click event will advance the DimensionIndex which will increase until the set Dimensions value is reached then cycle or reset to 0. A good example of working with Dimensions with code is the InteractiveToggleCollection found in the InteractableExamples demo scene on the RadialSet object.
+
+<img src="../External/ReadMeImages/Interactable/InteractableToggleCollection.png" width="450">
 
 
 ## Events
@@ -86,8 +101,7 @@ You can use Interactable to detect input events other than just OnClick. The Eve
 <img src="../External/ReadMeImages/Interactable/Events.png" width="450">
 
 
-
-At the bottom of the Interactable component, click the Add Event button to reveal additional event options. A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor Interactable state changes and define patterns to detect. When a pattern is detected, we can make something happen through the inspector or directly in code.
+**At the bottom of the Interactable component, click the Add Event button to reveal additional event options.** A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor Interactable state changes and define patterns to detect. When a pattern is detected, we can make something happen through the inspector or directly in code.
 
 <img src="../External/ReadMeImages/Interactable/Event_audioClip.png" width="450">
 
