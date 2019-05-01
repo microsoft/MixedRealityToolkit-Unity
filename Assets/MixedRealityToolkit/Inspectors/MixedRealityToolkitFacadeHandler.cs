@@ -25,20 +25,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void OnPlayModeStateChanged(PlayModeStateChange obj)
         {
-            if (!MixedRealityToolkit.IsInitialized)
-            {
-                return;
-            }
-
             // When the play state changes just nuke everything and start over
             DestroyAllChildren();
         }
 
         private static void UpdateServiceFacades(SceneView sceneView)
         {
-            // If we're not using inspectors, destroy them all now
-            if (!MixedRealityToolkit.IsInitialized || MixedRealityToolkit.Instance.HasActiveProfile && !MixedRealityToolkit.Instance.ActiveProfile.UseServiceInspectors)
-            {
+            if (!MixedRealityToolkit.IsInitialized)
+            {   // Nothing to do here.
+                return;
+            }
+
+            if (MixedRealityToolkit.Instance.HasActiveProfile && !MixedRealityToolkit.Instance.ActiveProfile.UseServiceInspectors)
+            {   // If we're not using inspectors, destroy them all now
                 DestroyAllChildren();
                 return;
             }
@@ -144,6 +143,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void DestroyAllChildren()
         {
+            if (MixedRealityToolkit.IsInitialized)
+            {   // Nothing to do here.
+                return;
+            }
+
             Transform instanceTransform = MixedRealityToolkit.Instance.transform;
 
             childrenToDelete.Clear();
