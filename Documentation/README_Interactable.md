@@ -88,6 +88,8 @@ Every click event will advance the DimensionIndex which will increase until the 
 
 <img src="../External/ReadMeImages/Interactable/InteractableToggleCollection.png" width="450">
 
+**See the Events section to learn about Toggle Events.**
+
 
 ## Events
 You can use Interactable to detect input events other than just OnClick. The Events feature provides a way to enable functionality to extend a button, but not really visual or needed to provide feedback based on state changes.
