@@ -89,8 +89,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker
             location = Matrix4x4.identity;
 
 #if WINDOWS_UWP
-            var coordinateSystem = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(id);
-            return TryGetLocationForQRCode(coordinateSystem, out location);
+            try
+            {
+                var coordinateSystem = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(id);
+                return TryGetLocationForQRCode(coordinateSystem, out location);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Exception thrown creating coordinate system for qr code id: {e.ToString()}");
+                return false;
+            }
+
 #else
             Debug.LogError("Failed to create coordinate system for qr code id");
             return false;
