@@ -7,8 +7,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Describes a source change event.
-    /// <remarks>Source State events do not have an associated <see cref="MixedRealityInputAction"/>.</remarks>
     /// </summary>
+    /// <remarks>Source State events do not have an associated <see cref="MixedRealityInputAction"/>.</remarks>
     public class SourcePoseEventData<T> : SourceStateEventData
     {
         /// <summary>

@@ -40,8 +40,8 @@ namespace Microsoft.MixedReality.Toolkit
 
         /// <summary>
         /// Starts a process asynchronously.<para/>
-        /// <remarks>The provided Process Start Info must not use shell execution, and should redirect the standard output and errors.</remarks>
         /// </summary>
+        /// <remarks>The provided Process Start Info must not use shell execution, and should redirect the standard output and errors.</remarks>
         /// <param name="process">This Process.</param>
         /// <param name="startInfo">The Process start info.</param>
         /// <param name="showDebug">Should output debug code to Editor Console?</param>
