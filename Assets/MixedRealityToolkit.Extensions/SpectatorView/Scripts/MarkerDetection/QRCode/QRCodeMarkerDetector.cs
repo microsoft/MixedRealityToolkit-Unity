@@ -119,8 +119,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             {
                 lock (_contentLock)
                 {
-                    _markerIds.Add(e.Data.Id, markerId);
-                    _markerSizes.Add(markerId, e.Data.PhysicalSizeMeters);
+                    _markerIds[e.Data.Id] = markerId;
+                    _markerSizes[markerId] = e.Data.PhysicalSizeMeters;
                     _processMarkers = true;
                 }
             }
@@ -132,8 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             {
                 lock (_contentLock)
                 {
-                    _markerIds.Add(e.Data.Id, markerId);
-                    _markerSizes.Add(markerId, e.Data.PhysicalSizeMeters);
+                    _markerIds[e.Data.Id] = markerId;
+                    _markerSizes[markerId] = e.Data.PhysicalSizeMeters;
                     _processMarkers = true;
                 }
             }
@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         var coordinateSystem = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(markerPair.Key);
                         if (coordinateSystem != null)
                         {
-                            _markerCoordinateSystems.Add(markerPair.Key, coordinateSystem);
+                            _markerCoordinateSystems[markerPair.Key] = coordinateSystem;
                         }
                     }
                 }
@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         // so, we rotate the marker orientation 180 degrees around its z axis.
                         var rotation = Quaternion.LookRotation(location.GetColumn(2), location.GetColumn(1)) * Quaternion.Euler(0, 0, 180);
                         var marker = new Marker(markerId, translation, rotation);
-                        markerDictionary.Add(markerId, marker);
+                        markerDictionary[markerId] = marker;
                     }
                 }
             }

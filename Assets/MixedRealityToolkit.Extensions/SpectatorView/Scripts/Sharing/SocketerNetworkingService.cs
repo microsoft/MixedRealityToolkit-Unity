@@ -92,23 +92,37 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnConnected(SocketEndpoint obj)
         {
+            string playerId = string.Empty;
             lock(playerIds)
             {
                 if (!playerIds.ContainsKey(obj.Address))
                 {
                     playerIds.Add(obj.Address, Guid.NewGuid().ToString());
                 }
+
+                playerId = playerIds[obj.Address];
+            }
+
+            if (playerId != string.Empty)
+            {
+                PlayerConnected?.Invoke(playerId);
             }
         }
 
         private void OnDisconnected(SocketEndpoint obj)
         {
-            lock(playerIds)
+            string playerId = string.Empty;
+            lock (playerIds)
             {
                 if (playerIds.ContainsKey(obj.Address))
                 {
-                    playerIds.Remove(obj.Address);
+                    playerId = playerIds[obj.Address];
                 }
+            }
+
+            if (playerId != string.Empty)
+            {
+                PlayerDisconnected?.Invoke(playerId);
             }
         }
 

@@ -53,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public Vector3 topRight;
         public Vector3 bottomLeft;
         public Vector3 bottomRight;
+        public Quaternion orientation;
     }
 
     [Serializable]
@@ -62,7 +63,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public CameraResolution resolution;
         public CameraIntrinsics intrinsics;
         public CameraExtrinsics extrinsics;
-        public byte[] pixelData;
+        public byte[] pngData;
+
+        // Non-serialized items
+        public byte[] pixelData { get; set; }
+        public CameraFrame frame { get; set; }
     }
 
     [Serializable]

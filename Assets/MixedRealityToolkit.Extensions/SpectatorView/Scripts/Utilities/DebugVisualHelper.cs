@@ -40,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
             if (visual == null)
             {
                 visual = Instantiate(prefab);
-                Debug.Log($"Instantiated prefab for visual:{prefab.name}, position:{position}, rotation:{rotation}");
             }
 
             if (visual != null)
@@ -65,7 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
             if (visual == null)
             {
                 visual = Instantiate(prefab);
-                Debug.Log($"Instantiated prefab for visual, position:{position}, rotation:{rotation}, scale:{scale}");
             }
 
             if (visual != null)

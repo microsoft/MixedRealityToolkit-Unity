@@ -15,10 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
     /// </summary>
     public class SpectatorViewPluginAPI
     {
-        [DllImport("SpectatorViewPlugin", EntryPoint = "Initialize")]
+        [DllImport("ArUcoMarkerDetectorPlugin", EntryPoint = "Initialize")]
         internal static extern bool InitializeNative();
 
-        [DllImport("SpectatorViewPlugin", EntryPoint = "DetectMarkers")]
+        [DllImport("ArUcoMarkerDetectorPlugin", EntryPoint = "DetectMarkers")]
         internal static extern bool DetectMarkersNative(
             byte[] imageData,
             int imageWidth,
@@ -30,13 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             float markerSize,
             int arUcoMarkerDictionaryId);
 
-        [DllImport("SpectatorViewPlugin", EntryPoint = "GetDetectedMarkersCount")]
+        [DllImport("ArUcoMarkerDetectorPlugin", EntryPoint = "GetDetectedMarkersCount")]
         internal static extern int GetDetectedMarkersCountNative();
 
-        [DllImport("SpectatorViewPlugin", EntryPoint = "GetDetectedMarkerIds")]
+        [DllImport("ArUcoMarkerDetectorPlugin", EntryPoint = "GetDetectedMarkerIds")]
         internal static extern bool GetDetectedMarkerIdsNative(int[] detectedIds, int size);
 
-        [DllImport("SpectatorViewPlugin", EntryPoint = "GetDetectedMarkerPose")]
+        [DllImport("ArUcoMarkerDetectorPlugin", EntryPoint = "GetDetectedMarkerPose")]
         internal static extern bool GetDetectedMarkerPoseNative(int detectedId, float[] position, float[] rotation);
 
         /// <summary>

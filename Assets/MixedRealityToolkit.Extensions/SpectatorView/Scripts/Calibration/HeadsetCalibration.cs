@@ -43,20 +43,30 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected DebugVisualHelper arucoDebugVisualHelper;
 
+        public bool sendPVImage = false;
+
         protected HoloLensCamera holoLensCamera;
+        private bool cameraSetup = false;
         private bool markersUpdated = false;
         private Dictionary<int, Marker> qrCodeMarkers = new Dictionary<int, Marker>();
-        private Dictionary<int, Matrix4x4> qrCodesRelativeToCamera = new Dictionary<int, Matrix4x4>();
         private Dictionary<int, GameObject> qrCodeDebugVisuals = new Dictionary<int, GameObject>();
         private Dictionary<int, GameObject> arucoDebugVisuals = new Dictionary<int, GameObject>();
         private readonly float markerPaddingRatio = 34f / (300f - (2f * 34f)); // padding pixels / marker width in pixels
         private Dictionary<int, MarkerCorners> qrCodeMarkerCorners = new Dictionary<int, MarkerCorners>();
         private Dictionary<int, MarkerCorners> arucoMarkerCorners = new Dictionary<int, MarkerCorners>();
         private ConcurrentQueue<HeadsetCalibrationData> dataQueue;
+        private ConcurrentQueue<HeadsetCalibrationData> sendQueue;
 
         public event HeadsetCalibrationDataUpdatedHandler Updated;
         public void UpdateHeadsetCalibrationData()
         {
+            if (sendPVImage &&
+                !cameraSetup)
+            {
+                SetupCamera();
+                cameraSetup = true;
+            }
+
             if (dataQueue == null)
             {
                 dataQueue = new ConcurrentQueue<HeadsetCalibrationData>();
@@ -68,16 +78,40 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             data.headsetData.position = Camera.main.transform.position;
             data.headsetData.rotation = Camera.main.transform.rotation;
             data.markers = new List<MarkerPair>();
-            data.imageData = new PVImageData();
-            dataQueue.Enqueue(data);
+            foreach (var qrCodePair in qrCodeMarkers)
+            {
+                if (qrCodeMarkerCorners.ContainsKey(qrCodePair.Key) &&
+                    arucoMarkerCorners.ContainsKey(qrCodePair.Key))
+                {
+                    var markerPair = new MarkerPair();
+                    markerPair.id = qrCodePair.Key;
+                    markerPair.qrCodeMarkerCorners = qrCodeMarkerCorners[qrCodePair.Key];
+                    markerPair.arucoMarkerCorners = arucoMarkerCorners[qrCodePair.Key];
+                    data.markers.Add(markerPair);
+                }
+            }
+            data.imageData = null;
 
-            Debug.Log("Taking photo with HoloLens PV Camera");
-            holoLensCamera.TakeSingle();
+            if (!sendPVImage)
+            {
+                sendQueue.Enqueue(data);
+            }
+            else
+            {
+                data.imageData = new PVImageData();
+                dataQueue.Enqueue(data);
+
+                Debug.Log("Taking photo with HoloLens PV Camera");
+                if (!holoLensCamera.TakeSingle())
+                {
+                    Debug.Log("Failed to take photo, still setting up hololens camera");
+                }
+            }
         }
 
         private void Start()
         {
-            SetupCamera();
+            sendQueue = new ConcurrentQueue<HeadsetCalibrationData>();
 
             qrCodeMarkerDetector.MarkersUpdated += OnQRCodesMarkersUpdated;
             qrCodeMarkerDetector.StartDetecting();
@@ -89,6 +123,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 markersUpdated = false;
                 ProcessQRCodeUpdate();
+            }
+
+            while (sendQueue.Count > 0)
+            {
+                if (sendQueue.TryDequeue(out var data))
+                {
+                    if (data.imageData != null &&
+                        data.imageData.frame != null)
+                    {
+                        data.imageData.pngData = EncodeBGRAAsPNG(data.imageData.frame);
+                        data.imageData.frame.Release();
+                        data.imageData.frame = null;
+                    }
+
+                    SendHeadsetCalibrationDataPayload(data);
+                }
             }
         }
 
@@ -107,7 +157,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             HashSet<int> updatedMarkerIds = new HashSet<int>();
 
-            qrCodesRelativeToCamera.Clear();
             foreach (var marker in qrCodeMarkers)
             {
                 updatedMarkerIds.Add(marker.Key);
@@ -157,9 +206,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private async void SetupCamera()
         {
-            Debug.Log("Setting up HoloLensCamera to take grayscale images");
+            Debug.Log("Setting up HoloLensCamera");
             if (holoLensCamera == null)
-                holoLensCamera = new HoloLensCamera(CaptureMode.Single, PixelFormat.BGRA8);
+                holoLensCamera = new HoloLensCamera(CaptureMode.SingleLowLatency, PixelFormat.BGRA8);
 
             holoLensCamera.OnCameraInitialized += CameraInitialized;
             holoLensCamera.OnCameraStarted += CameraStarted;
@@ -183,9 +232,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void CameraInitialized(HoloLensCamera sender, bool initializeSuccessful)
         {
+            if (!initializeSuccessful)
+            {
+                Debug.Log("Camera failed to initialize");
+            }
+
             Debug.Log("HoloLensCamera initialized");
-            StreamDescription streamDesc = sender.StreamSelector.Select(StreamCompare.EqualTo, 1280, 720).StreamDescriptions[0];
-            sender.Start(streamDesc);
+            var descriptions = sender.StreamSelector.Select(StreamCompare.EqualTo, 1408, 792).StreamDescriptions;
+            if (descriptions.Count > 0)
+            {
+                StreamDescription streamDesc = descriptions[0];
+                sender.Start(streamDesc);
+            }
+            else
+            {
+                Debug.LogWarning("Expected camera resolution not supported");
+            }
         }
 
         private void CameraStarted(HoloLensCamera sender, bool startSuccessful)
@@ -211,19 +273,29 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             Debug.Log("Image obtained from HoloLens PV Camera");
-            if (dataQueue.TryDequeue(out var headsetCalibrationData))
-            {
-                headsetCalibrationData.imageData.pixelFormat = frame.PixelFormat;
-                headsetCalibrationData.imageData.resolution = frame.Resolution;
-                headsetCalibrationData.imageData.intrinsics = frame.Intrinsics;
-                headsetCalibrationData.imageData.extrinsics = frame.Extrinsics;
 
-                byte[] data = new byte[frame.PixelData.Length];
-                Buffer.BlockCopy(frame.PixelData, 0, data, 0, frame.PixelData.Length * sizeof(byte));
-                headsetCalibrationData.imageData.pixelData = data;
+            // Always obtain the most recent request. Some requests may be dropped, but we should use the most recent headpose
+            HeadsetCalibrationData data = null;
+            while (!dataQueue.IsEmpty)
+            {
+                dataQueue.TryDequeue(out data);
+            }
+
+            if (data != null)
+            {
+                data.imageData.pixelFormat = frame.PixelFormat;
+                data.imageData.resolution = frame.Resolution;
+                data.imageData.intrinsics = frame.Intrinsics;
+                data.imageData.extrinsics = frame.Extrinsics;
+                frame.AddRef();
+                data.imageData.frame = frame;
 
                 Debug.Log($"Frame obtained with resolution {frame.Resolution.Width} x {frame.Resolution.Height} and size {frame.PixelData.Length}");
-                SendHeadsetCalibrationDataPayload(headsetCalibrationData);
+                sendQueue.Enqueue(data);
+            }
+            else
+            {
+                Debug.Log("Image was captured but no headset data existed for payloads to send");
             }
 #endif
         }
@@ -303,7 +375,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             corners.topRight = originToTopLeftCorner.MultiplyPoint(new Vector3(-size, 0, 0));
             corners.bottomLeft = originToTopLeftCorner.MultiplyPoint(new Vector3(0, -size, 0));
             corners.bottomRight = originToTopLeftCorner.MultiplyPoint(new Vector3(-size, -size, 0));
+            corners.orientation = topLeftOrientation;
             return corners;
+        }
+
+        private static byte[] EncodeBGRAAsPNG(CameraFrame frame)
+        {
+            Texture2D texture = new Texture2D((int)frame.Resolution.Width, (int)frame.Resolution.Height, TextureFormat.BGRA32, false);
+
+            // Byte data obtained from a HoloLensCamera needs to be flipped vertically to display correctly in Unity
+            byte[] copy = new byte[frame.PixelData.Length];
+            int stride = (int)frame.Resolution.Width * 4;
+            for (int i = 0; i < frame.Resolution.Height; i++)
+            {
+                Array.Copy(frame.PixelData, (int)(frame.Resolution.Height - i - 1) * stride, copy, i * stride, stride);
+            }
+
+            texture.LoadRawTextureData(copy);
+            texture.Apply();
+            return texture.EncodeToPNG();
         }
     }
 }
