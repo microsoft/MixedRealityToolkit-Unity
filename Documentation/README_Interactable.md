@@ -55,9 +55,11 @@ Themes work a lot like materials. They are scriptable objects that contain a lis
 A default theme will be provided whenever an target object is added to a profile. It is not advised to edit the default theme, like in the case MRTK is updated, the theme could get overridden. A "Create Theme" button is provided whenever the default theme is used to make it easier to create a new themes. 
 
 <img src="../Documentation/Images/Interactable/DefaultTheme_values.png" width="450">
+
 *Example of the Default Theme*
 
 <img src="../Documentation/Images/Interactable/Theme.png" width="450">
+
 *Example of a Color Theme*
 
 The best way to save a profile of a button, with all the themes and targets setup, is to create a prefab of your button.
@@ -96,21 +98,24 @@ You can use Interactable to detect input events other than just OnClick. The Eve
 
 <img src="../Documentation/Images/Interactable/Events.png" width="450">
 
-At the bottom of the interactable component, click the "Add Event" button to reveal additional event options. A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor interactable state changes and define patterns to detect. When a pattern is detected, an action can be triggered through the inspector or directly in code.
+**At the bottom of the Interactable component, click the "Add Event" button to reveal additional event options.** A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor Interactable state changes and define patterns to detect. When a pattern is detected, an action can be triggered through the inspector or directly in code.
 
-**At the bottom of the Interactable component, click the Add Event button to reveal additional event options.** A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor Interactable state changes and define patterns to detect. When a pattern is detected, we can make something happen through the inspector or directly in code.
 <img src="../Documentation/Images/Interactable/Event_audioClip.png" width="450">
+
 *Example of audio clip to play on click. There is an audio theme for playing audio clips for each state change, like focus*
 
 <img src="../Documentation/Images/Interactable/Event_toggle.png" width="450">
+
 *Example of Toggle events*
 
 <img src="../Documentation/Images/Interactable/Event_hold.png" width="450">
+
 *Example of a hold event*
 
 Events can be placed on an object to monitor a separate interactable. Use `InteractableReceiver` for a single event (from the list) or `InteractableReceiverList` for a list of events similar to the interactable event list.
 
 <img src="../Documentation/Images/Interactable/InteractableReceiver.png" width="450">
+
 *Example of InteractableReceiver existing on a separate gameObject from the Interactable, referencing the Interactable for event and state updates*
 
 "Search Scope" provides a preferred path to search for an Interactable if one is not explicitly assigned.
