@@ -80,5 +80,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
             TangentialDistortion = tangentialDistortion;
             UndistortedProjectionTransform = undistortedProjectionTransform;
         }
+
+        public CameraIntrinsics()
+        {
+            FocalLength = Vector2.zero;
+            ImageWidth = 0;
+            ImageHeight = 0;
+            PrincipalPoint = Vector2.zero;
+            RadialDistortion = Vector3.zero;
+            TangentialDistortion = Vector2.zero;
+            UndistortedProjectionTransform = Matrix4x4.identity;
+        }
+
+        public override string ToString()
+        {
+            return $"Focal Length:{FocalLength}, Principal Point:{PrincipalPoint}, Image Width:{ImageWidth}, Image Height:{ImageHeight}, Radial Distortion:{RadialDistortion}, Tangential Distortion:{TangentialDistortion}";
+        }
     }
 }
