@@ -26,4 +26,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity
     guid: 2d6c43a82f3a88c4dbdc3b5e99a68d8a
+  - enabled: 1
+    path: Assets/TemporaryTesting/MRTKInstance1.unity
+    guid: bc39dd8f1babcd14e92cc479074cb3e7
+  - enabled: 1
+    path: Assets/TemporaryTesting/MRTKInstance2.unity
+    guid: b723188095a7d2a4699349f4dacab1cb
+  - enabled: 1
+    path: Assets/TemporaryTesting/MRTKInstance3.unity
+    guid: 5cea1e2011bb1994fadd958cf900764f
   m_configObjects: {}
