@@ -1,5 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
-using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;

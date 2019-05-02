@@ -1,7 +1,8 @@
-﻿using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
-using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
-using SpectatorView;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -101,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (feedImage != null &&
                 feedImage.texture == null)
-                feedImage.texture = ShaderManager.Instance.compositeTexture; // TODO - figure out what is the correct texture to use here in the new compositor wrapper
+                feedImage.texture = CompositorWrapper.GetDSLRFeed();
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -131,20 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         continue;
                     }
 
-                    // Process DSLR Image
-                    Texture2D dslrTexture = new Texture2D(
-                        ShaderManager.Instance.colorRGBTexture.width,
-                        ShaderManager.Instance.colorRGBTexture.height,
-                        TextureFormat.RGB24,
-                        false);
-
-                    var previousActive = RenderTexture.active;
-                    RenderTexture.active = ShaderManager.Instance.colorRGBTexture;
-                    dslrTexture.ReadPixels(new Rect(0, 0, dslrTexture.width, dslrTexture.height), 0, 0);
-                    dslrTexture.Apply();
+                    var dslrTexture = CompositorWrapper.GetDSLRTexture();
                     CalibrationDataHelper.SaveDSLRArUcoImage(dslrTexture, nextArUcoImageId);
-                    RenderTexture.active = previousActive;
-
                     CalibrationDataHelper.SaveHeadsetData(data, nextArUcoImageId);
 
                     if (ProcessArUcoData(data, dslrTexture))

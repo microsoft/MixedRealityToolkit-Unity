@@ -43,10 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected DebugVisualHelper arucoDebugVisualHelper;
 
-        public bool sendPVImage = false;
-
-        protected HoloLensCamera holoLensCamera;
-        private bool cameraSetup = false;
         private bool markersUpdated = false;
         private Dictionary<int, Marker> qrCodeMarkers = new Dictionary<int, Marker>();
         private Dictionary<int, GameObject> qrCodeDebugVisuals = new Dictionary<int, GameObject>();
@@ -54,24 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private readonly float markerPaddingRatio = 34f / (300f - (2f * 34f)); // padding pixels / marker width in pixels
         private Dictionary<int, MarkerCorners> qrCodeMarkerCorners = new Dictionary<int, MarkerCorners>();
         private Dictionary<int, MarkerCorners> arucoMarkerCorners = new Dictionary<int, MarkerCorners>();
-        private ConcurrentQueue<HeadsetCalibrationData> dataQueue;
         private ConcurrentQueue<HeadsetCalibrationData> sendQueue;
 
         public event HeadsetCalibrationDataUpdatedHandler Updated;
         public void UpdateHeadsetCalibrationData()
         {
-            if (sendPVImage &&
-                !cameraSetup)
-            {
-                SetupCamera();
-                cameraSetup = true;
-            }
-
-            if (dataQueue == null)
-            {
-                dataQueue = new ConcurrentQueue<HeadsetCalibrationData>();
-            }
-
             Debug.Log("Updating headset calibration data");
             var data = new HeadsetCalibrationData();
             data.timestamp = Time.time;
@@ -92,21 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
             data.imageData = null;
 
-            if (!sendPVImage)
-            {
-                sendQueue.Enqueue(data);
-            }
-            else
-            {
-                data.imageData = new PVImageData();
-                dataQueue.Enqueue(data);
-
-                Debug.Log("Taking photo with HoloLens PV Camera");
-                if (!holoLensCamera.TakeSingle())
-                {
-                    Debug.Log("Failed to take photo, still setting up hololens camera");
-                }
-            }
+            sendQueue.Enqueue(data);
         }
 
         private void Start()
@@ -140,11 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     SendHeadsetCalibrationDataPayload(data);
                 }
             }
-        }
-
-        private void OnDestroy()
-        {
-            CleanUpCamera();
         }
 
         private void OnQRCodesMarkersUpdated(Dictionary<int, Marker> markers)
@@ -202,102 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             RemoveItemsAndDestroy(qrCodeDebugVisuals, updatedMarkerIds);
             RemoveItemsAndDestroy(arucoDebugVisuals, updatedMarkerIds);
-        }
-
-        private async void SetupCamera()
-        {
-            Debug.Log("Setting up HoloLensCamera");
-            if (holoLensCamera == null)
-                holoLensCamera = new HoloLensCamera(CaptureMode.SingleLowLatency, PixelFormat.BGRA8);
-
-            holoLensCamera.OnCameraInitialized += CameraInitialized;
-            holoLensCamera.OnCameraStarted += CameraStarted;
-            holoLensCamera.OnFrameCaptured += FrameCaptured;
-
-            await holoLensCamera.Initialize();
-        }
-
-        private void CleanUpCamera()
-        {
-            Debug.Log("Cleaning up HoloLensCamera");
-            if (holoLensCamera != null)
-            {
-                holoLensCamera.Dispose();
-                holoLensCamera.OnCameraInitialized -= CameraInitialized;
-                holoLensCamera.OnCameraStarted -= CameraStarted;
-                holoLensCamera.OnFrameCaptured -= FrameCaptured;
-                holoLensCamera = null;
-            }
-        }
-
-        private void CameraInitialized(HoloLensCamera sender, bool initializeSuccessful)
-        {
-            if (!initializeSuccessful)
-            {
-                Debug.Log("Camera failed to initialize");
-            }
-
-            Debug.Log("HoloLensCamera initialized");
-            var descriptions = sender.StreamSelector.Select(StreamCompare.EqualTo, 1408, 792).StreamDescriptions;
-            if (descriptions.Count > 0)
-            {
-                StreamDescription streamDesc = descriptions[0];
-                sender.Start(streamDesc);
-            }
-            else
-            {
-                Debug.LogWarning("Expected camera resolution not supported");
-            }
-        }
-
-        private void CameraStarted(HoloLensCamera sender, bool startSuccessful)
-        {
-            if (startSuccessful)
-            {
-                Debug.Log("HoloLensCamera successfully started");
-            }
-            else
-            {
-                Debug.LogError("Error: HoloLensCamera failed to start");
-            }
-        }
-
-        private void FrameCaptured(HoloLensCamera sender, CameraFrame frame)
-        {
-#if UNITY_WSA
-            if (dataQueue == null ||
-                dataQueue.Count == 0)
-            {
-                Debug.Log("Data queue didn't contain any content, frame dropped");
-                return;
-            }
-
-            Debug.Log("Image obtained from HoloLens PV Camera");
-
-            // Always obtain the most recent request. Some requests may be dropped, but we should use the most recent headpose
-            HeadsetCalibrationData data = null;
-            while (!dataQueue.IsEmpty)
-            {
-                dataQueue.TryDequeue(out data);
-            }
-
-            if (data != null)
-            {
-                data.imageData.pixelFormat = frame.PixelFormat;
-                data.imageData.resolution = frame.Resolution;
-                data.imageData.intrinsics = frame.Intrinsics;
-                data.imageData.extrinsics = frame.Extrinsics;
-                frame.AddRef();
-                data.imageData.frame = frame;
-
-                Debug.Log($"Frame obtained with resolution {frame.Resolution.Width} x {frame.Resolution.Height} and size {frame.PixelData.Length}");
-                sendQueue.Enqueue(data);
-            }
-            else
-            {
-                Debug.Log("Image was captured but no headset data existed for payloads to send");
-            }
-#endif
         }
 
         private void SendHeadsetCalibrationDataPayload(HeadsetCalibrationData data)
