@@ -237,11 +237,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsFalse(interaction.Changed);
 
             // Make sure changes to a single component are detected correctly when only one axis is inverted (bug #4114)
-            interaction.InvertXAxis = true;
-            interaction.InvertYAxis = false;
-            interaction.Vector2Data = Vector2.one;
-            interaction.Vector2Data = new Vector2(1, -1);
-            Assert.IsTrue(interaction.Changed);
+            {
+                interaction.InvertXAxis = true;
+                interaction.InvertYAxis = false;
+                interaction.Vector2Data = Vector2.one;
+
+                Vector2 oneMinusOne = new Vector2(1, -1);
+                interaction.Vector2Data = oneMinusOne;
+                Assert.IsTrue(interaction.Changed);
+
+                interaction.Vector2Data = oneMinusOne;
+                Assert.IsFalse(interaction.Changed);
+            }
         }
 
         [Test]
