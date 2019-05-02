@@ -7,7 +7,6 @@
   - name: Mixed Reality Services
     href: MixedRealityServices.md
 - name: How-tos
-  href: howto_migrate.md
   items:
   - name: Getting Started
     href: GettingStartedWithTheMRTK.md
@@ -85,8 +84,9 @@
         href: README_Solver.md     
     - name: Spatial Awareness
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
-      items:
+      items:	
       - name: Configuring the Spatial Awareness Mesh Observer
+        href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
     - name: In-Editor Input Simulation
       href: InputSimulation/InputSimulationService.md
     - name: Diagnostics System

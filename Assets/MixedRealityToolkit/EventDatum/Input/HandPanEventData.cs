@@ -8,8 +8,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Describes an source state event that has a source id.
-    /// <remarks>Source State events do not have an associated <see cref="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputAction"/>.</remarks>
     /// </summary>
+    /// <remarks>Source State events do not have an associated <see cref="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputAction"/>.</remarks>
     public class HandPanEventData : BaseInputEventData
     {
         public Vector2 PanPosition

@@ -13,8 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsEditor,
         "Input Simulation Service",
-        "Profiles/DefaultMixedRealityInputSimulationProfile.asset", 
+        "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
     public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService
     {
         private ManualCameraControl cameraControl = null;
@@ -46,12 +47,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region BaseInputDeviceManager Implementation
 
         public InputSimulationService(
-            IMixedRealityServiceRegistrar registrar, 
+            IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             MixedRealityInputSystemProfile inputSystemProfile,
             Transform playspace,
-            string name, 
-            uint priority, 
+            string name,
+            uint priority,
             BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile)
         {
         }

@@ -12,5 +12,23 @@
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
     <tags>Unity MixedReality</tags>
+    <dependencies>
+      <dependency id="Microsoft.MixedReality.Toolkit" version="$version$" />
+    </dependencies>
   </metadata>
+  <files>
+    <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+
+    <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
+    <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Services.targets" />
+
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.BoundarySystem.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSimulation.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSystem.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSystem.Inspectors.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.TeleportSystem.dll*" target="Plugins\" />
+  </files>
 </package>

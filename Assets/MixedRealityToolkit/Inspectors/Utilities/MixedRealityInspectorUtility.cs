@@ -35,11 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Error);
                     }
-
-                    return false;
                 }
 
-                MixedRealityToolkit.ConfirmInitialized();
+                // Don't proceeed
+                return false;
             }
 
             if (!MixedRealityToolkit.Instance.HasActiveProfile)
