@@ -29,6 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             MixedRealitySceneSystem sceneSystem = (MixedRealitySceneSystem)target;
 
+            GUI.color = enabledColor;
+
             if (!Application.isPlaying)
             {
                 EditorGUILayout.HelpBox("Select the active lighting scene by clicking its name.", MessageType.Info);
@@ -43,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 bool selected = lightingScene.Name == sceneSystem.LightingSceneName;
 
-                GUI.color = selected ? Color.Lerp(Color.green, Color.white,0.5f) : Color.white;
+                GUI.color = selected ? enabledColor : disabledColor;
                 if (GUILayout.Button(lightingScene.Name, EditorStyles.toolbarButton) && !selected && !Application.isPlaying)
                 {
                     sceneSystem.SetLightingScene(lightingScene.Name);
@@ -52,13 +54,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
 
+            GUI.color = enabledColor;
+
+            if (!Application.isPlaying)
+            {
+                EditorGUILayout.HelpBox("Load / unload content scenes by clicking their names.", MessageType.Info);
+                EditorGUILayout.Space();
+            }
+
             EditorGUILayout.LabelField("Content Scenes", EditorStyles.boldLabel);
             foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
             {
                 Scene scene = EditorSceneManager.GetSceneByName(contentScene.Name);
                 bool loaded = scene.isLoaded;
 
-                GUI.color = loaded ? Color.Lerp(Color.green, Color.white, 0.5f) : Color.white;
+                GUI.color = loaded ? enabledColor : disabledColor;
                 if (GUILayout.Button(contentScene.Name, EditorStyles.toolbarButton) && !Application.isPlaying)
                 {
                     if (loaded)
