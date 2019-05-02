@@ -69,8 +69,6 @@ Note that themes that manipulate mesh objects (color or shader themes) are able 
 ### Creating Toggles
 Toggle or multi-step buttons can be created in the Profile using the Dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the Dimensions value is increased, slots for additional themes are provided for each Target in the Profile. This allows for a Normal Theme and a Toggled Theme to be used depending if the Interactable is toggled or not. 
 
-Toggle or multi-step buttons can be created in the profile using the dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the dimensions value is increased, slots for additional themes are provided for each item in the profile. This allows for a normal theme and a toggled theme to be used depending if the interactable is toggled or not. 
-
 <img src="../Documentation/Images/Interactable/Profile_toggle.png" width="450">
 
 With dimensions being a numeric value, the options for adding themes or steps is endless. An example of a multi-step button with 3 dimensions is one that controls speed. We may only want to have the option for 3 values, Fast (1x), Faster (2x) or Fastest (3x). Dimensions are used to control the text or texture of the button for each individual speed setting, using 3 different themes for each of them. Developers can assess the *DimensionIndex* to determine which dimension is currently active.
@@ -88,7 +86,7 @@ SetDimensionIndex(0);
 
 Every click event will advance the DimensionIndex which will increase until the set Dimensions value is reached then cycle or reset to 0. A good example of working with Dimensions with code is the InteractiveToggleCollection found in the InteractableExamples demo scene on the RadialSet object.
 
-<img src="../External/ReadMeImages/Interactable/InteractableToggleCollection.png" width="450">
+<img src="../Documentation/ReadMeImages/Interactable/InteractableToggleCollection.png" width="450">
 
 **See the Events section to learn about Toggle Events.**
 
