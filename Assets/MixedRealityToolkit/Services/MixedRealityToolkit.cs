@@ -636,7 +636,7 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     if (activeInstance != null)
                     {
-                        Debug.Assert(instance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
+                        Debug.Assert(activeInstance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
                     }
                 };
 #endif // UNITY_EDITOR
