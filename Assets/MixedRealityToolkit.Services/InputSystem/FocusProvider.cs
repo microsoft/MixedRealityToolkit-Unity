@@ -1057,6 +1057,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            // Early out if there have been no focus changes
+            if (pendingPointerSpecificFocusChange.Count == 0)
+            {
+                return;
+            }
+
             // ... but now we trim out objects whose overall focus was maintained the same by a different pointer:
 
             foreach (var pointer in pointers)
