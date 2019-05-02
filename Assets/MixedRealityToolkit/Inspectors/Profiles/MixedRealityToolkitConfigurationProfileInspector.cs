@@ -287,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Scene System configuration
             EditorGUILayout.Space();
-            showSceneSystemProperties = EditorGUILayout.Foldout(showDiagnosticProperties, "Scene System Settings", true);
+            showSceneSystemProperties = EditorGUILayout.Foldout(showSceneSystemProperties, "Scene System Settings", true);
             if (showSceneSystemProperties)
             {
                 using (new EditorGUI.IndentLevelScope())

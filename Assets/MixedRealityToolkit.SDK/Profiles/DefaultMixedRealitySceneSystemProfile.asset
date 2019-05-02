@@ -14,14 +14,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCustomProfile: 1
   useManagerScene: 1
-  managerSceneObject: {fileID: 102900000, guid: ae7bb08d297fb69408695d8de0962524,
-    type: 3}
+  managerScene:
+    Name: 
+    Path: 
+    BuildIndex: -1
+    Asset: {fileID: 0}
   useLightingScene: 1
-  lightingSceneObject: {fileID: 102900000, guid: 7e54e36c44f826c438c95da79f8de638,
-    type: 3}
-  buildSceneNames:
-  - ManagerScene
-  - LightingScene
-  - BoundaryVisualization
-  - ContentScene
-  - ManagerScene2
+  defaultLightingSceneIndex: 0
+  lightingScenes:
+  - Name: LightingScene1
+    Path: Assets/TemporaryTests/LightingScene1.unity
+    BuildIndex: 1
+    Asset: {fileID: 102900000, guid: 7e54e36c44f826c438c95da79f8de638, type: 3}
+  - Name: LightingScene2
+    Path: Assets/TemporaryTests/LightingScene2.unity
+    BuildIndex: 2
+    Asset: {fileID: 102900000, guid: e658a4e789b58a845ad62b898384adc0, type: 3}
+  - Name: LightingScene3
+    Path: Assets/TemporaryTests/LightingScene3.unity
+    BuildIndex: 3
+    Asset: {fileID: 102900000, guid: 11c051cc2550b6a44aa7852f3b7bda53, type: 3}
+  contentScenes:
+  - Name: ContentScene1
+    Path: Assets/TemporaryTests/ContentScene1.unity
+    BuildIndex: 4
+    Asset: {fileID: 102900000, guid: 2844642a986b5dd449f363846d781df0, type: 3}
+  - Name: ContentScene2
+    Path: Assets/TemporaryTests/ContentScene2.unity
+    BuildIndex: 5
+    Asset: {fileID: 102900000, guid: 8d232b45a4965814e88d9b4eccc34ba9, type: 3}
+  - Name: ContentScene3
+    Path: Assets/ContentScene3.unity
+    BuildIndex: 6
+    Asset: {fileID: 102900000, guid: d40dbc118249f324eb97fbbc3cbbc5c8, type: 3}
