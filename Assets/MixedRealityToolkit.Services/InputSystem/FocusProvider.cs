@@ -1085,7 +1085,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 MixedRealityToolkit.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
                 int numExits;
-                if (pendingOverallFocusExitSet.TryGetValue(pendingUnfocusObject, out numExits))
+                if (pendingUnfocusObject != null && pendingOverallFocusExitSet.TryGetValue(pendingUnfocusObject, out numExits))
                 {
                     if (numExits > 1)
                     {
