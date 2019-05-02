@@ -25,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private const float editorSettingsUpdateInterval = 2.5f;
         private float timeSinceLastEditorSettingsUpdate = 0;
         private float timeSinceLastLightingUpdate = 0;
-        private List<string> buildSceneNames = new List<string>();
 
         private void OnEditorInitialize()
         {
@@ -102,13 +101,17 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         private void UpdateSettingsOnEditorChanged(bool updateActiveScene = true)
         {
-            if (updatingSettingsOnEditorChanged || EditorApplication.isPlaying || EditorApplication.isCompiling)
+            if (updatingSettingsOnEditorChanged || EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling)
             {   // Make sure we don't double up on our updates via events we trigger during updates
                 return;
             }
 
             updatingSettingsOnEditorChanged = true;
 
+            // Ask the profile to refresh itself
+            profile.EditorRefreshSceneInfo();
+
+            // Update editor settings
             UpdateBuildSettings();
             UpdateManagerScene();
             UpdateLightingScene(updateActiveScene);
@@ -120,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         {
             if (profile.UseManagerScene)
             {
-                LoadSceneInEditor(profile.ManagerSceneObject, true, out Scene scene);
+                LoadSceneInEditor(profile.ManagerScene.Asset, true, out Scene scene);
             }
         }
 
@@ -132,71 +135,100 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 if (Time.realtimeSinceStartup - timeSinceLastLightingUpdate > lightingUpdateInterval)
                 {
                     timeSinceLastLightingUpdate = Time.realtimeSinceStartup;
-                    Scene contentScene;
-                    if (LoadSceneInEditor(profile.LightingSceneObject, false, out contentScene))
-                    {
-                        CopyLightingSettingsToActiveScene(contentScene);
+
+                    foreach (SceneInfo lso in profile.LightingScenes)
+                    {   // Make sure ALL lighting scenes are added to build settings
+                        if (lso.Name == lightingSceneName)
+                        {
+                            if (LoadSceneInEditor(lso.Asset, false, out Scene editorScene) && updateActiveScene)
+                            {
+                                EditorSceneManager.SetActiveScene(editorScene);
+                            }
+                        }
+                        else
+                        {
+                            UnloadSceneInEditor(lso.Asset);
+                        }
                     }
                 }
             }
         }
-
+        
         private void UpdateBuildSettings()
         {
             if (profile.UseManagerScene)
             {
-                AddSceneToBuildSettings(profile.ManagerSceneObject, true);
+                AddSceneToBuildSettings(profile.ManagerScene.Asset, true);
             }
 
             if (profile.UseLightingScene)
             {
-                AddSceneToBuildSettings(profile.LightingSceneObject, false);
+                foreach (SceneInfo lightingSceneObject in profile.LightingScenes)
+                {   // Make sure ALL lighting scenes are added to build settings
+                    AddSceneToBuildSettings(lightingSceneObject.Asset, false);
+                }
             }
+
+            // Content scenes are drawn from the build settings, so we don't need to add them here.
 
             CheckBuildSettings();
         }
 
         /// <summary>
         /// Checks build settings for possible errors and displays warnings.
-        /// Also modifies current profile's scene names property.
+        /// Also modifies current profile's content scene names property.
         /// </summary>
         private void CheckBuildSettings()
         {
-            // Make sure our profile's build scene names are accurate
-            SerializedObject profileObject = new SerializedObject(profile);
-            SerializedProperty buildSceneNamesProperty = profileObject.FindProperty("buildSceneNames");
-
-            GetSceneNamesFromBuildSettings(buildSceneNames);
-
-            // Make sure the array size is correct before proceeding
-            if (buildSceneNamesProperty.arraySize != buildSceneNames.Count)
-            {
-                buildSceneNamesProperty.arraySize = buildSceneNames.Count;
-                profileObject.ApplyModifiedProperties();
-            }
-
-            for (int i = 0; i < buildSceneNames.Count; i++)
-            {
-                SerializedProperty element = buildSceneNamesProperty.GetArrayElementAtIndex(i);
-                element.stringValue = buildSceneNames[i];
-            }
-            profileObject.ApplyModifiedProperties();
-
             // Find any duplicate names in our list
             // Duplicate names can complicate loading / unloading of scenes
             Dictionary<string, List<int>> duplicates = new Dictionary<string, List<int>>();
+            List<SceneInfo> allScenes = new List<SceneInfo>();
             bool foundDuplicates = false;
-            for (int i = 0; i < buildSceneNames.Count; i++)
+            List<int> indexes = null;
+
+            foreach (SceneInfo sceneInfo in profile.LightingScenes)
             {
-                List<int> indexes;
-                if (duplicates.TryGetValue(buildSceneNames[i], out indexes))
+                allScenes.Add(sceneInfo);
+
+                if (duplicates.TryGetValue(sceneInfo.Name, out indexes))
                 {
-                    indexes.Add(i);
+                    indexes.Add(sceneInfo.BuildIndex);
                     foundDuplicates = true;
                 }
                 else
                 {
-                    duplicates.Add(buildSceneNames[i], new List<int> { i });
+                    duplicates.Add(sceneInfo.Name, new List<int> { sceneInfo.BuildIndex });
+                }
+            }
+
+            foreach (SceneInfo sceneInfo in profile.ContentScenes)
+            {
+                allScenes.Add(sceneInfo);
+
+                if (duplicates.TryGetValue(sceneInfo.Name, out indexes))
+                {
+                    indexes.Add(sceneInfo.BuildIndex);
+                    foundDuplicates = true;
+                }
+                else
+                {
+                    duplicates.Add(sceneInfo.Name, new List<int> { sceneInfo.BuildIndex });
+                }
+            }
+
+            if (profile.UseManagerScene)
+            {
+                allScenes.Add(profile.ManagerScene);
+
+                if (duplicates.TryGetValue(profile.ManagerScene.Name, out indexes))
+                {
+                    indexes.Add(profile.ManagerScene.BuildIndex);
+                    foundDuplicates = true;
+                }
+                else
+                {
+                    duplicates.Add(profile.ManagerScene.Name, new List<int> { profile.ManagerScene.BuildIndex });
                 }
             }
 
@@ -207,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 if (!ResolveDuplicateScenesWindow.IsOpen)
                 {
                     ResolveDuplicateScenesWindow window = EditorWindow.GetWindow<ResolveDuplicateScenesWindow>("Fix Duplicate Scene Names");
-                    window.ResolveDuplicates(duplicates, buildSceneNames);
+                    window.ResolveDuplicates(duplicates, allScenes);
                 }
             }
             else if (ResolveDuplicateScenesWindow.IsOpen)
@@ -216,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 ResolveDuplicateScenesWindow.Instance.Close();
             }
         }
-
+        
         /// <summary>
         /// Adds scene to build settings.
         /// </summary>
@@ -224,6 +256,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <param name="setAsFirst">Sets as first scene to be loaded.</param>
         private static void AddSceneToBuildSettings(UnityEngine.Object sceneObject, bool setAsFirst = false)
         {
+            if (sceneObject == null)
+            {   // Can't add a null scene to build settings
+                return;
+            }
+
             long localID;
             string managerGuidString;
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(sceneObject, out managerGuidString, out localID);
@@ -310,12 +347,40 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             return true;
         }
 
+        private static bool UnloadSceneInEditor(UnityEngine.Object sceneObject)
+        {
+            Scene editorScene = default(Scene);
+
+            try
+            {
+                editorScene = EditorSceneManager.GetSceneByName(sceneObject.name);
+                if (editorScene.isLoaded)
+                {
+                    EditorSceneManager.CloseScene(editorScene, false);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // This can happen if we're trying to load immediately upon recompilation.
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                // This can happen if the scene is an invalid scene and we try to SetActive.
+                return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Copies the lighting settings from the lighting scene to the active scene
         /// </summary>
         /// <param name="lightingScene"></param>
         private static void CopyLightingSettingsToActiveScene(Scene lightingScene)
         {
+            return;
+
             // Store the active scene on entry
             Scene activeSceneOnEnter = EditorSceneManager.GetActiveScene();
 
@@ -370,13 +435,26 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
-        private static void GetSceneNamesFromBuildSettings(List<string> sceneNames)
+        private static List<string> GetContentSceneNamesFromBuildSettings(IEnumerable<SceneInfo> lightingScenes, SceneInfo managerScene)
         {
-            sceneNames.Clear();
+            List<string> sceneNames = new List<string>();
+            HashSet<string> nonContentSceneNames = new HashSet<string>();
+            foreach (SceneInfo scene in lightingScenes)
+            {
+                nonContentSceneNames.Add(scene.Name);
+            }
+            nonContentSceneNames.Add(managerScene.Name);
+
             for (int i = 0; i < EditorSceneManager.sceneCountInBuildSettings; i++)
             {
-                sceneNames.Add(GetSceneNameFromScenePath(SceneUtility.GetScenePathByBuildIndex(i)));
+                string sceneName = GetSceneNameFromScenePath(SceneUtility.GetScenePathByBuildIndex(i));
+                if (!nonContentSceneNames.Contains(sceneName))
+                {
+                    sceneNames.Add(sceneName);
+                }
             }
+
+            return sceneNames;
         }
 
         private static bool GetLightmapAndRenderSettings(out SerializedObject lightmapSettings, out SerializedObject renderSettings)

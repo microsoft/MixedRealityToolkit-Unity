@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// Because so much of this service's functionality is editor-only, it has been split into a partial class.
     /// This part handles the runtime parts of the service.
     /// </summary>
+    [DocLink("http://TEMPORARYURL")]
     public partial class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem
     {
         public MixedRealitySceneSystem(
@@ -50,8 +55,29 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public string SourceName { get; } = "Mixed Reality Scene System";
 
+        /// <inheritdoc />
+        public SceneInfo ManagerScne { get { return profile.ManagerScene; } }
+
+        /// <inheritdoc />
+        public IEnumerable<SceneInfo> LightingScenes { get { return profile.LightingScenes; } }
+        
+        /// <inheritdoc />
+        public IEnumerable<SceneInfo> ContentScenes { get { return profile.ContentScenes; } }
+
+        public string LightingSceneName
+        {
+            get { return lightingSceneName; }
+        }
+
+        private string lightingSceneName = string.Empty;
+
         public override void Initialize()
         {
+            if (profile.UseLightingScene)
+            {
+                SetLightingScene(profile.DefaultLightingScene.Name, false);
+            }
+
 #if UNITY_EDITOR
             OnEditorInitialize();
 #endif
@@ -60,6 +86,18 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public override void Update()
         {
 
+        }
+
+        /// <inheritdoc />
+        public async Task LoadScene(string sceneToLoad)
+        {
+            await LoadScenes(new string[] { sceneToLoad });
+        }
+
+        /// <inheritdoc />
+        public async Task UnloadScene(string sceneToUnload)
+        {
+            await UnloadScenes(new string[] {sceneToUnload} );
         }
 
         /// <inheritdoc />
@@ -233,6 +271,51 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             // We're done!
             SceneOpProgress = 1;
             SceneOpInProgress = false;
+        }
+
+        public bool IsSceneLoaded(string sceneName)
+        {
+            Scene scene = SceneManager.GetSceneByName(sceneName);
+            return scene.IsValid() && scene.isLoaded;
+        }
+
+        public async void SetLightingScene(string newLightingSceneName, bool transition = false)
+        {
+            if (lightingSceneName == newLightingSceneName)
+            {   // Nothing to do here
+                return;
+            }
+
+            SceneInfo lightingScene;
+            if (!string.IsNullOrEmpty(newLightingSceneName) && !profile.GetLightingSceneObject(newLightingSceneName, out lightingScene))
+            {   // Make sure we don't try to load a non-existent scene
+                Debug.LogWarning("Couldn't find lighting scene " + newLightingSceneName + " in profile - taking no action.");
+                return;
+            }
+
+            lightingSceneName = newLightingSceneName;
+
+            timeSinceLastLightingUpdate = 0;
+            timeSinceLastEditorSettingsUpdate = 0;
+
+            if (Application.isPlaying)
+            {
+                List<string> lightingSceneNames = new List<string>();
+                // Create a list of lighting scenes to unload
+                foreach (SceneInfo lso in LightingScenes)
+                {
+                    if (lso.Name != newLightingSceneName)
+                    {
+                        lightingSceneNames.Add(lso.Name);
+                    }
+                }
+
+                // Load the new lighting scene immediately
+                await LoadScene(newLightingSceneName);
+
+                // Unload the other lighting scenes
+                await UnloadScenes(lightingSceneNames);
+            }
         }
 
         private bool FindScene(string sceneName, out Scene scene, out int sceneIndex)

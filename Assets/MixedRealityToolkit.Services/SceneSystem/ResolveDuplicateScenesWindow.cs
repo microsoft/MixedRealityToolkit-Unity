@@ -19,19 +19,19 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private static ResolveDuplicateScenesWindow instance;
 
         private Dictionary<string, List<int>> duplicates;
-        private List<string> currentSceneNames;
-        private List<string> newSceneNames;
+        private List<SceneInfo> currentScenes;
+        private List<SceneInfo> newScenes;
 
-        public void ResolveDuplicates(Dictionary<string, List<int>> duplicates, List<string> scenes)
+        public void ResolveDuplicates(Dictionary<string, List<int>> duplicates, List<SceneInfo> scenes)
         {
             this.duplicates = new Dictionary<string, List<int>>(duplicates);
-            this.currentSceneNames = new List<string>(scenes);
-            this.newSceneNames = new List<string>(scenes);
+            this.currentScenes = new List<SceneInfo>(scenes);
+            this.newScenes = new List<SceneInfo>(scenes);
         }
 
         private void OnGUI()
         {
-            if (instance == null || duplicates == null || currentSceneNames == null || newSceneNames == null)
+            if (instance == null || duplicates == null || currentScenes == null || newScenes == null)
             {   // Probably caused by recompilation
                 Close();
                 return;
@@ -42,20 +42,25 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             bool readyToApply = true;
 
-            for (int i = 0; i < currentSceneNames.Count; i++)
+            for (int i = 0; i < currentScenes.Count; i++)
             {
-                bool isDuplicate = duplicates[currentSceneNames[i]].Count > 1;
+                bool isDuplicate = duplicates[currentScenes[i].Name].Count > 1;
                 GUI.color = isDuplicate ? Color.Lerp(Color.red, Color.white, 0.5f) : Color.white;
 
                 GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(i.ToString(), GUILayout.MaxWidth(25));
-                GUILayout.Button(currentSceneNames[i], EditorStyles.toolbarButton);
+                EditorGUILayout.LabelField(currentScenes[i].BuildIndex.ToString(), GUILayout.MaxWidth(25));
+                if (GUILayout.Button(currentScenes[i].Name, EditorStyles.miniButton))
+                {
+                    EditorGUIUtility.PingObject(currentScenes[i].Asset);
+                }
 
                 GUI.color = Color.white;
                 if (isDuplicate)
                 {
-                    newSceneNames[i] = EditorGUILayout.TextField(newSceneNames[i]);
-                    readyToApply &= ValidateNewSceneName(i, newSceneNames[i]);
+                    SceneInfo newSceneName = newScenes[i];
+                    newSceneName.Name = EditorGUILayout.TextField(newSceneName.Name);
+                    newScenes[i] = newSceneName;
+                    readyToApply &= ValidateNewSceneName(i, newSceneName.Name);
                 }
 
                 GUILayout.EndHorizontal();
@@ -67,14 +72,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             if (GUILayout.Button("Rename Scene Assets") && readyToApply)
             {
                 // Change the names of the assets
-                for (int i = 0; i < currentSceneNames.Count; i++)
+                for (int i = 0; i < currentScenes.Count; i++)
                 {
-                    if (currentSceneNames[i] != newSceneNames[i])
+                    if (currentScenes[i].Name != newScenes[i].Name)
                     {   // We've renamed something
-                        // Get the path of the scene at this index
-                        string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
-                        string newScenePath = scenePath.Replace(scenePath, newSceneNames[i]);
-                        AssetDatabase.RenameAsset(scenePath, newScenePath);
+                        // Rename the asset now
+                        AssetDatabase.RenameAsset(newScenes[i].Path, newScenes[i].Name);
                     }
                     AssetDatabase.Refresh();
                     AssetDatabase.SaveAssets();
@@ -100,11 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return false;
             }
 
-            for (int i = 0; i < newSceneNames.Count; i++)
+            for (int i = 0; i < newScenes.Count; i++)
             {
                 if (i == index) { continue; }
 
-                if (newSceneNames[i] == newSceneName)
+                if (newScenes[i].Name == newSceneName)
                 {
                     return false;
                 }
