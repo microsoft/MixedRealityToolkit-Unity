@@ -169,8 +169,8 @@ namespace Microsoft.MixedReality.Toolkit
 
         /// <inheritdoc />
         public bool RegisterService<T>(
-            Type concreteType, 
-            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), 
+            Type concreteType,
+            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityService
         {
             if (isApplicationQuitting)
@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit
         public bool UnregisterService<T>(string name = null) where T : IMixedRealityService
         {
             T serviceInstance = GetServiceByName<T>(name);
-            
+
             if (serviceInstance == null) { return false; }
 
             return UnregisterService<T>(serviceInstance);
@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     Debug.LogError("Failed to start the Input System!");
                 }
-                
+
                 args = new object[] { this, InputSystem, ActiveProfile.InputSystemProfile };
                 if (!RegisterDataProvider<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType, args: args))
                 {
@@ -636,8 +636,7 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     if (activeInstance != null)
                     {
-                        Debug.Assert(activeInstance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
-                        Debug.Assert(activeInstance.transform.childCount == 0, "The MixedRealityToolkit should not have GameObject children!");
+                        Debug.Assert(instance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
                     }
                 };
 #endif // UNITY_EDITOR
@@ -650,7 +649,7 @@ namespace Microsoft.MixedReality.Toolkit
                 newInstanceBeingInitialized = false;
             }
         }
-        
+
         /// <summary>
         /// Expose an assertion whether the MixedRealityToolkit class is initialized.
         /// </summary>
@@ -703,7 +702,7 @@ namespace Microsoft.MixedReality.Toolkit
                     {
                         // Since the scene is set up with a different camera parent, its likely
                         // that there's an expectation that that parent is going to be used for
-                        // something else. We print a warning to call out the fact that we're 
+                        // something else. We print a warning to call out the fact that we're
                         // co-opting this object for use with teleporting and such, since that
                         // might cause conflicts with the parent's intended purpose.
                         Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {MixedRealityPlayspaceName}. The existing parent will be renamed and used instead.");
@@ -718,7 +717,7 @@ namespace Microsoft.MixedReality.Toolkit
                 // otherwise reality-locked things like playspace boundaries won't be aligned properly.
                 // For now, we'll just assume that when the playspace is first initialized, the
                 // tracked space origin overlaps with the world space origin. If a platform ever does
-                // something else (i.e, placing the lower left hand corner of the tracked space at world 
+                // something else (i.e, placing the lower left hand corner of the tracked space at world
                 // space 0,0,0), we should compensate for that here.
                 return mixedRealityPlayspace;
             }
@@ -788,7 +787,7 @@ namespace Microsoft.MixedReality.Toolkit
             {   // Don't register instances while application is quitting
                 return;
             }
-            
+
             if (MixedRealityToolkit.activeInstance == null)
             {
                 // If we don't have an instance, set it here
@@ -830,7 +829,7 @@ namespace Microsoft.MixedReality.Toolkit
                 }
 
                 foreach (MixedRealityToolkit instance in toolkitInstances)
-                { 
+                {
                     if (instance == null)
                     {   // This may have been a mass-deletion - be wary of soon-to-be-unregistered instances
                         continue;

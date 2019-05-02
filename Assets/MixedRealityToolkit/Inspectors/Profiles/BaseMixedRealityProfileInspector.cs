@@ -4,8 +4,8 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,6 +25,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static BaseMixedRealityProfile profileToCopy;
         private static StringBuilder dropdownKeyBuilder = new StringBuilder();
 
+        private const int subProfileIndentWidth = 2;
+        private const int inspectorFoldoutWidth = 10;
+        private static Color subProfileBackgroundColor = new Color(1f, 1f, 1f, 0.15f);
+        private static GUIStyle subProfileBackgroundStyle = null;
+        private static GUIStyle foldoutStyle = null;
+
         protected virtual void OnEnable()
         {
             if (target == null)
@@ -43,10 +49,61 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
         /// <param name="guiContent">The GUIContent for the field.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
+        /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
-        protected static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true, Type serviceType = null)
+        public static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true, Type serviceType = null)
         {
             return RenderProfileInternal(property, guiContent, showAddButton, serviceType);
+        }
+
+        /// <summary>
+        /// Renders a non-editable object field and an editable dropdown of a profile.
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public static void RenderReadOnlyProfile(SerializedProperty property)
+        {
+            CreateStyles();
+
+            EditorGUILayout.BeginHorizontal();
+
+            bool showFoldout = false;
+            if (property.objectReferenceValue != null)
+            {
+                string showFoldoutKey = GetSubProfileDropdownKey(property);
+                showFoldout = SessionState.GetBool(showFoldoutKey, false);
+                showFoldout = EditorGUILayout.Foldout(showFoldout, property.displayName, true);
+                SessionState.SetBool(showFoldoutKey, showFoldout);
+            }
+
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.ObjectField(property.objectReferenceValue != null ? "" : property.displayName, property.objectReferenceValue, typeof(BaseMixedRealityProfile), false, GUILayout.ExpandWidth(true));      
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUILayout.EndHorizontal();
+
+            if (showFoldout && property.objectReferenceValue != null)
+            {
+                UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
+
+                // If this is a default MRTK configuration profile, ask it to render as a sub-profile
+                if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
+                {
+                    BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
+                    configProfile.RenderAsSubProfile = true;
+                }
+
+                EditorGUILayout.BeginHorizontal();
+                EditorGUI.indentLevel++;
+                EditorGUILayout.LabelField("", GUILayout.MaxWidth(subProfileIndentWidth));
+                EditorGUILayout.BeginVertical(subProfileBackgroundStyle);
+                subProfileEditor.OnInspectorGUI();
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+                EditorGUILayout.EndVertical();
+                EditorGUI.indentLevel--;
+                EditorGUILayout.EndHorizontal();
+            }
         }
 
         /// <summary>
@@ -54,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
+        /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
         protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, Type serviceType = null)
         {
@@ -62,6 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static bool RenderProfileInternal(SerializedProperty property, GUIContent guiContent, bool showAddButton, Type serviceType = null)
         {
+            CreateStyles();
+
             profile = property.serializedObject.targetObject as BaseMixedRealityProfile;
 
             bool changed = false;
@@ -78,8 +138,45 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
+            // Begin the horizontal group
             EditorGUILayout.BeginHorizontal();
-            RenderProfileField(property, guiContent, GetProfileTypesForService(serviceType));
+
+            // Draw the foldout - this contains the property name so it's clickable
+            bool showFoldout = false;
+            if (oldObject != null)
+            {
+                string showFoldoutKey = GetSubProfileDropdownKey(property);
+                showFoldout = SessionState.GetBool(showFoldoutKey, false);
+                showFoldout = EditorGUILayout.Foldout(showFoldout, property.displayName, true);
+                SessionState.SetBool(showFoldoutKey, showFoldout);
+            }
+
+            // Find the profile type so we can limit the available object field options
+            Type profileType = null;
+            if (serviceType != null)
+            {
+                // If GetProfileTypesForService has a count greater than one, then it won't be possible to use
+                // EditorGUILayout.ObjectField to restrict the set of profiles to a single type - in this
+                // case all profiles of BaseMixedRealityProfile will be visible in the picker.
+                // 
+                // However in the case where there is just a single profile type for the service, we can improve
+                // upon the user experience by limiting the set of things that show in the picker by restricting
+                // the set of profiles listed to only that type.
+                profileType = GetProfileTypesForService(serviceType).FirstOrDefault();
+            }
+
+            // If the profile type is still null, just set it to base profile type
+            if (profileType == null)
+            {
+                // If we don't find a profile type by searching 
+                profileType = typeof(BaseMixedRealityProfile);
+            }
+
+            // Draw the object field with an empty label - label is kept in the foldout
+            property.objectReferenceValue = EditorGUILayout.ObjectField(oldObject != null ? "" : property.displayName, oldObject, profileType, false, GUILayout.ExpandWidth(true));
+            changed = (property.objectReferenceValue != oldObject);
+                        
+            // Draw the clone button
             if (property.objectReferenceValue == null)
             {
                 var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
@@ -110,42 +207,27 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             EditorGUILayout.EndHorizontal();
-
-            // Check fields within profile for other nested profiles
-            // Draw them when found
-            if (property.objectReferenceValue != null)
+            
+            // Draw foldout
+            if (showFoldout && property.objectReferenceValue != null)
             {
-                Type profileType = property.objectReferenceValue.GetType();
-                if (typeof(BaseMixedRealityProfile).IsAssignableFrom(profileType))
+                UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
+
+                // If this is a default MRTK configuration profile, ask it to render as a sub-profile
+                if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
                 {
-                    string showFoldoutKey = GetSubProfileDropdownKey(property);
-                    bool showFoldout = SessionState.GetBool(showFoldoutKey, false);
-                    showFoldout = EditorGUILayout.Foldout(showFoldout, showFoldout ? "Hide " + property.displayName + " contents" : "Show " + property.displayName + " contents", true);
-
-                    if (showFoldout)
-                    {
-                        UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
-
-                        // If this is a default MRTK configuration profile, ask it to render as a sub-profile
-                        if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
-                        {
-                            BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
-                            configProfile.RenderAsSubProfile = true;
-                        }
-
-                        EditorGUI.indentLevel++;
-                        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                        subProfileEditor.OnInspectorGUI();
-
-                        EditorGUILayout.Space();
-                        EditorGUILayout.Space();
-
-                        EditorGUILayout.EndVertical();
-                        EditorGUI.indentLevel--;
-                    }
-
-                    SessionState.SetBool(showFoldoutKey, showFoldout);
+                    BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
+                    configProfile.RenderAsSubProfile = true;
                 }
+
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("", GUILayout.MaxWidth(subProfileIndentWidth));
+                EditorGUILayout.BeginVertical(subProfileBackgroundStyle);
+                subProfileEditor.OnInspectorGUI();
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndHorizontal();
             }
 
             return changed;
@@ -275,48 +357,27 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return false;
         }
 
-        /// <summary>
-        /// Renders the profile field, optionally restricting the set of selectable types based on the given
-        /// profileTypes parameter.
-        /// </summary>
-        /// <remarks>
-        /// If profileTypes has a count greater than one, then it won't be possible to use
-        /// EditorGUILayout.ObjectField to restrict the set of profiles to a single type - in this
-        /// case all profiles of BaseMixedRealityProfile will be visible in the picker.
-        /// 
-        /// However in the case where there is just a single profile type for the service, we can improve
-        /// upon the user experience by limiting the set of things that show in the picker by restricting
-        /// the set of profiles listed to only that type.
-        /// </remarks>
-        private static void RenderProfileField(SerializedProperty property, GUIContent guiContent, IReadOnlyCollection<Type> profileTypes)
-        {
-            if (profileTypes.Count == 1)
-            {
-                if (guiContent != null)
-                {
-                    EditorGUILayout.ObjectField(property, profileTypes.Single(), guiContent);
-                }
-                else
-                {
-                    EditorGUILayout.ObjectField(property, profileTypes.Single());
-                }
-            }
-            else
-            {
-                if (guiContent != null)
-                {
-                    EditorGUILayout.ObjectField(property, guiContent);
-                }
-                else
-                {
-                    EditorGUILayout.ObjectField(property);
-                }
-            }
-        }
-
         private static bool IsConcreteProfileType(String profileTypeName)
         {
             return profileTypeName != BaseMixedRealityProfileClassName;
+        }
+
+        private static void CreateStyles()
+        {
+            if (subProfileBackgroundStyle != null)
+            {
+                return;
+            }
+
+            subProfileBackgroundStyle = new GUIStyle();
+            Color[] pix = new Color[4] { subProfileBackgroundColor, subProfileBackgroundColor, subProfileBackgroundColor, subProfileBackgroundColor };
+            Texture2D bgTexture = new Texture2D(2, 2);
+            bgTexture.SetPixels(pix);
+            bgTexture.Apply();
+            subProfileBackgroundStyle.normal.background = bgTexture;
+
+            foldoutStyle = new GUIStyle(EditorStyles.foldout);
+            foldoutStyle.stretchWidth = false;
         }
     }
 }
