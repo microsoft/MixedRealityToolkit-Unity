@@ -218,10 +218,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3.Dot(pointOnPlane, LocalRight),
                 Vector3.Dot(pointOnPlane, localUp));
 
-            // Clamp to bounds
-            planeSpacePoint = new Vector2(
-                Mathf.Clamp(planeSpacePoint.x, -bounds.x / 2, bounds.x / 2),
-                Mathf.Clamp(planeSpacePoint.y, -bounds.y / 2, bounds.y / 2));
+            if (planeSpacePoint.x < -bounds.x / 2 ||
+                planeSpacePoint.x > bounds.x / 2 ||
+                planeSpacePoint.y < -bounds.y / 2 ||
+                planeSpacePoint.y > bounds.y / 2)
+            {
+                return float.PositiveInfinity;
+            }
 
             // Convert back to 3D space
             Vector3 clampedPoint = transform.TransformPoint((LocalRight * planeSpacePoint.x) + (localUp * planeSpacePoint.y) + localCenter);
