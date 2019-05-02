@@ -100,7 +100,6 @@ Passes state information and input data on to receivers that detect patterns and
     <h5>Implements</h5>
     <div><span class="xref">IMixedRealityFocusChangedHandler</span></div>
     <div><span class="xref">IMixedRealityFocusHandler</span></div>
-    <div><span class="xref">IMixedRealityInputHandler</span></div>
     <div><span class="xref">IMixedRealityPointerHandler</span></div>
     <div><span class="xref">IMixedRealitySpeechHandler</span></div>
     <div><span class="xref">IMixedRealityTouchHandler</span></div>
@@ -110,7 +109,7 @@ Passes state information and input data on to receivers that detect patterns and
   <h5 id="Microsoft_MixedReality_Toolkit_UI_Interactable_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler, IMixedRealityTouchHandler</code></pre>
+public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler, IMixedRealityTouchHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -1730,89 +1729,6 @@ public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMi
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputDown_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputDown*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputDown_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputDown(InputEventData)">OnInputDown(InputEventData)</h4>
-  <div class="markdown level1 summary"><p>Used to handle global events really, using pointer events for most things</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnInputDown(InputEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">InputEventData</span></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputPressed_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputPressed*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputPressed_InputEventData_System_Single__" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputPressed(InputEventData{System.Single})">OnInputPressed(InputEventData&lt;Single&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnInputPressed(InputEventData&lt;float&gt; eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">InputEventData</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a>&gt;</td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputUp_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputUp*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputUp_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputUp(InputEventData)">OnInputUp(InputEventData)</h4>
-  <div class="markdown level1 summary"><p>Used for click events for actions not processed by pointer events</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnInputUp(InputEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">InputEventData</span></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnPointerClicked_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnPointerClicked*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnPointerClicked_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnPointerClicked(MixedRealityPointerEventData)">OnPointerClicked(MixedRealityPointerEventData)</h4>
   <div class="markdown level1 summary"></div>
@@ -2786,9 +2702,6 @@ requires isGlobal</p>
   </div>
   <div>
       <span class="xref">IMixedRealityFocusHandler</span>
-  </div>
-  <div>
-      <span class="xref">IMixedRealityInputHandler</span>
   </div>
   <div>
       <span class="xref">IMixedRealityPointerHandler</span>
