@@ -130,6 +130,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        void OnDisable()
+        {
+            // clear touch points in case we get disabled and can't receive the touch end event anymore
+            touchPoints.Clear();
+        }
+
         private void Update()
         {
             IsTouching = (touchPoints.Count != 0);
