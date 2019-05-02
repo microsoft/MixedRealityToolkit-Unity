@@ -542,6 +542,11 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool newInstanceBeingInitialized = false;
 
         /// <summary>
+        /// Lock property for the Mixed Reality Toolkit to prevent reinitialization
+        /// </summary>
+        private static readonly object initializedLock = new object();
+
+        /// <summary>
         /// Returns the Singleton instance of the classes type.
         /// If no instance is found, then we search for an instance in the scene.
         /// If more than one instance is found, only the first instance is activated. All others are deactivated.
@@ -591,11 +596,6 @@ namespace Microsoft.MixedReality.Toolkit
                 return activeInstance;
             }
         }
-
-        /// <summary>
-        /// Lock property for the Mixed Reality Toolkit to prevent reinitialization
-        /// </summary>
-        private static readonly object initializedLock = new object();
 
         private void InitializeInstance()
         {
@@ -801,9 +801,10 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            // If we're already registered, no need to proceed
             if (!toolkitInstances.Add(toolkitInstance))
+            {   // If we're already registered, no need to proceed
                 return;
+            }
 
             // If we do, then it's not this instance, so deactivate this instance
             toolkitInstance.gameObject.SetActive(false);
@@ -829,9 +830,11 @@ namespace Microsoft.MixedReality.Toolkit
                 }
 
                 foreach (MixedRealityToolkit instance in toolkitInstances)
-                {   // This may have been a  mass-deletion - be wary of soon-to-be-unregistered instances
+                { 
                     if (instance == null)
+                    {   // This may have been a mass-deletion - be wary of soon-to-be-unregistered instances
                         continue;
+                    }
 
                     // Select the first available instance and register it immediately
                     RegisterInstance(instance);
