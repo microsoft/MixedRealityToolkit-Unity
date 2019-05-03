@@ -46,10 +46,10 @@
       items:
       - name: Interactable
         href: README_Interactable.md
-      - name: Object Manipulation 
-        href: README_ManipulationHandler.md      
+      - name: Object Manipulation
+        href: README_ManipulationHandler.md
       - name: Fingertip Visualization
-        href: README_FingertipVisualization.md      
+        href: README_FingertipVisualization.md
       - name: App Bar
         href: README_AppBar.md
       - name: Bounding Box
@@ -57,24 +57,24 @@
       - name: Button
         href: README_Button.md
       - name: Object Collection
-        href: README_ObjectCollection.md      
+        href: README_ObjectCollection.md
       - name: Pointers
         href: README_Pointers.md
       - name: Slate
-        href: README_Slate.md       
+        href: README_Slate.md
       - name: System Keyboard
-        href: README_SystemKeyboard.md     
+        href: README_SystemKeyboard.md
       - name: Tooltips
-        href: README_Tooltip.md  
+        href: README_Tooltip.md
       - name: Solvers
-        href: README_Solver.md 
-      - name: Hand Interaction Example 
-        href: README_HandInteractionExamples.md           
+        href: README_Solver.md
+      - name: Hand Interaction Example
+        href: README_HandInteractionExamples.md
       - name: Eye Tracking Interaction Example
-        href: EyeTracking/EyeTracking_ExamplesOverview.md   
+        href: EyeTracking/EyeTracking_ExamplesOverview.md
     - name: Spatial Awareness
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
-      items:	
+      items:
       - name: Configuring the Spatial Awareness Mesh Observer
         href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
     - name: Boundary System
