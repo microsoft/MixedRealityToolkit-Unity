@@ -99,8 +99,6 @@
       href: Utilities/ExtensionServiceCreationWizard.md
   - name: Experimental Features
     items:
-    - name: Spatial Understanding
-      href: TODO.md
     - name: QR Tracking
       href: TODO.md
     - name: Spatial Audio
@@ -109,18 +107,6 @@
     items:
     - name: Shared Experiences
       href: TODO.md
-- name: How-to 
-  items:
-  - name: How to setup global voice commands 
-    href: TODO.md
-  - name: How to setup a scene for Mixed Reality
-    href: TODO.md
-  - name: How to trigger an action using MRTK button
-    href: TODO.md
-  - name: How to use Input Action (voice, controller...)
-    href: TODO.md
-  - name: How to trigger an action using MRTK button
-    href: TODO.md
 - name: Contributing
   href: Contributing/CONTRIBUTING.md
   items:
