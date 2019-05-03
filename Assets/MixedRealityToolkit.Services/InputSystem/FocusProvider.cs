@@ -629,12 +629,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
+                MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+
                 if (!objectIsStillFocusedByOtherPointer)
                 {
                     // Policy: only raise focus exit if no other pointers are still focusing the object
                     MixedRealityToolkit.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
                 }
-                MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+
+                MixedRealityToolkit.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -703,7 +706,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     MixedRealityRaycaster.DebugEnabled = pointerProfile.DebugDrawPointingRays;
 
                     Color rayColor;
-
                     if ((pointerProfile.DebugDrawPointingRayColors != null) && (pointerProfile.DebugDrawPointingRayColors.Length > 0))
                     {
                         rayColor = pointerProfile.DebugDrawPointingRayColors[pointerCount++ % pointerProfile.DebugDrawPointingRayColors.Length];
@@ -711,6 +713,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     else
                     {
                         rayColor = Color.green;
+                    }
+
+                    if (!pointer.Pointer.IsActive)
+                    {
+                        // Only draw pointers that are currently active, but make sure to 
+                        // increment color even if pointer is disabled so that the color for e.g. the 
+                        // sphere pointer or the poke pointer remains consistent.
+                        continue;
                     }
 
                     Debug.DrawRay(pointer.StartPoint, (pointer.Details.Point - pointer.StartPoint), rayColor);

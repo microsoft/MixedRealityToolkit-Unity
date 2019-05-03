@@ -55,41 +55,64 @@ Themes work a lot like materials. They are scriptable objects that contain a lis
 A default theme will be provided whenever an target object is added to a profile. It is not advised to edit the default theme, like in the case MRTK is updated, the theme could get overridden. A "Create Theme" button is provided whenever the default theme is used to make it easier to create a new themes. 
 
 <img src="../Documentation/Images/Interactable/DefaultTheme_values.png" width="450">
+
 *Example of the Default Theme*
 
 <img src="../Documentation/Images/Interactable/Theme.png" width="450">
+
 *Example of a Color Theme*
 
 The best way to save a profile of a button, with all the themes and targets setup, is to create a prefab of your button.
-
 Note that themes that manipulate mesh objects (color or shader themes) are able to detect the shader properties in the material assigned to the target object. A drop down list of shader properties will define how the values of the theme are applied and is a convenience of this ability. Conflicts can arise if the same theme is used on objects that do not share the same material shader setting. Best practice is to create a separate theme for objects with different shaders; this is not an issue when using the same color theme on a text object and a mesh object, because all the shader properties are ignored on text objects.
 
-Toggle or multi-step buttons can be created in the profile using the dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the dimensions value is increased, slots for additional themes are provided for each item in the profile. This allows for a normal theme and a toggled theme to be used depending if the interactable is toggled or not. 
+
+### Creating Toggles
+Toggle or multi-step buttons can be created in the Profile using the Dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the Dimensions value is increased, slots for additional themes are provided for each Target in the Profile. This allows for a Normal Theme and a Toggled Theme to be used depending if the Interactable is toggled or not. 
 
 <img src="../Documentation/Images/Interactable/Profile_toggle.png" width="450">
 
 With dimensions being a numeric value, the options for adding themes or steps is endless. An example of a multi-step button with 3 dimensions is one that controls speed. We may only want to have the option for 3 values, Fast (1x), Faster (2x) or Fastest (3x). Dimensions are used to control the text or texture of the button for each individual speed setting, using 3 different themes for each of them. Developers can assess the *DimensionIndex* to determine which dimension is currently active.
 
-## Events ##
+```
+//Access the current DimensionIndex
+GetDimensionIndex();
 
-You can use an interactable to detect input events other than just OnClick. The events feature provides a way to enable functionality to extend a button, but not really visual or needed to provide feedback based on state changes.
+//Set the DimensionIndex - toggled
+SetDimensionIndex(1);
+
+//Set the DimensinIndex - Untoggled
+SetDimensionIndex(0);
+```
+
+Every click event will advance the DimensionIndex which will increase until the set Dimensions value is reached then cycle or reset to 0. A good example of working with Dimensions with code is the InteractiveToggleCollection found in the InteractableExamples demo scene on the RadialSet object.
+
+<img src="../Documentation/Images/Interactable/InteractableToggleCollection.png" width="450">
+
+**See the Events section to learn about Toggle Events.**
+
+## Events
+You can use Interactable to detect input events other than just OnClick. The Events feature provides a way to enable functionality to extend a button, but not really visual or needed to provide feedback based on state changes.
 
 <img src="../Documentation/Images/Interactable/Events.png" width="450">
 
-At the bottom of the interactable component, click the "Add Event" button to reveal additional event options. A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor interactable state changes and define patterns to detect. When a pattern is detected, an action can be triggered through the inspector or directly in code.
+**At the bottom of the Interactable component, click the "Add Event" button to reveal additional event options.** A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor Interactable state changes and define patterns to detect. When a pattern is detected, an action can be triggered through the inspector or directly in code.
 
 <img src="../Documentation/Images/Interactable/Event_audioClip.png" width="450">
+
 *Example of audio clip to play on click. There is an audio theme for playing audio clips for each state change, like focus*
 
 <img src="../Documentation/Images/Interactable/Event_toggle.png" width="450">
+
 *Example of Toggle events*
 
 <img src="../Documentation/Images/Interactable/Event_hold.png" width="450">
+
 *Example of a hold event*
 
 Events can be placed on an object to monitor a separate interactable. Use `InteractableReceiver` for a single event (from the list) or `InteractableReceiverList` for a list of events similar to the interactable event list.
 
 <img src="../Documentation/Images/Interactable/InteractableReceiver.png" width="450">
+
 *Example of InteractableReceiver existing on a separate gameObject from the Interactable, referencing the Interactable for event and state updates*
 
 "Search Scope" provides a preferred path to search for an Interactable if one is not explicitly assigned.
