@@ -86,7 +86,7 @@ SetDimensionIndex(0);
 
 Every click event will advance the DimensionIndex which will increase until the set Dimensions value is reached then cycle or reset to 0. A good example of working with Dimensions with code is the InteractiveToggleCollection found in the InteractableExamples demo scene on the RadialSet object.
 
-<img src="../Documentation/ReadMeImages/Interactable/InteractableToggleCollection.png" width="450">
+<img src="../Documentation/Images/Interactable/InteractableToggleCollection.png" width="450">
 
 **See the Events section to learn about Toggle Events.**
 
