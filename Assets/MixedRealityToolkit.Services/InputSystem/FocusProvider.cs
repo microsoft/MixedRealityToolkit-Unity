@@ -703,7 +703,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     MixedRealityRaycaster.DebugEnabled = pointerProfile.DebugDrawPointingRays;
 
                     Color rayColor;
-                    
                     if ((pointerProfile.DebugDrawPointingRayColors != null) && (pointerProfile.DebugDrawPointingRayColors.Length > 0))
                     {
                         rayColor = pointerProfile.DebugDrawPointingRayColors[pointerCount++ % pointerProfile.DebugDrawPointingRayColors.Length];
