@@ -592,7 +592,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
-  metroCertificateNotAfter: 0024314c1f21d601
+  metroCertificateNotAfter: 80b15b7b5218d601
   metroApplicationDescription: Microsoft.MixedReality.Toolkit
   wsaImages: {}
   metroTileShortName: MixedRealityToolkit
