@@ -42,7 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.localScale = Vector3.one * 0.2f;
 
             var manipHandler = testObject.AddComponent<ManipulationHandler>();
-            yield return WaitForFrames(2);
+            // Wait for two frames to make sure we don't get null pointer exception.
+            yield return null;
+            yield return null;
+
+            GameObject.Destroy(testObject);
         }
 
         /// <summary>
@@ -81,6 +85,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.Translate(Vector3.up);
             yield return null;
             Assert.IsTrue(hoverExitCount == 1, "ManipulationHandler did not receive hover exit event");
+
+            GameObject.Destroy(testObject);
         }
 
     }
