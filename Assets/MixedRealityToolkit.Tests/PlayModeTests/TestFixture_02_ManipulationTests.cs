@@ -75,21 +75,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.OnHoverEntered.AddListener((eventData) => hoverEnterCount++);
             manipHandler.OnHoverExited.AddListener((eventData) => hoverExitCount++);
 
-            yield return WaitForFrames(2);
+            yield return null;
             Assert.AreEqual(hoverEnterCount, 1, $"ManipulationHandler did not receive hover enter event, count is {hoverEnterCount}");
 
             testObject.transform.Translate(Vector3.up);
-            yield return new WaitForEndOfFrame();
+            yield return null;
             Assert.IsTrue(hoverExitCount == 1, "ManipulationHandler did not receive hover exit event");
         }
-
-        private IEnumerator WaitForFrames(int nFrames)
-        {
-            for (int i = 0; i < nFrames; i++)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-        }
+]
     }
 }
 #endif
