@@ -41,18 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 return;
             }
 #endif
-
-            if (testScene.IsValid() && testScene.isLoaded)
-            {
-                SceneManager.UnloadSceneAsync(testScene);
-            }
-
-            testScene = SceneManager.CreateScene("TestScene");
-            SceneManager.SetActiveScene(testScene);
-
-            var cameraObject = new GameObject("Camera");
-            var camera = cameraObject.AddComponent<Camera>();
-            cameraObject.tag = "MainCamera";
         }
 
         public static void InitializeMixedRealityToolkitScene(bool useDefaultProfile = false)
