@@ -26,3 +26,23 @@ Finally, a scene to compare and test the MRTK/Standard shader against the Unity/
 ![comparison](https://user-images.githubusercontent.com/13305729/43346748-4640f754-91a7-11e8-927e-60ed4f98e010.gif)
 
 Single pass instanced stereo rendering has also been enabled by default and a few minor MRTK/Standard shader bugs have been fixed.
+
+### Triplanar mapping
+Triplanar mapping is a technique to programmatically texture a mesh. Often used in terrain, meshes without UVs, or difficult to unwrap shapes. This implementation supports world or local space projection, the specification of blending smoothness, and normal map support. Note, each texture used requires 3 texture samples, so please use sparingly in performance critical situations.
+
+![triplanar](https://user-images.githubusercontent.com/13305729/47942385-f9b71080-deae-11e8-8b4f-29a3594d8e96.gif)
+
+A checkbox has also been added to control albedo optimizations. As an optimization albedo operations are disabled when no albedo texture is specified. To control this (as requested by this blog post: http://dotnetbyexample.blogspot.com/2018/10/workaround-remote-texture-loading-does.html) Simply check this box:
+
+![albedoassignment](https://user-images.githubusercontent.com/13305729/47942430-28cd8200-deaf-11e8-8df7-d80a51485047.png)
+
+The lighting model has been tweaked to match the Unity standard shader a little closer. And, the example comparison scene has been updated to reflect this:
+
+![matrixcompare](https://user-images.githubusercontent.com/13305729/47942465-4ef32200-deaf-11e8-8a8b-f850d7eaf015.gif)
+
+Fresnel lighting on back facing polygons should now look more correct. (Thank you Gerrit Lochmann for the fix).
+
+Finally, normal map scale is now supported and a few extra material gallery examples have been added.
+
+![newmaterials](https://user-images.githubusercontent.com/13305729/48226180-ec3cd300-e353-11e8-87f7-42b952a2c742.gif)
+
