@@ -65,17 +65,17 @@ You can find  other example scenes under [**Assets/MixedRealityToolkit.Examples/
 
 # Engage with the Community
 
-Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
+- Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
 
-Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) using the **MRTK** tag.
+- Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) using the **MRTK** tag.
 
-Search for [known issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) or file a [new issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
+- Search for [known issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) or file a [new issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
 
-Join our weekly community shiproom to hear directly from the feature team. (link coming soon) 
+- Join our weekly community shiproom to hear directly from the feature team. (link coming soon) 
 
-Deep dive into project plan and learn how you can contribute to MRTK in our [wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki). 
+- Deep dive into project plan and learn how you can contribute to MRTK in our [wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki). 
 
-For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
+- For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). 
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
