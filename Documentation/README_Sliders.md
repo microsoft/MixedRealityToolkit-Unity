@@ -3,11 +3,8 @@
 
 Sliders are UI components that allow you to continuously change a value by moving a slider on a track. Currently the Pinch Slider can be moved by directly grabbing the slider, either directly or at a distance. Sliders work on AR and VR, using motion controllers, hands, or Gesture + Voice.
 
-## Sliders Example
-You can see an example usage of sliders in the file `Assets\MixedRealityToolkit.Examples\Demos\UX\Slider\Scenes\SliderExample.unity`.
-
 ## Example scene
-You can find the Slider examples in the **SliderExample** scene under:
+You can find examples in the **SliderExample** scene under:
 [MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes)
 
 ## How to use Sliders
