@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             Assert.IsTrue(hoverExitCount == 1, "ManipulationHandler did not receive hover exit event");
         }
-]
+
     }
 }
 #endif
