@@ -1,7 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -22,8 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             nextChessboardImageId = 0;
             nextArUcoImageId = 0;
 
-#if UNITY_EDITOR
-            string rootFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName);
+            string rootFolder = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName);
             if (Directory.Exists(rootFolder))
             {
                 InitializeDirectory(rootFolder, ChessboardImageDirectoryName, "*.png", out nextChessboardImageId);
@@ -51,9 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 file.Delete();
             }
-#else
-            Debug.LogError("CalibrationDataHelper is not supported for current platform");
-#endif
         }
 
         private static void InitializeDirectory(string rootFolder, string directoryName, string fileExtensionExpected, out int nextImageId)
@@ -97,10 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private static void SaveImage(string directory, Texture2D image, string fileID)
         {
-#if UNITY_EDITOR
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName, directory, $"{fileID}.png");
+            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, directory, $"{fileID}.png");
             File.WriteAllBytes(path, image.EncodeToPNG());
-#endif
         }
 
         public static Texture2D LoadChessboardImage(int fileID)
@@ -115,8 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private static Texture2D LoadImage(string directory, int fileID)
         {
-#if UNITY_EDITOR
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName, directory, $"{fileID}.png");
+            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, directory, $"{fileID}.png");
 
             if (File.Exists(path))
             {
@@ -135,14 +125,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                 return tempTexture;
             }
-#endif
+
             return null;
         }
 
         public static HeadsetCalibrationData LoadHeadsetData(int fileID)
         {
-#if UNITY_EDITOR
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName, HeadsetDataDirectory, $"{fileID}.json");
+            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, HeadsetDataDirectory, $"{fileID}.json");
             if (File.Exists(path))
             {
                 var fileData = File.ReadAllBytes(path);
@@ -151,49 +140,41 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     return calibrationData;
                 }
             }
-#endif
 
             return null;
         }
 
         public static void SaveHeadsetData(HeadsetCalibrationData data, int fileID)
         {
-#if UNITY_EDITOR
             byte[] temp = data.imageData.pixelData;
             data.imageData.pixelData = null;
             byte[] tempPNG = data.imageData.pngData;
             data.imageData.pngData = null;
 
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName, HeadsetDataDirectory, $"{fileID}.json");
+            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, HeadsetDataDirectory, $"{fileID}.json");
             File.WriteAllBytes(path, data.Serialize());
 
             data.imageData.pixelData = temp;
             data.imageData.pngData = tempPNG;
-#endif
         }
 
         public static string SaveCameraIntrinsics(CalculatedCameraIntrinsics intrinsics)
         {
-#if UNITY_EDITOR
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName, $"CameraIntrinsics.json");
+            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, $"CameraIntrinsics.json");
             int i = 0;
             while (File.Exists(path))
             {
-                path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName, $"CameraIntrinsics_{i}.json");
+                path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, $"CameraIntrinsics_{i}.json");
                 i++;
             }
             var str = JsonUtility.ToJson(intrinsics);
             var payload = Encoding.ASCII.GetBytes(str);
             File.WriteAllBytes(path, payload);
             return path;
-#else
-            return "";
-#endif
         }
 
         public static CalculatedCameraIntrinsics LoadCameraIntrinsics(string path)
         {
-#if UNITY_EDITOR
             if (File.Exists(path))
             {
                 try
@@ -212,32 +193,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 Debug.LogError($"Failed to find camera intrinsics file {path}");
             }
-#endif
+
             return null;
         }
 
         public static string SaveCameraExtrinsics(CalculatedCameraExtrinsics extrinsics)
         {
-#if UNITY_EDITOR
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName, $"CameraExtrinsics.json");
+            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, $"CameraExtrinsics.json");
             int i = 0;
             while (File.Exists(path))
             {
-                path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName, $"CameraExtrinsics_{i}.json");
+                path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, $"CameraExtrinsics_{i}.json");
                 i++;
             }
             var str = JsonUtility.ToJson(extrinsics);
             var payload = Encoding.ASCII.GetBytes(str);
             File.WriteAllBytes(path, payload);
             return path;
-#else
-            return "";
-#endif
         }
 
         public static CalculatedCameraExtrinsics LoadCameraExtrinsics(string path)
         {
-#if UNITY_EDITOR
             if (File.Exists(path))
             {
                 try
@@ -256,8 +232,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 Debug.LogError($"Failed to find camera extrinsics file {path}");
             }
-#endif
+
             return null;
+        }
+
+        private static string GetDocumentsFolderPath()
+        {
+#if UNITY_EDITOR || UNITY_STANDALONE
+            return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+#elif UNITY_WSA
+            return Windows.Storage.KnownFolders.DocumentsLibrary.Path;
+#else
+            return String.empty;
+#endif
         }
     }
 }

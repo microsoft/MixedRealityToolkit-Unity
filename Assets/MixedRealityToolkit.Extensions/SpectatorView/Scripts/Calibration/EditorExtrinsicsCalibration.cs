@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     {
         public string cameraIntrinsicsPath = "";
 
+        [Header("HoloLens Parameters")]
         /// <summary>
         /// Time between headset calibration data requests (in seconds).
         /// </summary>
@@ -27,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Used to setup a network connection.")]
         [SerializeField]
         private MonoBehaviour MatchMakingService;
-        private IMatchMakingService matchMakingService;
+        private IMatchMakingService matchMakingService = null;
 
         /// <summary>
         /// Used to send/receive data related to the calibration process.
@@ -35,8 +36,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Used to send/receive data related to the calibration process.")]
         [SerializeField]
         private MonoBehaviour NetworkingService;
-        private INetworkingService networkingService;
+        private INetworkingService networkingService = null;
 
+        [Header("VR Headset Parameters")]
+        /// <summary>
+        /// Used to obtain headset information for a vr headset.
+        /// </summary>
+        [Tooltip("Used to obtain headset information for a vr headset.")]
+        [SerializeField]
+        private HeadsetCalibration headsetCalibration = null;
+
+        [Header("Universal Parameters")]
         public RawImage feedImage;
         public RawImage lastArUcoImage;
         public DebugVisualHelper markerVisualHelper;
@@ -74,10 +84,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             calibration = new CalibrationAPI();
 
             networkingService = NetworkingService as INetworkingService;
-            networkingService.DataReceived += OnDataReceived;
+            if (networkingService != null)
+            {
+                networkingService.DataReceived += OnDataReceived;
+            }
 
             matchMakingService = MatchMakingService as IMatchMakingService;
-            matchMakingService.Connect();
+            if (matchMakingService != null)
+            {
+                matchMakingService.Connect();
+            }
+
+            if (headsetCalibration != null)
+            {
+                headsetCalibration.Updated += OnHeadsetCalibrationUpdated;
+            }
 
             for(int i = 0; i < nextArUcoImageId; i++)
             {
@@ -98,6 +119,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
+        private void OnHeadsetCalibrationUpdated(byte[] data)
+        {
+            if(HeadsetCalibrationData.TryDeserialize(data, out var headsetData))
+            {
+                dataQueue.Enqueue(headsetData);
+            }
+        }
+
         private void Update()
         {
             if (feedImage != null &&
@@ -106,17 +135,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                var request = new HeadsetCalibrationDataRequest();
-                request.timestamp = Time.time;
-                var payload = request.Serialize();
+                if (networkingService != null &&
+                    matchMakingService != null)
+                {
+                    var request = new HeadsetCalibrationDataRequest();
+                    request.timestamp = Time.time;
+                    var payload = request.Serialize();
 
-                if (networkingService.SendData(payload, NetworkPriority.Critical))
-                {
-                    Debug.Log($"Sent calibration request {request.timestamp}");
+                    if (networkingService.SendData(payload, NetworkPriority.Critical))
+                    {
+                        Debug.Log($"Sent headset calibration data request to HoloLens at {request.timestamp}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Failed to send headset calibration data request to HoloLens");
+                    }
                 }
-                else
+
+                if (headsetCalibration != null)
                 {
-                    Debug.LogWarning("Failed to send calibration request");
+                    Debug.Log("Requesting headset calibration data from VR Headset");
+                    headsetCalibration.UpdateHeadsetCalibrationData();
                 }
             }
 

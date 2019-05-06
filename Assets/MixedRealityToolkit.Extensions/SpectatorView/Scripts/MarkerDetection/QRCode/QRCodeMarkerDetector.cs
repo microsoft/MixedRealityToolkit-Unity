@@ -6,6 +6,10 @@
 // public facing development.
 #define QRCODESTRACKER_BINARY_AVAILABLE
 
+#if QRCODESTRACKER_BINARY_AVAILABLE && WINDOWS_UWP && UNITY_WSA
+#define ENABLE_QRCODES
+#endif
+
 #if QRCODESTRACKER_BINARY_AVAILABLE
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker;
 #endif
@@ -16,7 +20,7 @@ using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using System.Collections.Generic;
 using System;
 
-#if UNITY_WSA && WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
 using Windows.Perception.Spatial;
 using Windows.Perception.Spatial.Preview;
 #endif
@@ -29,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
     public class QRCodeMarkerDetector : MonoBehaviour,
         IMarkerDetector
     {
-#if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
         private QRCodesManager _qrCodesManager;
         private Dictionary<Guid, SpatialCoordinateSystem> _markerCoordinateSystems = new Dictionary<Guid, SpatialCoordinateSystem>();
 #endif
@@ -41,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         private Dictionary<int, List<Marker>> _markerObservations = new Dictionary<int, List<Marker>>();
         private readonly string _qrCodeNamePrefix = "sv";
 
-#if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
         private bool _tracking = false;
 #endif
 
@@ -56,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// <inheritdoc />
         public void StartDetecting()
         {
-#if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
             _tracking = true;
 #else
             Debug.LogError("Current platform does not support qr code marker detector");
@@ -66,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// <inheritdoc />
         public void StopDetecting()
         {
-#if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
             _tracking = false;
             _processMarkers = false;
 #else
@@ -89,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             return false;
         }
 
-#if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
         protected void Start()
         {
             if (_qrCodesManager == null)
@@ -202,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             // Stop processing markers once all markers have been located
             _processMarkers = !locatedAllMarkers;
         }
-#endif // WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#endif // ENABLE_QRCODES
 
         private bool TryGetMarkerId(string qrCode, out int markerId)
         {
