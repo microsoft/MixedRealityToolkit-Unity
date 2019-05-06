@@ -70,8 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The physics layers to use when performing scene queries.
         /// </summary>
-        /// <remarks>If set, will override the <see cref="IMixedRealityInputSystem"/>'s default scene query layer mask array.
-        /// </remarks>
+        /// <remarks>If set, will override the <see cref="IMixedRealityInputSystem"/>'s default scene query layer mask array.</remarks>
         /// <example>
         /// Allow the pointer to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)
         /// <code language="csharp"><![CDATA[

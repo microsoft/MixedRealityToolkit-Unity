@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <typeparam name="T">The interface type of the service to be unregistered (ex: IMixedRealityBoundarySystem).</typeparam>
         /// <param name="name">The name of the service to unregister.</param>
         /// <returns>True if the service was successfully unregistered, false otherwise.</returns>
-        /// <remarks>If the name argument is not especified, the first instance will be unregistered</remarks>
+        /// <remarks>If the name argument is not specified, the first instance will be unregistered</remarks>
         bool UnregisterService<T>(string name = null) where T : IMixedRealityService;
 
         /// <summary>

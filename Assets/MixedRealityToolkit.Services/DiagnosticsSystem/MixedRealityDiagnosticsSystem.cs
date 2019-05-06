@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// <summary>
     /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html")]
     public class MixedRealityDiagnosticsSystem : BaseCoreSystem, IMixedRealityDiagnosticsSystem
     {
         public MixedRealityDiagnosticsSystem(
