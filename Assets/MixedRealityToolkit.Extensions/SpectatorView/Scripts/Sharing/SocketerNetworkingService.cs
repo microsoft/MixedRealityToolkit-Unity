@@ -1,4 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System;
 using System.Collections.Generic;
@@ -42,9 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected TimeSpan timeoutInterval = TimeSpan.Zero;
 
-        private bool runAsUser = false;
-        private Dictionary<string, string> playerIds = new Dictionary<string, string>();
-
         /// <inheritdoc />
         public event PlayerConnectedHandler PlayerConnected;
 
@@ -53,6 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         /// <inheritdoc />
         public event DataHandler DataReceived;
+
+        private bool runAsUser = false;
+        private Dictionary<string, string> playerIds = new Dictionary<string, string>();
 
         private void Start()
         {
