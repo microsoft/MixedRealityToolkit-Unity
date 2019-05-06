@@ -3,6 +3,18 @@ This page covers how to set up your Unity MRTK scene to use Eye Tracking in your
 The following assumes you are starting out with a fresh new scene.
 Alternatively, you can check out our already configured [MRTK Eye Tracking Examples](EyeTracking_ExamplesOverview.md).
 
+### Eye tracking requirements 
+For Eye Tracking to work correctly, the following requirements must be met:
+
+1. An _'Eye Gaze Data Provider'_ must be added to the input system. This provides eye tracking data from the platform.
+2. Eye Tracking must be set as the preferred source in the _'Gaze Provider'_. This setting can be toggled at runtime.
+3. The _'Gaze Input'_ capability must be enabled in the application manifest. Currently this is only available in Visual Studio.
+4. The HoloLens **must** be calibrated for the current user under system settings.
+
+**IMPORTANT:** If any of the above requirements are not met, the application will automatically fall back to head-based gaze tracking.
+
+Below are the steps required to enable eye tracking in an application. 
+
 
 ### Setting up the scene
 Set up the _MixedRealityToolkit_ by simply clicking _'Mixed Reality Toolkit -> Configure…'_ in the menu bar.
@@ -38,6 +50,8 @@ While head gaze is still available via the _GazeProvider_ in MRTK which is attac
 
 ![MRTK](../../Documentation/Images/EyeTracking/mrtk_setup_eyes_gazeprovider.png)
 
+**NOTE:** Developers can toggle between eye tracking and head tracking in code by changing the _'UseEyeTracking'_ property of _'GazeProvider'_.  
+
 
 ### Simulating Eye Tracking in the Unity Editor
 You can simulate Eye Tracking input in the Unity Editor to ensure that events are correctly triggered before deploying the app to your HoloLens 2.
@@ -70,11 +84,14 @@ Building your app with Eye Tracking should be similar to how you would compile o
 The only difference is that the *'Gaze Input'* capability is unfortunately not yet supported by Unity under 'Player Settings -> Publishing Settings -> Capabilities'. 
 To use Eye Tracking on your HoloLens 2 device, you need to manually edit the package manifest that is part of your build Visual Studio project.
 Follow these steps:
+
 1. Build your Unity project as you would normally do for _HoloLens 2_.
 2. Open your compiled Visual Studio project and then open the _'Package.appxmanifest'_ in your solution.
 3. Make sure to tick the _'Gaze Input'_ checkbox under _Capabilities_.
 
 ![Enabling Gaze Input in Visual Studio](../../Documentation/Images/EyeTracking/mrtk_et_gazeinput.jpg)
+
+**IMPORTANT:** Don't forget to calibrate HoloLens for the current user. Without calibration, eye tracking won't work. Calibration can be found under system settings.  
 
 If everything is set up correctly, a prompt should pop up asking the user for permission to use Eye Tracking when you start your Unity app on a HoloLens 2 device for the first time.
 
