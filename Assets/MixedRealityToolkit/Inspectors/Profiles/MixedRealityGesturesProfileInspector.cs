@@ -45,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             windowsNavigationGestureSettings = serializedObject.FindProperty("navigationGestures");
             windowsRailsNavigationGestures = serializedObject.FindProperty("railsNavigationGestures");
             windowsGestureAutoStart = serializedObject.FindProperty("windowsGestureAutoStart");
+
             thisProfile = target as MixedRealityGesturesProfile;
             Debug.Assert(thisProfile != null);
 

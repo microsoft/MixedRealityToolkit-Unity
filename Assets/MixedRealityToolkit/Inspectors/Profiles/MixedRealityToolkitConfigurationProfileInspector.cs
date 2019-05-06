@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool showSpatialAwarenessProperties = true;
         private SerializedProperty enableSpatialAwarenessSystem;
         private SerializedProperty spatialAwarenessSystemType;
+        private SerializedProperty spatialAwarenessSystemProfile;
         // Diagnostic system properties
         private static bool showDiagnosticProperties = true;
         private SerializedProperty enableDiagnosticsSystem;
@@ -110,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Spatial Awareness system configuration
             enableSpatialAwarenessSystem = serializedObject.FindProperty("enableSpatialAwarenessSystem");
             spatialAwarenessSystemType = serializedObject.FindProperty("spatialAwarenessSystemType");
+            spatialAwarenessSystemProfile = serializedObject.FindProperty("spatialAwarenessSystemProfile");
             // Diagnostics system configuration
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
@@ -271,7 +273,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
                     EditorGUILayout.PropertyField(spatialAwarenessSystemType);
-                    EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer. Spatial Awareness observers are registered as Additional Service Providers.", MessageType.Info);
+                    EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
+                    changed |= RenderProfile(spatialAwarenessSystemProfile);
                 }
             }
 
@@ -291,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Registered Services configuration
             EditorGUILayout.Space();
-            showRegisteredServiceProperties = EditorGUILayout.Foldout(showRegisteredServiceProperties, "Additional Service Providers", true);
+            showRegisteredServiceProperties = EditorGUILayout.Foldout(showRegisteredServiceProperties, "Extension Services", true);
             if (showRegisteredServiceProperties)
             {
                 using (new EditorGUI.IndentLevelScope())

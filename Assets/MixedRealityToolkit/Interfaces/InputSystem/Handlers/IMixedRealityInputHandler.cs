@@ -23,26 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="eventData"></param>
         void OnInputDown(InputEventData eventData);
-
-        /// <summary>
-        /// Input Pressed updates from Interactions, Keys, buttons, triggers, or any other simple input.
-        /// </summary>
-        /// <param name="eventData"></param>
-        /// <remarks>
-        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> is the pressed amount, if available.
-        /// </remarks>
-        [Obsolete("Use IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)")]
-        void OnInputPressed(InputEventData<float> eventData);
-
-        /// <summary>
-        /// Input Position updates from Thumbsticks, Touchpads, or any other dual axis input with a position.
-        /// </summary>
-        /// <remarks>
-        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> is the current input position.
-        /// </remarks>
-        /// <param name="eventData"></param>
-        [Obsolete("Use IMixedRealityInputHandler<Vector2>.OnInputChanged(InputEventData<Vector2> eventData)")]
-        void OnPositionInputChanged(InputEventData<Vector2> eventData);
     }
 
     /// <summary>

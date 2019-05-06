@@ -16,6 +16,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Calculates position and orientation from the right motion-tracked controller.
         /// </summary>
-        MotionControllerRight
+        MotionControllerRight,
+        /// <summary>
+        /// Calculates position and orientation from a tracked hand joint on the left hand.
+        /// </summary>
+        HandJointLeft,
+        /// <summary>
+        /// Calculates position and orientation from a tracked hand joint on the right hand.
+        /// </summary>
+        HandJointRight
     }
 }
