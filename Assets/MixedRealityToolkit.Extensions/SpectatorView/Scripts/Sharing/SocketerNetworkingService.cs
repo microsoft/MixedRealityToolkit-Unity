@@ -131,19 +131,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnReceive(IncomingMessage obj)
         {
-            bool validId = false;
-            string playerId = String.Empty;
+            string playerId = string.Empty;
 
             lock(playerIds)
             {
                 if (playerIds.ContainsKey(obj.Endpoint.Address))
                 {
                     playerId = playerIds[obj.Endpoint.Address];
-                    validId = true;
                 }
             }
 
-            if (validId)
+            if (playerId != string.Empty)
             {
                 DataReceived?.Invoke(playerId, obj.Data);
             }

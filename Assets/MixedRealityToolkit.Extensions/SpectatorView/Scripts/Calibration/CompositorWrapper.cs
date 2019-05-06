@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
 #if COMPOSITOR_PLUGIN_AVAILABLE
             // Obtain DSLR Feed
-            return ShaderManager.Instance.compositeTexture; // TODO - figure out what is the correct texture to use here in the new compositor wrapper
+            return ShaderManager.Instance.compositeTexture; // Note: figure out what is the correct texture to use here in the new compositor wrapper
 #else
             return null;
 #endif
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public static Texture2D GetDSLRTexture()
         {
 #if COMPOSITOR_PLUGIN_AVAILABLE
-            // Obtain DSLR Imag
+            // Obtain DSLR Image
             Texture2D dslrTexture = new Texture2D(
                 ShaderManager.Instance.colorRGBTexture.width,
                 ShaderManager.Instance.colorRGBTexture.height,

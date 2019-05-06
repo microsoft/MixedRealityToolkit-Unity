@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public event HeadsetCalibrationDataUpdatedHandler Updated;
 
         /// <summary>
-        /// Call to signal to the HeadsetCalibration class that it should create a new qr code/aruco marker payload.
+        /// Call to signal to the HeadsetCalibration class that it should create a new qr code/aruco marker payload
         /// </summary>
         public void UpdateHeadsetCalibrationData()
         {

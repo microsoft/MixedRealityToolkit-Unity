@@ -94,12 +94,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker
             }
             catch (Exception e)
             {
-                Debug.LogError($"Exception thrown creating coordinate system for qr code id: {e.ToString()}");
+                Debug.LogError($"Exception thrown creating coordinate system for qr code id: {id.ToString()}, {e.ToString()}");
                 return false;
             }
 
 #else
-            Debug.LogError("Failed to create coordinate system for qr code id");
+            Debug.LogError($"Failed to create coordinate system for qr code id: {id.ToString()}");
             return false;
 #endif
         }

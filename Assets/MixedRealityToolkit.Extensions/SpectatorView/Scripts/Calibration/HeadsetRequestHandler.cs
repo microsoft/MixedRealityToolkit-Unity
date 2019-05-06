@@ -43,13 +43,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private bool updateData = false;
         private HeadsetCalibrationDataRequest request = null;
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
-#if UNITY_EDITOR
             FieldHelper.ValidateType<IMatchMakingService>(MatchMakingService);
             FieldHelper.ValidateType<INetworkingService>(NetworkingService);
-#endif
         }
+#endif
 
         private void Start()
         {

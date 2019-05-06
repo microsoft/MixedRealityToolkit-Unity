@@ -20,6 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected string cameraIntrinsicsPath = "";
 
+        [Header("Physical Calibration Board Parameters")]
+        /// <summary>
+        /// The number of ArUco markers on the calibration board.
+        /// </summary>
+        [Tooltip("The number of ArUco markers on the calibration board.")]
+        [SerializeField]
+        protected int expectedNumberOfMarkers = 18;
+
         [Header("HoloLens Parameters")]
         /// <summary>
         /// Time between headset calibration data requests (in seconds).
@@ -83,12 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private CalibrationAPI calibration = null;
         private CalculatedCameraIntrinsics dslrIntrinsics;
-        private Queue<HeadsetCalibrationData> dataQueue = new Queue<HeadsetCalibrationData>();
+        private HeadsetCalibrationData headsetData = null;
         private int nextArUcoImageId = 0;
         private List<CalculatedCameraExtrinsics> cameraExtrinsics;
         private CalculatedCameraExtrinsics globalExtrinsics;
         private List<GameObject> parentVisuals = new List<GameObject>();
-        private int expectedMarkers = 18;
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -129,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 headsetCalibration.Updated += OnHeadsetCalibrationUpdated;
             }
 
-            for(int i = 0; i < nextArUcoImageId; i++)
+            for (int i = 0; i < nextArUcoImageId; i++)
             {
                 var dslrTexture = CalibrationDataHelper.LoadDSLRArUcoImage(i);
                 var headsetData = CalibrationDataHelper.LoadHeadsetData(i);
@@ -150,9 +157,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnHeadsetCalibrationUpdated(byte[] data)
         {
-            if(HeadsetCalibrationData.TryDeserialize(data, out var headsetData))
+            if(HeadsetCalibrationData.TryDeserialize(data, out var headsetCalibrationData))
             {
-                dataQueue.Enqueue(headsetData);
+                this.headsetData = headsetCalibrationData;
             }
         }
 
@@ -160,7 +167,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (feedImage != null &&
                 feedImage.texture == null)
+            {
                 feedImage.texture = CompositorWrapper.GetDSLRFeed();
+            }
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -188,30 +197,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
             }
 
-            while (dataQueue.Count > 0)
+            if (headsetData != null)
             {
-                var data = dataQueue.Dequeue();
-
-                if (dataQueue.Count == 0)
+                if (headsetData.markers.Count != expectedNumberOfMarkers)
                 {
-                    if (data.markers.Count != expectedMarkers)
-                    {
-                        Debug.Log("Headset has not yet detected all of the markers on the calibration board, dropping payload from headset.");
-                        continue;
-                    }
-
+                    Debug.Log("Headset has not yet detected all of the markers on the calibration board, dropping payload from headset.");
+                }
+                else
+                {
                     var dslrTexture = CompositorWrapper.GetDSLRTexture();
                     CalibrationDataHelper.SaveDSLRArUcoImage(dslrTexture, nextArUcoImageId);
-                    CalibrationDataHelper.SaveHeadsetData(data, nextArUcoImageId);
+                    CalibrationDataHelper.SaveHeadsetData(headsetData, nextArUcoImageId);
 
-                    if (ProcessArUcoData(data, dslrTexture))
+                    if (ProcessArUcoData(headsetData, dslrTexture))
                     {
                         CalibrationDataHelper.SaveDSLRArUcoDetectedImage(dslrTexture, nextArUcoImageId);
-                        CreateVisual(data, nextArUcoImageId);
+                        CreateVisual(headsetData, nextArUcoImageId);
                     }
 
                     nextArUcoImageId++;
                 }
+
+                headsetData = null;
             }
 
             if (Input.GetKeyDown(KeyCode.Return))
@@ -252,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             HeadsetCalibrationData headsetCalibrationData;
             if (HeadsetCalibrationData.TryDeserialize(payload, out headsetCalibrationData))
             {
-                dataQueue.Enqueue(headsetCalibrationData);
+                headsetData = headsetCalibrationData;
             }
         }
 
@@ -317,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 Debug.LogWarning("Extrinsics count should be at least as large as the parent visuals count, visuals not created");
             }
 
-            for(int i = 0; i < parentVisuals.Count; i++)
+            for (int i = 0; i < parentVisuals.Count; i++)
             {
                 var parent = parentVisuals[i];
                 GameObject camera = null;

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -88,6 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             int size);
 
         private bool initialized = false;
+        private const int sizeIntrinsics = 12;
+        private const int sizeExtrinsics = 7;
 
         /// <summary>
         /// Creates an API instance and initializes the plugin.
@@ -103,10 +106,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     return;
                 }
             }
-            catch { }
+            catch (Exception e)
+            {
+                Debug.LogError($"Exception thrown initializing SpectatorViewPlugin dll for calibration: {e.ToString()}");
+                initialized = false;
+                return;
+            }
 
             initialized = false;
-            Debug.LogError("Failed to initialize CalibrationPlugin dll for calibration");
+            Debug.LogError("Failed to initialize SpectatorViewPlugin dll for calibration");
         }
 
         /// <summary>
@@ -231,62 +239,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <returns>A list of camera extrinsic values</returns>
         public List<CalculatedCameraExtrinsics> CalculateIndividualArUcoExtrinsics(CameraIntrinsics intrinsics, int numExtrinsics)
         {
-            int intrinsicsSize = 12;
-            float[] inputIntrinsics = new float[intrinsicsSize];
-            inputIntrinsics[0] = intrinsics.FocalLength.x;
-            inputIntrinsics[1] = intrinsics.FocalLength.y;
-            inputIntrinsics[2] = intrinsics.PrincipalPoint.x;
-            inputIntrinsics[3] = intrinsics.PrincipalPoint.y;
-            inputIntrinsics[4] = intrinsics.RadialDistortion.x;
-            inputIntrinsics[5] = intrinsics.RadialDistortion.y;
-            inputIntrinsics[6] = intrinsics.RadialDistortion.z;
-            inputIntrinsics[7] = intrinsics.TangentialDistortion.x;
-            inputIntrinsics[8] = intrinsics.TangentialDistortion.y;
-            inputIntrinsics[9] = intrinsics.ImageWidth;
-            inputIntrinsics[10] = intrinsics.ImageHeight;
-            inputIntrinsics[11] = 0.0f; // reprojection error, unused
+            float[] inputIntrinsics = CreateIntrinsicsArray(intrinsics);
 
-            int sizeExtrinsics = 7;
             float[] extrinsics = new float[numExtrinsics * sizeExtrinsics];
             if (!ProcessIndividualArUcoExtrinsicsNative(inputIntrinsics, extrinsics, numExtrinsics))
             {
                 PrintLastError();
                 return null;
             }
-            else
+
+            List<CalculatedCameraExtrinsics> output = new List<CalculatedCameraExtrinsics>();
+            for (int i = 0; i < numExtrinsics; i++)
             {
-                List<CalculatedCameraExtrinsics> output = new List<CalculatedCameraExtrinsics>();
-                for (int i = 0; i < numExtrinsics; i++)
-                {
-                    int offset = i * sizeExtrinsics;
-                    bool succeeded = (extrinsics[offset] > 0.01f);
-
-                    Vector3 rightHandedPosition = new Vector3(extrinsics[offset + 1], extrinsics[offset + 2], extrinsics[offset + 3]);
-
-                    Vector3 rodriguesVector = new Vector3(extrinsics[offset + 4], extrinsics[offset + 5], extrinsics[offset + 6]);
-                    var angle = Mathf.Rad2Deg * rodriguesVector.magnitude;
-                    var axis = rodriguesVector.normalized;
-                    Quaternion rightHandedRotation = Quaternion.AngleAxis(angle, axis);
-
-                    var rightHandedMatrix = Matrix4x4.TRS(rightHandedPosition, rightHandedRotation, Vector3.one);
-                    var leftHandedMatrix = rightHandedMatrix;
-                    leftHandedMatrix.m02 *= -1.0f;
-                    leftHandedMatrix.m12 *= -1.0f;
-                    leftHandedMatrix.m22 *= -1.0f;
-                    leftHandedMatrix.m32 *= -1.0f;
-
-                    var inverse = leftHandedMatrix.inverse;
-                    var inversePosition = inverse.GetColumn(3);
-                    var inverseRotation = Quaternion.LookRotation(inverse.GetColumn(2), inverse.GetColumn(1)) * Quaternion.Euler(0, 0, 180);
-
-                    var calcExtrinsics = new CalculatedCameraExtrinsics();
-                    calcExtrinsics.ViewFromWorld = Matrix4x4.TRS(inversePosition, inverseRotation, Vector3.one);
-                    calcExtrinsics.Succeeded = succeeded;
-                    output.Add(calcExtrinsics);
-                }
-
-                return output;
+                int offset = i * sizeExtrinsics;
+                var calcExtrinsics = CreateExtrinsicsFromArray(extrinsics, offset);
+                output.Add(calcExtrinsics);
             }
+
+            return output;
         }
 
         /// <summary>
@@ -296,22 +266,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <returns>Camera extrinsics</returns>
         public CalculatedCameraExtrinsics CalculateGlobalArUcoExtrinsics(CameraIntrinsics intrinsics)
         {
-            int intrinsicsSize = 12;
-            float[] inputIntrinsics = new float[intrinsicsSize];
-            inputIntrinsics[0] = intrinsics.FocalLength.x;
-            inputIntrinsics[1] = intrinsics.FocalLength.y;
-            inputIntrinsics[2] = intrinsics.PrincipalPoint.x;
-            inputIntrinsics[3] = intrinsics.PrincipalPoint.y;
-            inputIntrinsics[4] = intrinsics.RadialDistortion.x;
-            inputIntrinsics[5] = intrinsics.RadialDistortion.y;
-            inputIntrinsics[6] = intrinsics.RadialDistortion.z;
-            inputIntrinsics[7] = intrinsics.TangentialDistortion.x;
-            inputIntrinsics[8] = intrinsics.TangentialDistortion.y;
-            inputIntrinsics[9] = intrinsics.ImageWidth;
-            inputIntrinsics[10] = intrinsics.ImageHeight;
-            inputIntrinsics[11] = 0.0f; // reprojection error, unused
+            float[] inputIntrinsics = CreateIntrinsicsArray(intrinsics);
 
-            int sizeExtrinsics = 7;
             int numExtrinsics = 1;
             float[] extrinsics = new float[sizeExtrinsics];
             if (!ProcessGlobalArUcoExtrinsicsNative(inputIntrinsics, extrinsics, numExtrinsics))
@@ -320,29 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return null;
             }
 
-            bool succeeded = (extrinsics[0] > 0.01f);
-
-            Vector3 rightHandedPosition = new Vector3(extrinsics[1], extrinsics[2], extrinsics[3]);
-
-            Vector3 rodriguesVector = new Vector3(extrinsics[4], extrinsics[5], extrinsics[6]);
-            var angle = Mathf.Rad2Deg * rodriguesVector.magnitude;
-            var axis = rodriguesVector.normalized;
-            Quaternion rightHandedRotation = Quaternion.AngleAxis(angle, axis);
-
-            var rightHandedMatrix = Matrix4x4.TRS(rightHandedPosition, rightHandedRotation, Vector3.one);
-            var leftHandedMatrix = rightHandedMatrix;
-            leftHandedMatrix.m02 *= -1.0f;
-            leftHandedMatrix.m12 *= -1.0f;
-            leftHandedMatrix.m22 *= -1.0f;
-            leftHandedMatrix.m32 *= -1.0f;
-
-            var inverse = leftHandedMatrix.inverse;
-            var inversePosition = inverse.GetColumn(3);
-            var inverseRotation = Quaternion.LookRotation(inverse.GetColumn(2), inverse.GetColumn(1)) * Quaternion.Euler(0, 0, 180);
-
-            var calcExtrinsics = new CalculatedCameraExtrinsics();
-            calcExtrinsics.ViewFromWorld = Matrix4x4.TRS(inversePosition, inverseRotation, Vector3.one);
-            calcExtrinsics.Succeeded = succeeded;
+            var calcExtrinsics = CreateExtrinsicsFromArray(extrinsics);
             return calcExtrinsics;
         }
 
@@ -405,8 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <returns>Returns the calculated camera intriniscs, null if the camera intrinsics could not be calculated</returns>
         public CalculatedCameraIntrinsics CalculateChessboardIntrinsics(float chessSquareSize)
         {
-            int intrinsicsSize = 12;
-            float[] output = new float[intrinsicsSize];
+            float[] output = new float[sizeIntrinsics];
             if (ProcessChessboardIntrinsicsNative(chessSquareSize, output, 1))
             {
                 var intrinsics = new CalculatedCameraIntrinsics(
@@ -423,6 +356,52 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             return null;
+        }
+
+        private float[] CreateIntrinsicsArray(CameraIntrinsics intrinsics)
+        {
+            float[] intrinsicsArr = new float[sizeIntrinsics];
+            intrinsicsArr[0] = intrinsics.FocalLength.x;
+            intrinsicsArr[1] = intrinsics.FocalLength.y;
+            intrinsicsArr[2] = intrinsics.PrincipalPoint.x;
+            intrinsicsArr[3] = intrinsics.PrincipalPoint.y;
+            intrinsicsArr[4] = intrinsics.RadialDistortion.x;
+            intrinsicsArr[5] = intrinsics.RadialDistortion.y;
+            intrinsicsArr[6] = intrinsics.RadialDistortion.z;
+            intrinsicsArr[7] = intrinsics.TangentialDistortion.x;
+            intrinsicsArr[8] = intrinsics.TangentialDistortion.y;
+            intrinsicsArr[9] = intrinsics.ImageWidth;
+            intrinsicsArr[10] = intrinsics.ImageHeight;
+            intrinsicsArr[11] = 0.0f; // reprojection error, unused
+            return intrinsicsArr;
+        }
+
+        private CalculatedCameraExtrinsics CreateExtrinsicsFromArray(float[] extrinsicsArray, int offset = 0)
+        {
+            bool succeeded = (extrinsicsArray[offset + 0] > 0.01f);
+
+            Vector3 rightHandedPosition = new Vector3(extrinsicsArray[offset + 1], extrinsicsArray[offset + 2], extrinsicsArray[offset + 3]);
+
+            Vector3 rodriguesVector = new Vector3(extrinsicsArray[offset + 4], extrinsicsArray[offset + 5], extrinsicsArray[offset + 6]);
+            var angle = Mathf.Rad2Deg * rodriguesVector.magnitude;
+            var axis = rodriguesVector.normalized;
+            Quaternion rightHandedRotation = Quaternion.AngleAxis(angle, axis);
+
+            var rightHandedMatrix = Matrix4x4.TRS(rightHandedPosition, rightHandedRotation, Vector3.one);
+            var leftHandedMatrix = rightHandedMatrix;
+            leftHandedMatrix.m02 *= -1.0f;
+            leftHandedMatrix.m12 *= -1.0f;
+            leftHandedMatrix.m22 *= -1.0f;
+            leftHandedMatrix.m32 *= -1.0f;
+
+            var inverse = leftHandedMatrix.inverse;
+            var inversePosition = inverse.GetColumn(3);
+            var inverseRotation = Quaternion.LookRotation(inverse.GetColumn(2), inverse.GetColumn(1)) * Quaternion.Euler(0, 0, 180);
+
+            var calcExtrinsics = new CalculatedCameraExtrinsics();
+            calcExtrinsics.ViewFromWorld = Matrix4x4.TRS(inversePosition, inverseRotation, Vector3.one);
+            calcExtrinsics.Succeeded = succeeded;
+            return calcExtrinsics;
         }
     }
 }

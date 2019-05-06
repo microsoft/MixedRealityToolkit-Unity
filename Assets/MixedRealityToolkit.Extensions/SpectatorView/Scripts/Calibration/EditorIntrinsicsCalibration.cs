@@ -89,10 +89,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             if (chessboardHeatmap)
+            {
                 CalibrationDataHelper.SaveImage(chessboardHeatmap, "ChessboardHeatmap");
+            }
 
             if (chessboardCorners)
+            {
                 CalibrationDataHelper.SaveImage(chessboardCorners, "ChessboardCorners");
+            }
         }
 
         private void Update()
@@ -190,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 unityPixels[i] = pixels[i];
             }
 
-            for(int i = 0; i < unityCorners.Length; i++)
+            for (int i = 0; i < unityCorners.Length; i++)
             {
                 unityCorners[i] = cornersPixels[i];
             }
@@ -205,13 +209,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             chessboardHeatmap.Apply();
 
             if (lastProcessedImage)
+            {
                 lastProcessedImage.texture = texture;
+            }
 
             if (cornersImage)
+            {
                 cornersImage.texture = chessboardCorners;
+            }
 
             if (heatmapImage)
+            {
                 heatmapImage.texture = chessboardHeatmap;
+            }
 
             return true;
         }
