@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Physics
 {
+    /// <summary>
+    /// A Distorter that distorts points based on their distance and direction from the center of the
+    /// bulge point.
+    /// </summary>
+    /// <remarks>
+    /// The characteristics of the distortion are also heavily controlled by the BulgeFalloff
+    /// property, which should contain key frames that cover the [0, 1] time range.
+    /// </remarks>
     public class DistorterBulge : Distorter
     {
         [SerializeField]
