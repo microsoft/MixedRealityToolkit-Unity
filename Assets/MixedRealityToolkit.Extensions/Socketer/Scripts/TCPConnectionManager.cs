@@ -32,12 +32,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         /// </summary>
         public event Action<IncomingMessage> OnReceive;
 
-        private ConcurrentQueue<SocketEndpoint> newConnections;
-        private ConcurrentQueue<SocketEndpoint> oldConnections;
-        private ConcurrentDictionary<int, SocketEndpoint> serverConnections;
+        private readonly ConcurrentQueue<SocketEndpoint> newConnections = new ConcurrentQueue<SocketEndpoint>();
+        private readonly ConcurrentQueue<SocketEndpoint> oldConnections = new ConcurrentQueue<SocketEndpoint>();
+        private readonly ConcurrentDictionary<int, SocketEndpoint> serverConnections = new ConcurrentDictionary<int, SocketEndpoint>();
+        private readonly ConcurrentQueue<IncomingMessage> inputMessageQueue = new ConcurrentQueue<IncomingMessage>();
         private SocketEndpoint clientConnection;
         private SocketerClient client;
-        private ConcurrentQueue<IncomingMessage> inputMessageQueue;
 
         private SocketerClient server;
 
@@ -148,14 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
                 oldConnections.Enqueue(clientConnection);
                 clientConnection = null;
             }
-        }
-
-        private void Awake()
-        {
-            newConnections = new ConcurrentQueue<SocketEndpoint>();
-            oldConnections = new ConcurrentQueue<SocketEndpoint>();
-            serverConnections = new ConcurrentDictionary<int, SocketEndpoint>();
-            inputMessageQueue = new ConcurrentQueue<IncomingMessage>();
         }
 
         private void Update()
