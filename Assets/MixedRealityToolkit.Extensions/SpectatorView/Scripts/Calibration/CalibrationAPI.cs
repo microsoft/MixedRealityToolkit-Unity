@@ -56,18 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             int numMarkers,
             float[] markerCornersInWorld,
             float[] markerCornersRelativeToCamera,
-            float[] planarCorners,
-            int numMarkerCornerValues,
-            float[] orientation);
-
-#if UNITY_WSA
-        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessArUcoIntrinsics")]
-#else
-        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessArUcoIntrinsics")]
-#endif
-        internal static extern bool ProcessArUcoIntrinsicsNative(
-            float[] intrinsics,
-            int numIntrinsics);
+            int numMarkerCornerValues);
 
 #if UNITY_WSA
         [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessIndividualArUcoExtrinsics")]
@@ -172,47 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     markerCornersRelativeToCamera.Add(-1.0f * corners.bottomLeft.z);
                 }
 
-                List<MarkerCorners> planarMarkers = new List<MarkerCorners>();
-                var originMarkerTransform = Matrix4x4.TRS(
-                    data.markers[0].arucoMarkerCorners.topLeft,
-                    data.markers[0].arucoMarkerCorners.orientation,
-                    Vector3.one);
-                var markerAsOriginTransform = originMarkerTransform.inverse;
-                foreach (var markerPair in data.markers)
-                {
-                    var arUcoCorners = markerPair.arucoMarkerCorners;
-
-                    // Note: a better flattening algorithm could likely be used
-                    var planarCorners = new MarkerCorners();
-                    planarCorners.topLeft = markerAsOriginTransform.MultiplyPoint(arUcoCorners.topLeft);
-                    planarCorners.topRight = markerAsOriginTransform.MultiplyPoint(arUcoCorners.topRight);
-                    planarCorners.bottomRight = markerAsOriginTransform.MultiplyPoint(arUcoCorners.bottomRight);
-                    planarCorners.bottomLeft = markerAsOriginTransform.MultiplyPoint(arUcoCorners.bottomLeft);
-
-                    planarCorners.topLeft.z = 0;
-                    planarCorners.topRight.z = 0;
-                    planarCorners.bottomRight.z = 0;
-                    planarCorners.bottomLeft.z = 0;
-
-                    planarMarkers.Add(planarCorners);
-                }
-                List<float> planarMarkerCorners = new List<float>();
-                foreach (var corners in planarMarkers)
-                {
-                    planarMarkerCorners.Add(corners.topLeft.x);
-                    planarMarkerCorners.Add(corners.topLeft.y);
-                    planarMarkerCorners.Add(-1.0f * corners.topLeft.z);
-                    planarMarkerCorners.Add(corners.topRight.x);
-                    planarMarkerCorners.Add(corners.topRight.y);
-                    planarMarkerCorners.Add(-1.0f * corners.topRight.z);
-                    planarMarkerCorners.Add(corners.bottomRight.x);
-                    planarMarkerCorners.Add(corners.bottomRight.y);
-                    planarMarkerCorners.Add(-1.0f * corners.bottomRight.z);
-                    planarMarkerCorners.Add(corners.bottomLeft.x);
-                    planarMarkerCorners.Add(corners.bottomLeft.y);
-                    planarMarkerCorners.Add(-1.0f * corners.bottomLeft.z);
-                }
-
                 if (!ProcessArUcoImageNative(
                     dslrImage,
                     imageWidth,
@@ -221,9 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     markerIds.Count,
                     markerCorners.ToArray(),
                     markerCornersRelativeToCamera.ToArray(),
-                    planarMarkerCorners.ToArray(),
-                    markerCorners.Count,
-                    orientation))
+                    markerCorners.Count))
                 {
                     PrintLastError();
                     return false;
@@ -258,52 +204,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 markersRelativeToCamera.Add(cornersRelativeToCamera);
             }
             return markersRelativeToCamera;
-        }
-
-        public List<CalculatedCameraIntrinsics> CalculateArUcoIntrinsics()
-        {
-            if (!initialized)
-            {
-                Debug.LogWarning("Unable to calculate intrinsics. CalibrationPlugin dll failed to initialize for calibration");
-                return null;
-            }
-
-            int numIntrinsics = 5;
-            int intrinsicsSize = 12;
-            float[] output = new float[numIntrinsics * intrinsicsSize];
-            try
-            {
-                if (ProcessArUcoIntrinsicsNative(output, numIntrinsics))
-                {
-                    List<CalculatedCameraIntrinsics> intrinsics = new List<CalculatedCameraIntrinsics>();
-
-                    // Note: The undistorted projection matrix is not calculated
-                    for (int i = 0; i < numIntrinsics; i++)
-                    {
-                        int offset = intrinsicsSize * i;
-                        var temp = new CalculatedCameraIntrinsics(
-                            output[offset + 11],
-                            new Vector2(output[offset + 0], output[offset + 1]), // Focal length
-                            (uint)output[offset + 9], // Image width
-                            (uint)output[offset + 10], // Image height
-                            new Vector2(output[offset + 2], output[offset + 3]), // Principal point
-                            new Vector3(output[offset + 4], output[offset + 5], output[offset + 6]), // Radial distortion
-                            new Vector2(output[offset + 7], output[offset + 8]), // Tangential distortion
-                            Matrix4x4.identity); // Undistorted projection matrix
-
-                        intrinsics.Add(temp);
-                    }
-
-                    return intrinsics;
-                }
-            }
-            catch
-            {
-                PrintLastError();
-            }
-
-            Debug.LogError("Failed to calculate intrinsics");
-            return null;
         }
 
         public List<CalculatedCameraExtrinsics> CalculateIndividualArUcoExtrinsics(CameraIntrinsics intrinsics, int numExtrinsics)

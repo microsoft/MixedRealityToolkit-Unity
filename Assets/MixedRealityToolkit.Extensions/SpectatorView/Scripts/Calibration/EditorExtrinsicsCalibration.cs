@@ -185,16 +185,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                Debug.Log("Starting Camera Intrinsics calculations.");
-                var intrinsics = calibration.CalculateArUcoIntrinsics();
-                foreach (var intrinsic in intrinsics)
-                {
-                    Debug.Log($"Calculated intrinsics: {intrinsic}");
-                }
-            }
-
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 Debug.Log("Starting Individual Camera Extrinsics calculations.");
