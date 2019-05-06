@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections.Generic;
 using UnityEngine;
 
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
@@ -73,7 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     data.markers.Add(markerPair);
                 }
             }
-            data.imageData = null;
 
             sendQueue.Enqueue(data);
         }
@@ -98,14 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 if (sendQueue.TryDequeue(out var data))
                 {
-                    if (data.imageData != null &&
-                        data.imageData.frame != null)
-                    {
-                        data.imageData.pngData = EncodeBGRAAsPNG(data.imageData.frame);
-                        data.imageData.frame.Release();
-                        data.imageData.frame = null;
-                    }
-
                     SendHeadsetCalibrationDataPayload(data);
                 }
             }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -146,16 +149,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public static void SaveHeadsetData(HeadsetCalibrationData data, int fileID)
         {
-            byte[] temp = data.imageData.pixelData;
-            data.imageData.pixelData = null;
-            byte[] tempPNG = data.imageData.pngData;
-            data.imageData.pngData = null;
-
             string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, HeadsetDataDirectory, $"{fileID}.json");
             File.WriteAllBytes(path, data.Serialize());
-
-            data.imageData.pixelData = temp;
-            data.imageData.pngData = tempPNG;
         }
 
         public static string SaveCameraIntrinsics(CalculatedCameraIntrinsics intrinsics)

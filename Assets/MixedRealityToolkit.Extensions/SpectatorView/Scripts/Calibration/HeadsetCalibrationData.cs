@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public float timestamp;
         public HeadsetData headsetData;
         public List<MarkerPair> markers;
-        public PVImageData imageData;
 
         public byte[] Serialize()
         {
@@ -57,20 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public Vector3 bottomLeft;
         public Vector3 bottomRight;
         public Quaternion orientation;
-    }
-
-    [Serializable]
-    internal class PVImageData
-    {
-        public PixelFormat pixelFormat;
-        public CameraResolution resolution;
-        public CameraIntrinsics intrinsics;
-        public CameraExtrinsics extrinsics;
-        public byte[] pngData;
-
-        // Non-serialized items
-        public byte[] pixelData { get; set; }
-        public CameraFrame frame { get; set; }
     }
 
     [Serializable]
