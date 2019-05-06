@@ -162,7 +162,7 @@ steps:
    
    $logFile = New-Item -Path .\playmode-test-run.log -ItemType File -Force
    
-   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -runTests -testPlatform playmodemode -batchmode -logFile $($logFile.Name) -editorTestsResultFile .\test-editmode-default.xml" -PassThru
+   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -runTests -testPlatform playmode -batchmode -logFile $($logFile.Name) -editorTestsResultFile .\test-editmode-default.xml" -PassThru
    $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
    
    while (-not $proc.HasExited -and $ljob.HasMoreData)
