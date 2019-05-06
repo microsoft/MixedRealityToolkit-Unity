@@ -10,8 +10,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     [Serializable]
     public class CalculatedCameraIntrinsics : CameraIntrinsics
     {
+        /// <summary>
+        /// Reprojection error for the calculated intrinsics
+        /// </summary>
         public float ReprojectionError;
 
+        /// <inheritdoc />
         public CalculatedCameraIntrinsics(
             float reprojectionError,
             Vector2 focalLength,
@@ -33,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             ReprojectionError = reprojectionError;
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"reprojection error: {ReprojectionError} {base.ToString()}";

@@ -516,8 +516,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ba66325842ea3a4a92ebc6f7ee28de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chessboardWidth: 16
+  chessboardHeight: 11
+  chessSquareSize: 0.0236
   feedImage: {fileID: 219257777}
-  lastCornersImage: {fileID: 289866433}
+  lastProcessedImage: {fileID: 289866433}
   heatmapImage: {fileID: 1338278820}
   cornersImage: {fileID: 301856826}
 --- !u!4 &1391036312

@@ -9,21 +9,64 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     public class EditorIntrinsicsCalibration : MonoBehaviour
     {
-        public RawImage feedImage;
-        public RawImage lastCornersImage;
-        public RawImage heatmapImage;
-        public RawImage cornersImage;
+        [Header("Physical Chessboard Parameters")]
+        /// <summary>
+        /// Chessboard width in squares.
+        /// </summary>
+        [Tooltip("Chessboard width in squares.")]
+        [SerializeField]
+        protected int chessboardWidth = 16;
+
+        /// <summary>
+        /// Chessboard height in squares.
+        /// </summary>
+        [Tooltip("Chessboard height in squares.")]
+        [SerializeField]
+        protected int chessboardHeight = 11;
+
+        /// <summary>
+        /// Physical size of a chessboard square (in meters).
+        /// </summary>
+        [Tooltip("Physical size of a chessboard square (in meters).")]
+        [SerializeField]
+        public float chessSquareSize = 0.0236f;
+
+        [Header("UI Parameters")]
+        /// <summary>
+        /// Image for displaying the dslr camera feed.
+        /// </summary>
+        [Tooltip("Image for displaying the dslr camera feed.")]
+        [SerializeField]
+        protected RawImage feedImage;
+
+        /// <summary>
+        /// Image for displaying the detected corners on the last processed dslr camera feed image.
+        /// </summary>
+        [Tooltip("Image for displaying the detected corners on the last processed dslr camera feed image.")]
+        [SerializeField]
+        protected RawImage lastProcessedImage;
+
+        /// <summary>
+        /// Image for displaying the detected corners heatmap image.
+        /// </summary>
+        [Tooltip("Image for displaying the detected corners heatmap image.")]
+        [SerializeField]
+        protected RawImage heatmapImage;
+
+        /// <summary>
+        /// Image for displaying the detected corners image.
+        /// </summary>
+        [Tooltip("Image for displaying the detected corners image.")]
+        [SerializeField]
+        protected RawImage cornersImage;
 
         private int nextChessboardImageId = 0;
         private CalibrationAPI calibration = null;
-        int boardWidth = 16;
-        int boardHeight = 11;
-        float chessSquareSize = 0.0236f;
-        Texture2D chessboardCorners = null;
-        Texture2D chessboardHeatmap = null;
+        private Texture2D chessboardCorners = null;
+        private Texture2D chessboardHeatmap = null;
         private int cornerScale = 3;
         private int heatmapWidth = 12;
-        private List<CalculatedCameraIntrinsics> intrinsics;
+        private CalculatedCameraIntrinsics intrinsics;
 
 #if UNITY_EDITOR
         private void Start()
@@ -87,12 +130,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 Debug.Log("Starting Camera Intrinsics calculation.");
                 intrinsics = calibration.CalculateChessboardIntrinsics(chessSquareSize);
-                foreach(var intrinsic in intrinsics)
-                {
-                    Debug.Log($"Chessboard intrinsics reprojection error: {intrinsic.ToString()}");
-                    var file = CalibrationDataHelper.SaveCameraIntrinsics(intrinsic);
-                    Debug.Log($"Camera Intrinsics saved to file: {file}");
-                }
+                Debug.Log($"Chessboard intrinsics reprojection error: {intrinsics.ToString()}");
+                var file = CalibrationDataHelper.SaveCameraIntrinsics(intrinsics);
+                Debug.Log($"Camera Intrinsics saved to file: {file}");
             }
         }
 
@@ -140,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             var unityHeatmap = chessboardHeatmap.GetRawTextureData<byte>();
             var heatmapPixels = unityHeatmap.ToArray();
 
-            if (!calibration.ProcessChessboardImage(pixels, imageWidth, imageHeight, boardWidth, boardHeight, cornersPixels, heatmapPixels, cornerScale, heatmapWidth))
+            if (!calibration.ProcessChessboardImage(pixels, imageWidth, imageHeight, chessboardWidth, chessboardHeight, cornersPixels, heatmapPixels, cornerScale, heatmapWidth))
             {
                 return false;
             }
@@ -164,8 +204,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             chessboardCorners.Apply();
             chessboardHeatmap.Apply();
 
-            if (lastCornersImage)
-                lastCornersImage.texture = texture;
+            if (lastProcessedImage)
+                lastProcessedImage.texture = texture;
 
             if (cornersImage)
                 cornersImage.texture = chessboardCorners;

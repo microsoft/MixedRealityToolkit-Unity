@@ -89,6 +89,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private bool initialized = false;
 
+        /// <summary>
+        /// Creates an API instance and initializes the plugin.
+        /// Note: Creating multiple CalibrationAPI instances at the same time is not supported.
+        /// </summary>
         public CalibrationAPI()
         {
             try
@@ -105,6 +109,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             Debug.LogError("Failed to initialize CalibrationPlugin dll for calibration");
         }
 
+        /// <summary>
+        /// Processes an image containing ArUco markers cooresponding with world space coordinates provided in the headset calibraiton data.
+        /// </summary>
+        /// <param name="data">Headset calibration data</param>
+        /// <param name="dslrImage">RGB24 dslr image data</param>
+        /// <param name="imageWidth">Image width in pixels</param>
+        /// <param name="imageHeight">Image height in pixels</param>
+        /// <returns>Returns true if ArUco markers were found in the image that had valid world space coordinates in the provided headset calibration data.</returns>
         public bool ProcessArUcoData(HeadsetCalibrationData data, byte[] dslrImage, int imageWidth, int imageHeight)
         {
             if (!initialized)
@@ -185,6 +197,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return false;
         }
 
+        /// <summary>
+        /// Creates a list of marker pairs that are corrected for the unity camera location specified in the headset calibration data.
+        /// </summary>
+        /// <param name="data">Headset calibration data</param>
+        /// <returns>Marker corners transformed to correct for the unity camera orientation</returns>
         public static List<MarkerCorners> CalcMarkerCornersRelativeToCamera(HeadsetCalibrationData data)
         {
             List<MarkerCorners> markersRelativeToCamera = new List<MarkerCorners>();
@@ -206,6 +223,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return markersRelativeToCamera;
         }
 
+        /// <summary>
+        /// Calculates camera extrinsics for each provided aruco data set
+        /// </summary>
+        /// <param name="intrinsics">Camera intrinsics for the dslr camera</param>
+        /// <param name="numExtrinsics">The number of extrinsics that should be calculated. This should be equal to the number of successful calls made to <see cref="ProcessArUcoData(HeadsetCalibrationData, byte[], int, int)"/></param>
+        /// <returns>A list of camera extrinsic values</returns>
         public List<CalculatedCameraExtrinsics> CalculateIndividualArUcoExtrinsics(CameraIntrinsics intrinsics, int numExtrinsics)
         {
             int intrinsicsSize = 12;
@@ -266,6 +289,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
+        /// <summary>
+        /// Calculates one camera extrinsic value based on all provided ArUco data sets
+        /// </summary>
+        /// <param name="intrinsics">Camera intrinsics</param>
+        /// <returns>Camera extrinsics</returns>
         public CalculatedCameraExtrinsics CalculateGlobalArUcoExtrinsics(CameraIntrinsics intrinsics)
         {
             int intrinsicsSize = 12;
@@ -318,6 +346,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return calcExtrinsics;
         }
 
+        /// <summary>
+        /// Prints the last error available for the SpectatorViewPlugin/SpectatorViewPlugin.Editor dll
+        /// </summary>
         public void PrintLastError()
         {
             char[] message = new char[256];
@@ -328,6 +359,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
+        /// <summary>
+        /// Process a chessboard image for calculating camera intrinsics
+        /// </summary>
+        /// <param name="image">RGB24 image data in bytes</param>
+        /// <param name="imageWidth">image width in pixels</param>
+        /// <param name="imageHeight">image height in pixels</param>
+        /// <param name="boardWidth">chessboard width in squares</param>
+        /// <param name="boardHeight">chessboard height in squares</param>
+        /// <param name="cornersImage">RGB24 helper image byte data for displaying detected corners</param>
+        /// <param name="heatmapImage">RGB24 helper image byte data for displaying detected corner heatmaps</param>
+        /// <param name="cornerImageRadias">radias for drawing detected corners in the cornersImage</param>
+        /// <param name="heatmapWidth">the number of horizontal bins used when generating the heatmapImage</param>
+        /// <returns>Returns true if the specified chessboard was detected in the provided image, otherwise false</returns>
         public bool ProcessChessboardImage(
             byte[] image,
             int imageWidth,
@@ -354,31 +398,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 heatmapWidth);
         }
 
-        public List<CalculatedCameraIntrinsics> CalculateChessboardIntrinsics(float chessSquareSize)
+        /// <summary>
+        /// Calculates camera intrinsics using all provided chessboard images
+        /// </summary>
+        /// <param name="chessSquareSize">Size of a chessboard square in meters</param>
+        /// <returns>Returns the calculated camera intriniscs, null if the camera intrinsics could not be calculated</returns>
+        public CalculatedCameraIntrinsics CalculateChessboardIntrinsics(float chessSquareSize)
         {
-            int numIntrinsics = 1;
             int intrinsicsSize = 12;
-            float[] output = new float[numIntrinsics * intrinsicsSize];
-            if (ProcessChessboardIntrinsicsNative(chessSquareSize, output, numIntrinsics))
+            float[] output = new float[intrinsicsSize];
+            if (ProcessChessboardIntrinsicsNative(chessSquareSize, output, 1))
             {
-                List<CalculatedCameraIntrinsics> intrinsics = new List<CalculatedCameraIntrinsics>();
-
-                // Note: The undistorted projection matrix is not calculated
-                for (int i = 0; i < numIntrinsics; i++)
-                {
-                    int offset = intrinsicsSize * i;
-                    var temp = new CalculatedCameraIntrinsics(
-                        output[offset + 11],
-                        new Vector2(output[offset + 0], output[offset + 1]), // Focal length
-                        (uint)output[offset + 9], // Image width
-                        (uint)output[offset + 10], // Image height
-                        new Vector2(output[offset + 2], output[offset + 3]), // Principal point
-                        new Vector3(output[offset + 4], output[offset + 5], output[offset + 6]), // Radial distortion
-                        new Vector2(output[offset + 7], output[offset + 8]), // Tangential distortion
-                        Matrix4x4.identity); // Undistorted projection matrix
-
-                    intrinsics.Add(temp);
-                }
+                var intrinsics = new CalculatedCameraIntrinsics(
+                    output[11],
+                    new Vector2(output[0], output[1]), // Focal length
+                    (uint)output[9], // Image width
+                    (uint)output[10], // Image height
+                    new Vector2(output[2], output[3]), // Principal point
+                    new Vector3(output[4], output[5], output[6]), // Radial distortion
+                    new Vector2(output[7], output[8]), // Tangential distortion
+                    Matrix4x4.identity); // Undistorted projection matrix, Note: not currently calculated
 
                 return intrinsics;
             }

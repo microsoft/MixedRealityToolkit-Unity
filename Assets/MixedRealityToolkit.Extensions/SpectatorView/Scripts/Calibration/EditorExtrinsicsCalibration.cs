@@ -12,7 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     public class EditorExtrinsicsCalibration : MonoBehaviour
     {
-        public string cameraIntrinsicsPath = "";
+        [Header("Camera Intrinsics")]
+        /// <summary>
+        /// Path to a camera intrinsics file created using chessboard intrinsics calibration.
+        /// </summary>
+        [Tooltip("Path to a camera intrinsics file created using chessboard intrinsics calibration.")]
+        [SerializeField]
+        protected string cameraIntrinsicsPath = "";
 
         [Header("HoloLens Parameters")]
         /// <summary>
@@ -44,13 +50,36 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         [Tooltip("Used to obtain headset information for a vr headset.")]
         [SerializeField]
-        private HeadsetCalibration headsetCalibration = null;
+        protected HeadsetCalibration headsetCalibration = null;
 
-        [Header("Universal Parameters")]
-        public RawImage feedImage;
-        public RawImage lastArUcoImage;
-        public DebugVisualHelper markerVisualHelper;
-        public DebugVisualHelper cameraVisualHelper;
+        [Header("UI Parameters")]
+        /// <summary>
+        /// Image for displaying the dslr camera feed.
+        /// </summary>
+        [Tooltip("Image for displaying the dslr camera feed.")]
+        [SerializeField]
+        protected RawImage feedImage;
+
+        /// <summary>
+        /// Image for displaying the last processed ArUco marker dataset.
+        /// </summary>
+        [Tooltip(" Image for displaying the last processed ArUco marker dataset.")]
+        [SerializeField]
+        protected RawImage lastArUcoImage;
+
+        /// <summary>
+        /// Used to draw debug visuals for detected aruco markers.
+        /// </summary>
+        [Tooltip("Used to draw debug visuals for detected aruco markers.")]
+        [SerializeField]
+        protected DebugVisualHelper markerVisualHelper;
+
+        /// <summary>
+        /// Used to draw debug visuals for camera positions/orientations.
+        /// </summary>
+        [Tooltip("Used to draw debug visuals for camera positions/orientations.")]
+        [SerializeField]
+        protected DebugVisualHelper cameraVisualHelper;
 
         private CalibrationAPI calibration = null;
         private CalculatedCameraIntrinsics dslrIntrinsics;

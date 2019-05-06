@@ -9,10 +9,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     [Serializable]
     public class CalculatedCameraExtrinsics : CameraExtrinsics
     {
+        /// <summary>
+        /// True if the calculation succeeded, otherwise false
+        /// </summary>
         public bool Succeeded;
 
+        /// <inheritdoc />
         public CalculatedCameraExtrinsics() : base() { }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"Succeeded: {Succeeded} {base.ToString()}";

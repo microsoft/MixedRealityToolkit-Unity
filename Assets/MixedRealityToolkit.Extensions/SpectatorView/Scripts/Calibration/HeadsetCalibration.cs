@@ -14,6 +14,10 @@ using System.Collections.Concurrent;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
+    /// <summary>
+    /// Called when HeadsetCalibration has a new qr code/aruco marker payload
+    /// </summary>
+    /// <param name="data">byte data to send over the network</param>
     public delegate void HeadsetCalibrationDataUpdatedHandler(byte[] data);
 
     public class HeadsetCalibration : MonoBehaviour
@@ -55,7 +59,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private Dictionary<int, MarkerCorners> arucoMarkerCorners = new Dictionary<int, MarkerCorners>();
         private ConcurrentQueue<HeadsetCalibrationData> sendQueue;
 
+        /// <inheritdoc />
         public event HeadsetCalibrationDataUpdatedHandler Updated;
+
+        /// <summary>
+        /// Call to signal to the HeadsetCalibration class that it should create a new qr code/aruco marker payload.
+        /// </summary>
         public void UpdateHeadsetCalibrationData()
         {
             Debug.Log("Updating headset calibration data");

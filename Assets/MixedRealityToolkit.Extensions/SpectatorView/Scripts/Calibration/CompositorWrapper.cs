@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    public class CompositorWrapper
+    internal class CompositorWrapper
     {
         public static RenderTexture GetDSLRFeed()
         {
