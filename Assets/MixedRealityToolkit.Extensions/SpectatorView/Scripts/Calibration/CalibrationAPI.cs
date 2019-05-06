@@ -10,10 +10,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     internal class CalibrationAPI
     {
-        [DllImport("CalibrationPlugin", EntryPoint = "InitializeCalibration")]
+#if UNITY_WSA
+        [DllImport("SpectatorViewPlugin", EntryPoint = "InitializeCalibration")]
+#else
+        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "InitializeCalibration")]
+#endif
         internal static extern bool InitializeCalibrationNative();
 
-        [DllImport("CalibrationPlugin", EntryPoint = "ProcessChessboardImage")]
+#if UNITY_WSA
+        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessChessboardImage")]
+#else
+        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessChessboardImage")]
+#endif
         internal static extern bool ProcessChessboardImageNative(
             byte[] image,
             int imageWidth,
@@ -25,13 +33,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             int cornerImageRadias,
             int heatmapWidth);
 
-        [DllImport("CalibrationPlugin", EntryPoint = "ProcessChessboardIntrinsics")]
+#if UNITY_WSA
+        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessChessboardIntrinsics")]
+#else
+        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessChessboardIntrinsics")]
+#endif
         internal static extern bool ProcessChessboardIntrinsicsNative(
             float squareSize,
             float[] intrinsics,
             int numIntrinsics);
 
-        [DllImport("CalibrationPlugin", EntryPoint = "ProcessArUcoData")]
+#if UNITY_WSA
+        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessArUcoData")]
+#else
+        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessArUcoData")]
+#endif
         internal static extern bool ProcessArUcoImageNative(
             byte[] image,
             int imageWidth,
@@ -44,24 +60,40 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             int numMarkerCornerValues,
             float[] orientation);
 
-        [DllImport("CalibrationPlugin", EntryPoint = "ProcessArUcoIntrinsics")]
+#if UNITY_WSA
+        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessArUcoIntrinsics")]
+#else
+        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessArUcoIntrinsics")]
+#endif
         internal static extern bool ProcessArUcoIntrinsicsNative(
             float[] intrinsics,
             int numIntrinsics);
 
-        [DllImport("CalibrationPlugin", EntryPoint = "ProcessIndividualArUcoExtrinsics")]
+#if UNITY_WSA
+        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessIndividualArUcoExtrinsics")]
+#else
+        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessIndividualArUcoExtrinsics")]
+#endif
         internal static extern bool ProcessIndividualArUcoExtrinsicsNative(
             float[] intrinsics,
             float[] extrinsics,
             int numExtrinsics);
 
-        [DllImport("CalibrationPlugin", EntryPoint = "ProcessGlobalArUcoExtrinsics")]
+#if UNITY_WSA
+        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessGlobalArUcoExtrinsics")]
+#else
+        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessGlobalArUcoExtrinsics")]
+#endif
         internal static extern bool ProcessGlobalArUcoExtrinsicsNative(
             float[] intrinsics,
             float[] extrinsics,
             int numExtrinsics);
 
-        [DllImport("CalibrationPlugin", EntryPoint = "GetLastErrorMessage")]
+#if UNITY_WSA
+        [DllImport("SpectatorViewPlugin", EntryPoint = "GetLastErrorMessage")]
+#else
+        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "GetLastErrorMessage")]
+#endif
         internal static extern bool GetLastErrorMessageNative(
             char[] buff,
             int size);
