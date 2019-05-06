@@ -25,15 +25,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         /// </summary>
         public event Action<IncomingMessage> OnReceive;
 
+        private readonly TimeSpan timeoutInterval = TimeSpan.Zero;
         private readonly ConcurrentQueue<SocketEndpoint> newConnections = new ConcurrentQueue<SocketEndpoint>();
         private readonly ConcurrentQueue<SocketEndpoint> oldConnections = new ConcurrentQueue<SocketEndpoint>();
         private readonly ConcurrentDictionary<int, SocketEndpoint> serverConnections = new ConcurrentDictionary<int, SocketEndpoint>();
+        private readonly ConcurrentQueue<IncomingMessage> inputMessageQueue = new ConcurrentQueue<IncomingMessage>();
         private SocketEndpoint clientConnection;
         private SocketerClient client;
-        private ConcurrentQueue<IncomingMessage> inputMessageQueue = new ConcurrentQueue<IncomingMessage>();
 
         private SocketerClient server;
-        private TimeSpan timeoutInterval;
 
         /// <summary>
         /// Returns true if any server or client connections exist, otherwise false
@@ -49,11 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         /// Returns the number of bytes currently queued for the socketer server
         /// </summary>
         public int OutputBytesQueued => SocketerClient.OutputQueueLength;
-
-        public TCPConnectionManager(TimeSpan timeoutInterval)
-        {
-            this.timeoutInterval = timeoutInterval;
-        }
 
         /// <summary>
         /// Call to begin acting as a server listening on the provided port

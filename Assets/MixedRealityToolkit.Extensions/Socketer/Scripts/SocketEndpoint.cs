@@ -40,7 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         /// </summary>
         public void Disconnect()
         {
-            State = ConnectionState.Disconnected;
+            if (State != ConnectionState.Disconnected)
+            {
+                State = ConnectionState.Disconnected;
+                this.socketerClient.Disconnect(sourceId);
+            }
         }
 
         /// <summary>
