@@ -120,7 +120,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         /// Same as calling GetGameObject(objectIdentifier, Vector3.zero, Quaternion.identity)
         /// </summary>
         /// <param name="objectIdentifier">The identifier you want to use to identifiy the kind of game object you want to retrieve.</param>
-        /// <returns></returns>
         public GameObject GetGameObject(string objectIdentifier)
         {
             return GetGameObject(objectIdentifier, Vector3.zero, Quaternion.identity);
@@ -130,7 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         /// Gets the number of game objects in the pool for a specific identifier.
         /// </summary>
         /// <param name="objectIdentifier"></param>
-        /// <returns></returns>
         public int Count(string objectIdentifier)
         {
             EnsureListForObjectID(objectIdentifier);
