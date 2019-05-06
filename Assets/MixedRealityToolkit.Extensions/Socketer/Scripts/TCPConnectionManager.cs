@@ -13,13 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
     public class TCPConnectionManager : MonoBehaviour
     {
         /// <summary>
-        /// Timeout interval for the socket endpoints
-        /// </summary>
-        [Tooltip("Timeout interval for the socket endpoints")]
-        [SerializeField]
-        private TimeSpan timeoutInterval = TimeSpan.Zero;
-
-        /// <summary>
         /// Called when a client or server connection is established and the connection manager is using the TCP protocol.
         /// </summary>
         public event Action<SocketEndpoint> OnConnected;
@@ -32,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         /// </summary>
         public event Action<IncomingMessage> OnReceive;
 
+        private readonly TimeSpan timeoutInterval = TimeSpan.Zero;
         private readonly ConcurrentQueue<SocketEndpoint> newConnections = new ConcurrentQueue<SocketEndpoint>();
         private readonly ConcurrentQueue<SocketEndpoint> oldConnections = new ConcurrentQueue<SocketEndpoint>();
         private readonly ConcurrentDictionary<int, SocketEndpoint> serverConnections = new ConcurrentDictionary<int, SocketEndpoint>();
