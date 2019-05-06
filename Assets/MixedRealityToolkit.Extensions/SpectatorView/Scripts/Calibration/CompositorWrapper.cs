@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 // Enable this when you have access to the spectator view compositor dlls
-#define COMPOSITOR_PLUGIN_AVAILABLE
+// #define COMPOSITOR_PLUGIN_AVAILABLE
 
 #if COMPOSITOR_PLUGIN_AVAILABLE
 using SpectatorView;
