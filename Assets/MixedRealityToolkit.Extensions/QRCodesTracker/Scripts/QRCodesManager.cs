@@ -8,11 +8,9 @@
 
 #if QRCODESTRACKER_BINARY_AVAILABLE
 
-#if UNITY_WSA
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.WSA;
 
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
@@ -47,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker
         public bool AutoStartQRTracking = true;
 
         public bool IsTrackerRunning { get; private set; }
-        public QRCodesTrackerPlugin.QRTrackerStartResult StartResult { get; private set; }
+        public QRTrackerStartResult StartResult { get; private set; }
 
         public event EventHandler<bool> QRCodesTrackingStateChanged;
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeAdded;
@@ -126,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker
             {
                 try
                 {
-                    var appSpatialCoordinateSystem = (SpatialCoordinateSystem)System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(WorldManager.GetNativeISpatialCoordinateSystemPtr());
+                    var appSpatialCoordinateSystem = (SpatialCoordinateSystem)System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr());
                     if (appSpatialCoordinateSystem != null)
                     {
                         // Get the relative transform from the unity origin
@@ -301,6 +299,4 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker
         }
     }
 }
-#endif
-
-#endif // BINARIES_AVAILABLE
+#endif // QRCODESTRACKER_BINARY_AVAILABLE
