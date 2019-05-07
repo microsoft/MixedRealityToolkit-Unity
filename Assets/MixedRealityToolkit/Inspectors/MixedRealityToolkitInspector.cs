@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             string commandName = Event.current.commandName;
             var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>();
 
-            if (activeProfile.objectReferenceValue == null && currentPickerWindow == -1 && checkChange)
+            if (activeProfile.objectReferenceValue == null && currentPickerWindow == -1 && checkChange && !BuildPipeline.isBuildingPlayer)
             {
                 if (allConfigProfiles.Length > 1)
                 {
@@ -99,8 +99,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             Selection.activeObject = MixedRealityToolkit.Instance;
             Debug.Assert(MixedRealityToolkit.IsInitialized);
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-            Debug.Assert(playspace != null);
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
         }
 
