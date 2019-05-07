@@ -47,4 +47,4 @@ MonoBehaviour:
       Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
   registeredServiceProvidersProfile: {fileID: 11400000, guid: e0bbb696e100b0d4386ce57da2e4636d,
     type: 2}
-  useServiceInspectors: 1
+  useServiceInspectors: 0
