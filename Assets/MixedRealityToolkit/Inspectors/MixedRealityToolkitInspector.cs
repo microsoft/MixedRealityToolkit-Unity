@@ -111,8 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             Selection.activeObject = MixedRealityToolkit.Instance;
             Debug.Assert(MixedRealityToolkit.IsInitialized);
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-            Debug.Assert(playspace != null);
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
         }
 

@@ -109,7 +109,7 @@ Which contains the following:
 
 * Mixed Reality Toolkit - The toolkit itself, providing the central configuration entry point for the entire framework.
 * MixedRealityPlayspace - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
-* The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDK's
+* The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs
 
 **Note** While working in your scene, **DO NOT move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
 If you need to move the players start point, then **move the scene content and NOT the camera**!
