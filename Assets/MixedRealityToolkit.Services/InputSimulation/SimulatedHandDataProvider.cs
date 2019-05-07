@@ -120,7 +120,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
             if (gesturePose != null)
             {
-                pose.TransitionTo(gesturePose, poseBlending, gestureBlending);
+                if (gestureBlending > poseBlending)
+                {
+                    float range = Mathf.Clamp01(1.0f - poseBlending);
+                    float lerpFactor = range > 0.0f ? (gestureBlending - poseBlending) / range : 1.0f;
+                    pose.InterpolateOffsets(pose, gesturePose, lerpFactor);
+                }
             }
             poseBlending = gestureBlending;
 

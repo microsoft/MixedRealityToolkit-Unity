@@ -20,6 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
+        /// <summary>
+        /// Joint poses are stored as right-hand poses in camera space.
+        /// Output poses are computed in world space, and mirroring on the x axis for the left hand.
+        /// </summary>
         private MixedRealityPose[] localJointPoses;
 
         public ArticulatedHandPose()
@@ -34,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Array.Copy(_localJointPoses, localJointPoses, jointCount);
         }
 
+        /// <summary>
+        /// Compute world space poses from camera-space joint data.
+        /// </summary>
         public void ComputeJointPoses(Handedness handedness, Quaternion rotation, Vector3 position, MixedRealityPose[] jointsOut)
         {
             var cameraRotation = CameraCache.Main.transform.rotation;
@@ -64,6 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        /// <summary>
+        /// Take world space joint poses from any hand and convert into right-hand, camera-space poses.
+        /// </summary>
         public void ParseFromJointPoses(MixedRealityPose[] joints, Handedness handedness, Quaternion rotation, Vector3 position)
         {
             var invRotation = Quaternion.Inverse(rotation);
@@ -94,6 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        /// <summary>
+        /// Set all poses to zero.
+        /// </summary>
         public void SetZero()
         {
             for (int i = 0; i < jointCount; i++)
@@ -102,11 +115,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        /// <summary>
+        /// Copy data from another articulated hand pose.
+        /// </summary>
         public void Copy(ArticulatedHandPose other)
         {
             Array.Copy(other.localJointPoses, localJointPoses, jointCount);
         }
 
+        /// <summary>
+        /// Blend between two hand poses.
+        /// </summary>
         public void InterpolateOffsets(ArticulatedHandPose poseA, ArticulatedHandPose poseB, float value)
         {
             for (int i = 0; i < jointCount; i++)
@@ -117,23 +136,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        public void TransitionTo(ArticulatedHandPose other, float lastAnim, float currentAnim)
-        {
-            if (currentAnim <= lastAnim)
-            {
-                return;
-            }
-
-            float range = Mathf.Clamp01(1.0f - lastAnim);
-            float lerpFactor = range > 0.0f ? (currentAnim - lastAnim) / range : 1.0f;
-            for (int i = 0; i < jointCount; i++)
-            {
-                var p = Vector3.Lerp(localJointPoses[i].Position, other.localJointPoses[i].Position, lerpFactor);
-                var r = Quaternion.Slerp(localJointPoses[i].Rotation, other.localJointPoses[i].Rotation, lerpFactor);
-                localJointPoses[i] = new MixedRealityPose(p, r);
-            }
-        }
-
+        /// <summary>
+        /// Supported hand gestures.
+        /// </summary>
         public enum GestureId
         {
             /// <summary>
@@ -176,6 +181,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private static readonly Dictionary<GestureId, ArticulatedHandPose> handPoses = new Dictionary<GestureId, ArticulatedHandPose>();
 
+        /// <summary>
+        /// Get pose data for a supported gesture.
+        /// </summary>
         public static ArticulatedHandPose GetGesturePose(GestureId gesture)
         {
             if (handPoses.TryGetValue(gesture, out ArticulatedHandPose pose))
@@ -186,6 +194,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         #if UNITY_EDITOR
+        /// <summary>
+        /// Load pose data from files.
+        /// </summary>
         public static void LoadGesturePoses()
         {
             string basePath = "Assets/MixedRealityToolkit.Services/InputSimulation/ArticulatedHandPoses/";
@@ -270,6 +281,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        /// <summary>
+        /// Serialize pose data to JSON format.
+        /// </summary>
         public string ToJson()
         {
             var dict = new ArticulatedHandPoseDictionary();
@@ -277,6 +291,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return JsonUtility.ToJson(dict);
         }
 
+        /// <summary>
+        /// Deserialize pose data from JSON format.
+        /// </summary>
         public void FromJson(string json)
         {
             var dict = JsonUtility.FromJson<ArticulatedHandPoseDictionary>(json);
