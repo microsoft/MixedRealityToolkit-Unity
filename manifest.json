@@ -1564,6 +1564,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandJointChaser/MRTK_Solver_HandJoint.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandJointChaser/MRTK_Solver_HandJoint.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Input/ControllerInputMapping.png",
       "output": {
         "resource": {
@@ -2140,6 +2162,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/MRTK170802_Short_20.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg"
         }
       },
       "is_incremental": false,
@@ -3005,6 +3038,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Slider/MRTK_UX_Slider_Main.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Slider/MRTK_UX_Slider_Main.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Sliders/MRTK_Sliders_Main.png",
       "output": {
         "resource": {
@@ -3677,11 +3721,35 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/README_HandJointChaser.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_HandJointChaser.html",
+          "hash": "joTb0EEboQtPa48usB8qRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/README_Interactable.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Interactable.html",
           "hash": "yOJ6y8VYX1r+SdBfow659Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_MRTKStandardShader.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_MRTKStandardShader.html",
+          "hash": "mvQRcP45DQVdRbIvyYH/Vw=="
         }
       },
       "is_incremental": false,
@@ -3741,7 +3809,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Sliders.html",
-          "hash": "SMZX5QlJsrn6oBstugIOzg=="
+          "hash": "yuNE52Pqy6o02mp57U7jwQ=="
         }
       },
       "is_incremental": false,
@@ -3837,7 +3905,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "wRATH6qAaAc2okCTYsD2sg=="
+          "hash": "r2GYhh3HEJ7ti1nUUKkiWA=="
         }
       },
       "is_incremental": false,
@@ -3849,7 +3917,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "WfqxLbyoNRmQYjh3gs+pVQ=="
+          "hash": "hz7oW6DREtKSK7J1pFS7oQ=="
         }
       },
       "is_incremental": false,
@@ -14511,7 +14579,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 90,
+          "total_file_count": 92,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

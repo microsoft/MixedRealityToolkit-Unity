@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Sliders | Mixed Reality Toolkit Documentation </title>
+    <title>Hand Joint Chaser Example | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Sliders | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Hand Joint Chaser Example | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.42.0.0">
     
     <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
@@ -80,43 +80,17 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="sliders">Sliders</h1>
+<h1 id="hand-joint-chaser-example">Hand Joint Chaser Example</h1>
 
-<p><img src="Images/Slider/MRTK_UX_Slider_Main.jpg" alt=""></p>
-<p>Sliders are UI components that allow you to continuously change a value by moving a slider on a track. Currently the Pinch Slider can be moved by directly grabbing the slider, either directly or at a distance. Sliders work on AR and VR, using motion controllers, hands, or Gesture + Voice.</p>
+<p><img src="Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg" alt="">
+This example scene demonstrates how to use Solver to attach objects to the hand joints.</p>
 <h2 id="example-scene">Example scene</h2>
-<p>You can find examples in the <strong>SliderExample</strong> scene under:
-<a href="/Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes">MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/</a></p>
-<h2 id="how-to-use-sliders">How to use Sliders</h2>
-<p>Drag and drop the <strong>PinchSlider</strong> prefab into the scene hierarchy. If you want to modify or create your own slider, remember to do the following:</p>
-<ul>
-<li>Make sure your that your thumb object has a collider on it. In the PinchSlider prefab, the collider is on <code>SliderThumb/Button_AnimationContainer/Slider_Button</code></li>
-<li>Make sure that the object containing the collider also has a Near Interaction Grabbable component on it, if you want to be able to grab the slider near.</li>
-</ul>
-<p>We also recommend using the following hierarchy</p>
-<ul>
-<li>PinchSlider - Contains the sliderComponent
-<ul>
-<li>SliderThumb - Contains the movable thumb</li>
-<li>TrackVisuals - Containing the track and any other visuals</li>
-<li>OtherVisuals - Containing any other visuals</li>
-</ul>
-</li>
-</ul>
-<h2 id="slider-events">Slider Events</h2>
-<p>Sliders expose the following events:</p>
-<ul>
-<li>OnValueUpdated - Called whenever the slider value changes</li>
-<li>OnInteractionStarted - Called when the user grabs the slider</li>
-<li>OnInteractionEnded - Called when the user releases the slider</li>
-<li>OnHoverEntered - Called when the user's hand / controller hovers over the slider, using either near or far interaction.</li>
-<li>OnHoverExited - Called when the user's hand / controller is no longer near the slider.</li>
-</ul>
-<h2 id="configuring-slider-bound-and-axis">Configuring Slider Bound and Axis</h2>
-<p>You can directly move the starting and end points of the slider by moving the handles in the Scene:</p>
-<p><img src="Images/Sliders/MRTK_Sliders_Setup.png" alt="Sliders Config"></p>
-<p>You can also specify the axis (in local space) of the slider via the <em>Slider Axis</em> field</p>
-<p>If you cannot use the handles, you can instead specify the start and end points of the slider via the <em>Slider Start Distance</em> and <em>Slider End Distance</em> fields. These specify start / end position of slider as a distance from the slider's center, in local coordinates. This means that once you set the slider start and end distances as you want them, you can scale the slider to be smaller or larger without needing to update the start and end distances.</p>
+<p>You can find the example scene <strong>HandJointChaserExample</strong> scene under:
+<a href="/Assets/MixedRealityToolkit.Examples/Demos/Input/Scenes">MixedRealityToolkit.Examples/Demos/Input/Scenes/</a></p>
+<h2 id="solver-handler">Solver Handler</h2>
+<p>Click <strong>Tracked Object To Reference</strong> and select <strong>Hand Joint Left</strong> or <strong>Hand Joint Right</strong>. You will be able to see <strong>Tracked Hand Joint</strong> drop down. From the drop down list, you can select specfic joint to track.
+This example scene uses Radial View Solver to make an object follow the target object. See <a href="README_Solver.html">Solver</a> page for more details.</p>
+<p><img src="Images/HandJointChaser/MRTK_Solver_HandJoint.jpg" alt=""></p>
 </article>
           </div>
           
@@ -125,7 +99,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_Sliders.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_HandJointChaser.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
