@@ -142,7 +142,14 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         {
                             if (LoadSceneInEditor(lso.Asset, false, out Scene editorScene) && updateActiveScene)
                             {
-                                EditorSceneManager.SetActiveScene(editorScene);
+                                try
+                                {
+                                    EditorSceneManager.SetActiveScene(editorScene);
+                                }
+                                catch (ArgumentException)
+                                {
+                                    // This can happen if we try to set an invalid scene active.
+                                }
                             }
                         }
                         else
@@ -343,6 +350,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 // This can happen if the scene is an invalid scene and we try to SetActive.
                 return false;
             }
+            catch (NullReferenceException)
+            {
+                // This can happen if the scene object is null.
+                return false;
+            }
 
             return true;
         }
@@ -369,6 +381,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 // This can happen if the scene is an invalid scene and we try to SetActive.
                 return false;
             }
+            catch (NullReferenceException)
+            {
+                // This can happen if the scene object is null.
+                return false;
+            }
 
             return true;
         }
@@ -379,8 +396,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <param name="lightingScene"></param>
         private static void CopyLightingSettingsToActiveScene(Scene lightingScene)
         {
-            return;
-
             // Store the active scene on entry
             Scene activeSceneOnEnter = EditorSceneManager.GetActiveScene();
 
