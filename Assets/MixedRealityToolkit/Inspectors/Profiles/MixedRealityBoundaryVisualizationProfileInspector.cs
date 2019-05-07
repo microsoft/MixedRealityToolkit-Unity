@@ -94,12 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Boundary Visualization Options", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Boundary visualizations can help users stay oriented and comfortable in the experience.", MessageType.Info);
-            // Boundary settings depend on the experience scale
-            if (MixedRealityToolkit.Instance.ActiveProfile.TargetExperienceScale != ExperienceScale.Room)
-            {
-                EditorGUILayout.Space();
-                EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Warning);
-            }
             EditorGUILayout.Space();
 
             CheckProfileLock(target);

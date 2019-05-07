@@ -19,9 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestUtilities.InitializeMixedRealityToolkitScene(true);
 
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-            playspace.transform.position = new Vector3(1.0f, 1.5f, -2.0f);
-            playspace.transform.LookAt(Vector3.zero);
+            MixedRealityPlayspace.PerformTransformation(
+                p =>
+                {
+                    p.position = new Vector3(1.0f, 1.5f, -2.0f);
+                    p.LookAt(Vector3.zero);
+                });
 
             var testLight = new GameObject("TestLight");
             var light = testLight.AddComponent<Light>();

@@ -1,4 +1,4 @@
-![MRTK](../../Documentation/Images/EyeTracking/mrtk_et_targetselect.png)
+![MRTK](../Images/EyeTracking/mrtk_et_targetselect.png)
 
 # Eye-Supported Target Selection
 This page discusses different options for accessing eye gaze data and eye gaze specific events to select targets in MRTK. 

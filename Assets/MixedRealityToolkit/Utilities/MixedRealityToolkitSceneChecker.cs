@@ -113,8 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 GUI.enabled = (configurationProfile != null);
                 if (GUILayout.Button("Yes"))
                 {
-                    var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-                    Debug.Assert(playspace != null);
                     MixedRealityToolkit.Instance.ActiveProfile = configurationProfile;
 
                     SessionState.SetBool(HideNoActiveToolkitWarningKey, hideWarning);
