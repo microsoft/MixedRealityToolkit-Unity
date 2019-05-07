@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         float GetVideoDT()
         {
-            return (0.0001f * (NativeInterface.GetColorDuration() / 1000));
+            return (0.0001f * (UnityCompositorInterface.GetColorDuration() / 1000));
         }
 
         private float GetTimeFromFrame(int frame)
@@ -247,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                     float videoDt = GetVideoDT();
                     int frame = (int)(time / videoDt);
                     //Subtract the queued frames
-                    frame -= NativeInterface.GetCaptureFrameIndex() - CurrentCompositeFrame;
+                    frame -= UnityCompositorInterface.GetCaptureFrameIndex() - CurrentCompositeFrame;
                     time = videoDt * frame;
                 }
             }
@@ -261,9 +261,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
             UpdateStatsElement(PCFpsStats, 1.0f / Time.deltaTime);
 
-            NativeInterface.UpdateSpectatorView();
+            UnityCompositorInterface.UpdateSpectatorView();
 
-            int captureFrameIndex = NativeInterface.GetCaptureFrameIndex();
+            int captureFrameIndex = UnityCompositorInterface.GetCaptureFrameIndex();
 
             int prevCompositeFrame = CurrentCompositeFrame;
 
@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
             UpdateStatsElement(StepStats, step);
 
-            NativeInterface.SetCompositeFrameIndex(CurrentCompositeFrame);
+            UnityCompositorInterface.SetCompositeFrameIndex(CurrentCompositeFrame);
 
             #region Spectator View Transform
             if (IsCurrentlyActive && transform.parent != null)
@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                     SpectatorViewPoseCache.PoseData poseData = poseCache.GetLatestPose();
                     if (poseData != null)
                     {
-                        timeSynchronizer.Update(NativeInterface.GetCaptureFrameIndex(), captureTime, poseData.Index, poseData.TimeStamp);
+                        timeSynchronizer.Update(UnityCompositorInterface.GetCaptureFrameIndex(), captureTime, poseData.Index, poseData.TimeStamp);
                     }
                 }
 
@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
             if (!frameProviderInitialized)
             {
-                frameProviderInitialized = NativeInterface.InitializeFrameProviderOnDevice((int)CaptureDevice);
+                frameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice((int)CaptureDevice);
                 if (frameProviderInitialized)
                 {
                     CurrentCompositeFrame = 0;
@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                 }
             }
 
-            NativeInterface.UpdateCompositor();
+            UnityCompositorInterface.UpdateCompositor();
 #endif
         }
 
@@ -395,19 +395,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         public void ResetCompositor()
         {
             Debug.Log("Disposing DLL Resources.");
-            NativeInterface.Reset();
+            UnityCompositorInterface.Reset();
 
-            NativeInterface.StopFrameProvider();
-            if (NativeInterface.IsRecording())
+            UnityCompositorInterface.StopFrameProvider();
+            if (UnityCompositorInterface.IsRecording())
             {
-                NativeInterface.StopRecording();
+                UnityCompositorInterface.StopRecording();
             }
         }
 
         // Send audio data to Compositor.
         private void OnAudioFilterRead(float[] data, int channels)
         {
-            if (!NativeInterface.IsRecording())
+            if (!UnityCompositorInterface.IsRecording())
             {
                 return;
             }
@@ -437,7 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                 audioStreamWriter.Flush();
                 byte[] outBytes = audioMemoryStream.ToArray();
                 audioMemoryStream = null;
-                NativeInterface.SetAudioData(outBytes, outBytes.Length, audioStartTime);
+                UnityCompositorInterface.SetAudioData(outBytes, outBytes.Length, audioStartTime);
             }
         }
 
@@ -448,7 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             {
                 audioStreamWriter.Flush();
                 byte[] outBytes = audioMemoryStream.ToArray();
-                NativeInterface.SetAudioData(outBytes, outBytes.Length, audioStartTime);
+                UnityCompositorInterface.SetAudioData(outBytes, outBytes.Length, audioStartTime);
                 audioMemoryStream = null;
             }
         }

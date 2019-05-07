@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if UNITY_EDITOR
 using System;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
 {
-    public static class NativeInterface
+    internal static class UnityCompositorInterface
     {
         [DllImport("UnityCompositorInterface")]
         public static extern int GetFrameWidth();
@@ -94,7 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         [DllImport("UnityCompositorInterface")]
         public static extern void SetCompositeFrameIndex(int index);
-
-
     }
 }
+#endif

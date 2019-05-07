@@ -126,11 +126,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         private void Start()
         {
-            frameWidth = NativeInterface.GetFrameWidth();
-            frameHeight = NativeInterface.GetFrameHeight();
-            outputYUV = NativeInterface.OutputYUV();
-            renderEvent = NativeInterface.GetRenderEventFunc();
-            hardwareEncodeVideo = NativeInterface.HardwareEncodeVideo();
+            frameWidth = UnityCompositorInterface.GetFrameWidth();
+            frameHeight = UnityCompositorInterface.GetFrameHeight();
+            outputYUV = UnityCompositorInterface.OutputYUV();
+            renderEvent = UnityCompositorInterface.GetRenderEventFunc();
+            hardwareEncodeVideo = UnityCompositorInterface.HardwareEncodeVideo();
 
             downsampleMat = LoadMaterial("Downsample");
             YUVToRGBMat = LoadMaterial("YUVToRGB");
@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private void Update()
         {
             // this updates after we start running or when the video source changes, so we need to check every frame
-            bool newOutputYUV = NativeInterface.OutputYUV();
+            bool newOutputYUV = UnityCompositorInterface.OutputYUV();
             if (outputYUV != newOutputYUV)
             {
                 outputYUV = newOutputYUV;
@@ -252,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             Graphics.Blit(renderTexture, alphaTexture, extractAlphaMat);
 
             // Video texture.
-            if (NativeInterface.IsRecording())
+            if (UnityCompositorInterface.IsRecording())
             {
                 videoOutputTexture.DiscardContents();
                 // convert composite to the format expected by our video encoder (NV12 or BGR)
@@ -302,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         public void SetHologramShaderAlpha(float alpha)
         {
-            NativeInterface.SetAlpha(alpha);
+            UnityCompositorInterface.SetAlpha(alpha);
             holoAlphaMat.SetFloat("_Alpha", alpha);
         }
 
@@ -315,7 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             if (colorTexture == null)
             {
                 IntPtr colorSRV;
-                if (NativeInterface.CreateUnityColorTexture(out colorSRV))
+                if (UnityCompositorInterface.CreateUnityColorTexture(out colorSRV))
                 {
                     colorTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.ARGB32, false, false, colorSRV);
                     colorTexture.filterMode = FilterMode.Point;
@@ -358,9 +358,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             displayOutputTexture.colorBuffer.ToString();
             compositeTexture.colorBuffer.ToString();
 
-            NativeInterface.SetVideoRenderTexture(videoOutputTexture.GetNativeTexturePtr());
-            NativeInterface.SetOutputRenderTexture(displayOutputTexture.GetNativeTexturePtr());
-            NativeInterface.SetHoloTexture(compositeTexture.GetNativeTexturePtr());
+            UnityCompositorInterface.SetVideoRenderTexture(videoOutputTexture.GetNativeTexturePtr());
+            UnityCompositorInterface.SetOutputRenderTexture(displayOutputTexture.GetNativeTexturePtr());
+            UnityCompositorInterface.SetHoloTexture(compositeTexture.GetNativeTexturePtr());
         }
         #endregion
 #endif
