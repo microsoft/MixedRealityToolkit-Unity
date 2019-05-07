@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"reprojection error: {ReprojectionError} {base.ToString()}";
+            return $"reprojection error: {ReprojectionError.ToString("G4")} {base.ToString()}";
         }
     }
 }

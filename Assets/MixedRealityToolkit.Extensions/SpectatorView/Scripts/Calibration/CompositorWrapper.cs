@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-// Enable this when you have access to the spectator view compositor dlls
-// #define COMPOSITOR_PLUGIN_AVAILABLE
-
+// Enable this preprocessor directive in your player settings as needed.
 #if COMPOSITOR_PLUGIN_AVAILABLE
 using SpectatorView;
 #endif

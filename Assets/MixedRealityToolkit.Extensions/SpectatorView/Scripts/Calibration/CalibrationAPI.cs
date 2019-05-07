@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         internal static extern bool ProcessChessboardIntrinsicsNative(
             float squareSize,
             float[] intrinsics,
-            int numIntrinsics);
+            int sizeIntrinsics);
 
 #if UNITY_WSA
         [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessArUcoData")]
@@ -67,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         internal static extern bool ProcessIndividualArUcoExtrinsicsNative(
             float[] intrinsics,
             float[] extrinsics,
+            int sizeExtrinsics,
             int numExtrinsics);
 
 #if UNITY_WSA
@@ -77,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         internal static extern bool ProcessGlobalArUcoExtrinsicsNative(
             float[] intrinsics,
             float[] extrinsics,
-            int numExtrinsics);
+            int sizeExtrinsics);
 
 #if UNITY_WSA
         [DllImport("SpectatorViewPlugin", EntryPoint = "GetLastErrorMessage")]
@@ -242,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             float[] inputIntrinsics = CreateIntrinsicsArray(intrinsics);
 
             float[] extrinsics = new float[numExtrinsics * sizeExtrinsics];
-            if (!ProcessIndividualArUcoExtrinsicsNative(inputIntrinsics, extrinsics, numExtrinsics))
+            if (!ProcessIndividualArUcoExtrinsicsNative(inputIntrinsics, extrinsics, sizeExtrinsics, numExtrinsics))
             {
                 PrintLastError();
                 return null;
@@ -268,9 +269,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             float[] inputIntrinsics = CreateIntrinsicsArray(intrinsics);
 
-            int numExtrinsics = 1;
             float[] extrinsics = new float[sizeExtrinsics];
-            if (!ProcessGlobalArUcoExtrinsicsNative(inputIntrinsics, extrinsics, numExtrinsics))
+            if (!ProcessGlobalArUcoExtrinsicsNative(inputIntrinsics, extrinsics, sizeExtrinsics))
             {
                 PrintLastError();
                 return null;
@@ -340,7 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public CalculatedCameraIntrinsics CalculateChessboardIntrinsics(float chessSquareSize)
         {
             float[] output = new float[sizeIntrinsics];
-            if (ProcessChessboardIntrinsicsNative(chessSquareSize, output, 1))
+            if (ProcessChessboardIntrinsicsNative(chessSquareSize, output, sizeIntrinsics))
             {
                 var intrinsics = new CalculatedCameraIntrinsics(
                     output[11],

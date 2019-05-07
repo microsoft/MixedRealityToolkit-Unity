@@ -55,8 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private Dictionary<int, GameObject> qrCodeDebugVisuals = new Dictionary<int, GameObject>();
         private Dictionary<int, GameObject> arucoDebugVisuals = new Dictionary<int, GameObject>();
         private readonly float markerPaddingRatio = 34f / (300f - (2f * 34f)); // padding pixels / marker width in pixels
-        private Dictionary<int, MarkerCorners> qrCodeMarkerCorners = new Dictionary<int, MarkerCorners>();
-        private Dictionary<int, MarkerCorners> arucoMarkerCorners = new Dictionary<int, MarkerCorners>();
+        private Dictionary<int, MarkerPair> markerPairs = new Dictionary<int, MarkerPair>();
         private ConcurrentQueue<HeadsetCalibrationData> sendQueue;
 
         /// <inheritdoc />
@@ -75,13 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             data.markers = new List<MarkerPair>();
             foreach (var qrCodePair in qrCodeMarkers)
             {
-                if (qrCodeMarkerCorners.ContainsKey(qrCodePair.Key) &&
-                    arucoMarkerCorners.ContainsKey(qrCodePair.Key))
+                if (markerPairs.ContainsKey(qrCodePair.Key))
                 {
-                    var markerPair = new MarkerPair();
-                    markerPair.id = qrCodePair.Key;
-                    markerPair.qrCodeMarkerCorners = qrCodeMarkerCorners[qrCodePair.Key];
-                    markerPair.arucoMarkerCorners = arucoMarkerCorners[qrCodePair.Key];
+                    var markerPair = markerPairs[qrCodePair.Key];
                     data.markers.Add(markerPair);
                 }
             }
@@ -141,15 +136,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         qrCodeDebugVisuals[marker.Key] = qrCodeDebugVisual;
                     }
 
-                    lock (qrCodeMarkerCorners)
-                    {
-                        qrCodeMarkerCorners[marker.Key] = CalculateMarkerCorners(qrCodePosition, qrCodeRotation, size);
-                    }
-
                     var originToQRCode = Matrix4x4.TRS(qrCodePosition, qrCodeRotation, Vector3.one);
                     var arucoPosition = originToQRCode.MultiplyPoint(new Vector3(-1.0f * ((2.0f * (size * markerPaddingRatio)) + (size)), 0, 0));
-                    // Assuming that the aruco marker has the same orientation as qr code marker.
-                    // Because both the aruco marker and qr code marker are on the same plane/2d calibration board.
+                    // We assume that the aruco marker has the same orientation as the qr code marker because they are on the same plane/2d calibration board.
                     var arucoRotation = marker.Value.Rotation;
 
                     if (showDebugVisuals)
@@ -160,15 +149,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         arucoDebugVisuals[marker.Key] = arucoDebugVisual;
                     }
 
-                    lock (arucoMarkerCorners)
+                    var markerPair = new MarkerPair();
+                    markerPair.id = marker.Key;
+                    markerPair.qrCodeMarkerCorners = CalculateMarkerCorners(qrCodePosition, qrCodeRotation, size);
+                    markerPair.arucoMarkerCorners = CalculateMarkerCorners(arucoPosition, arucoRotation, size);
+
+                    lock (markerPairs)
                     {
-                        arucoMarkerCorners[marker.Key] = CalculateMarkerCorners(arucoPosition, arucoRotation, size);
+                        markerPairs[marker.Key] = markerPair;
                     }
                 }
             }
 
-            RemoveItemsAndDestroy(qrCodeDebugVisuals, updatedMarkerIds);
-            RemoveItemsAndDestroy(arucoDebugVisuals, updatedMarkerIds);
+            RemoveUnobservedItemsAndDestroy(qrCodeDebugVisuals, updatedMarkerIds);
+            RemoveUnobservedItemsAndDestroy(arucoDebugVisuals, updatedMarkerIds);
         }
 
         private void SendHeadsetCalibrationDataPayload(HeadsetCalibrationData data)
@@ -188,10 +182,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 observedMarkers.Add(markerUpdate.Key);
             }
 
-            RemoveItems(dictionary, observedMarkers);
+            RemoveUnobservedItems(dictionary, observedMarkers);
         }
 
-        private static void RemoveItems<TKey, TValue>(Dictionary<TKey, TValue> items, HashSet<TKey> itemsToKeep)
+        private static void RemoveUnobservedItems<TKey, TValue>(Dictionary<TKey, TValue> items, HashSet<TKey> itemsToKeep)
         {
             List<TKey> keysToRemove = new List<TKey>();
             foreach (var pair in items)
@@ -208,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        private static void RemoveItemsAndDestroy<TKey>(Dictionary<TKey, GameObject> items, HashSet<TKey> itemsToKeep)
+        private static void RemoveUnobservedItemsAndDestroy<TKey>(Dictionary<TKey, GameObject> items, HashSet<TKey> itemsToKeep)
         {
             List<TKey> keysToRemove = new List<TKey>();
             foreach (var pair in items)
@@ -248,23 +242,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             corners.bottomRight = originToTopLeftCorner.MultiplyPoint(new Vector3(-size, -size, 0));
             corners.orientation = topLeftOrientation;
             return corners;
-        }
-
-        private static byte[] EncodeBGRAAsPNG(CameraFrame frame)
-        {
-            Texture2D texture = new Texture2D((int)frame.Resolution.Width, (int)frame.Resolution.Height, TextureFormat.BGRA32, false);
-
-            // Byte data obtained from a HoloLensCamera needs to be flipped vertically to display correctly in Unity
-            byte[] copy = new byte[frame.PixelData.Length];
-            int stride = (int)frame.Resolution.Width * 4;
-            for (int i = 0; i < frame.Resolution.Height; i++)
-            {
-                Array.Copy(frame.PixelData, (int)(frame.Resolution.Height - i - 1) * stride, copy, i * stride, stride);
-            }
-
-            texture.LoadRawTextureData(copy);
-            texture.Apply();
-            return texture.EncodeToPNG();
         }
     }
 }

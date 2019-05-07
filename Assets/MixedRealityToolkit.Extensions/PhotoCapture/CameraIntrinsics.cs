@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
 
         public override string ToString()
         {
-            return $"Focal Length:{FocalLength}, Principal Point:{PrincipalPoint}, Image Width:{ImageWidth}, Image Height:{ImageHeight}, Radial Distortion:{RadialDistortion}, Tangential Distortion:{TangentialDistortion}";
+            return $"Focal Length:{FocalLength.ToString("G4")}, Principal Point:{PrincipalPoint.ToString("G4")}, Image Width:{ImageWidth.ToString("G4")}, Image Height:{ImageHeight.ToString("G4")}, Radial Distortion:{RadialDistortion.ToString("G4")}, Tangential Distortion:{TangentialDistortion.ToString("G4")}";
         }
     }
 }

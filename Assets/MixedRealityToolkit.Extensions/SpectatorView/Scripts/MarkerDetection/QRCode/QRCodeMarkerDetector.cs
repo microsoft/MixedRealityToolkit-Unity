@@ -1,11 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-// The process for distributing QRCodesTrackerPlugin.dll is not yet defined. This code will remain unusable
-// to the general public until said distribution story is determiend. However, this file has been added to enable
-// public facing development.
-// #define QRCODESTRACKER_BINARY_AVAILABLE
-
+// Enable this preprocessor directive (QRCODESTRACKER_BINARY_AVAILABLE) in your player settings as needed.
 #if QRCODESTRACKER_BINARY_AVAILABLE && WINDOWS_UWP && UNITY_WSA
 #define ENABLE_QRCODES
 #endif

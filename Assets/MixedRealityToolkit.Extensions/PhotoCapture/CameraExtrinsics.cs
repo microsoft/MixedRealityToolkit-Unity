@@ -19,9 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
 
         public override string ToString()
         {
-            var position = ViewFromWorld.GetColumn(3);
-            var rotation = Quaternion.LookRotation(ViewFromWorld.GetColumn(2), ViewFromWorld.GetColumn(1));
-            return $"Position: {position.ToString()}, Rotation: {rotation.ToString()}";
+            Vector3 position = ViewFromWorld.GetColumn(3);
+            Quaternion rotation = Quaternion.LookRotation(ViewFromWorld.GetColumn(2), ViewFromWorld.GetColumn(1));
+            return $"Position: {position.ToString("G4")}, Rotation: {rotation.eulerAngles.ToString("G4")}";
         }
     }
 }

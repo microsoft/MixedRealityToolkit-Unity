@@ -55,6 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public event DataHandler DataReceived;
 
         private bool runAsUser = false;
+
+        /// <summary>
+        /// This dictionary maps ip addresses to unique player ids
+        /// </summary>
         private Dictionary<string, string> playerIds = new Dictionary<string, string>();
 
         private void Start()
@@ -157,6 +161,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (net != null)
             {
                 net.DisconnectAll();
+                net.OnConnected -= OnConnected;
+                net.OnDisconnected -= OnDisconnected;
+                net.OnReceive -= OnReceive;
                 return true;
             }
 
