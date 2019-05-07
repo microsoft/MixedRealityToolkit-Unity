@@ -16,7 +16,7 @@ using UnityEngine.TestTools;
 using Microsoft.MixedReality.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class TestFixture_02_ManipulationTests
+    public class ManipulationHandlerTests
     {
         /// <summary>
         /// Test creating adding a ManipulationHandler to GameObject programmatically.
@@ -28,15 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestUtilities.InitializeMixedRealityToolkitScene(true);
 
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-            playspace.transform.position = new Vector3(1.0f, 1.5f, -2.0f);
-            playspace.transform.LookAt(Vector3.zero);
-
-            var testLight = new GameObject("TestLight");
-            var light = testLight.AddComponent<Light>();
-            light.type = LightType.Directional;
-            testLight.transform.position = new Vector3(-2.5f, 3.0f, -1.2f);
-            testLight.transform.LookAt(Vector3.zero);
+            RenderSettings.skybox = null;
 
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
@@ -47,6 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             GameObject.Destroy(testObject);
+            yield return null;
         }
 
         /// <summary>
@@ -63,12 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             playspace.transform.position = new Vector3(1.0f, 1.5f, -2.0f);
             playspace.transform.LookAt(Vector3.zero);
 
-            var testLight = new GameObject("TestLight");
-            var light = testLight.AddComponent<Light>();
-            light.type = LightType.Directional;
-            testLight.transform.position = new Vector3(-2.5f, 3.0f, -1.2f);
-            testLight.transform.LookAt(Vector3.zero);
-
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
 
@@ -80,13 +67,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.OnHoverExited.AddListener((eventData) => hoverExitCount++);
 
             yield return null;
-            Assert.AreEqual(hoverEnterCount, 1, $"ManipulationHandler did not receive hover enter event, count is {hoverEnterCount}");
+            Assert.AreEqual(1, hoverEnterCount, $"ManipulationHandler did not receive hover enter event, count is {hoverEnterCount}");
 
             testObject.transform.Translate(Vector3.up);
             yield return null;
-            Assert.IsTrue(hoverExitCount == 1, "ManipulationHandler did not receive hover exit event");
+            Assert.AreEqual(1, hoverExitCount, "ManipulationHandler did not receive hover exit event");
 
             GameObject.Destroy(testObject);
+            yield return null;
         }
 
     }

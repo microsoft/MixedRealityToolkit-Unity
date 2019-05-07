@@ -12,7 +12,7 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class TestFixture_01_SimplePlayModeTest
+    public class SimplePlayModeTests
     {
         [UnityTest]
         public IEnumerator Test01_WhizzySphere()
