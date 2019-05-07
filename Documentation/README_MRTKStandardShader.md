@@ -17,7 +17,7 @@ Built in configurable stencil test support to achieve a wide array of effects. S
 
 ![stenciltest](https://user-images.githubusercontent.com/13305729/43346556-621f9bc0-91a6-11e8-90fa-0d4015003248.gif)
 
-Instanced color support to give thousands of GPU instanced meshes unique material properties (example scene not in this PR):
+Instanced color support to give thousands of GPU instanced meshes unique material properties:
 
 ![instances](https://user-images.githubusercontent.com/13305729/43346720-243d838e-91a7-11e8-82a3-cbb082052039.gif)
 
