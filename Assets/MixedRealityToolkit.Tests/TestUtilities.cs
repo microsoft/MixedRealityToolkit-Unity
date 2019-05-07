@@ -46,9 +46,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void InitializePlayspace()
         {
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-            playspace.transform.position = new Vector3(1.0f, 1.5f, -2.0f);
-            playspace.transform.LookAt(Vector3.zero);
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = new Vector3(1.0f, 1.5f, -2.0f);
+                p.LookAt(Vector3.zero);
+            });
         }
 
         public static void InitializeMixedRealityToolkitScene(bool useDefaultProfile = false)
