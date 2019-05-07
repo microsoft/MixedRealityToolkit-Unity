@@ -16,45 +16,21 @@ MonoBehaviour:
   startBehavior: 0
   recognitionConfidenceLevel: 1
   speechCommands:
-  - localizationKey: 
-    keyword: Menu
+  - keyword: Menu
     keyCode: 9
     action:
       id: 2
       description: Menu
       axisConstraint: 2
-  - localizationKey: 
-    keyword: Toggle Diagnostics
+  - keyword: Toggle Diagnostics
     keyCode: 100
     action:
       id: 1
       description: Toggle Diagnostics
       axisConstraint: 0
-  - localizationKey: 
-    keyword: Toggle Profiler
+  - keyword: Toggle Profiler
     keyCode: 112
     action:
       id: 7
       description: Grip Press
       axisConstraint: 3
-  - localizationKey: 
-    keyword: Record Right Hand
-    keyCode: 0
-    action:
-      id: 14
-      description: RecordHandStart
-      axisConstraint: 0
-  - localizationKey: 
-    keyword: Record Left Hand
-    keyCode: 0
-    action:
-      id: 15
-      description: RecordHandStop
-      axisConstraint: 0
-  - localizationKey: 
-    keyword: Stop
-    keyCode: 0
-    action:
-      id: 0
-      description: RecordHandStop
-      axisConstraint: 0

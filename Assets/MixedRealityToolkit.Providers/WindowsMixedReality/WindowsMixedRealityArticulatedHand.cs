@@ -65,7 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose)
         {
 #if WINDOWS_UWP
-            bool ok = unityJointPoses.TryGetValue(joint, out MixedRealityPose sss);
             return unityJointPoses.TryGetValue(joint, out pose);
 #else
             pose = MixedRealityPose.ZeroIdentity;
