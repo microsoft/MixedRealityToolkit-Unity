@@ -89,7 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected DebugVisualHelper cameraVisualHelper;
 
-        private CalibrationAPI calibration = null;
         private CalculatedCameraIntrinsics dslrIntrinsics;
         private HeadsetCalibrationData headsetData = null;
         private int nextArUcoImageId = 0;
@@ -116,8 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 Debug.Log($"Successfully loaded the provided camera intrinsics file: {dslrIntrinsics}");
             }
-
-            calibration = new CalibrationAPI();
 
             networkingService = NetworkingService as INetworkingService;
             if (networkingService != null)
@@ -224,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 Debug.Log("Starting Individual Camera Extrinsics calculations.");
-                cameraExtrinsics = calibration.CalculateIndividualArUcoExtrinsics(dslrIntrinsics, parentVisuals.Count);
+                cameraExtrinsics = CalibrationAPI.Instance.CalculateIndividualArUcoExtrinsics(dslrIntrinsics, parentVisuals.Count);
                 if (cameraExtrinsics != null)
                 {
                     foreach (var extrinsic in cameraExtrinsics)
@@ -235,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
 
                 Debug.Log("Starting the Global Camera Extrinsics calculation.");
-                globalExtrinsics = calibration.CalculateGlobalArUcoExtrinsics(dslrIntrinsics);
+                globalExtrinsics = CalibrationAPI.Instance.CalculateGlobalArUcoExtrinsics(dslrIntrinsics);
                 if (globalExtrinsics != null)
                 {
                     var fileName = CalibrationDataHelper.SaveCameraExtrinsics(globalExtrinsics);
@@ -276,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             var unityPixels = dslrTexture.GetRawTextureData<byte>();
             var pixels = unityPixels.ToArray();
 
-            if (!calibration.ProcessArUcoData(headsetData, pixels, imageWidth, imageHeight))
+            if (!CalibrationAPI.Instance.ProcessArUcoData(headsetData, pixels, imageWidth, imageHeight))
             {
                 return false;
             }

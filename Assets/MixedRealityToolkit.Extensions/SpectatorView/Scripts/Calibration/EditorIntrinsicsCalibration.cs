@@ -61,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         protected RawImage cornersImage;
 
         private int nextChessboardImageId = 0;
-        private CalibrationAPI calibration = null;
         private Texture2D chessboardCorners = null;
         private Texture2D chessboardHeatmap = null;
         private int cornerScale = 3;
@@ -72,7 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private void Start()
         {
             CalibrationDataHelper.Initialize(out nextChessboardImageId, out var nextArUcoImageId);
-            calibration = new CalibrationAPI();
 
             for (int i = 0; i < nextChessboardImageId; i++)
             {
@@ -133,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 Debug.Log("Starting Camera Intrinsics calculation.");
-                intrinsics = calibration.CalculateChessboardIntrinsics(chessSquareSize);
+                intrinsics = CalibrationAPI.Instance.CalculateChessboardIntrinsics(chessSquareSize);
                 Debug.Log($"Chessboard intrinsics reprojection error: {intrinsics.ToString()}");
                 var file = CalibrationDataHelper.SaveCameraIntrinsics(intrinsics);
                 Debug.Log($"Camera Intrinsics saved to file: {file}");
@@ -184,7 +182,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             var unityHeatmap = chessboardHeatmap.GetRawTextureData<byte>();
             var heatmapPixels = unityHeatmap.ToArray();
 
-            if (!calibration.ProcessChessboardImage(pixels, imageWidth, imageHeight, chessboardWidth, chessboardHeight, cornersPixels, heatmapPixels, cornerScale, heatmapWidth))
+            if (!CalibrationAPI.Instance.ProcessChessboardImage(
+                pixels,
+                imageWidth,
+                imageHeight,
+                chessboardWidth,
+                chessboardHeight,
+                cornersPixels,
+                heatmapPixels,
+                cornerScale,
+                heatmapWidth))
             {
                 return false;
             }

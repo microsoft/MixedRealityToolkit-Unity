@@ -19,6 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         internal static extern bool InitializeCalibrationNative();
 
 #if UNITY_WSA
+        [DllImport("SpectatorViewPlugin", EntryPoint = "ResetCalibration")]
+#else
+        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ResetCalibration")]
+#endif
+        internal static extern bool ResetCalibrationNative();
+
+#if UNITY_WSA
         [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessChessboardImage")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessChessboardImage")]
@@ -93,11 +100,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private const int sizeIntrinsics = 12;
         private const int sizeExtrinsics = 7;
 
+        public static CalibrationAPI Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new CalibrationAPI();
+                }
+
+                return instance;
+            }
+        }
+        private static CalibrationAPI instance;
+
         /// <summary>
         /// Creates an API instance and initializes the plugin.
         /// Note: Creating multiple CalibrationAPI instances at the same time is not supported.
         /// </summary>
-        public CalibrationAPI()
+        private CalibrationAPI()
         {
             try
             {
@@ -116,6 +137,29 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             initialized = false;
             Debug.LogError("Failed to initialize SpectatorViewPlugin dll for calibration");
+        }
+
+        /// <summary>
+        /// Call to reset the cached calibration data.
+        /// </summary>
+        /// <returns>Returns true if resetting the calibration data succeeded, otherwise false</returns>
+        public bool Reset()
+        {
+            if (initialized)
+            {
+                try
+                {
+                    return ResetCalibrationNative();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Exception thrown when trying to reset calibration data: {e.ToString()}");
+                    return false;
+                }
+            }
+
+            Debug.LogWarning("The calibration API is not yet initialized and can't be reset");
+            return false;
         }
 
         /// <summary>
