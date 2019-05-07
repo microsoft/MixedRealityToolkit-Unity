@@ -26,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         MonoBehaviour,
         IMixedRealityFocusChangedHandler,
         IMixedRealityFocusHandler,
-        IMixedRealityInputHandler,
         IMixedRealityPointerHandler,
         IMixedRealitySpeechHandler,
         IMixedRealityTouchHandler
@@ -679,66 +678,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion MixedRealityPointerHandlers
 
         #region MixedRealityInputHandlers
-
-        /// <summary>
-        /// Used for click events for actions not processed by pointer events
-        /// </summary>
-        /// <param name="eventData"></param>
-        public void OnInputUp(InputEventData eventData)
-        {
-            // check global and focus
-            if (!CanInteract())
-            {
-                return;
-            }
-
-            if (StateManager != null)
-            {
-                // check if the InputAction matches - and - if the pointer event did not fire first or is handling these actions, 
-                if (eventData != null && ShouldListen(eventData.MixedRealityInputAction) && inputTimer != null && (eventData.MixedRealityInputAction != pointerInputAction || pointerInputAction == MixedRealityInputAction.None))
-                {
-                    if (GlobalClickOrder[0] == 0)
-                    {
-                        GlobalClickOrder[1] = 1;
-                    }
-                    StopCoroutine(inputTimer);
-                    inputTimer = null;
-                    SetPress(false);
-
-                    IncreaseDimensionIndex();
-                    SendOnClick(null);
-                    SetVisited(true);
-
-                    eventData.Use();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Used to handle global events really, using pointer events for most things
-        /// </summary>
-        /// <param name="eventData"></param>
-        public void OnInputDown(InputEventData eventData)
-        {
-            if (!CanInteract())
-            {
-                return;
-            }
-
-            if (StateManager != null)
-            {
-                if (eventData != null && ShouldListen(eventData.MixedRealityInputAction) && (eventData.MixedRealityInputAction != pointerInputAction || pointerInputAction == MixedRealityInputAction.None))
-                {
-                    StartInputTimer(true);
-                    SetPress(true);
-                    eventData.Use();
-                }
-            }
-        }
-
-        public void OnInputPressed(InputEventData<float> eventData)
-        {
-        }
 
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
