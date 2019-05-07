@@ -17,6 +17,10 @@ public class AdditiveLoadTesting : MonoBehaviour
         AsyncOperation loadOp2 = SceneManager.LoadSceneAsync("MRTKInstance2", LoadSceneMode.Additive);
         AsyncOperation loadOp3 = SceneManager.LoadSceneAsync("MRTKInstance3", LoadSceneMode.Additive);
 
+        loadOp1.allowSceneActivation = true;
+        loadOp2.allowSceneActivation = true;
+        loadOp3.allowSceneActivation = true;
+
         while (!(loadOp1.isDone && loadOp2.isDone && loadOp3.isDone))
             yield return null;
 

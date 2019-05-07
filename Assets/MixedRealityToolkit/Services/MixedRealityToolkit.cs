@@ -573,16 +573,18 @@ namespace Microsoft.MixedReality.Toolkit
                             return null;
                         }
 #endif
-                        RegisterInstance(new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>());
+                        //RegisterInstance(new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>());
                         break;
 
                     case 1:
+                        Debug.Log("Attempting to register instance " + objects[0].GetInstanceID());
                         RegisterInstance(objects[0]);
                         break;
 
                     default:
                         foreach (MixedRealityToolkit toolkit in objects)
                         {
+                            Debug.Log("Attempting to register instance " + toolkit.GetInstanceID());
                             RegisterInstance(toolkit);
                         }
                         break;
@@ -675,16 +677,6 @@ namespace Microsoft.MixedReality.Toolkit
             return IsInitialized;
         }
 
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
-            {
-                RegisterInstance(this);
-            }
-        }
-#endif // UNITY_EDITOR
-
         private void Awake()
         {
             RegisterInstance(this);
@@ -741,12 +733,10 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             if (MixedRealityToolkit.activeInstance == null)
-            {
-                // If we don't have an instance, set it here
+            {   // If we don't have an instance, set it here
                 // Set the instance to active
                 MixedRealityToolkit.activeInstance = toolkitInstance;
                 toolkitInstances.Add(toolkitInstance);
-                toolkitInstance.gameObject.SetActive(true);
                 toolkitInstance.InitializeInstance();
                 toolkitInstance.name = ActiveInstanceGameObjectName;
                 return;
@@ -756,9 +746,8 @@ namespace Microsoft.MixedReality.Toolkit
             {   // If we're already registered, no need to proceed
                 return;
             }
-
+            
             // If we do, then it's not this instance, so deactivate this instance
-            toolkitInstance.gameObject.SetActive(false);
             toolkitInstance.name = InactiveInstanceGameObjectName;
             // Move to the bottom of the heirarchy so it stays out of the way
             toolkitInstance.transform.SetSiblingIndex(int.MaxValue);
@@ -774,7 +763,6 @@ namespace Microsoft.MixedReality.Toolkit
                 toolkitInstance.ClearCoreSystemCache();
                 // If this was the active instance, un-register the active instance
                 MixedRealityToolkit.activeInstance = null;
-
                 if (MixedRealityToolkit.isApplicationQuitting)
                 {   // Don't search for additional instances if we're quitting
                     return;
@@ -786,7 +774,6 @@ namespace Microsoft.MixedReality.Toolkit
                     {   // This may have been a mass-deletion - be wary of soon-to-be-unregistered instances
                         continue;
                     }
-
                     // Select the first available instance and register it immediately
                     RegisterInstance(instance);
                     break;
