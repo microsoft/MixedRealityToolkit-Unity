@@ -30,27 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 offset = Vector3.zero;
         private Handedness recordingHand = Handedness.None;
 
-        void Update()
-        {
-            // if (UnityEngine.Input.GetKeyDown(KeyCode.F9))
-            // {
-            //     RecordHandStart(Handedness.Left);
-            // }
-            // if (UnityEngine.Input.GetKeyUp(KeyCode.F9))
-            // {
-            //     RecordHandStop(Handedness.Left);
-            // }
-
-            // if (UnityEngine.Input.GetKeyDown(KeyCode.F10))
-            // {
-            //     RecordHandStart(Handedness.Right);
-            // }
-            // if (UnityEngine.Input.GetKeyUp(KeyCode.F10))
-            // {
-            //     RecordHandStop(Handedness.Right);
-            // }
-        }
-
         public void RecordLeftHandStart()
         {
             RecordHandStart(Handedness.Left);
@@ -82,21 +61,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             recordingHand = Handedness.None;
 
             StoreRecordedHandPose(pose.ToJson());
-            // StoreRecordedHandPose(pose.GenerateInitializerCode());
         }
 
         #if WINDOWS_UWP
         private static void StoreRecordedHandPose(string data)
-        // private static async void StoreRecordedHandPose(string data)
         {
             string path = Path.Combine(Application.persistentDataPath, "ArticulatedHandPose.json");
             using (TextWriter writer = File.CreateText(path))
             {
                 writer.Write(data);
             }
-            // StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            // StorageFile storageFile = await storageFolder.CreateFileAsync("ArticulatedHandPose.json", CreationCollisionOption.ReplaceExisting);
-            // await FileIO.WriteTextAsync(storageFile, data);
         }
         #else
         private static void StoreRecordedHandPose(string data)
