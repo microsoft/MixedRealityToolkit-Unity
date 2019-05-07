@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator Test01_ManipulationHandlerInstantiate()
         {
             TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializePlayspace();
 
             RenderSettings.skybox = null;
 
@@ -52,10 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator Test02_ManipulationHandlerGazeHover()
         {
             TestUtilities.InitializeMixedRealityToolkitScene(true);
-
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-            playspace.transform.position = new Vector3(1.0f, 1.5f, -2.0f);
-            playspace.transform.LookAt(Vector3.zero);
+            TestUtilities.InitializePlayspace();
 
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
@@ -73,6 +71,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.Translate(Vector3.up);
             yield return null;
             Assert.AreEqual(1, hoverExitCount, "ManipulationHandler did not receive hover exit event");
+
+            testObject.transform.Translate(5 * Vector3.up);
+            yield return null;
+            Assert.IsTrue(hoverExitCount == 1, "ManipulationHandler did not receive hover exit event");
 
             GameObject.Destroy(testObject);
             // Wait for a frame to give Unity a change to actually destroy the object

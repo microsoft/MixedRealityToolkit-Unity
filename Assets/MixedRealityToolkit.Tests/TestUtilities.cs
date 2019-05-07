@@ -5,6 +5,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
@@ -41,6 +42,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 return;
             }
 #endif
+        }
+
+        public static void InitializePlayspace()
+        {
+            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            playspace.transform.position = new Vector3(1.0f, 1.5f, -2.0f);
+            playspace.transform.LookAt(Vector3.zero);
         }
 
         public static void InitializeMixedRealityToolkitScene(bool useDefaultProfile = false)
