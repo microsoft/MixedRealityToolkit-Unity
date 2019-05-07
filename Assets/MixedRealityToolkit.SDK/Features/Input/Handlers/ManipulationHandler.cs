@@ -196,9 +196,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         };
 
         private State currentState = State.Start;
-        private TwoHandMoveLogic m_moveLogic;
-        private TwoHandScaleLogic m_scaleLogic;
-        private TwoHandRotateLogic m_rotateLogic;
+        private TwoHandMoveLogic moveLogic;
+        private TwoHandScaleLogic scaleLogic;
+        private TwoHandRotateLogic rotateLogic;
         private Dictionary<uint, IMixedRealityPointer> pointerIdToPointerMap = new Dictionary<uint, IMixedRealityPointer>();
 
         private Quaternion objectToHandRotation;
@@ -218,9 +218,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region MonoBehaviour Functions
         private void Awake()
         {
-            m_moveLogic = new TwoHandMoveLogic(constraintOnMovement);
-            m_rotateLogic = new TwoHandRotateLogic();
-            m_scaleLogic = new TwoHandScaleLogic();
+            moveLogic = new TwoHandMoveLogic(constraintOnMovement);
+            rotateLogic = new TwoHandRotateLogic();
+            scaleLogic = new TwoHandScaleLogic();
         }
         private void Start()
         {
@@ -337,7 +337,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 case State.MovingRotating:
                 case State.RotatingScaling:
                 case State.MovingRotatingScaling:
-                    // TODO: if < 2, make this go to start state ('drop it')
                     if (handsPressedCount == 0)
                     {
                         newState = State.Start;
@@ -503,18 +502,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if ((currentState & State.Moving) > 0)
             {
-                targetPosition = m_moveLogic.Update(GetPointersCentroid(), IsNearManipulation());
+                targetPosition = moveLogic.Update(GetPointersCentroid(), IsNearManipulation());
             }
 
             var handPositionMap = GetHandPositionMap();
 
             if ((currentState & State.Rotating) > 0)
             {
-                targetRotationTwoHands = m_rotateLogic.Update(handPositionMap, targetRotationTwoHands, constraintOnRotation);
+                targetRotationTwoHands = rotateLogic.Update(handPositionMap, targetRotationTwoHands, constraintOnRotation);
             }
             if ((currentState & State.Scaling) > 0)
             {
-                targetScale = m_scaleLogic.UpdateMap(handPositionMap);
+                targetScale = scaleLogic.UpdateMap(handPositionMap);
             }
 
             float lerpAmount = GetLerpAmount();
@@ -586,7 +585,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                targetPosition = m_moveLogic.Update(GetPointersCentroid(), IsNearManipulation());
+                targetPosition = moveLogic.Update(GetPointersCentroid(), IsNearManipulation());
             }
 
             float lerpAmount = GetLerpAmount();
@@ -602,15 +601,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if ((newState & State.Rotating) > 0)
             {
-                m_rotateLogic.Setup(handPositionMap, hostTransform, ConstraintOnRotation);
+                rotateLogic.Setup(handPositionMap, hostTransform, ConstraintOnRotation);
             }
             if ((newState & State.Moving) > 0)
             {
-                m_moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
+                moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
             }
             if ((newState & State.Scaling) > 0)
             {
-                m_scaleLogic.Setup(handPositionMap, hostTransform);
+                scaleLogic.Setup(handPositionMap, hostTransform);
             }
         }
         private void HandleTwoHandManipulationEnded() { }
@@ -620,7 +619,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Assert.IsTrue(pointerIdToPointerMap.Count == 1);
             IMixedRealityPointer pointer = pointerIdToPointerMap.Values.First();
 
-            m_moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
+            moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
 
             // Calculate relative transform from object to hand.
             Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
