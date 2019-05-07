@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private float frameOffset = -10.0f;
         private TextureManager textureManager;
         private MicrophoneInput microphoneInput;
-        private Calibration calibration;
+        private ICalibrationData calibrationData;
 
 #if UNITY_EDITOR
         private bool overrideCameraPose;
@@ -156,8 +156,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         private void Start()
         {
-            //UnityEngine.XR.WSA.HolographicSettings.ActivateLatentFramePresentation(true);
-
             IsCurrentlyActive = false;
             spectatorCamera = GetComponent<Camera>();
 
@@ -177,7 +175,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             // Ensure that runInBackground is set to true so that the compositor can run even when not focused
             Application.runInBackground = true;
 
-            calibration = gameObject.AddComponent<Calibration>();
             textureManager = gameObject.AddComponent<TextureManager>();
             microphoneInput = GetComponentInChildren<MicrophoneInput>();
             textureManager.Compositor = this;
@@ -359,8 +356,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         }
 
 #if UNITY_EDITOR
-        public void EnableHolographicCamera(Transform parent)
+        public void EnableHolographicCamera(Transform parent, ICalibrationData calibrationData)
         {
+            this.calibrationData = calibrationData;
             GameObject container = GameObject.Find("SpectatorView");
             if (container == null)
             {
@@ -376,8 +374,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
             gameObject.transform.parent = container.transform;
 
-            calibration.SetUnityCameraExtrinstics(transform);
-            calibration.SetUnityCameraIntrinsics(GetComponent<Camera>());
+            calibrationData.SetUnityCameraExtrinstics(transform);
+            calibrationData.SetUnityCameraIntrinsics(GetComponent<Camera>());
 
             IsCurrentlyActive = true;
         }
