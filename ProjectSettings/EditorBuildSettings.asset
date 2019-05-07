@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionRecordArticulatedHandPose.unity
+    guid: bb5e8437c0c71d4468e0b70fe0c114c7
+  - enabled: 1
     path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
     guid: 3dd4a396b5225f8469b9a1eb608bfa57
   - enabled: 1

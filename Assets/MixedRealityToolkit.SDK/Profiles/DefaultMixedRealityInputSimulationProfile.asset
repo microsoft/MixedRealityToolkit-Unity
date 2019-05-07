@@ -35,7 +35,7 @@ MonoBehaviour:
   handHideTimeout: 0.2
   leftHandManipulationKey: 304
   rightHandManipulationKey: 32
-  defaultHandGesture: 2
+  defaultHandGesture: 1
   leftMouseHandGesture: 3
   middleMouseHandGesture: 0
   rightMouseHandGesture: 0
