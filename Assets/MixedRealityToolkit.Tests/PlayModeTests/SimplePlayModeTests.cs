@@ -6,14 +6,13 @@
 // Unity doesn't include the the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
-using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class TestFixture_01_SimplePlayModeTest
+    public class SimplePlayModeTests
     {
         [UnityTest]
         public IEnumerator Test01_WhizzySphere()
@@ -54,6 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return new WaitForFixedUpdate();
             }
             stopwatch.Stop();
+
+            GameObject.Destroy(testLight);
+            GameObject.Destroy(testObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
         }
     }
 }

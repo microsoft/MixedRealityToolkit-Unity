@@ -59,7 +59,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
         private Transform hostTransform = null;
 
-        public Transform HostTransform => hostTransform;
+        public Transform HostTransform
+        {
+            get => hostTransform;
+            set => hostTransform = value;
+        }
 
         [Header("Manipulation")]
         [SerializeField]
@@ -86,15 +90,31 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Specifies whether manipulation can be done using far interaction with pointers.")]
         private bool allowFarManipulation = true;
 
-        public bool AllowFarManipulation => allowFarManipulation;
+        public bool AllowFarManipulation
+        {
+            get => allowFarManipulation;
+            set => allowFarManipulation = value;
+        }
 
         [SerializeField]
         [Tooltip("Rotation behavior of object when using one hand near")]
         private RotateInOneHandType oneHandRotationModeNear = RotateInOneHandType.RotateAboutGrabPoint;
 
+        public RotateInOneHandType OneHandRotationModeNear
+        {
+            get => oneHandRotationModeNear;
+            set => oneHandRotationModeNear = value;
+        }
+
         [SerializeField]
         [Tooltip("Rotation behavior of object when using one hand at distance")]
         private RotateInOneHandType oneHandRotationModeFar = RotateInOneHandType.RotateAboutGrabPoint;
+
+        public RotateInOneHandType OneHandRotationModeFar
+        {
+            get => oneHandRotationModeFar;
+            set => oneHandRotationModeFar = value;
+        }
 
         [SerializeField]
         [EnumFlags]
@@ -154,10 +174,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Event handlers
         [Header("Manipulation Events")]
-        public ManipulationEvent OnManipulationStarted;
-        public ManipulationEvent OnManipulationEnded;
-        public ManipulationEvent OnHoverEntered;
-        public ManipulationEvent OnHoverExited;
+        public ManipulationEvent OnManipulationStarted = new ManipulationEvent();
+        public ManipulationEvent OnManipulationEnded = new ManipulationEvent();
+        public ManipulationEvent OnHoverEntered = new ManipulationEvent();
+        public ManipulationEvent OnHoverExited = new ManipulationEvent();
         #endregion
 
         #region Private Properties
@@ -625,28 +645,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
             isNearManipulation = IsNearManipulation();
             // TODO: If we are on HoloLens 1, push and pop modal input handler so that we can use old
             // gaze/gesture/voice manipulation. For HoloLens 2, we don't want to do this.
-            OnManipulationStarted.Invoke(new ManipulationEventData
+            if (OnManipulationStarted != null)
             {
-                ManipulationSource = this,
-                IsNearInteraction = isNearManipulation,
-                PointerCentroid = GetPointersCentroid(),
-                PointerVelocity = GetPointersVelocity(),
-                PointerAngularVelocity = GetPointersAngularVelocity()
-            });
+                OnManipulationStarted.Invoke(new ManipulationEventData
+                {
+                    ManipulationSource = this,
+                    IsNearInteraction = isNearManipulation,
+                    PointerCentroid = GetPointersCentroid(),
+                    PointerVelocity = GetPointersVelocity(),
+                    PointerAngularVelocity = GetPointersAngularVelocity()
+                });
+            }
         }
 
         private void HandleManipulationEnded()
         {
             // TODO: If we are on HoloLens 1, push and pop modal input handler so that we can use old
             // gaze/gesture/voice manipulation. For HoloLens 2, we don't want to do this.
-            OnManipulationEnded.Invoke(new ManipulationEventData
+            if (OnManipulationEnded != null)
             {
-                ManipulationSource = this,
-                IsNearInteraction = isNearManipulation,
-                PointerCentroid = GetPointersCentroid(),
-                PointerVelocity = GetPointersVelocity(),
-                PointerAngularVelocity = GetPointersAngularVelocity()
-            });
+                OnManipulationEnded.Invoke(new ManipulationEventData
+                {
+                    ManipulationSource = this,
+                    IsNearInteraction = isNearManipulation,
+                    PointerCentroid = GetPointersCentroid(),
+                    PointerVelocity = GetPointersVelocity(),
+                    PointerAngularVelocity = GetPointersAngularVelocity()
+                }); 
+            }
         }
 
         #endregion Private Event Handlers
@@ -687,7 +713,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return;
             }
-            OnHoverEntered.Invoke(new ManipulationEventData { IsNearInteraction = !isFar });
+            if (OnHoverEntered != null)
+            {
+                OnHoverEntered.Invoke(new ManipulationEventData { IsNearInteraction = !isFar }); 
+            }
         }
 
         public void OnFocusExit(FocusEventData eventData)
@@ -697,7 +726,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return;
             }
-            OnHoverExited.Invoke(new ManipulationEventData { IsNearInteraction = !isFar });
+            if (OnHoverExited != null)
+            {
+                OnHoverExited.Invoke(new ManipulationEventData { IsNearInteraction = !isFar }); 
+            }
         }
         #endregion
     }
