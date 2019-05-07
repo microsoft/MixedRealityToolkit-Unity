@@ -50,6 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return new WaitForFixedUpdate();
             }
             stopwatch.Stop();
+
+            GameObject.Destroy(testLight);
+            GameObject.Destroy(testObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
         }
     }
 }

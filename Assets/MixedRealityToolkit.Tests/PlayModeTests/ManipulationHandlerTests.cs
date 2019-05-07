@@ -39,6 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             GameObject.Destroy(testObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
 
@@ -74,6 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(1, hoverExitCount, "ManipulationHandler did not receive hover exit event");
 
             GameObject.Destroy(testObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
 
