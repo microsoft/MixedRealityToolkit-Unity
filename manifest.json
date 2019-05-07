@@ -10084,11 +10084,23 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.TestFixture_01_SimplePlayModeTest.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestFixture_01_SimplePlayModeTest.html",
-          "hash": "B/lBU9ySJ6NExuorTxrVWw=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.html",
+          "hash": "eyfq4v6fCzrojDmO8MkzbA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.SimplePlayModeTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SimplePlayModeTests.html",
+          "hash": "JTzC/xI1s1KOCxn9HYn2OQ=="
         }
       },
       "is_incremental": false,
@@ -10100,7 +10112,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html",
-          "hash": "mKUbM/0sB60K+mrsTzNjdg=="
+          "hash": "pp2U8Eym1DCiESbgS0AVZg=="
         }
       },
       "is_incremental": false,
@@ -10112,7 +10124,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "nUqgvX4Tlc2eE7c2HVfCdg=="
+          "hash": "pwYcONQJL7tvDL4oIt+vwg=="
         }
       },
       "is_incremental": false,
@@ -11108,7 +11120,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.html",
-          "hash": "UZyHIj6QTZJP1UPJwTHvog=="
+          "hash": "MMQEyGCxQjQAk2LKSXLfxQ=="
         }
       },
       "is_incremental": false,
@@ -14444,7 +14456,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "AaxMXCt8+dF4XjLhGinxew=="
+          "hash": "vRozwUH9s9J0vtFGa/aDEA=="
         }
       },
       "is_incremental": false,
@@ -14519,7 +14531,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 881,
+          "total_file_count": 882,
           "skipped_file_count": 0
         }
       }
