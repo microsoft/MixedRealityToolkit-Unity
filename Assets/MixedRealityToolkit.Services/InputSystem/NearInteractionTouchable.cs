@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -209,15 +210,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Vector3 localPoint = transform.InverseTransformPoint(samplePoint) - localCenter;
 
-            // Get point on plane
-            Plane plane = new Plane(localForward, Vector3.zero);
-            Vector3 pointOnPlane = plane.ClosestPointOnPlane(localPoint);
+            // Get surface coordinates
+            Vector3 planeSpacePoint = new Vector3(
+                Vector3.Dot(localPoint, LocalRight),
+                Vector3.Dot(localPoint, localUp),
+                Vector3.Dot(localPoint, localForward));
 
-            // Get plane coordinates
-            Vector2 planeSpacePoint = new Vector2(
-                Vector3.Dot(pointOnPlane, LocalRight),
-                Vector3.Dot(pointOnPlane, localUp));
-
+            // touchables currently can only be touched within the bounds of the rectangle.
+            // We return infinity to ensure that any point outside the bounds does not get touched.
             if (planeSpacePoint.x < -bounds.x / 2 ||
                 planeSpacePoint.x > bounds.x / 2 ||
                 planeSpacePoint.y < -bounds.y / 2 ||
@@ -226,10 +226,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return float.PositiveInfinity;
             }
 
-            // Convert back to 3D space
-            Vector3 clampedPoint = transform.TransformPoint((LocalRight * planeSpacePoint.x) + (localUp * planeSpacePoint.y) + localCenter);
+            // Scale back to 3D space
+            planeSpacePoint = transform.TransformSize(planeSpacePoint);
 
-            return (samplePoint - clampedPoint).magnitude;
+            return Math.Abs(planeSpacePoint.z);
         }
 
     }
