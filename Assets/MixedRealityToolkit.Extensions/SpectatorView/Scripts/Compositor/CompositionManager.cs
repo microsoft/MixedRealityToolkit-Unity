@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         public float DefaultAlpha = 0.9f;
 
         private float frameOffset = -10.0f;
-        private ShaderManager shaderManager;
+        private TextureManager textureManager;
         private MicrophoneInput microphoneInput;
         private Calibration calibration;
 
@@ -178,9 +178,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             Application.runInBackground = true;
 
             calibration = gameObject.AddComponent<Calibration>();
-            shaderManager = gameObject.AddComponent<ShaderManager>();
+            textureManager = gameObject.AddComponent<TextureManager>();
             microphoneInput = GetComponentInChildren<MicrophoneInput>();
-            shaderManager.Compositor = this;
+            textureManager.Compositor = this;
 
             // Change audio listener to the holographic camera.
             AudioListener listener = null;

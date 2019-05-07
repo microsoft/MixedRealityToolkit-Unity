@@ -10,7 +10,7 @@ using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
 {
-    public class ShaderManager : MonoBehaviour
+    public class TextureManager : MonoBehaviour
     {
 #if UNITY_EDITOR
         public CompositionManager Compositor { get; set; }
