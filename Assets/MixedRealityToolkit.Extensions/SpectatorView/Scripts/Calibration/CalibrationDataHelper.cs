@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -14,30 +15,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private const string ChessboardDetectedImageDirectoryName = "CHESS_DETECTED";
         private const string DSLRArUcoDirectoryName = "DSLR_ARUCO";
         private const string DSLRArUcoDetectedDirectoryName = "DSLR_ARUCO_DETECTED";
-        private const string HeadsetDataDirectory = "META";
+        private const string HeadsetDataDirectory = "HEADSET_DATA";
         private const string RootDirectoryName = "Calibration";
 
-        public static void Initialize(out int nextChessboardImageId, out int nextArUcoImageId)
+        public static void Initialize()
         {
-            nextChessboardImageId = 0;
-            nextArUcoImageId = 0;
-
             string rootFolder = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName);
-            if (Directory.Exists(rootFolder))
-            {
-                InitializeDirectory(rootFolder, ChessboardImageDirectoryName, "*.png", out nextChessboardImageId);
-                InitializeDirectory(rootFolder, DSLRArUcoDirectoryName, "*.png", out nextArUcoImageId);
-                InitializeDirectory(rootFolder, HeadsetDataDirectory, "*.json", out nextArUcoImageId);
-            }
-            else
-            {
-                Directory.CreateDirectory(rootFolder);
-                Directory.CreateDirectory(Path.Combine(rootFolder, ChessboardImageDirectoryName));
-                Directory.CreateDirectory(Path.Combine(rootFolder, ChessboardDetectedImageDirectoryName));
-                Directory.CreateDirectory(Path.Combine(rootFolder, DSLRArUcoDirectoryName));
-                Directory.CreateDirectory(Path.Combine(rootFolder, DSLRArUcoDetectedDirectoryName));
-                Directory.CreateDirectory(Path.Combine(rootFolder, HeadsetDataDirectory));
-            }
+            InitializeDirectory(rootFolder);
+            InitializeDirectory(Path.Combine(rootFolder, ChessboardImageDirectoryName));
+            InitializeDirectory(Path.Combine(rootFolder, ChessboardDetectedImageDirectoryName));
+            InitializeDirectory(Path.Combine(rootFolder, DSLRArUcoDirectoryName));
+            InitializeDirectory(Path.Combine(rootFolder, DSLRArUcoDetectedDirectoryName));
+            InitializeDirectory(Path.Combine(rootFolder, HeadsetDataDirectory));
 
             DirectoryInfo detectedChessboards = new DirectoryInfo(Path.Combine(rootFolder, ChessboardDetectedImageDirectoryName));
             foreach (FileInfo file in detectedChessboards.GetFiles())
@@ -52,18 +41,44 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        private static void InitializeDirectory(string rootFolder, string directoryName, string fileExtensionExpected, out int nextImageId)
+        private static void InitializeDirectory(string directoryName)
         {
-            nextImageId = 0;
-            string directory = Path.Combine(rootFolder, directoryName);
-            if (Directory.Exists(directory))
+            if (!Directory.Exists(directoryName))
             {
-                nextImageId = Math.Max(Directory.GetFiles(directory, fileExtensionExpected, SearchOption.TopDirectoryOnly).Length, nextImageId);
+                Directory.CreateDirectory(directoryName);
             }
-            else
+        }
+
+        public static List<string> GetChessboardImageFileNames()
+        {
+            string rootFolder = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName);
+            DirectoryInfo chessboardDirectory = new DirectoryInfo(Path.Combine(rootFolder, ChessboardImageDirectoryName));
+            var files = chessboardDirectory.GetFiles();
+            List<string> subfixes = new List<string>();
+            for (int i = 0; i < files.Length; i++)
             {
-                Directory.CreateDirectory(directory);
+                var fileName = Path.GetFileNameWithoutExtension(files[i].Name);
+                subfixes.Add(fileName);
             }
+
+            subfixes.Sort();
+            return subfixes;
+        }
+
+        public static List<string> GetArUcoDatasetFileNames()
+        {
+            string rootFolder = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName);
+            DirectoryInfo arUcoDirectory = new DirectoryInfo(Path.Combine(rootFolder, DSLRArUcoDirectoryName));
+            var files = arUcoDirectory.GetFiles();
+            List<string> subfixes = new List<string>();
+            for (int i = 0; i < files.Length; i++)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(files[i].Name);
+                subfixes.Add(fileName);
+            }
+
+            subfixes.Sort();
+            return subfixes;
         }
 
         public static void SaveImage(Texture2D image, string fileName)
@@ -71,24 +86,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             SaveImage("", image, fileName);
         }
 
-        public static void SaveChessboardImage(Texture2D image, int fileID)
+        public static void SaveChessboardImage(Texture2D image, string subfix)
         {
-            SaveImage(ChessboardImageDirectoryName, image, fileID.ToString());
+            SaveImage(ChessboardImageDirectoryName, image, subfix);
         }
 
-        public static void SaveChessboardDetectedImage(Texture2D image, int fileID)
+        public static void SaveChessboardDetectedImage(Texture2D image, string subfix)
         {
-            SaveImage(ChessboardDetectedImageDirectoryName, image, fileID.ToString());
+            SaveImage(ChessboardDetectedImageDirectoryName, image, subfix);
         }
 
-        public static void SaveDSLRArUcoImage(Texture2D image, int fileID)
+        public static void SaveDSLRArUcoImage(Texture2D image, string subfix)
         {
-            SaveImage(DSLRArUcoDirectoryName, image, fileID.ToString());
+            SaveImage(DSLRArUcoDirectoryName, image, subfix);
         }
 
-        public static void SaveDSLRArUcoDetectedImage(Texture2D image, int fileID)
+        public static void SaveDSLRArUcoDetectedImage(Texture2D image, string subfix)
         {
-            SaveImage(DSLRArUcoDetectedDirectoryName, image, fileID.ToString());
+            SaveImage(DSLRArUcoDetectedDirectoryName, image, subfix);
         }
 
         private static void SaveImage(string directory, Texture2D image, string fileID)
@@ -97,19 +112,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             File.WriteAllBytes(path, image.EncodeToPNG());
         }
 
-        public static Texture2D LoadChessboardImage(int fileID)
+        public static Texture2D LoadChessboardImage(string filename)
         {
-            return LoadImage(ChessboardImageDirectoryName, fileID);
+            return LoadImage(ChessboardImageDirectoryName, filename);
         }
 
-        public static Texture2D LoadDSLRArUcoImage(int fileID)
+        public static Texture2D LoadDSLRArUcoImage(string filename)
         {
-            return LoadImage(DSLRArUcoDirectoryName, fileID);
+            return LoadImage(DSLRArUcoDirectoryName, filename);
         }
 
-        private static Texture2D LoadImage(string directory, int fileID)
+        private static Texture2D LoadImage(string directory, string filename)
         {
-            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, directory, $"{fileID}.png");
+            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, directory, $"{filename}.png");
 
             if (File.Exists(path))
             {
@@ -132,9 +147,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return null;
         }
 
-        public static HeadsetCalibrationData LoadHeadsetData(int fileID)
+        public static HeadsetCalibrationData LoadHeadsetData(string filename)
         {
-            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, HeadsetDataDirectory, $"{fileID}.json");
+            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, HeadsetDataDirectory, $"{filename}.json");
             if (File.Exists(path))
             {
                 var fileData = File.ReadAllBytes(path);
@@ -147,9 +162,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return null;
         }
 
-        public static void SaveHeadsetData(HeadsetCalibrationData data, int fileID)
+        public static void SaveHeadsetData(HeadsetCalibrationData data, string filename)
         {
-            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, HeadsetDataDirectory, $"{fileID}.json");
+            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, HeadsetDataDirectory, $"{filename}.json");
             File.WriteAllBytes(path, data.Serialize());
         }
 
@@ -240,6 +255,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 #else
             return String.empty;
 #endif
+        }
+
+        /// <summary>
+        /// Creates a unique file name based on the current time.
+        /// </summary>
+        /// <returns>Returns a file name based on the current time.</returns>
+        public static string GetUniqueFileName()
+        {
+            var subfix = "_" + DateTime.Now.ToString("yyyy'_'MM'_'dd'_'HH':'mm':'ss");
+            return subfix;
         }
     }
 }

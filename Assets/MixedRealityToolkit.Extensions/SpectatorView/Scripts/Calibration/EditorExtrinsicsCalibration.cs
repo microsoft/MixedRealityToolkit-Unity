@@ -91,7 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private CalculatedCameraIntrinsics dslrIntrinsics;
         private HeadsetCalibrationData headsetData = null;
-        private int nextArUcoImageId = 0;
         private List<CalculatedCameraExtrinsics> cameraExtrinsics;
         private CalculatedCameraExtrinsics globalExtrinsics;
         private List<GameObject> parentVisuals = new List<GameObject>();
@@ -105,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            CalibrationDataHelper.Initialize(out var nextChessboardImageId, out nextArUcoImageId);
+            CalibrationDataHelper.Initialize();
             dslrIntrinsics = CalibrationDataHelper.LoadCameraIntrinsics(cameraIntrinsicsPath);
             if (dslrIntrinsics == null)
             {
@@ -133,21 +132,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 headsetCalibration.Updated += OnHeadsetCalibrationUpdated;
             }
 
-            for (int i = 0; i < nextArUcoImageId; i++)
+            var arucoDatasetFileNames = CalibrationDataHelper.GetArUcoDatasetFileNames();
+            foreach (var fileName in arucoDatasetFileNames)
             {
-                var dslrTexture = CalibrationDataHelper.LoadDSLRArUcoImage(i);
-                var headsetData = CalibrationDataHelper.LoadHeadsetData(i);
+                var dslrTexture = CalibrationDataHelper.LoadDSLRArUcoImage(fileName);
+                var headsetData = CalibrationDataHelper.LoadHeadsetData(fileName);
 
                 if (dslrTexture == null ||
-                    headsetData == null ||
-                    !ProcessArUcoData(headsetData, dslrTexture))
+                    headsetData == null)
                 {
-                    Debug.LogWarning($"Failed to process dataset: {i}");
+                    Debug.LogWarning($"Failed to locate dataset: {fileName}");
+                }
+                else if (!ProcessArUcoData(headsetData, dslrTexture))
+                {
+                    Debug.LogWarning($"Failed to process dataset: {fileName}");
                 }
                 else
                 {
-                    CalibrationDataHelper.SaveDSLRArUcoDetectedImage(dslrTexture, i);
-                    CreateVisual(headsetData, i);
+                    CalibrationDataHelper.SaveDSLRArUcoDetectedImage(dslrTexture, fileName);
+                    CreateVisual(headsetData, fileName);
                 }
             }
         }
@@ -203,16 +206,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 else
                 {
                     var dslrTexture = CompositorWrapper.GetDSLRTexture();
-                    CalibrationDataHelper.SaveDSLRArUcoImage(dslrTexture, nextArUcoImageId);
-                    CalibrationDataHelper.SaveHeadsetData(headsetData, nextArUcoImageId);
+                    var fileName = CalibrationDataHelper.GetUniqueFileName();
+                    CalibrationDataHelper.SaveDSLRArUcoImage(dslrTexture, fileName);
+                    CalibrationDataHelper.SaveHeadsetData(headsetData, fileName);
 
                     if (ProcessArUcoData(headsetData, dslrTexture))
                     {
-                        CalibrationDataHelper.SaveDSLRArUcoDetectedImage(dslrTexture, nextArUcoImageId);
-                        CreateVisual(headsetData, nextArUcoImageId);
+                        CalibrationDataHelper.SaveDSLRArUcoDetectedImage(dslrTexture, fileName);
+                        CreateVisual(headsetData, fileName);
                     }
-
-                    nextArUcoImageId++;
                 }
 
                 headsetData = null;
@@ -291,10 +293,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return true;
         }
 
-        private void CreateVisual(HeadsetCalibrationData data, int index)
+        private void CreateVisual(HeadsetCalibrationData data, string fileName)
         {
             var parent = new GameObject();
-            parent.name = $"Dataset {index}";
+            parent.name = $"Dataset {fileName}";
 
             for (int i = 0; i < data.markers.Count; i++)
             {
@@ -302,13 +304,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 var corners = data.markers[i].arucoMarkerCorners;
                 float dist = Vector3.Distance(corners.topLeft, corners.topRight);
                 markerVisualHelper.CreateOrUpdateVisual(ref temp, corners.topLeft, corners.orientation, dist * Vector3.one);
-                temp.name = $"Marker {index}.{data.markers[i].id}";
+                temp.name = $"Marker {fileName}.{data.markers[i].id}";
                 temp.transform.parent = parent.transform;
             }
 
             GameObject camera = null;
             cameraVisualHelper.CreateOrUpdateVisual(ref camera, data.headsetData.position, data.headsetData.rotation);
-            camera.name = $"HoloLens {index}";
+            camera.name = $"HoloLens {fileName}";
             camera.transform.parent = parent.transform;
 
             parentVisuals.Add(parent);

@@ -60,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected RawImage cornersImage;
 
-        private int nextChessboardImageId = 0;
         private Texture2D chessboardCorners = null;
         private Texture2D chessboardHeatmap = null;
         private int cornerScale = 3;
@@ -70,19 +69,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 #if UNITY_EDITOR
         private void Start()
         {
-            CalibrationDataHelper.Initialize(out nextChessboardImageId, out var nextArUcoImageId);
+            CalibrationDataHelper.Initialize();
+            var chessboardImageFileNames = CalibrationDataHelper.GetChessboardImageFileNames();
 
-            for (int i = 0; i < nextChessboardImageId; i++)
+            foreach (var fileName in chessboardImageFileNames)
             {
-                var texture = CalibrationDataHelper.LoadChessboardImage(i);
+                var texture = CalibrationDataHelper.LoadChessboardImage(fileName);
                 if(texture == null ||
                    !ProcessChessboardImage(texture))
                 {
-                    Debug.LogWarning($"Failed to process/locate chessboard in dataset: {i}");
+                    Debug.LogWarning($"Failed to process/locate chessboard image: {fileName}");
                 }
                 else
                 {
-                    CalibrationDataHelper.SaveChessboardDetectedImage(texture, i);
+                    CalibrationDataHelper.SaveChessboardDetectedImage(texture, fileName);
                 }
             }
 
@@ -112,20 +112,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 var dslrTexture = CompositorWrapper.GetDSLRTexture();
-                CalibrationDataHelper.SaveChessboardImage(dslrTexture, nextChessboardImageId);
+                var fileName = CalibrationDataHelper.GetUniqueFileName();
+                CalibrationDataHelper.SaveChessboardImage(dslrTexture, fileName);
 
                 if(!ProcessChessboardImage(dslrTexture))
                 {
-                    Debug.LogWarning($"Failed to process/locate chessboard in dataset: {nextChessboardImageId}");
+                    Debug.LogWarning($"Failed to process/locate chessboard in dataset: {fileName}");
                 }
                 else
                 {
-                    CalibrationDataHelper.SaveChessboardDetectedImage(dslrTexture, nextChessboardImageId);
+                    CalibrationDataHelper.SaveChessboardDetectedImage(dslrTexture, fileName);
                     CalibrationDataHelper.SaveImage(chessboardHeatmap, "ChessboardHeatmap");
                     CalibrationDataHelper.SaveImage(chessboardCorners, "ChessboardCorners");
                 }
-
-                nextChessboardImageId++;
             }
 
             if (Input.GetKeyDown(KeyCode.Return))
