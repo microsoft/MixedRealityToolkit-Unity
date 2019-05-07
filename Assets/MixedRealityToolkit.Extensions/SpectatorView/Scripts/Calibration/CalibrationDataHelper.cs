@@ -54,15 +54,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             string rootFolder = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName);
             DirectoryInfo chessboardDirectory = new DirectoryInfo(Path.Combine(rootFolder, ChessboardImageDirectoryName));
             var files = chessboardDirectory.GetFiles();
-            List<string> subfixes = new List<string>();
+            List<string> fileNames = new List<string>();
             for (int i = 0; i < files.Length; i++)
             {
                 var fileName = Path.GetFileNameWithoutExtension(files[i].Name);
-                subfixes.Add(fileName);
+                fileNames.Add(fileName);
             }
 
-            subfixes.Sort();
-            return subfixes;
+            fileNames.Sort();
+            return fileNames;
         }
 
         public static List<string> GetArUcoDatasetFileNames()
@@ -70,15 +70,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             string rootFolder = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName);
             DirectoryInfo arUcoDirectory = new DirectoryInfo(Path.Combine(rootFolder, DSLRArUcoDirectoryName));
             var files = arUcoDirectory.GetFiles();
-            List<string> subfixes = new List<string>();
+            List<string> fileNames = new List<string>();
             for (int i = 0; i < files.Length; i++)
             {
                 var fileName = Path.GetFileNameWithoutExtension(files[i].Name);
-                subfixes.Add(fileName);
+                fileNames.Add(fileName);
             }
 
-            subfixes.Sort();
-            return subfixes;
+            fileNames.Sort();
+            return fileNames;
         }
 
         public static void SaveImage(Texture2D image, string fileName)
@@ -86,24 +86,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             SaveImage("", image, fileName);
         }
 
-        public static void SaveChessboardImage(Texture2D image, string subfix)
+        public static void SaveChessboardImage(Texture2D image, string fileName)
         {
-            SaveImage(ChessboardImageDirectoryName, image, subfix);
+            SaveImage(ChessboardImageDirectoryName, image, fileName);
         }
 
-        public static void SaveChessboardDetectedImage(Texture2D image, string subfix)
+        public static void SaveChessboardDetectedImage(Texture2D image, string fileName)
         {
-            SaveImage(ChessboardDetectedImageDirectoryName, image, subfix);
+            SaveImage(ChessboardDetectedImageDirectoryName, image, fileName);
         }
 
-        public static void SaveDSLRArUcoImage(Texture2D image, string subfix)
+        public static void SaveDSLRArUcoImage(Texture2D image, string fileName)
         {
-            SaveImage(DSLRArUcoDirectoryName, image, subfix);
+            SaveImage(DSLRArUcoDirectoryName, image, fileName);
         }
 
-        public static void SaveDSLRArUcoDetectedImage(Texture2D image, string subfix)
+        public static void SaveDSLRArUcoDetectedImage(Texture2D image, string fileName)
         {
-            SaveImage(DSLRArUcoDetectedDirectoryName, image, subfix);
+            SaveImage(DSLRArUcoDetectedDirectoryName, image, fileName);
         }
 
         private static void SaveImage(string directory, Texture2D image, string fileID)
@@ -263,8 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <returns>Returns a file name based on the current time.</returns>
         public static string GetUniqueFileName()
         {
-            var subfix = "_" + DateTime.Now.ToString("yyyy'_'MM'_'dd'_'HH':'mm':'ss");
-            return subfix;
+            return DateTime.Now.ToString("yyyy'-'MM'-'dd'_'HH'-'mm'-'ss");
         }
     }
 }

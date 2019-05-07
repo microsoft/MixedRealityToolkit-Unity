@@ -30,27 +30,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         [Header("HoloLens Parameters")]
         /// <summary>
-        /// Time between headset calibration data requests (in seconds).
-        /// </summary>
-        [Tooltip("Time between headset calibration data requests (in seconds).")]
-        [SerializeField]
-        private float timeBetweenRequests = 5.0f;
-
-        /// <summary>
         /// Used to setup a network connection.
         /// </summary>
         [Tooltip("Used to setup a network connection.")]
         [SerializeField]
-        private MonoBehaviour MatchMakingService;
-        private IMatchMakingService matchMakingService = null;
+        protected MonoBehaviour MatchMakingService;
+        protected IMatchMakingService matchMakingService = null;
 
         /// <summary>
         /// Used to send/receive data related to the calibration process.
         /// </summary>
         [Tooltip("Used to send/receive data related to the calibration process.")]
         [SerializeField]
-        private MonoBehaviour NetworkingService;
-        private INetworkingService networkingService = null;
+        protected MonoBehaviour NetworkingService;
+        protected INetworkingService networkingService = null;
 
         [Header("VR Headset Parameters")]
         /// <summary>

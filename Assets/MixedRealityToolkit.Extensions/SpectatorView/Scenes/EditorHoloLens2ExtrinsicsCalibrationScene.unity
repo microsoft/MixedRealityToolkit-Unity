@@ -474,8 +474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7abda130a4f4dfc4989cb445d1bd8fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraIntrinsicsPath: C:\Users\chriba\Documents\Calibration\CameraIntrinsics_ManyChessboardPhotos.json
-  timeBetweenRequests: 5
+  cameraIntrinsicsPath: C:\Users\chriba\Documents\Calibration\CameraIntrinsics_1.json
+  expectedNumberOfMarkers: 18
   MatchMakingService: {fileID: 740770235}
   NetworkingService: {fileID: 740770235}
   headsetCalibration: {fileID: 0}

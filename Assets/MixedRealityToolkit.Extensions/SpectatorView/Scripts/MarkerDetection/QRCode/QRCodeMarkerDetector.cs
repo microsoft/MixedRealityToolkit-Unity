@@ -32,10 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
 #if ENABLE_QRCODES
         private QRCodesManager _qrCodesManager;
         private Dictionary<Guid, SpatialCoordinateSystem> _markerCoordinateSystems = new Dictionary<Guid, SpatialCoordinateSystem>();
+        private bool _processMarkers = false;
 #endif
 
         private object _contentLock = new object();
-        private bool _processMarkers = false;
         private Dictionary<Guid, int> _markerIds = new Dictionary<Guid, int>();
         private Dictionary<int, float> _markerSizes = new Dictionary<int, float>();
         private Dictionary<int, List<Marker>> _markerObservations = new Dictionary<int, List<Marker>>();

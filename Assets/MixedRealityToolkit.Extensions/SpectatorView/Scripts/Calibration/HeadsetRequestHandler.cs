@@ -15,30 +15,30 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         [Tooltip("Used to obtain marker, headset and pv camera data.")]
         [SerializeField]
-        private HeadsetCalibration headsetCalibration;
+        protected HeadsetCalibration headsetCalibration;
 
         /// <summary>
         /// Used to setup a network connection.
         /// </summary>
         [Tooltip("Used to setup a network connection.")]
         [SerializeField]
-        private MonoBehaviour MatchMakingService;
-        private IMatchMakingService matchMakingService;
+        protected MonoBehaviour MatchMakingService;
+        protected IMatchMakingService matchMakingService;
 
         /// <summary>
         /// Used to send/receive data related to the calibration process.
         /// </summary>
         [Tooltip("Used to send/receive data related to the calibration process.")]
         [SerializeField]
-        private MonoBehaviour NetworkingService;
-        private INetworkingService networkingService;
+        protected MonoBehaviour NetworkingService;
+        protected INetworkingService networkingService;
 
         /// <summary>
         /// Used to display the last request timestamp.
         /// </summary>
         [Tooltip("Used to display the last request timestamp.")]
         [SerializeField]
-        private Text lastRequestTimestampText;
+        protected Text lastRequestTimestampText;
 
         private bool updateData = false;
         private HeadsetCalibrationDataRequest request = null;
