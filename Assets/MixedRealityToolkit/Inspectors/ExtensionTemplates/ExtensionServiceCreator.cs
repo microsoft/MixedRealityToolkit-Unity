@@ -442,18 +442,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (Result == CreateResult.Error)
                 return;
 
+            // This delay is purely for visual flow
             await Task.Delay(100);
             string inspectorAsset = CreateTextAssetFromTemplate(InspectorTemplate);
             WriteTextAssetToDisk(inspectorAsset, InspectorName, InspectorFolderPath);
             if (Result == CreateResult.Error)
                 return;
 
+            // This delay is purely for visual flow
             await Task.Delay(100);
             string interfaceAsset = CreateTextAssetFromTemplate(InterfaceTemplate);
             WriteTextAssetToDisk(interfaceAsset, InterfaceName, InterfaceFolderPath);
             if (Result == CreateResult.Error)
                 return;
 
+            // This delay is purely for visual flow
             await Task.Delay(100);
             string profileAsset = string.Empty;
             if (UsesProfile)
