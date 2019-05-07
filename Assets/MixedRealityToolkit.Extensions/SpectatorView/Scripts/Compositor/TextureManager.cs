@@ -15,21 +15,44 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 #if UNITY_EDITOR
         public CompositionManager Compositor { get; set; }
 
-        // the color image texture coming from the camera, converted to RGB. The Unity camera is "cleared" to this texture
+        /// <summary>
+        /// The color image texture coming from the camera, converted to RGB. The Unity camera is "cleared" to this texture
+        /// </summary>
         public RenderTexture colorRGBTexture { get; private set; }
-        // the final step of rendering holograms (on top of color texture)
+
+        /// <summary>
+        /// The final step of rendering holograms (on top of color texture)
+        /// </summary>
         public RenderTexture renderTexture { get; private set; }
-        // the final composite texture (hologram opactiy reduced based on alpha setting)
+
+        /// <summary>
+        /// The final composite texture (hologram opactiy reduced based on alpha setting)
+        /// </summary>
         public RenderTexture compositeTexture { get; private set; }
-        // an RGBA texture where all 4 channels contain the hologram alpha value
+
+        /// <summary>
+        /// An RGBA texture where all 4 channels contain the hologram alpha value
+        /// </summary>
         public RenderTexture alphaTexture { get; private set; }
-        // the raw color image data coming from the capture card
+
+        /// <summary>
+        /// The raw color image data coming from the capture card
+        /// </summary>
         private Texture2D colorTexture = null;
-        // override texture for testing calibration
+
+        /// <summary>
+        /// An override texture for testing calibration
+        /// </summary>
         private Texture2D overrideColorTexture = null;
-        // the final composite texture converted to NV12 format for use in creating video file
+
+        /// <summary>
+        /// The final composite texture converted to NV12 format for use in creating video file
+        /// </summary>
         private RenderTexture videoOutputTexture = null;
-        // the final composite texture converted into the format expected by output on the capture card (YUV or BGRA)
+
+        /// <summary>
+        /// The final composite texture converted into the format expected by output on the capture card (YUV or BGRA)
+        /// </summary>
         private RenderTexture displayOutputTexture = null;
 
         public RenderTexture[] supersampleBuffers;
