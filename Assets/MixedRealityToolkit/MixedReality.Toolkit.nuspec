@@ -13,4 +13,19 @@
     <releaseNotes>$releaseNotes$</releaseNotes>
     <tags>Unity MixedReality</tags>
   </metadata>
+  <files>
+    <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+
+    <file src="MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.targets" />
+
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Build.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Inspectors.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Utilities.Async.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Utilities.Gltf.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Utilities.Gltf.Importers.dll*" target="Plugins\" />
+  </files>
 </package>

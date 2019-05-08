@@ -73,3 +73,8 @@ Assets/StreamingAssets.meta
 # DocFX Generated #
 # =============== #
 doc/
+
+# =========================================== #
+# Asset Script Reference Retargeter Generated #
+# =========================================== #
+NuGet/

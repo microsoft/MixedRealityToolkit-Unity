@@ -6,11 +6,11 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom property drawer to show a foldout help section in the Inspector
+    /// Custom property drawer to show an optionally collapsible foldout help section in the Inspector
     /// </summary>
     /// <example>
     /// <code>
-    /// [Help("This is a multiline collapsable help section.\n • Great for providing simple instructions in Inspector.\n • Easy to use.\n • Saves space.")]
+    /// [Help("This is a multiline optionally collapsable help section.\n • Great for providing simple instructions in Inspector.\n • Easy to use.\n • Saves space.")]
     /// </code>
     /// </example>
     [CustomPropertyDrawer(typeof(HelpAttribute))]
@@ -24,11 +24,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             HelpAttribute help = attribute as HelpAttribute;
 
-            HelpFoldOut = EditorGUI.Foldout(position, HelpFoldOut, help.Header);
-            if (HelpFoldOut)
+            if (help.Collapsible)
+            {
+                HelpFoldOut = EditorGUI.Foldout(position, HelpFoldOut, help.Header);
+                if (HelpFoldOut)
+                {
+                    EditorGUI.HelpBox(position, help.Text, MessageType.Info);
+                }
+            }
+            else
             {
                 EditorGUI.HelpBox(position, help.Text, MessageType.Info);
             }
+            cachedPosition = position;
         }
 
         /// <summary>
@@ -39,10 +47,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             HelpAttribute help = attribute as HelpAttribute;
 
+            // Computing the actual height requires the cachedPosition because
+            // CalcSize doesn't factor in word-wrapped height, and CalcHeight
+            // requires a pre-determined width.
             GUIStyle helpStyle = EditorStyles.helpBox;
-            Vector2 size = helpStyle.CalcSize(new GUIContent(help.Text));
-            float lines = size.y / helpStyle.lineHeight;
-            return helpStyle.margin.top + helpStyle.margin.bottom + helpStyle.lineHeight * (HelpFoldOut ? lines : 1.0f);
+            GUIContent helpContent = new GUIContent(help.Text);
+            float wrappedHeight = helpStyle.CalcHeight(helpContent, cachedPosition.width);
+
+            // The height of the help box should be the content if expanded, or
+            // just the header text if not expanded.
+            float contentHeight = !help.Collapsible || HelpFoldOut ?
+                wrappedHeight :
+                helpStyle.lineHeight;
+
+            return helpStyle.margin.top + helpStyle.margin.bottom + contentHeight;
         }
 
         #region Private
@@ -51,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// The "help" foldout state
         /// </summary>
         private bool HelpFoldOut = false;
+        private Rect cachedPosition = new Rect();
 
         #endregion
     }

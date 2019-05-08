@@ -229,6 +229,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         public override void OnPostSceneQuery()
         {
+            if (IsSelectPressed)
+            {
+                MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+            }
+
             // Use the results from the last update to set our NavigationResult
             float clearWorldLength = 0f;
             TeleportSurfaceResult = TeleportSurfaceResult.None;
@@ -357,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                             {
                                 canMove = false;
                                 // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
-                                MixedRealityToolkit.Instance.MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
+                                MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
                             }
                             else // We may be trying to strafe backwards.
                             {
@@ -371,10 +376,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                                 if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
                                 {
                                     canMove = false;
-                                    var height = MixedRealityToolkit.Instance.MixedRealityPlayspace.position.y;
-                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityToolkit.Instance.MixedRealityPlayspace.position;
+                                    var height = MixedRealityPlayspace.Position.y;
+                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityPlayspace.Position;
                                     newPosition.y = height;
-                                    MixedRealityToolkit.Instance.MixedRealityPlayspace.position = newPosition;
+                                    MixedRealityPlayspace.Position = newPosition;
                                 }
                             }
                         }

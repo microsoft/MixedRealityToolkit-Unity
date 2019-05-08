@@ -27,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
         /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
         /// <param name="inputSystemProfile">The input system configuration profile.</param>
-        /// <param name="playspace">The <see href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</see> of the playspace object.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
@@ -35,12 +34,17 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             MixedRealityInputSystemProfile inputSystemProfile,
-            Transform playspace,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, name, priority, profile) { }
 
 #if UNITY_WSA
+
+        /// <summary>
+        /// The max expected sources is two - two controllers and/or two hands.
+        /// We'll set it to 20 just to be certain we can't run out of sources.
+        /// </summary>
+        public const int MaxInteractionSourceStates = 20;
 
         /// <summary>
         /// Dictionary to capture all active controllers detected
@@ -50,7 +54,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Cache of the states captured from the Unity InteractionManager for UWP
         /// </summary>
-        InteractionSourceState[] interactionmanagerStates;
+        InteractionSourceState[] interactionmanagerStates = new InteractionSourceState[MaxInteractionSourceStates];
+
+        /// <summary>
+        /// The number of states captured most recently
+        /// </summary>
+        private int numInteractionManagerStates;
 
         /// <summary>
         /// The current source state reading for the Unity InteractionManager for UWP
@@ -277,12 +286,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
             InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
 
-            interactionmanagerStates = InteractionManager.GetCurrentReading();
+            numInteractionManagerStates = InteractionManager.GetCurrentReading(interactionmanagerStates);
 
             // Avoids a Unity Editor bug detecting a controller from the previous run during the first frame
 #if !UNITY_EDITOR
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
-            for (var i = 0; i < interactionmanagerStates?.Length; i++)
+            for (var i = 0; i < numInteractionManagerStates; i++)
             {
                 var controller = GetController(interactionmanagerStates[i].source);
 
@@ -307,9 +316,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             base.Update();
 
-            interactionmanagerStates = InteractionManager.GetCurrentReading();
+            numInteractionManagerStates = InteractionManager.GetCurrentReading(interactionmanagerStates);
 
-            for (var i = 0; i < interactionmanagerStates?.Length; i++)
+            for (var i = 0; i < numInteractionManagerStates; i++)
             {
                 // SourceDetected gets raised when a new controller is detected and, if previously present, 
                 // when OnEnable is called. Do not create a new controller here.
