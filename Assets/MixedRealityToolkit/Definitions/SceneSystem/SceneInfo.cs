@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SceneSystem
 {
@@ -9,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     public struct SceneInfo
     {
         public static SceneInfo Empty { get { return empty; } }
-        private static SceneInfo empty;
+        private static SceneInfo empty = default(SceneInfo);
 
         /// <summary>
         /// Scene asset is not set.
@@ -23,18 +24,21 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         /// <summary>
-        /// Scene asset is set, but other values are not.
+        /// Scene asset was set at some point, but is now gone
         /// </summary>
-        public bool IsIncomplete
+        public bool IsMissing
         {
             get
             {
-                return Asset != null && (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Path) || BuildIndex < 0);
+                return Asset == null && !string.IsNullOrEmpty(Name);
             }
         }
 
+        [HideInInspector]
         public string Name;
+        [HideInInspector]
         public string Path;
+        [HideInInspector]
         public int BuildIndex;
 #if UNITY_EDITOR
         [SceneAssetReference]

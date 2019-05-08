@@ -107,10 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             updatingSettingsOnEditorChanged = true;
-
-            // Ask the profile to refresh itself
-            profile.EditorRefreshSceneInfo();
-
+            
             // Update editor settings
             UpdateBuildSettings();
             UpdateManagerScene();
@@ -119,11 +116,41 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             updatingSettingsOnEditorChanged = false;
         }
 
+        /// <summary>
+        /// If a manager scene is being used, this loads the scene in editor and ensures that an instance of the MRTK has been added to it.
+        /// </summary>
         private void UpdateManagerScene()
         {
-            if (profile.UseManagerScene)
+            if (!profile.UseManagerScene)
+            {   // Nothing to do here.
+                return;
+            }
+
+            if (LoadSceneInEditor(profile.ManagerScene.Asset, true, out Scene scene))
             {
-                LoadSceneInEditor(profile.ManagerScene.Asset, true, out Scene scene);
+                // Check for an MRTK instance
+                bool foundToolkitInstance = false;
+                foreach (GameObject rootGameObject in scene.GetRootGameObjects())
+                {
+                    MixedRealityToolkit instance = rootGameObject.GetComponent<MixedRealityToolkit>();
+                    if (instance != null)
+                    {
+                        foundToolkitInstance = true;
+                        break;
+                    }
+                }
+
+                if (!foundToolkitInstance)
+                {
+                    Debug.LogWarning("Didn't find a MixedRealityToolkit instance in your manager scene. Creating one now.");
+                    GameObject mrtkGo = new GameObject("MixedRealityToolkit");
+                    mrtkGo.AddComponent<MixedRealityToolkit>();
+                    SceneManager.MoveGameObjectToScene(mrtkGo, scene);
+                }
+            }
+            else
+            {
+                Debug.Log("Couldn't load manager scene!");
             }
         }
 
@@ -170,10 +197,15 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             if (profile.UseLightingScene)
             {
-                foreach (SceneInfo lightingSceneObject in profile.LightingScenes)
+                foreach (SceneInfo lightingScene in profile.LightingScenes)
                 {   // Make sure ALL lighting scenes are added to build settings
-                    AddSceneToBuildSettings(lightingSceneObject.Asset, false);
+                    AddSceneToBuildSettings(lightingScene.Asset, false);
                 }
+            }
+
+            foreach (SceneInfo contentScene in profile.ContentScenes)
+            {
+                AddSceneToBuildSettings(contentScene.Asset);
             }
 
             // Content scenes are drawn from the build settings, so we don't need to add them here.
@@ -187,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         private void CheckBuildSettings()
         {
-            // Find any duplicate names in our list
+            // Find any duplicate names in our lists
             // Duplicate names can complicate loading / unloading of scenes
             Dictionary<string, List<int>> duplicates = new Dictionary<string, List<int>>();
             List<SceneInfo> allScenes = new List<SceneInfo>();
@@ -196,6 +228,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             foreach (SceneInfo sceneInfo in profile.LightingScenes)
             {
+                if (sceneInfo.IsEmpty)
+                {   // Don't bother with empty scenes, they'll be handled elsewhere.
+                    continue;
+                }
+
                 allScenes.Add(sceneInfo);
 
                 if (duplicates.TryGetValue(sceneInfo.Name, out indexes))
@@ -211,6 +248,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             foreach (SceneInfo sceneInfo in profile.ContentScenes)
             {
+                if (sceneInfo.IsEmpty)
+                {   // Don't bother with empty scenes, they'll be handled elsewhere.
+                    continue;
+                }
+
                 allScenes.Add(sceneInfo);
 
                 if (duplicates.TryGetValue(sceneInfo.Name, out indexes))

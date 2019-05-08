@@ -12,17 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [MixedRealityServiceInspector(typeof(MixedRealitySceneSystem))]
     public class SceneSystemInspector : BaseMixedRealityServiceInspector
     {
-        private const string ShowObserverBoundaryKey = "MRTK_SpatialAwarenessSystemInspector_ShowObserverBoundaryKey";
-        private const string ShowObserverOriginKey = "MRTK_SpatialAwarenessSystemInspector_ShowObserverOriginKey";
-
-        private static bool ShowObserverBoundary = false;
-        private static bool ShowObserverOrigin = false;
-
-        private static readonly Color[] observerColors = new Color[] { Color.blue, Color.cyan, Color.green, Color.magenta, Color.red, Color.yellow };
-        private static readonly Color originColor = new Color(0.75f, 0.1f, 0.75f, 0.75f);
         private static readonly Color enabledColor = GUI.backgroundColor;
         private static readonly Color disabledColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
-        
+        private static readonly Color errorColor = Color.Lerp(GUI.backgroundColor, Color.red, 0.5f);
+
         public override bool DrawProfileField { get { return true; } }
 
         public override void DrawInspectorGUI(object target)
@@ -31,18 +24,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             GUI.color = enabledColor;
 
+            EditorGUILayout.LabelField("Lighting Scene", EditorStyles.boldLabel);
             if (!Application.isPlaying)
             {
                 EditorGUILayout.HelpBox("Select the active lighting scene by clicking its name.", MessageType.Info);
                 EditorGUILayout.Space();
             }
-
-            EditorGUILayout.LabelField("Lighting Scene", EditorStyles.boldLabel);
-
             EditorGUILayout.Space();
             EditorGUILayout.BeginVertical();
             foreach (SceneInfo lightingScene in sceneSystem.LightingScenes)
             {
+                if (lightingScene.IsEmpty)
+                {
+                    GUI.color = errorColor;
+                    GUILayout.Button("(Scene Missing)", EditorStyles.toolbarButton);
+                    continue;
+                }
+
                 bool selected = lightingScene.Name == sceneSystem.LightingSceneName;
 
                 GUI.color = selected ? enabledColor : disabledColor;
@@ -56,15 +54,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             GUI.color = enabledColor;
 
+            EditorGUILayout.LabelField("Content Scenes", EditorStyles.boldLabel);
             if (!Application.isPlaying)
             {
                 EditorGUILayout.HelpBox("Load / unload content scenes by clicking their names.", MessageType.Info);
                 EditorGUILayout.Space();
             }
-
-            EditorGUILayout.LabelField("Content Scenes", EditorStyles.boldLabel);
+            EditorGUILayout.Space();
             foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
             {
+                if (contentScene.IsEmpty)
+                {
+                    GUI.color = errorColor;
+                    GUILayout.Button("(Scene Missing)", EditorStyles.toolbarButton);
+                    continue;
+                }
+
                 Scene scene = EditorSceneManager.GetSceneByName(contentScene.Name);
                 bool loaded = scene.isLoaded;
 
