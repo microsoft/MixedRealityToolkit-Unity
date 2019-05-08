@@ -1,18 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-// The process for distributing QRCodesTrackerPlugin.dll is not yet defined. This code will remain unusable
-// to the general public until said distribution story is determiend. However, this file has been added to enable
-// public facing development.
-// #define QRCODESTRACKER_BINARY_AVAILABLE
-
+// Enable this preprocessor directive in your player settings as needed.
 #if QRCODESTRACKER_BINARY_AVAILABLE
 
-#if UNITY_WSA
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.WSA;
 
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
@@ -47,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker
         public bool AutoStartQRTracking = true;
 
         public bool IsTrackerRunning { get; private set; }
-        public QRCodesTrackerPlugin.QRTrackerStartResult StartResult { get; private set; }
+        public QRTrackerStartResult StartResult { get; private set; }
 
         public event EventHandler<bool> QRCodesTrackingStateChanged;
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeAdded;
@@ -89,10 +83,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker
             location = Matrix4x4.identity;
 
 #if WINDOWS_UWP
-            var coordinateSystem = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(id);
-            return TryGetLocationForQRCode(coordinateSystem, out location);
+            try
+            {
+                var coordinateSystem = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(id);
+                return TryGetLocationForQRCode(coordinateSystem, out location);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Exception thrown creating coordinate system for qr code id: {id.ToString()}, {e.ToString()}");
+                return false;
+            }
+
 #else
-            Debug.LogError("Failed to create coordinate system for qr code id");
+            Debug.LogError($"Failed to create coordinate system for qr code id: {id.ToString()}");
             return false;
 #endif
         }
@@ -117,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker
             {
                 try
                 {
-                    var appSpatialCoordinateSystem = (SpatialCoordinateSystem)System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(WorldManager.GetNativeISpatialCoordinateSystemPtr());
+                    var appSpatialCoordinateSystem = (SpatialCoordinateSystem)System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr());
                     if (appSpatialCoordinateSystem != null)
                     {
                         // Get the relative transform from the unity origin
@@ -292,6 +295,4 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker
         }
     }
 }
-#endif
-
-#endif // BINARIES_AVAILABLE
+#endif // QRCODESTRACKER_BINARY_AVAILABLE
