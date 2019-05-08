@@ -234,7 +234,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             public TrackedHandJoint JointIndex
             {
-                get { return (TrackedHandJoint)Array.FindIndex(jointNames, IsJointName); }
+                get
+                {
+                    int nameIndex = Array.FindIndex(jointNames, IsJointName);
+                    if (nameIndex < 0)
+                    {
+                        Debug.LogError($"Joint name {joint} not in TrackedHandJoint enum");
+                        return TrackedHandJoint.None;
+                    }
+                    return (TrackedHandJoint)nameIndex;
+                }
                 set { joint = jointNames[(int)value]; }
             }
 
