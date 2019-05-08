@@ -81,6 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("True to prefer eye tracking over head gaze, when available.")]
+        [Help("When enabling eye tracking, please follow the instructions at " 
+               + "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/EyeTracking/EyeTracking_BasicSetup.html#eye-tracking-requirements "
+               + "to set up 'Gaze Input' capabilities through Visual Studio.", "", false)]
         private bool preferEyeTracking = false;
 
         /// <inheritdoc />
