@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <remarks>
         /// The usage of eye-based tracking depends on having the Gaze Input permission set
-        /// and user approved, along with proper device eye calibration. This willback to head-based
+        /// and user approved, along with proper device eye calibration. This will fallback to head-based
         /// gaze when eye-based tracking is not available.
         /// </remarks>
         bool UseEyeTracking { get; set; }
