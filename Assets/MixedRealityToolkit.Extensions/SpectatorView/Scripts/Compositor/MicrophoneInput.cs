@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
 {
+    /// <summary>
+    /// Captures microphone input and plays that input back through an AudioSource.
+    /// </summary>
     public class MicrophoneInput : MonoBehaviour
     {
         private const float MaxOffset = 1f;
@@ -45,6 +48,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             tickTime = 0;
         }
 
+        /// <summary>
+        /// Starts microphone capture on the first available microphone.
+        /// </summary>
+        /// <returns>True if a microphone was available to capture, otherwise false.</returns>
         public bool StartMicrophone()
         {
             if (microphoneAudioSource == null)

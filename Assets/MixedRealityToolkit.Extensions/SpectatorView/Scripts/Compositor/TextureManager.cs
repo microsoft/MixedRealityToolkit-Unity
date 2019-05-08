@@ -10,6 +10,10 @@ using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
 {
+    /// <summary>
+    /// Manages the textures used for compositing holograms with video, and controls
+    /// the actual composition of textures together.
+    /// </summary>
     public class TextureManager : MonoBehaviour
     {
 #if UNITY_EDITOR
@@ -70,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private Material downsampleMat;
         private Material[] downsampleMats;
 
-        private Camera svCamera;
+        private Camera spectatorViewCamera;
 
         private int frameWidth;
         private int frameHeight;
@@ -108,16 +112,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             }
         }
 
-        public static Material LoadMaterial(string shaderName)
+        /// <summary>
+        /// Loads a material from Unity resources with the given name.
+        /// </summary>
+        /// <param name="materialName">The name of the material to load.</param>
+        /// <returns>The material loaded from resources.</returns>
+        public static Material LoadMaterial(string materialName)
         {
-            Material mat = new Material(Resources.Load<Material>("Materials/"+shaderName));
-            if(mat == null)
+            Material material = new Material(Resources.Load<Material>("Materials/" + materialName));
+            if (material == null)
             {
-                Debug.LogError(shaderName + " could not be found");
+                Debug.LogError(materialName + " could not be found");
             }
-            return mat;
+            return material;
         }
 
+        /// <summary>
+        /// Sets a texture to use as a replacement for the video background texture.
+        /// </summary>
+        /// <param name="texture">A texture that overrides the video texture, or null to resume using the
+        /// incoming video texture from the capture card.</param>
         public void SetOverrideColorTexture(Texture2D texture)
         {
             overrideColorTexture = texture;
@@ -166,21 +180,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         private void SetupCameraAndRenderTextures()
         {
-            if (svCamera != null)
+            if (spectatorViewCamera != null)
             {
                 Debug.LogError("Can only have a single SV camera");
             }
 
-            svCamera = GetComponent<Camera>();
-            if (svCamera == null)
+            spectatorViewCamera = GetComponent<Camera>();
+            if (spectatorViewCamera == null)
             {
                 renderTexture = null;
                 return;
             }
-            svCamera.enabled = true;
-            svCamera.clearFlags = CameraClearFlags.Depth;
-            svCamera.nearClipPlane = 0.01f;
-            svCamera.backgroundColor = new Color(0, 0, 0, 0);
+            spectatorViewCamera.enabled = true;
+            spectatorViewCamera.clearFlags = CameraClearFlags.Depth;
+            spectatorViewCamera.nearClipPlane = 0.01f;
+            spectatorViewCamera.backgroundColor = new Color(0, 0, 0, 0);
 
             supersampleBuffers = new RenderTexture[Compositor.SuperSampleLevel];
             downsampleMats = new Material[supersampleBuffers.Length];
@@ -189,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             renderTexture.antiAliasing = (int)Compositor.AntiAliasing;
             renderTexture.filterMode = Compositor.Filter;
 
-            svCamera.targetTexture = renderTexture;
+            spectatorViewCamera.targetTexture = renderTexture;
 
             colorRGBTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             alphaTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
@@ -223,14 +237,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private void OnPreRender()
         {
             Graphics.Blit(CurrentColorTexture, colorRGBTexture, CurrentColorMaterial);
-            Graphics.Blit(colorRGBTexture, svCamera.targetTexture);
+            Graphics.Blit(colorRGBTexture, spectatorViewCamera.targetTexture);
         }
 
         private void OnPostRender()
         {
             displayOutputTexture.DiscardContents();
 
-            RenderTexture sourceTexture = svCamera.targetTexture;
+            RenderTexture sourceTexture = spectatorViewCamera.targetTexture;
 
             if (supersampleBuffers.Length > 0)
             {
@@ -262,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             TextureRenderCompleted?.Invoke();
 
             // push the texture to the compositor plugin and pull the next real world camera texture
-            
+
             // Issue a plugin event with arbitrary integer identifier.
             // The plugin can distinguish between different
             // things it needs to do based on this ID.
@@ -300,6 +314,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             extractAlphaMat.SetTexture("_MainTex", renderTexture);
         }
 
+        /// <summary>
+        /// Sets the alpha value used for compositing holograms.
+        /// </summary>
+        /// <param name="alpha">The new alpha value for compositing.</param>
         public void SetHologramShaderAlpha(float alpha)
         {
             UnityCompositorInterface.SetAlpha(alpha);

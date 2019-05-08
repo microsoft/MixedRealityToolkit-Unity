@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
 {
+    /// <summary>
+    /// Synchronizes time adjustments between the compositor and the HoloLens.
+    /// </summary>
     public class SpectatorViewTimeSynchronizer
     {
         private float deltaCameraToUnity;
@@ -17,12 +20,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private int prevPoseIndex = -1;
         private int numPoseIndexSamples = 0;
 
-        public void Update(int camFrame, float camTime, int poseIndex, float poseTime)
+        /// <summary>
+        /// Records a sample to update the time synchronizer.
+        /// </summary>
+        /// <param name="cameraFrame">The index of the current video frame.</param>
+        /// <param name="cameraTime">The timestamp of the current video frame.</param>
+        /// <param name="poseIndex">The index of the current HoloLens pose.</param>
+        /// <param name="poseTime">The timestamp of the current HoloLens pose.</param>
+        public void Update(int cameraFrame, float cameraTime, int poseIndex, float poseTime)
         {
-            if (camFrame != prevCamFrame)
+            if (cameraFrame != prevCamFrame)
             {
-                prevCamFrame = camFrame;
-                float newDelta = Time.time - camTime;
+                prevCamFrame = cameraFrame;
+                float newDelta = Time.time - cameraTime;
                 numCamFrameSamples++;
                 deltaCameraToUnity = Mathf.Lerp(deltaCameraToUnity, newDelta, 1.0f / Mathf.Min(numCamFrameSamples, 60));
             }
@@ -35,16 +45,29 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             }
         }
 
+        /// <summary>
+        /// Gets the timestamp of a HoloLens pose from a video camera time.
+        /// </summary>
+        /// <param name="cameraTime">The timestamp in the video camera timeline.</param>
+        /// <returns>The timestamp of the HoloLens pose associated with the video, in the HoloLens timeline.</returns>
         public float GetPoseTimeFromCameraTime(float cameraTime)
         {
             return GetUnityTimeFromCameraTime(cameraTime) - deltaPoseToUnity;
         }
 
+        /// <summary>
+        /// Gets the timestamp of a HoloLens pose from a video camera time.
+        /// </summary>
+        /// <param name="cameraTime">The timestamp in the video camera timeline.</param>
+        /// <returns>The timestamp of the video frame in Unity's timeline.</returns>
         public float GetUnityTimeFromCameraTime(float cameraTime)
         {
             return cameraTime + deltaCameraToUnity;
         }
 
+        /// <summary>
+        /// Resets the time synchronization for a new synchronization session.
+        /// </summary>
         public void Reset()
         {
             prevCamFrame = -1;

@@ -8,39 +8,103 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
 {
+    /// <summary>
+    /// Manages compositing real-world video and holograms together and creating an output
+    /// video texture with recorded audio.
+    /// </summary>
     public class CompositionManager : MonoBehaviour
     {
         private const int DSPBufferSize = 1024;
         private const AudioSpeakerMode SpeakerMode = AudioSpeakerMode.Stereo;
 
         public enum FrameProviderDeviceType { BlackMagic, Elgato };
-        public bool IsCurrentlyActive { get; set; }
+        public enum Depth { None, Sixteen = 16, TwentyFour = 24 }
+        public enum AntiAliasingSamples { One = 1, Two = 2, Four = 4, Eight = 8 };
 
+        /// <summary>
+        /// Gets whether or not the holographic camera rig is connected and sending poses
+        /// for the camera to the compositor.
+        /// </summary>
+        public bool IsHolographicCameraConnected { get; set; }
+
+        /// <summary>
+        /// Gets or sets the texture depth used for the RenderTextures used during compositing.
+        /// </summary>
         [Header("Hologram Settings")]
+        [Tooltip("Texture depth for the RenderTexture used by the compositor")]
         public Depth TextureDepth = Depth.TwentyFour;
+
+        /// <summary>
+        /// Gets or sets the sampling level for antialiasing when supersampling is used.
+        /// </summary>
+        [Tooltip("Anti-aliasing sampling level for downsampling the supersample textures to the target video resolution.")]
         public AntiAliasingSamples AntiAliasing = AntiAliasingSamples.Eight;
+
+        /// <summary>
+        /// Gets or sets the filter mode for downsampling when supersampling is used.
+        /// </summary>
+        [Tooltip("Filtering mode used for downsampling the supersample textures to the target video resolution.")]
         public FilterMode Filter = FilterMode.Trilinear;
+
+        /// <summary>
+        /// Gets or sets the number of additional buffers to use for supersampling.
+        /// Each additional buffer doubles the size of the rendered holograms before they're
+        /// downsampled to the video resolution.
+        /// </summary>
         [Range(0, 2)]
+        [Tooltip("Number of additional buffers used to render holograms at a higher resolution. Each additional level doubles the size of the rendered hologram before it is downsampled to the video resolution.")]
         public int SuperSampleLevel = 0;
 
+        /// <summary>
+        /// Gets or sets the alpha value used for rendering holograms on top of video.
+        /// </summary>
         [Tooltip("Default alpha for the holograms in the composite video.")]
         public float DefaultAlpha = 0.9f;
 
-        private float frameOffset = -10.0f;
+        /// <summary>
+        /// Gets or sets whether microphone audio should be recorded into the output video.
+        /// </summary>
+        [Tooltip("Enables or disables recording microphone audio when recording videos.")]
+        public bool EnableMicrophoneAudio = true;
+
+
+        private float videoTimestampToHolographicTimestampOffset = -10.0f;
+        private int captureDeviceIndex = -1;
         private TextureManager textureManager;
         private MicrophoneInput microphoneInput;
         private ICalibrationData calibrationData;
+
+        private bool frameProviderInitialized = false;
+        private SpectatorViewPoseCache poseCache = new SpectatorViewPoseCache();
+        private SpectatorViewTimeSynchronizer timeSynchronizer = new SpectatorViewTimeSynchronizer();
+
+        private Camera spectatorCamera;
+
+        /// <summary>
+        /// Gets the index of the video frame currently being composited.
+        /// </summary>
+        public int CurrentCompositeFrame { get; private set; }
 
 #if UNITY_EDITOR
         private bool overrideCameraPose;
         private Vector3 overrideCameraPosition;
         private Quaternion overrideCameraRotation;
+        private MemoryStream audioMemoryStream = null;
 
+        /// <summary>
+        /// Clears the usage of an overridden camera pose and returns to normal pose calculations.
+        /// </summary>
         public void ClearOverridePose()
         {
             overrideCameraPose = false;
         }
 
+        /// <summary>
+        /// Stops computing the position and rotation of the holographic camera from external sources
+        /// and instead fixes the position and rotation as specified.
+        /// </summary>
+        /// <param name="position">The local position of the holographic camera.</param>
+        /// <param name="rotation">The local rotation of the holographic camera.</param>
         public void SetOverridePose(Vector3 position, Quaternion rotation)
         {
             overrideCameraPose = true;
@@ -49,29 +113,34 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         }
 #endif
 
-        public float FrameOffset
+        /// <summary>
+        /// Gets or sets the additional time offset in seconds to adjust holographic timestamps
+        /// from the HoloLens to video timestamps from the compositor.
+        /// </summary>
+        public float VideoTimestampToHolographicTimestampOffset
         {
             get
             {
-                if (frameOffset < -1.0f)
+                if (videoTimestampToHolographicTimestampOffset < -1.0f)
                 {
-                    frameOffset = PlayerPrefs.GetFloat("FrameOffset");
+                    videoTimestampToHolographicTimestampOffset = PlayerPrefs.GetFloat(nameof(VideoTimestampToHolographicTimestampOffset));
                 }
-                return frameOffset;
+                return videoTimestampToHolographicTimestampOffset;
             }
             set
             {
-                if (frameOffset != value)
+                if (videoTimestampToHolographicTimestampOffset != value)
                 {
-                    Debug.LogFormat("FrameOffset set:{0}", value);
-                    frameOffset = value;
-                    PlayerPrefs.SetFloat("FrameOffset", frameOffset);
+                    videoTimestampToHolographicTimestampOffset = value;
+                    PlayerPrefs.SetFloat(nameof(VideoTimestampToHolographicTimestampOffset), videoTimestampToHolographicTimestampOffset);
                     PlayerPrefs.Save();
                 }
             }
         }
 
-        private int captureDeviceIndex = -1;
+        /// <summary>
+        /// Gets or sets the type of capture device to read video content from.
+        /// </summary>
         public FrameProviderDeviceType CaptureDevice
         {
             get
@@ -92,25 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                 }
             }
         }
-
-        public bool EnableMicrophoneAudio = true;
-
-#if UNITY_EDITOR
-        private MemoryStream audioMemoryStream = null;
-#endif
-
-        public enum Depth { None, Sixteen = 16, TwentyFour = 24 }
-        public enum AntiAliasingSamples { One = 1, Two = 2, Four = 4, Eight = 8 };
-
-        private bool frameProviderInitialized = false;
-
-        private SpectatorViewPoseCache poseCache = new SpectatorViewPoseCache();
-
-        private SpectatorViewTimeSynchronizer timeSynchronizer = new SpectatorViewTimeSynchronizer();
-        
-        public int CurrentCompositeFrame { get; private set; }
-
-        private Camera spectatorCamera;
 
         #region AudioData
         private BinaryWriter audioStreamWriter;
@@ -156,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         private void Start()
         {
-            IsCurrentlyActive = false;
+            IsHolographicCameraConnected = false;
             spectatorCamera = GetComponent<Camera>();
 
 #if !UNITY_EDITOR
@@ -181,10 +231,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
             // Change audio listener to the holographic camera.
             AudioListener listener = null;
-            var cam = Camera.main;
-            if (cam)
+            var mainCamera = Camera.main;
+            if (mainCamera)
             {
-                listener = cam.GetComponent<AudioListener>();
+                listener = mainCamera.GetComponent<AudioListener>();
                 if (listener != null)
                 {
                     GameObject.DestroyImmediate(listener);
@@ -215,22 +265,35 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
 
 #if UNITY_EDITOR
-
-        float GetVideoDT()
+        /// <summary>
+        /// Gets the time duration of a single video frame.
+        /// </summary>
+        /// <returns>The time duration of a single video frame, in seconds.</returns>
+        private float GetVideoFrameDuration()
         {
             return (0.0001f * (UnityCompositorInterface.GetColorDuration() / 1000));
         }
 
+        /// <summary>
+        /// Gets the time for a video frame relative to the start of video capture.
+        /// </summary>
+        /// <param name="frame">The index of the video frame.</param>
+        /// <returns>The time of the video frame relative to the start of the video capture, in seconds.</returns>
         private float GetTimeFromFrame(int frame)
         {
-            return GetVideoDT() * frame;
+            return GetVideoFrameDuration() * frame;
         }
 
 #endif
 
+        /// <summary>
+        /// Gets the timestamp of the hologram that will be composited for the current frame of the compositor.
+        /// </summary>
+        /// <returns>The hologram timestamp corresponding to the current video frame, in Unity's timeline.</returns>
         public float GetHologramTime()
         {
             float time = Time.time;
+
 #if UNITY_EDITOR
             if (frameProviderInitialized)
             {
@@ -241,14 +304,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                 else
                 {
                     //Clamp time to video dt
-                    float videoDt = GetVideoDT();
-                    int frame = (int)(time / videoDt);
+                    float videoDeltaTime = GetVideoFrameDuration();
+                    int frame = (int)(time / videoDeltaTime);
                     //Subtract the queued frames
                     frame -= UnityCompositorInterface.GetCaptureFrameIndex() - CurrentCompositeFrame;
-                    time = videoDt * frame;
+                    time = videoDeltaTime * frame;
                 }
             }
 #endif
+
             return time;
         }
 
@@ -285,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             UnityCompositorInterface.SetCompositeFrameIndex(CurrentCompositeFrame);
 
             #region Spectator View Transform
-            if (IsCurrentlyActive && transform.parent != null)
+            if (IsHolographicCameraConnected && transform.parent != null)
             {
                 //Update time syncronizer
                 {
@@ -311,12 +375,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
                     Quaternion currRot;
                     Vector3 currPos;
-                    poseTime += FrameOffset;
+                    poseTime += VideoTimestampToHolographicTimestampOffset;
                     if (captureFrameIndex <= 0) //No frames captured yet, lets use the very latest camera transform
                     {
                         poseTime = float.MaxValue;
                     }
-                    poseCache.GetPose(out currPos, out currRot, poseTime);
+                    poseCache.GetPose(poseTime, out currPos, out currRot);
 
                     transform.parent.localPosition = currPos;
                     transform.parent.localRotation = currRot;
@@ -356,6 +420,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         }
 
 #if UNITY_EDITOR
+        /// <summary>
+        /// Enables the holographic camera rig for compositing. The hologram camera will be adjusted to match
+        /// calibration data (its position and rotation will track the external camera, and its projection matrix
+        /// will match the calibration information for the video camera used for compositing).
+        /// </summary>
+        /// <param name="parent">The parent transform that the holographic camera rig should be attached to.</param>
+        /// <param name="calibrationData">The calibration data used to set up the position, rotation, and
+        /// projection matrix for the holographic camera.</param>
         public void EnableHolographicCamera(Transform parent, ICalibrationData calibrationData)
         {
             this.calibrationData = calibrationData;
@@ -377,10 +449,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             calibrationData.SetUnityCameraExtrinstics(transform);
             calibrationData.SetUnityCameraIntrinsics(GetComponent<Camera>());
 
-            IsCurrentlyActive = true;
+            IsHolographicCameraConnected = true;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             frameProviderInitialized = false;
         }
@@ -390,9 +462,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             ResetCompositor();
         }
 
-        public void ResetCompositor()
+        private void ResetCompositor()
         {
-            Debug.Log("Disposing DLL Resources.");
+            Debug.Log("Stopping the video composition system.");
             UnityCompositorInterface.Reset();
 
             UnityCompositorInterface.StopFrameProvider();
@@ -402,7 +474,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             }
         }
 
-        // Send audio data to Compositor.
         private void OnAudioFilterRead(float[] data, int channels)
         {
             if (!UnityCompositorInterface.IsRecording())
@@ -439,6 +510,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             }
         }
 
+        /// <summary>
+        /// Stops audio recording by ensuring the audio stream is fully written immediately.
+        /// </summary>
         public void StopRecordingAudio()
         {
             //Send any left over stream
