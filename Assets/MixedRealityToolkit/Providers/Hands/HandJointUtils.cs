@@ -8,8 +8,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public static class HandJointUtils
     {
         /// <summary>
-        /// Try to find the first matching hand controller and return the pose of the requested joint for that hand.
+        /// Tries to get the the pose of the requested joint for the first controller with the specified handedness.
         /// </summary>
+        /// <param name="joint">The requested joint</param>
+        /// <param name="handedness">The specific hand of interest. This should be either Handedness.Left or Handedness.Right</param>
+        /// <param name="pose">The output pose data</param>
         public static bool TryGetJointPose(TrackedHandJoint joint, Handedness handedness, out MixedRealityPose pose)
         {
             IMixedRealityHand hand = FindHand(handedness);
@@ -25,6 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Find the first detected hand controller with matching handedness.
         /// </summary>
+        /// <remarks>
+        /// The given handeness should be either Handedness.Left or Handedness.Right.
+        /// </remarks>
         public static IMixedRealityHand FindHand(Handedness handedness)
         {
             foreach (var detectedController in MixedRealityToolkit.InputSystem.DetectedControllers)
