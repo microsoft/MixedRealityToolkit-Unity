@@ -45,6 +45,7 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_NEAR_LIGHT_FADE)] _NearLightFade("Near Light Fade", Float) = 0.0
         _FadeBeginDistance("Fade Begin Distance", Range(0.01, 10.0)) = 0.85
         _FadeCompleteDistance("Fade Complete Distance", Range(0.01, 10.0)) = 0.5
+        _FadeMinValue("Fade Min Value", Range(0.0, 1.0)) = 0.0
 
         // Fluent options.
         [Toggle(_HOVER_LIGHT)] _HoverLight("Hover Light", Float) = 1.0
@@ -86,6 +87,8 @@ Shader "Mixed Reality Toolkit/Standard"
         [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("Blend Operation", Float) = 0                 // "Add"
         [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("Depth Test", Float) = 4                // "LessEqual"
         [Enum(DepthWrite)] _ZWrite("Depth Write", Float) = 1                                         // "On"
+        _ZOffsetFactor("Depth Offset Factor", Float) = 0                                             // "Zero"
+        _ZOffsetUnits("Depth Offset Units", Float) = 0                                               // "Zero"
         [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("Color Write Mask", Float) = 15 // "All"
         [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Float) = 2                     // "Back"
         _RenderQueueOverride("Render Queue Override", Range(-1.0, 5000)) = -1
@@ -170,6 +173,7 @@ Shader "Mixed Reality Toolkit/Standard"
             ZTest[_ZTest]
             ZWrite[_ZWrite]
             Cull[_CullMode]
+            Offset[_ZOffsetFactor],[_ZOffsetUnits]
             ColorMask[_ColorWriteMask]
 
             Stencil
@@ -422,6 +426,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_NEAR_PLANE_FADE)
             float _FadeBeginDistance;
             float _FadeCompleteDistance;
+            fixed _FadeMinValue;
 #endif
 
 #if defined(_HOVER_LIGHT) || defined(_NEAR_LIGHT_FADE)
@@ -627,7 +632,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #else
                 float fadeDistance = -UnityObjectToViewPos(v.vertex.xyz).z;
 #endif
-                o.worldPosition.w = saturate(mad(fadeDistance, rangeInverse, -_FadeCompleteDistance * rangeInverse));
+                o.worldPosition.w = max(saturate(mad(fadeDistance, rangeInverse, -_FadeCompleteDistance * rangeInverse)), _FadeMinValue);
 #endif
 
 #if defined(_SCALE)
