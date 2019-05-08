@@ -149,6 +149,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             Type controllerType = GetCurrentControllerType(joystickName);
 
+            if (controllerType == null)
+            {
+                return null;
+            }
+
             var inputSource = inputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller", sourceType: InputSourceType.Controller);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
 

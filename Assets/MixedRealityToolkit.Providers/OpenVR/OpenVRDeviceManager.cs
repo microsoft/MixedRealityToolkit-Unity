@@ -65,6 +65,11 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
             Type controllerType = GetCurrentControllerType(joystickName);
 
+            if (controllerType == null)
+            {
+                return null;
+            }
+
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
             var pointers = RequestPointers(controllerType, controllingHand);
