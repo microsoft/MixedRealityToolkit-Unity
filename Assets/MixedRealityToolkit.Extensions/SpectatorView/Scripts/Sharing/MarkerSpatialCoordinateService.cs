@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
+#if !UNITY_WSA
 using UnityEngine.XR.ARFoundation;
+#endif
 
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
@@ -71,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
         ISpatialCoordinateServiceOld,
         IPlayerStateObserver
     {
-        #region Serializable  Classes
+#region Serializable  Classes
         [Serializable]
         private class TransformData
         {
@@ -281,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
                 return bytes;
             }
         }
-        #endregion
+#endregion
 
         /// <summary>
         /// Various visual states possible when setting up the <see cref="MarkerSpatialCoordinateService"/> based spatial coordinate system
@@ -302,12 +304,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
         [SerializeField]
         protected Camera _aRFoundationCamera;
 
+#if !UNITY_WSA
         /// <summary>
         /// AR Point Cloud Manager defined for mobile device's AR Foundation experience. Said manager will be used to determine whether or not the mobile device has found its local application origin.
         /// </summary>
         [Tooltip("AR Point Cloud Manager defined for mobile device's AR Foundation experience. Said manager will be used to determine whether or not the mobile device has found its local application origin.")]
         [SerializeField]
         protected ARPointCloudManager _aRPointCloudManager;
+#endif
 
         /// <summary>
         /// If true, debug visuals will be added to the unity scene to reflect positions of <see cref="User"/>s and <see cref="Spectator"/>s in the shared application space.
@@ -370,7 +374,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
         protected VisualState _visualState = VisualState.none;
         protected GameObject _sharedOriginVisual;
 
-        #region User specific fields
+#region User specific fields
         /// <summary>
         /// Marker detector used by the primary user to locate spectators in the shared scene.
         /// </summary>
@@ -385,9 +389,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
         protected Dictionary<string, GameObject> _markerVisuals = new Dictionary<string, GameObject>();
         protected Dictionary<string, GameObject> _cameraVisuals = new Dictionary<string, GameObject>();
         private User _cachedSelfUser;
-        #endregion
+#endregion
 
-        #region Spectator specific fields
+#region Spectator specific fields
         /// <summary>
         /// Number of point cloud points to detect before assessing the mobile device has found in the AR scene (default value is 4).
         /// </summary>
@@ -406,7 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
         protected GameObject _userCameraVisual;
         private Spectator _cachedSelfSpectator = new Spectator();
         private User _cachedUser;
-        #endregion
+#endregion
 
         protected void OnValidate()
         {

@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-// The process for distributing QRCodesTrackerPlugin.dll is not yet defined. This code will remain unusable
-// to the general public until said distribution story is determiend. However, this file has been added to enable
-// public facing development.
-// #define QRCODESTRACKER_BINARY_AVAILABLE
+// Enable this preprocessor directive (QRCODESTRACKER_BINARY_AVAILABLE) in your player settings as needed.
+#if QRCODESTRACKER_BINARY_AVAILABLE && WINDOWS_UWP && UNITY_WSA
+#define ENABLE_QRCODES
+#endif
 
 #if QRCODESTRACKER_BINARY_AVAILABLE
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker;
@@ -16,7 +16,7 @@ using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using System.Collections.Generic;
 using System;
 
-#if UNITY_WSA && WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
 using Windows.Perception.Spatial;
 using Windows.Perception.Spatial.Preview;
 #endif
@@ -29,19 +29,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
     public class QRCodeMarkerDetector : MonoBehaviour,
         IMarkerDetector
     {
-#if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
         private QRCodesManager _qrCodesManager;
         private Dictionary<Guid, SpatialCoordinateSystem> _markerCoordinateSystems = new Dictionary<Guid, SpatialCoordinateSystem>();
+        private bool _processMarkers = false;
 #endif
 
         private object _contentLock = new object();
-        private bool _processMarkers = false;
         private Dictionary<Guid, int> _markerIds = new Dictionary<Guid, int>();
         private Dictionary<int, float> _markerSizes = new Dictionary<int, float>();
         private Dictionary<int, List<Marker>> _markerObservations = new Dictionary<int, List<Marker>>();
         private readonly string _qrCodeNamePrefix = "sv";
 
-#if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
         private bool _tracking = false;
 #endif
 
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// <inheritdoc />
         public void StartDetecting()
         {
-#if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
             _tracking = true;
 #else
             Debug.LogError("Current platform does not support qr code marker detector");
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// <inheritdoc />
         public void StopDetecting()
         {
-#if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
             _tracking = false;
             _processMarkers = false;
 #else
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             return false;
         }
 
-#if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#if ENABLE_QRCODES
         protected void Start()
         {
             if (_qrCodesManager == null)
@@ -119,8 +119,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             {
                 lock (_contentLock)
                 {
-                    _markerIds.Add(e.Data.Id, markerId);
-                    _markerSizes.Add(markerId, e.Data.PhysicalSizeMeters);
+                    _markerIds[e.Data.Id] = markerId;
+                    _markerSizes[markerId] = e.Data.PhysicalSizeMeters;
                     _processMarkers = true;
                 }
             }
@@ -132,8 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             {
                 lock (_contentLock)
                 {
-                    _markerIds.Add(e.Data.Id, markerId);
-                    _markerSizes.Add(markerId, e.Data.PhysicalSizeMeters);
+                    _markerIds[e.Data.Id] = markerId;
+                    _markerSizes[markerId] = e.Data.PhysicalSizeMeters;
                     _processMarkers = true;
                 }
             }
@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         var coordinateSystem = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(markerPair.Key);
                         if (coordinateSystem != null)
                         {
-                            _markerCoordinateSystems.Add(markerPair.Key, coordinateSystem);
+                            _markerCoordinateSystems[markerPair.Key] = coordinateSystem;
                         }
                     }
                 }
@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         // so, we rotate the marker orientation 180 degrees around its z axis.
                         var rotation = Quaternion.LookRotation(location.GetColumn(2), location.GetColumn(1)) * Quaternion.Euler(0, 0, 180);
                         var marker = new Marker(markerId, translation, rotation);
-                        markerDictionary.Add(markerId, marker);
+                        markerDictionary[markerId] = marker;
                     }
                 }
             }
@@ -202,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             // Stop processing markers once all markers have been located
             _processMarkers = !locatedAllMarkers;
         }
-#endif // WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
+#endif // ENABLE_QRCODES
 
         private bool TryGetMarkerId(string qrCode, out int markerId)
         {

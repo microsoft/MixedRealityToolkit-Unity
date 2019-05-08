@@ -16,5 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
         /// Camera's view from world matrix
         /// </summary>
         public Matrix4x4 ViewFromWorld = Matrix4x4.identity;
+
+        public override string ToString()
+        {
+            Vector3 position = ViewFromWorld.GetColumn(3);
+            Quaternion rotation = Quaternion.LookRotation(ViewFromWorld.GetColumn(2), ViewFromWorld.GetColumn(1));
+            return $"Position: {position.ToString("G4")}, Rotation: {rotation.eulerAngles.ToString("G4")}";
+        }
     }
 }
