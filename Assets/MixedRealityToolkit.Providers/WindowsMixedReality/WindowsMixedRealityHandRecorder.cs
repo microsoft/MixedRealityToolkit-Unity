@@ -19,13 +19,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
 
     /// <summary>
-    /// Record joint positions of a hand and log them for use in simulated hands
+    /// Record joint positions of a hand and log them for use in simulated hands.
     /// </summary>
     public class WindowsMixedRealityHandRecorder : MonoBehaviour
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
-        public TrackedHandJoint ReferenceJoint = TrackedHandJoint.IndexTip;
+        /// <summary>
+        /// The joint positioned at the origin at the start of the recording.
+        /// </summary>
+        /// <remarks>
+        /// If the reference joint moves between start and stop of recording then final position is used as an offset.
+        /// Example: A "poke" gesture can be simulated by moving the index finger forward between start and stop,
+        /// giving an offset that creates a poking motion when interpolated.
+        /// </remarks>
+        public TrackedHandJoint ReferenceJoint { get; set; } = TrackedHandJoint.IndexTip;
+
+        /// <summary>
+        /// Default output filename for saving the recorded pose.
+        /// </summary>
+        public string OutputFileName { get; } = "ArticulatedHandPose";
 
         private Vector3 offset = Vector3.zero;
         private Handedness recordingHand = Handedness.None;
@@ -60,20 +73,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             recordingHand = Handedness.None;
 
-            StoreRecordedHandPose(pose.ToJson());
+            var filename = String.Format("{0}-{1}.json", OutputFileName, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"));
+            StoreRecordedHandPose(pose.ToJson(), filename);
         }
 
         #if WINDOWS_UWP
-        private static void StoreRecordedHandPose(string data)
+        private static void StoreRecordedHandPose(string data, string filename)
         {
-            string path = Path.Combine(Application.persistentDataPath, "ArticulatedHandPose.json");
+            string path = Path.Combine(Application.persistentDataPath, filename);
             using (TextWriter writer = File.CreateText(path))
             {
                 writer.Write(data);
             }
         }
         #else
-        private static void StoreRecordedHandPose(string data)
+        private static void StoreRecordedHandPose(string data, string filename)
         {
             Debug.Log(data);
         }
