@@ -30,6 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         public IEnumerable<SceneInfo> ContentScenes { get { return contentScenes; } }
 
+        public bool ManageBuildSettings => manageBuildSettings;
+
         [SerializeField]
         [Tooltip("Using a manager scene ensures a MixedRealityToolkit instance will always be loaded first in your application. It also ensures that this scene and instance will never be unloaded.")]
         private bool useManagerScene = true;
@@ -38,18 +40,23 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private SceneInfo managerScene = default(SceneInfo);
 
         [SerializeField]
-        [Tooltip("Using a content scene ensures that the same lighting settings will be enforced across all loaded scenes.")]
+        [Tooltip("Using a lighting scene ensures that the same lighting settings will be enforced across all loaded scenes.")]
         private bool useLightingScene = true;
 
         [SerializeField]
         private int defaultLightingSceneIndex = 0;
 
         [SerializeField]
+        [Tooltip("Scenes used to control lighting settings. Only one lighting scene can be loaded at any given time.")]
         private SceneInfo[] lightingScenes = new SceneInfo[0];
 
         [SerializeField]
-        [Tooltip("Scene names in your build settings which aren't a lighting or manager scene. These will be managed by the service.")]
+        [Tooltip("Scene names in your build settings which aren't a lighting or manager scene. These can be loaded / unloaded at will.")]
         private SceneInfo[] contentScenes = new SceneInfo[0];
+
+        [SerializeField]
+        [Tooltip("If true, scene service will manage which scenes are in the build settings and in what order.")]
+        private bool manageBuildSettings = true;
 
         public bool GetLightingSceneObject(string lightingSceneName, out SceneInfo lightingScene)
         {
@@ -90,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             for (int i = 0; i < sceneInfoArray.Length; i++)
             {
-                if (!sceneInfoArray[i].IsEmpty && !buildIndexes.Add(sceneInfoArray[i].BuildIndex))
+                if (!sceneInfoArray[i].IsEmpty && sceneInfoArray[i].IsInBuildSettings && !buildIndexes.Add(sceneInfoArray[i].BuildIndex))
                 {   // If we encounter a duplicate, just set it to entry.
                     // This will ensure we don't get duplicates when we add new elements to the array.
                     sceneInfoArray[i] = SceneInfo.Empty;

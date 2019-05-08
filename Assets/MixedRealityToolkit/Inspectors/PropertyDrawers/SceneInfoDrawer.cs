@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit
     public class SceneInfoDrawer : PropertyDrawer
     {
         const float iconWidth = 40f;
+        const float objectFieldRelativeWidth = 0.35f;
         const string errorIconContent = "d_console.erroricon.sml";
         const string warningIconContent = "d_console.warnicon.sml";
 
@@ -22,13 +23,34 @@ namespace Microsoft.MixedReality.Toolkit
             SerializedProperty nameProperty = property.FindPropertyRelative("Name");
             SerializedProperty pathProperty = property.FindPropertyRelative("Path");
             SerializedProperty buildIndexProperty = property.FindPropertyRelative("BuildIndex");
+            SerializedProperty includedProperty = property.FindPropertyRelative("Included");
 
-            Rect fieldPosition = position;
+            bool lastMode = EditorGUIUtility.wideMode;
+            EditorGUIUtility.wideMode = true;
+            EditorGUI.BeginProperty(position, label, property);
+
+            // Indent our rect
+            position = EditorGUI.IndentedRect(position);
+
+            // Make room for a toggle control
+            Rect toggleRect = position;
+            toggleRect.width -= position.width * objectFieldRelativeWidth;
+
+            // Make room for an object field
+            Rect objectFieldRect = position;
+            objectFieldRect.x += position.width * objectFieldRelativeWidth;
+            objectFieldRect.width -= position.width * objectFieldRelativeWidth;
+
+            // Make an icon rect in case we need one
+            Rect iconRect = objectFieldRect;
+            iconRect.x = objectFieldRect.x + objectFieldRect.width - iconWidth;
+            iconRect.width = iconWidth;
 
             if (Application.isPlaying)
             {   // Don't allow this field to be edited, just draw the object property
                 EditorGUI.BeginDisabledGroup(true);
-                EditorGUI.ObjectField(position, label, assetProperty.objectReferenceValue, typeof(SceneAsset), false);
+                EditorGUI.Toggle(toggleRect, label, includedProperty.boolValue);
+                EditorGUI.ObjectField(objectFieldRect, label, assetProperty.objectReferenceValue, typeof(SceneAsset), false);
                 EditorGUI.EndDisabledGroup();
                 return;
             }
@@ -40,36 +62,64 @@ namespace Microsoft.MixedReality.Toolkit
             if (asset == null)
             {
                 string missingSceneName = nameProperty.stringValue;
-                if (!string.IsNullOrEmpty (missingSceneName))
+                if (!string.IsNullOrEmpty(missingSceneName))
                 {
-                    var errorContent = EditorGUIUtility.IconContent(errorIconContent);
-                    GUI.Label(new Rect(position.width, position.y, position.width, position.height), errorContent);
-                    fieldPosition = new Rect(position.x, position.y, position.width - iconWidth, position.height);
+                    // Draw a disabled toggle
+                    EditorGUI.BeginDisabledGroup(true);
+                    GUI.Toggle(toggleRect, includedProperty.boolValue, missingSceneName + " (Missing)");
+                    EditorGUI.EndDisabledGroup();
 
-                    asset = EditorGUI.ObjectField(fieldPosition, missingSceneName + " (Missing)", asset, typeof(SceneAsset), false);
+                    var errorContent = EditorGUIUtility.IconContent(errorIconContent);
+                    GUI.Label(iconRect, errorContent);
+
+                    objectFieldRect.width -= iconWidth;
+                    asset = EditorGUI.ObjectField(objectFieldRect, asset, typeof(SceneAsset), false);
                 }
                 else
                 {
-                    var errorContent = EditorGUIUtility.IconContent(warningIconContent);
-                    GUI.Label(new Rect(position.width, position.y, position.width, position.height), errorContent);
-                    fieldPosition = new Rect(position.x, position.y, position.width - iconWidth, position.height);
+                    // Draw a disabled toggle
+                    EditorGUI.BeginDisabledGroup(true);
+                    GUI.Toggle(toggleRect, false, "(Empty)");
+                    EditorGUI.EndDisabledGroup();
 
-                    asset = EditorGUI.ObjectField(fieldPosition, "(Empty)", asset, typeof(SceneAsset), false);
+                    var errorContent = EditorGUIUtility.IconContent(warningIconContent);
+                    GUI.Label(iconRect, errorContent);
+
+                    objectFieldRect.width -= iconWidth;
+                    asset = EditorGUI.ObjectField(objectFieldRect, asset, typeof(SceneAsset), false);
                 }
             }
             else
             {
                 if (buildIndexProperty.intValue >= 0)
                 {
-                    asset = EditorGUI.ObjectField(fieldPosition, nameProperty.stringValue + " (" + buildIndexProperty.intValue + ")", asset, typeof(SceneAsset), false);
+                    // Draw a functional toggle
+                    string content = nameProperty.stringValue + (includedProperty.boolValue ? " (Build index #" + buildIndexProperty.intValue + ")" : " (Disabled)");
+                    bool included = GUI.Toggle(toggleRect, includedProperty.boolValue, content);
+
+                    if (included != includedProperty.boolValue)
+                    {
+                        // Change the editor build settings right now
+                        EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
+                        scenes[buildIndexProperty.intValue].enabled = included;
+                        EditorBuildSettings.scenes = scenes;
+                    }
+                    
+                    asset = EditorGUI.ObjectField(objectFieldRect, asset, typeof(SceneAsset), false);
                 }
                 else
                 {
-                    var errorContent = EditorGUIUtility.IconContent(warningIconContent);
-                    GUI.Label(new Rect(position.width, position.y, position.width, position.height), errorContent);
-                    fieldPosition = new Rect(position.x, position.y, position.width - iconWidth, position.height);
+                    // Draw a disabled toggle
+                    EditorGUI.BeginDisabledGroup(true);
+                    // Draw a functional toggle
+                    GUI.Toggle(toggleRect, includedProperty.boolValue, nameProperty.stringValue + " (Not included in build)");
+                    EditorGUI.EndDisabledGroup();
 
-                    asset = EditorGUI.ObjectField(fieldPosition, nameProperty.stringValue + " (No build index)", asset, typeof(SceneAsset), false);
+                    var errorContent = EditorGUIUtility.IconContent(warningIconContent);
+                    GUI.Label(iconRect, errorContent);
+
+                    objectFieldRect.width -= iconWidth;
+                    asset = EditorGUI.ObjectField(objectFieldRect, asset, typeof(SceneAsset), false);
                 }
             }
 
@@ -79,15 +129,23 @@ namespace Microsoft.MixedReality.Toolkit
                 changed = true;
             }
 
-            changed |= RefreshSceneInfo(asset, nameProperty, pathProperty, buildIndexProperty);
+            changed |= RefreshSceneInfo(asset, nameProperty, pathProperty, buildIndexProperty, includedProperty);
 
             if (changed)
             {
                 property.serializedObject.ApplyModifiedProperties();
             }
+            
+            EditorGUIUtility.wideMode = lastMode;
+            EditorGUI.EndProperty();
         }
 
-        private static bool RefreshSceneInfo(UnityEngine.Object asset, SerializedProperty nameProperty, SerializedProperty pathProperty, SerializedProperty buildIndexProperty)
+        private static bool RefreshSceneInfo(
+            UnityEngine.Object asset, 
+            SerializedProperty nameProperty, 
+            SerializedProperty pathProperty,
+            SerializedProperty buildIndexProperty,
+            SerializedProperty includedProperty)
         {
             bool changed = false;
 
@@ -122,6 +180,20 @@ namespace Microsoft.MixedReality.Toolkit
                     buildIndexProperty.intValue = buildIndex;
                     changed = true;
                 }
+
+                bool included = false;
+                if (buildIndex >= 0)
+                {
+                    EditorBuildSettingsScene buildSettingsScene = EditorBuildSettings.scenes[buildIndex];
+                    included = buildSettingsScene.enabled;
+                }
+                if (included != includedProperty.boolValue)
+                {
+                    includedProperty.boolValue = included;
+                    changed = true;
+                }
+
+
             }
 
             return changed;
