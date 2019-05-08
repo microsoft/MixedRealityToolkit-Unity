@@ -112,6 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent rimColor = new GUIContent("Color", "Rim Highlight Color");
             public static GUIContent rimPower = new GUIContent("Power", "Rim Highlight Saturation");
             public static GUIContent vertexColors = new GUIContent("Vertex Colors", "Enable Vertex Color Tinting");
+            public static GUIContent vertexExtrusion = new GUIContent("Vertex Extrusion", "Enable Vertex Extrusion Along the Vetex Normal");
+            public static GUIContent vertexExtrusionValue = new GUIContent("Vertex Extrusion Value", "How Far to Extrude the Vertex Along the Vetex Normal");
             public static GUIContent clippingPlane = new GUIContent("Clipping Plane", "Enable Clipping Against a Plane");
             public static GUIContent clippingSphere = new GUIContent("Clipping Sphere", "Enable Clipping Against a Sphere");
             public static GUIContent clippingBox = new GUIContent("Clipping Box", "Enable Clipping Against a Box");
@@ -201,6 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty rimColor;
         protected MaterialProperty rimPower;
         protected MaterialProperty vertexColors;
+        protected MaterialProperty vertexExtrusion;
+        protected MaterialProperty vertexExtrusionValue;
         protected MaterialProperty clippingPlane;
         protected MaterialProperty clippingSphere;
         protected MaterialProperty clippingBox;
@@ -289,6 +293,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             rimColor = FindProperty("_RimColor", props);
             rimPower = FindProperty("_RimPower", props);
             vertexColors = FindProperty("_VertexColors", props);
+            vertexExtrusion = FindProperty("_VertexExtrusion", props);
+            vertexExtrusionValue = FindProperty("_VertexExtrusionValue", props);
             clippingPlane = FindProperty("_ClippingPlane", props);
             clippingSphere = FindProperty("_ClippingSphere", props);
             clippingBox = FindProperty("_ClippingBox", props);
@@ -599,6 +605,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             materialEditor.ShaderProperty(vertexColors, Styles.vertexColors);
+
+            materialEditor.ShaderProperty(vertexExtrusion, Styles.vertexExtrusion);
+
+            if (PropertyEnabled(vertexExtrusion))
+            {
+                materialEditor.ShaderProperty(vertexExtrusionValue, Styles.vertexExtrusionValue, 2);
+            }
 
             materialEditor.ShaderProperty(clippingPlane, Styles.clippingPlane);
 

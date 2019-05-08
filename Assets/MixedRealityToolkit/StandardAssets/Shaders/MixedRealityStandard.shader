@@ -35,6 +35,8 @@ Shader "Mixed Reality Toolkit/Standard"
         _RimColor("Rim Color", Color) = (0.5, 0.5, 0.5, 1.0)
         _RimPower("Rim Power", Range(0.0, 8.0)) = 0.25
         [Toggle(_VERTEX_COLORS)] _VertexColors("Vertex Colors", Float) = 0.0
+        [Toggle(_VERTEX_EXTRUSION)] _VertexExtrusion("Vertex Extrusion", Float) = 0.0
+        _VertexExtrusionValue("Vertex Extrusion Value", Float) = 0.0
         [Toggle(_CLIPPING_PLANE)] _ClippingPlane("Clipping Plane", Float) = 0.0
         [Toggle(_CLIPPING_SPHERE)] _ClippingSphere("Clipping Sphere", Float) = 0.0
         [Toggle(_CLIPPING_BOX)] _ClippingBox("Clipping Box", Float) = 0.0
@@ -211,6 +213,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _REFRACTION
             #pragma shader_feature _RIM_LIGHT
             #pragma shader_feature _VERTEX_COLORS
+            #pragma shader_feature _VERTEX_EXTRUSION
             #pragma shader_feature _CLIPPING_PLANE
             #pragma shader_feature _CLIPPING_SPHERE
             #pragma shader_feature _CLIPPING_BOX
@@ -400,6 +403,10 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_RIM_LIGHT)
             fixed3 _RimColor;
             fixed _RimPower;
+#endif
+
+#if defined(_VERTEX_EXTRUSION)
+            float _VertexExtrusionValue;
 #endif
 
 #if defined(_CLIPPING_PLANE)
@@ -605,10 +612,25 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_INSTANCED_COLOR)
                 UNITY_TRANSFER_INSTANCE_ID(v, o);
 #endif
-                o.position = UnityObjectToClipPos(v.vertex);
+                float4 vertexPosition = v.vertex;
+
+#if defined(_WORLD_POSITION) || defined(_VERTEX_EXTRUSION)
+                float3 worldVertexPosition = mul(unity_ObjectToWorld, vertexPosition).xyz;
+#endif
+
+#if defined(_NORMAL) || defined(_VERTEX_EXTRUSION)
+                fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
+#endif
+
+#if defined(_VERTEX_EXTRUSION)
+                worldVertexPosition += worldNormal * _VertexExtrusionValue;
+                vertexPosition = mul(unity_WorldToObject, float4(worldVertexPosition, 1.0));
+#endif
+
+                o.position = UnityObjectToClipPos(vertexPosition);
 
 #if defined(_WORLD_POSITION)
-                o.worldPosition.xyz = mul(unity_ObjectToWorld, v.vertex).xyz;
+                o.worldPosition.xyz = worldVertexPosition;
 #endif
 
 #if defined(_NEAR_PLANE_FADE)
@@ -630,7 +652,7 @@ Shader "Mixed Reality Toolkit/Standard"
                     fadeDistance = min(fadeDistance, NearLightDistance(_ProximityLightData[dataIndex], o.worldPosition));
                 }
 #else
-                float fadeDistance = -UnityObjectToViewPos(v.vertex.xyz).z;
+                float fadeDistance = -UnityObjectToViewPos(vertexPosition).z;
 #endif
                 o.worldPosition.w = max(saturate(mad(fadeDistance, rangeInverse, -_FadeCompleteDistance * rangeInverse)), _FadeMinValue);
 #endif
@@ -721,13 +743,11 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_NORMAL)
-                fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
-
 #if defined(_TRIPLANAR_MAPPING)
                 o.worldNormal = worldNormal;
 #if defined(_LOCAL_SPACE_TRIPLANAR_MAPPING)
                 o.triplanarNormal = v.normal;
-                o.triplanarPosition = v.vertex;
+                o.triplanarPosition = vertexPosition;
 #else
                 o.triplanarNormal = worldNormal;
                 o.triplanarPosition = o.worldPosition;
