@@ -175,6 +175,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            EditorGUILayout.LabelField(creator.InspectorName + ".cs", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("An optional inspector for your service. This will be displayed in the editor when service inspectors are enabled.", EditorStyles.wordWrappedMiniLabel);
+            creator.UsesInspector = EditorGUILayout.Toggle("Generate Inspector", creator.UsesInspector);
+            if (creator.UsesInspector)
+            {
+                creator.InspectorFolderObject = EditorGUILayout.ObjectField("Target Folder", creator.InspectorFolderObject, typeof(UnityEngine.Object), false);
+            }
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.Space();
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField(creator.ProfileName + ".cs", EditorStyles.boldLabel);
             EditorGUILayout.LabelField("An optional profile script for your service. Profiles are scriptable objects that store permanent config data. If you're not sure whether your service will need a profile, it's best to create one. You can remove it later.", EditorStyles.wordWrappedMiniLabel);
             creator.UsesProfile = EditorGUILayout.Toggle("Generate Profile", creator.UsesProfile);
