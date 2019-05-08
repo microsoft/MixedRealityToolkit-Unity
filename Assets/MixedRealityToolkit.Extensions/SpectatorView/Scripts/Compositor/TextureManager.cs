@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         public RenderTexture renderTexture { get; private set; }
 
         /// <summary>
-        /// The final composite texture (hologram opactiy reduced based on alpha setting)
+        /// The final composite texture (hologram opacity reduced based on alpha setting)
         /// </summary>
         public RenderTexture compositeTexture { get; private set; }
 
@@ -63,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         public event Action TextureRenderCompleted;
 
+        private Material ignoreAlphaMat;
         private Material BGRToRGBMat;
         private Material RGBToBGRMat;
         private Material YUVToRGBMat;
@@ -81,6 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private bool outputYUV;
         private bool hardwareEncodeVideo;
         private IntPtr renderEvent;
+
+        public Material IgnoreAlphaMaterial => ignoreAlphaMat;
 
         private Texture2D CurrentColorTexture
         {
@@ -117,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         /// </summary>
         /// <param name="materialName">The name of the material to load.</param>
         /// <returns>The material loaded from resources.</returns>
-        public static Material LoadMaterial(string materialName)
+        private static Material LoadMaterial(string materialName)
         {
             Material material = new Material(Resources.Load<Material>("Materials/" + materialName));
             if (material == null)
@@ -155,6 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             BGRVideoMat = LoadMaterial("BGRToRGB");
             holoAlphaMat = LoadMaterial("HoloAlpha");
             extractAlphaMat = LoadMaterial("ExtractAlpha");
+            ignoreAlphaMat = LoadMaterial("IgnoreAlpha");
 
             SetHologramShaderAlpha(Compositor.DefaultAlpha);
 
