@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                string controllerName = controllerType == null ? "Unknown" : controllerType.Type.Name.ToString().ToProperCase();
+                string controllerName = (controllerType.Type != null) ? controllerType.Type.Name.ToString().ToProperCase() : "Unknown";
 
                 string handednessText = string.Empty;
                 switch (handedness)
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (controllerType != null && controllerType.Type != null)
+                if (controllerType.Type != null)
                 {
                     var attr = MixedRealityControllerAttribute.Find(controllerType);
                     if (attr != null)
