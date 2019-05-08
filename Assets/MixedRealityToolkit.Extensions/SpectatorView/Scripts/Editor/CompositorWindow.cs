@@ -204,13 +204,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 {
                     CompositionManager compositionManager = GetCompositionManager();
 
-                    EditorGUILayout.Space();
+                    if (compositionManager != null)
+                    {
+                        EditorGUILayout.Space();
 
-                    GUI.enabled = compositionManager == null || !compositionManager.IsVideoFrameProviderInitialized;
-                    compositionManager.CaptureDevice = (CompositionManager.FrameProviderDeviceType)EditorGUILayout.Popup("Video source", ((int)compositionManager.CaptureDevice), Enum.GetNames(typeof(CompositionManager.FrameProviderDeviceType)));
-                    GUI.enabled = true;
+                        GUI.enabled = compositionManager == null || !compositionManager.IsVideoFrameProviderInitialized;
+                        compositionManager.CaptureDevice = (CompositionManager.FrameProviderDeviceType)EditorGUILayout.Popup("Video source", ((int)compositionManager.CaptureDevice), Enum.GetNames(typeof(CompositionManager.FrameProviderDeviceType)));
+                        GUI.enabled = true;
 
-                    EditorGUILayout.Space();
+                        EditorGUILayout.Space();
+                    }
 
                     float newAlpha = EditorGUILayout.Slider("Alpha", hologramAlpha, 0, 1);
                     if (newAlpha != hologramAlpha)
