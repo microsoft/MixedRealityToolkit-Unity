@@ -12,20 +12,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public class MixedRealitySceneSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         const float DragAreaWidth = 0f;
-        const float DragAreaHeight = 50f;
+        const float DragAreaHeight = 30f;
         const float DragAreaOffset = 10;
 
         private static bool showManagerProperties = true;
         private SerializedProperty useManagerScene;
         private SerializedProperty managerScene;
 
+        private static bool showContentProperties = true;
+        private SerializedProperty contentScenes;
+
         private static bool showLightingProperties = true;
         private SerializedProperty useLightingScene;
         private SerializedProperty defaultLightingSceneIndex;
         private SerializedProperty lightingScenes;
 
-        private static bool showContentProperties = true;
-        private SerializedProperty contentScenes;
+        private static bool showEditorProperties = true;
+        private SerializedProperty manageBuildSettings;
 
         protected override void OnEnable()
         {
@@ -44,6 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             lightingScenes = serializedObject.FindProperty("lightingScenes");
 
             contentScenes = serializedObject.FindProperty("contentScenes");
+
+            manageBuildSettings = serializedObject.FindProperty("manageBuildSettings");
         }
 
         public override void OnInspectorGUI()
@@ -69,6 +74,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.Space();
 
+            EditorGUILayout.Space();
+            showEditorProperties = EditorGUILayout.Foldout(showEditorProperties, "Editor Settings", true);
+            if (showEditorProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(manageBuildSettings);
+                }
+            }
+
             showManagerProperties = EditorGUILayout.Foldout(showManagerProperties, "Manager Scene Settings", true);
             if (showManagerProperties)
             {
@@ -76,6 +91,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.PropertyField(useManagerScene);
                     EditorGUILayout.PropertyField(managerScene, includeChildren: true);
+                }
+            }
+
+            EditorGUILayout.Space();
+            showContentProperties = EditorGUILayout.Foldout(showContentProperties, "Content Scene Settings", true);
+            if (showContentProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(contentScenes, includeChildren: true);
+                    DrawSceneInfoDragAndDrop(contentScenes);
                 }
             }
 
@@ -95,17 +121,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            EditorGUILayout.Space();
-            showContentProperties = EditorGUILayout.Foldout(showContentProperties, "Content Scene Settings", true);
-            if (showContentProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(contentScenes, includeChildren: true);
-                    DrawSceneInfoDragAndDrop(contentScenes);
-                }
-            }
-
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -116,15 +131,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 Rect dropArea = GUILayoutUtility.GetRect(DragAreaWidth, DragAreaHeight, GUILayout.ExpandWidth(true));
                 dropArea.width -= DragAreaOffset * 2;
                 dropArea.x += DragAreaOffset;
-
                 GUI.Box(dropArea, "Drag-and-drop new " + arrayProperty.displayName, EditorStyles.helpBox);
+
                 switch (Event.current.type)
                 {
                     case EventType.DragUpdated:
                     case EventType.DragPerform:
                         if (!dropArea.Contains(Event.current.mousePosition))
                         {
-                            return;
+                            break;
                         }
 
                         DragAndDrop.visualMode = DragAndDropVisualMode.Link;
@@ -132,7 +147,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         {
                             SerializedProperty arrayElement = null;
                             SerializedProperty assetProperty = null;
-                            bool changed = false;
 
                             DragAndDrop.AcceptDrag();
                             foreach (Object draggedObject in DragAndDrop.objectReferences)
@@ -159,19 +173,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     Debug.LogWarning("Skipping " + draggedObject.name + " - it's already in the " + arrayProperty.displayName + " list.");
                                     continue;
                                 }
-
-                                int newIndex = arrayProperty.arraySize;
-                                arrayProperty.InsertArrayElementAtIndex(newIndex);
+                                
+                                // Create the new element at 0
+                                arrayProperty.InsertArrayElementAtIndex(0);
                                 arrayProperty.serializedObject.ApplyModifiedProperties();
 
-                                arrayElement = arrayProperty.GetArrayElementAtIndex(newIndex);
+                                // Get the new element and assign the dragged object
+                                arrayElement = arrayProperty.GetArrayElementAtIndex(0);
                                 assetProperty = arrayElement.FindPropertyRelative("Asset");
                                 assetProperty.objectReferenceValue = draggedObject;
-                                changed = true;
-                            }
+                                arrayProperty.serializedObject.ApplyModifiedProperties();
 
-                            if (changed)
-                            {
+                                // Move the new element to end of list
+                                arrayProperty.MoveArrayElement(0, arrayProperty.arraySize - 1);
                                 arrayProperty.serializedObject.ApplyModifiedProperties();
                             }
                         }

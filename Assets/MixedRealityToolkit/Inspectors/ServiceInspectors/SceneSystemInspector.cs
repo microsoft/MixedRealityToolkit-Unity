@@ -86,6 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 }
             }
+
+            EditorGUILayout.Space();
         }
     }
 }

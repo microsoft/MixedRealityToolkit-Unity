@@ -26,6 +26,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private float timeSinceLastEditorSettingsUpdate = 0;
         private float timeSinceLastLightingUpdate = 0;
 
+        private enum BuildIndexTarget
+        {
+            First,
+            None,
+            Last,
+        }
+
         private void OnEditorInitialize()
         {
             // Subscribe to editor events
@@ -190,34 +197,37 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         
         private void UpdateBuildSettings()
         {
+            if (!profile.ManageBuildSettings)
+            {   // Nothing to do here
+                return;
+            }
+
             if (profile.UseManagerScene)
             {
-                AddSceneToBuildSettings(profile.ManagerScene.Asset, true);
+                AddSceneToBuildSettings(profile.ManagerScene.Asset, BuildIndexTarget.First);
+            }
+
+            foreach (SceneInfo contentScene in profile.ContentScenes)
+            {
+                AddSceneToBuildSettings(contentScene.Asset, BuildIndexTarget.None);
             }
 
             if (profile.UseLightingScene)
             {
                 foreach (SceneInfo lightingScene in profile.LightingScenes)
                 {   // Make sure ALL lighting scenes are added to build settings
-                    AddSceneToBuildSettings(lightingScene.Asset, false);
+                    AddSceneToBuildSettings(lightingScene.Asset, BuildIndexTarget.Last);
                 }
             }
 
-            foreach (SceneInfo contentScene in profile.ContentScenes)
-            {
-                AddSceneToBuildSettings(contentScene.Asset);
-            }
-
-            // Content scenes are drawn from the build settings, so we don't need to add them here.
-
-            CheckBuildSettings();
+            CheckBuildSettingsForDuplicates();
         }
 
         /// <summary>
         /// Checks build settings for possible errors and displays warnings.
         /// Also modifies current profile's content scene names property.
         /// </summary>
-        private void CheckBuildSettings()
+        private void CheckBuildSettingsForDuplicates()
         {
             // Find any duplicate names in our lists
             // Duplicate names can complicate loading / unloading of scenes
@@ -297,13 +307,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 ResolveDuplicateScenesWindow.Instance.Close();
             }
         }
-        
+
         /// <summary>
         /// Adds scene to build settings.
         /// </summary>
         /// <param name="sceneObject">Scene object reference.</param>
         /// <param name="setAsFirst">Sets as first scene to be loaded.</param>
-        private static void AddSceneToBuildSettings(UnityEngine.Object sceneObject, bool setAsFirst = false)
+        private static void AddSceneToBuildSettings(UnityEngine.Object sceneObject, BuildIndexTarget buildIndexTarget = BuildIndexTarget.None)
         {
             if (sceneObject == null)
             {   // Can't add a null scene to build settings
@@ -329,30 +339,57 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             if (buildIndex < 0)
             {
                 // It doesn't exist in the build settings, add it now
-                Debug.LogWarning("Adding " + sceneObject.name + " to build settings now.");
-
                 List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
-                if (setAsFirst)
-                {   // Add it to index 0
-                    scenes.Insert(0, new EditorBuildSettingsScene(sceneGuid, true));
-                }
-                else
-                {   // Just add it to the end
-                    scenes.Add(new EditorBuildSettingsScene(sceneGuid, true));
+                switch (buildIndexTarget)
+                {
+                    case BuildIndexTarget.First:
+                        // Add it to index 0
+                        scenes.Insert(0, new EditorBuildSettingsScene(sceneGuid, true));
+                        break;
+
+                    case BuildIndexTarget.None:
+                    default:
+                        // Just add it to the end
+                        scenes.Add(new EditorBuildSettingsScene(sceneGuid, true));
+                        break;
                 }
 
                 EditorBuildSettings.scenes = scenes.ToArray();
             }
-            else if (setAsFirst && buildIndex != 0)
+            else
             {
-                // If it does exist, but isn't in the right spot, move it now
-                Debug.LogWarning("Scene '" + sceneObject.name + "' was not first in build order. Changing build settings now.");
+                switch (buildIndexTarget)
+                {
+                    // If it does exist, but isn't in the right spot, move it now
+                    case BuildIndexTarget.First:
+                        if (buildIndex != 0)
+                        {
+                            Debug.LogWarning("Scene '" + sceneObject.name + "' was not first in build order. Changing build settings now.");
 
-                List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
-                scenes.RemoveAt(buildIndex);
-                scenes.Insert(0, new EditorBuildSettingsScene(sceneGuid, true));
+                            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
+                            scenes.RemoveAt(buildIndex);
+                            scenes.Insert(0, new EditorBuildSettingsScene(sceneGuid, true));
+                            EditorBuildSettings.scenes = scenes.ToArray();
+                        }
+                        break;
 
-                EditorBuildSettings.scenes = scenes.ToArray();
+                    case BuildIndexTarget.Last:
+                        if (buildIndex != EditorSceneManager.sceneCountInBuildSettings - 1)
+                        {
+                            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
+                            scenes.RemoveAt(buildIndex);
+                            scenes.Insert(scenes.Count - 1, new EditorBuildSettingsScene(sceneGuid, true));
+
+                            EditorBuildSettings.scenes = scenes.ToArray();
+                        }
+                        break;
+
+                    case BuildIndexTarget.None:
+                    default:
+                        // Do nothing
+                        break;
+
+                }
             }
         }
 
