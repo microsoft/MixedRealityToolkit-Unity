@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         [SerializeField]
         [Tooltip("Custom function for distribing points along curve.Used when DistanceCurveValue is set to Distance. Total points set by LineStepCount.")]
-        private AnimationCurve customPointDistributionCurve = AnimationCurve.Linear(0,0,1,1);
+        private AnimationCurve customPointDistributionCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
         /// <summary>
         /// Number of steps to interpolate along line in Interpolated step mode
