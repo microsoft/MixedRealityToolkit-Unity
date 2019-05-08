@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                 if (inputSystem != null)
                 {
-                    var pointers = RequestPointers(SupportedControllerType.TouchScreen, Handedness.Any);
+                    var pointers = RequestPointers(typeof(UnityTouchController), Handedness.Any);
                     inputSource = inputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
                 }
 

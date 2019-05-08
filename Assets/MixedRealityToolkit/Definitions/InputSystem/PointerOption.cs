@@ -19,23 +19,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="controllerType"></param>
         /// <param name="handedness"></param>
         /// <param name="pointerPrefab"></param>
-        public PointerOption(SupportedControllerType controllerType, Handedness handedness, GameObject pointerPrefab)
+        public PointerOption(Type controllerType, Handedness handedness, GameObject pointerPrefab)
         {
             this.controllerType = controllerType;
             this.handedness = handedness;
             this.pointerPrefab = pointerPrefab;
         }
 
-        [EnumFlags]
         [SerializeField]
         [Tooltip("The controller this pointer will attach itself to at runtime.")]
-        private SupportedControllerType controllerType;
+        private Type controllerType;
 
         /// <summary>
         /// The type of Controller this pointer will attach itself to at runtime.
         /// </summary>
         /// <remarks>If <see cref="Microsoft.MixedReality.Toolkit.Utilities.Handedness.None"/> is selected, then it will attach to any controller type</remarks>
-        public SupportedControllerType ControllerType => controllerType;
+        public Type ControllerType => controllerType;
 
         [SerializeField]
         [Tooltip("Defines which hand to create the pointer prefab on")]

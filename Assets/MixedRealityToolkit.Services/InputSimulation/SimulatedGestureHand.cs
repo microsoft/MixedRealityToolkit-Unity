@@ -2,12 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [MixedRealityController(
-        SupportedControllerType.GGVHand,
+        typeof(SimulatedGestureHand),
         new[] { Handedness.Left, Handedness.Right })]
     public class SimulatedGestureHand : SimulatedHand
     {

@@ -35,15 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                string controllerName = "Unknown";
-                if (controllerType.Type != null)
-                {
-                    var attr = MixedRealityControllerAttribute.Find(controllerType);
-                    if (attr != null)
-                    {
-                        controllerName = attr.SupportedControllerType.ToString().ToProperCase();
-                    }
-                }
+                string controllerName = controllerType == null ? "Unknown" : controllerType.Type.Name.ToString().ToProperCase();
 
                 string handednessText = string.Empty;
                 switch (handedness)
@@ -68,23 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Controller Type to instantiate at runtime.
         /// </summary>
-        public SystemType ControllerType => controllerType;
-
-        public SupportedControllerType SupportedControllerType
-        {
-            get
-            {
-                if (controllerType.Type != null)
-                {
-                    var attr = MixedRealityControllerAttribute.Find(controllerType);
-                    if (attr != null)
-                    {
-                        return attr.SupportedControllerType;
-                    }
-                }
-                return 0;
-            }
-        }
+        public SystemType SupportedControllerType => controllerType;
 
         [SerializeField]
         [Tooltip("The designated hand that the device is managing.")]
@@ -102,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (controllerType.Type != null)
+                if (controllerType != null && controllerType.Type != null)
                 {
                     var attr = MixedRealityControllerAttribute.Find(controllerType);
                     if (attr != null)
@@ -110,6 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         return attr.Flags.HasFlag(MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings);
                     }
                 }
+
                 return false;
             }
         }

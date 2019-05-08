@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     for (int i = 0; i < controllerMappings.Length; i++)
                     {
-                        if (controllerMappings[i].ControllerType.Type == controllerType)
+                        if (controllerMappings[i].SupportedControllerType == controllerType)
                         {
                             profileFound = true;
 

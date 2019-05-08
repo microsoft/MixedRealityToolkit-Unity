@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The SupportedControllerType to which the controller device belongs to.
         /// </summary>
-        public SupportedControllerType SupportedControllerType { get; }
+        public Type SupportedControllerType { get; }
 
         /// <summary>
         /// List of handedness values supported by the respective controller.
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="texturePath"></param>
         /// <param name="flags"></param>
         public MixedRealityControllerAttribute(
-            SupportedControllerType supportedControllerType, 
+            Type supportedControllerType, 
             Handedness[] supportedHandedness,
             string texturePath = "", 
             MixedRealityControllerConfigurationFlags flags = 0)

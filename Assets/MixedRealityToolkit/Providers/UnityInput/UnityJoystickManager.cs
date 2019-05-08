@@ -147,19 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return controller;
             }
 
-            Type controllerType;
-
-            switch (GetCurrentControllerType(joystickName))
-            {
-                default:
-                    return null;
-                case SupportedControllerType.GenericUnity:
-                    controllerType = typeof(GenericJoystickController);
-                    break;
-                case SupportedControllerType.Xbox:
-                    controllerType = typeof(XboxController);
-                    break;
-            }
+            Type controllerType = GetCurrentControllerType(joystickName);
 
             var inputSource = inputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller", sourceType: InputSourceType.Controller);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
@@ -186,23 +174,23 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </summary>
         /// <param name="joystickName">The name of they joystick from Unity's <see href="https://docs.unity3d.com/ScriptReference/Input.GetJoystickNames.html">Input.GetJoystickNames</see></param>
         /// <returns>The supported controller type</returns>
-        protected virtual SupportedControllerType GetCurrentControllerType(string joystickName)
+        protected virtual Type GetCurrentControllerType(string joystickName)
         {
             // todo: this should be using an allow list, not a disallow list
             if (string.IsNullOrEmpty(joystickName) ||
                 joystickName.Contains("OpenVR") ||
                 joystickName.Contains("Spatial"))
             {
-                return 0;
+                return null;
             }
 
             if (joystickName.ToLower().Contains("xbox"))
             {
-                return SupportedControllerType.Xbox;
+                return typeof(XboxController);
             }
 
             Debug.Log($"{joystickName} does not have a defined controller type, falling back to generic controller type");
-            return SupportedControllerType.GenericUnity;
+            return typeof(GenericJoystickController);
         }
     }
 }

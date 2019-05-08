@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -246,24 +247,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            SupportedControllerType st = simulationMode == HandSimulationMode.Gestures ? SupportedControllerType.GGVHand : SupportedControllerType.ArticulatedHand;
-            IMixedRealityPointer[] pointers = RequestPointers(st, handedness);
+
+            Type controllerType = simulationMode == HandSimulationMode.Gestures ? typeof(SimulatedGestureHand) : typeof(SimulatedArticulatedHand);
+            IMixedRealityPointer[] pointers = RequestPointers(controllerType, handedness);
 
             var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
-            switch (simulationMode)
-            {
-                case HandSimulationMode.Articulated:
-                    controller = new SimulatedArticulatedHand(TrackingState.Tracked, handedness, inputSource);
-                    break;
-                case HandSimulationMode.Gestures:
-                    controller = new SimulatedGestureHand(TrackingState.Tracked, handedness, inputSource);
-                    break;
-                default:
-                    controller = null;
-                    break;
-            }
+            controller = Activator.CreateInstance(controllerType, TrackingState.Tracked, handedness, inputSource) as SimulatedHand;
 
-            System.Type controllerType = simulationMode == HandSimulationMode.Gestures ? typeof(SimulatedGestureHand) : typeof(SimulatedArticulatedHand);
             if (controller == null)
             {
                 Debug.LogError($"Failed to create {controllerType} controller");

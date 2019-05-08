@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     // Try to find index of mapping in asset.
                     int idx = Array.FindIndex(MixedRealityControllerMappingProfiles, 0, MixedRealityControllerMappingProfiles.Length,
-                        profile => profile.ControllerType.Type == controllerType && profile.Handedness == handedness);
+                        profile => profile.SupportedControllerType == controllerType && profile.Handedness == handedness);
 
                     if (idx < 0)
                     {
@@ -114,12 +114,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Array.Sort(mixedRealityControllerMappingProfiles, (profile1, profile2) => 
             {
-                bool isOptional1 = (profile1.ControllerType.Type == null || UsesCustomInteractionMapping(profile1.ControllerType.Type));
-                bool isOptional2 = (profile2.ControllerType.Type == null || UsesCustomInteractionMapping(profile2.ControllerType.Type));
+                bool isOptional1 = (profile1.SupportedControllerType == null || UsesCustomInteractionMapping(profile1.SupportedControllerType));
+                bool isOptional2 = (profile2.SupportedControllerType == null || UsesCustomInteractionMapping(profile2.SupportedControllerType));
                 if (!isOptional1 && !isOptional2)
                 {
-                    int idx1 = Array.FindIndex(ControllerMappingTypes, type => type == profile1.ControllerType.Type);
-                    int idx2 = Array.FindIndex(ControllerMappingTypes, type => type == profile2.ControllerType.Type);
+                    int idx1 = Array.FindIndex(ControllerMappingTypes, type => type == profile1.SupportedControllerType);
+                    int idx2 = Array.FindIndex(ControllerMappingTypes, type => type == profile2.SupportedControllerType);
 
                     if (idx1 == idx2)
                     {

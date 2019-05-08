@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -92,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void OnFocus()
         {
-            currentControllerTexture = ControllerMappingLibrary.GetControllerTexture(currentControllerMapping.ControllerType, currentControllerMapping.Handedness);
+            currentControllerTexture = ControllerMappingLibrary.GetControllerTexture(currentControllerMapping.SupportedControllerType, currentControllerMapping.Handedness);
 
             #region Interaction Constraint Setup
 
@@ -210,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         new ControllerInputActionOption
                         {
-                            Controller = 0,
+                            Controller = null,
                             Handedness = Handedness.None,
                             InputLabelPositions = new[] {new Vector2(0, 0)},
                             IsLabelFlipped = new []{false}
@@ -352,11 +353,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             controllerInputActionOptions.Controllers.Add(currentControllerOption);
                             isMouseInRects = new bool[currentInteractionList.arraySize];
 
-                            if (controllerInputActionOptions.Controllers.Any(option => option.Controller == 0))
+                            if (controllerInputActionOptions.Controllers.Any(option => option.Controller == null))
                             {
                                 controllerInputActionOptions.Controllers.Remove(
                                     controllerInputActionOptions.Controllers.Find(option =>
-                                        option.Controller == 0));
+                                        option.Controller == null));
                             }
 
                             File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(controllerInputActionOptions));
@@ -603,7 +604,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         bool skip = false;
                         var description = interactionDescription.stringValue;
-                        if (currentControllerMapping.SupportedControllerType == SupportedControllerType.WindowsMixedReality
+                        if (currentControllerMapping.SupportedControllerType == typeof(WindowsMixedRealityController)
                             && currentControllerMapping.Handedness == Handedness.None)
                         {
                             if (description == "Grip Press" ||

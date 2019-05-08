@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     [MixedRealityController(
-        SupportedControllerType.ViveWand,
+        typeof(ViveWandController),
         new[] { Handedness.Left, Handedness.Right },
         "StandardAssets/Textures/ViveWandController")]
     public class ViveWandController : GenericOpenVRController

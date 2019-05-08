@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     [Serializable]
     public class ControllerInputActionOption
     {
-        public SupportedControllerType Controller;
+        public SystemType Controller;
         public Handedness Handedness;
         public Vector2[] InputLabelPositions;
         public bool[] IsLabelFlipped;

@@ -63,37 +63,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 controllingHand = Handedness.None;
             }
 
-            var currentControllerType = GetCurrentControllerType(joystickName);
-            Type controllerType;
-
-            switch (currentControllerType)
-            {
-                case SupportedControllerType.GenericOpenVR:
-                    controllerType = typeof(GenericOpenVRController);
-                    break;
-                case SupportedControllerType.ViveWand:
-                    controllerType = typeof(ViveWandController);
-                    break;
-                case SupportedControllerType.ViveKnuckles:
-                    controllerType = typeof(ViveKnucklesController);
-                    break;
-                case SupportedControllerType.OculusTouch:
-                    controllerType = typeof(OculusTouchController);
-                    break;
-                case SupportedControllerType.OculusRemote:
-                    controllerType = typeof(OculusRemoteController);
-                    break;
-                case SupportedControllerType.WindowsMixedReality:
-                    controllerType = typeof(WindowsMixedRealityOpenVRMotionController);
-                    break;
-                default:
-                    return null;
-            }
+            Type controllerType = GetCurrentControllerType(joystickName);
 
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-            var pointers = RequestPointers(currentControllerType, controllingHand);
-            var inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, InputSourceType.Controller);
+            var pointers = RequestPointers(controllerType, controllingHand);
+            var inputSource = inputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller {controllingHand}", pointers, InputSourceType.Controller);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             if (detectedController == null)
@@ -120,41 +95,41 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         }
 
         /// <inheritdoc />
-        protected override SupportedControllerType GetCurrentControllerType(string joystickName)
+        protected override Type GetCurrentControllerType(string joystickName)
         {
             if (string.IsNullOrEmpty(joystickName) || !joystickName.Contains("OpenVR"))
             {
-                return 0;
+                return null;
             }
 
             if (joystickName.Contains("Oculus Rift CV1"))
             {
-                return SupportedControllerType.OculusTouch;
+                return typeof(OculusTouchController);
             }
 
             if (joystickName.Contains("Oculus remote"))
             {
-                return SupportedControllerType.OculusRemote;
+                return typeof(OculusRemoteController);
             }
 
             if (joystickName.Contains("Vive Wand"))
             {
-                return SupportedControllerType.ViveWand;
+                return typeof(ViveWandController);
             }
 
             if (joystickName.Contains("Vive Knuckles"))
             {
-                return SupportedControllerType.ViveKnuckles;
+                return typeof(ViveKnucklesController);
             }
 
             if (joystickName.Contains("WindowsMR"))
             {
-                return SupportedControllerType.WindowsMixedReality;
+                return typeof(WindowsMixedRealityOpenVRMotionController);
             }
 
             Debug.Log($"{joystickName} does not have a defined controller type, falling back to generic controller type");
 
-            return SupportedControllerType.GenericOpenVR;
+            return typeof(GenericOpenVRController);
         }
 
         #endregion Controller Utilities

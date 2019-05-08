@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
     [MixedRealityController(
-        SupportedControllerType.TouchScreen,
+        typeof(UnityTouchController),
         new[] { Handedness.Any })]
     public class UnityTouchController : BaseController
     {

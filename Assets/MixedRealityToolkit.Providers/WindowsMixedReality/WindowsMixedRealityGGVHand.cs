@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     /// A Windows Mixed Reality Controller Instance.
     /// </summary>
     [MixedRealityController(
-        SupportedControllerType.GGVHand,
+        typeof(WindowsMixedRealityGGVHand),
         new[] { Handedness.Left, Handedness.Right })]
     public class WindowsMixedRealityGGVHand : WindowsMixedRealityController
     {

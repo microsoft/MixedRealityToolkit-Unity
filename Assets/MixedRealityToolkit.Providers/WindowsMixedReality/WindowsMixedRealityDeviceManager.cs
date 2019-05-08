@@ -451,17 +451,17 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             switch(interactionSource.kind)
             {
                 case InteractionSourceKind.Controller:
-                    pointers = RequestPointers(SupportedControllerType.WindowsMixedReality, controllingHand);
+                    pointers = RequestPointers(typeof(WindowsMixedRealityController), controllingHand);
                     inputSourceType = InputSourceType.Controller;
                     break;
                 case InteractionSourceKind.Hand:
                     if(interactionSource.supportsPointing)
                     {
-                        pointers = RequestPointers(SupportedControllerType.ArticulatedHand, controllingHand);
+                        pointers = RequestPointers(typeof(WindowsMixedRealityArticulatedHand), controllingHand);
                     }
                     else
                     {
-                        pointers = RequestPointers(SupportedControllerType.GGVHand, controllingHand);
+                        pointers = RequestPointers(typeof(WindowsMixedRealityGGVHand), controllingHand);
                     }
                     inputSourceType = InputSourceType.Hand;
                     break;

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     [MixedRealityController(
-        SupportedControllerType.OculusRemote,
+        typeof(OculusRemoteController),
         new[] { Handedness.None },
         "StandardAssets/Textures/OculusRemoteController")]
     public class OculusRemoteController : GenericOpenVRController

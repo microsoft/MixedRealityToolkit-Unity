@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     [MixedRealityController(
-        SupportedControllerType.ViveKnuckles,
+        typeof(ViveKnucklesController),
         new[] { Handedness.Left, Handedness.Right })]
     public class ViveKnucklesController : GenericOpenVRController
     {

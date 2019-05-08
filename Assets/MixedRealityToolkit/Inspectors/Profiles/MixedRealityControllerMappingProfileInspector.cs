@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
@@ -17,11 +18,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     {
         private struct ControllerRenderProfile
         {
-            public SupportedControllerType SupportedControllerType;
+            public Type SupportedControllerType;
             public Handedness Handedness;
             public MixedRealityInteractionMapping[] Interactions;
 
-            public ControllerRenderProfile(SupportedControllerType supportedControllerType, Handedness handedness, MixedRealityInteractionMapping[] interactions)
+            public ControllerRenderProfile(Type supportedControllerType, Handedness handedness, MixedRealityInteractionMapping[] interactions)
             {
                 SupportedControllerType = supportedControllerType;
                 Handedness = handedness;
@@ -143,12 +144,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 for (int i = 0; i < thisProfile.MixedRealityControllerMappingProfiles.Length; i++)
                 {
                     MixedRealityControllerMapping controllerMapping = thisProfile.MixedRealityControllerMappingProfiles[i];
-                    Type controllerType = controllerMapping.ControllerType;
+                    Type controllerType = controllerMapping.SupportedControllerType;
                     if (controllerType == null) { continue; }
 
                     Handedness handedness = controllerMapping.Handedness;
                     bool useCustomInteractionMappings = controllerMapping.HasCustomInteractionMappings;
-                    SupportedControllerType supportedControllerType = controllerMapping.SupportedControllerType;
+                    Type supportedControllerType = controllerMapping.SupportedControllerType;
 
                     var controllerMappingProperty = controllerList.GetArrayElementAtIndex(i);
                     var handednessProperty = controllerMappingProperty.FindPropertyRelative("handedness");
@@ -223,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                 var attribute = MixedRealityControllerAttribute.Find(genericTypes[genericTypeIdx]);
                                 if (attribute != null)
                                 {
-                                    genericTypeListContent[genericTypeIdx] = new GUIContent(attribute.SupportedControllerType.ToString().Replace("Generic", "").ToProperCase() + " Controller");
+                                    genericTypeListContent[genericTypeIdx] = new GUIContent(attribute.SupportedControllerType.Name.ToString().Replace("Generic", "").ToProperCase() + " Controller");
                                 }
                                 else
                                 {
@@ -276,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             {
                                 interactionsProperty.ClearArray();
                                 serializedObject.ApplyModifiedProperties();
-                                thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type = genericTypes[currentGenericType];
+                                thisProfile.MixedRealityControllerMappingProfiles[i].SupportedControllerType.Type = genericTypes[currentGenericType];
                                 thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);
                                 serializedObject.ApplyModifiedProperties();
                                 return;
@@ -303,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     }
                     else
                     {
-                        if (supportedControllerType == SupportedControllerType.WindowsMixedReality &&
+                        if (supportedControllerType == typeof(WindowsMixedRealityController) &&
                             handedness == Handedness.None)
                         {
                             controllerTitle = "HoloLens Voice and Clicker";
@@ -338,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             var interactionsProperty = mixedRealityControllerMapping.FindPropertyRelative("interactions");
             interactionsProperty.ClearArray();
             serializedObject.ApplyModifiedProperties();
-            thisProfile.MixedRealityControllerMappingProfiles[index].ControllerType.Type = controllerType;
+            thisProfile.MixedRealityControllerMappingProfiles[index].SupportedControllerType.Type = controllerType;
             thisProfile.MixedRealityControllerMappingProfiles[index].SetDefaultInteractionMapping(true);
         }
     }

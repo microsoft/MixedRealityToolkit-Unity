@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     /// A Windows Mixed Reality Controller Instance.
     /// </summary>
     [MixedRealityController(
-        SupportedControllerType.WindowsMixedReality,
+        typeof(WindowsMixedRealityController),
         new[] { Handedness.Left, Handedness.Right, Handedness.None },
         "StandardAssets/Textures/MotionController")]
     public class WindowsMixedRealityController : BaseController

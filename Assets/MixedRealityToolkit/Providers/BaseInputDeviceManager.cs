@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="controllingHand">The handedness of the controller making the request.</param>
         /// <param name="useSpecificType">Only register pointers with a specific type.</param>
         /// <returns></returns>
-        protected virtual IMixedRealityPointer[] RequestPointers(SupportedControllerType controllerType, Handedness controllingHand)
+        protected virtual IMixedRealityPointer[] RequestPointers(System.Type controllerType, Handedness controllingHand)
         {
             var pointers = new List<IMixedRealityPointer>();
 
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     var pointerProfile = InputSystemProfile.PointerProfile.PointerOptions[i];
 
-                    if (((pointerProfile.ControllerType & controllerType) != 0) &&
+                    if (pointerProfile.ControllerType == controllerType &&
                         (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
