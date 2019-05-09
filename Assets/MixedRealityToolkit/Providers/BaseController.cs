@@ -33,6 +33,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Enabled = true;
         }
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         /// <summary>
         /// The default interactions for this controller.
         /// </summary>
