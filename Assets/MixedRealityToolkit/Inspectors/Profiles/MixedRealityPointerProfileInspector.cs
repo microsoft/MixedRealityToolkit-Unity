@@ -57,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             };
 
             pointerOptionList.drawElementCallback += DrawPointerOptionElement;
+            pointerOptionList.elementHeightCallback += OnElementHeightReturned;
             pointerOptionList.onAddCallback += OnPointerOptionAdded;
             pointerOptionList.onRemoveCallback += OnPointerOptionRemoved;
         }
@@ -149,21 +150,31 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             bool lastMode = EditorGUIUtility.wideMode;
             EditorGUIUtility.wideMode = true;
 
-            var halfFieldHeight = EditorGUIUtility.singleLineHeight * 0.25f;
-            var controllerTypeRect = new Rect(rect.x, rect.y + halfFieldHeight, rect.width, EditorGUIUtility.singleLineHeight);
-            var handednessControlRect = new Rect(rect.x, rect.y + halfFieldHeight * 6, rect.width, EditorGUIUtility.singleLineHeight);
-            var pointerPrefabRect = new Rect(rect.x, rect.y + halfFieldHeight * 11, rect.width, EditorGUIUtility.singleLineHeight);
-
             var pointerOption = pointerOptions.GetArrayElementAtIndex(index);
-            var controllerType = pointerOption.FindPropertyRelative("controllerType");
+            var controllerType = pointerOption.FindPropertyRelative("controllerTypes");
+            var arrayHeight = (controllerType.isExpanded ? EditorGUIUtility.singleLineHeight * 2 + controllerType.arraySize * EditorGUIUtility.singleLineHeight : 0);
+
+            var halfFieldHeight = EditorGUIUtility.singleLineHeight * 0.25f;
+            var controllerTypeRect = new Rect(rect.x, rect.y + halfFieldHeight, rect.width, EditorGUIUtility.singleLineHeight + arrayHeight);
+            var handednessControlRect = new Rect(rect.x, rect.y + halfFieldHeight * 6 + arrayHeight, rect.width, EditorGUIUtility.singleLineHeight);
+            var pointerPrefabRect = new Rect(rect.x, rect.y + halfFieldHeight * 11 + arrayHeight, rect.width, EditorGUIUtility.singleLineHeight);
+
             var handedness = pointerOption.FindPropertyRelative("handedness");
             var prefab = pointerOption.FindPropertyRelative("pointerPrefab");
 
-            EditorGUI.PropertyField(controllerTypeRect, controllerType, ControllerTypeContent);
+            EditorGUI.PropertyField(controllerTypeRect, controllerType, ControllerTypeContent, true);
             EditorGUI.PropertyField(handednessControlRect, handedness);
             EditorGUI.PropertyField(pointerPrefabRect, prefab);
 
             EditorGUIUtility.wideMode = lastMode;
+        }
+
+        private float OnElementHeightReturned(int index)
+        {
+            var pointerOption = pointerOptions.GetArrayElementAtIndex(index);
+            var controllerType = pointerOption.FindPropertyRelative("controllerTypes");
+            var arrayHeight = EditorGUIUtility.singleLineHeight + (controllerType.isExpanded ? EditorGUIUtility.singleLineHeight * 2 + controllerType.arraySize * EditorGUIUtility.singleLineHeight : 0);
+            return EditorGUIUtility.singleLineHeight * 3 + arrayHeight;
         }
 
         private void OnPointerOptionAdded(ReorderableList list)

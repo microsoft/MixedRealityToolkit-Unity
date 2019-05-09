@@ -19,9 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="controllerType"></param>
         /// <param name="handedness"></param>
         /// <param name="pointerPrefab"></param>
-        public PointerOption(Type controllerType, Handedness handedness, GameObject pointerPrefab)
+        public PointerOption(Handedness handedness, GameObject pointerPrefab, params Type[] controllerType)
         {
-            this.controllerType = controllerType;
+            this.controllerTypes = new SystemType[controllerType.Length];
+            for (int i = 0; i < controllerType.Length; i++)
+            {
+                this.controllerTypes[i] = new SystemType(controllerType[i]);
+            }
             this.handedness = handedness;
             this.pointerPrefab = pointerPrefab;
         }
@@ -29,13 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("The controller this pointer will attach itself to at runtime.")]
         [Implements(typeof(IMixedRealityController), TypeGrouping.ByNamespaceFlat)]
-        private SystemType controllerType;
-
-        /// <summary>
-        /// The type of Controller this pointer will attach itself to at runtime.
-        /// </summary>
-        /// <remarks>If <see cref="Microsoft.MixedReality.Toolkit.Utilities.Handedness.None"/> is selected, then it will attach to any controller type</remarks>
-        public Type ControllerType => controllerType;
+        private SystemType[] controllerTypes;
 
         [SerializeField]
         [Tooltip("Defines which hand to create the pointer prefab on")]
@@ -50,5 +48,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private GameObject pointerPrefab;
 
         public GameObject PointerPrefab => pointerPrefab;
+
+        public bool Contains(SystemType type)
+        {
+            foreach (var controllertype in controllerTypes)
+            {
+                if (controllertype.Equals(type))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

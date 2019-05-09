@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     var pointerProfile = InputSystemProfile.PointerProfile.PointerOptions[i];
 
-                    if (pointerProfile.ControllerType == controllerType &&
+                    if (pointerProfile.Contains(controllerType) &&
                         (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
