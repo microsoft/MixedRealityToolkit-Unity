@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             cameraTransform.transform.localRotation = Quaternion.LookRotation(cameraExtrinsics.ViewFromWorld.GetColumn(2), cameraExtrinsics.ViewFromWorld.GetColumn(1));
 
             // Magic offset from Unity's underlying coordinate frame (WorldManager.GetNativeISpatialCoordinateSystemPtr()) and the head pose used for the camera.
-            // Poses are sent in the coordinate frame space because the camera position uses prediction.
+            // Poses are sent in the coordinate frame space because the Unity camera position uses prediction.
             cameraTransform.localPosition += new Vector3(0f, 0.08f, 0.08f);
         }
 

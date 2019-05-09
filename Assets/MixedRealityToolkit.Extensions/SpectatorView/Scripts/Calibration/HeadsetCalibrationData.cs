@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public byte[] Serialize()
         {
             var str = JsonUtility.ToJson(this);
-            var payload = Encoding.ASCII.GetBytes(str);
+            var payload = Encoding.UTF8.GetBytes(str);
             return payload;
         }
 
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             try
             {
-                var str = Encoding.ASCII.GetString(payload);
+                var str = Encoding.UTF8.GetString(payload);
                 headsetCalibrationData = JsonUtility.FromJson<HeadsetCalibrationData>(str);
                 return true;
             }
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public byte[] Serialize()
         {
             var str = JsonUtility.ToJson(this);
-            var payload = Encoding.ASCII.GetBytes(str);
+            var payload = Encoding.UTF8.GetBytes(str);
             return payload;
         }
 
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             try
             {
-                var str = Encoding.ASCII.GetString(payload);
+                var str = Encoding.UTF8.GetString(payload);
                 request = JsonUtility.FromJson<HeadsetCalibrationDataRequest>(str);
                 return true;
             }

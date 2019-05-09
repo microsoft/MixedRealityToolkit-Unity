@@ -167,9 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void SendHeadsetCalibrationDataPayload(HeadsetCalibrationData data)
         {
-            byte[] payload = null;
-            payload = Encoding.ASCII.GetBytes(JsonUtility.ToJson(data));
-
+            byte[] payload = data.Serialize();
             Updated?.Invoke(payload);
         }
 
