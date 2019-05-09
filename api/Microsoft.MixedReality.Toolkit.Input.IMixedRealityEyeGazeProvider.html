@@ -201,7 +201,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_UseEyeTracking_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.UseEyeTracking*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_UseEyeTracking" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.UseEyeTracking">UseEyeTracking</h4>
-  <div class="markdown level1 summary"><p>True to provide eye tracking, when available.</p>
+  <div class="markdown level1 summary"><p>If true, eye-based tracking will be used when available.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -223,6 +223,11 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_UseEyeTracking_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The usage of eye-based tracking depends on having the Gaze Input permission set
+and user approved, along with proper device eye calibration. This will fallback to head-based
+gaze when eye-based tracking is not available.</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   

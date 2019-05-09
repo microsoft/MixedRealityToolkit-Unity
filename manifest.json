@@ -7084,7 +7084,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.GazeProvider.html",
-          "hash": "NuV5yTLtCl7mifJOvGrYIg=="
+          "hash": "OBYB2xeb3QMCPko9cFi3yg=="
         }
       },
       "is_incremental": false,
@@ -7384,7 +7384,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html",
-          "hash": "i2kZqYV6PgwpB0a6iMWtwQ=="
+          "hash": "Y5w/Mi+Cz9dccsdw+8mveA=="
         }
       },
       "is_incremental": false,
@@ -10012,7 +10012,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer.html",
-          "hash": "G69sLvH5Q5PjFfRkurXNHQ=="
+          "hash": "N67T+fi1knwzbqoCtwow3A=="
         }
       },
       "is_incremental": false,
@@ -10060,7 +10060,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html",
-          "hash": "ccbCOztXNedmYfGNGJgowg=="
+          "hash": "4G2qw57RXsrqJkWHP7DPMQ=="
         }
       },
       "is_incremental": false,
@@ -14577,17 +14577,17 @@
           "total_file_count": 92,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 881,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 881,
           "skipped_file_count": 0
         }
       }
