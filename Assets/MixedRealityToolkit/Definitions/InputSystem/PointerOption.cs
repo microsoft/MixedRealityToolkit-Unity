@@ -28,7 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The controller this pointer will attach itself to at runtime.")]
-        private Type controllerType;
+        [Implements(typeof(IMixedRealityController), TypeGrouping.ByNamespaceFlat)]
+        private SystemType controllerType;
 
         /// <summary>
         /// The type of Controller this pointer will attach itself to at runtime.
