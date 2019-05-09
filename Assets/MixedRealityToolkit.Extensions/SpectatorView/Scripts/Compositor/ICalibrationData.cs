@@ -18,8 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         /// holographic camera's position and rotation are correctly offset
         /// from the HoloLens providing poses for the camera rig.
         /// </summary>
-        /// <param name="cameraGO">The transform that contains the holographic camera.</param>
-        void SetUnityCameraExtrinstics(Transform cameraGO);
+        /// <param name="cameraTransform">The transform that contains the holographic camera.</param>
+        void SetUnityCameraExtrinstics(Transform cameraTransform);
 
         /// <summary>
         /// Sets up the intrinsic parameters (such as a projection matrix or field of view) of the holographic

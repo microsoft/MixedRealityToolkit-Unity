@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
 using System;
+using System.Text;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
@@ -41,6 +42,29 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public override string ToString()
         {
             return $"reprojection error: {ReprojectionError.ToString("G4")} {base.ToString()}";
+        }
+
+        public byte[] Serialize()
+        {
+            var str = JsonUtility.ToJson(this);
+            var payload = Encoding.ASCII.GetBytes(str);
+            return payload;
+        }
+
+        public static bool TryDeserialize(byte[] payload, out CalculatedCameraIntrinsics intrinsics)
+        {
+            intrinsics = null;
+
+            try
+            {
+                var str = Encoding.ASCII.GetString(payload);
+                intrinsics = JsonUtility.FromJson<CalculatedCameraIntrinsics>(str);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
