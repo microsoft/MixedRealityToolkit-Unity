@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
+
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
@@ -49,6 +51,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             contentScenes = serializedObject.FindProperty("contentScenes");
 
             manageBuildSettings = serializedObject.FindProperty("manageBuildSettings");
+        }
+
+        private void OnSelecteContentScene(ReorderableList list)
+        {
+            Debug.Log("Selecting");
+        }
+
+        private void DrawContentSceneElement(Rect rect, int index, bool isActive, bool isFocused)
+        {
+            SceneInfoDrawer.DrawProperty(rect, contentScenes.GetArrayElementAtIndex(index), GUIContent.none, isActive, isFocused);
         }
 
         public override void OnInspectorGUI()
