@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         private const int textureRenderModeComposite = 0;
         private const int textureRenderModeSplit = 1;
         private const int horizontalFrameRectangleMargin = 50;
+        private const int lowQueuedOutputFrameWarningMark = 6;
         private Vector2 scrollPosition;
         private int renderFrameWidth;
         private int renderFrameHeight;
@@ -96,7 +97,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 EditorGUILayout.BeginHorizontal("Box");
                 {
                     string[] compositionOptions = new string[] { "Final composited texture", "All intermediate textures" };
-                    textureRenderMode = EditorGUILayout.Popup("Rendering mode:", textureRenderMode, compositionOptions);
+                    GUIContent renderingModeLabel = new GUIContent("Display texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (top right: input video, bottom right: alpha mask, bottom left: opaque hologram, top left: final alpha-blended hologram)");
+                    textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
                 }
                 EditorGUILayout.EndHorizontal();
 
@@ -209,13 +211,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                         EditorGUILayout.Space();
 
                         GUI.enabled = compositionManager == null || !compositionManager.IsVideoFrameProviderInitialized;
-                        compositionManager.CaptureDevice = (CompositionManager.FrameProviderDeviceType)EditorGUILayout.Popup("Video source", ((int)compositionManager.CaptureDevice), Enum.GetNames(typeof(CompositionManager.FrameProviderDeviceType)));
+                        GUIContent label = new GUIContent("Video source", "The video capture card you want to use as input for compositing.");
+                        compositionManager.CaptureDevice = (CompositionManager.FrameProviderDeviceType)EditorGUILayout.Popup(label, ((int)compositionManager.CaptureDevice), Enum.GetNames(typeof(CompositionManager.FrameProviderDeviceType)));
                         GUI.enabled = true;
 
                         EditorGUILayout.Space();
                     }
 
-                    float newAlpha = EditorGUILayout.Slider("Alpha", hologramAlpha, 0, 1);
+                    GUIContent alphaLabel = new GUIContent("Alpha", "The alpha value used to blend holographic content with video content. 0 will result in completely transparent holograms, 1 in completely opaque holograms.");
+                    float newAlpha = EditorGUILayout.Slider(alphaLabel, this.hologramAlpha, 0, 1);
                     if (newAlpha != hologramAlpha)
                     {
                         hologramAlpha = newAlpha;
@@ -232,7 +236,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                         EditorGUILayout.BeginHorizontal();
                         {
                             float previousFrameOffset = compositionManager.VideoTimestampToHolographicTimestampOffset;
-                            compositionManager.VideoTimestampToHolographicTimestampOffset = EditorGUILayout.Slider("Frame time adjustment", previousFrameOffset, -1 * maxFrameOffset, maxFrameOffset);
+                            GUIContent frameTimeAdjustmentLabel = new GUIContent("Frame time adjustment", "The time in seconds to offset video timestamps from holographic timestamps. Use this to manually adjust for network latency if holograms appear to lag behind or follow ahead of the video content as you move the camera.");
+                            compositionManager.VideoTimestampToHolographicTimestampOffset = EditorGUILayout.Slider(frameTimeAdjustmentLabel, previousFrameOffset, -1 * maxFrameOffset, maxFrameOffset);
                         }
                         EditorGUILayout.EndHorizontal();
                     }
@@ -256,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     RenderTitle(framerateStatisticsMessage, framerateStatisticsColor);
                     
                     int queuedFrameCount = compositionManager.GetQueuedOutputFrameCount();
-                    Color queuedFrameColor = (queuedFrameCount > 6) ? Color.green : Color.red;
+                    Color queuedFrameColor = (queuedFrameCount > lowQueuedOutputFrameWarningMark) ? Color.green : Color.red;
                     RenderTitle($"{queuedFrameCount} Queued output frames", queuedFrameColor);
                 }
                 else
