@@ -76,6 +76,20 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
 
+        private IMixedRealityTeleportSystem teleportSystem = null;
+
+        protected IMixedRealityTeleportSystem TeleportSystem
+        {
+            get
+            {
+                if (teleportSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityTeleportSystem>(out teleportSystem); 
+                }
+                return teleportSystem;
+            }
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -85,9 +99,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 gravityDistorter = GetComponent<DistorterGravity>();
             }
 
-            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
+            if (MixedRealityToolkit.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
             {
-                MixedRealityToolkit.TeleportSystem.Register(gameObject);
+                TeleportSystem.Register(gameObject);
             }
         }
 
@@ -97,9 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             if (lateRegisterTeleport && MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled)
             {
-                if (MixedRealityToolkit.TeleportSystem == null)
+                if (TeleportSystem == null)
                 {
-                    await new WaitUntil(() => MixedRealityToolkit.TeleportSystem != null);
+                    await new WaitUntil(() => TeleportSystem != null);
 
                     // We've been destroyed during the await.
                     if (this == null)
@@ -116,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 }
 
                 lateRegisterTeleport = false;
-                MixedRealityToolkit.TeleportSystem.Register(gameObject);
+                TeleportSystem.Register(gameObject);
             }
         }
 
@@ -124,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             base.OnDisable();
 
-            MixedRealityToolkit.TeleportSystem?.Unregister(gameObject);
+            TeleportSystem?.Unregister(gameObject);
         }
 
         private Vector2 currentInputPosition = Vector2.zero;
@@ -337,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     {
                         teleportEnabled = true;
 
-                        MixedRealityToolkit.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                        TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
                     }
                     else if (canMove)
                     {
@@ -403,7 +417,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                         TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                     {
-                        MixedRealityToolkit.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                        TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
                     }
                 }
 
@@ -411,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    MixedRealityToolkit.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                    TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                 }
             }
 
