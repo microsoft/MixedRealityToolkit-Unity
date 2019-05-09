@@ -130,6 +130,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        private void OnEnable()
+        {
+            touchPoints.Clear()
+        }
+
         private void Update()
         {
             IsTouching = (touchPoints.Count != 0);
