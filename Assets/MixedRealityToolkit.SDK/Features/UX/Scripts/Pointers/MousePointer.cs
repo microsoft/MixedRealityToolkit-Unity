@@ -54,6 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool IsInteractionEnabled => isInteractionEnabled;
 
         private IMixedRealityController controller;
+        private MixedRealityMouseInputProfile mouseInputProfile = null;
+        private MixedRealityMouseInputProfile MouseInputProfile => mouseInputProfile ?? (mouseInputProfile = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>()?.MouseInputProfile);
+
 
         /// <inheritdoc />
         public override IMixedRealityController Controller
@@ -170,10 +173,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Vector3 mouseDeltaRotation = Vector3.zero;
                     mouseDeltaRotation.x += eventData.InputData.x;
                     mouseDeltaRotation.y += eventData.InputData.y;
-                    var mouseInputProfile = MixedRealityToolkit.Instance?.GetService<MouseDeviceManager>()?.MouseInputProfile;
-                    if (mouseInputProfile != null)
+                    if (MouseInputProfile != null)
                     {
-                        mouseDeltaRotation *= mouseInputProfile.MouseSpeed;
+                        mouseDeltaRotation *= MouseInputProfile.MouseSpeed;
                     }
                     UpdateMouseRotation(mouseDeltaRotation);
                 }
