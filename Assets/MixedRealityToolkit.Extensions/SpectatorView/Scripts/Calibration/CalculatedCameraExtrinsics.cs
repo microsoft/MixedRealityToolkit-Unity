@@ -44,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
             catch
             {
+                Debug.LogWarning($"Exception thrown deserializing camera extrinsics: {e.ToString()}");
                 return false;
             }
         }
