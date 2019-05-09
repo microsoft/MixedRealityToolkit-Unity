@@ -40,14 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            if (DrawTagProperty)
-            {
-                return ((EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight) * 4);
-            }
-            else
-            {
-                return ((EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight) * 3);
-            }
+            return (EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight) * (DrawTagProperty ? 4 : 3);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -64,12 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUIUtility.wideMode = true;
             EditorGUI.BeginProperty(position, label, property);
 
-            // Clamp widths so they don't go off screen
-            //float propertyWidth = Mathf.Min(totalPropertyWidth, position.width);
-            //float assetWidth = Mathf.Min(assetPropertyWidth, position.width);
-            //float tagWidth = Mathf.Min(tagPropertyWidth, position.width);
-            //float buttonWidth = Mathf.Min(buttonPropertyWidth, position.width);
-
             // Indent our rect, then reset indent to 0 so sub-properties don't get doubly indented
             position = EditorGUI.IndentedRect(position);
             //position.width = propertyWidth;
@@ -77,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Draw a box around our item
             Rect boxPosition = position;
-            boxPosition.height = (EditorGUIUtility.singleLineHeight * 4) - EditorGUIUtility.standardVerticalSpacing;
+            boxPosition.height = (EditorGUIUtility.singleLineHeight * (DrawTagProperty ? 4 : 3)) - EditorGUIUtility.standardVerticalSpacing;
             GUI.Box(boxPosition, GUIContent.none, EditorStyles.helpBox);
 
             position = boxOffset.Remove(position);
@@ -90,15 +77,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             assetRect.height = EditorGUIUtility.singleLineHeight;
             assetRect.x += iconWidth;
            
-            Rect tagRect = position;
-            //tagRect.width = tagWidth;
-            tagRect.height = EditorGUIUtility.singleLineHeight;
-            tagRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-
             Rect buttonRect = position;
-            //buttonRect.width = buttonWidth;
             buttonRect.height = EditorGUIUtility.singleLineHeight;
-            buttonRect.y += (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 2;
+            buttonRect.y += (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing);
+
+            Rect tagRect = position;
+            tagRect.height = EditorGUIUtility.singleLineHeight;
+            tagRect.y += ((EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 2) + EditorGUIUtility.standardVerticalSpacing;
 
             bool changed = false;
 

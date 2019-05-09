@@ -75,7 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             else
             {
-                EditorGUILayout.BeginHorizontal();
                 foreach (string tag in contentTags)
                 {
                     EditorGUILayout.BeginVertical(GUILayout.MaxWidth(tagLoadButtonSetWidth));
@@ -83,16 +82,28 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.BeginHorizontal();
                     if (GUILayout.Button("Load", EditorStyles.toolbarButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
                     {
-
+                        foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
+                        {
+                            if (contentScene.Tag == tag)
+                            {
+                                EditorSceneManager.OpenScene(contentScene.Path, OpenSceneMode.Additive);
+                            }
+                        }
                     }
                     if (GUILayout.Button("Unload", EditorStyles.toolbarButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
                     {
-
+                        foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
+                        {
+                            if (contentScene.Tag == tag)
+                            {
+                                Scene scene = EditorSceneManager.GetSceneByName(contentScene.Name);
+                                EditorSceneManager.CloseScene(scene, false);
+                            }
+                        }
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.EndVertical();
                 }
-                EditorGUILayout.EndHorizontal();
             }
 
             EditorGUILayout.Space();
