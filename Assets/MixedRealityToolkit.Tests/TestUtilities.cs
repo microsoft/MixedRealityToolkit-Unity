@@ -25,9 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
-        private static Scene testScene;
-        public static Scene TestScene => testScene;
-
         public static void CleanupScene()
         {
             // Create a default test scene.
@@ -100,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 yield return null;
             }
-            testScene = SceneManager.GetActiveScene();
+            var testScene = SceneManager.GetActiveScene();
 
             // Tests
             Assert.IsTrue(testScene.IsValid());
