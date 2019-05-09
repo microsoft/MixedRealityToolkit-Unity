@@ -89,6 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    // Disable the tag field since we're drawing manager scenes
+                    SceneInfoDrawer.DrawTagProperty = false;
                     EditorGUILayout.PropertyField(useManagerScene);
                     EditorGUILayout.PropertyField(managerScene, includeChildren: true);
                 }
@@ -100,6 +102,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    // Enable the tag field since we're drawing content scenes
+                    SceneInfoDrawer.DrawTagProperty = true;
                     EditorGUILayout.PropertyField(contentScenes, includeChildren: true);
                     //DrawSceneInfoDragAndDrop(contentScenes);
                 }
@@ -114,6 +118,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.PropertyField(useLightingScene);
                     if (useLightingScene.boolValue)
                     {
+                        // Disable the tag field since we're drawing lighting scenes
+                        SceneInfoDrawer.DrawTagProperty = false;
                         defaultLightingSceneIndex.intValue = EditorGUILayout.IntSlider(defaultLightingSceneIndex.displayName, defaultLightingSceneIndex.intValue, 0, lightingScenes.arraySize - 1);
                         EditorGUILayout.PropertyField(lightingScenes, includeChildren: true);
                         //DrawSceneInfoDragAndDrop(lightingScenes);
