@@ -11,7 +11,7 @@ using System.Collections;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class TestFixture_02_Press
+    public class InteractionTests_Press
     {
         /// Test InteractionTest_Press_Far
         [UnityTest]
