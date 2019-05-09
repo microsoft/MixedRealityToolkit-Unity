@@ -273,13 +273,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
 
             public static T Deserialize<T>(byte[] data)
             {
-                var json = Encoding.ASCII.GetString(data);
+                var json = Encoding.UTF8.GetString(data);
                 return JsonUtility.FromJson<T>(json);
             }
 
             static byte[] ToBytes(string serialized)
             {
-                var bytes = Encoding.ASCII.GetBytes(serialized);
+                var bytes = Encoding.UTF8.GetBytes(serialized);
                 return bytes;
             }
         }
