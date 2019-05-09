@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -28,17 +30,35 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private Vector2 scrollPos_Discovered = new Vector2();
         private Vector2 scrollPos_Converted = new Vector2();
         private List<Material> discoveredMaterials = new List<Material>();
-        private List<UndoMaterial> convertedMaterials = new List<UndoMaterial>();
 
-        private class UndoMaterial
-        {
-            public Material material;
-            public Shader shader;
-        }
+        private Light[] sceneLights;
+
+        private const uint kSize = 5;
+        private long totalActivePolyCount, totalInActivePolyCount = 0;
+        private GameObject[] LargestMeshes = new GameObject[kSize];
+        private int[] LargestMeshSizes = new int[kSize];
 
         private Shader replacementShader;
         private Shader unityStandardShader;
         private Shader errorShader;
+        private Sprite MRTKIcon;
+
+        // Internal structure to easily search mesh polycounts in scene
+        private struct MeshNode
+        {
+            public int polycount;
+            public MeshFilter filter;
+        }
+
+        private enum PerformanceTarget
+        {
+            AR_Headsets,
+            VR_Standalone,
+            VR_Tethered
+        };
+
+        [SerializeField]
+        private PerformanceTarget PerfTarget = PerformanceTarget.AR_Headsets;
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Optimize Window", false, 0)]
         public static void OpenWindow()
@@ -55,79 +75,166 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             replacementShader = Shader.Find("Mixed Reality Toolkit/Standard");
             unityStandardShader = Shader.Find("Standard");
             errorShader = Shader.Find("Hidden/InternalErrorShader");
+
+            // TODO: This is broken?
+            var results = AssetDatabase.FindAssets("t:sprite MRTK_Logo_Black");
+            if (results.Length >= 1)
+            {
+                MRTKIcon = (Sprite)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(results[0]), typeof(Sprite));
+            }
         }
 
+        private GUIStyle GetIconButtonStyle()
+        {
+            var s = new GUIStyle();
+            s.alignment = TextAnchor.MiddleLeft;
+            s.fontStyle = FontStyle.Bold;
+            s.fixedWidth = 24;
+            var b = s.border;
+            b.left = 0;
+            b.top = 0;
+            b.right = 0;
+            b.bottom = 0;
+            return s;
+        }
+
+        private void BuildTitle(string title, string url)
+        {
+            // Section Title
+            EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+            EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
+            if (GUILayout.Button(EditorGUIUtility.IconContent("_Help", "|Learn more"), GetIconButtonStyle()))
+            {
+                Application.OpenURL(url);
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+
+        private void BuildSection(string title, string url, Action renderContent)
+        {
+            EditorGUILayout.BeginVertical();
+                // Section Title
+                BuildTitle(title, url);
+
+                renderContent();
+            EditorGUILayout.EndVertical();
+        }
+
+        private bool test = false;
+        private int selected = 0;
+        private string[] items = { "Camera", "Experience", "Boundary" };
         private void OnGUI()
         {
-            // TODO: Check that XR settings virtual reality supported checked?
             // TODO: Hide things if already set/optimized
             // TODO: Filter or look at current build target => Ie also enable depth buffer sharing for oculus?
-            EditorGUILayout.HelpBox("This tool automates the process of initializing your project, currently open scene, and material assets to recommended settings for Mixed Reality", UnityEditor.MessageType.Info);
+
+            // TODO: Put in custom mixed reality toolkit logo
+            //EditorGUILayout.LabelField(new GUIContent("Mixed Reality Toolkit Optimize Window", this.MRTKIcon), EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+                EditorGUILayout.LabelField(new GUIContent(this.MRTKIcon.texture), GUILayout.Height(48), GUILayout.MaxWidth(100));
+
+            var s = new GUIStyle();
+            s.alignment = TextAnchor.MiddleLeft;
+            s.fixedHeight = 48;
+            s.fontStyle = FontStyle.Bold;
+            EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", s);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.LabelField("This tool automates the process of initializing your project, currently open scene, and material assets to recommended settings for Mixed Reality");
             EditorGUILayout.Space();
 
-            showProjectOptimizations = EditorGUILayout.Foldout(showProjectOptimizations, "Project Optimizations");
-            //GUILayout.Label("Project Optimizations", EditorStyles.boldLabel);
+            // TODO: insert enum drop down or some kind of toggle select*
 
+            PerfTarget = (PerformanceTarget)EditorGUILayout.EnumPopup("Performance Target", this.PerfTarget);
+
+            if (!PlayerSettings.virtualRealitySupported)
+            {
+                EditorGUILayout.HelpBox("Current build target does not have virtual reality support enabled", MessageType.Warning);
+            }
+
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            showProjectOptimizations = EditorGUILayout.Foldout(showProjectOptimizations, "Project Optimizations");
             if (showProjectOptimizations)
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-
-                    EditorGUILayout.BeginHorizontal();
-                        singlePassInstanced = EditorGUILayout.ToggleLeft("Set Single Pass Instanced Rendering", singlePassInstanced);
-                        if (GUILayout.Button(EditorGUIUtility.IconContent("_Help", "|Learn more"), GUILayout.Width(24), GUILayout.Height(24)))
-                        {
-                            // TODO: Look at help link?
-                        }
-                        //EditorGUILayout.LabelField(EditorGUIUtility.IconContent("_Help", "|Help tooltip here"));
-                    EditorGUILayout.EndHorizontal();
-
-                    EditorGUILayout.BeginHorizontal();
-                        setQualityLevel = EditorGUILayout.ToggleLeft("Set Quality Level to Lowest", setQualityLevel);
-                        if(GUILayout.Button(EditorGUIUtility.IconContent("_Help", "|Learn more"), GUILayout.Width(24), GUILayout.Height(24)))
-                        {
-                        // TODO: Look at help link?
-                        //EditorApplication.ExecuteMenuItem("Edit/Project Settings/Quality");
+                    if (PlayerSettings.stereoRenderingPath != StereoRenderingPath.Instancing)
+                    {
+                        BuildSection("Single Pass Instanced Rendering", "www.google.com", () =>
+                            {
+                                EditorGUILayout.LabelField("Long explanation of how single pass rendering works here", EditorStyles.label);
+                                singlePassInstanced = EditorGUILayout.ToggleLeft("Set Single Pass Instanced Rendering", singlePassInstanced);
+                            });
                     }
 
-                    EditorGUILayout.EndHorizontal();
+                    BuildSection("Quality Settings", "www.google.com", () =>
+                    {
+                        EditorGUILayout.LabelField("Long explanation of how single pass rendering works here", EditorStyles.label);
+                        setQualityLevel = EditorGUILayout.ToggleLeft("Set Quality Level to Lowest", setQualityLevel);
+                    });
 
-                    enableDepthBufferSharing = EditorGUILayout.BeginToggleGroup("Enable Depth Buffer Sharing", enableDepthBufferSharing);
+                    BuildSection("Depth Buffer Sharing", "www.google.com", () =>
+                    {
+                        EditorGUILayout.LabelField("Long explanation of how single pass rendering works here", EditorStyles.label);
+                        enableDepthBufferSharing = EditorGUILayout.BeginToggleGroup("Enable Depth Buffer Sharing", enableDepthBufferSharing);
                         enable16BitDepthBuffer = EditorGUILayout.ToggleLeft("Set Depth Buffer to 16-bit", enable16BitDepthBuffer);
-                        EditorGUILayout.HelpBox("16-bit is generally more performant than 24-bit", UnityEditor.MessageType.Info);
                         // TODO: Set camera to far plane of 100m? Or have this automatically in scene configure?
-                    EditorGUILayout.EndToggleGroup();
-                    EditorGUILayout.Space();
+                        EditorGUILayout.EndToggleGroup();
+                    });
 
-                    if (GUILayout.Button("Optimize Project")) // change size?
+                    // TODO: Change size of button? Put on right
+                    if (GUILayout.Button("Optimize Project"))
                     {
                         OptimizeProject();
                     }
                 }
             }
-
-            //GUILayout.Label("Scene Optimizations", EditorStyles.boldLabel);
+            EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
-            showSceneOptimizations = EditorGUILayout.Foldout(showSceneOptimizations, "Scene Optimizations");
 
+            GUILayout.BeginVertical("Box");
+            showSceneOptimizations = EditorGUILayout.Foldout(showSceneOptimizations, "Scene Optimizations");
             if (showSceneOptimizations)
             {
-                disableRealtimeGlobalIllumination = EditorGUILayout.ToggleLeft("Disable Realtime Global Illumination", disableRealtimeGlobalIllumination);
-                disableBakedGlobalIllumination = EditorGUILayout.ToggleLeft("Disable Baked Global Illumination", disableBakedGlobalIllumination);
-                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("This section will provide controls and information for the currently opened & active scene.", EditorStyles.label);
 
-                // TODO: need to offer option to set per-scene? ==> AssetDatabase and just modify files?
-
-                // TODO: Analyze current scene gameobjects for high poly count??
-
-                if (GUILayout.Button("Optimize Current Scene"))
+                BuildSection("Lighting Settings", "www.google.com", () =>
                 {
-                    OptimizeScene();
-                }
+                    EditorGUILayout.LabelField("Long explanation of how single pass rendering works here", EditorStyles.label);
+
+                    disableRealtimeGlobalIllumination = EditorGUILayout.ToggleLeft("Disable Realtime Global Illumination", disableRealtimeGlobalIllumination);
+                    disableBakedGlobalIllumination = EditorGUILayout.ToggleLeft("Disable Baked Global Illumination", disableBakedGlobalIllumination);
+
+                    if (GUILayout.Button("Optimize Lighting"))
+                    {
+                        OptimizeScene();
+                    }
+                });
+
+                BuildSection("Live Scene Analysis", "www.google.com", () =>
+                {
+                    if (GUILayout.Button("Analyze Scene"))
+                    {
+                        AnalyzeScene();
+                    }
+
+                    // TODO: Finish this per platform?
+                    /*
+                    if (sceneLights != null && sceneLights.Length > 1)
+                    {
+                        EditorGUILayout.LabelField("Long explanation of how single pass rendering works here", EditorStyles.label);
+
+                        sceneLights
+                    }*/
+
+                    // Number of lights
+                    // Shadows/MSAA?
+                    // Mesh polycount
+                });
             }
+            GUILayout.EndVertical();
 
             showShaderOptimizations = EditorGUILayout.Foldout(showShaderOptimizations, "Shader Optimizations");
-
             if (showShaderOptimizations)
             {
                 EditorGUILayout.HelpBox("It is recommended to utilize the MRTK Standard Shader for most materials", MessageType.Info);
@@ -151,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     if (GUILayout.Button("Undo"))
                     {
-                        UndoMaterials();
+                        //UndoMaterials();
                     }
                 EditorGUILayout.EndHorizontal();
 
@@ -169,6 +276,47 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.EndScrollView();
                 EditorGUILayout.EndHorizontal();
 
+            }
+        }
+
+        private void AnalyzeScene()
+        {
+            this.sceneLights = FindObjectsOfType<Light>();
+
+            // TODO: Consider searching for particle renderers count?
+
+            var filters = FindObjectsOfType<MeshFilter>();
+            List<MeshNode> meshes = new List<MeshNode>();
+            foreach(var f in filters)
+            {
+                int count = f.mesh.triangles.Length / 3;
+
+                meshes.Add(new MeshNode
+                {
+                    polycount = count,
+                    filter = f
+                });
+
+                if (f.gameObject.activeInHierarchy)
+                {
+                    totalActivePolyCount += count;
+                }
+                else
+                {
+                    totalInActivePolyCount += count;
+                }
+            }
+
+            meshes.OrderByDescending(s => s.polycount);
+            for(int i = 0; i < kSize; i++)
+            {
+                this.LargestMeshSizes[i] = 0;
+                this.LargestMeshes[i] = null;
+                if (i < meshes.Count)
+                {
+                    this.LargestMeshSizes[i] = meshes[i].polycount;
+                    this.LargestMeshes[i] = meshes[i].filter.gameObject;
+                }
             }
         }
 
@@ -247,8 +395,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void ConvertMaterials()
         {
-            convertedMaterials.Clear();
-
             foreach (Material asset in this.discoveredMaterials)
             {
                 if (asset != null)
@@ -263,22 +409,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             shader = asset.shader,
                         });*/
 
-                        asset.shader = replacementShader;
+            asset.shader = replacementShader;
                     }
                 }
             }
 
             discoveredMaterials.Clear();
-        }
-
-        private void UndoMaterials()
-        {
-            foreach (UndoMaterial um in this.convertedMaterials)
-            {
-                um.material.shader = um.shader;
-            }
-
-            convertedMaterials.Clear();
         }
 
         public static void ChangeProperty(SerializedObject target, string name, Action<SerializedProperty> changer)
