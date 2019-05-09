@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         const string errorIconContent = "TestFailed";
 
         static readonly RectOffset boxOffset = EditorStyles.helpBox.padding;
-        static readonly GUIStyle italicStyle = EditorStyles.label;
+        static readonly GUIStyle italicStyle = new GUIStyle(EditorStyles.label);
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -103,7 +103,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     labelContent = new GUIContent(" (" + missingSceneName + ")");
                     labelContent.tooltip = "The scene " + missingSceneName + " is missing. It will not be available to load.";
                     italicStyle.fontStyle = FontStyle.Italic;
-                    buttonsDisabled = true;
                     tagDisabled = true;
                     iconContent = EditorGUIUtility.IconContent(missingIconContent);
                 }
@@ -150,12 +149,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             asset = EditorGUI.ObjectField(assetRect, labelContent, assetProperty.objectReferenceValue, typeof(SceneAsset), false);
             EditorGUI.EndDisabledGroup();
 
-            if (asset != assetProperty.objectReferenceValue)
-            {
-                assetProperty.objectReferenceValue = asset;
-                changed = true;
-            }
-
             if (DrawTagProperty)
             {
                 // Draw our tag field
@@ -167,31 +160,79 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Draw our button
             EditorGUI.BeginDisabledGroup(buttonsDisabled || Application.isPlaying);
-            if (buildIndexProperty.intValue < 0)
+            if (!string.IsNullOrEmpty (nameProperty.stringValue) && asset == null)
             {
-                // Show add to build button
-                if (GUI.Button(buttonRect, "Add to build settings", EditorStyles.toolbarButton) && asset != null)
+                // The scene is missing - draw a button that lets people attempt to recover it
+                if (GUI.Button(buttonRect, "Search for missing scene", EditorStyles.toolbarButton))
                 {
-                    List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
-                    scenes.Add(new EditorBuildSettingsScene(pathProperty.stringValue, true));
-                    enabledProperty.boolValue = true;
-                    EditorBuildSettings.scenes = scenes.ToArray();
-                    changed = true;
+                    SceneAsset newSceneAsset = null;
+                    // Attempt to load via the scene path
+                    newSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(pathProperty.stringValue);
+                    if (newSceneAsset != null)
+                    {
+                        Debug.Log("Found scene at path " + pathProperty.stringValue);
+                        asset = newSceneAsset;
+                    }
+                    else
+                    {
+                        // If we didn't find it this way, search for all scenes in the project and try a name match
+                        foreach (string sceneGUID in AssetDatabase.FindAssets("t:Scene"))
+                        {
+                            string scenePath = AssetDatabase.GUIDToAssetPath(sceneGUID);
+                            string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+
+                            Debug.Log("Checking scene " + sceneName + " at " + scenePath);
+
+                            if (sceneName == nameProperty.stringValue)
+                            {
+                                newSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(pathProperty.stringValue);
+                                if (newSceneAsset != null)
+                                {
+                                    Debug.Log("Found scene at path " + scenePath);
+                                    asset = newSceneAsset;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else
             {
-                // Show add / remove toggle
-                if (GUI.Button(buttonRect, enabledProperty.boolValue ? "Disable in build settings" : "Enable in build settings", EditorStyles.toolbarButton))
+                if (buildIndexProperty.intValue < 0)
                 {
-                    enabledProperty.boolValue = !enabledProperty.boolValue;
-                    EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
-                    scenes[buildIndexProperty.intValue].enabled = enabledProperty.boolValue;
-                    EditorBuildSettings.scenes = scenes;
-                    changed = true;
+                    // The scene exists but it isn't in our build settings
+                    // Show a button that lets us add it
+                    if (GUI.Button(buttonRect, "Add to build settings", EditorStyles.toolbarButton) && asset != null)
+                    {
+                        List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
+                        scenes.Add(new EditorBuildSettingsScene(pathProperty.stringValue, true));
+                        enabledProperty.boolValue = true;
+                        EditorBuildSettings.scenes = scenes.ToArray();
+                        changed = true;
+                    }
+                }
+                else
+                {
+                    // The scene exists and is in build settings
+                    // Show add / remove toggle
+                    if (GUI.Button(buttonRect, enabledProperty.boolValue ? "Disable in build settings" : "Enable in build settings", EditorStyles.toolbarButton))
+                    {
+                        enabledProperty.boolValue = !enabledProperty.boolValue;
+                        EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
+                        scenes[buildIndexProperty.intValue].enabled = enabledProperty.boolValue;
+                        EditorBuildSettings.scenes = scenes;
+                        changed = true;
+                    }
                 }
             }
             EditorGUI.EndDisabledGroup();
+
+            if (asset != assetProperty.objectReferenceValue)
+            {
+                assetProperty.objectReferenceValue = asset;
+                changed = true;
+            }
 
             if (!Application.isPlaying && !EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isCompiling)
             {   // This is expensive so don't refresh during play mode or while other stuff is going on

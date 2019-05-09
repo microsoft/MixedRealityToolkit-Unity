@@ -434,6 +434,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 // This can happen if the scene object is null.
                 return false;
             }
+            catch (MissingReferenceException)
+            {
+                // This can happen if the scene object is null.
+                return false;
+            }
 
             return true;
         }
@@ -461,6 +466,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return false;
             }
             catch (NullReferenceException)
+            {
+                // This can happen if the scene object is null.
+                return false;
+            }
+            catch (MissingReferenceException)
             {
                 // This can happen if the scene object is null.
                 return false;
