@@ -22,6 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         public enum AntiAliasingSamples { One = 1, Two = 2, Four = 4, Eight = 8 };
 
         /// <summary>
+        /// Gets the texture manager used for compositing.
+        /// </summary>
+        public TextureManager TextureManager => textureManager;
+
+        /// <summary>
         /// Gets whether or not the holographic camera rig is connected and sending poses
         /// for the camera to the compositor.
         /// </summary>
@@ -74,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private MicrophoneInput microphoneInput;
         private ICalibrationData calibrationData;
 
-        private bool frameProviderInitialized = false;
+        private bool isVideoFrameProviderInitialized = false;
         private SpectatorViewPoseCache poseCache = new SpectatorViewPoseCache();
         private SpectatorViewTimeSynchronizer timeSynchronizer = new SpectatorViewTimeSynchronizer();
 
@@ -84,6 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         /// Gets the index of the video frame currently being composited.
         /// </summary>
         public int CurrentCompositeFrame { get; private set; }
+
+        /// <summary>
+        /// Gets whether or not the video frame provider has finished initialization.
+        /// </summary>
+        public bool IsVideoFrameProviderInitialized => isVideoFrameProviderInitialized;
 
 #if UNITY_EDITOR
         private bool overrideCameraPose;
@@ -169,41 +179,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private const int MAX_NUM_CACHED_AUDIO_FRAMES = 5;
         #endregion
 
-        const int statCapacity = 60;
-        Queue<float> PCFpsStats = new Queue<float>(statCapacity);
-        Queue<float> StepStats = new Queue<float>(statCapacity);
+        const int storedStatisticsCapacity = 60;
+        Queue<float> framerateStatistics = new Queue<float>(storedStatisticsCapacity);
 
-        void UpdateStatsElement(Queue<float> statElements, float newVal)
+        public Queue<float> FramerateStatistics => framerateStatistics;
+
+        private void UpdateStatsElement(Queue<float> statElements, float newVal)
         {
-            if (statElements.Count == statCapacity)
+            if (statElements.Count == storedStatisticsCapacity)
+            {
                 statElements.Dequeue();
+            }
+
             statElements.Enqueue(newVal);
         }
-
-        string GetStatsString(string title, Queue<float> statElements, out float average)
-        {
-            float min = float.MaxValue;
-            float max = float.MinValue;
-            float total = 0.0f;
-            foreach (var v in statElements)
-            {
-                min = Mathf.Min(v, min);
-                max = Mathf.Max(v, max);
-                total += v;
-            }
-            average = total / statElements.Count;
-            return string.Format("{0}:{1} Min:{2} Max:{3} Avg:{4:N1}", title, (int)statElements.Peek(), (int)min, (int)max, average);
-        }
-
-        public string GetFPSStatsString(out float average)
-        {
-            return GetStatsString("PC FPS", PCFpsStats, out average);
-        }
-        public string GetStepStatsString(out float average)
-        {
-            return GetStatsString("STEPS", StepStats, out average);
-        }
-
+       
         private void Start()
         {
             IsHolographicCameraConnected = false;
@@ -271,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         /// <returns>The time duration of a single video frame, in seconds.</returns>
         private float GetVideoFrameDuration()
         {
-            return (0.0001f * (UnityCompositorInterface.GetColorDuration() / 1000));
+            return (0.0001f * UnityCompositorInterface.GetColorDuration() / 1000);
         }
 
         /// <summary>
@@ -284,6 +274,40 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             return GetVideoFrameDuration() * frame;
         }
 
+        /// <summary>
+        /// Gets the framerate of the input video stream.
+        /// </summary>
+        /// <returns>The framerate, in frames per second.</returns>
+        public float GetVideoFramerate()
+        {
+            return 1.0f / GetVideoFrameDuration();
+        }
+
+        /// <summary>
+        /// Gets the width of the video frame.
+        /// </summary>
+        /// <returns>The width of the video frame, in pixels.</returns>
+        public static int GetVideoFrameWidth()
+        {
+            return UnityCompositorInterface.GetFrameWidth();
+        }
+
+        /// <summary>
+        /// Gets the height of the video frame.
+        /// </summary>
+        /// <returns>The height of the video frame, in pixels.</returns>
+        public static int GetVideoFrameHeight()
+        {
+            return UnityCompositorInterface.GetFrameHeight();
+        }
+
+        /// <summary>
+        /// Gets the number of composited frames ready to be output by the video output buffer.
+        /// </summary>
+        public int GetQueuedOutputFrameCount()
+        {
+            return UnityCompositorInterface.GetNumQueuedOutputFrames();
+        }
 #endif
 
         /// <summary>
@@ -295,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             float time = Time.time;
 
 #if UNITY_EDITOR
-            if (frameProviderInitialized)
+            if (isVideoFrameProviderInitialized)
             {
                 if (poseCache.poses.Count > 0)
                 {
@@ -320,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         {
 #if UNITY_EDITOR
 
-            UpdateStatsElement(PCFpsStats, 1.0f / Time.deltaTime);
+            UpdateStatsElement(framerateStatistics, 1.0f / Time.deltaTime);
 
             UnityCompositorInterface.UpdateSpectatorView();
 
@@ -343,8 +367,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                 step = 1;
             }
             CurrentCompositeFrame += step;
-
-            UpdateStatsElement(StepStats, step);
 
             UnityCompositorInterface.SetCompositeFrameIndex(CurrentCompositeFrame);
 
@@ -389,10 +411,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
             #endregion
 
-            if (!frameProviderInitialized)
+            if (!isVideoFrameProviderInitialized)
             {
-                frameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice((int)CaptureDevice);
-                if (frameProviderInitialized)
+                isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice((int)CaptureDevice);
+                if (isVideoFrameProviderInitialized)
                 {
                     CurrentCompositeFrame = 0;
                     timeSynchronizer.Reset();
@@ -454,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         private void OnEnable()
         {
-            frameProviderInitialized = false;
+            isVideoFrameProviderInitialized = false;
         }
 
         private void OnDestroy()
@@ -510,10 +532,31 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             }
         }
 
+        public void TakePicture()
+        {
+            UnityCompositorInterface.TakePicture();
+        }
+
+        public bool IsRecording()
+        {
+            return UnityCompositorInterface.IsRecording();
+        }
+
+        public void StartRecording()
+        {
+            UnityCompositorInterface.StartRecording();
+        }
+
+        public void StopRecording()
+        {
+            StopRecordingAudio();
+            UnityCompositorInterface.StopRecording();
+        }
+
         /// <summary>
         /// Stops audio recording by ensuring the audio stream is fully written immediately.
         /// </summary>
-        public void StopRecordingAudio()
+        private void StopRecordingAudio()
         {
             //Send any left over stream
             if (audioMemoryStream != null)
