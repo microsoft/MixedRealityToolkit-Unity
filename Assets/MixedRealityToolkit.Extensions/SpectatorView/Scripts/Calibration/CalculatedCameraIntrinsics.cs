@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 intrinsics = JsonUtility.FromJson<CalculatedCameraIntrinsics>(str);
                 return true;
             }
-            catch
+            catch (Exception e)
             {
                 Debug.LogWarning($"Exception thrown deserializing camera intrinsics: {e.ToString()}");
                 return false;

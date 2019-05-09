@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 extrinsics = JsonUtility.FromJson<CalculatedCameraExtrinsics>(str);
                 return true;
             }
-            catch
+            catch (Exception e)
             {
                 Debug.LogWarning($"Exception thrown deserializing camera extrinsics: {e.ToString()}");
                 return false;
