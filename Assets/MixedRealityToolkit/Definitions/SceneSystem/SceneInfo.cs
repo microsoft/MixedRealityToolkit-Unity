@@ -24,18 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         /// <summary>
-        /// Scene asset was set at some point, but is now gone
-        /// </summary>
-        public bool IsMissing
-        {
-            get
-            {
-                return Asset == null && !string.IsNullOrEmpty(Name);
-            }
-        }
-
-        /// <summary>
-        /// Returns true if the asset is not null and if the scene is in our build settings.
+        /// Returns true if the asset is not null and if the scene has a valid build index. Doesn't respect whether scene is enabled in build settings.
         /// </summary>
         public bool IsInBuildSettings
         {
@@ -61,13 +50,22 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// True if scene is included in build (not just added to build settings, but also checked)
         /// </summary>
         [HideInInspector]
-        public bool Included;
+        public bool Enabled;
 
         /// <summary>
         /// Build index of the scene. Set by the property drawer.
         /// </summary>
         [HideInInspector]
         public int BuildIndex;
+
+        /// <summary>
+        /// Optional tag used to load and unload scenes in groups.
+        /// </summary>
+#if UNITY_EDITOR
+        [TagProperty]
+#endif
+        public string Tag;
+
 #if UNITY_EDITOR
         [SceneAssetReference]
 #endif
