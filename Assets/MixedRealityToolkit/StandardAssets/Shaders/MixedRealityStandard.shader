@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 Shader "Mixed Reality Toolkit/Standard"
@@ -168,7 +168,7 @@ Shader "Mixed Reality Toolkit/Standard"
         Pass
         {
             Name "Main"
-            Tags{ "RenderType" = "Opaque" "LightMode" = "ForwardBase" "PerformanceChecks" = "False" }
+            Tags{ "RenderType" = "Opaque" "LightMode" = "ForwardBase" }
             LOD 100
             Blend[_SrcBlend][_DstBlend]
             BlendOp[_BlendOp]
@@ -1106,6 +1106,6 @@ Shader "Mixed Reality Toolkit/Standard"
         }
     }
     
-    FallBack "VertexLit"
+    Fallback "Hidden/InternalErrorShader"
     CustomEditor "Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI"
 }

@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -1060,6 +1061,35 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (propertyValue.HasValue)
             {
                 material.SetColor(propertyName, propertyValue.Value);
+            }
+        }
+
+        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline")]
+        protected static void UpgradeShaderForLightweightRP()
+        {
+            string shaderName = "Mixed Reality Toolkit/Standard";
+            string path = AssetDatabase.GetAssetPath(Shader.Find(shaderName));
+
+            if (path != null)
+            {
+                try
+                {
+                    string upgradedShader = File.ReadAllText(path);
+                    upgradedShader = upgradedShader.Replace("Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"ForwardBase\" }",
+                                                            "Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"LightweightForward\" }");
+                    File.WriteAllText(path, upgradedShader);
+                    AssetDatabase.Refresh();
+
+                    Debug.LogFormat("Upgraded {0} for use with the Lightweight Render Pipeline.", path);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+            }
+            else
+            {
+                Debug.LogErrorFormat("Failed to get asset path to: {0}", shaderName);
             }
         }
     }
