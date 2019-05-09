@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public class MixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
+
+        private Func<bool>[] RenderProfileFuncs;
 
         // Experience properties
         private static bool showExperienceProperties = true;
@@ -99,7 +102,61 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Editor settings
             useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
+
+            this.RenderProfileFuncs = new Func<bool>[]
+            {
+                () => {
+                    EditorGUILayout.PropertyField(enableCameraSystem);
+                    EditorGUILayout.PropertyField(cameraSystemType);
+                    return RenderProfile(cameraProfile);
+                },
+                () => {
+                     EditorGUILayout.PropertyField(enableInputSystem);
+                    EditorGUILayout.PropertyField(inputSystemType);
+                    return RenderProfile(inputSystemProfile, true, typeof(IMixedRealityInputSystem));
+                },
+                () => {
+                    var experienceScale = (ExperienceScale)targetExperienceScale.intValue;
+                    if (experienceScale != ExperienceScale.Room)
+                    {
+                        // Alert the user if the experience scale does not support boundary features.
+                        GUILayout.Space(6f);
+                        EditorGUILayout.HelpBox("Boundaries are only supported in Room scale experiences.", MessageType.Warning);
+                        GUILayout.Space(6f);
+                    }
+                    EditorGUILayout.PropertyField(enableBoundarySystem);
+                    EditorGUILayout.PropertyField(boundarySystemType);
+                    return RenderProfile(boundaryVisualizationProfile, true, typeof(IMixedRealityBoundarySystem));
+                },
+                () => {
+                    EditorGUILayout.PropertyField(enableTeleportSystem);
+                    EditorGUILayout.PropertyField(teleportSystemType);
+                    return false;
+                },
+                () => {
+                    EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
+                    EditorGUILayout.PropertyField(spatialAwarenessSystemType);
+                    EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
+                    return RenderProfile(spatialAwarenessSystemProfile, true, typeof(IMixedRealitySpatialAwarenessSystem));
+                },
+                () => {
+                    EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
+                    EditorGUILayout.PropertyField(enableDiagnosticsSystem);
+                    EditorGUILayout.PropertyField(diagnosticsSystemType);
+                    return RenderProfile(diagnosticsSystemProfile);
+                },
+                () => {
+                    return RenderProfile(registeredServiceProvidersProfile);
+                },
+                () => {
+                    EditorGUILayout.PropertyField(useServiceInspectors);
+                    return false;
+                },
+            };
         }
+
+        private static string[] TabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "Extensions", "Editor" };
+        private static int SelectedTab = 0;
 
         public override void OnInspectorGUI()
         {
@@ -149,13 +206,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             bool changed = false;
 
             // Experience configuration
-            EditorGUILayout.Space();
             ExperienceScale experienceScale = (ExperienceScale)targetExperienceScale.intValue;
+            /*
             showExperienceProperties = EditorGUILayout.Foldout(showExperienceProperties, "Experience Settings", true);
             if (showExperienceProperties)
             {
                 using (new EditorGUI.IndentLevelScope())
-                {
+                {*/
                     EditorGUILayout.PropertyField(targetExperienceScale, TargetScaleContent);
                     string scaleDescription = string.Empty;
 
@@ -187,10 +244,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         GUILayout.Space(6f);
                         EditorGUILayout.HelpBox(scaleDescription, MessageType.Info);
                     }
+            //     }
+            // }
+
+            EditorGUILayout.BeginHorizontal();
+                GUILayout.BeginVertical("Box");
+                        SelectedTab = GUILayout.SelectionGrid(SelectedTab, TabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
+                GUILayout.EndVertical();
+
+            EditorGUILayout.BeginVertical();
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    changed |= RenderProfileFuncs[SelectedTab]();
                 }
-            }
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.EndHorizontal();
 
             // Camera Profile configuration
+            /*
             EditorGUILayout.Space();
             showCameraProperties = EditorGUILayout.Foldout(showCameraProperties, "Camera Settings", true);
             if (showCameraProperties)
@@ -296,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.PropertyField(useServiceInspectors);
                 }
-            }
+            }*/
 
             if (!changed)
             {

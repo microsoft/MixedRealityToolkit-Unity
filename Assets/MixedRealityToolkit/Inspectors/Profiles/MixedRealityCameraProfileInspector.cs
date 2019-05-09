@@ -67,9 +67,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             serializedObject.Update();
           
             EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Opaque Display Settings", EditorStyles.boldLabel);
+            /*
+             * TODO:TROY
             showOpaqueProperties = EditorGUILayout.Foldout(showOpaqueProperties, "Opaque Display Settings", true);
             if (showOpaqueProperties)
-            {
+            {*/
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.PropertyField(opaqueNearClip, nearClipTitle);
@@ -82,12 +85,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     opaqueQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", opaqueQualityLevel.intValue, QualitySettings.names);
                 }
-            }
+            //}
 
             EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Transparent Display Settings", EditorStyles.boldLabel);
+            /*
             showTransparentProperties = EditorGUILayout.Foldout(showTransparentProperties, "Transparent Display Settings", true);
             if (showTransparentProperties)
-            {
+            {*/
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.PropertyField(transparentNearClip, nearClipTitle);
@@ -100,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     holoLensQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", holoLensQualityLevel.intValue, QualitySettings.names);
                 }
-            }
+            //}
 
             serializedObject.ApplyModifiedProperties();
         }

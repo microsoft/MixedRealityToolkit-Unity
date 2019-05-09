@@ -147,7 +147,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 string showFoldoutKey = GetSubProfileDropdownKey(property);
                 showFoldout = SessionState.GetBool(showFoldoutKey, false);
-                showFoldout = EditorGUILayout.Foldout(showFoldout, property.displayName, true);
+                // TODO: TROY
+                //showFoldout = EditorGUILayout.Foldout(showFoldout, property.displayName, true);
                 SessionState.SetBool(showFoldoutKey, showFoldout);
             }
 
@@ -207,9 +208,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             EditorGUILayout.EndHorizontal();
-            
+
             // Draw foldout
-            if (showFoldout && property.objectReferenceValue != null)
+            // TODO: TROY
+            //if (showFoldout && property.objectReferenceValue != null)
+            if (property.objectReferenceValue != null)
             {
                 UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
 
@@ -221,10 +224,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("", GUILayout.MaxWidth(subProfileIndentWidth));
-                EditorGUILayout.BeginVertical(subProfileBackgroundStyle);
+                //EditorGUILayout.LabelField("", GUILayout.MaxWidth(subProfileIndentWidth));
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                // TODO: TROY
+                //EditorGUILayout.BeginVertical(subProfileBackgroundStyle);
                 subProfileEditor.OnInspectorGUI();
-                EditorGUILayout.Space();
+                //EditorGUILayout.Space();
                 EditorGUILayout.Space();
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndHorizontal();
