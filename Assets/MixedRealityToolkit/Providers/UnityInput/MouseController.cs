@@ -49,6 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
         private MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
 
+        private MixedRealityMouseInputProfile mouseInputProfile = null;
+        private MixedRealityMouseInputProfile MouseInputProfile => mouseInputProfile ?? (mouseInputProfile = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>()?.MouseInputProfile);
+
         /// <summary>
         /// Update controller.
         /// </summary>
@@ -76,10 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     mouseDeltaRotation.x += -UInput.GetAxis("Mouse Y");
                     mouseDeltaRotation.y += UInput.GetAxis("Mouse X");
                     
-                    var mouseInputProfile = MixedRealityToolkit.Instance?.GetService<MouseDeviceManager>()?.MouseInputProfile;
-                    if (mouseInputProfile != null)
+                    if (MouseInputProfile != null)
                     {
-                        mouseDeltaRotation *= mouseInputProfile.MouseSpeed;
+                        mouseDeltaRotation *= MouseInputProfile.MouseSpeed;
                     }
 
                     MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
