@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.SceneSystem;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -12,6 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [MixedRealityServiceInspector(typeof(MixedRealitySceneSystem))]
     public class SceneSystemInspector : BaseMixedRealityServiceInspector
     {
+        private const float maxLoadButtonWidth = 50;
+        private const float tagLoadButtonSetWidth = 120;
+
         private static readonly Color enabledColor = GUI.backgroundColor;
         private static readonly Color disabledColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
         private static readonly Color errorColor = Color.Lerp(GUI.backgroundColor, Color.red, 0.5f);
@@ -57,10 +61,42 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.LabelField("Content Scenes", EditorStyles.boldLabel);
             if (!Application.isPlaying)
             {
-                EditorGUILayout.HelpBox("Load / unload content scenes by clicking their names.", MessageType.Info);
+                EditorGUILayout.HelpBox("You can load / unload scenes in the editor by clicking on their tags or names", MessageType.Info);
                 EditorGUILayout.Space();
             }
+
+            EditorGUI.BeginDisabledGroup(Application.isPlaying);
             EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Load / Unload by tag", EditorStyles.miniBoldLabel);
+            List<string> contentTags = new List<string>(sceneSystem.ContentTags);
+            if (contentTags.Count == 0)
+            {
+                EditorGUILayout.LabelField("(No scenes with content tags found)", EditorStyles.miniLabel);
+            }
+            else
+            {
+                EditorGUILayout.BeginHorizontal();
+                foreach (string tag in contentTags)
+                {
+                    EditorGUILayout.BeginVertical(GUILayout.MaxWidth(tagLoadButtonSetWidth));
+                    EditorGUILayout.LabelField(tag, EditorStyles.miniLabel);
+                    EditorGUILayout.BeginHorizontal();
+                    if (GUILayout.Button("Load", EditorStyles.toolbarButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
+                    {
+
+                    }
+                    if (GUILayout.Button("Unload", EditorStyles.toolbarButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
+                    {
+
+                    }
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.EndVertical();
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Load / Unload individually", EditorStyles.miniBoldLabel);
             foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
             {
                 if (contentScene.IsEmpty)
@@ -86,6 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 }
             }
+            EditorGUI.EndDisabledGroup();
 
             EditorGUILayout.Space();
         }

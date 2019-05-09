@@ -19,17 +19,45 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         float SceneOpProgress { get; }
 
         /// <summary>
-        /// Async method to load the scenes provided. Will do nothing if a scene operation is already in progress.
+        /// Async method to load the scenes by name. Will do nothing if a scene operation is already in progress.
         /// </summary>
         /// <param name="scenesToLoad"></param>
         /// <returns></returns>
-        Task LoadScenes(IEnumerable<string> scenesToLoad);
+        Task LoadContent(IEnumerable<string> scenesToLoad);
 
         /// <summary>
-        /// Async method to unload the scenes provided. Will do nothing if a scene operation is already in progress.
+        /// Async method to unload the scenes by name. Will do nothing if a scene operation is already in progress.
         /// </summary>
         /// <param name="scenesToLoad"></param>
         /// <returns></returns>
-        Task UnloadScenes(IEnumerable<string> scenesToUnload);
+        Task UnloadContent(IEnumerable<string> scenesToUnload);
+
+        /// <summary>
+        /// Async method to load a single scene by name. Will do nothing if a scene operation is already in progress.
+        /// </summary>
+        /// <param name="sceneToLoad"></param>
+        /// <returns></returns>
+        Task LoadContent(string sceneToLoad);
+
+        /// <summary>
+        /// Async method to unload a single scene by name. Will do nothing if a scene operation is already in progress.
+        /// </summary>
+        /// <param name="sceneToUnload"></param>
+        /// <returns></returns>
+        Task UnloadContent(string sceneToUnload);
+
+        /// <summary>
+        // Async method to load scenes by tag. Will do nothing if a scene operation is already in progress.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        Task LoadContentByTag(string tag);
+
+        /// <summary>
+        /// Async method to unload scenes by tag. Will do nothing if a scene operation is already in progress.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        Task UnloadContentByTag(string tag);
     }
 }

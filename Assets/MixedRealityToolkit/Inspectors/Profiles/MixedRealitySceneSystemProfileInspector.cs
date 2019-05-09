@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.PropertyField(contentScenes, includeChildren: true);
-                    DrawSceneInfoDragAndDrop(contentScenes);
+                    //DrawSceneInfoDragAndDrop(contentScenes);
                 }
             }
 
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         defaultLightingSceneIndex.intValue = EditorGUILayout.IntSlider(defaultLightingSceneIndex.displayName, defaultLightingSceneIndex.intValue, 0, lightingScenes.arraySize - 1);
                         EditorGUILayout.PropertyField(lightingScenes, includeChildren: true);
-                        DrawSceneInfoDragAndDrop(lightingScenes);
+                        //DrawSceneInfoDragAndDrop(lightingScenes);
                     }
                 }
             }

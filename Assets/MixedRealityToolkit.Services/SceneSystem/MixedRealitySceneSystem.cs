@@ -64,6 +64,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public IEnumerable<SceneInfo> ContentScenes { get { return profile.ContentScenes; } }
 
+        /// <inheritdoc />
+        public IEnumerable<string> ContentTags { get { return profile.ContentTags; } }
+
         public string LightingSceneName
         {
             get { return lightingSceneName; }
@@ -89,19 +92,19 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         /// <inheritdoc />
-        public async Task LoadScene(string sceneToLoad)
+        public async Task LoadContent(string sceneToLoad)
         {
-            await LoadScenes(new string[] { sceneToLoad });
+            await LoadContent(new string[] { sceneToLoad });
         }
 
         /// <inheritdoc />
-        public async Task UnloadScene(string sceneToUnload)
+        public async Task UnloadContent(string sceneToUnload)
         {
-            await UnloadScenes(new string[] {sceneToUnload} );
+            await UnloadContent(new string[] {sceneToUnload} );
         }
 
         /// <inheritdoc />
-        public async Task LoadScenes(IEnumerable<string> scenesToLoad)
+        public async Task LoadContent(IEnumerable<string> scenesToLoad)
         {
             if (SceneOpInProgress)
             {
@@ -189,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         /// <inheritdoc />
-        public async Task UnloadScenes(IEnumerable<string> scenesToUnload)
+        public async Task UnloadContent(IEnumerable<string> scenesToUnload)
         {
             if (SceneOpInProgress)
             {
@@ -273,6 +276,18 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             SceneOpInProgress = false;
         }
 
+        /// <inheritdoc />
+        public async Task LoadContentByTag(string tag)
+        {
+            await LoadContent(profile.GetContentSceneNamesByTag(tag));
+        }
+
+        /// <inheritdoc />
+        public async Task UnloadContentByTag(string tag)
+        {
+            await UnloadContent(profile.GetContentSceneNamesByTag(tag));
+        }
+
         public bool IsSceneLoaded(string sceneName)
         {
             Scene scene = SceneManager.GetSceneByName(sceneName);
@@ -311,10 +326,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 }
 
                 // Load the new lighting scene immediately
-                await LoadScene(newLightingSceneName);
+                await LoadContent(newLightingSceneName);
 
                 // Unload the other lighting scenes
-                await UnloadScenes(lightingSceneNames);
+                await UnloadContent(lightingSceneNames);
             }
         }
 
