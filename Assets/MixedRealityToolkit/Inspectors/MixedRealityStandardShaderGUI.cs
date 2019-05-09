@@ -776,9 +776,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.enabled = false;
             materialEditor.RenderQueueField();
 
-            // When round corner or border light features are used, enable instancing to disable batching. Static and dynamic 
-            // batching will normalize the object scale, which breaks border related features.
-            GUI.enabled = !PropertyEnabled(roundCorners) && !PropertyEnabled(borderLight);
+            // Enable instancing to disable batching. Static and dynamic batching will normalize the object scale, which breaks 
+            // features which utilize object scale.
+            GUI.enabled = !ScaleRequired();
 
             if (!GUI.enabled && !material.enableInstancing)
             {
@@ -818,6 +818,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 material.SetInt(Styles.stencilComparisonName, (int)CompareFunction.Disabled);
                 material.SetInt(Styles.stencilOperationName, (int)StencilOp.Keep);
             }
+        }
+
+        protected bool ScaleRequired()
+        {
+            return PropertyEnabled(roundCorners) || 
+                   PropertyEnabled(borderLight) ||
+                   (PropertyEnabled(enableTriplanarMapping) && PropertyEnabled(enableLocalSpaceTriplanarMapping));
         }
 
         protected static void SetupMaterialWithAlbedo(Material material, MaterialProperty albedoMap, MaterialProperty albedoAlphaMode, MaterialProperty albedoAssignedAtRuntime)
