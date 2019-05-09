@@ -11,11 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public static class InputAnimationUtils
     {
-        public static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
+        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
         private static IInputSimulationService inputSimService = null;
         private static IInputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
 
+        /// <summary>
+        /// Record a keyframe at the given time for the main camera and tracked input devices.
+        /// </summary>
         public static void RecordKeyframe(InputAnimation animation, float time, InputRecordingSettings settings)
         {
             RecordInputHandData(animation, time, Handedness.Left, settings);
@@ -23,16 +26,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (CameraCache.Main)
             {
                 var cameraPose = new MixedRealityPose(CameraCache.Main.transform.position, CameraCache.Main.transform.rotation);
-                animation.AddCameraPoseKeys(time, cameraPose, settings.CameraPositionThreshold, settings.CameraRotationThreshold);
+                animation.AddCameraPoseKey(time, cameraPose, settings.CameraPositionThreshold, settings.CameraRotationThreshold);
             }
         }
 
+        /// <summary>
+        /// Record a keyframe at the given time for a hand with the given handedness it is tracked.
+        /// </summary>
         public static bool RecordInputHandData(InputAnimation animation, float time, Handedness handedness, InputRecordingSettings settings)
         {
             var hand = HandJointUtils.FindHand(handedness);
             if (hand == null)
             {
-                animation.AddHandStateKeys(time, handedness, false, false);
+                animation.AddHandStateKey(time, handedness, false, false);
                 return false;
             }
 
@@ -51,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            animation.AddHandStateKeys(time, handedness, isTracked, isPinching);
+            animation.AddHandStateKey(time, handedness, isTracked, isPinching);
 
             if (isTracked)
             {
@@ -59,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (hand.TryGetJoint((TrackedHandJoint)i, out MixedRealityPose jointPose))
                     {
-                        animation.AddHandJointKeys(time, handedness, (TrackedHandJoint)i, jointPose.Position, settings.JointPositionThreshold);
+                        animation.AddHandJointKey(time, handedness, (TrackedHandJoint)i, jointPose.Position, settings.JointPositionThreshold);
                     }
                 }
             }
@@ -67,6 +73,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return true;
         }
 
+        /// <summary>
+        /// Evaluate input animation and apply it using the input simulation service.
+        /// </summary>
         public static void ApplyInputAnimation(InputAnimation animation, float time)
         {
             if (InputSimService != null)
@@ -84,6 +93,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Serialize an animation curve as binary data.
+        /// </summary>
         public static void SerializeAnimationCurve(BinaryWriter writer, AnimationCurve curve)
         {
             writer.Write((int)curve.preWrapMode);
@@ -103,6 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Deserialize an animation curve from binary data.
+        /// </summary>
         public static void DeserializeAnimationCurve(BinaryReader reader, AnimationCurve curve)
         {
             curve.preWrapMode = (WrapMode)reader.ReadInt32();

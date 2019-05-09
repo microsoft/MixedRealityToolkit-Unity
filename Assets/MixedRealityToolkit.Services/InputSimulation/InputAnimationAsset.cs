@@ -10,6 +10,9 @@ using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Asset that contains input animation data and allows playback at runtime.
+    /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input Animation", fileName = "MixedRealityInputAnimation", order = 100)]
     public class InputAnimationAsset : PlayableAsset
     {

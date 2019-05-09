@@ -9,6 +9,9 @@ using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Uses input animation data to simulate camera and hand movement via the input simulation service.
+    /// </summary>
     public class InputPlaybackBehaviour : PlayableBehaviour
     {
         public InputAnimation InputAnimation = null;

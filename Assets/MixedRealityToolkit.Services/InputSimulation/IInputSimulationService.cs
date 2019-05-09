@@ -7,7 +7,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         MixedRealityInputSimulationProfile InputSimulationProfile { get; }
 
+        /// <summary>
+        /// Pose data for the left hand.
+        /// </summary>
         SimulatedHandData HandDataLeft { get; }
+        /// <summary>
+        /// Pose data for the right hand.
+        /// </summary>
         SimulatedHandData HandDataRight { get; }
 
         /// <summary>

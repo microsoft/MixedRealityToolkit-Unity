@@ -16,18 +16,34 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// A used-defined marker on the input animation timeline.
+    /// </summary>
     [Serializable]
     public class InputAnimationMarker
     {
+        /// <summary>
+        /// Placement of the marker relative to the input animation start time.
+        /// </summary>
         public float time = 0.0f;
+
+        /// <summary>
+        /// Custom name of the marker.
+        /// </summary>
         public string name = "";
     }
 
+    /// <summary>
+    /// Contains a set of animation curves that describe motion of camera and hands.
+    /// </summary>
     [System.Serializable]
     public class InputAnimation
     {
         protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
+        /// <summary>
+        /// Maximum duration of all animations curves.
+        /// </summary>
         [SerializeField]
         private float duration = 0.0f;
         public float Duration => duration;
@@ -49,6 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private AnimationCurve[] cameraRotationCurves;
 
+        /// <summary>
+        /// Number of markers in the animation.
+        /// </summary>
         [SerializeField]
         private List<InputAnimationMarker> markers;
         public int markerCount => markers.Count;
@@ -122,51 +141,61 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// AnimationUtility is only available with UnityEditor
         #if UNITY_EDITOR
 
-        public void AddHandStateKeys(float time, Handedness handedness, bool isTracked, bool isPinching)
+        /// <summary>
+        /// Add a keyframe for the tracking state of a hand.
+        /// </summary>
+        public void AddHandStateKey(float time, Handedness handedness, bool isTracked, bool isPinching)
         {
             if (handedness == Handedness.Left)
             {
-                AddHandStateKeys(time, isTracked, isPinching, handTrackedCurveLeft, handPinchCurveLeft);
+                AddHandStateKey(time, isTracked, isPinching, handTrackedCurveLeft, handPinchCurveLeft);
             }
             else if (handedness == Handedness.Right)
             {
-                AddHandStateKeys(time, isTracked, isPinching, handTrackedCurveRight, handPinchCurveRight);
+                AddHandStateKey(time, isTracked, isPinching, handTrackedCurveRight, handPinchCurveRight);
             }
         }
 
-        public void AddHandJointKeys(float time, Handedness handedness, TrackedHandJoint joint, Vector3 jointPosition, float positionThreshold)
+        /// <summary>
+        /// Add a keyframe for one hand joint.
+        /// </summary>
+        public void AddHandJointKey(float time, Handedness handedness, TrackedHandJoint joint, Vector3 jointPosition, float positionThreshold)
         {
             if (handedness == Handedness.Left)
             {
-                AddHandJointKeys(time, joint, jointPosition, handJointCurvesLeft, positionThreshold);
+                AddHandJointKey(time, joint, jointPosition, handJointCurvesLeft, positionThreshold);
             }
             else if (handedness == Handedness.Right)
             {
-                AddHandJointKeys(time, joint, jointPosition, handJointCurvesRight, positionThreshold);
+                AddHandJointKey(time, joint, jointPosition, handJointCurvesRight, positionThreshold);
             }
         }
 
+        /// <summary>
+        /// Add a keyframe for an entire hand pose containing all the joints.
+        /// </summary>
         public void AddHandDataKeys(float time, Handedness handedness, SimulatedHandData data, float positionThreshold, float rotationThreshold)
         {
             if (handedness == Handedness.Left)
             {
-                AddHandStateKeys(time, data.IsTracked, data.IsPinching, handTrackedCurveLeft, handPinchCurveLeft);
+                AddHandStateKey(time, data.IsTracked, data.IsPinching, handTrackedCurveLeft, handPinchCurveLeft);
                 for (int i = 0; i < jointCount; ++i)
                 {
-                    AddHandJointKeys(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesLeft, positionThreshold);
+                    AddHandJointKey(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesLeft, positionThreshold);
                 }
             }
             else if (handedness == Handedness.Right)
             {
-                AddHandStateKeys(time, data.IsTracked, data.IsPinching, handTrackedCurveRight, handPinchCurveRight);
+                AddHandStateKey(time, data.IsTracked, data.IsPinching, handTrackedCurveRight, handPinchCurveRight);
                 for (int i = 0; i < jointCount; ++i)
                 {
-                    AddHandJointKeys(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesRight, positionThreshold);
+                    AddHandJointKey(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesRight, positionThreshold);
                 }
             }
         }
 
-        private void AddHandStateKeys(float time, bool isTracked, bool isPinching, AnimationCurve trackedCurve, AnimationCurve pinchCurve)
+        /// Add a keyframe for the tracking state of a hand.
+        private void AddHandStateKey(float time, bool isTracked, bool isPinching, AnimationCurve trackedCurve, AnimationCurve pinchCurve)
         {
             AddBoolKeyFiltered(trackedCurve, time, isTracked);
             AddBoolKeyFiltered(pinchCurve, time, isPinching);
@@ -174,7 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             duration = Mathf.Max(duration, time);
         }
 
-        private void AddHandJointKeys(float time, TrackedHandJoint joint, Vector3 jointPosition, AnimationCurve[] jointCurves, float positionThreshold)
+        /// Add a keyframe for one hand joint.
+        private void AddHandJointKey(float time, TrackedHandJoint joint, Vector3 jointPosition, AnimationCurve[] jointCurves, float positionThreshold)
         {
             int curveIndex = (int)joint * 3;
             AddFloatKeyFiltered(jointCurves[curveIndex + 0], time, jointPosition.x, positionThreshold);
@@ -184,7 +214,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             duration = Mathf.Max(duration, time);
         }
 
-        public void AddCameraPoseKeys(float time, MixedRealityPose cameraPose, float positionThreshold, float rotationThreshold)
+        /// <summary>
+        /// Add a keyframe for the camera transform.
+        /// </summary>
+        public void AddCameraPoseKey(float time, MixedRealityPose cameraPose, float positionThreshold, float rotationThreshold)
         {
             AddFloatKeyFiltered(cameraPositionCurves[0], time, cameraPose.Position.x, positionThreshold);
             AddFloatKeyFiltered(cameraPositionCurves[1], time, cameraPose.Position.y, positionThreshold);
@@ -298,17 +331,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return lowIdx;
         }
 
+        /// <summary>
+        /// Add a user-defined marker.
+        /// </summary>
         public void AddMarker(InputAnimationMarker marker)
         {
             int index = FindMarkerInterval(marker.time) + 1;
             markers.Insert(index, marker);
         }
 
+        /// <summary>
+        /// Remove the user-defined marker at the given index.
+        /// </summary>
         public void RemoveMarker(int index)
         {
             markers.RemoveAt(index);
         }
 
+        /// <summary>
+        /// Change the time of the marker at the given index.
+        /// </summary>
         public void SetMarkerTime(int index, float time)
         {
             InputAnimationMarker marker = markers[index];
@@ -321,6 +363,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endif // UNITY_EDITOR
 
+        /// <summary>
+        /// Evaluate hand tracking state and joint poses at the given time.
+        /// </summary>
         public void EvaluateHandData(float time, Handedness handedness, SimulatedHandData result)
         {
             if (handedness == Handedness.Left)
@@ -333,6 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// Evaluate hand tracking state and joint poses at the given time.
         private void EvaluateHandData(float time, SimulatedHandData result, AnimationCurve trackedCurve, AnimationCurve pinchCurve, AnimationCurve[] jointCurves)
         {
             bool isTracked = (trackedCurve.Evaluate(time) > 0.5f);
@@ -351,6 +397,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 });
         }
 
+        /// <summary>
+        /// Evaluate the camera transform at the given time.
+        /// </summary>
         public MixedRealityPose EvaluateCameraPose(float time)
         {
             var cameraPose = new MixedRealityPose();
@@ -373,6 +422,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return cameraPose;
         }
 
+        /// <summary>
+        /// Get the marker at the given index.
+        /// </summary>
         public InputAnimationMarker GetMarker(int index)
         {
             return markers[index];
@@ -408,11 +460,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return lowIdx;
         }
 
+        /// Sort marker array by time values.
         private void SortMarkers()
         {
             markers.Sort(new CompareMarkers());
         }
 
+        /// <summary>
+        /// Serialize animation data into a stream.
+        /// </summary>
         public void ToStream(Stream stream)
         {
             var writer = new BinaryWriter(stream);
@@ -430,6 +486,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             formatter.Serialize(stream, markers);
         }
 
+        /// <summary>
+        /// Deserialize animation data from a stream.
+        /// </summary>
         public void FromStream(Stream stream)
         {
             var reader = new BinaryReader(stream);

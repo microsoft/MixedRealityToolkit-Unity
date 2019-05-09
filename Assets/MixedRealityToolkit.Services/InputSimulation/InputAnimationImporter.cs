@@ -16,11 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public const string Extension = "inputanim";
     }
 
+    /// <summary>
+    /// Importer to construct an input animation asset from binary data.
+    /// </summary>
     [ScriptedImporter(1, InputAnimationImportUtils.Extension)]
     public class InputAnimationImporter : ScriptedImporter
     {
-        // public float m_Scale = 1;
-
+        /// <inheritdoc/>
         public override void OnImportAsset(AssetImportContext ctx)
         {
             using (FileStream fs = new FileStream(ctx.assetPath, FileMode.Open))
@@ -36,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
     }
 
+    /// <summary>
+    /// Exporter to save input animation as binary data.
+    /// </summary>
     public class InputAnimationExporter
     {
         public static void ExportInputAnimation(string filePath, InputAnimation animation)
@@ -48,6 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
 #if UNITY_EDITOR
+        /// <summary>
+        /// Menu entry to convert a selected input animation asset to binary data.
+        /// </summary>
         [MenuItem("Mixed Reality Toolkit/Utilities/Export Input Animation")]
         static void ExportInputAnimationMenuItem()
         {
