@@ -96,9 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public IMixedRealityInputSystem InputSystem { private get; set; }
-
-        /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
         {
             get
@@ -273,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (isDown)
                 {
-                    MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
+                    InputSystem?.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
                 }
             }
 

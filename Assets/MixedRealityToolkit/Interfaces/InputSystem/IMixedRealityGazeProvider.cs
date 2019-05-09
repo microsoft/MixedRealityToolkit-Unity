@@ -16,11 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool Enabled { get; set; }
 
         /// <summary>
-        /// The <see cref="IMixedRealityInputSystem"/> instance for which this object is providing gaze data.
-        /// </summary>
-        IMixedRealityInputSystem InputSystem { set; }
-
-        /// <summary>
         /// The Gaze Input Source for the provider.
         /// </summary>
         IMixedRealityInputSource GazeInputSource { get; }
