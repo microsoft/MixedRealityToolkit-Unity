@@ -35,15 +35,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         const string warningIconContent = "TestInconclusive";
         const string errorIconContent = "TestFailed";
 
-        static readonly RectOffset boxOffset = EditorStyles.helpBox.padding;
-        static readonly GUIStyle italicStyle = new GUIStyle(EditorStyles.label);
+        static RectOffset boxOffset;
+        static GUIStyle italicStyle;
+
+        public static float GetPropertyHeight(bool drawTagProperty)
+        {
+            return (EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight) * (drawTagProperty ? 4 : 3);
+        }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return (EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight) * (DrawTagProperty ? 4 : 3);
+            return GetPropertyHeight(DrawTagProperty);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            DrawProperty(position, property, label);
+        }
+
+        public static void DrawProperty(Rect position, SerializedProperty property, GUIContent label, bool isActive = false, bool isSelected = false)
         {
             SerializedProperty assetProperty = property.FindPropertyRelative("Asset");
             SerializedProperty nameProperty = property.FindPropertyRelative("Name");
@@ -52,10 +62,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             SerializedProperty enabledProperty = property.FindPropertyRelative("Enabled");
             SerializedProperty tagProperty = property.FindPropertyRelative("Tag");
 
+            // Set up our properties and settings
+            boxOffset = EditorStyles.helpBox.padding;
+            if (italicStyle == null) { italicStyle = new GUIStyle(EditorStyles.label); }
             bool lastMode = EditorGUIUtility.wideMode;
             int lastIndentLevel = EditorGUI.indentLevel;
             EditorGUIUtility.wideMode = true;
             EditorGUI.BeginProperty(position, label, property);
+
+            GUI.color = isActive ? Color.gray : GUI.backgroundColor;
+            GUI.color = isSelected ? Color.blue : GUI.backgroundColor;
 
             // Indent our rect, then reset indent to 0 so sub-properties don't get doubly indented
             position = EditorGUI.IndentedRect(position);
