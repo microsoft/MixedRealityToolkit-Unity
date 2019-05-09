@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -44,13 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         float IMixedRealityMousePointer.HideTimeout => hideTimeout;
-
-        [SerializeField]
-        [Range(0.1f, 10f)]
-        [Tooltip("Mouse cursor speed that gets applied to the mouse delta.")]
-        private float speed = 0.25f;
-
-        float IMixedRealityMousePointer.Speed => speed;
 
         #endregion IMixedRealityMousePointer Implementation
 
@@ -176,7 +170,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Vector3 mouseDeltaRotation = Vector3.zero;
                     mouseDeltaRotation.x += eventData.InputData.x;
                     mouseDeltaRotation.y += eventData.InputData.y;
-                    UpdateMouseRotation(mouseDeltaRotation * speed);
+                    var mouseInputProfile = MixedRealityToolkit.Instance?.GetService<MouseDeviceManager>()?.MouseInputProfile;
+                    if (mouseInputProfile != null)
+                    {
+                        mouseDeltaRotation *= mouseInputProfile.MouseSpeed;
+                    }
+                    UpdateMouseRotation(mouseDeltaRotation);
                 }
             }
         }

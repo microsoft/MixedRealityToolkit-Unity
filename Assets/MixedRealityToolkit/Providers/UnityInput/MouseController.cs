@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UInput = UnityEngine.Input;
+using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
@@ -74,10 +75,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     var mouseDeltaRotation = Vector3.zero;
                     mouseDeltaRotation.x += -UInput.GetAxis("Mouse Y");
                     mouseDeltaRotation.y += UInput.GetAxis("Mouse X");
-                    IMixedRealityMousePointer mousePointer = (IMixedRealityMousePointer)InputSource.Pointers[0];
-                    if (mousePointer != null)
+                    
+                    var mouseInputProfile = MixedRealityToolkit.Instance?.GetService<MouseDeviceManager>()?.MouseInputProfile;
+                    if (mouseInputProfile != null)
                     {
-                        mouseDeltaRotation *= mousePointer.Speed;
+                        mouseDeltaRotation *= mouseInputProfile.MouseSpeed;
                     }
 
                     MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;

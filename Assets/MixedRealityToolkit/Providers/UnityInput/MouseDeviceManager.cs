@@ -38,6 +38,22 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </summary>
         public MouseController Controller { get; private set; }
 
+        /// <summary>
+        /// Return the service profile and ensure that the type is correct
+        /// </summary>
+        public MixedRealityMouseInputProfile MouseInputProfile
+        {
+            get
+            {
+                var profile = ConfigurationProfile as MixedRealityMouseInputProfile;
+                if (!profile)
+                {
+                    Debug.LogError("Profile for Mouse Input Service must be a MixedRealityMouseInputProfile");
+                }
+                return profile;
+            }
+        }
+
         /// <inheritdoc />
         public override void Enable()
         {
@@ -120,5 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 Controller = null;
             }
         }
+
     }
 }
