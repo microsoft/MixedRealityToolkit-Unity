@@ -130,13 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
 
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-
-        /// <summary>
-        /// The currently active instance of <see cref="Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.IMixedRealitySpatialAwarenessSystem"/>.
-        /// </summary>
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
-
 #if UNITY_WSA
         /// <inheritdoc />
         protected override void Dispose(bool disposing)

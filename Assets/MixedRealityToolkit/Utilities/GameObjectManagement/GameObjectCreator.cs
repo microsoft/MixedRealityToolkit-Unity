@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         /// <summary>
         /// Called when the GameObject is about to be recycled by the GameObjectPool. This allows you to potentially free
         /// up any resources before it is deactivated by the GameObjectPool. If the GameObject has a component that implements
-        /// the IGameObjectCreatorHandler interface, it will call its PrepareForRecycle function;
+        /// the IGameObjectCreatorHandler interface, it will call its PrepareForRecycle function.
         /// </summary>
         /// <param name="obj">The GameObject that is about to be recycled.</param>
         public virtual void PrepareForRecycle(GameObject obj)
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         /// <summary>
         /// Called before the GameObject's position and rotation are set (as well as it's active state) by the GameObjectPool
         /// when GetGameObject is called. If the GameObject has a component that implements
-        /// the IGameObjectCreatorHandler interface, it will call its PrepareForUse function;
+        /// the IGameObjectCreatorHandler interface, it will call its PrepareForUse function.
         /// </summary>
         /// <param name="obj">The GameObject that is about to be used.</param>
         public virtual void PrepareForUse(GameObject obj)

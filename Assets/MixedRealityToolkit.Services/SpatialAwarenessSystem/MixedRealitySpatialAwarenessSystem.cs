@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
         /// <summary>
-        ///  The collection of registered spatial awareness observers.
+        /// The collection of registered spatial awareness observers.
         /// </summary>
         private List<IMixedRealitySpatialAwarenessObserver> observers = new List<IMixedRealitySpatialAwarenessObserver>();
 

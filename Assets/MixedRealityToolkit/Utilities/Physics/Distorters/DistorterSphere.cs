@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Physics
 {
+    /// <summary>
+    /// A Distorter that distorts points based on their distance and direction from the
+    /// center of the sphere of size 2.
+    /// </summary>
     public class DistorterSphere : Distorter
     {
         public Vector3 SphereCenter
