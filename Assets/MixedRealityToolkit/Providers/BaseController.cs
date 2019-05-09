@@ -234,10 +234,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // If we've got a controller model prefab, then create it and place it in the scene.
-            var playspace = GetPlayspace();
-            var controllerObject = (playspace != null) ?
-            UnityEngine.Object.Instantiate(controllerModel, playspace) :
-            UnityEngine.Object.Instantiate(controllerModel);
+            GameObject controllerObject = UnityEngine.Object.Instantiate(controllerModel);
+            MixedRealityPlayspace.AddChild(controllerObject.transform);
 
             return TryAddControllerModelToSceneHierarchy(controllerObject);
         }
@@ -247,15 +245,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (controllerObject != null)
             {
                 controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
-                var playspace = GetPlayspace();
-                if (playspace != null)
-                {
-                    controllerObject.transform.parent = playspace.transform;
-                }
-                else
-                {
-                    Debug.LogWarning("Playspace was not found. No parent transform was applied to the controller object");
-                }
 
                 Visualizer = controllerObject.GetComponent<IMixedRealityControllerVisualizer>();
 
@@ -275,14 +264,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #region MRTK instance helpers
-        protected Transform GetPlayspace()
-        {
-            if (MixedRealityToolkit.Instance != null)
-                return MixedRealityToolkit.Instance.MixedRealityPlayspace;
-
-            return null;
-        }
-
         protected MixedRealityControllerVisualizationProfile GetControllerVisualizationProfile()
         {
             if (MixedRealityToolkit.Instance != null &&

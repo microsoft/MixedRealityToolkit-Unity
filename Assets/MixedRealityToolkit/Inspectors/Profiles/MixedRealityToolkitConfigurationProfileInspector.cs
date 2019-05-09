@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -49,6 +52,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool showRegisteredServiceProperties = true;
         private SerializedProperty registeredServiceProvidersProfile;
 
+        // Editor settings
+        private static bool showEditorSettings = true;
+        private SerializedProperty useServiceInspectors;
+
+        private MixedRealityToolkitConfigurationProfile configurationProfile;
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -87,6 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Additional registered components configuration
             registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
+
+            // Editor settings
+            useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
         }
 
         public override void OnInspectorGUI()
@@ -117,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
                     var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;
+                    UnityEditor.Undo.RecordObject(MixedRealityToolkit.Instance, "Create new profiles");
                     MixedRealityToolkit.Instance.ActiveProfile = newProfile;
                     Selection.activeObject = newProfile;
                 }
@@ -199,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.PropertyField(enableInputSystem);
                     EditorGUILayout.PropertyField(inputSystemType);
-                    changed |= RenderProfile(inputSystemProfile);
+                    changed |= RenderProfile(inputSystemProfile, true, typeof(IMixedRealityInputSystem));
                 }
             }
 
@@ -219,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                     EditorGUILayout.PropertyField(enableBoundarySystem);
                     EditorGUILayout.PropertyField(boundarySystemType);
-                    changed |= RenderProfile(boundaryVisualizationProfile);
+                    changed |= RenderProfile(boundaryVisualizationProfile, true, typeof(IMixedRealityBoundarySystem));
                 }
             }
 
@@ -245,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
                     EditorGUILayout.PropertyField(spatialAwarenessSystemType);
                     EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
-                    changed |= RenderProfile(spatialAwarenessSystemProfile);
+                    changed |= RenderProfile(spatialAwarenessSystemProfile, true, typeof(IMixedRealitySpatialAwarenessSystem));
                 }
             }
 
@@ -271,6 +284,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 using (new EditorGUI.IndentLevelScope())
                 {
                     changed |= RenderProfile(registeredServiceProvidersProfile);
+                }
+            }
+
+            // Editor settings
+            EditorGUILayout.Space();
+            showEditorSettings = EditorGUILayout.Foldout(showEditorSettings, "Editor Settings", true);
+            if (showEditorSettings)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(useServiceInspectors);
                 }
             }
 

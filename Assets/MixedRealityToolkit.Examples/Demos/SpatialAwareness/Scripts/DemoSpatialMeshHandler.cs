@@ -14,6 +14,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class DemoSpatialMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>
     {
+        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+
+        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem
+        {
+            get
+            {
+                if (spatialAwarenessSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out spatialAwarenessSystem);
+                }
+                return spatialAwarenessSystem;
+            }
+        }
         /// <summary>
         /// Collection that tracks the IDs and count of updates for each active spatial awareness mesh.
         /// </summary>
@@ -21,13 +34,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private async void OnEnable()
         {
-            await new WaitUntil(() => MixedRealityToolkit.SpatialAwarenessSystem != null);
-            MixedRealityToolkit.SpatialAwarenessSystem.Register(gameObject);
+            await new WaitUntil(() => SpatialAwarenessSystem != null);
+            SpatialAwarenessSystem.Register(gameObject);
         }
 
         private void OnDisable()
         {
-            MixedRealityToolkit.SpatialAwarenessSystem?.Unregister(gameObject);
+            SpatialAwarenessSystem?.Unregister(gameObject);
         }
 
         /// <inheritdoc />

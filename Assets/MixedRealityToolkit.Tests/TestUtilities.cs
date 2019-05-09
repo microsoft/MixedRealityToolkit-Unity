@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -40,18 +41,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 return;
             }
 #endif
+        }
 
-            if (testScene.IsValid() && testScene.isLoaded)
+        public static void InitializePlayspace()
+        {
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
             {
-                SceneManager.UnloadSceneAsync(testScene);
-            }
-
-            testScene = SceneManager.CreateScene("TestScene");
-            SceneManager.SetActiveScene(testScene);
-
-            var cameraObject = new GameObject("Camera");
-            var camera = cameraObject.AddComponent<Camera>();
-            cameraObject.tag = "MainCamera";
+                p.position = new Vector3(1.0f, 1.5f, -2.0f);
+                p.LookAt(Vector3.zero);
+            });
         }
 
         public static void InitializeMixedRealityToolkit()

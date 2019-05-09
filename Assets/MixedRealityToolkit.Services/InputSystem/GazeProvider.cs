@@ -81,6 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("True to prefer eye tracking over head gaze, when available.")]
+        [Help("When enabling eye tracking, please follow the instructions at " 
+               + "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/EyeTracking/EyeTracking_BasicSetup.html#eye-tracking-requirements "
+               + "to set up 'Gaze Input' capabilities through Visual Studio.", "", false)]
         private bool preferEyeTracking = false;
 
         /// <inheritdoc />
@@ -92,9 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public IMixedRealityInputSystem InputSystem { private get; set; }
-
-        /// <inheritdoc />
-        public Transform Playspace { private get; set; }
 
         /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
@@ -477,7 +477,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if ((GazeCursor == null) &&
                 (GazeCursorPrefab != null))
             {
-                GameObject cursor = Instantiate(GazeCursorPrefab, Playspace);
+                GameObject cursor = Instantiate(GazeCursorPrefab);
+                MixedRealityPlayspace.AddChild(cursor.transform);
                 SetGazeCursor(cursor);
             }
 

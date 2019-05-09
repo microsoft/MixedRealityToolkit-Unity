@@ -11,7 +11,7 @@ To get started with the Mixed Reality Toolkit you will need:
 * [Visual Studio 2017](http://dev.windows.com/downloads)
 * [Unity 2018.3.x](https://unity3d.com/get-unity/download/archive)
 * [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
-* You don't need this to simulate in Unity Editor or run in VR, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need [Windows SDK 18362+](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK).
+* You don't need this to simulate in Unity Editor or run in VR, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
 
 
 ## Get the latest MRTK Unity packages
@@ -19,6 +19,16 @@ To get started with the Mixed Reality Toolkit you will need:
 2. Under Assets, download both `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` and `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
 
 For additional delivery mechanisms, please see [Downloading the MRTK](DownloadingTheMRTK.md).
+
+## Switch your Unity project to the target platform
+The next step **Import MRTK packages into your Unity project** will apply changes to your project specifically for the platform that is selected in the project at that moment you import them. 
+
+You should make sure that you select the correct platform before following the next step.
+
+For instance, if you want to create a HoloLens application, switch to Universal Windows Platform:
+- Open menu : File > Build Settings
+- Select **Universal Windows Platform** in the **Platform** list
+- Click on the **Switch Platform** button
 
 ## Import MRTK packages into your Unity project
 1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.
@@ -99,7 +109,7 @@ Which contains the following:
 
 * Mixed Reality Toolkit - The toolkit itself, providing the central configuration entry point for the entire framework.
 * MixedRealityPlayspace - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
-* The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDK's
+* The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs
 
 **Note** While working in your scene, **DO NOT move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
 If you need to move the players start point, then **move the scene content and NOT the camera**!

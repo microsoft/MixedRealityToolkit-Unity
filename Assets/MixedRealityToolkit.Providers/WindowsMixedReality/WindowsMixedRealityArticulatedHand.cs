@@ -329,12 +329,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                             // We want the controller to follow the Playspace, so fold in the playspace transform here to 
                             // put the controller pose into world space.
-                            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-                            if (playspace != null)
-                            {
-                                unityJointPositions[i] = playspace.TransformPoint(unityJointPositions[i]);
-                                unityJointOrientations[i] = playspace.rotation * unityJointOrientations[i];
-                            }
+                            unityJointPositions[i] = MixedRealityPlayspace.TransformPoint(unityJointPositions[i]);
+                            unityJointOrientations[i] = MixedRealityPlayspace.Rotation * unityJointOrientations[i];
 
                             if (jointIndices[i] == HandJointKind.IndexTip)
                             {
