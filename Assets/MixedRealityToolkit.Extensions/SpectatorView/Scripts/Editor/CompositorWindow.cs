@@ -14,10 +14,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor
 {
     [Description("Compositor")]
-    public class CompositorWindow : SpectatorViewWindowBase<CompositorWindow>
+    public class CompositorWindow : EditorWindowBase<CompositorWindow>
     {
         private const float maxFrameOffset = 0.2f;
-        private const float statisticsUpdateCooldownTime = 0.1f;
+        private const float statisticsUpdateCooldownTimeSeconds = 0.1f;
         private const float quadPadding = 4;
         private const int textureRenderModeComposite = 0;
         private const int textureRenderModeSplit = 1;
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
         private float uiFrameWidth = 100;
         private float uiFrameHeight = 100;
-        private float statisticsUpdateTime = 0.0f;
+        private float statisticsUpdateTimeSeconds = 0.0f;
 
         private CompositionManager cachedCompositionManager;
 
@@ -176,22 +176,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                             compositionManager.StopRecording();
                         }
                     }
+                
+                    if (GUILayout.Button("Take Picture"))
+                    {
+                        compositionManager.TakePicture();
+                    }
+
+                    EditorGUILayout.Space();
+                    GUI.enabled = true;
+
+                    // Open Folder
+                    if (GUILayout.Button("Open Folder"))
+                    {
+                        Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "HologramCapture"));
+                    }
                 }
-
-                if (GUILayout.Button("Take Picture"))
-                {
-                    compositionManager.TakePicture();
-                }
-
-                EditorGUILayout.Space();
-                GUI.enabled = true;
-
-                // Open Folder
-                if (GUILayout.Button("Open Folder"))
-                {
-                    Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "HologramCapture"));
-                }
-
                 EditorGUILayout.EndVertical();
             }
         }
@@ -268,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 {
                     framerateStatisticsMessage = null;
                     framerateStatisticsColor = Color.green;
-                    statisticsUpdateTime = 0.0f;
+                    statisticsUpdateTimeSeconds = 0.0f;
 
                     RenderTitle("Compositor is not running, no statistics available", Color.green);
                 }
@@ -277,10 +276,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
         private void UpdateStatistics(CompositionManager compositionManager)
         {
-            statisticsUpdateTime -= Time.deltaTime;
-            if (statisticsUpdateTime <= 0)
+            statisticsUpdateTimeSeconds -= Time.deltaTime;
+            if (statisticsUpdateTimeSeconds <= 0)
             {
-                statisticsUpdateTime = statisticsUpdateCooldownTime;
+                statisticsUpdateTimeSeconds = statisticsUpdateCooldownTimeSeconds;
 
                 float average;
                 framerateStatisticsMessage = GetFramerateStatistics(compositionManager, out average);

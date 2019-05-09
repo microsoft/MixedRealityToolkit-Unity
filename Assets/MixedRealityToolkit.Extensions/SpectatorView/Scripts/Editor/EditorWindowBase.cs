@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor
 {
-    public class SpectatorViewWindowBase<TWindow> : EditorWindow where TWindow : SpectatorViewWindowBase<TWindow>
+    public class EditorWindowBase<TWindow> : EditorWindow where TWindow : EditorWindowBase<TWindow>
     {
         private static Dictionary<Type, EditorWindow> windows = new Dictionary<Type, EditorWindow>();
 
