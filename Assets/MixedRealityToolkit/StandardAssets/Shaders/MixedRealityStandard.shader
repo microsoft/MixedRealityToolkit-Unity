@@ -326,8 +326,11 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_VERTEX_COLORS)
                 fixed4 color : COLOR0;
 #endif
+#if defined(_SPHERICAL_HARMONICS)
+                fixed3 ambient : COLOR1;
+#endif
 #if defined(_IRIDESCENCE)
-                fixed3 iridescentColor : COLOR1;
+                fixed3 iridescentColor : COLOR2;
 #endif
 #if defined(_WORLD_POSITION)
 #if defined(_NEAR_PLANE_FADE)
@@ -341,15 +344,15 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 #if defined(_NORMAL)
 #if defined(_TRIPLANAR_MAPPING)
-                fixed3 worldNormal : COLOR2;
-                fixed3 triplanarNormal : COLOR3;
+                fixed3 worldNormal : COLOR3;
+                fixed3 triplanarNormal : COLOR4;
                 float3 triplanarPosition : TEXCOORD6;
 #elif defined(_NORMAL_MAP)
-                fixed3 tangentX : COLOR2;
-                fixed3 tangentY : COLOR3;
-                fixed3 tangentZ : COLOR4;
+                fixed3 tangentX : COLOR3;
+                fixed3 tangentY : COLOR4;
+                fixed3 tangentZ : COLOR5;
 #else
-                fixed3 worldNormal : COLOR2;
+                fixed3 worldNormal : COLOR3;
 #endif
 #endif
                 UNITY_VERTEX_OUTPUT_STEREO
@@ -735,6 +738,10 @@ Shader "Mixed Reality Toolkit/Standard"
                 o.color = v.color;
 #endif
 
+#if defined(_SPHERICAL_HARMONICS)
+                o.ambient = ShadeSH9(float4(worldNormal, 1.0));
+#endif
+
 #if defined(_IRIDESCENCE)
                 float3 rightTangent = normalize(mul((float3x3)unity_ObjectToWorld, float3(1.0, 0.0, 0.0)));
                 float3 incidentWithCenter = normalize(mul(unity_ObjectToWorld, float4(0.0, 0.0, 0.0, 1.0)) - _WorldSpaceCameraPos);
@@ -1035,7 +1042,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 // Final lighting mix.
                 fixed4 output = albedo;
 #if defined(_SPHERICAL_HARMONICS)
-                fixed3 ambient = ShadeSH9(float4(worldNormal, 1.0));
+                fixed3 ambient = i.ambient;
 #else
                 fixed3 ambient = glstate_lightmodel_ambient + fixed3(0.25, 0.25, 0.25);
 #endif
