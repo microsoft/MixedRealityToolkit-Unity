@@ -34,18 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             get { return distortOrder; }
             set
             {
-                if (value < 0)
-                {
-                    distortOrder = 0;
-                }
-                else if (value > 10)
-                {
-                    distortOrder = 10;
-                }
-                else
-                {
-                    distortOrder = value;
-                }
+                distortOrder = Mathf.Clamp(value, 0, 10);
             }
         }
 
