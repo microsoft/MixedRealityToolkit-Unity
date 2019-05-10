@@ -30,6 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             connectionManager.OnReceive += ConnectionManager_OnReceive;
         }
 
+        private void OnDestroy()
+        {
+            connectionManager.DisconnectAll();
+        }
+
         private void ConnectionManager_OnConnected(SocketEndpoint endpoint)
         {
             lastReceivedPoseTime = Time.time;
