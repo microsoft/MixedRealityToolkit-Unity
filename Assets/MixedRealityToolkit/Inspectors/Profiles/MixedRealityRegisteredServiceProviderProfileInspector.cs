@@ -21,31 +21,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             configurations = serializedObject.FindProperty("configurations");
             configFoldouts = new bool[configurations.arraySize];
         }
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            RenderTitleDescriptionAndLogo(
+                "Registered Service Providers Profile",
+                "This profile defines any additional Services like systems, features, and managers to register with the Mixed Reality Toolkit.");
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
-                return;
+                if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
+                {
+                    return;
+                }
             }
-
-            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-            {
-                return;
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Registered Service Providers Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("This profile defines any additional Services like systems, features, and managers to register with the Mixed Reality Toolkit.", MessageType.Info);
 
             CheckProfileLock(target);
 
