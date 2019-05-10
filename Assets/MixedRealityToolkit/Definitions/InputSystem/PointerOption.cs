@@ -21,10 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="pointerPrefab"></param>
         public PointerOption(Handedness handedness, GameObject pointerPrefab, params Type[] controllerType)
         {
-            this.controllerTypes = new SystemType[controllerType.Length];
+            controllerTypes = new SystemType[controllerType.Length];
             for (int i = 0; i < controllerType.Length; i++)
             {
-                this.controllerTypes[i] = new SystemType(controllerType[i]);
+                controllerTypes[i] = new SystemType(controllerType[i]);
             }
             this.handedness = handedness;
             this.pointerPrefab = pointerPrefab;
