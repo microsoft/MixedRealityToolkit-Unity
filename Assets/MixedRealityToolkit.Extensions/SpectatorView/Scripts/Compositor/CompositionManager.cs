@@ -84,6 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private SpectatorViewTimeSynchronizer timeSynchronizer = new SpectatorViewTimeSynchronizer();
 
         private Camera spectatorCamera;
+        private GameObject videoCameraPose;
 
         /// <summary>
         /// Gets the index of the video frame currently being composited.
@@ -463,20 +464,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         {
 #if UNITY_EDITOR
             this.calibrationData = calibrationData;
-            GameObject container = GameObject.Find("SpectatorView");
-            if (container == null)
+            if (videoCameraPose == null)
             {
-                container = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                container.GetComponent<MeshRenderer>().enabled = false;
-                GameObject.DestroyImmediate(container.GetComponent<Collider>());
-                container.name = "SpectatorView";
+                videoCameraPose = new GameObject("HoloLens Pose");
             }
 
-            container.transform.SetParent(parent);
-            container.transform.localPosition = Vector3.zero;
-            container.transform.localRotation = Quaternion.identity;
+            videoCameraPose.transform.SetParent(parent);
+            videoCameraPose.transform.localPosition = Vector3.zero;
+            videoCameraPose.transform.localRotation = Quaternion.identity;
 
-            gameObject.transform.parent = container.transform;
+            gameObject.transform.parent = videoCameraPose.transform;
 
             calibrationData.SetUnityCameraExtrinstics(transform);
             calibrationData.SetUnityCameraIntrinsics(GetComponent<Camera>());
