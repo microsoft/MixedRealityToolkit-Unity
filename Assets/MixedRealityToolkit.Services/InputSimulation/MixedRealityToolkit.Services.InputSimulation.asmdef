@@ -2,8 +2,7 @@
     "name": "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.SDK",
-        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality"
+        "Microsoft.MixedReality.Toolkit.SDK"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
