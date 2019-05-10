@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Diagnostics;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -16,6 +17,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             Debug.Assert(condition, message);
         }
+
+        private static IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
+        private static IMixedRealityDiagnosticsSystem DiagnosticsSystem
+        {
+            get
+            {
+                if (diagnosticsSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityDiagnosticsSystem>(out diagnosticsSystem);
+                }
+                return diagnosticsSystem;
+            }
+        }
+        public static void Status(string status)
+        {
+            DiagnosticsSystem.DebugStatus(status);
+        }
+
 
         /// <summary>
         /// Asserts a condition.

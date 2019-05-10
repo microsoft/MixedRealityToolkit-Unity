@@ -148,6 +148,10 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private Material textMaterial;
         private Mesh quadMesh;
 
+
+        private TextMesh debugLogText;
+        private StringBuilder stringBuilder = new StringBuilder();
+
         private void Reset()
         {
             if (defaultMaterial == null)
@@ -349,7 +353,15 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 peakMemoryUsage = memoryUsage;
             }
 
+            debugLogText.text = stringBuilder.ToString();
+            stringBuilder.Clear();
+
             window.SetActive(isVisible);
+        }
+
+        public void Status(string text)
+        {
+            stringBuilder.AppendLine(text);
         }
 
         private Vector3 CalculateWindowPosition(Transform cameraTransform)
@@ -461,7 +473,9 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     bar.transform.localPosition = new Vector3(0.5f, 0.0f, 0.0f);
                 }
             }
-
+            {
+                debugLogText = CreateText("Status:", new Vector3(-0.495f, -.5f, 0.0f), window.transform, TextAnchor.UpperLeft, textMaterial, Color.white, "", 64);
+            }
             window.SetActive(isVisible);
         }
 
@@ -508,14 +522,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             return quad;
         }
 
-        private static TextMesh CreateText(string name, Vector3 position, Transform parent, TextAnchor anchor, Material material, Color color, string text)
+        private static TextMesh CreateText(string name, Vector3 position, Transform parent, TextAnchor anchor, Material material, Color color, string text, int fontSize = 48)
         {
             GameObject obj = new GameObject(name);
             obj.transform.localScale = Vector3.one * 0.0016f;
             obj.transform.parent = parent;
             obj.transform.localPosition = position;
             TextMesh textMesh = obj.AddComponent<TextMesh>();
-            textMesh.fontSize = 48;
+            textMesh.fontSize = fontSize;
             textMesh.anchor = anchor;
             textMesh.color = color;
             textMesh.text = text;

@@ -183,6 +183,11 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             HandleEvent(eventData, OnDiagnosticsChanged);
         }
 
+        public void DebugStatus(string statusMessage)
+        {
+            visualProfiler.Status(statusMessage);
+        }
+
         /// <summary>
         /// Event sent whenever the diagnostics visualization changes.
         /// </summary>
