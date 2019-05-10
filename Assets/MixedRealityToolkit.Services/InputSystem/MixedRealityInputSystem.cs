@@ -1298,6 +1298,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
         }
 
+        public void SpeechWakeWordRecognized()
+        {
+            focusProvider.SpeechWakeWordRecognized();
+        }
+
         #endregion Speech Keyword Events
 
         #region Dictation Events

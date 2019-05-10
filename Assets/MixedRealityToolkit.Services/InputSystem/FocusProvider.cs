@@ -813,6 +813,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return (hit1.hitObject != null) ? hit1 : hit2;
         }
 
+        private enum GazePointerState
+        {
+            Initial, // When the application starts up, the gaze pointer should be active
+            GazePointerActive, // Gaze pointer is active when no hands are visible, after "select" 
+            GazePointerInactive // Gaze pointer is inactive as soon as motion controller or articulated hand pointers appear
+        }
+        private GazePointerState gazePointerState = GazePointerState.Initial;
+        private bool activateGazeKeywordIsSet = false;
+
         /// <summary>
         /// Disable inactive pointers to unclutter the way for active ones.
         /// </summary>
@@ -821,7 +830,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
             if (gazePointer != null)
             {
-                int numFarCursors = 0;
+                int numFarPointers = 0;
                 int numNearPointersActive = 0;
                 foreach (var p in pointers)
                 {
@@ -834,16 +843,55 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 numNearPointersActive++;
                             }
                         }
-                        else if (p.Pointer.BaseCursor != null)
+                        else if (p.Pointer.BaseCursor != null && ! (p.Pointer == gazePointer) )
                         {
-                            numFarCursors++;
+                            numFarPointers++;
                         }
                     }
                 }
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
                 // Show the gaze cursor if there are no other pointers that are showing a cursor
-                gazePointer.IsInteractionEnabled = numFarCursors == 1 && numNearPointersActive == 0;
+                //gazePointer.IsInteractionEnabled = numFarCursors == 1 && numNearPointersActive == 0;
+
+                GazePointerState newState = gazePointerState;
+                bool isMotionControllerOrHandUp = numFarPointers > 0 || numNearPointersActive > 0;
+                switch (gazePointerState)
+                {
+                    case GazePointerState.Initial:
+                        if (isMotionControllerOrHandUp)
+                        {
+                            // There is some pointer other than the gaze pointer in the scene, assume
+                            // this is from a motion controller or articulated hand, and that we should
+                            // hide the gaze pointer
+                            newState = GazePointerState.GazePointerInactive;
+                        }
+                        break;
+                    case GazePointerState.GazePointerActive:
+                        if (isMotionControllerOrHandUp)
+                        {
+                            newState = GazePointerState.GazePointerInactive;
+                        }
+                        break;
+                    case GazePointerState.GazePointerInactive:
+                        // Go from inactive to active if we say the word "select"
+                        if (activateGazeKeywordIsSet)
+                        {
+                            newState = GazePointerState.GazePointerActive;
+                            activateGazeKeywordIsSet = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                DebugUtilities.Status($"{gazePointerState} => {newState} \t far {numFarPointers} \t near {numNearPointersActive}");
+                gazePointerState = newState;
+                gazePointer.IsInteractionEnabled = gazePointerState != GazePointerState.GazePointerInactive;
             }
+        }
+
+        public void SpeechWakeWordRecognized()
+        {
+            activateGazeKeywordIsSet = true;
         }
 
         #region Physics Raycasting
@@ -1168,6 +1216,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 UnregisterPointer(eventData.InputSource.Pointers[i]);
             }
         }
+
 
         #endregion ISourceState Implementation
     }

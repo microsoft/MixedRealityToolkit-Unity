@@ -467,6 +467,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="command"></param>
         void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SpeechCommands command);
 
+        /// <summary>
+        /// Call this when the keyword to wake speech + gaze input keyword gets recognized. 
+        /// On HoloLens and Windows Mixed Reality, this keyword is "select"
+        /// This keyword gets used to turn on speech input mode, activating the gaze cursor to allow for
+        /// speech input.
+        /// </summary>
+        void SpeechWakeWordRecognized();
         #endregion Speech Keyword Events
 
         #region Dictation Events

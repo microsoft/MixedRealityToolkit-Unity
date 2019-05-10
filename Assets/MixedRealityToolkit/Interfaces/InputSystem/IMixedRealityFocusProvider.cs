@@ -76,5 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <typeparam name="T">The type of pointers to request. Use IMixedRealityPointer to access all pointers.</typeparam>
         /// <returns></returns>
         IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer;
+        void SpeechWakeWordRecognized();
     }
 }
