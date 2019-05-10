@@ -492,7 +492,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     default:
                         break;
                 }
-                DebugUtilities.Status($"{gazePointerState} => {newState} \t far {numFarPointers} \t near {numNearPointersActive}");
                 gazePointerState = newState;
             }
         }
