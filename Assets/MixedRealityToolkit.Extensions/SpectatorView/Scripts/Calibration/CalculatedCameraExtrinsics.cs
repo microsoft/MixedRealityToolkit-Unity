@@ -3,6 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
 using System;
+using System.Text;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
@@ -21,6 +23,30 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public override string ToString()
         {
             return $"Succeeded: {Succeeded} {base.ToString()}";
+        }
+
+        public byte[] Serialize()
+        {
+            var str = JsonUtility.ToJson(this);
+            var payload = Encoding.UTF8.GetBytes(str);
+            return payload;
+        }
+
+        public static bool TryDeserialize(byte[] payload, out CalculatedCameraExtrinsics extrinsics)
+        {
+            extrinsics = null;
+
+            try
+            {
+                var str = Encoding.UTF8.GetString(payload);
+                extrinsics = JsonUtility.FromJson<CalculatedCameraExtrinsics>(str);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"Exception thrown deserializing camera extrinsics: {e.ToString()}");
+                return false;
+            }
         }
     }
 }

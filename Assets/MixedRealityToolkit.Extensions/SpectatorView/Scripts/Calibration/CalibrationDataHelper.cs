@@ -177,8 +177,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, $"CameraIntrinsics_{i}.json");
                 i++;
             }
-            var str = JsonUtility.ToJson(intrinsics);
-            var payload = Encoding.ASCII.GetBytes(str);
+
+            var payload = intrinsics.Serialize();
             File.WriteAllBytes(path, payload);
             return path;
         }
@@ -187,23 +187,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (File.Exists(path))
             {
-                try
+                var fileData = File.ReadAllBytes(path);
+                if (CalculatedCameraIntrinsics.TryDeserialize(fileData, out var intrinsics))
                 {
-                    var fileData = File.ReadAllBytes(path);
-                    var str = Encoding.ASCII.GetString(fileData);
-                    var intrinsics = JsonUtility.FromJson<CalculatedCameraIntrinsics>(str);
                     return intrinsics;
                 }
-                catch
-                {
-                    Debug.LogError($"Exception thrown loading camera intrinsics file {path}");
-                }
-            }
-            else
-            {
-                Debug.LogError($"Failed to find camera intrinsics file {path}");
             }
 
+            Debug.LogError($"Failed to load camera intrinsics file {path}");
             return null;
         }
 
@@ -216,8 +207,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, $"CameraExtrinsics_{i}.json");
                 i++;
             }
-            var str = JsonUtility.ToJson(extrinsics);
-            var payload = Encoding.ASCII.GetBytes(str);
+
+            var payload = extrinsics.Serialize();
             File.WriteAllBytes(path, payload);
             return path;
         }
@@ -226,23 +217,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (File.Exists(path))
             {
-                try
+                var fileData = File.ReadAllBytes(path);
+                if(CalculatedCameraExtrinsics.TryDeserialize(fileData, out var extrinsics))
                 {
-                    var fileData = File.ReadAllBytes(path);
-                    var str = Encoding.ASCII.GetString(fileData);
-                    var extrinsics = JsonUtility.FromJson<CalculatedCameraExtrinsics>(str);
                     return extrinsics;
                 }
-                catch
-                {
-                    Debug.LogError($"Exception thrown loading camera extrinsics file {path}");
-                }
-            }
-            else
-            {
-                Debug.LogError($"Failed to find camera extrinsics file {path}");
             }
 
+            Debug.LogError($"Failed to load camera extrinsics file {path}");
             return null;
         }
 
