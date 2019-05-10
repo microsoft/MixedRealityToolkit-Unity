@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [SettingsProvider]
         private static SettingsProvider Preferences()
         {
-            var provider = new SettingsProvider("Project/Mixed Reality Toolkit")//, SettingsScope.Project)
+            var provider = new SettingsProvider("Project/Mixed Reality Toolkit", SettingsScope.Project)
             {
                 label = "Microsoft Mixed Reality Toolkit",
 
