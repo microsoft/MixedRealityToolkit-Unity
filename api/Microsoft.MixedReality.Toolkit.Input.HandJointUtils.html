@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class HandJointUtils
    | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.42.0.0">
+    <meta name="generator" content="docfx 2.42.2.0">
     
     <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -173,6 +173,65 @@
 </div>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_HandJointUtils_FindHand_" data-uid="Microsoft.MixedReality.Toolkit.Input.HandJointUtils.FindHand*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_HandJointUtils_FindHand__1_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Input.HandJointUtils.FindHand``1(Handedness)">FindHand&lt;T&gt;(Handedness)</h4>
+  <div class="markdown level1 summary"><p>Find the first detected hand controller of the given type with matching handedness.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T FindHand&lt;T&gt;(Handedness handedness)
+    where T : class, IMixedRealityHand</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_HandJointUtils_TryGetJointPose_" data-uid="Microsoft.MixedReality.Toolkit.Input.HandJointUtils.TryGetJointPose*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_HandJointUtils_TryGetJointPose_TrackedHandJoint_Handedness_MixedRealityPose__" data-uid="Microsoft.MixedReality.Toolkit.Input.HandJointUtils.TryGetJointPose(TrackedHandJoint,Handedness,MixedRealityPose@)">TryGetJointPose(TrackedHandJoint, Handedness, out MixedRealityPose)</h4>
   <div class="markdown level1 summary"><p>Tries to get the the pose of the requested joint for the first controller with the specified handedness.</p>
@@ -223,6 +282,75 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_HandJointUtils_TryGetJointPose_" data-uid="Microsoft.MixedReality.Toolkit.Input.HandJointUtils.TryGetJointPose*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_HandJointUtils_TryGetJointPose__1_TrackedHandJoint_Handedness_MixedRealityPose__" data-uid="Microsoft.MixedReality.Toolkit.Input.HandJointUtils.TryGetJointPose``1(TrackedHandJoint,Handedness,MixedRealityPose@)">TryGetJointPose&lt;T&gt;(TrackedHandJoint, Handedness, out MixedRealityPose)</h4>
+  <div class="markdown level1 summary"><p>Try to find the first matching hand controller of the given type and return the pose of the requested joint for that hand.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGetJointPose&lt;T&gt;(TrackedHandJoint joint, Handedness handedness, out MixedRealityPose pose)
+    where T : class, IMixedRealityHand</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TrackedHandJoint</span></td>
+        <td><span class="parametername">joint</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">MixedRealityPose</span></td>
+        <td><span class="parametername">pose</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
         <td></td>
       </tr>
     </tbody>

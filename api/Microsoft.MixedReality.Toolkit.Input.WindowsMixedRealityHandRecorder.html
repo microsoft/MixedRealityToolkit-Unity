@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class WindowsMixedRealityUtilities
+    <title>Class WindowsMixedRealityHandRecorder
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class WindowsMixedRealityUtilities
+    <meta name="title" content="Class WindowsMixedRealityHandRecorder
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.42.2.0">
     
@@ -81,134 +81,116 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityUtilities">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_Input_WindowsMixedRealityUtilities" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityUtilities" class="text-break">Class WindowsMixedRealityUtilities
+  <h1 id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder" class="text-break">Class WindowsMixedRealityHandRecorder
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Record joint positions of a hand and log them for use in simulated hands.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">WindowsMixedRealityUtilities</span></div>
+    <div class="level1"><span class="xref">WindowsMixedRealityHandRecorder</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.html">Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_Input_WindowsMixedRealityUtilities_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class WindowsMixedRealityUtilities</code></pre>
+    <pre><code class="lang-csharp hljs">public class WindowsMixedRealityHandRecorder : MonoBehaviour</code></pre>
   </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_OutputFileName_" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder.OutputFileName*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_OutputFileName" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder.OutputFileName">OutputFileName</h4>
+  <div class="markdown level1 summary"><p>Default output filename for saving the recorded pose.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string OutputFileName { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_ReferenceJoint_" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder.ReferenceJoint*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_ReferenceJoint" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder.ReferenceJoint">ReferenceJoint</h4>
+  <div class="markdown level1 summary"><p>The joint positioned at the origin at the start of the recording.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TrackedHandJoint ReferenceJoint { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TrackedHandJoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_ReferenceJoint_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the reference joint moves between start and stop of recording then final position is used as an offset.
+Example: A &quot;poke&quot; gesture can be simulated by moving the index finger forward between start and stop,
+giving an offset that creates a poking motion when interpolated.</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_Input_WindowsMixedRealityUtilities_SystemQuaternionToUnity_" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityUtilities.SystemQuaternionToUnity*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_Input_WindowsMixedRealityUtilities_SystemQuaternionToUnity_System_Numerics_Quaternion_" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityUtilities.SystemQuaternionToUnity(System.Numerics.Quaternion)">SystemQuaternionToUnity(Quaternion)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_RecordHandStop_" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder.RecordHandStop*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_RecordHandStop" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder.RecordHandStop">RecordHandStop()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static UnityEngine.Quaternion SystemQuaternionToUnity(Quaternion quaternion)</code></pre>
+    <pre><code class="lang-csharp hljs">public void RecordHandStop()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></td>
-        <td><span class="parametername">quaternion</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">UnityEngine.Quaternion</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_Input_WindowsMixedRealityUtilities_SystemVector3ToUnity_" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityUtilities.SystemVector3ToUnity*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_Input_WindowsMixedRealityUtilities_SystemVector3ToUnity_System_Numerics_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityUtilities.SystemVector3ToUnity(System.Numerics.Vector3)">SystemVector3ToUnity(Vector3)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_RecordLeftHandStart_" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder.RecordLeftHandStart*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_RecordLeftHandStart" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder.RecordLeftHandStart">RecordLeftHandStart()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static UnityEngine.Vector3 SystemVector3ToUnity(Vector3 vector)</code></pre>
+    <pre><code class="lang-csharp hljs">public void RecordLeftHandStart()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></td>
-        <td><span class="parametername">vector</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_RecordRightHandStart_" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder.RecordRightHandStart*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_WindowsMixedRealityHandRecorder_RecordRightHandStart" data-uid="Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityHandRecorder.RecordRightHandStart">RecordRightHandStart()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RecordRightHandStart()</code></pre>
+  </div>
 </article>
           </div>
           
