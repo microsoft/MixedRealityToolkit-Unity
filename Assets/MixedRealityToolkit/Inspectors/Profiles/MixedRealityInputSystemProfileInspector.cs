@@ -91,6 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             EditorGUILayout.PropertyField(focusProviderType);
             EditorGUILayout.Space();
 
+            //EditorGUI.indentLevel++;
+
             RenderFoldout(ref showDataProviders, "Data Providers", () =>
             {
                 using (new EditorGUI.IndentLevelScope())

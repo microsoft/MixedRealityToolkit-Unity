@@ -57,7 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(showDiagnostics);
                 if(!showDiagnostics.boolValue)
@@ -70,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Profiler Settings", EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(showProfiler);
                 EditorGUILayout.PropertyField(frameSampleRate);

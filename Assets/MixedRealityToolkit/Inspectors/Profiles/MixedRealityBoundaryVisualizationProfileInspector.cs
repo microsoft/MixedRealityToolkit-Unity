@@ -80,6 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
         public override void OnInspectorGUI()
         {
+            EditorGUILayout.BeginVertical();
+
             if (!RenderProfileHeader("Boundary Visualization Options",
                 "Boundary visualizations can help users stay oriented and comfortable in the experience.",
                 "Back to Configuration Profile",
@@ -92,14 +94,12 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(boundaryHeight);
             }
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Floor Settings", EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(showFloor, showContent);
                 EditorGUILayout.PropertyField(floorMaterial, materialContent);
@@ -112,7 +112,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Play Area Settings", EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(showPlayArea, showContent);
                 EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
@@ -121,7 +120,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Tracked Area Settings", EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(showTrackedArea, showContent);
                 EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
@@ -130,7 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Boundary Wall Settings", EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
                 EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
@@ -139,7 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Boundary Ceiling Settings", EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
                 EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
@@ -147,6 +143,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+
+            EditorGUILayout.EndVertical();
         }
     }
 }
