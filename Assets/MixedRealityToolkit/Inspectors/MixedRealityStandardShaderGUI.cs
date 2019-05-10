@@ -1070,7 +1070,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             string shaderName = "Mixed Reality Toolkit/Standard";
             string path = AssetDatabase.GetAssetPath(Shader.Find(shaderName));
 
-            if (path != null)
+            if (!string.IsNullOrEmpty(path))
             {
                 try
                 {
