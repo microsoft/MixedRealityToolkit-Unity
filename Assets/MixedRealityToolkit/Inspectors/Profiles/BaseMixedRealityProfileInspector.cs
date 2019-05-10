@@ -262,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             PasteProfileValues();
             Selection.activeObject = profile;
 
-            if (!profileToCopy.IsCustomProfile)
+            if (!profileToCopy.IsCustomProfile && MixedRealityToolkit.IsInitialized)
             {
                 // For now we only replace it if it's the master configuration profile.
                 // Sub-profiles are easy to update in the master configuration inspector.

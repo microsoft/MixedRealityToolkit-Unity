@@ -46,11 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             // General settings
             startupBehavior = serializedObject.FindProperty("startupBehavior");
             observationExtents = serializedObject.FindProperty("observationExtents");
@@ -70,21 +65,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            RenderTitleDescriptionAndLogo(
+                "Spatial Awareness Mesh Observer Profile",
+                "Configuration settings for how the real-world environment will be perceived and displayed.");
+
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
-                return;
+                if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
+                {
+                    return;
+                }
             }
 
-            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-            {
-                return;
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Spatial Awareness Mesh Observer Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Configuration settings for how the real-world environment will be perceived and displayed.", MessageType.Info);
-            EditorGUILayout.Space();
             serializedObject.Update();
 
             if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)

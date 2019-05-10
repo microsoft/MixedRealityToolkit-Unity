@@ -50,8 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            RenderTitleDescriptionAndLogo(
+                "Speech Commands",
+                "Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.");
+
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
                 return;
             }
@@ -71,10 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             CheckProfileLock(target);
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.", MessageType.Info);
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {

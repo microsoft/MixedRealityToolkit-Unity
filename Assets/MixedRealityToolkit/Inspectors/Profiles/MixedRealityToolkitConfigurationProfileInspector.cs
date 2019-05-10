@@ -115,12 +115,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var configurationProfile = (MixedRealityToolkitConfigurationProfile)target;
 
             serializedObject.Update();
-            RenderMixedRealityToolkitLogo();
+
+            RenderTitleDescriptionAndLogo("Configuration Profile", string.Empty);
 
             if (!MixedRealityToolkit.IsInitialized)
             {
-                EditorGUILayout.HelpBox("Unable to find Mixed Reality Toolkit!", MessageType.Error);
-                return;
+                EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Warning);
+                if (GUILayout.Button("Click here to add Mixed Reality Toolkit instance to scene"))
+                {
+                    new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                }
             }
 
             if (!configurationProfile.IsCustomProfile)
@@ -134,13 +138,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     CreateCopyProfileValues();
                 }
 
-                if (GUILayout.Button("Create new profiles"))
+                if (MixedRealityToolkit.IsInitialized)
                 {
-                    ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
-                    var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;
-                    UnityEditor.Undo.RecordObject(MixedRealityToolkit.Instance, "Create new profiles");
-                    MixedRealityToolkit.Instance.ActiveProfile = newProfile;
-                    Selection.activeObject = newProfile;
+                    if (GUILayout.Button("Create new profiles"))
+                    {
+                        ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
+                        var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;
+                        UnityEditor.Undo.RecordObject(MixedRealityToolkit.Instance, "Create new profiles");
+                        MixedRealityToolkit.Instance.ActiveProfile = newProfile;
+                        Selection.activeObject = newProfile;
+                    }
                 }
 
                 EditorGUILayout.EndHorizontal();
@@ -328,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
 
-            if (changed)
+            if (changed && MixedRealityToolkit.IsInitialized)
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(configurationProfile);
             }
