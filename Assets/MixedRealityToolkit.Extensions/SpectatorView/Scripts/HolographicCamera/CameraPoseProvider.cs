@@ -24,9 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
     public class CameraPoseProvider : MonoBehaviour
     {
         [SerializeField]
-        private int port = 7502;
-
-        [SerializeField]
         private Transform originTransform = null;
 
         private TCPConnectionManager tcpConnectionManager;
@@ -40,7 +37,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
         {
             tcpConnectionManager = GetComponent<TCPConnectionManager>();
             tcpConnectionManager.OnConnected += TcpConnectionManager_OnConnected;
-            tcpConnectionManager.StartListening(port);
+        }
+
+        private void OnDestroy()
+        {
+            tcpConnectionManager.OnConnected -= TcpConnectionManager_OnConnected;
         }
 
         private void Update()

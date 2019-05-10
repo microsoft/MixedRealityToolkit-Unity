@@ -253,6 +253,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 #endif
         }
 
+        /// <summary>
+        /// Adds a new camera pose with the time the camera was at when that pose was registered.
+        /// </summary>
+        /// <param name="cameraPosition">The position of the camera relative to the origin anchor.</param>
+        /// <param name="cameraRotation">The rotation of the camera relative to the origin anchor.</param>
+        /// <param name="cameraTimestamp">The timestamp the pose was recorded at in the camera's time system.</param>
+        public void AddCameraPose(Vector3 cameraPosition, Quaternion cameraRotation, float cameraTimestamp)
+        {
+            poseCache.AddPose(cameraPosition, cameraRotation, cameraTimestamp);
+        }
 
 #if UNITY_EDITOR
         /// <summary>
@@ -441,7 +451,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             UpdateCullingMask();
         }
 
-#if UNITY_EDITOR
         /// <summary>
         /// Enables the holographic camera rig for compositing. The hologram camera will be adjusted to match
         /// calibration data (its position and rotation will track the external camera, and its projection matrix
@@ -452,6 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         /// projection matrix for the holographic camera.</param>
         public void EnableHolographicCamera(Transform parent, ICalibrationData calibrationData)
         {
+#if UNITY_EDITOR
             this.calibrationData = calibrationData;
             GameObject container = GameObject.Find("SpectatorView");
             if (container == null)
@@ -472,8 +482,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             calibrationData.SetUnityCameraIntrinsics(GetComponent<Camera>());
 
             IsHolographicCameraConnected = true;
+#endif
         }
 
+#if UNITY_EDITOR
         private void OnEnable()
         {
             isVideoFrameProviderInitialized = false;
