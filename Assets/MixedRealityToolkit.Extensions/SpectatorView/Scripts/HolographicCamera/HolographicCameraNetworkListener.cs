@@ -8,10 +8,14 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.HolographicCamera
 {
+    /// <summary>
+    /// Represents the network listener for the camera pose provider app.
+    /// </summary>
     [RequireComponent(typeof(TCPConnectionManager))]
     public class HolographicCameraNetworkListener : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("The TCP port that the listening socket should be bound to.")]
         private int listeningPort = 7502;
 
         private TCPConnectionManager tcpConnectionManager;

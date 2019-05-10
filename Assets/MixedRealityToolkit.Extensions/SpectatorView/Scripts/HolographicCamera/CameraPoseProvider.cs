@@ -20,6 +20,9 @@ using Calendar = Windows.Globalization.Calendar;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.HolographicCamera
 {
+    /// <summary>
+    /// Component that provides time-adjusted holographic poses to the compositor.
+    /// </summary>
     [RequireComponent(typeof(TCPConnectionManager))]
     public class CameraPoseProvider : MonoBehaviour
     {
@@ -72,6 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 
         private void TcpConnectionManager_OnConnected(SocketEndpoint endpoint)
         {
+            // Restart the timeline at 0 each time we reconnect to the HoloLens
             timestampStopwatch = Stopwatch.StartNew();
         }
 

@@ -11,6 +11,10 @@ using Windows.Storage;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.HolographicCamera
 {
+    /// <summary>
+    /// Loads calibration data from the Pictures library on the device and transfers that data
+    /// to the compositor upon connection.
+    /// </summary>
     [RequireComponent(typeof(TCPConnectionManager))]
     public class CalibrationDataProvider : MonoBehaviour
     {
