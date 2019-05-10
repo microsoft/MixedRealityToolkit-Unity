@@ -86,12 +86,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
-
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
+                RenderMixedRealityToolkitLogo();
+
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
 
                 DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
@@ -99,22 +97,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (!RenderProfileHeader("Gesture Input",
+                "This gesture map is any and all movements of part the user's body, especially a hand or the head, that raise actions through the input system.\n\n" +
+                "Note: Defined controllers can look up the list of gestures and raise the events based on specific criteria.",
+                "Back to Input Profile",
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
             {
                 return;
             }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Gesture Input", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("This gesture map is any and all movements of part the user's body, especially a hand or the head, that raise actions through the input system.\n\nNote: Defined controllers can look up the list of gestures and raise the events based on specific criteria.", MessageType.Info);
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
                 return;
             }
-
-            CheckProfileLock(target);
 
             serializedObject.Update();
             EditorGUILayout.Space();
@@ -136,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
 
-            if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton))
+            if (RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
             {
                 list.arraySize += 1;
                 var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);
@@ -152,8 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 var actionConstraint = action.FindPropertyRelative("axisConstraint");
                 actionConstraint.intValue = 0;
             }
-
-            GUILayout.Space(12f);
 
             if (list == null || list.arraySize == 0)
             {

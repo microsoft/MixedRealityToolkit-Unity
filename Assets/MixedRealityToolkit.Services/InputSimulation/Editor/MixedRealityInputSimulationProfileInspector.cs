@@ -116,25 +116,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-
-            if (GUILayout.Button("Back to Input Profile"))
+            if (!RenderProfileHeader("Input Simulation settings",
+                "Settings for simulating input devices in the editor.",
+                "Back to Input Profile",
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                return;
             }
-            EditorGUILayout.Space();
-
-            EditorGUILayout.LabelField("Input Simulation settings", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Settings for simulating input devices in the editor.", MessageType.Info);
-            CheckProfileLock(target);
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
 
             serializedObject.Update();
 
             bool isGUIEnabled = GUI.enabled;
 
-            GUILayout.Space(12f);
             EditorGUILayout.PropertyField(isCameraControlEnabled);
             {
                 EditorGUILayout.BeginVertical("Label");
@@ -159,10 +152,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GUI.enabled = isGUIEnabled;
             }
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(simulateEyePosition);
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(handSimulationMode);
             {
                 EditorGUILayout.BeginVertical("Label");

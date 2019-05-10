@@ -21,6 +21,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [SerializeField]
         private Texture2D logoDarkTheme = null;
 
+        [SerializeField]
+        private static Texture helpIcon = null;
+
+        private static GUIContent WarningIconContent = null;
+
         protected virtual void Awake()
         {
             string assetPath = "StandardAssets/Textures";
@@ -33,6 +38,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (logoDarkTheme == null)
             {
                 logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_White.png"), typeof(Texture2D));
+            }
+
+            if (helpIcon == null)
+            {
+                helpIcon = EditorGUIUtility.IconContent("_Help").image;
+            }
+
+            if (WarningIconContent == null)
+            {
+                WarningIconContent = new GUIContent(EditorGUIUtility.IconContent("console.warnicon").image,
+                    "This profile is part of the default set from the Mixed Reality Toolkit SDK. You can make a copy of this profile, and customize it if needed.");
             }
         }
 
@@ -52,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUILayout.Label(EditorGUIUtility.isProSkin ? logoDarkTheme : logoLightTheme, GUILayout.MaxHeight(96f));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            GUILayout.Space(12f);
+            GUILayout.Space(3f);
         }
 
         /// <summary>
@@ -77,6 +93,55 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return false;
         }
 
+        // TODO: Troy add comments
+        protected static bool RenderIndentedButton(string buttonText, params GUILayoutOption[] options)
+        {
+            bool result = false;
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(EditorGUI.indentLevel * 15);
+                result = GUILayout.Button(buttonText, options);
+            GUILayout.EndHorizontal();
+            return result;
+        }
+
+        protected static bool RenderIndentedButton(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
+        {
+            bool result = false;
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(EditorGUI.indentLevel * 15);
+                result = GUILayout.Button(content, style, options);
+            GUILayout.EndHorizontal();
+            return result;
+        }
+
+        // TODO: Troy add comments
+        protected bool RenderProfileHeader(string title, string description, string backText, BaseMixedRealityProfile backProfile)
+        {
+            RenderMixedRealityToolkitLogo();
+
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            {
+                return false;
+            }
+
+            if (DrawBacktrackProfileButton(backText, backProfile))
+            {
+                return false;
+            }
+            
+            EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
+                //console.infoicon
+                EditorGUILayout.LabelField(new GUIContent(helpIcon, description), GUILayout.Width(48));
+
+                CheckProfileLock(target);
+
+            EditorGUILayout.EndHorizontal();
+            
+            //EditorGUILayout.HelpBox(description, MessageType.Info);
+            return true;
+        }
+
         /// <summary>
         /// Checks if the profile is locked and displays a warning.
         /// </summary>
@@ -86,7 +151,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
             {
-                EditorGUILayout.HelpBox("This profile is part of the default set from the Mixed Reality Toolkit SDK. You can make a copy of this profile, and customize it if needed.", MessageType.Warning);
+                EditorGUILayout.LabelField(WarningIconContent, GUILayout.Width(48));
+                //EditorGUILayout.HelpBox("This profile is part of the default set from the Mixed Reality Toolkit SDK. You can make a copy of this profile, and customize it if needed.", MessageType.Warning);
                 GUI.enabled = !lockProfile;
             }
         }

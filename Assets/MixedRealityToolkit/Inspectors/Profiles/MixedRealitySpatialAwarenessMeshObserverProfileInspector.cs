@@ -70,90 +70,62 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            if (!RenderProfileHeader("Spatial Awareness Mesh Observer Profile",
+                "Configuration settings for how the real-world environment will be perceived and displayed.",
+                "Back to Configuration Profile",
+                MixedRealityToolkit.Instance.ActiveProfile))
             {
                 return;
             }
 
-            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-            {
-                return;
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Spatial Awareness Mesh Observer Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Configuration settings for how the real-world environment will be perceived and displayed.", MessageType.Info);
-            EditorGUILayout.Space();
             serializedObject.Update();
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
             {
-                GUI.enabled = false;
-            }
-
-            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
-            if (showGeneralProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.PropertyField(startupBehavior);
+                EditorGUILayout.Space();
+                EditorGUILayout.PropertyField(updateInterval);
+                EditorGUILayout.Space();
+                EditorGUILayout.PropertyField(isStationaryObserver);
+                EditorGUILayout.PropertyField(observerVolumeType, volumeTypeContent);
+                string message = string.Empty;
+                if (observerVolumeType.intValue == (int)VolumeType.AxisAlignedCube)
                 {
-                    EditorGUILayout.PropertyField(startupBehavior);
-                    EditorGUILayout.Space();
-                    EditorGUILayout.PropertyField(updateInterval);
-                    EditorGUILayout.Space();
-                    EditorGUILayout.PropertyField(isStationaryObserver);
-                    EditorGUILayout.PropertyField(observerVolumeType, volumeTypeContent);
-                    string message = string.Empty;
-                    if (observerVolumeType.intValue == (int)VolumeType.AxisAlignedCube)
-                    {
-                        message = "Observed meshes will be aligned to the world coordinate space.";
-                    }
-                    else if (observerVolumeType.intValue == (int)VolumeType.UserAlignedCube)
-                    {
-                        message = "Observed meshes will be aligned to the user's coordinate space.";
-                    }
-                    else if (observerVolumeType.intValue == (int)VolumeType.Sphere)
-                    {
-                        message = "The X value of the Observation Extents will be used as the sphere radius.";
-                    }
-                    EditorGUILayout.HelpBox(message, MessageType.Info);
-                    EditorGUILayout.PropertyField(observationExtents);
+                    message = "Observed meshes will be aligned to the world coordinate space.";
                 }
+                else if (observerVolumeType.intValue == (int)VolumeType.UserAlignedCube)
+                {
+                    message = "Observed meshes will be aligned to the user's coordinate space.";
+                }
+                else if (observerVolumeType.intValue == (int)VolumeType.Sphere)
+                {
+                    message = "The X value of the Observation Extents will be used as the sphere radius.";
+                }
+                EditorGUILayout.HelpBox(message, MessageType.Info);
+                EditorGUILayout.PropertyField(observationExtents);
             }
 
             EditorGUILayout.Space();
-            showPhysicsProperties = EditorGUILayout.Foldout(showPhysicsProperties, "Physics Settings", true);
-            if (showPhysicsProperties)
+            EditorGUILayout.LabelField("Physics Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
-                    EditorGUILayout.PropertyField(recalculateNormals);
-                }
+                EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
+                EditorGUILayout.PropertyField(recalculateNormals);
             }
 
             EditorGUILayout.Space();
-            showLevelOfDetailProperties = EditorGUILayout.Foldout(showLevelOfDetailProperties, "Level of Detail Settings", true);
-            if (showLevelOfDetailProperties)
+            EditorGUILayout.LabelField("Level of Detail Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(levelOfDetail, lodContent);
-                    EditorGUILayout.PropertyField(trianglesPerCubicMeter, trianglesPerCubicMeterContent);
-                    EditorGUILayout.HelpBox("The value of Triangles per Cubic Meter is ignored unless Level of Detail is set to Custom.", MessageType.Info);
-                }
+                EditorGUILayout.PropertyField(levelOfDetail, lodContent);
+                EditorGUILayout.PropertyField(trianglesPerCubicMeter, trianglesPerCubicMeterContent);
+                EditorGUILayout.HelpBox("The value of Triangles per Cubic Meter is ignored unless Level of Detail is set to Custom.", MessageType.Info);
             }
 
             EditorGUILayout.Space();
-            showDisplayProperties = EditorGUILayout.Foldout(showDisplayProperties, "Display Settings", true);
-            if (showDisplayProperties)
+            EditorGUILayout.LabelField("Display Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(displayOption, displayOptionContent);
-                    EditorGUILayout.PropertyField(visibleMaterial);
-                    EditorGUILayout.PropertyField(occlusionMaterial);
-                }
+                EditorGUILayout.PropertyField(displayOption, displayOptionContent);
+                EditorGUILayout.PropertyField(visibleMaterial);
+                EditorGUILayout.PropertyField(occlusionMaterial);
             }
 
             serializedObject.ApplyModifiedProperties();

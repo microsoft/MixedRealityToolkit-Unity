@@ -34,13 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
-            {
-                return;
-            }
-
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
@@ -49,19 +42,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 return;
             }
-
-            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+  
+            if (!RenderProfileHeader("Input Actions",
+                "Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
+                                    "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.",
+                "Back to Input Profile",
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
             {
                 return;
             }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Input Actions", EditorStyles.boldLabel);
-
-            EditorGUILayout.HelpBox("Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
-                                    "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.", MessageType.Info);
-
-            CheckProfileLock(target);
 
             serializedObject.Update();
             RenderList(inputActionList);
@@ -72,7 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
-            if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton))
+
+            if (RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
             {
                 list.arraySize += 1;
                 var inputAction = list.GetArrayElementAtIndex(list.arraySize - 1);

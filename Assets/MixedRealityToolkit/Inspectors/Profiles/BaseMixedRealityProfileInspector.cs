@@ -28,8 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const int subProfileIndentWidth = 2;
         private const int inspectorFoldoutWidth = 10;
         private static Color subProfileBackgroundColor = new Color(1f, 1f, 1f, 0.15f);
-        private static GUIStyle subProfileBackgroundStyle = null;
-        private static GUIStyle foldoutStyle = null;
+        protected static GUIStyle subProfileBackgroundStyle = null;
+        protected static GUIStyle foldoutStyle = null;
+        protected static GUIStyle boldFoldoutStyle = null;
 
         protected virtual void OnEnable()
         {
@@ -41,6 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             targetProfile = serializedObject;
             profile = target as BaseMixedRealityProfile;
+
+            CreateStyles();
         }
 
         /// <summary>
@@ -51,9 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
-        public static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true, Type serviceType = null)
+        public static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true, bool renderBoxContainer = true, Type serviceType = null)
         {
-            return RenderProfileInternal(property, guiContent, showAddButton, serviceType);
+            return RenderProfileInternal(property, guiContent, showAddButton, renderBoxContainer, serviceType);
         }
 
         /// <summary>
@@ -63,8 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <returns></returns>
         public static void RenderReadOnlyProfile(SerializedProperty property)
         {
-            CreateStyles();
-
             EditorGUILayout.BeginHorizontal();
 
             bool showFoldout = false;
@@ -113,15 +114,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
-        protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, Type serviceType = null)
+        protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, bool renderBoxContainer = true, Type serviceType = null)
         {
-            return RenderProfileInternal(property, null, showAddButton, serviceType);
+            return RenderProfileInternal(property, null, showAddButton, renderBoxContainer, serviceType);
         }
 
-        private static bool RenderProfileInternal(SerializedProperty property, GUIContent guiContent, bool showAddButton, Type serviceType = null)
+        private static bool RenderProfileInternal(SerializedProperty property, GUIContent guiContent, bool showAddButton, bool renderBoxContainer, Type serviceType = null)
         {
-            CreateStyles();
-
             profile = property.serializedObject.targetObject as BaseMixedRealityProfile;
 
             bool changed = false;
@@ -138,19 +137,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            // Begin the horizontal group
-            EditorGUILayout.BeginHorizontal();
-
             // Draw the foldout - this contains the property name so it's clickable
+            /*
             bool showFoldout = false;
             if (oldObject != null)
             {
+              
+                 * // TODO: TROY
                 string showFoldoutKey = GetSubProfileDropdownKey(property);
                 showFoldout = SessionState.GetBool(showFoldoutKey, false);
                 // TODO: TROY
                 //showFoldout = EditorGUILayout.Foldout(showFoldout, property.displayName, true);
                 SessionState.SetBool(showFoldoutKey, showFoldout);
-            }
+            }*/
 
             // Find the profile type so we can limit the available object field options
             Type profileType = null;
@@ -172,6 +171,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // If we don't find a profile type by searching 
                 profileType = typeof(BaseMixedRealityProfile);
             }
+
+            // Begin the horizontal group
+            EditorGUILayout.BeginHorizontal();
 
             // Draw the object field with an empty label - label is kept in the foldout
             property.objectReferenceValue = EditorGUILayout.ObjectField(oldObject != null ? "" : property.displayName, oldObject, profileType, false, GUILayout.ExpandWidth(true));
@@ -223,19 +225,42 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     configProfile.RenderAsSubProfile = true;
                 }
 
-                EditorGUILayout.BeginHorizontal();
+                //EditorGUILayout.BeginHorizontal();
                 //EditorGUILayout.LabelField("", GUILayout.MaxWidth(subProfileIndentWidth));
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                if (renderBoxContainer)
+                {
+                    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                }
+                else
+                {
+                    EditorGUILayout.BeginVertical();
+                }
                 // TODO: TROY
                 //EditorGUILayout.BeginVertical(subProfileBackgroundStyle);
                 subProfileEditor.OnInspectorGUI();
-                //EditorGUILayout.Space();
                 EditorGUILayout.Space();
                 EditorGUILayout.EndVertical();
-                EditorGUILayout.EndHorizontal();
+                //EditorGUILayout.EndHorizontal();
             }
 
             return changed;
+        }
+
+        protected static void RenderFoldout(ref bool currentState, string title, Action renderContent)
+        {
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+
+            // TODO: Troy save style
+            //var style = new GUIStyle(EditorStyles.foldout);
+            //style.fontStyle = FontStyle.Bold;
+
+            currentState = EditorGUILayout.Foldout(currentState, title, true, boldFoldoutStyle);
+            if (currentState)
+            {
+                renderContent();
+            }
+
+            EditorGUILayout.EndVertical();
         }
 
         private static string GetSubProfileDropdownKey(SerializedProperty property)
@@ -369,20 +394,28 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static void CreateStyles()
         {
-            if (subProfileBackgroundStyle != null)
+            // TODO: Troy and create global style here*
+            if (subProfileBackgroundStyle == null)
             {
-                return;
+                subProfileBackgroundStyle = new GUIStyle();
+                Color[] pix = new Color[4] { subProfileBackgroundColor, subProfileBackgroundColor, subProfileBackgroundColor, subProfileBackgroundColor };
+                Texture2D bgTexture = new Texture2D(2, 2);
+                bgTexture.SetPixels(pix);
+                bgTexture.Apply();
+                subProfileBackgroundStyle.normal.background = bgTexture;
             }
 
-            subProfileBackgroundStyle = new GUIStyle();
-            Color[] pix = new Color[4] { subProfileBackgroundColor, subProfileBackgroundColor, subProfileBackgroundColor, subProfileBackgroundColor };
-            Texture2D bgTexture = new Texture2D(2, 2);
-            bgTexture.SetPixels(pix);
-            bgTexture.Apply();
-            subProfileBackgroundStyle.normal.background = bgTexture;
+            if (foldoutStyle == null)
+            {
+                foldoutStyle = new GUIStyle(EditorStyles.foldout);
+                foldoutStyle.stretchWidth = false;
+            }
 
-            foldoutStyle = new GUIStyle(EditorStyles.foldout);
-            foldoutStyle.stretchWidth = false;
+            if (boldFoldoutStyle == null)
+            {
+                boldFoldoutStyle = new GUIStyle(EditorStyles.foldout);
+                boldFoldoutStyle.fontStyle = FontStyle.Bold;
+            }
         }
     }
 }

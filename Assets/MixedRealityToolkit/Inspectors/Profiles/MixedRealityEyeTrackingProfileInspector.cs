@@ -25,22 +25,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-
-            if (GUILayout.Button("Back to Registered Service Providers Profile"))
+            if (!RenderProfileHeader("Eye tracking settings", 
+                string.Empty, 
+                "Back to Registered Service Providers Profile", 
+                MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile;
+                return;
             }
-            EditorGUILayout.Space();
-
-            EditorGUILayout.LabelField("Eye tracking settings", EditorStyles.boldLabel);
-            CheckProfileLock(target);
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
 
             serializedObject.Update();
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(smoothEyeTracking);
 

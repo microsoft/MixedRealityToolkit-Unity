@@ -45,54 +45,39 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            if (!RenderProfileHeader("Diagnostic Visualization Options",
+                "Diagnostic visualizations can help monitor system resources and performance inside an application.",
+                "Back to Configuration Profile",
+                MixedRealityToolkit.Instance.ActiveProfile))
             {
                 return;
             }
-
-            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-            {
-                return;
-            }
-
-            CheckProfileLock(target);
 
             serializedObject.Update();
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Diagnostic Visualization Options", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Diagnostic visualizations can help monitor system resources and performance inside an application.", MessageType.Info);
-
-            EditorGUILayout.Space();
-            showGeneralSettings = EditorGUILayout.Foldout(showGeneralSettings, "General Settings", true);
-            if (showGeneralSettings)
+            EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
+            using (new EditorGUI.IndentLevelScope())
             {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.PropertyField(showDiagnostics);
+                if(!showDiagnostics.boolValue)
                 {
-                    EditorGUILayout.PropertyField(showDiagnostics);
-                    if(!showDiagnostics.boolValue)
-                    {
-                        EditorGUILayout.Space();
-                        EditorGUILayout.HelpBox("Diagnostic visualizations have been globally disabled.", MessageType.Info);
-                        EditorGUILayout.Space();
-                    }
+                    EditorGUILayout.Space();
+                    EditorGUILayout.HelpBox("Diagnostic visualizations have been globally disabled.", MessageType.Info);
+                    EditorGUILayout.Space();
                 }
             }
 
             EditorGUILayout.Space();
-            showProfilerSettings = EditorGUILayout.Foldout(showProfilerSettings, "Profiler Settings", true);
-            if (showProfilerSettings)
+            EditorGUILayout.LabelField("Profiler Settings", EditorStyles.boldLabel);
+            using (new EditorGUI.IndentLevelScope())
             {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(showProfiler);
-                    EditorGUILayout.PropertyField(frameSampleRate);
-                    EditorGUILayout.PropertyField(windowAnchor);
-                    EditorGUILayout.PropertyField(windowOffset);
-                    EditorGUILayout.PropertyField(windowScale);
-                    EditorGUILayout.PropertyField(windowFollowSpeed);
-                }
+                EditorGUILayout.PropertyField(showProfiler);
+                EditorGUILayout.PropertyField(frameSampleRate);
+                EditorGUILayout.PropertyField(windowAnchor);
+                EditorGUILayout.PropertyField(windowOffset);
+                EditorGUILayout.PropertyField(windowScale);
+                EditorGUILayout.PropertyField(windowFollowSpeed);
             }
 
             serializedObject.ApplyModifiedProperties();

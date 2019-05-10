@@ -50,14 +50,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
-            {
-                return;
-            }
-
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
+                RenderMixedRealityToolkitLogo();
+
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
 
                 DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
@@ -65,16 +61,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (!RenderProfileHeader("Speech Commands", 
+                "Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.",
+                "Back to Input Profile",
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
             {
                 return;
             }
-
-            CheckProfileLock(target);
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.", MessageType.Info);
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
@@ -84,19 +77,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             serializedObject.Update();
 
-            EditorGUILayout.Space();
-            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
-            if (showGeneralProperties)
+            EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(recognizerStartBehaviour);
-                    EditorGUILayout.PropertyField(recognitionConfidenceLevel);
-                }
+                EditorGUILayout.PropertyField(recognizerStartBehaviour);
+                EditorGUILayout.PropertyField(recognitionConfidenceLevel);
             }
 
             EditorGUILayout.Space();
-            showSpeechCommands = EditorGUILayout.Foldout(showSpeechCommands, "Speech Commands", true);
+            showSpeechCommands = EditorGUILayout.Foldout(showSpeechCommands, "Speech Commands", true, boldFoldoutStyle);
             if (showSpeechCommands)
             {
                 using (new EditorGUI.IndentLevelScope())
@@ -113,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
 
-            if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton))
+            if (RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
             {
                 list.arraySize += 1;
                 var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);

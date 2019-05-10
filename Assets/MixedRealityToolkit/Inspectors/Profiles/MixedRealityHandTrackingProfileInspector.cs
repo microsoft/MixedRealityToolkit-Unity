@@ -35,23 +35,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-
-            if (GUILayout.Button("Back to Input Profile"))
+            if (!RenderProfileHeader("Hand tracking settings", 
+                "Use this for platform-specific hand tracking settings.",
+                "Back to Input Profile",
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                return;
             }
-            EditorGUILayout.Space();
-
-            EditorGUILayout.LabelField("Hand tracking settings", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Use this for platform-specific hand tracking settings.", MessageType.Info);
-            CheckProfileLock(target);
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
 
             serializedObject.Update();
 
-            GUILayout.Space(12f);
             EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(jointPrefab);
             EditorGUILayout.PropertyField(palmPrefab);

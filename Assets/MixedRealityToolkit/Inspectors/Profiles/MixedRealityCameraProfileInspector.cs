@@ -47,65 +47,43 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            if (!RenderProfileHeader("Camera Profile", 
+                "The Camera Profile helps configure cross platform camera settings.",
+                "Back to the Configuration Profile",
+                MixedRealityToolkit.Instance.ActiveProfile))
             {
                 return;
             }
-
-            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-            {
-                return;
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Camera Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("The Camera Profile helps configure cross platform camera settings.", MessageType.Info);
-
-            CheckProfileLock(target);
 
             serializedObject.Update();
           
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Opaque Display Settings", EditorStyles.boldLabel);
-            /*
-             * TODO:TROY
-            showOpaqueProperties = EditorGUILayout.Foldout(showOpaqueProperties, "Opaque Display Settings", true);
-            if (showOpaqueProperties)
-            {*/
-                using (new EditorGUI.IndentLevelScope())
+            {
+                EditorGUILayout.PropertyField(opaqueNearClip, nearClipTitle);
+                EditorGUILayout.PropertyField(opaqueClearFlags, clearFlagsTitle);
+
+                if ((CameraClearFlags)opaqueClearFlags.intValue == CameraClearFlags.Color)
                 {
-                    EditorGUILayout.PropertyField(opaqueNearClip, nearClipTitle);
-                    EditorGUILayout.PropertyField(opaqueClearFlags, clearFlagsTitle);
-
-                    if ((CameraClearFlags)opaqueClearFlags.intValue == CameraClearFlags.Color)
-                    {
-                        opaqueBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", opaqueBackgroundColor.colorValue);
-                    }
-
-                    opaqueQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", opaqueQualityLevel.intValue, QualitySettings.names);
+                    opaqueBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", opaqueBackgroundColor.colorValue);
                 }
-            //}
+
+                opaqueQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", opaqueQualityLevel.intValue, QualitySettings.names);
+            }
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Transparent Display Settings", EditorStyles.boldLabel);
-            /*
-            showTransparentProperties = EditorGUILayout.Foldout(showTransparentProperties, "Transparent Display Settings", true);
-            if (showTransparentProperties)
-            {*/
-                using (new EditorGUI.IndentLevelScope())
+            {
+                EditorGUILayout.PropertyField(transparentNearClip, nearClipTitle);
+                EditorGUILayout.PropertyField(transparentClearFlags, clearFlagsTitle);
+
+                if ((CameraClearFlags)transparentClearFlags.intValue == CameraClearFlags.Color)
                 {
-                    EditorGUILayout.PropertyField(transparentNearClip, nearClipTitle);
-                    EditorGUILayout.PropertyField(transparentClearFlags, clearFlagsTitle);
-
-                    if ((CameraClearFlags)transparentClearFlags.intValue == CameraClearFlags.Color)
-                    {
-                        transparentBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", transparentBackgroundColor.colorValue);
-                    }
-
-                    holoLensQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", holoLensQualityLevel.intValue, QualitySettings.names);
+                    transparentBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", transparentBackgroundColor.colorValue);
                 }
-            //}
+
+                holoLensQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", holoLensQualityLevel.intValue, QualitySettings.names);
+            }
 
             serializedObject.ApplyModifiedProperties();
         }

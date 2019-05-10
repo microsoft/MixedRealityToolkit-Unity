@@ -103,56 +103,59 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Editor settings
             useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
 
-            this.RenderProfileFuncs = new Func<bool>[]
+            if (this.RenderProfileFuncs == null)
             {
-                () => {
-                    EditorGUILayout.PropertyField(enableCameraSystem);
-                    EditorGUILayout.PropertyField(cameraSystemType);
-                    return RenderProfile(cameraProfile);
-                },
-                () => {
-                     EditorGUILayout.PropertyField(enableInputSystem);
-                    EditorGUILayout.PropertyField(inputSystemType);
-                    return RenderProfile(inputSystemProfile, true, typeof(IMixedRealityInputSystem));
-                },
-                () => {
-                    var experienceScale = (ExperienceScale)targetExperienceScale.intValue;
-                    if (experienceScale != ExperienceScale.Room)
-                    {
-                        // Alert the user if the experience scale does not support boundary features.
-                        GUILayout.Space(6f);
-                        EditorGUILayout.HelpBox("Boundaries are only supported in Room scale experiences.", MessageType.Warning);
-                        GUILayout.Space(6f);
-                    }
-                    EditorGUILayout.PropertyField(enableBoundarySystem);
-                    EditorGUILayout.PropertyField(boundarySystemType);
-                    return RenderProfile(boundaryVisualizationProfile, true, typeof(IMixedRealityBoundarySystem));
-                },
-                () => {
-                    EditorGUILayout.PropertyField(enableTeleportSystem);
-                    EditorGUILayout.PropertyField(teleportSystemType);
-                    return false;
-                },
-                () => {
-                    EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
-                    EditorGUILayout.PropertyField(spatialAwarenessSystemType);
-                    EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
-                    return RenderProfile(spatialAwarenessSystemProfile, true, typeof(IMixedRealitySpatialAwarenessSystem));
-                },
-                () => {
-                    EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
-                    EditorGUILayout.PropertyField(enableDiagnosticsSystem);
-                    EditorGUILayout.PropertyField(diagnosticsSystemType);
-                    return RenderProfile(diagnosticsSystemProfile);
-                },
-                () => {
-                    return RenderProfile(registeredServiceProvidersProfile);
-                },
-                () => {
-                    EditorGUILayout.PropertyField(useServiceInspectors);
-                    return false;
-                },
-            };
+                this.RenderProfileFuncs = new Func<bool>[]
+                {
+                    () => {
+                        EditorGUILayout.PropertyField(enableCameraSystem);
+                        EditorGUILayout.PropertyField(cameraSystemType);
+                        return RenderProfile(cameraProfile);
+                    },
+                    () => {
+                         EditorGUILayout.PropertyField(enableInputSystem);
+                        EditorGUILayout.PropertyField(inputSystemType);
+                        return RenderProfile(inputSystemProfile, true, true, typeof(IMixedRealityInputSystem));
+                    },
+                    () => {
+                        var experienceScale = (ExperienceScale)targetExperienceScale.intValue;
+                        if (experienceScale != ExperienceScale.Room)
+                        {
+                            // Alert the user if the experience scale does not support boundary features.
+                            GUILayout.Space(6f);
+                            EditorGUILayout.HelpBox("Boundaries are only supported in Room scale experiences.", MessageType.Warning);
+                            GUILayout.Space(6f);
+                        }
+                        EditorGUILayout.PropertyField(enableBoundarySystem);
+                        EditorGUILayout.PropertyField(boundarySystemType);
+                        return RenderProfile(boundaryVisualizationProfile, true, true, typeof(IMixedRealityBoundarySystem));
+                    },
+                    () => {
+                        EditorGUILayout.PropertyField(enableTeleportSystem);
+                        EditorGUILayout.PropertyField(teleportSystemType);
+                        return false;
+                    },
+                    () => {
+                        EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
+                        EditorGUILayout.PropertyField(spatialAwarenessSystemType);
+                        EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
+                        return RenderProfile(spatialAwarenessSystemProfile, true, true, typeof(IMixedRealitySpatialAwarenessSystem));
+                    },
+                    () => {
+                        EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
+                        EditorGUILayout.PropertyField(enableDiagnosticsSystem);
+                        EditorGUILayout.PropertyField(diagnosticsSystemType);
+                        return RenderProfile(diagnosticsSystemProfile);
+                    },
+                    () => {
+                        return RenderProfile(registeredServiceProvidersProfile);
+                    },
+                    () => {
+                        EditorGUILayout.PropertyField(useServiceInspectors);
+                        return false;
+                    },
+                };
+            }
         }
 
         private static string[] TabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "Extensions", "Editor" };
@@ -200,182 +203,65 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 GUI.enabled = false;
             }
 
-            var previousLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 160f;
+            //var previousLabelWidth = EditorGUIUtility.labelWidth;
+            //EditorGUIUtility.labelWidth = 160f;
             EditorGUI.BeginChangeCheck();
             bool changed = false;
 
             // Experience configuration
             ExperienceScale experienceScale = (ExperienceScale)targetExperienceScale.intValue;
-            /*
-            showExperienceProperties = EditorGUILayout.Foldout(showExperienceProperties, "Experience Settings", true);
-            if (showExperienceProperties)
+
+            EditorGUILayout.PropertyField(targetExperienceScale, TargetScaleContent);
+            string scaleDescription = string.Empty;
+
+            switch (experienceScale)
             {
-                using (new EditorGUI.IndentLevelScope())
-                {*/
-                    EditorGUILayout.PropertyField(targetExperienceScale, TargetScaleContent);
-                    string scaleDescription = string.Empty;
+                case ExperienceScale.OrientationOnly:
+                    scaleDescription = "The user is stationary. Position data does not change.";
+                    break;
 
-                    switch (experienceScale)
-                    {
-                        case ExperienceScale.OrientationOnly:
-                            scaleDescription = "The user is stationary. Position data does not change.";
-                            break;
+                case ExperienceScale.Seated:
+                    scaleDescription = "The user is stationary and seated. The origin of the world is at a neutral head-level position.";
+                    break;
 
-                        case ExperienceScale.Seated:
-                            scaleDescription = "The user is stationary and seated. The origin of the world is at a neutral head-level position.";
-                            break;
+                case ExperienceScale.Standing:
+                    scaleDescription = "The user is stationary and standing. The origin of the world is on the floor, facing forward.";
+                    break;
 
-                        case ExperienceScale.Standing:
-                            scaleDescription = "The user is stationary and standing. The origin of the world is on the floor, facing forward.";
-                            break;
+                case ExperienceScale.Room:
+                    scaleDescription = "The user is free to move about the room. The origin of the world is on the floor, facing forward. Boundaries are available.";
+                    break;
 
-                        case ExperienceScale.Room:
-                            scaleDescription = "The user is free to move about the room. The origin of the world is on the floor, facing forward. Boundaries are available.";
-                            break;
+                case ExperienceScale.World:
+                    scaleDescription = "The user is free to move about the world. Relies upon knowledge of the environment (Spatial Anchors and Spatial Mapping).";
+                    break;
+            }
 
-                        case ExperienceScale.World:
-                            scaleDescription = "The user is free to move about the world. Relies upon knowledge of the environment (Spatial Anchors and Spatial Mapping).";
-                            break;
-                    }
-
-                    if (scaleDescription != string.Empty)
-                    {
-                        GUILayout.Space(6f);
-                        EditorGUILayout.HelpBox(scaleDescription, MessageType.Info);
-                    }
-            //     }
-            // }
+            if (scaleDescription != string.Empty)
+            {
+                GUILayout.Space(6f);
+                EditorGUILayout.HelpBox(scaleDescription, MessageType.Info);
+            }
 
             EditorGUILayout.BeginHorizontal();
-                GUILayout.BeginVertical("Box");
-                        SelectedTab = GUILayout.SelectionGrid(SelectedTab, TabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
-                GUILayout.EndVertical();
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(120));
+                    SelectedTab = GUILayout.SelectionGrid(SelectedTab, TabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
+                EditorGUILayout.EndVertical();
 
-            EditorGUILayout.BeginVertical();
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    changed |= RenderProfileFuncs[SelectedTab]();
-                }
-            EditorGUILayout.EndVertical();
-
-            EditorGUILayout.EndHorizontal();
-
-            // Camera Profile configuration
-            /*
-            EditorGUILayout.Space();
-            showCameraProperties = EditorGUILayout.Foldout(showCameraProperties, "Camera Settings", true);
-            if (showCameraProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(enableCameraSystem);
-                    EditorGUILayout.PropertyField(cameraSystemType);
-                    changed |= RenderProfile(cameraProfile);
-                }
-            }
-
-            // Input System configuration
-            EditorGUILayout.Space();
-            showInputProperties = EditorGUILayout.Foldout(showInputProperties, "Input System Settings", true);
-            if (showInputProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(enableInputSystem);
-                    EditorGUILayout.PropertyField(inputSystemType);
-                    changed |= RenderProfile(inputSystemProfile, true, typeof(IMixedRealityInputSystem));
-                }
-            }
-
-            // Boundary System configuration
-            EditorGUILayout.Space();
-            showBoundaryProperties = EditorGUILayout.Foldout(showBoundaryProperties, "Boundary System Settings", true);
-            if (showBoundaryProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    if (experienceScale != ExperienceScale.Room)
+                EditorGUILayout.BeginVertical();
+                    using (new EditorGUI.IndentLevelScope())
                     {
-                        // Alert the user if the experience scale does not support boundary features.
-                        GUILayout.Space(6f);
-                        EditorGUILayout.HelpBox("Boundaries are only supported in Room scale experiences.", MessageType.Warning);
-                        GUILayout.Space(6f);
+                        changed |= RenderProfileFuncs[SelectedTab]();
                     }
-                    EditorGUILayout.PropertyField(enableBoundarySystem);
-                    EditorGUILayout.PropertyField(boundarySystemType);
-                    changed |= RenderProfile(boundaryVisualizationProfile, true, typeof(IMixedRealityBoundarySystem));
-                }
-            }
-
-            // Teleport System configuration
-            EditorGUILayout.Space();
-            showTeleportProperties = EditorGUILayout.Foldout(showTeleportProperties, "Teleport System Settings", true);
-            if (showTeleportProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(enableTeleportSystem);
-                    EditorGUILayout.PropertyField(teleportSystemType);
-                }
-            }
-
-            // Spatial Awareness System configuration
-            EditorGUILayout.Space();
-            showSpatialAwarenessProperties = EditorGUILayout.Foldout(showSpatialAwarenessProperties, "Spatial Awareness System Settings", true);
-            if (showSpatialAwarenessProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
-                    EditorGUILayout.PropertyField(spatialAwarenessSystemType);
-                    EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
-                    changed |= RenderProfile(spatialAwarenessSystemProfile, true, typeof(IMixedRealitySpatialAwarenessSystem));
-                }
-            }
-
-            // Diagnostics System configuration
-            EditorGUILayout.Space();
-            showDiagnosticProperties = EditorGUILayout.Foldout(showDiagnosticProperties, "Diagnostics System Settings", true);
-            if (showDiagnosticProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
-                    EditorGUILayout.PropertyField(enableDiagnosticsSystem);
-                    EditorGUILayout.PropertyField(diagnosticsSystemType);
-                    changed |= RenderProfile(diagnosticsSystemProfile);
-                }
-            }
-
-            // Registered Services configuration
-            EditorGUILayout.Space();
-            showRegisteredServiceProperties = EditorGUILayout.Foldout(showRegisteredServiceProperties, "Extension Services", true);
-            if (showRegisteredServiceProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    changed |= RenderProfile(registeredServiceProvidersProfile);
-                }
-            }
-
-            // Editor settings
-            EditorGUILayout.Space();
-            showEditorSettings = EditorGUILayout.Foldout(showEditorSettings, "Editor Settings", true);
-            if (showEditorSettings)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(useServiceInspectors);
-                }
-            }*/
+                EditorGUILayout.EndVertical();
+            EditorGUILayout.EndHorizontal();
 
             if (!changed)
             {
                 changed |= EditorGUI.EndChangeCheck();
             }
 
-            EditorGUIUtility.labelWidth = previousLabelWidth;
+            //EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
 
             if (changed)
