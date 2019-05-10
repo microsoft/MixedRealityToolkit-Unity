@@ -121,6 +121,9 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "UnityCG.cginc"
             #include "UnityMetaPass.cginc"
 
+            // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
+            //#define _LIGHTWEIGHT_RENDER_PIPELINE
+
             struct v2f
             {
                 float4 vertex : SV_POSITION;
@@ -143,7 +146,15 @@ Shader "Mixed Reality Toolkit/Standard"
 
             fixed4 _Color;
             fixed4 _EmissiveColor;
+
+#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+            CBUFFER_START(_LightBuffer)
+            float4 _MainLightPosition;
+            half4 _MainLightColor;
+            CBUFFER_END
+#else
             fixed4 _LightColor0;
+#endif
 
             half4 frag(v2f i) : SV_Target
             {
@@ -158,7 +169,11 @@ Shader "Mixed Reality Toolkit/Standard"
                 output.Emission += _EmissiveColor;
 #endif
 #endif
+#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+                output.SpecularColor = _MainLightColor.rgb;
+#else
                 output.SpecularColor = _LightColor0.rgb;
+#endif
 
                 return UnityMetaFragment(output);
             }
@@ -239,6 +254,9 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "UnityCG.cginc"
             #include "UnityStandardConfig.cginc"
             #include "UnityStandardUtils.cginc"
+
+            // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
+            //#define _LIGHTWEIGHT_RENDER_PIPELINE
 
 #if defined(_TRIPLANAR_MAPPING) || defined(_DIRECTIONAL_LIGHT) || defined(_SPHERICAL_HARMONICS) || defined(_REFLECTIONS) || defined(_RIM_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_ENVIRONMENT_COLORING)
             #define _NORMAL
@@ -396,7 +414,14 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_DIRECTIONAL_LIGHT)
+#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+            CBUFFER_START(_LightBuffer)
+            float4 _MainLightPosition;
+            half4 _MainLightColor;
+            CBUFFER_END
+#else
             fixed4 _LightColor0;
+#endif
 #endif
 
 #if defined(_REFRACTION)
@@ -1007,10 +1032,14 @@ Shader "Mixed Reality Toolkit/Standard"
 
                 // Blinn phong lighting.
 #if defined(_DIRECTIONAL_LIGHT)
-                fixed diffuse = max(0.0, dot(worldNormal, _WorldSpaceLightPos0));
-
+#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+                float4 directionalLightDirection = _MainLightPosition;
+#else
+                float4 directionalLightDirection = _WorldSpaceLightPos0;
+#endif
+                fixed diffuse = max(0.0, dot(worldNormal, directionalLightDirection));
 #if defined(_SPECULAR_HIGHLIGHTS)
-                fixed halfVector = max(0.0, dot(worldNormal, normalize(_WorldSpaceLightPos0 + worldViewDir)));
+                fixed halfVector = max(0.0, dot(worldNormal, normalize(directionalLightDirection + worldViewDir)));
                 fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4.0)) * _Smoothness * 0.5);
 #else
                 fixed specular = 0.0;
@@ -1050,8 +1079,13 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_DIRECTIONAL_LIGHT)
                 fixed oneMinusMetallic = (1.0 - _Metallic);
                 output.rgb = lerp(output.rgb, ibl, minProperty);
-                output.rgb *= lerp((ambient + _LightColor0.rgb * diffuse + _LightColor0.rgb * specular) * max(oneMinusMetallic, _MinMetallicLightContribution), albedo, minProperty);
-                output.rgb += (_LightColor0.rgb * albedo * specular) + (_LightColor0.rgb * specular * _Smoothness);
+#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+                fixed3 directionalLightColor = _MainLightColor.rgb;
+#else
+                fixed3 directionalLightColor = _LightColor0.rgb;
+#endif
+                output.rgb *= lerp((ambient + directionalLightColor * diffuse + directionalLightColor * specular) * max(oneMinusMetallic, _MinMetallicLightContribution), albedo, minProperty);
+                output.rgb += (directionalLightColor * albedo * specular) + (directionalLightColor * specular * _Smoothness);
                 output.rgb += ibl * oneMinusMetallic * _IblContribution;
 #elif defined(_REFLECTIONS)
                 output.rgb = lerp(output.rgb, ibl, minProperty);
