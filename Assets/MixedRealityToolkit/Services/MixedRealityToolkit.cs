@@ -565,26 +565,15 @@ namespace Microsoft.MixedReality.Toolkit
                 switch (objects.Length)
                 {
                     case 0:
-#if UNITY_EDITOR
-                        // Generating a new instance during app shutdown in the editor allows instances to persist into edit mode, which may cause unwanted behavior
-                        if (isApplicationQuitting)
-                        {
-                            Debug.LogWarning("Trying to find instance during application shutdown.");
-                            return null;
-                        }
-#endif
-                        //RegisterInstance(new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>());
                         break;
 
                     case 1:
-                        Debug.Log("Attempting to register instance " + objects[0].GetInstanceID());
                         RegisterInstance(objects[0]);
                         break;
 
                     default:
                         foreach (MixedRealityToolkit toolkit in objects)
                         {
-                            Debug.Log("Attempting to register instance " + toolkit.GetInstanceID());
                             RegisterInstance(toolkit);
                         }
                         break;
@@ -592,7 +581,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                 if (activeInstance == null)
                 {
-                    Debug.LogError("Didn't find / couldn't create an active instance of mixed reality toolkit.");
+                    Debug.LogError("Didn't find / couldn't create an active instance of mixed reality toolkit. You can add one to your scene via 'Mixed Reality Toolkit->Add to Scene and Configure'");
                 }
 
                 return activeInstance;

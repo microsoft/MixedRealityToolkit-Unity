@@ -26,14 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!MixedRealityToolkit.IsInitialized)
             {
-                // Search the scene for one, in case we've just hot reloaded the assembly.
-                var managerSearch = Object.FindObjectsOfType<MixedRealityToolkit>();
-
-                if (managerSearch.Length == 0)
+                if (showHelpBox)
                 {
-                    if (showHelpBox)
+                    EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Error);
+                    if (GUILayout.Button("Click here to add Mixed Reality Toolkit instance to scene"))
                     {
-                        EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Error);
+                        new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
                     }
                 }
 
