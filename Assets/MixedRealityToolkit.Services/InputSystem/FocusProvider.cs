@@ -412,6 +412,93 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Helper class for managing the visibility of the gaze pointer to match windows mixed reality and HoloLens 2
+        /// When application starts, gaze pointer is visible. Then when articulate hands / motion controllers
+        /// appear, hide the gaze cursor. Whenever user says the voice wake word, make the 
+        /// gaze controller appear.
+        /// </summary>
+        private class GazePointerStateMachine
+        {
+            private enum GazePointerState
+            {
+                Initial, // When the application starts up, the gaze pointer should be active
+                GazePointerActive, // Gaze pointer is active when no hands are visible, after "select" 
+                GazePointerInactive // Gaze pointer is inactive as soon as motion controller or articulated hand pointers appear
+            }
+            private GazePointerState gazePointerState = GazePointerState.Initial;
+            private bool activateGazeKeywordIsSet = false;
+
+            public bool IsGazePointerActive
+            {
+                get { return gazePointerState != GazePointerState.GazePointerInactive; }
+            }
+
+            public void OnSpeechWakeWordRecognized()
+            {
+                activateGazeKeywordIsSet = true;
+            }
+
+            public void UpdateState(HashSet<PointerData> pointers, GenericPointer currentGazePointer)
+            {
+                int numFarPointers = 0;
+                int numNearPointersActive = 0;
+                foreach (var p in pointers)
+                {
+                    if (p.Pointer != null)
+                    {
+                        if (p.Pointer is IMixedRealityNearPointer)
+                        {
+                            if (p.Pointer.IsInteractionEnabled)
+                            {
+                                numNearPointersActive++;
+                            }
+                        }
+                        else if (p.Pointer.BaseCursor != null && !(p.Pointer == currentGazePointer))
+                        {
+                            // We ignore the currentGazePointer here because for cases like HoloLens 1
+                            // hand input or the gamepad, we want to show the cursor still.
+                            numFarPointers++;
+                        }
+                    }
+                }
+                GazePointerState newState = gazePointerState;
+                bool isMotionControllerOrHandUp = numFarPointers > 0 || numNearPointersActive > 0;
+                switch (gazePointerState)
+                {
+                    case GazePointerState.Initial:
+                        if (isMotionControllerOrHandUp)
+                        {
+                            // There is some pointer other than the gaze pointer in the scene, assume
+                            // this is from a motion controller or articulated hand, and that we should
+                            // hide the gaze pointer
+                            newState = GazePointerState.GazePointerInactive;
+                        }
+                        break;
+                    case GazePointerState.GazePointerActive:
+                        if (isMotionControllerOrHandUp)
+                        {
+                            newState = GazePointerState.GazePointerInactive;
+                        }
+                        break;
+                    case GazePointerState.GazePointerInactive:
+                        // Go from inactive to active if we say the word "select"
+                        if (activateGazeKeywordIsSet)
+                        {
+                            newState = GazePointerState.GazePointerActive;
+                            activateGazeKeywordIsSet = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                DebugUtilities.Status($"{gazePointerState} => {newState} \t far {numFarPointers} \t near {numNearPointersActive}");
+                gazePointerState = newState;
+            }
+        }
+
+        private GazePointerStateMachine gazePointerStateMachine = new GazePointerStateMachine();
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
@@ -812,16 +899,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return (hit1.hitObject != null) ? hit1 : hit2;
         }
-
-        private enum GazePointerState
-        {
-            Initial, // When the application starts up, the gaze pointer should be active
-            GazePointerActive, // Gaze pointer is active when no hands are visible, after "select" 
-            GazePointerInactive // Gaze pointer is inactive as soon as motion controller or articulated hand pointers appear
-        }
-        private GazePointerState gazePointerState = GazePointerState.Initial;
-        private bool activateGazeKeywordIsSet = false;
-
+        
         /// <summary>
         /// Disable inactive pointers to unclutter the way for active ones.
         /// </summary>
@@ -830,68 +908,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
             if (gazePointer != null)
             {
-                int numFarPointers = 0;
-                int numNearPointersActive = 0;
-                foreach (var p in pointers)
-                {
-                    if (p.Pointer != null)
-                    {
-                        if (p.Pointer is IMixedRealityNearPointer)
-                        {
-                            if (p.Pointer.IsInteractionEnabled)
-                            {
-                                numNearPointersActive++;
-                            }
-                        }
-                        else if (p.Pointer.BaseCursor != null && ! (p.Pointer == gazePointer) )
-                        {
-                            numFarPointers++;
-                        }
-                    }
-                }
-                // The gaze cursor's visibility is controlled by IsInteractionEnabled
-                // Show the gaze cursor if there are no other pointers that are showing a cursor
-                //gazePointer.IsInteractionEnabled = numFarCursors == 1 && numNearPointersActive == 0;
+                gazePointerStateMachine.UpdateState(pointers, gazePointer);
 
-                GazePointerState newState = gazePointerState;
-                bool isMotionControllerOrHandUp = numFarPointers > 0 || numNearPointersActive > 0;
-                switch (gazePointerState)
-                {
-                    case GazePointerState.Initial:
-                        if (isMotionControllerOrHandUp)
-                        {
-                            // There is some pointer other than the gaze pointer in the scene, assume
-                            // this is from a motion controller or articulated hand, and that we should
-                            // hide the gaze pointer
-                            newState = GazePointerState.GazePointerInactive;
-                        }
-                        break;
-                    case GazePointerState.GazePointerActive:
-                        if (isMotionControllerOrHandUp)
-                        {
-                            newState = GazePointerState.GazePointerInactive;
-                        }
-                        break;
-                    case GazePointerState.GazePointerInactive:
-                        // Go from inactive to active if we say the word "select"
-                        if (activateGazeKeywordIsSet)
-                        {
-                            newState = GazePointerState.GazePointerActive;
-                            activateGazeKeywordIsSet = false;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                DebugUtilities.Status($"{gazePointerState} => {newState} \t far {numFarPointers} \t near {numNearPointersActive}");
-                gazePointerState = newState;
-                gazePointer.IsInteractionEnabled = gazePointerState != GazePointerState.GazePointerInactive;
+                // The gaze cursor's visibility is controlled by IsInteractionEnabled
+                gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;
             }
         }
 
         public void SpeechWakeWordRecognized()
         {
-            activateGazeKeywordIsSet = true;
+            gazePointerStateMachine.OnSpeechWakeWordRecognized();
         }
 
         #region Physics Raycasting
