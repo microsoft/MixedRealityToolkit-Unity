@@ -11,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
     /// Open VR Implementation of the Windows Mixed Reality Motion Controllers.
     /// </summary>
     [MixedRealityController(
-        typeof(WindowsMixedRealityOpenVRMotionController),
         new[] { Handedness.Left, Handedness.Right },
         "StandardAssets/Textures/MotionController")]
     public class WindowsMixedRealityOpenVRMotionController : GenericOpenVRController

@@ -8,7 +8,6 @@ using UInput = UnityEngine.Input;
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
     [MixedRealityController(
-        typeof(GenericJoystickController),
         new[] { Handedness.None },
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
     public class GenericJoystickController : BaseController

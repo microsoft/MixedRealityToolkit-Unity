@@ -221,15 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             int currentGenericType = -1;
                             for (int genericTypeIdx = 0; genericTypeIdx < genericTypes.Length; genericTypeIdx++)
                             {
-                                var attribute = MixedRealityControllerAttribute.Find(genericTypes[genericTypeIdx]);
-                                if (attribute != null)
-                                {
-                                    genericTypeListContent[genericTypeIdx] = new GUIContent(attribute.SupportedControllerType.Name.ToString().Replace("Generic", "").ToProperCase() + " Controller");
-                                }
-                                else
-                                {
-                                    genericTypeListContent[genericTypeIdx] = new GUIContent("Unknown Controller");
-                                }
+                                genericTypeListContent[genericTypeIdx] = new GUIContent(genericTypes[genericTypeIdx].Name.ToString().Replace("Generic", "").ToProperCase() + " Controller");
 
                                 genericTypeListIds[genericTypeIdx] = genericTypeIdx;
 

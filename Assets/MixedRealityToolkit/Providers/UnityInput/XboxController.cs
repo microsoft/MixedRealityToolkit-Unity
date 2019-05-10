@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
     /// Xbox Controller using Unity Input System
     /// </summary>
     [MixedRealityController(
-        typeof(XboxController),
         new[] { Handedness.None },
         "StandardAssets/Textures/XboxController")]
     public class XboxController : GenericJoystickController

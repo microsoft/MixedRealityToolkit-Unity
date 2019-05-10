@@ -7,7 +7,6 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [MixedRealityController(
-        typeof(SimulatedArticulatedHand),
         new[] { Handedness.Left, Handedness.Right })]
     public class SimulatedArticulatedHand : SimulatedHand
     {

@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     /// A Windows Mixed Reality Controller Instance.
     /// </summary>
     [MixedRealityController(
-        typeof(WindowsMixedRealityArticulatedHand),
         new[] { Handedness.Left, Handedness.Right })]
     public class WindowsMixedRealityArticulatedHand : WindowsMixedRealityController, IMixedRealityHand
     {

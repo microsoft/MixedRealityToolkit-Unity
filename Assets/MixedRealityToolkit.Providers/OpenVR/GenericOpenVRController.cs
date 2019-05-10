@@ -11,7 +11,6 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     [MixedRealityController(
-        typeof(GenericOpenVRController),
         new[] { Handedness.Left, Handedness.Right },
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
     public class GenericOpenVRController : GenericJoystickController

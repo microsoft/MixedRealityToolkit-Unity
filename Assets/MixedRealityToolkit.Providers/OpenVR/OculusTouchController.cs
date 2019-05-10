@@ -8,7 +8,6 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     [MixedRealityController(
-        typeof(OculusTouchController),
         new[] { Handedness.Left, Handedness.Right },
         "StandardAssets/Textures/OculusControllersTouch")]
     public class OculusTouchController : GenericOpenVRController
