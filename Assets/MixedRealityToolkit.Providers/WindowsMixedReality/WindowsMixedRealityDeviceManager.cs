@@ -591,7 +591,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (args.state.source.kind == InteractionSourceKind.Voice)
             {
                 GetController(args.state.source)?.UpdateController(args.state);
-                MixedRealityToolkit.InputSystem?.SpeechWakeWordRecognized();
             }
         }
 

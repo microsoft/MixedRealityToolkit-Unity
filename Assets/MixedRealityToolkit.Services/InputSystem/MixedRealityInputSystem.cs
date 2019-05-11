@@ -1294,13 +1294,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, command);
 
+            FocusProvider?.OnSpeechKeywordRecognized(speechEventData);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
-        }
-
-        public void SpeechWakeWordRecognized()
-        {
-            focusProvider.SpeechWakeWordRecognized();
         }
 
         #endregion Speech Keyword Events

@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Implements the Focus Provider for handling focus of pointers.
     /// </summary>
-    public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider
+    public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider, IMixedRealitySpeechHandler
     {
         /// <summary>
         /// Maximum distance at which all pointers can collide with a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>, unless it has an override extent.
@@ -76,13 +76,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <typeparam name="T">The type of pointers to request. Use IMixedRealityPointer to access all pointers.</typeparam>
         /// <returns></returns>
         IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer;
-
-        /// <summary>
-        /// This gets called by device manager when a 'wake word' for speech-based focus input
-        /// is recognized. For example, on Windows Mixed Reality and HoloLens 2, when the user
-        /// says the command "select", he/she will move into 'voice input mode', and the gaze cursor
-        /// is activated and used to provide focus for voice commands.
-        /// </summary>
-        void SpeechWakeWordRecognized();
     }
 }

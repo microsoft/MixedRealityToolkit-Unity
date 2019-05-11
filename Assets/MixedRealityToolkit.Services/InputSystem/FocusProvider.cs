@@ -418,7 +418,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// appear, hide the gaze cursor. Whenever user says the voice wake word, make the 
         /// gaze controller appear.
         /// </summary>
-        private class GazePointerStateMachine
+        private class GazePointerStateMachine : IMixedRealitySpeechHandler
         {
             private enum GazePointerState
             {
@@ -432,11 +432,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public bool IsGazePointerActive
             {
                 get { return gazePointerState != GazePointerState.GazePointerInactive; }
-            }
-
-            public void OnSpeechWakeWordRecognized()
-            {
-                activateGazeKeywordIsSet = true;
             }
 
             public void UpdateState(HashSet<PointerData> pointers, GenericPointer currentGazePointer)
@@ -493,6 +488,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         break;
                 }
                 gazePointerState = newState;
+            }
+
+            public void OnSpeechKeywordRecognized(SpeechEventData eventData)
+            {
+                if (eventData.Command.Keyword.Equals("select", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    activateGazeKeywordIsSet = true;
+                }
             }
         }
 
@@ -914,11 +917,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public void SpeechWakeWordRecognized()
-        {
-            gazePointerStateMachine.OnSpeechWakeWordRecognized();
-        }
-
         #region Physics Raycasting
 
         /// <summary>
@@ -1244,5 +1242,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 
         #endregion ISourceState Implementation
+
+        #region IMixedRealitySpeechHandler Implementation
+        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
+        {
+            gazePointerStateMachine.OnSpeechKeywordRecognized(eventData);
+        }
+        #endregion
     }
 }
