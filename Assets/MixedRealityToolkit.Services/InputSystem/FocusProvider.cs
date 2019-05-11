@@ -449,7 +449,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 numNearPointersActive++;
                             }
                         }
-                        else if (p.Pointer.BaseCursor != null && !(p.Pointer == currentGazePointer))
+                        else if (p.Pointer.BaseCursor != null 
+                            && !(p.Pointer == currentGazePointer)
+                            && p.Pointer.IsInteractionEnabled)
                         {
                             // We ignore the currentGazePointer here because for cases like HoloLens 1
                             // hand input or the gamepad, we want to show the cursor still.
