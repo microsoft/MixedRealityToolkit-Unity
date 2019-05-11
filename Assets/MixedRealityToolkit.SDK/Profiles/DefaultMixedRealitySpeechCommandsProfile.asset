@@ -18,14 +18,14 @@ MonoBehaviour:
   speechCommands:
   - localizationKey: 
     keyword: Menu
-    keyCode: 9
+    keyCode: 51
     action:
       id: 2
       description: Menu
       axisConstraint: 2
   - localizationKey: 
     keyword: Select
-    keyCode: 100
+    keyCode: 49
     action:
       id: 1
       description: Toggle Diagnostics
