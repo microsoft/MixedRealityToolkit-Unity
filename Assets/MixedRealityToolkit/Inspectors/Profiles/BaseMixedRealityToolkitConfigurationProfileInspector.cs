@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -25,6 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static Texture helpIcon = null;
 
         private static GUIContent WarningIconContent = null;
+
+        protected enum BackProfileType
+        {
+            Configuration,
+            Input
+        };
 
         protected virtual void Awake()
         {
@@ -71,6 +78,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUILayout.Space(3f);
         }
 
+
+        protected bool DrawBacktrackProfileButton(BackProfileType returnProfileTarget = BackProfileType.Configuration)
+        {
+            string backText = string.Empty;
+            BaseMixedRealityProfile backProfile = null;
+            switch (returnProfileTarget)
+            {
+                case BackProfileType.Configuration:
+                    backText = "Back to Configuration Profile";
+                    backProfile = MixedRealityToolkit.Instance.ActiveProfile;
+                    break;
+                case BackProfileType.Input:
+                    backText = "Back to Input Profile";
+                    backProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                    break;
+            }
+
+            return DrawBacktrackProfileButton(backText, backProfile);
+        }
+
         /// <summary>
         /// Renders a button that will take user back to a specified profile object
         /// </summary>
@@ -90,33 +117,60 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 Selection.activeObject = activeObject;
                 return true;
             }
+
             return false;
         }
 
-        // TODO: Troy add comments
+        /// <summary>
+        /// Helper function to render buttons correctly indented according to EditorGUI.indentLevel since GUILayout component don't respond naturally
+        /// </summary>
+        /// <param name="buttonText">text to place in button</param>
+        /// <param name="options">layout options</param>
+        /// <returns>true if button clicked, false if otherwise</returns>
         protected static bool RenderIndentedButton(string buttonText, params GUILayoutOption[] options)
         {
-            bool result = false;
-            GUILayout.BeginHorizontal();
-            GUILayout.Space(EditorGUI.indentLevel * 15);
-                result = GUILayout.Button(buttonText, options);
-            GUILayout.EndHorizontal();
-            return result;
+            return RenderIndentedButton(() => { return GUILayout.Button(buttonText, options); });
         }
 
+        /// <summary>
+        /// Helper function to render buttons correctly indented according to EditorGUI.indentLevel since GUILayout component don't respond naturally
+        /// </summary>
+        /// <param name="content">What to draw in button</param>
+        /// <param name="style">Style configuration for button</param>
+        /// <param name="options">layout options</param>
+        /// <returns>true if button clicked, false if otherwise</returns>
         protected static bool RenderIndentedButton(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
         {
+            return RenderIndentedButton(() => { return GUILayout.Button(content, style, options); });
+        }
+
+        /// <summary>
+        /// Helper function to support primary overloaded version of this functionality
+        /// </summary>
+        /// <param name="renderButton">The code to render button correctly based on parameter types passed</param>
+        /// <returns>true if button clicked, false if otherwise</returns>
+        private static bool RenderIndentedButton(Func<bool> renderButton)
+        {
             bool result = false;
             GUILayout.BeginHorizontal();
             GUILayout.Space(EditorGUI.indentLevel * 15);
-                result = GUILayout.Button(content, style, options);
+                result = renderButton();
             GUILayout.EndHorizontal();
             return result;
         }
 
-        // TODO: Troy add comments
-        protected bool RenderProfileHeader(string title, string description, string backText, BaseMixedRealityProfile backProfile)
+        /// <summary>
+        /// Helper function to render header correctly for all profiles
+        /// </summary>
+        /// <param name="title">Title of profile</param>
+        /// <param name="description">profile tooltip describing purpose</param>
+        /// <param name="backText">Text for back button if not rendering as sub-profile</param>
+        /// <param name="backProfile">Target profile to return to if not rendering as sub-profile</param>
+        /// <returns>true to render rest of profile as-is or false if profile/MRTK is in a state to not render rest of profile contents</returns>
+        protected bool RenderProfileHeader(string title, string description, BackProfileType returnProfileTarget = BackProfileType.Configuration)
         {
+            GUI.enabled = true;
+
             RenderMixedRealityToolkitLogo();
 
             if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
@@ -124,21 +178,24 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return false;
             }
 
-            if (DrawBacktrackProfileButton(backText, backProfile))
+            if (DrawBacktrackProfileButton(returnProfileTarget))
             {
                 return false;
             }
-            
+
+            bool lockProfile = CheckProfileLock(target);
+
             EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
-                //console.infoicon
-                EditorGUILayout.LabelField(new GUIContent(helpIcon, description), GUILayout.Width(48));
-
-                CheckProfileLock(target);
-
+                EditorGUILayout.LabelField(new GUIContent(title, description), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
+                if (lockProfile)
+                {
+                    EditorGUILayout.LabelField("Clone Profile to Edit Settings", GUILayout.Width(200));
+                }
             EditorGUILayout.EndHorizontal();
-            
-            //EditorGUILayout.HelpBox(description, MessageType.Info);
+
+            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
+            GUI.enabled = !lockProfile;
+
             return true;
         }
 
@@ -147,14 +204,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         /// <param name="target"></param>
         /// <param name="lockProfile"></param>
-        protected static void CheckProfileLock(Object target, bool lockProfile = true)
+        protected static bool CheckProfileLock(Object target, bool lockProfile = true)
         {
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                EditorGUILayout.LabelField(WarningIconContent, GUILayout.Width(48));
-                //EditorGUILayout.HelpBox("This profile is part of the default set from the Mixed Reality Toolkit SDK. You can make a copy of this profile, and customize it if needed.", MessageType.Warning);
-                GUI.enabled = !lockProfile;
-            }
+            return MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile;
         }
     }
 }

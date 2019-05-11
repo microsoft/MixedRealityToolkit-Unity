@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(120));
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(100));
                     SelectedTab = GUILayout.SelectionGrid(SelectedTab, TabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
                 EditorGUILayout.EndVertical();
 

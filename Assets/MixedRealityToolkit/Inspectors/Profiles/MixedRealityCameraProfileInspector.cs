@@ -10,13 +10,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomEditor(typeof(MixedRealityCameraProfile))]
     public class MixedRealityCameraProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private static bool showOpaqueProperties = true;
         private SerializedProperty opaqueNearClip;
         private SerializedProperty opaqueClearFlags;
         private SerializedProperty opaqueBackgroundColor;
         private SerializedProperty opaqueQualityLevel;
 
-        private static bool showTransparentProperties = true;
         private SerializedProperty transparentNearClip;
         private SerializedProperty transparentClearFlags;
         private SerializedProperty transparentBackgroundColor;
@@ -24,6 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
         private readonly GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
+
+        private const string ProfileTitle = "Camera Profile";
+        private const string ProfileDescription = "The Camera Profile helps configure cross platform camera settings.";
 
         protected override void OnEnable()
         {
@@ -47,10 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader("Camera Profile", 
-                "The Camera Profile helps configure cross platform camera settings.",
-                "Back to the Configuration Profile",
-                MixedRealityToolkit.Instance.ActiveProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
                 return;
             }

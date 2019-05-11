@@ -42,6 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private GUIStyle controllerButtonStyle;
         private static bool showControllerDefinitions = false;
 
+        private const string ProfileTitle = "Controller Input Mapping Profile";
+        private const string ProfileDescription = "Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
+                                    "You'll want to define all your Input Actions first. They can then be wired up to hardware sensors, controllers, gestures, and other input devices.";
+
+
         private readonly List<ControllerRenderProfile> controllerRenderList = new List<ControllerRenderProfile>();
 
         protected override void Awake()
@@ -97,11 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
             
-            if (!RenderProfileHeader("Controller Input Mapping", 
-                "Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
-                                    "You'll want to define all your Input Actions first. They can then be wired up to hardware sensors, controllers, gestures, and other input devices.",
-                "Back to Input Profile",
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
@@ -130,8 +131,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
 
             controllerRenderList.Clear();
-
-            GUILayout.Space(12f);
 
             showControllerDefinitions = EditorGUILayout.Foldout(showControllerDefinitions, "Controller Definitions");
             if (showControllerDefinitions)

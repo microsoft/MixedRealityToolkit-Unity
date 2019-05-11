@@ -13,7 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
     public class MixedRealitySpatialAwarenessMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         // General settings
-        private static bool showGeneralProperties = true;
         private SerializedProperty startupBehavior;
         private SerializedProperty observationExtents;
         private SerializedProperty observerVolumeType;
@@ -21,17 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty updateInterval;
 
         // Physics settings
-        private static bool showPhysicsProperties = true;
         private SerializedProperty meshPhysicsLayer;
         private SerializedProperty recalculateNormals;
 
         // Level of Detail settings
-        private static bool showLevelOfDetailProperties = true;
         private SerializedProperty levelOfDetail;
         private SerializedProperty trianglesPerCubicMeter;
 
         // Display settings
-        private static bool showDisplayProperties = true;
         private SerializedProperty displayOption;
         private SerializedProperty visibleMaterial;
         private SerializedProperty occlusionMaterial;
@@ -70,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader("Spatial Awareness Mesh Observer Profile",
+            if (!RenderProfileHeader("Spatial Mesh Observer Profile",
                 "Configuration settings for how the real-world environment will be perceived and displayed.",
                 "Back to Configuration Profile",
                 MixedRealityToolkit.Instance.ActiveProfile))

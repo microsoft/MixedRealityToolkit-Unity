@@ -17,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private static readonly GUIContent ComponentTypeContent = new GUIContent("Type");
         private static readonly GUIContent RuntimePlatformContent = new GUIContent("Platform(s)");
-        private static readonly GUIContent ProviderProfileContent = new GUIContent("Profile");
 
         private static bool showDataProviders = false;
         private SerializedProperty dataProviderConfigurations;
@@ -91,7 +90,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             EditorGUILayout.PropertyField(focusProviderType);
             EditorGUILayout.Space();
 
-            //EditorGUI.indentLevel++;
+            bool isSubProfile = RenderAsSubProfile;
+            if (!isSubProfile)
+            {
+                EditorGUI.indentLevel++;
+            }
 
             RenderFoldout(ref showDataProviders, "Data Providers", () =>
             {
@@ -114,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 using (new EditorGUI.IndentLevelScope())
                 {
                     changed |= RenderProfile(inputActionsProfile, true, false);
+                    EditorGUILayout.Space();
                     changed |= RenderProfile(inputActionRulesProfile, true, false);
                 }
             });
@@ -124,6 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 {
                     EditorGUILayout.PropertyField(enableControllerMapping);
                     changed |= RenderProfile(controllerMappingProfile, true, false);
+                    EditorGUILayout.Space();
                     changed |= RenderProfile(controllerVisualizationProfile, true, false, typeof(IMixedRealityControllerVisualizer));
                 }
             });
@@ -151,6 +156,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     changed |= RenderProfile(handTrackingProfile, true, false);
                 }
             });
+
+            if (!isSubProfile)
+            {
+                EditorGUI.indentLevel--;
+            }
 
             if (!changed)
             {
@@ -197,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     return;
                 }
 
-                GUILayout.Space(12f);
+                EditorGUILayout.Space();
 
                 if (list == null || list.arraySize == 0)
                 {
@@ -253,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                     serviceType = (target as MixedRealityInputSystemProfile).DataProviderConfigurations[i].ComponentType;
                                 }
 
-                                changed |= RenderProfile(configurationProfile, ProviderProfileContent, true, false, serviceType);
+                                changed |= RenderProfile(configurationProfile, true, false, serviceType);
                             }
 
                             serializedObject.ApplyModifiedProperties();

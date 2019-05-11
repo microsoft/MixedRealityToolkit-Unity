@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "The keyboard key that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a keyboard key is pressed or keyword is recognized.");
 
-        private static bool showGeneralProperties = true;
         private SerializedProperty recognizerStartBehaviour;
         private SerializedProperty recognitionConfidenceLevel;
 
@@ -84,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             EditorGUILayout.Space();
-            showSpeechCommands = EditorGUILayout.Foldout(showSpeechCommands, "Speech Commands", true, boldFoldoutStyle);
+            showSpeechCommands = EditorGUILayout.Foldout(showSpeechCommands, "Speech Commands", true, MixedRealityStylesUtility.BoldFoldoutStyle);
             if (showSpeechCommands)
             {
                 using (new EditorGUI.IndentLevelScope())

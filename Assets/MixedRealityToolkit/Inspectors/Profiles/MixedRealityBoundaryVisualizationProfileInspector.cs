@@ -12,34 +12,31 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private static bool showGeneralProperties = true;
         private SerializedProperty boundaryHeight;
 
-        private static bool showFloorProperties = true;
         private SerializedProperty showFloor;
         private SerializedProperty floorMaterial;
         private SerializedProperty floorScale;
         private SerializedProperty floorPhysicsLayer;
 
-        private static bool showPlayAreaProperties = true;
         private SerializedProperty showPlayArea;
         private SerializedProperty playAreaMaterial;
         private SerializedProperty playAreaPhysicsLayer;
 
-        private static bool showTrackedAreaProperties = true;
         private SerializedProperty showTrackedArea;
         private SerializedProperty trackedAreaMaterial;
         private SerializedProperty trackedAreaPhysicsLayer;
 
-        private static bool showWallProperties = true;
         private SerializedProperty showBoundaryWalls;
         private SerializedProperty boundaryWallMaterial;
         private SerializedProperty boundaryWallsPhysicsLayer;
 
-        private static bool showCeilingProperties = true;
         private SerializedProperty showBoundaryCeiling;
         private SerializedProperty boundaryCeilingMaterial;
         private SerializedProperty ceilingPhysicsLayer;
+
+        private const string ProfileTitle = "Boundary Visualization Profile";
+        private const string ProfileDescription = "Boundary visualizations can help users stay oriented and comfortable in the experience.";
 
         private readonly GUIContent showContent = new GUIContent("Show");
         private readonly GUIContent scaleContent = new GUIContent("Scale");
@@ -82,10 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
         {
             EditorGUILayout.BeginVertical();
 
-            if (!RenderProfileHeader("Boundary Visualization Options",
-                "Boundary visualizations can help users stay oriented and comfortable in the experience.",
-                "Back to Configuration Profile",
-                MixedRealityToolkit.Instance.ActiveProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
                 return;
             }
