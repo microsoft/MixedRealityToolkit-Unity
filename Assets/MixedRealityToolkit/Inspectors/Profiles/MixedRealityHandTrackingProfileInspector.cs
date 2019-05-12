@@ -19,6 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableHandMeshVisualization;
         private SerializedProperty enableHandJointVisualization;
 
+        private const string ProfileTitle = "Hand Tracking Settings";
+        private const string ProfileDescription = "Use this for platform-specific hand tracking settings.";
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -35,14 +38,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader("Hand tracking settings", 
-                "Use this for platform-specific hand tracking settings.",
-                "Back to Input Profile",
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
@@ -54,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.PropertyField(enableHandJointVisualization);
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
     }
 }

@@ -16,50 +16,43 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
 
-        private Func<bool>[] RenderProfileFuncs;
-
         // Experience properties
-        private static bool showExperienceProperties = true;
         private SerializedProperty targetExperienceScale;
         // Camera properties
-        private static bool showCameraProperties = true;
         private SerializedProperty enableCameraSystem;
         private SerializedProperty cameraSystemType;
         private SerializedProperty cameraProfile;
         // Input system properties
-        private static bool showInputProperties = true;
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
         private SerializedProperty inputSystemProfile;
         // Boundary system properties
-        private static bool showBoundaryProperties = true;
         private SerializedProperty enableBoundarySystem;
         private SerializedProperty boundarySystemType;
         private SerializedProperty boundaryVisualizationProfile;
         // Teleport system properties
-        private static bool showTeleportProperties = true;
         private SerializedProperty enableTeleportSystem;
         private SerializedProperty teleportSystemType;
         // Spatial Awareness system properties
-        private static bool showSpatialAwarenessProperties = true;
         private SerializedProperty enableSpatialAwarenessSystem;
         private SerializedProperty spatialAwarenessSystemType;
         private SerializedProperty spatialAwarenessSystemProfile;
         // Diagnostic system properties
-        private static bool showDiagnosticProperties = true;
         private SerializedProperty enableDiagnosticsSystem;
         private SerializedProperty diagnosticsSystemType;
         private SerializedProperty diagnosticsSystemProfile;
 
         // Additional registered components profile
-        private static bool showRegisteredServiceProperties = true;
         private SerializedProperty registeredServiceProvidersProfile;
 
         // Editor settings
-        private static bool showEditorSettings = true;
         private SerializedProperty useServiceInspectors;
 
         private MixedRealityToolkitConfigurationProfile configurationProfile;
+        private Func<bool>[] RenderProfileFuncs;
+
+        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "Extensions", "Editor" };
+        private static int SelectedProfileTab = 0;
 
         protected override void OnEnable()
         {
@@ -115,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     () => {
                          EditorGUILayout.PropertyField(enableInputSystem);
                         EditorGUILayout.PropertyField(inputSystemType);
-                        return RenderProfile(inputSystemProfile, true, true, typeof(IMixedRealityInputSystem));
+                        return RenderProfile(inputSystemProfile, true, false, typeof(IMixedRealityInputSystem));
                     },
                     () => {
                         var experienceScale = (ExperienceScale)targetExperienceScale.intValue;
@@ -128,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
                         EditorGUILayout.PropertyField(enableBoundarySystem);
                         EditorGUILayout.PropertyField(boundarySystemType);
-                        return RenderProfile(boundaryVisualizationProfile, true, true, typeof(IMixedRealityBoundarySystem));
+                        return RenderProfile(boundaryVisualizationProfile, true, false, typeof(IMixedRealityBoundarySystem));
                     },
                     () => {
                         EditorGUILayout.PropertyField(enableTeleportSystem);
@@ -139,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
                         EditorGUILayout.PropertyField(spatialAwarenessSystemType);
                         EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
-                        return RenderProfile(spatialAwarenessSystemProfile, true, true, typeof(IMixedRealitySpatialAwarenessSystem));
+                        return RenderProfile(spatialAwarenessSystemProfile, true, false, typeof(IMixedRealitySpatialAwarenessSystem));
                     },
                     () => {
                         EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
@@ -157,9 +150,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 };
             }
         }
-
-        private static string[] TabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "Extensions", "Editor" };
-        private static int SelectedTab = 0;
 
         public override void OnInspectorGUI()
         {
@@ -182,7 +172,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (GUILayout.Button("Copy & Customize"))
                 {
-                    CreateCopyProfileValues();
+                    var originalSelection = Selection.activeObject;
+                    CreateCustomProfile(target as BaseMixedRealityProfile);
+                    Selection.activeObject = originalSelection;
                 }
 
                 if (GUILayout.Button("Create new profiles"))
@@ -197,14 +189,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.EndHorizontal();
             }
 
-            // We don't call the CheckLock method so won't get a duplicate message.
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            bool isGUIEnabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            GUI.enabled = isGUIEnabled;
 
-            //var previousLabelWidth = EditorGUIUtility.labelWidth;
-            //EditorGUIUtility.labelWidth = 160f;
             EditorGUI.BeginChangeCheck();
             bool changed = false;
 
@@ -212,47 +199,27 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             ExperienceScale experienceScale = (ExperienceScale)targetExperienceScale.intValue;
 
             EditorGUILayout.PropertyField(targetExperienceScale, TargetScaleContent);
-            string scaleDescription = string.Empty;
 
-            switch (experienceScale)
+            string scaleDescription = GetExperienceDescription(experienceScale);
+            if (!string.IsNullOrEmpty(scaleDescription))
             {
-                case ExperienceScale.OrientationOnly:
-                    scaleDescription = "The user is stationary. Position data does not change.";
-                    break;
-
-                case ExperienceScale.Seated:
-                    scaleDescription = "The user is stationary and seated. The origin of the world is at a neutral head-level position.";
-                    break;
-
-                case ExperienceScale.Standing:
-                    scaleDescription = "The user is stationary and standing. The origin of the world is on the floor, facing forward.";
-                    break;
-
-                case ExperienceScale.Room:
-                    scaleDescription = "The user is free to move about the room. The origin of the world is on the floor, facing forward. Boundaries are available.";
-                    break;
-
-                case ExperienceScale.World:
-                    scaleDescription = "The user is free to move about the world. Relies upon knowledge of the environment (Spatial Anchors and Spatial Mapping).";
-                    break;
-            }
-
-            if (scaleDescription != string.Empty)
-            {
-                GUILayout.Space(6f);
+                EditorGUILayout.Space();
                 EditorGUILayout.HelpBox(scaleDescription, MessageType.Info);
             }
 
             EditorGUILayout.BeginHorizontal();
+
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(100));
-                    SelectedTab = GUILayout.SelectionGrid(SelectedTab, TabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
+                    GUI.enabled = true; // Force enable so we can view profile defaults
+                    SelectedProfileTab = GUILayout.SelectionGrid(SelectedProfileTab, ProfileTabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
+                    GUI.enabled = isGUIEnabled;
                 EditorGUILayout.EndVertical();
 
-                EditorGUILayout.BeginVertical();
-                    using (new EditorGUI.IndentLevelScope())
-                    {
-                        changed |= RenderProfileFuncs[SelectedTab]();
-                    }
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    changed |= RenderProfileFuncs[SelectedProfileTab]();
+                }
                 EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
 
@@ -261,13 +228,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 changed |= EditorGUI.EndChangeCheck();
             }
 
-            //EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
 
             if (changed)
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(configurationProfile);
             }
+        }
+
+        private static string GetExperienceDescription(ExperienceScale experienceScale)
+        {
+            switch (experienceScale)
+            {
+                case ExperienceScale.OrientationOnly:
+                    return "The user is stationary. Position data does not change.";
+                case ExperienceScale.Seated:
+                    return "The user is stationary and seated. The origin of the world is at a neutral head-level position.";
+                case ExperienceScale.Standing:
+                    return "The user is stationary and standing. The origin of the world is on the floor, facing forward.";
+                case ExperienceScale.Room:
+                    return "The user is free to move about the room. The origin of the world is on the floor, facing forward. Boundaries are available.";
+                case ExperienceScale.World:
+                    return "The user is free to move about the world. Relies upon knowledge of the environment (Spatial Anchors and Spatial Mapping).";
+            }
+
+            return null;
         }
     }
 }

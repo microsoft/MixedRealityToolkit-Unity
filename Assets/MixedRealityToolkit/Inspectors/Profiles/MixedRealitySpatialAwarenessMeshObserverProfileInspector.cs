@@ -37,6 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private readonly GUIContent volumeTypeContent = new GUIContent("Observer Shape");
         private readonly GUIContent physicsLayerContent = new GUIContent("Physics Layer");
         private readonly GUIContent trianglesPerCubicMeterContent = new GUIContent("Triangles/Cubic Meter");
+        private const string ProfileTitle = "Spatial Mesh Observer Settings";
+        private const string ProfileDescription = "Configuration settings for how the real-world environment will be perceived and displayed.";
 
         protected override void OnEnable()
         {
@@ -66,14 +68,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader("Spatial Mesh Observer Profile",
-                "Configuration settings for how the real-world environment will be perceived and displayed.",
-                "Back to Configuration Profile",
-                MixedRealityToolkit.Instance.ActiveProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
@@ -125,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             }
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
     }
 }

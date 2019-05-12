@@ -59,6 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty holdStartDuration;
         private SerializedProperty manipulationStartThreshold;
 
+        private const string ProfileTitle = "Input Simulation Settings";
+        private const string ProfileDescription = "Settings for simulating input devices in the editor.";
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -116,10 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader("Input Simulation settings",
-                "Settings for simulating input devices in the editor.",
-                "Back to Input Profile",
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }

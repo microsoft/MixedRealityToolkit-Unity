@@ -17,6 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static bool[] configFoldouts;
 
+        private const string ProfileTitle = "Registered Services Settings";
+        private const string ProfileDescription = "This profile defines any additional Services like systems, features, and managers to register with the Mixed Reality Toolkit.";
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -32,17 +35,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader("Registered Service Providers Profile",
-                "This profile defines any additional Services like systems, features, and managers to register with the Mixed Reality Toolkit.",
-                "Back to Configuration Profile",
-                MixedRealityToolkit.Instance.ActiveProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
+
             RenderList(configurations);
+
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
 
         private void RenderList(SerializedProperty list)

@@ -45,6 +45,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty handTrackingProfile;
 
         private static bool[] providerFoldouts;
+        private const string ProfileTitle = "Input System Settings";
+        private const string ProfileDescription = "The Input System Profile helps developers configure input for cross-platform applications.";
 
         protected override void OnEnable()
         {
@@ -75,15 +77,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader("Input System Profile",
-                "The Input System Profile helps developers configure input for cross-platform applications.",
-                "Back to Configuration Profile",
-                MixedRealityToolkit.Instance.ActiveProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
+
             EditorGUI.BeginChangeCheck();
             bool changed = false;
 
@@ -168,6 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
 
             if (changed)
             {

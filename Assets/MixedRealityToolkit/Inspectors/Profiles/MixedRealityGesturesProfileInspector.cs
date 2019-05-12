@@ -20,6 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent GestureTypeContent = new GUIContent("Gesture Type", "The type of Gesture that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a Gesture is recognized.");
 
+        private const string ProfileTitle = "Gesture Settings";
+        private const string ProfileDescription = "This gesture map is any and all movements of part the user's body, especially a hand or the head, that raise actions through the input system.\n\n" +
+                "Note: Defined controllers can look up the list of gestures and raise the events based on specific criteria.";
+
         private SerializedProperty gestures;
         private SerializedProperty windowsManipulationGestureSettings;
         private SerializedProperty useRailsNavigation;
@@ -97,11 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-            if (!RenderProfileHeader("Gesture Input",
-                "This gesture map is any and all movements of part the user's body, especially a hand or the head, that raise actions through the input system.\n\n" +
-                "Note: Defined controllers can look up the list of gestures and raise the events based on specific criteria.",
-                "Back to Input Profile",
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
@@ -112,7 +112,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Windows Gesture Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(windowsManipulationGestureSettings);
@@ -125,6 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             EditorGUILayout.LabelField("Defined Recognizable Gestures", EditorStyles.boldLabel);
             RenderList(gestures);
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
 
         private void RenderList(SerializedProperty list)

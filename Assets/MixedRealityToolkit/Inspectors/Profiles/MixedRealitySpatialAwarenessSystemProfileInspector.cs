@@ -20,6 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
         private SerializedProperty observerConfigurations;
 
+        private const string ProfileTitle = "Spatial Awareness System Settings";
+        private const string ProfileDescription = "The Spatial Awareness System profile allows developers to configure cross-platform environmental awareness.";
+
         private static bool[] observerFoldouts;
 
         protected override void OnEnable()
@@ -41,22 +44,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader("Spatial Awareness System Profile", 
-                "The Spatial Awareness System profile allows developers to configure cross-platform environmental awareness.",
-                "Back to Configuration Profile",
-                MixedRealityToolkit.Instance.ActiveProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             using (new EditorGUI.IndentLevelScope())
             {
                 RenderList(observerConfigurations);
             }
-            
+
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
 
         private void RenderList(SerializedProperty list)

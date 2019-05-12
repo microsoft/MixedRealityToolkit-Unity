@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
         private readonly GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
 
-        private const string ProfileTitle = "Camera Profile";
+        private const string ProfileTitle = "Camera Settings";
         private const string ProfileDescription = "The Camera Profile helps configure cross platform camera settings.";
 
         protected override void OnEnable()
@@ -53,8 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
-          
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Opaque Display Settings", EditorStyles.boldLabel);
             {
@@ -84,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
     }
 }

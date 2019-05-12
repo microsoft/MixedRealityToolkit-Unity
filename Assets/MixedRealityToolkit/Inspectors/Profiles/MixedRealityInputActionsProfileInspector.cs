@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Action", "Add New Action");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The Name of the Action.");
         private static readonly GUIContent AxisConstraintContent = new GUIContent("Axis Constraint", "Optional Axis Constraint for this input source.");
+        private const string ProfileTitle = "Input Action Settings";
+        private const string ProfileDescription = "Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
+                                    "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.";
 
         private static Vector2 scrollPosition = Vector2.zero;
 
@@ -43,18 +46,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
   
-            if (!RenderProfileHeader("Input Actions",
-                "Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
-                                    "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.",
-                "Back to Input Profile",
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
+
             RenderList(inputActionList);
+
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
 
         private static void RenderList(SerializedProperty list)

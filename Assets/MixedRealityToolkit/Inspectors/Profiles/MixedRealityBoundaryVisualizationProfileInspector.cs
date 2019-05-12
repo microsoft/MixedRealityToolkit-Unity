@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
         private SerializedProperty boundaryCeilingMaterial;
         private SerializedProperty ceilingPhysicsLayer;
 
-        private const string ProfileTitle = "Boundary Visualization Profile";
+        private const string ProfileTitle = "Boundary Visualization Settings";
         private const string ProfileDescription = "Boundary visualizations can help users stay oriented and comfortable in the experience.";
 
         private readonly GUIContent showContent = new GUIContent("Show");
@@ -77,13 +77,12 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.BeginVertical();
-
             if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.Space();
@@ -138,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
             serializedObject.ApplyModifiedProperties();
 
-            EditorGUILayout.EndVertical();
+            GUI.enabled = true;
         }
     }
 }

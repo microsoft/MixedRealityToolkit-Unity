@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 {
@@ -20,6 +21,9 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
         private SerializedProperty windowOffset;
         private SerializedProperty windowScale;
         private SerializedProperty windowFollowSpeed;
+
+        private const string ProfileTitle = "Diagnostic Settings";
+        private const string ProfileDescription = "Diagnostic visualizations can help monitor system resources and performance inside an application.";
 
         // todo: coming soon
         // private static bool showDebugPanelSettings = true;
@@ -45,14 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader("Diagnostic Visualization Options",
-                "Diagnostic visualizations can help monitor system resources and performance inside an application.",
-                "Back to Configuration Profile",
-                MixedRealityToolkit.Instance.ActiveProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.Space();
@@ -79,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
     }
 }

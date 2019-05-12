@@ -12,6 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class MixedRealityMouseInputProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private SerializedProperty mouseSpeed;
+        private const string ProfileTitle = "Mouse Input Settings";
+        private const string ProfileDescription = "Settings for mouse input in the editor.";
 
         protected override void OnEnable()
         {
@@ -24,28 +26,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-
-            if (GUILayout.Button("Back to Input Profile"))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                return;
             }
-            EditorGUILayout.Space();
-
-            EditorGUILayout.LabelField("Mouse Input settings", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Settings for mouse input in the editor.", MessageType.Info);
-            CheckProfileLock(target);
-
             if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
-            bool isGUIEnabled = GUI.enabled;
-
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(mouseSpeed);
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
     }
 }

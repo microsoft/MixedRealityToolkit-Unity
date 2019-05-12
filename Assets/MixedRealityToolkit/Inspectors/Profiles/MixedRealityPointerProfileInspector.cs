@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     {
         private static readonly GUIContent ControllerTypeContent = new GUIContent("Controller Type", "The type of Controller this pointer will attach itself to at runtime.");
 
+        private const string ProfileTitle = "Pointer Settings";
+        private const string ProfileDescription = "Pointers attach themselves onto controllers as they are initialized.";
+
         private static bool showPointerProperties = true;
         private SerializedProperty pointingExtent;
         private SerializedProperty pointingRaycastLayerMasks;
@@ -63,22 +66,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader("Pointer Profile", 
-                "Pointers attach themselves onto controllers as they are initialized.",
-                "Back to Input Profile",
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
             currentlySelectedPointerOption = -1;
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Gaze Settings", EditorStyles.boldLabel);
             {
-                EditorGUILayout.HelpBox("The gaze provider uses the default settings above, but further customization of the gaze can be done on the Gaze Provider.", MessageType.Info);
-
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(gazeCursorPrefab);
                 EditorGUILayout.PropertyField(gazeProviderType);
@@ -117,6 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
             
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
 
         private void DrawPointerOptionElement(Rect rect, int index, bool isActive, bool isFocused)

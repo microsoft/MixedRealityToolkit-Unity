@@ -30,7 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected enum BackProfileType
         {
             Configuration,
-            Input
+            Input,
+            RegisteredServices
         };
 
         protected virtual void Awake()
@@ -92,6 +93,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 case BackProfileType.Input:
                     backText = "Back to Input Profile";
                     backProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                    break;
+                case BackProfileType.RegisteredServices:
+                    backText = "Back to Registered Service Providers Profile";
+                    backProfile = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile;
                     break;
             }
 
@@ -169,8 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <returns>true to render rest of profile as-is or false if profile/MRTK is in a state to not render rest of profile contents</returns>
         protected bool RenderProfileHeader(string title, string description, BackProfileType returnProfileTarget = BackProfileType.Configuration)
         {
-            GUI.enabled = true;
-
             RenderMixedRealityToolkitLogo();
 
             if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
@@ -183,30 +186,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return false;
             }
 
-            bool lockProfile = CheckProfileLock(target);
-
             EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(new GUIContent(title, description), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
-                if (lockProfile)
-                {
-                    EditorGUILayout.LabelField("Clone Profile to Edit Settings", GUILayout.Width(200));
-                }
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
-            GUI.enabled = !lockProfile;
+
+            //GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
 
             return true;
-        }
-
-        /// <summary>
-        /// Checks if the profile is locked and displays a warning.
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="lockProfile"></param>
-        protected static bool CheckProfileLock(Object target, bool lockProfile = true)
-        {
-            return MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile;
         }
     }
 }

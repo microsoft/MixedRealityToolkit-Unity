@@ -265,7 +265,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             newChildSerializedObject.ApplyModifiedProperties();
 
-            Selection.activeObject = newChildProfile;
             cloneWindow.Close();
         }
 

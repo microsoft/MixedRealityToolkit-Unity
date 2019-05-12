@@ -19,6 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "The keyboard key that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a keyboard key is pressed or keyword is recognized.");
 
+        private const string ProfileTitle = "Speech Settings";
+        private const string ProfileDescription = "Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.";
+
         private SerializedProperty recognizerStartBehaviour;
         private SerializedProperty recognitionConfidenceLevel;
 
@@ -60,10 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            if (!RenderProfileHeader("Speech Commands", 
-                "Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.",
-                "Back to Input Profile",
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
@@ -74,6 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
@@ -93,6 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
 
         private static void RenderList(SerializedProperty list)

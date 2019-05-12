@@ -41,6 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private float defaultLabelWidth;
         private float defaultFieldWidth;
 
+        private const string ProfileTitle = "Controller Visualization Settings";
+        private const string ProfileDescription = "Define all the custom controller visualizations you'd like to use for each controller type when they're rendered in the scene.\n\n" +
+                                    "Global settings are the default fallback, and any specific controller definitions take precedence.";
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -78,18 +82,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-            if (!RenderProfileHeader("Controller Visualizations", 
-                "Define all the custom controller visualizations you'd like to use for each controller type when they're rendered in the scene.\n\n" +
-                                    "Global settings are the default fallback, and any specific controller definitions take precedence.",
-                "Back to Input Profile",
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
 
+            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
-            //EditorGUIUtility.labelWidth = 168f;
             EditorGUILayout.LabelField("Visualization Settings", EditorStyles.boldLabel);
             {
                 EditorGUILayout.PropertyField(renderMotionControllers);
@@ -149,6 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
 
         private void RenderControllerList(SerializedProperty controllerList)
