@@ -82,13 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-            // TODO: Troy
-            /*
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
-            {
-                return;
-            }*/
-
             bool wasGUIEnabled = GUI.enabled;
             GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
@@ -105,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUI.indentLevel++;
             }
 
-            RenderFoldout(ref showDataProviders, "Data Providers", () =>
+            RenderFoldout(ref showDataProviders, "Input Data Providers", () =>
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
@@ -113,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
             });
 
-            RenderFoldout(ref showPointerProperties, "Pointer Settings", () =>
+            RenderFoldout(ref showPointerProperties, "Pointers", () =>
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
@@ -121,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
             });
 
-            RenderFoldout(ref showActionsProperties, "Action Settings", () =>
+            RenderFoldout(ref showActionsProperties, "Input Actions", () =>
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
@@ -131,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
             });
 
-            RenderFoldout(ref showControllerProperties, "Controller Settings", () =>
+            RenderFoldout(ref showControllerProperties, "Controllers", () =>
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
@@ -142,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
             });
 
-            RenderFoldout(ref showGestureProperties, "Gesture Settings", () =>
+            RenderFoldout(ref showGestureProperties, "Gestures", () =>
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
@@ -150,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
             });
 
-            RenderFoldout(ref showSpeechCommandsProperties, "Speech Commands Settings", () =>
+            RenderFoldout(ref showSpeechCommandsProperties, "Speech Commands", () =>
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
@@ -158,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
             });
 
-            RenderFoldout(ref showHandTrackingProperties, "Hand Tracking Settings", () =>
+            RenderFoldout(ref showHandTrackingProperties, "Hand Tracking", () =>
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
@@ -248,8 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             }
                         }
 
-                        // TODO: TROY
-                        if (providerFoldouts[i])//|| RenderAsSubProfile)
+                        if (providerFoldouts[i])
                         {
                             using (new EditorGUI.IndentLevelScope())
                             {

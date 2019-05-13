@@ -31,17 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            // TODO: Troy
-            /*
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
-            {
-                if (GUILayout.Button("Back to Input Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
-                }
-            }
-            */
-
             serializedObject.Update();
 
             EditorGUILayout.Space();

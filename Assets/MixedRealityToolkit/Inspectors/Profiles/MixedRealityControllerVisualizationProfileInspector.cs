@@ -174,9 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUILayout.Space();
                 EditorGUILayout.BeginHorizontal();
 
-                // TODO: Troy
-                //EditorGUIUtility.labelWidth = 64f;
-                EditorGUIUtility.fieldWidth = 64f;
                 var controllerSetting = controllerList.GetArrayElementAtIndex(i);
                 var mixedRealityControllerMappingDescription = controllerSetting.FindPropertyRelative("description");
                 bool hasValidType = thisProfile.ControllerVisualizationSettings[i].ControllerType != null &&
@@ -188,10 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 serializedObject.ApplyModifiedProperties();
                 var mixedRealityControllerHandedness = controllerSetting.FindPropertyRelative("handedness");
-                EditorGUILayout.LabelField($"{mixedRealityControllerMappingDescription.stringValue} {((Handedness)mixedRealityControllerHandedness.intValue).ToString().ToProperCase()} Hand");
-
-                EditorGUIUtility.fieldWidth = defaultFieldWidth;
-                EditorGUIUtility.labelWidth = defaultLabelWidth;
+                EditorGUILayout.LabelField($"{mixedRealityControllerMappingDescription.stringValue} {((Handedness)mixedRealityControllerHandedness.intValue).ToString().ToProperCase()} Hand", EditorStyles.boldLabel);
 
                 if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
@@ -202,8 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
 
                 EditorGUILayout.EndHorizontal();
-
-                EditorGUI.indentLevel++;
 
                 EditorGUILayout.PropertyField(controllerSetting.FindPropertyRelative("controllerType"));
                 EditorGUILayout.PropertyField(controllerSetting.FindPropertyRelative("controllerVisualizationType"));
@@ -244,8 +236,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 {
                     overrideModel.objectReferenceValue = overrideModelPrefab;
                 }
-
-                EditorGUI.indentLevel--;
             }
         }
 

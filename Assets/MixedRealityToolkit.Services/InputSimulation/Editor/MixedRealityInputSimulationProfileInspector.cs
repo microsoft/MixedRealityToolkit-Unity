@@ -124,7 +124,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             serializedObject.Update();
 
-            bool isGUIEnabled = GUI.enabled;
+            bool wasGUIEnabled = GUI.enabled;
+            bool isGUIEnabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
+            GUI.enabled = isGUIEnabled;
 
             EditorGUILayout.PropertyField(isCameraControlEnabled);
             {
@@ -193,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 EditorGUILayout.Space();
 
                 EditorGUILayout.EndVertical();
-                GUI.enabled = isGUIEnabled;
+                GUI.enabled = wasGUIEnabled;
             }
 
             serializedObject.ApplyModifiedProperties();

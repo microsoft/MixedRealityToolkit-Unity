@@ -115,8 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                             }
                         }
 
-                        // TODO: TROY
-                        //if (observerFoldouts[i]) || RenderAsSubProfile)
                         if (observerFoldouts[i])
                         {
                             EditorGUI.BeginChangeCheck();

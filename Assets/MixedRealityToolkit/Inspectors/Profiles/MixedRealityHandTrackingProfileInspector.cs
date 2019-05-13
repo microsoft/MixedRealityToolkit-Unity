@@ -41,6 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 return;
             }
 
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
+
             bool wasGUIEnabled = GUI.enabled;
             GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();

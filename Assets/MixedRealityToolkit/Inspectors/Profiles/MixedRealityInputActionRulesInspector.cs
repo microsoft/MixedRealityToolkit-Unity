@@ -110,8 +110,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-
-            bool isGuiLocked = !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool wasGUIlocked = GUI.enabled;
+            bool isGuiLocked = wasGUIlocked && !CheckProfileLock((BaseMixedRealityProfile)target);
             GUI.enabled = isGuiLocked;
             serializedObject.Update();
 
@@ -157,7 +157,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             EditorGUIUtility.wideMode = isWideMode;
             serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+
+            GUI.enabled = wasGUIlocked;
         }
 
         private bool RuleExists()
@@ -431,7 +432,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             action = MixedRealityInputAction.None;
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(BaseActionContent, GUILayout.Width(128));
+            EditorGUILayout.LabelField(BaseActionContent);
             EditorGUI.BeginChangeCheck();
 
             if (!isLocked)

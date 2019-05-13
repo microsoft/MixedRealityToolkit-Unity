@@ -47,24 +47,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             EditorGUILayout.BeginHorizontal();
 
-            // TODO: TROY
-            /*
-            bool showFoldout = false;
-            if (property.objectReferenceValue != null)
-            {
-                string showFoldoutKey = GetSubProfileDropdownKey(property);
-                showFoldout = SessionState.GetBool(showFoldoutKey, false);
-                showFoldout = EditorGUILayout.Foldout(showFoldout, property.displayName, true);
-                SessionState.SetBool(showFoldoutKey, showFoldout);
-            }*/
-
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.ObjectField(property.objectReferenceValue != null ? "" : property.displayName, property.objectReferenceValue, typeof(BaseMixedRealityProfile), false, GUILayout.ExpandWidth(true));      
             EditorGUI.EndDisabledGroup();
 
             EditorGUILayout.EndHorizontal();
 
-            //if (showFoldout && property.objectReferenceValue != null)
             if (property.objectReferenceValue != null)
             {
                 UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
@@ -77,13 +65,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
                 EditorGUILayout.BeginHorizontal();
-                EditorGUI.indentLevel++;
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                    subProfileEditor.OnInspectorGUI();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.EndVertical();
-                EditorGUI.indentLevel--;
+                    EditorGUI.indentLevel++;
+                    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                        subProfileEditor.OnInspectorGUI();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.EndVertical();
+                    EditorGUI.indentLevel--;
                 EditorGUILayout.EndHorizontal();
             }
         }
