@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUILayout.HelpBox("This instance of the toolkt is inactive. There can only be one active instance loaded at any time.", MessageType.Warning);
                 EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button ("Select Active Instance"))
+                if (GUILayout.Button("Select Active Instance"))
                 {
                     UnityEditor.Selection.activeGameObject = MixedRealityToolkit.Instance.gameObject;
                 }
@@ -62,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     activeProfile.objectReferenceValue = allConfigProfiles[0];
                     changed = true;
                     Selection.activeObject = allConfigProfiles[0];
+                    Debug.Log("all config profiles length");
                     EditorGUIUtility.PingObject(allConfigProfiles[0]);
                 }
                 else
@@ -73,6 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles");
                         activeProfile.objectReferenceValue = profile;
                         Selection.activeObject = profile;
+                        Debug.Log("display dialog");
                         EditorGUIUtility.PingObject(profile);
                     }
                 }
@@ -93,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         currentPickerWindow = -1;
                         changed = true;
                         Selection.activeObject = activeProfile.objectReferenceValue;
+                        Debug.Log("ObjectSelectorClosed");
                         EditorGUIUtility.PingObject(activeProfile.objectReferenceValue);
                         break;
                 }
@@ -123,6 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             Selection.activeObject = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             Debug.Assert(MixedRealityToolkit.IsInitialized);
+            Debug.Log("Create mixed reality toolkit game object");
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
         }
 

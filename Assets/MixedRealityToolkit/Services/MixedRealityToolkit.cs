@@ -87,6 +87,7 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_EDITOR
                 if (!Application.isPlaying && activeProfile == null)
                 {
+                    Debug.Log("Active profile");
                     UnityEditor.Selection.activeObject = Instance;
                     UnityEditor.EditorGUIUtility.PingObject(Instance);
                 }
@@ -590,6 +591,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                     if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode && activeProfile == null)
                     {
+                        Debug.Log("Stopping playmode");
                         UnityEditor.EditorApplication.isPlaying = false;
                         UnityEditor.Selection.activeObject = Instance;
                         UnityEditor.EditorGUIUtility.PingObject(Instance);
@@ -763,7 +765,7 @@ namespace Microsoft.MixedReality.Toolkit
             toolkitInstance.name = InactiveInstanceGameObjectName;
         }
 
-        #endregion MonoBehaviour Implementation
+        #endregion Instance Registration
 
         #region Service Container Management
 

@@ -24,18 +24,35 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
 
-        private static void OnPlayModeStateChanged(PlayModeStateChange obj)
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void OnScriptsReloaded()
         {
-            if (MixedRealityToolkit.IsInitialized)
-            {   // When the play state changes just nuke everything and start over
-                DestroyAllChildren(MixedRealityToolkit.Instance);
+            // If scripts were reloaded, nuke everything and start over
+            foreach (MixedRealityToolkit toolkitInstance in GameObject.FindObjectsOfType<MixedRealityToolkit>())
+            {
+                DestroyAllChildren(toolkitInstance);
             }
+            previousActiveInstance = null;
+        }
+
+        private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            foreach (MixedRealityToolkit toolkitInstance in GameObject.FindObjectsOfType<MixedRealityToolkit>())
+            {
+                DestroyAllChildren(toolkitInstance);
+            }
+            previousActiveInstance = null;
         }
 
         private static void UpdateServiceFacades(SceneView sceneView)
         {
             if (!MixedRealityToolkit.IsInitialized)
             {   // Nothing to do here.
+                return;
+            }
+
+            if (EditorApplication.isCompiling)
+            {   // Wait for compilation to complete before creating or destroying facades
                 return;
             }
 
