@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.StateSynchronization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private CompositionManager compositionManager = null;
 
         [SerializeField]
-        [Tooltip("The port that the " + nameof(HolographicCamera.HolographicCameraNetworkListener) + " listens for connections on.")]
+        [Tooltip("The port that the " + nameof(HolographicCamera.TCPNetworkListener) + " listens for connections on.")]
         private int remotePort = 7502;
 
         private SocketEndpoint currentConnection;
@@ -152,24 +153,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                     case "CalibrationData":
                         {
                             string calibrationDataJson = reader.ReadString();
-                            CalibrationPackage calibrationPackage = JsonUtility.FromJson<CalibrationPackage>(calibrationDataJson);
 
-                            ICalibrationParser parser;
-                            if (calibrationParsers.TryGetValue(calibrationPackage.calibrationType, out parser))
+                            ICalibrationData calibrationData;
+                            if (CalibrationPackage.TryParseCalibration(calibrationDataJson, calibrationParsers, out calibrationData))
                             {
-                                ICalibrationData calibrationData;
-                                if (parser.TryParse(calibrationPackage.calibrationData, out calibrationData))
-                                {
-                                    compositionManager.EnableHolographicCamera(transform, calibrationData);
-                                }
-                                else
-                                {
-                                    Debug.LogError("Failed to parse the received calibration data");
-                                }
-                            }
-                            else
-                            {
-                                Debug.LogError("Received calibration data with no registered parser");
+                                compositionManager.EnableHolographicCamera(transform, calibrationData);
                             }
                         }
                         break;
@@ -192,8 +180,33 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         [Serializable]
         private class CalibrationPackage
         {
-            public string calibrationType;
-            public string calibrationData;
+            public string calibrationType = null;
+            public string calibrationData = null;
+
+            public static bool TryParseCalibration(string calibrationDataJson, IDictionary<string, ICalibrationParser> calibrationParsers, out ICalibrationData calibrationData)
+            {
+                CalibrationPackage calibrationPackage = JsonUtility.FromJson<CalibrationPackage>(calibrationDataJson);
+
+                ICalibrationParser parser;
+                if (calibrationParsers.TryGetValue(calibrationPackage.calibrationType, out parser))
+                {
+                    if (parser.TryParse(calibrationPackage.calibrationData, out calibrationData))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to parse the received calibration data");
+                        return false;
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Received calibration data with no registered parser");
+                    calibrationData = null;
+                    return false;
+                }
+            }
         }
     }
 }
