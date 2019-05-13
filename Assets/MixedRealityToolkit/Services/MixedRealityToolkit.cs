@@ -83,14 +83,6 @@ namespace Microsoft.MixedReality.Toolkit
         {
             get
             {
-#if UNITY_EDITOR
-                if (!Application.isPlaying && activeProfile == null)
-                {
-                    Debug.Log("Active profile");
-                    UnityEditor.Selection.activeObject = Instance;
-                    UnityEditor.EditorGUIUtility.PingObject(Instance);
-                }
-#endif // UNITY_EDITOR
                 return activeProfile;
             }
             set
