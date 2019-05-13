@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 return activeInstance == this;
             }
-        }
+        } 
 
         private bool HasProfileAndIsInitialized => activeProfile != null && IsInitialized;
 
@@ -86,6 +86,7 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_EDITOR
                 if (!Application.isPlaying && activeProfile == null)
                 {
+                    Debug.Log("Active profile");
                     UnityEditor.Selection.activeObject = Instance;
                     UnityEditor.EditorGUIUtility.PingObject(Instance);
                 }
@@ -580,6 +581,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                     if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode && activeProfile == null)
                     {
+                        Debug.Log("Stopping playmode");
                         UnityEditor.EditorApplication.isPlaying = false;
                         UnityEditor.Selection.activeObject = Instance;
                         UnityEditor.EditorGUIUtility.PingObject(Instance);
@@ -677,6 +679,14 @@ namespace Microsoft.MixedReality.Toolkit
 
         #region Instance Registration
 
+        public static void SetActiveInstance(MixedRealityToolkit toolkitInstance)
+        {
+            // Disable the old instance
+            SetInstanceInactive(activeInstance);
+            // Immediately register the new instance
+            RegisterInstance(toolkitInstance);
+        }
+
         private static void RegisterInstance(MixedRealityToolkit toolkitInstance)
         {
             if (MixedRealityToolkit.isApplicationQuitting)
@@ -698,7 +708,7 @@ namespace Microsoft.MixedReality.Toolkit
             {   // If we're already registered, no need to proceed
                 return;
             }
-            
+
             // If we do, then it's not this instance, so deactivate this instance
             toolkitInstance.name = InactiveInstanceGameObjectName;
             // Move to the bottom of the heirarchy so it stays out of the way
@@ -733,7 +743,19 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        #endregion MonoBehaviour Implementation
+        private static void SetInstanceInactive(MixedRealityToolkit toolkitInstance)
+        {
+            if (toolkitInstance == activeInstance)
+            {   // If this is the active instance, we need to break it down
+                toolkitInstance.DestroyAllServices();
+                toolkitInstance.ClearCoreSystemCache();
+                // If this was the active instance, un-register the active instance
+                MixedRealityToolkit.activeInstance = null;
+            }
+            toolkitInstance.name = InactiveInstanceGameObjectName;
+        }
+
+        #endregion Instance Registration
 
         #region Service Container Management
 
