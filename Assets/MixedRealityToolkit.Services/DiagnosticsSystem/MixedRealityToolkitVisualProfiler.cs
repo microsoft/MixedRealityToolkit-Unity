@@ -96,12 +96,31 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         [Header("UI Settings")]
         [SerializeField, Range(0, 3), Tooltip("How many decimal places to display on numeric strings.")]
         private int displayedDecimalDigits = 1;
+
+        [System.Serializable]
+        private struct FrameRateColor
+        {
+            [Range(0.0f, 1.0f), Tooltip("The percentage of the target frame rate.")]
+            public float percentageOfTarget;
+            [Tooltip("The color to display for frames which meet or exceed the percentage of the target frame rate.")]
+            public Color color;
+        }
+
+        [SerializeField, Tooltip("A list of colors to display for differerent percentage of target frame rates.")]
+        private FrameRateColor[] frameRateColors = new FrameRateColor[] 
+        {
+            // Green
+            new FrameRateColor() { percentageOfTarget = 0.95f, color = new Color(127 / 256.0f, 186 / 256.0f, 0 / 256.0f, 1.0f) },
+            // Yellow
+            new FrameRateColor() { percentageOfTarget = 0.8f, color = new Color(255 / 256.0f, 185 / 256.0f, 0 / 256.0f, 1.0f) },
+            // Orange
+            new FrameRateColor() { percentageOfTarget = 0.7f, color = new Color(242 / 256.0f, 80 / 256.0f, 34 / 256.0f, 1.0f) },
+            // Grey
+            new FrameRateColor() { percentageOfTarget = 0.0f, color = new Color(128 / 256.0f, 128 / 256.0f, 128 / 256.0f, 1.0f) },
+        };
+
         [SerializeField, Tooltip("The color of the window backplate.")]
         private Color baseColor = new Color(80 / 256.0f, 80 / 256.0f, 80 / 256.0f, 1.0f);
-        [SerializeField, Tooltip("The color to display on frames which meet or exceed the target frame rate.")]
-        private Color targetFrameRateColor = new Color(127 / 256.0f, 186 / 256.0f, 0 / 256.0f, 1.0f);
-        [SerializeField, Tooltip("The color to display on frames which fall below the target frame rate.")]
-        private Color missedFrameRateColor = new Color(242 / 256.0f, 80 / 256.0f, 34 / 256.0f, 1.0f);
         [SerializeField, Tooltip("The color to display for current memory usage values.")]
         private Color memoryUsedColor = new Color(0 / 256.0f, 164 / 256.0f, 239 / 256.0f, 1.0f);
         [SerializeField, Tooltip("The color to display for peak (aka max) memory usage values.")]
@@ -277,10 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     frameInfoColors[i] = frameInfoColors[i - 1];
                 }
 
-                // Ideally we would query a device specific API (like the HolographicFramePresentationReport) to detect missed frames.
-                // But, many of these APIs are inaccessible in Unity. Currently missed frames are assumed when the average cpuFrameRate 
-                // is under the target frame rate.
-                frameInfoColors[0] = (cpuFrameRate < ((int)(AppFrameRate) - 1)) ? missedFrameRateColor : targetFrameRateColor;
+                frameInfoColors[0] = CalculateFrameColor(cpuFrameRate);
                 frameInfoPropertyBlock.SetVectorArray(colorID, frameInfoColors);
 
                 // Reset timers.
@@ -393,6 +409,33 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             return rotation;
         }
 
+        private Color CalculateFrameColor(int frameRate)
+        {
+            // Ideally we would query a device specific API (like the HolographicFramePresentationReport) to detect missed frames.
+            // But, many of these APIs are inaccessible in Unity. Currently missed frames are assumed when the average cpuFrameRate 
+            // is under the target frame rate.
+
+            int colorCount = frameRateColors.Length;
+
+            if (colorCount == 0)
+            {
+                return baseColor;
+            }
+
+            float percentageOfTarget = frameRate / AppTargetFrameRate;
+            int lastColor = colorCount - 1;
+
+            for (int i = 0; i < lastColor; ++i)
+            {
+                if (percentageOfTarget >= frameRateColors[i].percentageOfTarget)
+                {
+                    return frameRateColors[i].color;
+                }
+            }
+
+            return frameRateColors[lastColor].color;
+        }
+
         private void BuildWindow()
         {
             // Initialize property block state.
@@ -426,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 {
                     frameInfoMatrices[i] = Matrix4x4.TRS(position, Quaternion.identity, new Vector3(scale.x * 0.8f, scale.y, scale.z));
                     position.x -= scale.x;
-                    frameInfoColors[i] = targetFrameRateColor;
+                    frameInfoColors[i] = CalculateFrameColor((int)AppTargetFrameRate);
                 }
 
                 frameInfoPropertyBlock = new MaterialPropertyBlock();
@@ -608,7 +651,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             return bufferIndex;
         }
 
-        private static float AppFrameRate
+        private static float AppTargetFrameRate
         {
             get
             {
