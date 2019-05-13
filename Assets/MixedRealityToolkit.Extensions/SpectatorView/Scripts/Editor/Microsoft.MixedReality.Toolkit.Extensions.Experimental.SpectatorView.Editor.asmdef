@@ -1,7 +1,8 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView"
+        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView",
+        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

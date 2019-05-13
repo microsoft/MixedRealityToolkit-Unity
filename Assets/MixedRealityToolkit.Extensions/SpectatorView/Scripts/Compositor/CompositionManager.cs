@@ -75,15 +75,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         private float videoTimestampToHolographicTimestampOffset = -10.0f;
         private int captureDeviceIndex = -1;
-        private TextureManager textureManager;
+        private TextureManager textureManager = null;
         private MicrophoneInput microphoneInput;
-        private ICalibrationData calibrationData;
 
         private bool isVideoFrameProviderInitialized = false;
         private SpectatorViewPoseCache poseCache = new SpectatorViewPoseCache();
         private SpectatorViewTimeSynchronizer timeSynchronizer = new SpectatorViewTimeSynchronizer();
 
         private Camera spectatorCamera;
+        private GameObject videoCameraPose;
 
         /// <summary>
         /// Gets the index of the video frame currently being composited.
@@ -100,6 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private Vector3 overrideCameraPosition;
         private Quaternion overrideCameraRotation;
         private MemoryStream audioMemoryStream = null;
+        private ICalibrationData calibrationData;
 
         /// <summary>
         /// Clears the usage of an overridden camera pose and returns to normal pose calculations.
@@ -253,6 +254,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 #endif
         }
 
+        /// <summary>
+        /// Adds a new camera pose with the time the camera was at when that pose was registered.
+        /// </summary>
+        /// <param name="cameraPosition">The position of the camera relative to the origin anchor.</param>
+        /// <param name="cameraRotation">The rotation of the camera relative to the origin anchor.</param>
+        /// <param name="cameraTimestamp">The timestamp the pose was recorded at in the camera's time system.</param>
+        public void AddCameraPose(Vector3 cameraPosition, Quaternion cameraRotation, float cameraTimestamp)
+        {
+            poseCache.AddPose(cameraPosition, cameraRotation, cameraTimestamp);
+        }
 
 #if UNITY_EDITOR
         /// <summary>
@@ -441,7 +452,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             UpdateCullingMask();
         }
 
-#if UNITY_EDITOR
         /// <summary>
         /// Enables the holographic camera rig for compositing. The hologram camera will be adjusted to match
         /// calibration data (its position and rotation will track the external camera, and its projection matrix
@@ -452,28 +462,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         /// projection matrix for the holographic camera.</param>
         public void EnableHolographicCamera(Transform parent, ICalibrationData calibrationData)
         {
+#if UNITY_EDITOR
             this.calibrationData = calibrationData;
-            GameObject container = GameObject.Find("SpectatorView");
-            if (container == null)
+            if (videoCameraPose == null)
             {
-                container = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                container.GetComponent<MeshRenderer>().enabled = false;
-                GameObject.DestroyImmediate(container.GetComponent<Collider>());
-                container.name = "SpectatorView";
+                videoCameraPose = new GameObject("HMD Pose");
             }
 
-            container.transform.SetParent(parent);
-            container.transform.localPosition = Vector3.zero;
-            container.transform.localRotation = Quaternion.identity;
+            videoCameraPose.transform.SetParent(parent);
+            videoCameraPose.transform.localPosition = Vector3.zero;
+            videoCameraPose.transform.localRotation = Quaternion.identity;
 
-            gameObject.transform.parent = container.transform;
+            gameObject.transform.parent = videoCameraPose.transform;
 
             calibrationData.SetUnityCameraExtrinstics(transform);
             calibrationData.SetUnityCameraIntrinsics(GetComponent<Camera>());
 
             IsHolographicCameraConnected = true;
+#endif
         }
 
+#if UNITY_EDITOR
         private void OnEnable()
         {
             isVideoFrameProviderInitialized = false;
