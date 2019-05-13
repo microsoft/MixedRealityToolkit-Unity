@@ -93,32 +93,23 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
+            {
+                return;
+            }
+
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
-                RenderMixedRealityToolkitLogo();
-
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-
-                DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
-
                 return;
             }
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
-                RenderMixedRealityToolkitLogo();
-
                 EditorGUILayout.HelpBox("No Input Actions profile was specified.", MessageType.Error);
-
-                DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile);
-
                 return;
             }
 
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
-            {
-                return;
-            }
 
             bool isGuiLocked = !CheckProfileLock((BaseMixedRealityProfile)target);
             GUI.enabled = isGuiLocked;

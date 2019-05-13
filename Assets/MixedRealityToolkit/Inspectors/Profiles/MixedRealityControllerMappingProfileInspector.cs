@@ -91,34 +91,31 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
-            {
-                RenderMixedRealityToolkitLogo(); 
-
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-
-                DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
-
-                return;
-            }
-            
             if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
+
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
+
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
                 return;
             }
 
-            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             RenderControllerList(mixedRealityControllerMappingProfiles);
 
             serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+            GUI.enabled = wasGUIEnabled;
         }
 
         private void RenderControllerList(SerializedProperty controllerList)
@@ -194,11 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             {
                                 using (horizontalScope = new GUILayout.HorizontalScope())
                                 {
-                                    EditorGUIUtility.labelWidth = 64f;
-                                    EditorGUIUtility.fieldWidth = 64f;
-                                    EditorGUILayout.LabelField(controllerTitle);
-                                    EditorGUIUtility.fieldWidth = defaultFieldWidth;
-                                    EditorGUIUtility.labelWidth = defaultLabelWidth;
+                                    EditorGUILayout.LabelField(controllerTitle, EditorStyles.boldLabel);
 
                                     if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                                     {
@@ -206,10 +199,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                         return;
                                     }
                                 }
-                                EditorGUI.indentLevel++;
-
-                                EditorGUIUtility.labelWidth = 128f;
-                                EditorGUIUtility.fieldWidth = 64f;
 
                                 EditorGUI.BeginChangeCheck();
 
@@ -282,17 +271,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                     return;
                                 }
 
-                                EditorGUIUtility.labelWidth = defaultLabelWidth;
-                                EditorGUIUtility.fieldWidth = defaultFieldWidth;
-
-                                EditorGUI.indentLevel--;
-
-                                if (GUILayout.Button("Edit Input Action Map"))
+                                if (RenderIndentedButton("Edit Input Action Map"))
                                 {
                                     ControllerPopupWindow.Show(controllerMapping, interactionsProperty, handedness);
                                 }
 
-                                if (GUILayout.Button("Reset Input Actions"))
+                                if (RenderIndentedButton("Reset Input Actions"))
                                 {
                                     interactionsProperty.ClearArray();
                                     serializedObject.ApplyModifiedProperties();

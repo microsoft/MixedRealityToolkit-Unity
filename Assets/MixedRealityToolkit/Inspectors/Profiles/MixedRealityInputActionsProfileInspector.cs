@@ -32,34 +32,25 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Input Actions",
-                "Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
-                "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.");
-
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
-            {
-                if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
-                {
-                    EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-
-                    DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
-
-                    return;
-                }
-  
             if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
-                {
-                    return;
-                }
+            {
+                return;
             }
-            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
+
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             RenderList(inputActionList);
 
             serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+            GUI.enabled = wasGUIEnabled;
         }
 
         private static void RenderList(SerializedProperty list)

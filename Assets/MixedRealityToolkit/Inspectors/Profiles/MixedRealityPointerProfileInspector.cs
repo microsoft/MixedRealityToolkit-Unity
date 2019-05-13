@@ -66,7 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
+
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
+
             serializedObject.Update();
             currentlySelectedPointerOption = -1;
 
@@ -111,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
             
             serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+            GUI.enabled = wasGUIEnabled;
         }
 
         private void DrawPointerOptionElement(Rect rect, int index, bool isActive, bool isFocused)

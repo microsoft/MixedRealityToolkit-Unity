@@ -52,19 +52,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
-                RenderMixedRealityToolkitLogo();
-
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-
-                DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
-
                 return;
             }
 
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
                 return;
             }
 
@@ -74,7 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
@@ -94,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+            GUI.enabled = wasGUIEnabled;
         }
 
         private static void RenderList(SerializedProperty list)

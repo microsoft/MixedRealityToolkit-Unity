@@ -44,7 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                 return;
             }
 
-            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             using (new EditorGUI.IndentLevelScope())
@@ -53,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+            GUI.enabled = wasGUIEnabled;
         }
 
         private void RenderList(SerializedProperty list)
@@ -145,12 +146,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     }
                 }
 
-                if (MixedRealityToolkit.IsInitialized)
+                if (changed && MixedRealityToolkit.IsInitialized)
                 {
-                    if (changed)
-                    {
-                        EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
-                    }
+                    EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
                 }
             }
         }

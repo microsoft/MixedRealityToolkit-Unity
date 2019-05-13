@@ -48,7 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.Space();
@@ -80,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+            GUI.enabled = wasGUIEnabled;
         }
     }
 }

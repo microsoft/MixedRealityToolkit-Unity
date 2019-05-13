@@ -154,10 +154,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public override void OnInspectorGUI()
         {
             var configurationProfile = (MixedRealityToolkitConfigurationProfile)target;
-
             serializedObject.Update();
 
-            RenderTitleDescriptionAndLogo("Configuration Profile", string.Empty);
+            RenderMixedRealityToolkitLogo();
 
             if (!MixedRealityToolkit.IsInitialized)
             {
@@ -194,6 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
                 EditorGUILayout.EndHorizontal();
+                EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
             }
 
             bool isGUIEnabled = !CheckProfileLock((BaseMixedRealityProfile)target);
@@ -204,14 +204,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Experience configuration
             ExperienceScale experienceScale = (ExperienceScale)targetExperienceScale.intValue;
-
             EditorGUILayout.PropertyField(targetExperienceScale, TargetScaleContent);
 
             string scaleDescription = GetExperienceDescription(experienceScale);
             if (!string.IsNullOrEmpty(scaleDescription))
             {
-                EditorGUILayout.Space();
                 EditorGUILayout.HelpBox(scaleDescription, MessageType.Info);
+                EditorGUILayout.Space();
             }
 
             EditorGUILayout.BeginHorizontal();

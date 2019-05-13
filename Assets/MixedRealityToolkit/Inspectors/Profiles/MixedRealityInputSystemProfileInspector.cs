@@ -77,20 +77,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Input System Profile",
-                "The Input System Profile helps developers configure input for cross-platform applications.");
+            if (!RenderProfileHeader(ProfileTitle, string.Empty))
+            {
+                return;
+            }
 
+            // TODO: Troy
+            /*
             if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
                 return;
-            }
+            }*/
 
-            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-            {
-                return;
-            }
-            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUI.BeginChangeCheck();
@@ -177,20 +177,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+            GUI.enabled = wasGUIEnabled;
 
-            if (changed)
+            if (changed && MixedRealityToolkit.IsInitialized)
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
-            EditorGUIUtility.labelWidth = previousLabelWidth;
-            serializedObject.ApplyModifiedProperties();
-
-            if (MixedRealityToolkit.IsInitialized)
-            {
-                if (changed)
-                {
-                    EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
-                }
             }
         }
 
@@ -291,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
             }
 
-            if (changed)
+            if (changed && MixedRealityToolkit.IsInitialized)
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
             }

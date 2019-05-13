@@ -27,6 +27,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void OnInspectorGUI()
         {
             if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
+            {
+                return;
+            }
+
+            // TODO: Troy
+            /*
             if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
                 if (GUILayout.Button("Back to Input Profile"))
@@ -34,12 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
                 }
             }
-            else
-            {
-                return;
-            }
-
-            CheckProfileLock(target);
+            */
 
             serializedObject.Update();
 

@@ -68,7 +68,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                 return;
             }
 
-            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
@@ -120,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             }
 
             serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+            GUI.enabled = wasGUIEnabled;
         }
     }
 }

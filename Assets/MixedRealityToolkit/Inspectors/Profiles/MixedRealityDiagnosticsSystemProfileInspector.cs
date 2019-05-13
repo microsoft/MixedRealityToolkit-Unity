@@ -44,17 +44,13 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-                "Diagnostic Visualization Options",
-                "Diagnostic visualizations can help monitor system resources and performance inside an application.");
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
                 return;
             }
 
-            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.Space();
@@ -81,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+            GUI.enabled = wasGUIEnabled;
         }
     }
 }
