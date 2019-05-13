@@ -548,45 +548,8 @@ namespace Microsoft.MixedReality.Toolkit
 
         /// <summary>
         /// Returns the Singleton instance of the classes type.
-        /// If no instance is found, then we search for an instance in the scene.
-        /// If more than one instance is found, only the first instance is activated. All others are deactivated.
         /// </summary>
-        public static MixedRealityToolkit Instance
-        {
-            get
-            {
-                if (activeInstance != null)
-                {
-                    return activeInstance;
-                }
-
-                var objects = FindObjectsOfType<MixedRealityToolkit>();
-
-                switch (objects.Length)
-                {
-                    case 0:
-                        break;
-
-                    case 1:
-                        RegisterInstance(objects[0]);
-                        break;
-
-                    default:
-                        foreach (MixedRealityToolkit toolkit in objects)
-                        {
-                            RegisterInstance(toolkit);
-                        }
-                        break;
-                }
-
-                if (activeInstance == null)
-                {
-                    Debug.LogError("Didn't find / couldn't create an active instance of mixed reality toolkit. You can add one to your scene via 'Mixed Reality Toolkit->Add to Scene and Configure'");
-                }
-
-                return activeInstance;
-            }
-        }
+        public static MixedRealityToolkit Instance => activeInstance;
 
         private void InitializeInstance()
         {
