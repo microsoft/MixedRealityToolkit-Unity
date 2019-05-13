@@ -86,6 +86,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 #endif
         }
 
+        public override void Disable()
+        {
+#if UNITY_EDITOR
+            OnEditorDisable();
+#endif
+        }
+
         public override void Update()
         {
 

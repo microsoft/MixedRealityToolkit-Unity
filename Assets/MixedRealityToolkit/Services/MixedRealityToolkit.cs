@@ -724,6 +724,14 @@ namespace Microsoft.MixedReality.Toolkit
 
         #region Instance Registration
 
+        public static void SetActiveInstance(MixedRealityToolkit toolkitInstance)
+        {
+            // Disable the old instance
+            SetInstanceInactive(activeInstance);
+            // Immediately register the new instance
+            RegisterInstance(toolkitInstance);
+        }
+
         private static void RegisterInstance(MixedRealityToolkit toolkitInstance)
         {
             if (MixedRealityToolkit.isApplicationQuitting)
@@ -778,6 +786,18 @@ namespace Microsoft.MixedReality.Toolkit
                     break;
                 }
             }
+        }
+
+        private static void SetInstanceInactive(MixedRealityToolkit toolkitInstance)
+        {
+            if (toolkitInstance == activeInstance)
+            {   // If this is the active instance, we need to break it down
+                toolkitInstance.DestroyAllServices();
+                toolkitInstance.ClearCoreSystemCache();
+                // If this was the active instance, un-register the active instance
+                MixedRealityToolkit.activeInstance = null;
+            }
+            toolkitInstance.name = InactiveInstanceGameObjectName;
         }
 
         #endregion MonoBehaviour Implementation

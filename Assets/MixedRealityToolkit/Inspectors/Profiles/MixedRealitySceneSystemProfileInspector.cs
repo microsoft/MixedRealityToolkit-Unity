@@ -34,12 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
+            
             useManagerScene = serializedObject.FindProperty("useManagerScene");
             managerScene = serializedObject.FindProperty("managerScene");
 

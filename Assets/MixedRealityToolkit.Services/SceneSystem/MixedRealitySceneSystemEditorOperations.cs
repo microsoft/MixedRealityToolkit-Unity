@@ -51,6 +51,18 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             UpdateBuildSettings();
         }
 
+        private void OnEditorDisable()
+        {
+            EditorApplication.playModeStateChanged -= EditorApplicationPlayModeStateChanged;
+            EditorApplication.projectChanged -= EditorApplicationProjectChanged;
+            EditorApplication.hierarchyChanged -= EditorApplicationHeirarcyChanged;
+            EditorApplication.update -= EditorApplicationUpdate;
+
+            EditorSceneManager.newSceneCreated += EditorSceneManagerNewSceneCreated;
+            EditorSceneManager.sceneOpened -= EditorSceneManagerSceneOpened;
+            EditorSceneManager.sceneClosed -= EditorSceneManagerSceneClosed;
+        }
+
         #region update triggers from editor events
 
         private void EditorApplicationUpdate()
