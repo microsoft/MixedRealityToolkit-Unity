@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
     {
         private static List<Transform> childrenToDelete = new List<Transform>();
         private static List<IMixedRealityService> servicesToSort = new List<IMixedRealityService>();
+        private static MixedRealityToolkit previousActiveInstance;
 
         static MixedRealityToolkitFacadeHandler()
         {
@@ -25,8 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void OnPlayModeStateChanged(PlayModeStateChange obj)
         {
-            // When the play state changes just nuke everything and start over
-            DestroyAllChildren();
+            if (MixedRealityToolkit.IsInitialized)
+            {   // When the play state changes just nuke everything and start over
+                DestroyAllChildren(MixedRealityToolkit.Instance);
+            }
         }
 
         private static void UpdateServiceFacades(SceneView sceneView)
@@ -36,9 +39,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 return;
             }
 
+            if (previousActiveInstance != null && MixedRealityToolkit.Instance != previousActiveInstance)
+            {   // We've changed active instances. Destroy all children in the previous instance.
+                DestroyAllChildren(previousActiveInstance);
+            }
+
             if (MixedRealityToolkit.Instance.HasActiveProfile && !MixedRealityToolkit.Instance.ActiveProfile.UseServiceInspectors)
             {   // If we're not using inspectors, destroy them all now
-                DestroyAllChildren();
+                DestroyAllChildren(MixedRealityToolkit.Instance);
                 return;
             }
 
@@ -109,6 +117,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             {
                 Debug.LogWarning("Service Facades should remain parented under the MixedRealityToolkit instance.");
             }
+
+            previousActiveInstance = MixedRealityToolkit.Instance;
         }
 
         private static void CreateFacade(Transform parent, IMixedRealityService service, int facadeIndex)
@@ -141,14 +151,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             facade.SetService(service, parent);
         }
 
-        private static void DestroyAllChildren()
+        private static void DestroyAllChildren(MixedRealityToolkit instance)
         {
-            if (!MixedRealityToolkit.IsInitialized)
-            {   // Nothing to do here.
-                return;
-            }
-
-            Transform instanceTransform = MixedRealityToolkit.Instance.transform;
+            Transform instanceTransform = instance.transform;
 
             childrenToDelete.Clear();
             foreach (Transform child in instanceTransform.transform)

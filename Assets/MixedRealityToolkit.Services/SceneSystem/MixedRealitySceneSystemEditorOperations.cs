@@ -28,6 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private bool heirarchyDirty = false;
         // Cache these so we're not looking them up constantly
         private EditorBuildSettingsScene[] cachedBuildScenes = new EditorBuildSettingsScene[0];
+        // Checking for the manager scene via root game objects is very expensive
+        // So only do it once in a while
+        private float managerSceneInstanceCheckInterval = 2f;
+        private float managerSceneInstanceCheckTime;
 
         private enum BuildIndexTarget
         {
@@ -48,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             EditorSceneManager.sceneOpened += EditorSceneManagerSceneOpened;
             EditorSceneManager.sceneClosed += EditorSceneManagerSceneClosed;
 
+            cachedBuildScenes = EditorBuildSettings.scenes;
             UpdateBuildSettings();
         }
 
@@ -90,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         private void EditorApplicationProjectChanged()
         {
-            buildSettingsDirty = true;
+            //buildSettingsDirty = true;
         }
 
         private void EditorSceneManagerSceneClosed(Scene scene)
@@ -116,9 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             {   // Make sure we don't double up on our updates via events we trigger during updates
                 return;
             }
-
-            cachedBuildScenes = EditorBuildSettings.scenes;
-
+                        
             updatingSettingsOnEditorChanged = true;
 
             // Update editor settings
@@ -150,26 +153,30 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return;
             }
 
-            if (LoadSceneInEditor(profile.ManagerScene.Asset, true, out Scene scene))
+            if (LoadSceneInEditor(profile.ManagerScene, true, out Scene scene))
             {
-                // Check for an MRTK instance
-                bool foundToolkitInstance = false;
-                foreach (GameObject rootGameObject in scene.GetRootGameObjects())
+                if (Time.realtimeSinceStartup > managerSceneInstanceCheckTime)
                 {
-                    MixedRealityToolkit instance = rootGameObject.GetComponent<MixedRealityToolkit>();
-                    if (instance != null)
+                    managerSceneInstanceCheckTime = Time.realtimeSinceStartup + managerSceneInstanceCheckInterval;
+                    // Check for an MRTK instance
+                    bool foundToolkitInstance = false;
+                    foreach (GameObject rootGameObject in scene.GetRootGameObjects())
                     {
-                        foundToolkitInstance = true;
-                        break;
+                        MixedRealityToolkit instance = rootGameObject.GetComponent<MixedRealityToolkit>();
+                        if (instance != null)
+                        {
+                            foundToolkitInstance = true;
+                            break;
+                        }
                     }
-                }
 
-                if (!foundToolkitInstance)
-                {
-                    Debug.LogWarning("Didn't find a MixedRealityToolkit instance in your manager scene. Creating one now.");
-                    GameObject mrtkGo = new GameObject("MixedRealityToolkit");
-                    mrtkGo.AddComponent<MixedRealityToolkit>();
-                    SceneManager.MoveGameObjectToScene(mrtkGo, scene);
+                    if (!foundToolkitInstance)
+                    {
+                        Debug.LogWarning("Didn't find a MixedRealityToolkit instance in your manager scene. Creating one now.");
+                        GameObject mrtkGo = new GameObject("MixedRealityToolkit");
+                        mrtkGo.AddComponent<MixedRealityToolkit>();
+                        SceneManager.MoveGameObjectToScene(mrtkGo, scene);
+                    }
                 }
             }
             else
@@ -182,26 +189,21 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         {
             if (profile.UseLightingScene && updateActiveScene)
             {
+                bool loaded = false;
                 // Only update this once in a while to avoid being obnoxious
                 foreach (SceneInfo lightingScene in profile.LightingScenes)
                 {   // Make sure ALL lighting scenes are added to build settings
-                    if (lightingScene.Name == lightingSceneName)
+                    if (!loaded && lightingScene.Name == LightingSceneName)
                     {
-                        if (LoadSceneInEditor(lightingScene.Asset, false, out Scene editorScene) && updateActiveScene)
+                        if (LoadSceneInEditor(lightingScene, false, out Scene editorScene) && updateActiveScene)
                         {
-                            try
-                            {
-                                EditorSceneManager.SetActiveScene(editorScene);
-                            }
-                            catch (ArgumentException)
-                            {
-                                // This can happen if we try to set an invalid scene active.
-                            }
+                            SetActiveScene(editorScene);
                         }
+                        loaded = true;
                     }
                     else
                     {
-                        UnloadSceneInEditor(lightingScene.Asset);
+                        UnloadSceneInEditor(lightingScene);
                     }
                 }
             }
@@ -213,19 +215,19 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             if (profile.UseManagerScene)
             {
-                changedScenes |= AddSceneToBuildSettings(profile.ManagerScene.Asset, BuildIndexTarget.First);
+                changedScenes |= AddSceneToBuildSettings(profile.ManagerScene, cachedBuildScenes, BuildIndexTarget.First);
             }
 
             foreach (SceneInfo contentScene in profile.ContentScenes)
             {
-                changedScenes |= AddSceneToBuildSettings(contentScene.Asset, BuildIndexTarget.None);
+                changedScenes |= AddSceneToBuildSettings(contentScene, cachedBuildScenes, BuildIndexTarget.None);
             }
 
             if (profile.UseLightingScene)
             {
                 foreach (SceneInfo lightingScene in profile.LightingScenes)
                 {   // Make sure ALL lighting scenes are added to build settings
-                    changedScenes |= AddSceneToBuildSettings(lightingScene.Asset, BuildIndexTarget.Last);
+                    changedScenes |= AddSceneToBuildSettings(lightingScene, cachedBuildScenes, BuildIndexTarget.Last);
                 }
             }
 
@@ -327,21 +329,24 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         /// <param name="sceneObject">Scene object reference.</param>
         /// <param name="setAsFirst">Sets as first scene to be loaded.</param>
-        private static bool AddSceneToBuildSettings(UnityEngine.Object sceneObject, BuildIndexTarget buildIndexTarget = BuildIndexTarget.None)
+        private static bool AddSceneToBuildSettings(
+            SceneInfo scene, 
+            EditorBuildSettingsScene[] scenes,
+            BuildIndexTarget buildIndexTarget = BuildIndexTarget.None)
         {
-            if (sceneObject == null)
+            if (scene.IsEmpty)
             {   // Can't add a null scene to build settings
                 return false;
             }
 
             long localID;
             string managerGuidString;
-            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(sceneObject, out managerGuidString, out localID);
+            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(scene.Asset, out managerGuidString, out localID);
             GUID sceneGuid = new GUID(managerGuidString);
 
-            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
+            List<EditorBuildSettingsScene> newScenes = new List<EditorBuildSettingsScene>(scenes);
             // See if / where the scene exists in build settings
-            int buildIndex = GetSceneBuildIndex(sceneGuid, scenes);
+            int buildIndex = GetSceneBuildIndex(sceneGuid, newScenes);
 
             if (buildIndex < 0)
             {
@@ -350,17 +355,17 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 {
                     case BuildIndexTarget.First:
                         // Add it to index 0
-                        scenes.Insert(0, new EditorBuildSettingsScene(sceneGuid, true));
+                        newScenes.Insert(0, new EditorBuildSettingsScene(sceneGuid, true));
                         break;
 
                     case BuildIndexTarget.None:
                     default:
                         // Just add it to the end
-                        scenes.Add(new EditorBuildSettingsScene(sceneGuid, true));
+                        newScenes.Add(new EditorBuildSettingsScene(sceneGuid, true));
                         break;
                 }
 
-                EditorBuildSettings.scenes = scenes.ToArray();
+                EditorBuildSettings.scenes = newScenes.ToArray();
                 return true;
             }
             else
@@ -371,20 +376,20 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     case BuildIndexTarget.First:
                         if (buildIndex != 0)
                         {
-                            Debug.LogWarning("Scene '" + sceneObject.name + "' was not first in build order. Changing build settings now.");
+                            Debug.LogWarning("Scene '" + scene.Name + "' was not first in build order. Changing build settings now.");
 
-                            scenes.RemoveAt(buildIndex);
-                            scenes.Insert(0, new EditorBuildSettingsScene(sceneGuid, true));
-                            EditorBuildSettings.scenes = scenes.ToArray();
+                            newScenes.RemoveAt(buildIndex);
+                            newScenes.Insert(0, new EditorBuildSettingsScene(sceneGuid, true));
+                            EditorBuildSettings.scenes = newScenes.ToArray();
                         }
                         return true;
 
                     case BuildIndexTarget.Last:
                         if (buildIndex != EditorSceneManager.sceneCountInBuildSettings - 1)
                         {
-                            scenes.RemoveAt(buildIndex);
-                            scenes.Insert(scenes.Count - 1, new EditorBuildSettingsScene(sceneGuid, true));
-                            EditorBuildSettings.scenes = scenes.ToArray();
+                            newScenes.RemoveAt(buildIndex);
+                            newScenes.Insert(newScenes.Count - 1, new EditorBuildSettingsScene(sceneGuid, true));
+                            EditorBuildSettings.scenes = newScenes.ToArray();
                         }
                         return true;
 
@@ -397,6 +402,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
+        /// <summary>
+        /// Gets the build index for a scene GUID.
+        /// There are many ways to do this in Unity but this is the only 100% reliable method I know of.
+        /// </summary>
+        /// <param name="sceneGUID"></param>
+        /// <param name="scenes"></param>
+        /// <returns></returns>
         private static int GetSceneBuildIndex(GUID sceneGUID, List<EditorBuildSettingsScene> scenes)
         {
             int buildIndex = -1;
@@ -425,20 +437,20 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <param name="setAsFirst">Whether to set first in the heirarchy window.</param>
         /// <param name="editorScene">The loaded scene.</param>
         /// <returns>True if successful.</returns>
-        private static bool LoadSceneInEditor(UnityEngine.Object sceneObject, bool setAsFirst, out Scene editorScene)
+        private static bool LoadSceneInEditor(SceneInfo sceneInfo, bool setAsFirst, out Scene editorScene)
         {
             editorScene = default(Scene);
 
             try
             {
-                editorScene = EditorSceneManager.GetSceneByName(sceneObject.name);
+                editorScene = EditorSceneManager.GetSceneByName(sceneInfo.Name);
                 if (!editorScene.isLoaded)
                 {
-                    string scenePath = AssetDatabase.GetAssetOrScenePath(sceneObject);
+                    string scenePath = AssetDatabase.GetAssetOrScenePath(sceneInfo.Asset);
                     EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
                 }
 
-                if (setAsFirst && EditorSceneManager.sceneCount >= 1)
+                if (setAsFirst && EditorSceneManager.loadedSceneCount >= 1)
                 {   // Move the scene to first in order in the heirarchy
                     Scene nextScene = EditorSceneManager.GetSceneAt(0);
                     EditorSceneManager.MoveSceneBefore(editorScene, nextScene);
@@ -468,17 +480,58 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             return true;
         }
 
-        private static bool UnloadSceneInEditor(UnityEngine.Object sceneObject)
+        /// <summary>
+        /// Unloads a scene in the editor and catches any errors that can happen along the way.
+        /// </summary>
+        /// <param name="sceneInfo"></param>
+        /// <returns></returns>
+        private static bool UnloadSceneInEditor(SceneInfo sceneInfo)
         {
             Scene editorScene = default(Scene);
 
             try
             {
-                editorScene = EditorSceneManager.GetSceneByName(sceneObject.name);
+                editorScene = EditorSceneManager.GetSceneByName(sceneInfo.Name);
                 if (editorScene.isLoaded)
                 {
                     EditorSceneManager.CloseScene(editorScene, false);
                 }
+            }
+            catch (InvalidOperationException)
+            {
+                // This can happen if we're trying to load immediately upon recompilation.
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                // This can happen if the scene is an invalid scene and we try to SetActive.
+                return false;
+            }
+            catch (NullReferenceException)
+            {
+                // This can happen if the scene object is null.
+                return false;
+            }
+            catch (MissingReferenceException)
+            {
+                // This can happen if the scene object is null.
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to set the active scene and catches all the various ways it can go wrong.
+        /// Returns true if successful.
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <returns></returns>
+        private static bool SetActiveScene(Scene scene)
+        {
+            try
+            {
+                EditorSceneManager.SetActiveScene(scene);
             }
             catch (InvalidOperationException)
             {
@@ -520,28 +573,19 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             SerializedObject sourceLightmapSettings;
             SerializedObject sourceRenderSettings;
 
-            try
+            // Set the active scene to the lighting scene
+            SetActiveScene(lightingScene);
+            // If we can't get the source settings for some reason, abort
+            if (!GetLightmapAndRenderSettings(out sourceLightmapSettings, out sourceRenderSettings))
             {
-                // Set the active scene to the lighting scene
-                EditorSceneManager.SetActiveScene(lightingScene);
-                // If we can't get the source settings for some reason, abort
-                if (!GetLightmapAndRenderSettings(out sourceLightmapSettings, out sourceRenderSettings))
-                {
-                    return;
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                // This can happen if the lighting scene is invalid
                 return;
             }
 
             bool madeChanges = false;
 
-            try
+            // Set active scene back to the active scene on enter
+            if (SetActiveScene(activeSceneOnEnter))
             {
-                // Set active scene back to the active scene on enter
-                EditorSceneManager.SetActiveScene(activeSceneOnEnter);
                 SerializedObject targetLightmapSettings;
                 SerializedObject targetRenderSettings;
 
@@ -550,11 +594,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     madeChanges |= CopySerializedObject(sourceLightmapSettings, targetLightmapSettings);
                     madeChanges |= CopySerializedObject(sourceRenderSettings, targetRenderSettings);
                 }
-            }
-            catch (InvalidOperationException)
-            {
-                // This can happen if the current active scene is invalid
-                return;
             }
 
             if (madeChanges)

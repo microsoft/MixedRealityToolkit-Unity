@@ -67,12 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public IEnumerable<string> ContentTags { get { return profile.ContentTags; } }
 
-        public string LightingSceneName
-        {
-            get { return lightingSceneName; }
-        }
-
-        private string lightingSceneName = string.Empty;
+        public string LightingSceneName { get; private set; } = string.Empty;
 
         public override void Initialize()
         {
@@ -303,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         public async void SetLightingScene(string newLightingSceneName, bool transition = false)
         {
-            if (lightingSceneName == newLightingSceneName)
+            if (LightingSceneName == newLightingSceneName)
             {   // Nothing to do here
                 return;
             }
@@ -315,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return;
             }
 
-            lightingSceneName = newLightingSceneName;
+            LightingSceneName = newLightingSceneName;
 
             if (Application.isPlaying)
             {
