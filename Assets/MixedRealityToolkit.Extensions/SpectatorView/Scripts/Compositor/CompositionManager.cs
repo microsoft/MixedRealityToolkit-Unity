@@ -482,6 +482,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 #endif
         }
 
+        /// <summary>
+        /// Clears cached information about synchronized poses and time offsets.
+        /// </summary>
+        public void ResetPoseSynchronization()
+        {
+            timeSynchronizer.Reset();
+            poseCache.Reset();
+        }
+
 #if UNITY_EDITOR
         private void OnEnable()
         {
