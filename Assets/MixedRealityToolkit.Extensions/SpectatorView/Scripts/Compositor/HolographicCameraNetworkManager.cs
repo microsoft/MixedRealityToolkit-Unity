@@ -99,24 +99,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                     case "CalibrationData":
                         {
                             string calibrationDataJson = reader.ReadString();
-                            CalibrationPackage calibrationPackage = JsonUtility.FromJson<CalibrationPackage>(calibrationDataJson);
 
-                            ICalibrationParser parser;
-                            if (calibrationParsers.TryGetValue(calibrationPackage.calibrationType, out parser))
+                            ICalibrationData calibrationData;
+                            if (CalibrationPackage.TryParseCalibration(calibrationDataJson, calibrationParsers, out calibrationData))
                             {
-                                ICalibrationData calibrationData;
-                                if (parser.TryParse(calibrationPackage.calibrationData, out calibrationData))
-                                {
-                                    compositionManager.EnableHolographicCamera(transform, calibrationData);
-                                }
-                                else
-                                {
-                                    Debug.LogError("Failed to parse the received calibration data");
-                                }
-                            }
-                            else
-                            {
-                                Debug.LogError("Received calibration data with no registered parser");
+                                compositionManager.EnableHolographicCamera(transform, calibrationData);
                             }
                         }
                         break;
@@ -129,6 +116,31 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         {
             public string calibrationType = null;
             public string calibrationData = null;
+
+            public static bool TryParseCalibration(string calibrationDataJson, IDictionary<string, ICalibrationParser> calibrationParsers, out ICalibrationData calibrationData)
+            {
+                CalibrationPackage calibrationPackage = JsonUtility.FromJson<CalibrationPackage>(calibrationDataJson);
+
+                ICalibrationParser parser;
+                if (calibrationParsers.TryGetValue(calibrationPackage.calibrationType, out parser))
+                {
+                    if (parser.TryParse(calibrationPackage.calibrationData, out calibrationData))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to parse the received calibration data");
+                        return false;
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Received calibration data with no registered parser");
+                    calibrationData = null;
+                    return false;
+                }
+            }
         }
     }
 }
