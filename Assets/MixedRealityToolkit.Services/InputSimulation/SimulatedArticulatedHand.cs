@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // For convenience of simulating in Unity Editor, make the ray use the index
             // finger position instead of knuckle, since the index finger doesn't move when we press.
-            Vector3 pointerPosition = jointPositions[(int)TrackedHandJoint.IndexTip];
+            Vector3 pointerPosition = jointPoses[TrackedHandJoint.IndexTip].Position;
             IsPositionAvailable = IsRotationAvailable = pointerPosition != Vector3.zero;
 
             if (IsPositionAvailable)
@@ -70,11 +70,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 currentPointerPose.Position = ray.origin;
                 currentPointerPose.Rotation = Quaternion.LookRotation(ray.direction);
 
-                currentGripPose.Position = jointPositions[(int)TrackedHandJoint.Palm];
-                currentGripPose.Rotation = jointOrientations[(int)TrackedHandJoint.Palm];
+                currentGripPose = jointPoses[TrackedHandJoint.Palm];
 
-                currentIndexPose.Position = jointPositions[(int)TrackedHandJoint.IndexTip];
-                currentIndexPose.Rotation = jointOrientations[(int)TrackedHandJoint.IndexTip];
+                currentIndexPose = jointPoses[TrackedHandJoint.IndexTip];
             }
 
             if (lastGripPose != currentGripPose)
