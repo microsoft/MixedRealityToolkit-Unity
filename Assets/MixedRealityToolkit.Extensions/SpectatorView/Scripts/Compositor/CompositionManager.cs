@@ -466,7 +466,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             this.calibrationData = calibrationData;
             if (videoCameraPose == null)
             {
-                videoCameraPose = new GameObject("HoloLens Pose");
+                videoCameraPose = new GameObject("HMD Pose");
             }
 
             videoCameraPose.transform.SetParent(parent);
