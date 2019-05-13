@@ -166,6 +166,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         if (instance != null)
                         {
                             foundToolkitInstance = true;
+                            // If we found an instance, and it's not the active instance, activate it now
+                            if (instance != MixedRealityToolkit.Instance)
+                            {
+                                Debug.LogWarning("Setting the manager scene MixedRealityToolkit instance to the active instance.");
+                                MixedRealityToolkit.SetActiveInstance(instance);
+                            }
                             break;
                         }
                     }
