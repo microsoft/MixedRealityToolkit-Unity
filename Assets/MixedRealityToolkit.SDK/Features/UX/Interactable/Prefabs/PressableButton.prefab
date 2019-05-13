@@ -146,6 +146,7 @@ MonoBehaviour:
   pressDistance: 0.006
   releaseDistanceDelta: 0.001
   returnRate: 25
+  enforceFrontPush: 1
   TouchBegin:
     m_PersistentCalls:
       m_Calls:
@@ -249,7 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   routingTarget: {fileID: 7440800412470431853}
-  InteractableOnClick: 0
+  InteractableOnClick: 1
 --- !u!114 &7440800412470431853
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -22,19 +22,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Check and make sure we have a Mixed Reality Toolkit and an active profile.
         /// </summary>
         /// <returns>True if the Mixed Reality Toolkit is properly initialized.</returns>
-        public static bool CheckMixedRealityConfigured(bool showHelpBox = true)
+        public static bool CheckMixedRealityConfigured(bool renderEditorElements = true, bool showCreateButton = false)
         {
             if (!MixedRealityToolkit.IsInitialized)
             {
-                // Search the scene for one, in case we've just hot reloaded the assembly.
-                var managerSearch = Object.FindObjectsOfType<MixedRealityToolkit>();
-
-                if (managerSearch.Length == 0)
+                if (renderEditorElements)
                 {
-                    if (showHelpBox)
+                    EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Error);
+
+                    if (showCreateButton && GUILayout.Button("Click here to add Mixed Reality Toolkit instance to scene"))
                     {
-                        EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Error);
+                        new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
                     }
+                    EditorGUILayout.Space();
                 }
 
                 // Don't proceeed
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (!MixedRealityToolkit.Instance.HasActiveProfile)
             {
-                if (showHelpBox)
+                if (renderEditorElements)
                 {
                     EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Toolkit.", MessageType.Error);
                 }
