@@ -109,7 +109,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [MenuItem("Mixed Reality Toolkit/Add to Scene and Configure...")]
         public static void CreateMixedRealityToolkitGameObject()
         {
-            Selection.activeObject = MixedRealityToolkit.Instance;
+            if (MixedRealityToolkit.IsInitialized)
+            {
+                EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
+                return;
+            }
+
+            Selection.activeObject = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             Debug.Assert(MixedRealityToolkit.IsInitialized);
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
         }
