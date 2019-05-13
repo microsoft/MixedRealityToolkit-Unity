@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private CompositionManager compositionManager = null;
 
         [SerializeField]
-        [Tooltip("The port that the " + nameof(HolographicCamera.HolographicCameraNetworkListener) + " listens for connections on.")]
+        [Tooltip("The port that the " + nameof(HolographicCamera.TCPNetworkListener) + " listens for connections on.")]
         private int remotePort = 7502;
 
         private void Awake()
