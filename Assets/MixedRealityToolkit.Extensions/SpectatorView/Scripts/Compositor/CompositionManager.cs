@@ -75,9 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         private float videoTimestampToHolographicTimestampOffset = -10.0f;
         private int captureDeviceIndex = -1;
-        private TextureManager textureManager;
+        private TextureManager textureManager = null;
         private MicrophoneInput microphoneInput;
-        private ICalibrationData calibrationData;
 
         private bool isVideoFrameProviderInitialized = false;
         private SpectatorViewPoseCache poseCache = new SpectatorViewPoseCache();
@@ -101,6 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private Vector3 overrideCameraPosition;
         private Quaternion overrideCameraRotation;
         private MemoryStream audioMemoryStream = null;
+        private ICalibrationData calibrationData;
 
         /// <summary>
         /// Clears the usage of an overridden camera pose and returns to normal pose calculations.
@@ -466,7 +466,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             this.calibrationData = calibrationData;
             if (videoCameraPose == null)
             {
-                videoCameraPose = new GameObject("HoloLens Pose");
+                videoCameraPose = new GameObject("HMD Pose");
             }
 
             videoCameraPose.transform.SetParent(parent);
