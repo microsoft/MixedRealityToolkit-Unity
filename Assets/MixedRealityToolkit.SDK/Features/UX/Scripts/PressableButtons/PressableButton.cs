@@ -28,6 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Header("Press Settings")]
         [Tooltip("The offset at which pushing starts.")]
         private float startPushDistance = 0.0f;
+
+        [SerializeField]
         [Tooltip("Maximum push distance")]
         private float maxPushDistance = 0.2f;
 
