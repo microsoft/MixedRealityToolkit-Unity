@@ -74,8 +74,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            RenderTitleDescriptionAndLogo(
+                "Input System Profile",
+                "The Input System Profile helps developers configure input for cross-platform applications.");
+
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
                 return;
             }
@@ -84,10 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 return;
             }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Input System Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("The Input System Profile helps developers configure input for cross-platform applications.", MessageType.Info);
 
             CheckProfileLock(target);
 
@@ -189,9 +188,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
 
-            if (changed)
+            if (MixedRealityToolkit.IsInitialized)
             {
-                EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
+                if (changed)
+                {
+                    EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
+                }
             }
         }
 

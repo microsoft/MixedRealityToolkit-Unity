@@ -24,17 +24,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             uint priority = DefaultPriority, 
             BaseMixedRealityProfile profile = null) : base(registrar, spatialAwarenessSystem, name, priority, profile)
         {
-            if (MixedRealityToolkit.SpatialAwarenessSystem != null)
-            {
-                SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
-            }
-            else
-            {
-                Debug.LogError($"A spatial observer is registered in your service providers profile, but the spatial awareness system is turned off. Please either turn on spatial awareness or remove {name}.");
-            }
+            SpatialAwarenessSystem = spatialAwarenessSystem;
 
+            SourceId = (SpatialAwarenessSystem != null) ? SpatialAwarenessSystem.GenerateNewSourceId() : 0;
             SourceName = name;
+
         }
+
+        /// <summary>
+        /// The spatial awareness system that is associated with this observer.
+        /// </summary>
+        protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem { get; private set; }
 
         #region IMixedRealityEventSource Implementation
 

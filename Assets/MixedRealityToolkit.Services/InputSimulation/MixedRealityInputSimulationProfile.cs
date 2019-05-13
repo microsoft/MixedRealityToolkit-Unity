@@ -113,17 +113,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [Header("Hand Gesture Settings")]
         [SerializeField]
-        private SimulatedHandPose.GestureId defaultHandGesture = SimulatedHandPose.GestureId.Open;
-        public SimulatedHandPose.GestureId DefaultHandGesture => defaultHandGesture;
+        private ArticulatedHandPose.GestureId defaultHandGesture = ArticulatedHandPose.GestureId.Open;
+        public ArticulatedHandPose.GestureId DefaultHandGesture => defaultHandGesture;
         [SerializeField]
-        private SimulatedHandPose.GestureId leftMouseHandGesture = SimulatedHandPose.GestureId.Pinch;
-        public SimulatedHandPose.GestureId LeftMouseHandGesture => leftMouseHandGesture;
+        private ArticulatedHandPose.GestureId leftMouseHandGesture = ArticulatedHandPose.GestureId.Pinch;
+        public ArticulatedHandPose.GestureId LeftMouseHandGesture => leftMouseHandGesture;
         [SerializeField]
-        private SimulatedHandPose.GestureId middleMouseHandGesture = SimulatedHandPose.GestureId.None;
-        public SimulatedHandPose.GestureId MiddleMouseHandGesture => middleMouseHandGesture;
+        private ArticulatedHandPose.GestureId middleMouseHandGesture = ArticulatedHandPose.GestureId.None;
+        public ArticulatedHandPose.GestureId MiddleMouseHandGesture => middleMouseHandGesture;
         [SerializeField]
-        private SimulatedHandPose.GestureId rightMouseHandGesture = SimulatedHandPose.GestureId.None;
-        public SimulatedHandPose.GestureId RightMouseHandGesture => rightMouseHandGesture;
+        private ArticulatedHandPose.GestureId rightMouseHandGesture = ArticulatedHandPose.GestureId.None;
+        public ArticulatedHandPose.GestureId RightMouseHandGesture => rightMouseHandGesture;
         [SerializeField]
         [Tooltip("Gesture interpolation per second")]
         private float handGestureAnimationSpeed = 8.0f;
