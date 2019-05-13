@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Size of the cube collidable used in scale handles")]
         private float scaleHandleSize = 0.03f;
         [SerializeField]
-        [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. If not set, spheres will be displayed instead")]
+        [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead")]
         GameObject rotationHandlePrefab = null;
         [SerializeField]
         [FormerlySerializedAs("ballRadius")]
