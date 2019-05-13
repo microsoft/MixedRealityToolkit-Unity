@@ -29,11 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             observerConfigurations = serializedObject.FindProperty("observerConfigurations");
 
             if (observerFoldouts == null || observerFoldouts.Length != observerConfigurations.arraySize)
@@ -150,9 +145,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     }
                 }
 
-                if (changed)
+                if (MixedRealityToolkit.IsInitialized)
                 {
-                    EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
+                    if (changed)
+                    {
+                        EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
+                    }
                 }
             }
         }

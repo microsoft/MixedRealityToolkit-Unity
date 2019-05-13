@@ -30,11 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             opaqueNearClip = serializedObject.FindProperty("nearClipPlaneOpaqueDisplay");
             opaqueClearFlags = serializedObject.FindProperty("cameraClearFlagsOpaqueDisplay");
             opaqueBackgroundColor = serializedObject.FindProperty("backgroundColorOpaqueDisplay");

@@ -24,11 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             configurations = serializedObject.FindProperty("configurations");
             configFoldouts = new bool[configurations.arraySize];
         }

@@ -27,30 +27,32 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             inputActionList = serializedObject.FindProperty("inputActions");
         }
 
         public override void OnInspectorGUI()
         {
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            RenderTitleDescriptionAndLogo(
+                "Input Actions",
+                "Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
+                "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.");
+
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+                {
+                    EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
 
-                DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
+                    DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
 
-                return;
-            }
+                    return;
+                }
   
             if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
-            {
-                return;
+                {
+                    return;
+                }
             }
-
             GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 

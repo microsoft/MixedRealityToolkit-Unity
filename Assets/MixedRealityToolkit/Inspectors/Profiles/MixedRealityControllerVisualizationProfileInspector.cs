@@ -52,11 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             defaultLabelWidth = EditorGUIUtility.labelWidth;
             defaultFieldWidth = EditorGUIUtility.fieldWidth;
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             thisProfile = target as MixedRealityControllerVisualizationProfile;
 
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");

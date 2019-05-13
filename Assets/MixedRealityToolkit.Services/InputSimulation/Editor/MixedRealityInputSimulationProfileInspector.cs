@@ -66,8 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false)) { return; }
-
             isCameraControlEnabled = serializedObject.FindProperty("isCameraControlEnabled");
 
             extraMouseSensitivityScale = serializedObject.FindProperty("extraMouseSensitivityScale");

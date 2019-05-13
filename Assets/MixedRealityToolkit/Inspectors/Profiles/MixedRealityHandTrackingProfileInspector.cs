@@ -26,8 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false)) { return; }
-
             jointPrefab = serializedObject.FindProperty("jointPrefab");
             fingertipPrefab = serializedObject.FindProperty("fingertipPrefab");
             palmPrefab = serializedObject.FindProperty("palmPrefab");

@@ -27,12 +27,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void OnInspectorGUI()
         {
             if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            {
+                if (GUILayout.Button("Back to Input Profile"))
+                {
+                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                }
+            }
+            else
             {
                 return;
             }
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
 
-            GUI.enabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            CheckProfileLock(target);
+
             serializedObject.Update();
 
             EditorGUILayout.Space();

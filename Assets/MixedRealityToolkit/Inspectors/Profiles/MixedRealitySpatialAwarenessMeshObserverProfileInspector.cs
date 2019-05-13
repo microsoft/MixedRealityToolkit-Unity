@@ -44,11 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             // General settings
             startupBehavior = serializedObject.FindProperty("startupBehavior");
             observationExtents = serializedObject.FindProperty("observationExtents");

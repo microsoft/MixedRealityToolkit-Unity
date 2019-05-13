@@ -63,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Initialize()
         {
+            ArticulatedHandPose.LoadGesturePoses();
         }
 
         /// <inheritdoc />

@@ -39,11 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             pointingExtent = serializedObject.FindProperty("pointingExtent");
             pointingRaycastLayerMasks = serializedObject.FindProperty("pointingRaycastLayerMasks");
             pointerOptions = serializedObject.FindProperty("pointerOptions");

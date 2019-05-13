@@ -46,11 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             boundaryHeight = serializedObject.FindProperty("boundaryHeight");
 
             showFloor = serializedObject.FindProperty("showFloor");

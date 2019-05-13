@@ -90,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile)) { return; }
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 RenderMixedRealityToolkitLogo();
@@ -105,7 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 return;
             }
-
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);

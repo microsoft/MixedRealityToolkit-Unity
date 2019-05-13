@@ -33,11 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             showDiagnostics = serializedObject.FindProperty("showDiagnostics");
             showProfiler = serializedObject.FindProperty("showProfiler");
             frameSampleRate = serializedObject.FindProperty("frameSampleRate");
@@ -49,6 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
         public override void OnInspectorGUI()
         {
+            RenderMixedRealityToolkitLogo();
+                "Diagnostic Visualization Options",
+                "Diagnostic visualizations can help monitor system resources and performance inside an application.");
+
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
                 return;
