@@ -126,8 +126,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         [Serializable]
         private class CalibrationPackage
         {
-            public string calibrationType;
-            public string calibrationData;
+            public string calibrationType = null;
+            public string calibrationData = null;
         }
     }
 }
