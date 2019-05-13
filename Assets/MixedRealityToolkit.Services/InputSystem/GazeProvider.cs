@@ -82,6 +82,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("If true, eye-based tracking will be used when available. Requires the 'Gaze Input' permission and device eye calibration to have been run.")]
+        [Help("When enabling eye tracking, please follow the instructions at "
+               + "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/EyeTracking/EyeTracking_BasicSetup.html#eye-tracking-requirements "
+               + "to set up 'Gaze Input' capabilities through Visual Studio.", "", false)]
         [FormerlySerializedAs("preferEyeTracking")]
         private bool useEyeTracking = false;
 
