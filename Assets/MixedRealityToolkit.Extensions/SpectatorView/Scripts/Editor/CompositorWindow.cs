@@ -143,6 +143,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     {
                         cameraNetworkManager.Disconnect();
                     }
+
+                    if (GUILayout.Button(new GUIContent("Locate Shared Anchor", "Locates an ArUco marker to set the world origin for the camera")))
+                    {
+                        cameraNetworkManager.SendLocateSharedAnchorCommand();
+                    }
                 }
                 else
                 {

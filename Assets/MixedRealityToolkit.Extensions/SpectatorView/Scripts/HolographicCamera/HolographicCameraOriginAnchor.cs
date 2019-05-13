@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.WorldAnchors;
 using System.Collections;
@@ -15,9 +16,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
     [RequireComponent(typeof(TCPConnectionManager))]
     public class HolographicCameraOriginAnchor : MonoBehaviour
     {
+        private const int markerOriginId = 0;
         private const string AnchorName = "WorldRoot";
         private WorldAnchorManager worldAnchorManager;
         private TCPConnectionManager tcpConnectionManager;
+        private IMarkerDetector markerDetector;
+        private bool isDetectingMarker;
+
+        public bool IsDetectingMarker => isDetectingMarker;
 
         public bool IsAnchorLocated
         {
@@ -35,6 +41,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 
             tcpConnectionManager = GetComponent<TCPConnectionManager>();
             tcpConnectionManager.OnReceive += TcpConnectionManager_OnReceive;
+
+            markerDetector = GetComponent<IMarkerDetector>();
+            markerDetector.MarkersUpdated += MarkerDetector_MarkersUpdated;
+        }
+
+        private void MarkerDetector_MarkersUpdated(Dictionary<int, Marker> markers)
+        {
+            Marker originMarker;
+            if (markers.TryGetValue(markerOriginId, out originMarker))
+            {
+                markerDetector.StopDetecting();
+
+                transform.position = originMarker.Position;
+                transform.rotation = originMarker.Rotation;
+                worldAnchorManager.AttachAnchor(gameObject, AnchorName);
+            }
         }
 
         private void TcpConnectionManager_OnReceive(IncomingMessage data)
@@ -48,6 +70,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
                 {
                     case "CreateSharedAnchor":
                         {
+                            float markerDistance = reader.ReadSingle();
+
+                            if (!isDetectingMarker)
+                            {
+                                isDetectingMarker = true;
+                                worldAnchorManager.RemoveAnchor(gameObject);
+
+                                markerDetector.SetMarkerSize(markerDistance);
+                                markerDetector.StartDetecting();
+                            }
                         }
                         break;
                 }

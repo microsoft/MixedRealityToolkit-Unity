@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
     {
         private TCPConnectionManager connectionManager;
         private const float trackingStalledReceiveDelay = 1.0f;
+        private const float arUcoMarkerSizeInMeters = 0.1f;
         private float lastReceivedPoseTime = -1;
         private readonly Dictionary<string, ICalibrationParser> calibrationParsers = new Dictionary<string, ICalibrationParser>();
 
@@ -186,6 +187,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                         }
                         break;
                 }
+            }
+        }
+
+        public void SendLocateSharedAnchorCommand()
+        {
+            if (currentConnection == null)
+            {
+                Debug.LogError("Can't locate shared anchor while disconnected");
+                return;
+            }
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            using (BinaryWriter message = new BinaryWriter(memoryStream))
+            {
+                message.Write("CreateSharedAnchor");
+                message.Write(arUcoMarkerSizeInMeters);
+
+                currentConnection.Send(memoryStream.ToArray());
             }
         }
 

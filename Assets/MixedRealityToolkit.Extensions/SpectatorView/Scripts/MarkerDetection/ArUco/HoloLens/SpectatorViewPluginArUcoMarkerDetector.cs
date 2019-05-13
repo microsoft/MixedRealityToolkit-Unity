@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         private bool _detecting = false;
         private Dictionary<int, List<Marker>> _markerObservations;
         protected int _requiredObservations = 5;
+        private Dictionary<int, Marker> _nextMarkerUpdate;
 
         protected void Start()
         {
@@ -56,6 +57,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 {
                     Debug.LogError("Failed to take photo with HoloLensCamera, Camera State: " + _holoLensCamera.State.ToString());
                 }
+            }
+
+            if (_nextMarkerUpdate != null)
+            {
+                MarkersUpdated?.Invoke(_nextMarkerUpdate);
+                _nextMarkerUpdate = null;
             }
         }
 
@@ -90,6 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         public void SetMarkerSize(float size)
         {
             _markerSize = size;
+            _api.SetMarkerSize(size);
         }
 
         /// <inheritdoc />
@@ -183,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         }
                     }
 
-                    MarkersUpdated?.Invoke(validMarkers);
+                    _nextMarkerUpdate = validMarkers;
                 }
             }
 #endif

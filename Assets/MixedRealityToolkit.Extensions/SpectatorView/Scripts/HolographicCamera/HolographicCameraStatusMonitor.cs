@@ -59,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
                 message.Write("Status");
                 message.Write((byte)WorldManager.state);
                 message.Write(originAnchor.IsAnchorLocated);
+                message.Write(originAnchor.IsDetectingMarker);
 
                 byte[] newMessage = memoryStream.ToArray();
                 if (previousStatusMessage == null || !newMessage.SequenceEqual<byte>(previousStatusMessage))
