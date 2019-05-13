@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.StateSynchronization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
