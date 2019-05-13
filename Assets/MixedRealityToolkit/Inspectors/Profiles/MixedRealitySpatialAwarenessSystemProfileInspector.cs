@@ -28,11 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             observerConfigurations = serializedObject.FindProperty("observerConfigurations");
 
             observerFoldouts = new bool[observerConfigurations.arraySize];
@@ -40,15 +35,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
-            {
-                return;
-            }
+            RenderTitleDescriptionAndLogo(
+                "Spatial Awareness System Profile",
+                "The Spatial Awareness System profile allows developers to configure cross-platform environmental awareness.");
 
-            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
-                return;
+                if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
+                {
+                    return;
+                }
             }
 
             EditorGUILayout.Space();
@@ -166,9 +162,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     }
                 }
 
-                if (changed)
+                if (MixedRealityToolkit.IsInitialized)
                 {
-                    EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
+                    if (changed)
+                    {
+                        EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
+                    }
                 }
             }
         }
