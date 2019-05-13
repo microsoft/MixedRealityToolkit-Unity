@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             EnsureProfileSettings();
 
             Vector3 lastPosition = currentPosition;
-            currentPosition = jointPositions[(int)TrackedHandJoint.IndexTip];
+            currentPosition = jointPoses[TrackedHandJoint.IndexTip].Position;
             cumulativeDelta += currentPosition - lastPosition;
             currentGripPose.Position = currentPosition;
 

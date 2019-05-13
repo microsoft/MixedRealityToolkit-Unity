@@ -6,23 +6,25 @@
 // Unity doesn't include the the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
-using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class TestFixture_01_SimplePlayModeTest
+    public class SimplePlayModeTests
     {
         [UnityTest]
         public IEnumerator Test01_WhizzySphere()
         {
             TestUtilities.InitializeMixedRealityToolkitScene(true);
 
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-            playspace.transform.position = new Vector3(1.0f, 1.5f, -2.0f);
-            playspace.transform.LookAt(Vector3.zero);
+            MixedRealityPlayspace.PerformTransformation(
+                p =>
+                {
+                    p.position = new Vector3(1.0f, 1.5f, -2.0f);
+                    p.LookAt(Vector3.zero);
+                });
 
             var testLight = new GameObject("TestLight");
             var light = testLight.AddComponent<Light>();
@@ -51,6 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return new WaitForFixedUpdate();
             }
             stopwatch.Stop();
+
+            GameObject.Destroy(testLight);
+            GameObject.Destroy(testObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
         }
     }
 }

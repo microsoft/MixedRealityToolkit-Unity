@@ -20,16 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         public MixedRealityBoundarySystem(
             IMixedRealityServiceRegistrar registrar,
             MixedRealityBoundaryVisualizationProfile profile,
-            Transform playspace,
             ExperienceScale scale) : base(registrar, profile)
         {
             Scale = scale;
-
-            if (playspace == null)
-            {
-                Debug.LogError("The MixedRealityBoundarySystem object requires a valid playspace Transform.");
-            }
-            Playspace = playspace;
         }
 
         #region IMixedRealityService Implementation
@@ -259,13 +252,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         #region IMixedRealityBoundarySystem Implementation
 
         /// <summary>
-        /// The transform of the playspace scene object. We use this transform to parent
-        /// boundary visualizations that teleport with the user and to perform calculations
-        /// to ensure proper alignment with the world.
-        /// </summary>
-        private Transform Playspace = null;
-
-        /// <summary>
         /// The thickness of three dimensional generated boundary objects.
         /// </summary>
         private const float boundaryObjectThickness = 0.005f;
@@ -293,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 }
 
                 var visualizationParent = new GameObject("Boundary System Visualizations");
-                visualizationParent.transform.parent = Playspace;
+                MixedRealityPlayspace.AddChild(visualizationParent.transform);
                 return boundaryVisualizationParent = visualizationParent;
             }
         }
@@ -590,7 +576,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
 
             // Handle the user teleporting (boundary moves with them).
-            location = Playspace.InverseTransformPoint(location);
+            location = MixedRealityPlayspace.InverseTransformPoint(location);
 
             if (FloorHeight.Value > location.y ||
                 BoundaryHeight < location.y)
@@ -633,7 +619,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
 
             // Handle the user teleporting (boundary moves with them).
-            Vector3 transformedCenter = Playspace.TransformPoint(
+            Vector3 transformedCenter = MixedRealityPlayspace.TransformPoint(
                 new Vector3(rectangularBounds.Center.x, 0f, rectangularBounds.Center.y));
 
             center = new Vector2(transformedCenter.x, transformedCenter.z);
@@ -669,9 +655,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             currentFloorObject.name = "Boundary System Floor";
             currentFloorObject.transform.localScale = new Vector3(floorScale.x, boundaryObjectThickness, floorScale.y);
             currentFloorObject.transform.Translate(new Vector3(
-                Playspace.position.x,
+                MixedRealityPlayspace.Position.x,
                 FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f),
-                Playspace.position.z));
+                MixedRealityPlayspace.Position.z));
             currentFloorObject.layer = FloorPhysicsLayer;
             currentFloorObject.GetComponent<Renderer>().sharedMaterial = profile.FloorMaterial;
 
@@ -756,9 +742,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             currentTrackedAreaObject.layer = ignoreRaycastLayerValue;
             currentTrackedAreaObject.AddComponent<LineRenderer>();
             currentTrackedAreaObject.transform.Translate(new Vector3(
-                Playspace.position.x,
+                MixedRealityPlayspace.Position.x,
                 boundaryObjectRenderOffset,
-                Playspace.position.z));
+                MixedRealityPlayspace.Position.z));
             currentPlayAreaObject.layer = TrackedAreaPhysicsLayer;
 
             // Configure the renderer properties.

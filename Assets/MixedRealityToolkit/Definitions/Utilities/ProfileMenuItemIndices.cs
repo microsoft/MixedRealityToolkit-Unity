@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         InputSimulation,
         HandTracking,
         EyeTracking,
+        MouseInput,
 
         Assembly = 99
     }
