@@ -32,7 +32,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
 
+        /// <summary>
+        /// Number of IMixedRealityNearPointers that are active (IsInteractionEnabled == true).
+        /// </summary>
         public int NumNearPointersActive { get; private set; }
+
+        /// <summary>
+        /// The number of pointers that support far interaction (like motion controller rays, hand rays) that 
+        /// are active (IsInteractionEnabled == true), excluding the gaze cursor
+        /// </summary>
         public int NumFarPointersActive { get; private set; }
         
 
