@@ -13,7 +13,6 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 * **Supports a wide range of platforms**, including
   * Microsoft HoloLens
   * Microsoft HoloLens 2
-  * Microsoft Immersive headsets (IHMD)
   * Windows Mixed Reality headsets
   * OpenVR headsets (HTC Vive / Oculus Rift)
 
