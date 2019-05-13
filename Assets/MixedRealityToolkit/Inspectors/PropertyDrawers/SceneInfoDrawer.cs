@@ -1,4 +1,5 @@
-﻿using Boo.Lang;
+﻿using System;
+using Boo.Lang;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -20,6 +21,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// We could add an enum or bool to the SceneInfo struct to control this, but that seemed like unnecessary clutter.
         /// </summary>
         public static bool DrawTagProperty { get; set; }
+
+        /// <summary>
+        /// Cache our editor build settings scenes every so often 
+        /// so we're not loading them once per property draw call
+        /// </summary>
+        private static EditorBuildSettingsScene[] cachedScenes = new EditorBuildSettingsScene[0];
+        private static float cachedSceneCheckTime;
+        const float cachedScenesCheckInterval = 0.25f;
 
         const float iconWidth = 20f;
         const float totalPropertyWidth = 410;
@@ -55,11 +64,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public static void DrawProperty(Rect position, SerializedProperty property, GUIContent label, bool isActive = false, bool isSelected = false)
         {
+            // Make sure our cached scenes are up to date
+            if (cachedSceneCheckTime < Time.realtimeSinceStartup)
+            {
+                cachedSceneCheckTime = Time.realtimeSinceStartup + cachedScenesCheckInterval;
+                cachedScenes = EditorBuildSettings.scenes;
+            }
+
             SerializedProperty assetProperty = property.FindPropertyRelative("Asset");
             SerializedProperty nameProperty = property.FindPropertyRelative("Name");
             SerializedProperty pathProperty = property.FindPropertyRelative("Path");
             SerializedProperty buildIndexProperty = property.FindPropertyRelative("BuildIndex");
-            SerializedProperty enabledProperty = property.FindPropertyRelative("Enabled");
+            SerializedProperty includedProperty = property.FindPropertyRelative("Included");
             SerializedProperty tagProperty = property.FindPropertyRelative("Tag");
 
             // Set up our properties and settings
@@ -105,6 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             UnityEngine.Object asset = assetProperty.objectReferenceValue;
 
+            if (!Application.isPlaying && !EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isCompiling)
+            {   // This is expensive so don't refresh during play mode or while other stuff is going on
+                changed = RefreshSceneInfo(asset, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty);
+            }
+
             GUIContent labelContent = null;
             GUIContent iconContent = null;
             italicStyle.fontStyle = FontStyle.Normal;
@@ -133,9 +154,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             else
             {
-                if (buildIndexProperty.intValue >= 0)
+                if (includedProperty.boolValue)
                 {
-                    if (enabledProperty.boolValue)
+                    if (buildIndexProperty.intValue >= 0)
                     {
                         labelContent = new GUIContent(" Build index: " + buildIndexProperty.intValue);
                         labelContent.tooltip = "This scene is in build settings at index " + buildIndexProperty.intValue;
@@ -143,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                     else
                     {
-                        labelContent = new GUIContent(" Build index: " + buildIndexProperty.intValue + " (Disabled)");
+                        labelContent = new GUIContent(" (Disabled)");
                         labelContent.tooltip = "This scene is in build settings at index " + buildIndexProperty.intValue + ", but it has been disabled and will not be available to load.";
                         iconContent = EditorGUIUtility.IconContent(disabledIconContent);
                     }
@@ -181,41 +202,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // The scene is missing - draw a button that lets people attempt to recover it
                 if (GUI.Button(buttonRect, "Search for missing scene", EditorStyles.toolbarButton))
                 {
-                    SceneAsset newSceneAsset = null;
-                    // Attempt to load via the scene path
-                    newSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(pathProperty.stringValue);
-                    if (newSceneAsset != null)
-                    {
-                        Debug.Log("Found scene at path " + pathProperty.stringValue);
-                        asset = newSceneAsset;
-                    }
-                    else
-                    {
-                        // If we didn't find it this way, search for all scenes in the project and try a name match
-                        foreach (string sceneGUID in AssetDatabase.FindAssets("t:Scene"))
-                        {
-                            string scenePath = AssetDatabase.GUIDToAssetPath(sceneGUID);
-                            string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
-
-                            Debug.Log("Checking scene " + sceneName + " at " + scenePath);
-
-                            if (sceneName == nameProperty.stringValue)
-                            {
-                                newSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(pathProperty.stringValue);
-                                if (newSceneAsset != null)
-                                {
-                                    Debug.Log("Found scene at path " + scenePath);
-                                    asset = newSceneAsset;
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                   changed |= FindScene(nameProperty, pathProperty, ref asset);
                 }
             }
             else
             {
-                if (buildIndexProperty.intValue < 0)
+                // It's not included in build settings
+                if (!includedProperty.boolValue)
                 {
                     // The scene exists but it isn't in our build settings
                     // Show a button that lets us add it
@@ -223,21 +216,43 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
                         scenes.Add(new EditorBuildSettingsScene(pathProperty.stringValue, true));
-                        enabledProperty.boolValue = true;
-                        EditorBuildSettings.scenes = scenes.ToArray();
+                        includedProperty.boolValue = true;
+                        cachedScenes = scenes.ToArray();
+                        EditorBuildSettings.scenes = cachedScenes;
                         changed = true;
                     }
                 }
                 else
                 {
+                    bool enabledInBuild = buildIndexProperty.intValue >= 0;
                     // The scene exists and is in build settings
-                    // Show add / remove toggle
-                    if (GUI.Button(buttonRect, enabledProperty.boolValue ? "Disable in build settings" : "Enable in build settings", EditorStyles.toolbarButton))
+                    // Show enable / disable toggle
+                    if (GUI.Button(buttonRect, enabledInBuild ? "Disable in build settings" : "Enable in build settings", EditorStyles.toolbarButton))
                     {
-                        enabledProperty.boolValue = !enabledProperty.boolValue;
-                        EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
-                        scenes[buildIndexProperty.intValue].enabled = enabledProperty.boolValue;
-                        EditorBuildSettings.scenes = scenes;
+                        enabledInBuild = !enabledInBuild;
+                        // Find the scene in our build settings and enable / disable it
+                        cachedScenes = EditorBuildSettings.scenes;
+                        int sceneCount = 0;
+                        int buildIndex = -1;
+                        for (int i = 0; i < cachedScenes.Length; i++)
+                        {
+                            if (cachedScenes[i].path == pathProperty.stringValue)
+                            {
+                                cachedScenes[i].enabled = enabledInBuild;
+                                if (cachedScenes[i].enabled)
+                                {   // Only store the build index if it's enabled
+                                    buildIndex = sceneCount;
+                                }
+                                break;
+                            }
+
+                            if (cachedScenes[i].enabled)
+                            {   // Disabled scenes don't count toward scene count
+                                sceneCount++;
+                            }
+                        }
+                        EditorBuildSettings.scenes = cachedScenes;
+                        buildIndexProperty.intValue = buildIndex;
                         changed = true;
                     }
                 }
@@ -250,11 +265,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 changed = true;
             }
 
-            if (!Application.isPlaying && !EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isCompiling)
-            {   // This is expensive so don't refresh during play mode or while other stuff is going on
-                changed |= RefreshSceneInfo(asset, nameProperty, pathProperty, buildIndexProperty, enabledProperty, tagProperty);
-            }
-
             if (changed)
             {
                 property.serializedObject.ApplyModifiedProperties();
@@ -263,6 +273,41 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUIUtility.wideMode = lastMode;
             EditorGUI.indentLevel = lastIndentLevel;
             EditorGUI.EndProperty();
+        }
+
+        private static bool FindScene(SerializedProperty nameProperty, SerializedProperty pathProperty, ref UnityEngine.Object asset)
+        {
+            // Attempt to load via the scene path
+            SceneAsset newSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(pathProperty.stringValue);
+            if (newSceneAsset != null)
+            {
+                Debug.Log("Found missing scene at path " + pathProperty.stringValue);
+                asset = newSceneAsset;
+                return true;
+            }
+            else
+            {
+                // If we didn't find it this way, search for all scenes in the project and try a name match
+                foreach (string sceneGUID in AssetDatabase.FindAssets("t:Scene"))
+                {
+                    string scenePath = AssetDatabase.GUIDToAssetPath(sceneGUID);
+                    string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+
+                    if (sceneName == nameProperty.stringValue)
+                    {
+                        pathProperty.stringValue = scenePath;
+                        newSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
+                        if (newSceneAsset != null)
+                        {
+                            Debug.Log("Found missing scene at path " + scenePath);
+                            asset = newSceneAsset;
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         private static bool RefreshSceneInfo(
@@ -302,20 +347,37 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     changed = true;
                 }
 
-                Scene scene = EditorSceneManager.GetSceneByPath(scenePath);
-                int buildIndex = scene.buildIndex;
-                if (buildIndexProperty.intValue != buildIndex)
+                // This method is no longer reliable
+                // so we're using out cached scenes instead
+                //Scene scene = EditorSceneManager.GetSceneByPath(scenePath);
+                //int buildIndex = scene.buildIndex;
+
+                int buildIndex = -1;
+                int sceneCount = 0;
+                bool included = false;
+                for (int i = 0; i < cachedScenes.Length; i++)
+                {
+                    if (cachedScenes[i].path == scenePath)
+                    {   // If it's in here it's included, even if it's not enabled
+                        included = true;
+                        if (cachedScenes[i].enabled)
+                        {   // Only store the build index if it's enabled
+                            buildIndex = sceneCount;
+                        }
+                    }
+
+                    if (cachedScenes[i].enabled)
+                    {   // Disabled scenes don't count toward scene count
+                        sceneCount++;
+                    }
+                }
+
+                if (buildIndex != buildIndexProperty.intValue)
                 {
                     buildIndexProperty.intValue = buildIndex;
                     changed = true;
                 }
 
-                bool included = false;
-                if (buildIndex >= 0)
-                {
-                    EditorBuildSettingsScene buildSettingsScene = EditorBuildSettings.scenes[buildIndex];
-                    included = buildSettingsScene.enabled;
-                }
                 if (included != includedProperty.boolValue)
                 {
                     includedProperty.boolValue = included;

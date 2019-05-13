@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.SceneSystem
 {
@@ -23,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         /// <param name="scenesToLoad"></param>
         /// <returns></returns>
-        Task LoadContent(IEnumerable<string> scenesToLoad);
+        Task LoadContent(IEnumerable<string> scenesToLoad, LoadSceneMode mode = LoadSceneMode.Additive);
 
         /// <summary>
         /// Async method to unload the scenes by name. Will do nothing if a scene operation is already in progress.
@@ -37,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         /// <param name="sceneToLoad"></param>
         /// <returns></returns>
-        Task LoadContent(string sceneToLoad);
+        Task LoadContent(string sceneToLoad, LoadSceneMode mode = LoadSceneMode.Additive);
 
         /// <summary>
         /// Async method to unload a single scene by name. Will do nothing if a scene operation is already in progress.
@@ -51,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         /// <param name="tag"></param>
         /// <returns></returns>
-        Task LoadContentByTag(string tag);
+        Task LoadContentByTag(string tag, LoadSceneMode mode = LoadSceneMode.Additive);
 
         /// <summary>
         /// Async method to unload scenes by tag. Will do nothing if a scene operation is already in progress.

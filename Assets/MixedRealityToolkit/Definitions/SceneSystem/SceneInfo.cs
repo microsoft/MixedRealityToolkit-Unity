@@ -30,7 +30,15 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         {
             get
             {
-                return Asset != null && BuildIndex >= 0;
+                return Asset != null && Included;
+            }
+        }
+
+        public bool IsEnabled
+        {
+            get
+            {
+                return IsInBuildSettings & BuildIndex >= 0;
             }
         }
         
@@ -47,13 +55,14 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public string Path;
 
         /// <summary>
-        /// True if scene is included in build (not just added to build settings, but also checked)
+        /// True if scene is included in build (NOT necessarily enabled)
         /// </summary>
         [HideInInspector]
-        public bool Enabled;
+        public bool Included;
 
         /// <summary>
-        /// Build index of the scene. Set by the property drawer.
+        /// Build index of the scene. If included in build settings and enabled, this will be a value greater than zero.
+        /// If not included or disabled, this will be -1
         /// </summary>
         [HideInInspector]
         public int BuildIndex;

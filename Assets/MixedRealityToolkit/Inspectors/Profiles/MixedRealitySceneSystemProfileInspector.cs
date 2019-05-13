@@ -30,7 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty lightingScenes;
 
         private static bool showEditorProperties = true;
-        private SerializedProperty manageBuildSettings;
 
         protected override void OnEnable()
         {
@@ -49,8 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             lightingScenes = serializedObject.FindProperty("lightingScenes");
 
             contentScenes = serializedObject.FindProperty("contentScenes");
-
-            manageBuildSettings = serializedObject.FindProperty("manageBuildSettings");
         }
 
         private void OnSelecteContentScene(ReorderableList list)
@@ -89,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    EditorGUILayout.PropertyField(manageBuildSettings);
+                    // TBD
                 }
             }
 

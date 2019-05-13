@@ -22,9 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 #if UNITY_EDITOR
         private bool updatingSettingsOnEditorChanged = false;
         private const float lightingUpdateInterval = 5f;
-        private const float editorSettingsUpdateInterval = 2.5f;
-        private float timeSinceLastEditorSettingsUpdate = 0;
-        private float timeSinceLastLightingUpdate = 0;
+        // These get set to dirty based on what we're doing in editor
+        private bool activeSceneDirty = false;
+        private bool buildSettingsDirty = false;
+        private bool heirarchyDirty = false;
+        // Cache these so we're not looking them up constantly
+        private EditorBuildSettingsScene[] cachedBuildScenes = new EditorBuildSettingsScene[0];
 
         private enum BuildIndexTarget
         {
@@ -44,12 +47,16 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             EditorSceneManager.newSceneCreated += EditorSceneManagerNewSceneCreated;
             EditorSceneManager.sceneOpened += EditorSceneManagerSceneOpened;
             EditorSceneManager.sceneClosed += EditorSceneManagerSceneClosed;
-            EditorSceneManager.activeSceneChangedInEditMode += EditorSceneManagerActiveSceneChangedInEditMode;
 
             UpdateBuildSettings();
         }
 
         #region update triggers from editor events
+
+        private void EditorApplicationUpdate()
+        {
+            CheckForChanges();
+        }
 
         private void EditorApplicationPlayModeStateChanged(PlayModeStateChange change)
         {
@@ -57,70 +64,68 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             {
                 case PlayModeStateChange.EnteredEditMode:
                 case PlayModeStateChange.ExitingPlayMode:
-                    UpdateSettingsOnEditorChanged(false);
+                    heirarchyDirty = true;
+                    buildSettingsDirty = true;
                     break;
             }
         }
 
-        private void EditorSceneManagerActiveSceneChangedInEditMode(Scene prevActiveScene, Scene newActiveScene)
-        {
-            // Don't change the active scene in this case.
-            // Otherwise we may usurp the creation of a new scene
-            // and steal its newly created camera and directional light
-            UpdateSettingsOnEditorChanged(false);
-        }
-
         private void EditorApplicationHeirarcyChanged()
         {
-            UpdateSettingsOnEditorChanged(true);
+            heirarchyDirty = true;
+            activeSceneDirty = true;
         }
 
         private void EditorApplicationProjectChanged()
         {
-            UpdateSettingsOnEditorChanged(true);
-        }
-
-        private void EditorApplicationUpdate()
-        {
-            if (Time.realtimeSinceStartup - timeSinceLastEditorSettingsUpdate > editorSettingsUpdateInterval)
-            {
-                timeSinceLastEditorSettingsUpdate = Time.realtimeSinceStartup;
-                UpdateSettingsOnEditorChanged(true);
-            }
+            buildSettingsDirty = true;
         }
 
         private void EditorSceneManagerSceneClosed(Scene scene)
         {
-            UpdateSettingsOnEditorChanged(true);
+            activeSceneDirty = true;
         }
 
         private void EditorSceneManagerSceneOpened(Scene scene, OpenSceneMode mode)
         {
-            UpdateSettingsOnEditorChanged(true);
+            activeSceneDirty = true;
         }
 
         private void EditorSceneManagerNewSceneCreated(Scene scene, NewSceneSetup setup, NewSceneMode mode)
         {
-            UpdateSettingsOnEditorChanged(true);
+            activeSceneDirty = true;
         }
 
         #endregion
 
-        private void UpdateSettingsOnEditorChanged(bool updateActiveScene = true)
+        private void CheckForChanges()
         {
             if (updatingSettingsOnEditorChanged || EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling)
             {   // Make sure we don't double up on our updates via events we trigger during updates
                 return;
             }
 
+            cachedBuildScenes = EditorBuildSettings.scenes;
+
             updatingSettingsOnEditorChanged = true;
-            
+
             // Update editor settings
-            UpdateBuildSettings();
-            UpdateManagerScene();
-            UpdateLightingScene(updateActiveScene);
+            if (buildSettingsDirty)
+            {
+                UpdateBuildSettings();
+            }
+
+            if (activeSceneDirty || heirarchyDirty)
+            {
+                UpdateManagerScene();
+                UpdateLightingScene(activeSceneDirty);
+            }
 
             updatingSettingsOnEditorChanged = false;
+
+            buildSettingsDirty = false;
+            heirarchyDirty = false;
+            activeSceneDirty = false;
         }
 
         /// <summary>
@@ -166,58 +171,55 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             if (profile.UseLightingScene && updateActiveScene)
             {
                 // Only update this once in a while to avoid being obnoxious
-                if (Time.realtimeSinceStartup - timeSinceLastLightingUpdate > lightingUpdateInterval)
-                {
-                    timeSinceLastLightingUpdate = Time.realtimeSinceStartup;
-
-                    foreach (SceneInfo lso in profile.LightingScenes)
-                    {   // Make sure ALL lighting scenes are added to build settings
-                        if (lso.Name == lightingSceneName)
+                foreach (SceneInfo lightingScene in profile.LightingScenes)
+                {   // Make sure ALL lighting scenes are added to build settings
+                    if (lightingScene.Name == lightingSceneName)
+                    {
+                        if (LoadSceneInEditor(lightingScene.Asset, false, out Scene editorScene) && updateActiveScene)
                         {
-                            if (LoadSceneInEditor(lso.Asset, false, out Scene editorScene) && updateActiveScene)
+                            try
                             {
-                                try
-                                {
-                                    EditorSceneManager.SetActiveScene(editorScene);
-                                }
-                                catch (ArgumentException)
-                                {
-                                    // This can happen if we try to set an invalid scene active.
-                                }
+                                EditorSceneManager.SetActiveScene(editorScene);
+                            }
+                            catch (ArgumentException)
+                            {
+                                // This can happen if we try to set an invalid scene active.
                             }
                         }
-                        else
-                        {
-                            UnloadSceneInEditor(lso.Asset);
-                        }
+                    }
+                    else
+                    {
+                        UnloadSceneInEditor(lightingScene.Asset);
                     }
                 }
             }
         }
-        
+
         private void UpdateBuildSettings()
         {
-            if (!profile.ManageBuildSettings)
-            {   // Nothing to do here
-                return;
-            }
+            bool changedScenes = false;
 
             if (profile.UseManagerScene)
             {
-                AddSceneToBuildSettings(profile.ManagerScene.Asset, BuildIndexTarget.First);
+                changedScenes |= AddSceneToBuildSettings(profile.ManagerScene.Asset, BuildIndexTarget.First);
             }
 
             foreach (SceneInfo contentScene in profile.ContentScenes)
             {
-                AddSceneToBuildSettings(contentScene.Asset, BuildIndexTarget.None);
+                changedScenes |= AddSceneToBuildSettings(contentScene.Asset, BuildIndexTarget.None);
             }
 
             if (profile.UseLightingScene)
             {
                 foreach (SceneInfo lightingScene in profile.LightingScenes)
                 {   // Make sure ALL lighting scenes are added to build settings
-                    AddSceneToBuildSettings(lightingScene.Asset, BuildIndexTarget.Last);
+                    changedScenes |= AddSceneToBuildSettings(lightingScene.Asset, BuildIndexTarget.Last);
                 }
+            }
+
+            if (changedScenes)
+            {   // If we made changes, cache the build scenes again
+                cachedBuildScenes = EditorBuildSettings.scenes;
             }
 
             CheckBuildSettingsForDuplicates();
@@ -313,11 +315,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         /// <param name="sceneObject">Scene object reference.</param>
         /// <param name="setAsFirst">Sets as first scene to be loaded.</param>
-        private static void AddSceneToBuildSettings(UnityEngine.Object sceneObject, BuildIndexTarget buildIndexTarget = BuildIndexTarget.None)
+        private static bool AddSceneToBuildSettings(UnityEngine.Object sceneObject, BuildIndexTarget buildIndexTarget = BuildIndexTarget.None)
         {
             if (sceneObject == null)
             {   // Can't add a null scene to build settings
-                return;
+                return false;
             }
 
             long localID;
@@ -325,21 +327,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(sceneObject, out managerGuidString, out localID);
             GUID sceneGuid = new GUID(managerGuidString);
 
+            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
             // See if / where the scene exists in build settings
-            int buildIndex = -1;
-            for (int i = 0; i < EditorSceneManager.sceneCountInBuildSettings; i++)
-            {
-                if (EditorBuildSettings.scenes[i].guid == sceneGuid)
-                {
-                    buildIndex = i;
-                    break;
-                }
-            }
+            int buildIndex = GetSceneBuildIndex(sceneGuid, scenes);
 
             if (buildIndex < 0)
             {
                 // It doesn't exist in the build settings, add it now
-                List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
                 switch (buildIndexTarget)
                 {
                     case BuildIndexTarget.First:
@@ -355,6 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 }
 
                 EditorBuildSettings.scenes = scenes.ToArray();
+                return true;
             }
             else
             {
@@ -366,31 +361,49 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         {
                             Debug.LogWarning("Scene '" + sceneObject.name + "' was not first in build order. Changing build settings now.");
 
-                            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
                             scenes.RemoveAt(buildIndex);
                             scenes.Insert(0, new EditorBuildSettingsScene(sceneGuid, true));
                             EditorBuildSettings.scenes = scenes.ToArray();
                         }
-                        break;
+                        return true;
 
                     case BuildIndexTarget.Last:
                         if (buildIndex != EditorSceneManager.sceneCountInBuildSettings - 1)
                         {
-                            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
                             scenes.RemoveAt(buildIndex);
                             scenes.Insert(scenes.Count - 1, new EditorBuildSettingsScene(sceneGuid, true));
-
                             EditorBuildSettings.scenes = scenes.ToArray();
                         }
-                        break;
+                        return true;
 
                     case BuildIndexTarget.None:
                     default:
                         // Do nothing
-                        break;
+                        return false;
 
                 }
             }
+        }
+
+        private static int GetSceneBuildIndex(GUID sceneGUID, List<EditorBuildSettingsScene> scenes)
+        {
+            int buildIndex = -1;
+            int sceneCount = 0;
+            for (int i = 0; i < scenes.Count; i++)
+            {
+                if (scenes[i].guid == sceneGUID)
+                {
+                    buildIndex = sceneCount;
+                    break;
+                }
+
+                if (scenes[i].enabled)
+                {
+                    sceneCount++;
+                }
+            }
+
+            return buildIndex;
         }
 
         /// <summary>

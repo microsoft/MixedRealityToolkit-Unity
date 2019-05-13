@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         /// <inheritdoc />
-        public async Task LoadContent(string sceneToLoad)
+        public async Task LoadContent(string sceneToLoad, LoadSceneMode mode = LoadSceneMode.Additive)
         {
             await LoadContent(new string[] { sceneToLoad });
         }
@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         /// <inheritdoc />
-        public async Task LoadContent(IEnumerable<string> scenesToLoad)
+        public async Task LoadContent(IEnumerable<string> scenesToLoad, LoadSceneMode mode = LoadSceneMode.Additive)
         {
             if (SceneOpInProgress)
             {
@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         /// <inheritdoc />
-        public async Task LoadContentByTag(string tag)
+        public async Task LoadContentByTag(string tag, LoadSceneMode mode = LoadSceneMode.Additive)
         {
             await LoadContent(profile.GetContentSceneNamesByTag(tag));
         }
@@ -309,9 +309,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             lightingSceneName = newLightingSceneName;
-
-            timeSinceLastLightingUpdate = 0;
-            timeSinceLastEditorSettingsUpdate = 0;
 
             if (Application.isPlaying)
             {
