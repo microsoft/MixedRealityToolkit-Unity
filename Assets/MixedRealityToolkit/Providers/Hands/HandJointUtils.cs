@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var hand = detectedController as T;
                 if (hand != null)
                 {
-                    if (detectedController.ControllerHandedness == handedness)
+                    if ((detectedController.ControllerHandedness & handedness) != 0)
                     {
                         return hand;
                     }
