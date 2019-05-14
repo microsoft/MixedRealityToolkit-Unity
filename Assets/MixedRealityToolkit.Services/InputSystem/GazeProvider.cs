@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityGazeProvider,
         IMixedRealityEyeGazeProvider,
         IMixedRealityInputHandler,
+        IMixedRealityInputHandler<Vector2>,
         IMixedRealityInputHandler<MixedRealityPose>
     {
         private const float VelocityThreshold = 0.1f;
@@ -392,6 +393,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     gazeProvider.InputSystem?.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
                 }
             }
+            public void OnInputChanged(InputEventData<Vector2> eventData)
+            {
+                if (dragInputSource != null && dragInputSource == eventData.InputSource && eventData.MixedRealityInputAction == pointerDragAction)
+                {
+                    dragPose.rotation = dragPose.rotation * Quaternion.Euler(0, eventData.InputData.x, 0);
+
+                    // REMOVE
+                    Debug.DrawRay(Position, Rotation * Vector3.forward, Color.green);
+                }
+            }
 
             public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
             {
@@ -547,6 +558,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
             }
+        }
+        public void OnInputChanged(InputEventData<Vector2> eventData)
+        {
+            gazePointer.OnInputChanged(eventData);
         }
 
         public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
