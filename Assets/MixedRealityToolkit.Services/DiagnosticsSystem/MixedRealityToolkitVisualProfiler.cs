@@ -47,6 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             set { isVisible = value; }
         }
 
+        [SerializeField, Tooltip("Should memory stats (used, peak, and limit) be displayed.")]
+        private bool displayMemoryStats = true;
+
         [SerializeField, Tooltip("The amount of time, in seconds, to collect frames for frame rate calculation.")]
         private float frameSampleRate = 0.1f;
 
@@ -106,17 +109,15 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             public Color color;
         }
 
-        [SerializeField, Tooltip("A list of colors to display for differerent percentage of target frame rates.")]
+        [SerializeField, Tooltip("A list of colors to display for different percentage of target frame rates.")]
         private FrameRateColor[] frameRateColors = new FrameRateColor[] 
         {
             // Green
             new FrameRateColor() { percentageOfTarget = 0.95f, color = new Color(127 / 256.0f, 186 / 256.0f, 0 / 256.0f, 1.0f) },
             // Yellow
-            new FrameRateColor() { percentageOfTarget = 0.8f, color = new Color(255 / 256.0f, 185 / 256.0f, 0 / 256.0f, 1.0f) },
-            // Orange
-            new FrameRateColor() { percentageOfTarget = 0.7f, color = new Color(242 / 256.0f, 80 / 256.0f, 34 / 256.0f, 1.0f) },
-            // Grey
-            new FrameRateColor() { percentageOfTarget = 0.0f, color = new Color(128 / 256.0f, 128 / 256.0f, 128 / 256.0f, 1.0f) },
+            new FrameRateColor() { percentageOfTarget = 0.75f, color = new Color(255 / 256.0f, 185 / 256.0f, 0 / 256.0f, 1.0f) },
+            // Red
+            new FrameRateColor() { percentageOfTarget = 0.0f, color = new Color(255 / 256.0f, 0 / 256.0f, 0 / 256.0f, 1.0f) },
         };
 
         [SerializeField, Tooltip("The color of the window backplate.")]
@@ -327,42 +328,45 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Update memory statistics.
-            ulong limit = AppMemoryUsageLimit;
-
-            if (limit != limitMemoryUsage)
+            if (displayMemoryStats && usedMemoryText != null)
             {
-                if (window.activeSelf && WillDisplayedMemoryUsageDiffer(limitMemoryUsage, limit, displayedDecimalDigits))
+                ulong limit = AppMemoryUsageLimit;
+
+                if (limit != limitMemoryUsage)
                 {
-                    MemoryUsageToString(stringBuffer, displayedDecimalDigits, limitMemoryText, limitMemoryString, limit);
+                    if (window.activeSelf && WillDisplayedMemoryUsageDiffer(limitMemoryUsage, limit, displayedDecimalDigits))
+                    {
+                        MemoryUsageToString(stringBuffer, displayedDecimalDigits, limitMemoryText, limitMemoryString, limit);
+                    }
+
+                    limitMemoryUsage = limit;
                 }
 
-                limitMemoryUsage = limit;
-            }
+                ulong usage = AppMemoryUsage;
 
-            ulong usage = AppMemoryUsage;
-
-            if (usage != memoryUsage)
-            {
-                usedAnchor.localScale = new Vector3((float)usage / limitMemoryUsage, usedAnchor.localScale.y, usedAnchor.localScale.z);
-
-                if (window.activeSelf && WillDisplayedMemoryUsageDiffer(memoryUsage, usage, displayedDecimalDigits))
+                if (usage != memoryUsage)
                 {
-                    MemoryUsageToString(stringBuffer, displayedDecimalDigits, usedMemoryText, usedMemoryString, usage);
+                    usedAnchor.localScale = new Vector3((float)usage / limitMemoryUsage, usedAnchor.localScale.y, usedAnchor.localScale.z);
+
+                    if (window.activeSelf && WillDisplayedMemoryUsageDiffer(memoryUsage, usage, displayedDecimalDigits))
+                    {
+                        MemoryUsageToString(stringBuffer, displayedDecimalDigits, usedMemoryText, usedMemoryString, usage);
+                    }
+
+                    memoryUsage = usage;
                 }
 
-                memoryUsage = usage;
-            }
-
-            if (memoryUsage > peakMemoryUsage)
-            {
-                peakAnchor.localScale = new Vector3((float)memoryUsage / limitMemoryUsage, peakAnchor.localScale.y, peakAnchor.localScale.z);
-
-                if (window.activeSelf && WillDisplayedMemoryUsageDiffer(peakMemoryUsage, memoryUsage, displayedDecimalDigits))
+                if (memoryUsage > peakMemoryUsage)
                 {
-                    MemoryUsageToString(stringBuffer, displayedDecimalDigits, peakMemoryText, peakMemoryString, memoryUsage);
-                }
+                    peakAnchor.localScale = new Vector3((float)memoryUsage / limitMemoryUsage, peakAnchor.localScale.y, peakAnchor.localScale.z);
 
-                peakMemoryUsage = memoryUsage;
+                    if (window.activeSelf && WillDisplayedMemoryUsageDiffer(peakMemoryUsage, memoryUsage, displayedDecimalDigits))
+                    {
+                        MemoryUsageToString(stringBuffer, displayedDecimalDigits, peakMemoryText, peakMemoryString, memoryUsage);
+                    }
+
+                    peakMemoryUsage = memoryUsage;
+                }
             }
 
             window.SetActive(isVisible);
@@ -477,6 +481,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Add memory usage text and bars.
+            if (displayMemoryStats)
             {
                 usedMemoryText = CreateText("UsedMemoryText", new Vector3(-0.495f, 0.0f, 0.0f), window.transform, TextAnchor.UpperLeft, textMaterial, memoryUsedColor, usedMemoryString);
                 peakMemoryText = CreateText("PeakMemoryText", new Vector3(0.0f, 0.0f, 0.0f), window.transform, TextAnchor.UpperCenter, textMaterial, memoryPeakColor, peakMemoryString);
