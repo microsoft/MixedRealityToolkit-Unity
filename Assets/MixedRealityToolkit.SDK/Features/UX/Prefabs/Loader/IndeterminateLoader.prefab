@@ -350,8 +350,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667b8706f1f4d84458d01b20e174e2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplitude: 0.05
-  frequency: 3
+  amplitude: 0.022
+  frequency: 2.78
   dotOffset: 0.022
   dotSetScale: 0.022
   lFOsin: 0
@@ -361,8 +361,8 @@ MonoBehaviour:
   reverseOrbit: 1
   invertOrbitOffset: 0
   dotSpinMultiplier: -0.36
-  dotScaleMultipler: 0
-  sinCosSplitScale: 0
+  dotScaleMultipler: 0.008
+  sinCosSplitScale: 1
 --- !u!1 &5301649066244700767
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,8 +499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667b8706f1f4d84458d01b20e174e2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplitude: 0.05
-  frequency: 3
+  amplitude: 0.022
+  frequency: 2.78
   dotOffset: 0.022
   dotSetScale: 0.022
   lFOsin: 0
@@ -510,5 +510,5 @@ MonoBehaviour:
   reverseOrbit: 0
   invertOrbitOffset: 0
   dotSpinMultiplier: 0.36
-  dotScaleMultipler: 0
+  dotScaleMultipler: 0.008
   sinCosSplitScale: 0
