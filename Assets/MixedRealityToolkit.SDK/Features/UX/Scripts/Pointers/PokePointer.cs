@@ -157,11 +157,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                     {
-                        MixedRealityToolkit.InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
+                        InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
                     }
                     else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                     {
-                        MixedRealityToolkit.InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, touchPosition);
+                        InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, touchPosition);
                     }
                 }
             }
@@ -179,12 +179,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                 {
-                    MixedRealityToolkit.InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
-                    MixedRealityToolkit.InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
+                    InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
+                    InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
                 }
                 else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
-                    MixedRealityToolkit.InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, touchPosition);
+                    InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, touchPosition);
                 }
 
                 currentTouchableObjectDown = null;
@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
-                    MixedRealityToolkit.InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
+                    InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
                 }
             }
         }
