@@ -490,8 +490,6 @@ namespace Microsoft.MixedReality.Toolkit
 
             // This will create the playspace
             Transform playspace = MixedRealityPlayspace.Transform;
-            // Parent the camera under the playspace
-            CameraCache.Main.transform.parent = playspace;
 
             bool addedComponents = false;
             if (!Application.isPlaying)
