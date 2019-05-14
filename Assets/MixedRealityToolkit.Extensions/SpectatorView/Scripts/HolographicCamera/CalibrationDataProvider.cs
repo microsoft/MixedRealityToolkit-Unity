@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 #if !UNITY_EDITOR && UNITY_WSA
@@ -45,8 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
                 StorageFile file = (await KnownFolders.PicturesLibrary.TryGetItemAsync(@"CalibrationData.json").AsTask()) as StorageFile;
                 if (file != null)
                 {
-                    string contents = await FileIO.ReadTextAsync(file);
+                    byte[] contents = (await FileIO.ReadBufferAsync(file)).ToArray();
                     message.Write("CalibrationData");
+                    message.Write(contents.Length);
                     message.Write(contents);
                     tcpConnectionManager.Broadcast(memoryStream.ToArray());
                 }

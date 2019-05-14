@@ -22,7 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private const float trackingStalledReceiveDelay = 1.0f;
         private const float arUcoMarkerSizeInMeters = 0.1f;
         private float lastReceivedPoseTime = -1;
-        private readonly Dictionary<string, ICalibrationParser> calibrationParsers = new Dictionary<string, ICalibrationParser>();
 
         [SerializeField]
         private CompositionManager compositionManager = null;
@@ -95,11 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             }
         }
 
-        public void RegisterCalibrationParser(string calibrationType, ICalibrationParser parser)
-        {
-            calibrationParsers[calibrationType] = parser;
-        }
-
         /// <summary>
         /// Gets whether or not a network connection to the holographic camera is established.
         /// </summary>
@@ -153,12 +147,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                         break;
                     case "CalibrationData":
                         {
-                            string calibrationDataJson = reader.ReadString();
+                            int calibrationDataPayloadLength = reader.ReadInt32();
+                            byte[] calibrationDataPayload = reader.ReadBytes(calibrationDataPayloadLength);
 
-                            ICalibrationData calibrationData;
-                            if (CalibrationPackage.TryParseCalibration(calibrationDataJson, calibrationParsers, out calibrationData))
+                            CalculatedCameraCalibration calibration;
+                            if (CalculatedCameraCalibration.TryDeserialize(calibrationDataPayload, out calibration))
                             {
-                                compositionManager.EnableHolographicCamera(transform, calibrationData);
+                                compositionManager.EnableHolographicCamera(transform, new CalibrationData(calibration.Intrinsics, calibration.Extrinsics));
+                            }
+                            else
+                            {
+                                Debug.LogError("Received a CalibrationData packet from the HoloLens that could not be understood.");
                             }
                         }
                         break;
@@ -193,38 +192,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                 message.Write(arUcoMarkerSizeInMeters);
 
                 currentConnection.Send(memoryStream.ToArray());
-            }
-        }
-
-        [Serializable]
-        private class CalibrationPackage
-        {
-            public string calibrationType = null;
-            public string calibrationData = null;
-
-            public static bool TryParseCalibration(string calibrationDataJson, IDictionary<string, ICalibrationParser> calibrationParsers, out ICalibrationData calibrationData)
-            {
-                CalibrationPackage calibrationPackage = JsonUtility.FromJson<CalibrationPackage>(calibrationDataJson);
-
-                ICalibrationParser parser;
-                if (calibrationParsers.TryGetValue(calibrationPackage.calibrationType, out parser))
-                {
-                    if (parser.TryParse(calibrationPackage.calibrationData, out calibrationData))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        Debug.LogError("Failed to parse the received calibration data");
-                        return false;
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Received calibration data with no registered parser");
-                    calibrationData = null;
-                    return false;
-                }
             }
         }
     }
