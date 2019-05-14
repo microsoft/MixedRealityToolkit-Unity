@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 lateInitialize = false;
-                InputSystem?.Register(gameObject);
+                InputSystem.Register(gameObject);
             }
         }
 

@@ -33,8 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void LateUpdate()
         {
-            if (InputSystem == null) { return; }
-
             leftHand = null;
             rightHand = null;
 

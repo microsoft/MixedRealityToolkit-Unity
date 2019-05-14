@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (isDown)
                 {
-                    InputSystem?.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
+                    InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
                 }
             }
 
