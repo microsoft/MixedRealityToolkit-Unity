@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </remarks>
     public class LoaderController : MonoBehaviour
     {
+
         /// <summary>
         /// Total strength of momvent of the loading animation
         /// </summary>
@@ -65,7 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => dotSetScale = value;
         }
 
-
         /// <summary>
         /// Use low frequency oscilation with the Sine calculation.
         /// </summary>
@@ -92,7 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => lFOcos = value;
         }
 
-
         /// <summary>
         /// Low Frequency oscilation frequency 
         /// </summary>
@@ -105,7 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => lFOfreq;
             set => lFOfreq = value;
         }
-
 
         /// <summary>
         /// Low Frequency oscilation amplitude 
@@ -120,7 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => lFOamp = value;
         }
 
-
         /// <summary>
         /// Reverses dots' orbit rotation path
         /// </summary>
@@ -133,7 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => reverseOrbit;
             set => reverseOrbit = value;
         }
-
 
         /// <summary>
         /// Inverts dots' position in orbit
@@ -148,7 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => invertOrbitOffset = value;
         }
 
-
         /// <summary>
         /// Multiplier to dot's rotation calculation
         /// </summary>
@@ -162,14 +157,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => dotSpinMultiplier = value;
         }
 
-
         /// <summary>
         /// Multiplier to dot's scale calculation
         /// </summary>
         [SerializeField]
         [Tooltip("Multiplier to dot's scale calculation")]
         private float dotScaleMultipler = 0.0f;
-
 
         public float DotScaleMultipler
         {
