@@ -26,7 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // After select called, pointer should show up again but only if no hands are up
             SpeechEventData data = new SpeechEventData(EventSystem.current);
-            data.Initialize(new BaseGenericInputSource("test input source"), Utilities.RecognitionConfidenceLevel.High, System.TimeSpan.MinValue, System.DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
+            data.Initialize(new BaseGenericInputSource("test input source", new IMixedRealityPointer[0], InputSourceType.Voice ), 
+                Utilities.RecognitionConfidenceLevel.High, 
+                System.TimeSpan.MinValue, 
+                System.DateTime.Now, 
+                new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
             gsm.OnSpeechKeywordRecognized(data);
             Assert.IsFalse(gsm.IsGazePointerActive, "After select is called but hands are up, gaze pointer should not show up");
 

@@ -47,8 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
 
             inputSimulationService.UserInputEnabled = false;
-            SimulatedHandPose gesturePose = SimulatedHandPose.GetGesturePose(SimulatedHandPose.GestureId.Open);
-            var handOpenPose = PlayModeTestUtilities.GenerateHandPose(SimulatedHandPose.GestureId.Open, Handedness.Right, Vector3.forward * 0.1f);
+            ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(ArticulatedHandPose.GestureId.Open);
+            var handOpenPose = PlayModeTestUtilities.GenerateHandPose(ArticulatedHandPose.GestureId.Open, Handedness.Right, Vector3.forward * 0.1f);
             inputSimulationService.HandDataRight.Update(true, false, handOpenPose);
             yield return null;
             // Gaze cursor should not be visible

@@ -9,14 +9,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class PlayModeTestUtilities
     {
-        public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(SimulatedHandPose.GestureId gesture, Handedness handedness, Vector3 screenPosition)
+        public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 screenPosition)
         {
             return (jointsOut) =>
             {
-                SimulatedHandPose gesturePose = SimulatedHandPose.GetGesturePose(gesture);
+                ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
                 Quaternion rotation = Quaternion.identity;
                 Vector3 position = CameraCache.Main.ScreenToWorldPoint(screenPosition);
-                gesturePose.ComputeJointPositions(handedness, rotation, position, jointsOut);
+                gesturePose.ComputeJointPoses(handedness, rotation, position, jointsOut);
             };
         }
     }
