@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         {
             _markerSize = markerSize;
         }
-
+        
         /// <summary>
         /// Assesses the provided image for ArUco markers
         /// </summary>
@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                             var rotation = new float[3];
                             if (GetDetectedMarkerPoseNative(id, position, rotation))
                             {
-                                Vector3 positionInOpenCVCameraSpace = new Vector3(position[0], position[1], position[2]);
+                                Vector3 positionInOpenCVCameraSpace = new Vector3(position[0], -position[1], position[2]);
 
                                 // The below logic ensures the following marker orientation:
                                 // Positive x axis is in the left direction of the observed marker
