@@ -358,7 +358,7 @@ MonoBehaviour:
   lFOcos: 0
   lFOfreq: 1
   lFOamp: 0.1
-  reverseOrbit: 0
+  reverseOrbit: 1
   invertOrbitOffset: 0
   dotSpinMultiplier: -0.36
   dotScaleMultipler: 0
