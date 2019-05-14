@@ -44,8 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return;
             }
-
-            ToggleList[index].OnPointerClicked(null);
+            
+            OnSelection(index, true);
         }
 
         /// <summary>

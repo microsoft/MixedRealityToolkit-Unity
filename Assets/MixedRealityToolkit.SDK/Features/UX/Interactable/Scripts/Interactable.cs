@@ -144,7 +144,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected float clickTime = 0.3f;
         protected Coroutine inputTimer;
 
+        // reference to the pointer action that started an interaction
         protected MixedRealityInputAction pointerInputAction;
+
+        // how many clicks does it take?
+        protected int clickCount = 0;
+
+        /// <summary>
+        /// how many times this interactable was clicked
+        /// good for checking when a click event occurs.
+        /// </summary>
+        public int ClickCount => clickCount;
 
         // order = pointer , input
         protected int[] GlobalClickOrder = new int[] { 0, 0 };
@@ -699,15 +709,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            if (ShouldListen(eventData.MixedRealityInputAction))
+            bool isGrip = IsGrip(eventData.Pointer, eventData.MixedRealityInputAction);
+
+            if (ShouldListen(eventData.MixedRealityInputAction) || isGrip)
             {
                 pointerDataManager.UpdatePointerData(eventData.Pointer, eventData.MixedRealityInputAction, false);
                 SetPress(false);
-                if (IsGrip(eventData.Pointer, eventData.MixedRealityInputAction))
+                if (isGrip)
                 {
                     SetGrip(false);
                 }
-
+                
                 SetGesture(false);
 
                 // if a global button is in the scene it will swallow all pointer down and ups, do we want this?
@@ -729,14 +741,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            if (ShouldListen(eventData.MixedRealityInputAction))
+            bool isGrip = IsGrip(eventData.Pointer, eventData.MixedRealityInputAction);
+
+            if (ShouldListen(eventData.MixedRealityInputAction) || isGrip)
             {
                 pointerDataManager.UpdatePointerData(eventData.Pointer, eventData.MixedRealityInputAction, true);
                 SetPress(true);
-                if (IsGrip(eventData.Pointer, eventData.MixedRealityInputAction))
-                {
-                    SetGrip(true);
-                }
+                SetGrip(isGrip);
 
                 // See above comment in OnPointerUp
                 if (!IsGlobal)
@@ -989,6 +1000,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected void SendOnClick(IMixedRealityPointer pointer)
         {
             OnClick.Invoke();
+            clickCount++;
 
             for (int i = 0; i < Events.Count; i++)
             {
@@ -1192,7 +1204,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             pointerDataManager.UpdatePointerData(eventData, eventData.MixedRealityInputAction, HasPress);
             Vector3 pressDirection = eventData.InputData - pressStartPosition;
             float pressDistance = Vector3.Dot(pressDirection, transform.forward);
-            if (pressDistance > PhysicalPressDistance && PhysicalPressOnClickTrigger == PhysicalPressClickBehavior.OnPress && !pressEventTriggered)
+            if (pressDistance >= PhysicalPressDistance && PhysicalPressOnClickTrigger == PhysicalPressClickBehavior.OnPress && !pressEventTriggered)
             {
                 SendOnClick(null);
                 pressEventTriggered = true;

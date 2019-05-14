@@ -330,7 +330,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             EditorGUI.indentLevel = indentOnSectionStart + 3;
 
                             string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
+                            bool hasPref = EditorPrefs.HasKey(prefKey);
                             bool showSettings = EditorPrefs.GetBool(prefKey);
+                            if (!hasPref)
+                            {
+                                showSettings = true;
+                            }
                             
                             InspectorUIUtility.ListSettings settings = listSettings[i];
                             bool show = InspectorUIUtility.DrawSectionStart(themeItem.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 3, showSettings, FontStyle.Normal, false);

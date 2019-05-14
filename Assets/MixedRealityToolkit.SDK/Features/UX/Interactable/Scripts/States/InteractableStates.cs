@@ -76,17 +76,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             /// </summary>
             Grip,
             /// <summary>
-            /// The interactable was clicked, a short automated status change
-            /// </summary>
-            Click,
-            /// <summary>
             /// Custom placeholder for anything
             /// </summary>
             Custom
 
         }
 
-        protected new State[] allStates = new State[18]
+        protected new State[] allStates = new State[17]
         {
             new State(){ Index = 0, Name = "Default", ActiveIndex = -1, Bit = 0, Value = 0},
             new State(){ Index = 1, Name = "Focus", ActiveIndex = -1, Bit = 0, Value = 0},
@@ -104,8 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             new State(){ Index = 13, Name = "VoiceCommand", ActiveIndex = -1, Bit = 0, Value = 0},
             new State(){ Index = 14, Name = "PhysicalTouch", ActiveIndex = -1, Bit = 0, Value = 0},
             new State(){ Index = 15, Name = "Grip", ActiveIndex = -1, Bit = 0, Value = 0},
-            new State(){ Index = 16, Name = "Click", ActiveIndex = -1, Bit = 0, Value = 0},
-            new State(){ Index = 17, Name = "Custom", ActiveIndex = -1, Bit = 0, Value = 0}
+            new State(){ Index = 16, Name = "Custom", ActiveIndex = -1, Bit = 0, Value = 0}
         };
 
         public InteractableStates(State defaultState) : base(defaultState)
