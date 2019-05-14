@@ -1,58 +1,78 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-public class MixedRealityOptimizeUtils
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
-
-    public static void SetDepthBufferSharing(bool enableDepthBuffer, bool set16BitDepthBuffer)
+    public class MixedRealityOptimizeUtils
     {
-        PlayerSettings.VROculus.sharedDepthBuffer = enableDepthBuffer;
+        public static void SetDepthBufferSharing(bool enableDepthBuffer)
+        {
+            PlayerSettings.VROculus.sharedDepthBuffer = enableDepthBuffer;
 
 #if UNITY_2019
-                PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled = enableDepthBuffer;
+        PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled = enableDepthBuffer;
 
-                PlayerSettings.VRWindowsMixedReality.depthBufferFormat = set16BitDepthBuffer ? 
-                    PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit :
-                    PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat24Bit;
+        PlayerSettings.VRWindowsMixedReality.depthBufferFormat = set16BitDepthBuffer ? 
+            PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit :
+            PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat24Bit;
 #else
-        var playerSettings = GetSettingsObject("PlayerSettings");
-
-            MixedRealityOptimizeUtils.ChangeProperty(playerSettings, 
-                "vrSettings.hololens.depthBufferSharingEnabled", 
+            var playerSettings = GetSettingsObject("PlayerSettings");
+            ChangeProperty(playerSettings,
+                "vrSettings.hololens.depthBufferSharingEnabled",
                 property => property.boolValue = enableDepthBuffer);
-
-            MixedRealityOptimizeUtils.ChangeProperty(playerSettings, 
-                "vrSettings.hololens.depthFormat", 
-                property => property.intValue = set16BitDepthBuffer ? 0 : 1);
 #endif
-    }
-
-    public static void ChangeProperty(SerializedObject target, string name, Action<SerializedProperty> changer)
-    {
-        var prop = target.FindProperty(name);
-        if (prop != null)
-        {
-            changer(prop);
-            target.ApplyModifiedProperties();
         }
-        else Debug.LogError("property not found: " + name);
-    }
 
-    public static SerializedObject GetSettingsObject(string className)
-    {
-        var settings = Unsupported.GetSerializedAssetInterfaceSingleton(className);
-        return new SerializedObject(settings);
-    }
+        public static void SetDepthBufferFormat(bool set16BitDepthBuffer)
+        {
+            int depthFormat = set16BitDepthBuffer ? 0 : 1;
 
-    public static SerializedObject GetLighmapSettings()
-    {
-        var getLightmapSettingsMethod = typeof(LightmapEditorSettings).GetMethod("GetLightmapSettings", BindingFlags.Static | BindingFlags.NonPublic);
-        var lightmapSettings = getLightmapSettingsMethod.Invoke(null, null) as UnityEngine.Object;
-        return new SerializedObject(lightmapSettings);
-    }
+            PlayerSettings.VRCardboard.depthFormat = depthFormat;
+            PlayerSettings.VRDaydream.depthFormat = depthFormat;
 
+            var playerSettings = GetSettingsObject("PlayerSettings");
+#if UNITY_2019
+        PlayerSettings.VRWindowsMixedReality.depthBufferFormat = set16BitDepthBuffer ? 
+            PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit :
+            PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat24Bit;
+
+        ChangeProperty(playerSettings, 
+                "vrSettings.lumin.depthFormat", 
+                property => property.intValue = depthFormat);
+#else
+            ChangeProperty(playerSettings,
+                "vrSettings.hololens.depthFormat",
+                property => property.intValue = depthFormat);
+#endif
+        }
+
+        public static void ChangeProperty(SerializedObject target, string name, Action<SerializedProperty> changer)
+        {
+            var prop = target.FindProperty(name);
+            if (prop != null)
+            {
+                changer(prop);
+                target.ApplyModifiedProperties();
+            }
+            else Debug.LogError("property not found: " + name);
+        }
+
+        public static SerializedObject GetSettingsObject(string className)
+        {
+            var settings = Unsupported.GetSerializedAssetInterfaceSingleton(className);
+            return new SerializedObject(settings);
+        }
+
+        public static SerializedObject GetLighmapSettings()
+        {
+            var getLightmapSettingsMethod = typeof(LightmapEditorSettings).GetMethod("GetLightmapSettings", BindingFlags.Static | BindingFlags.NonPublic);
+            var lightmapSettings = getLightmapSettingsMethod.Invoke(null, null) as UnityEngine.Object;
+            return new SerializedObject(lightmapSettings);
+        }
+    }
 }
