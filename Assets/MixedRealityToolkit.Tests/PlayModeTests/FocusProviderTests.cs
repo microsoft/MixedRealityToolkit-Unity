@@ -1,4 +1,7 @@
-﻿#if !WINDOWS_UWP
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+#if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
 // Unity doesn't include the the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
@@ -39,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputSimulationService = MixedRealityToolkit.Instance.GetService<InputSimulationService>();
             inputSimulationService.UserInputEnabled = false;
             SimulatedHandPose gesturePose = SimulatedHandPose.GetGesturePose(SimulatedHandPose.GestureId.Open);
-            var handOpenPose = GenerateHandPose(SimulatedHandPose.GestureId.Open, Handedness.Right, Vector3.forward * 0.1f);
+            var handOpenPose = PlayModeTestUtilities.GenerateHandPose(SimulatedHandPose.GestureId.Open, Handedness.Right, Vector3.forward * 0.1f);
             inputSimulationService.HandDataRight.Update(true, false, handOpenPose);
             yield return null;
             // Gaze cursor should not be visible
@@ -53,17 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
             yield return null;
             Assert.IsTrue(MixedRealityToolkit.InputSystem.GazeProvider.GazePointer.IsInteractionEnabled, "Gaze cursor should be visible after select command");
-        }
-
-        private SimulatedHandData.HandJointDataGenerator GenerateHandPose(SimulatedHandPose.GestureId gesture, Handedness handedness, Vector3 screenPosition)
-        {
-            return (jointsOut) =>
-            {
-                SimulatedHandPose gesturePose = SimulatedHandPose.GetGesturePose(gesture);
-                Quaternion rotation = Quaternion.identity;
-                Vector3 position = CameraCache.Main.ScreenToWorldPoint(screenPosition);
-                gesturePose.ComputeJointPositions(handedness, rotation, position, jointsOut);
-            };
         }
     }
 }
