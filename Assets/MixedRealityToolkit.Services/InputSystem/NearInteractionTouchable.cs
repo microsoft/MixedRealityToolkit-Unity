@@ -39,26 +39,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
                     UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(t.transform.rotation * t.localForward), arrowSize, EventType.Repaint);
 
-                    switch (t.touchableSurface)
-                    {
-                        case TouchableSurface.Quad:
-                            Vector3 rightDelta = t.transform.localToWorldMatrix.MultiplyVector(t.LocalRight * t.bounds.x / 2);
-                            Vector3 upDelta = t.transform.localToWorldMatrix.MultiplyVector(t.localUp * t.bounds.y / 2);
+                    Vector3 rightDelta = t.transform.localToWorldMatrix.MultiplyVector(t.LocalRight * t.bounds.x / 2);
+                    Vector3 upDelta = t.transform.localToWorldMatrix.MultiplyVector(t.localUp * t.bounds.y / 2);
 
-                            Vector3[] points = new Vector3[4];
-                            points[0] = center + rightDelta + upDelta;
-                            points[1] = center - rightDelta + upDelta;
-                            points[2] = center - rightDelta - upDelta;
-                            points[3] = center + rightDelta - upDelta;
+                    Vector3[] points = new Vector3[4];
+                    points[0] = center + rightDelta + upDelta;
+                    points[1] = center - rightDelta + upDelta;
+                    points[2] = center - rightDelta - upDelta;
+                    points[3] = center + rightDelta - upDelta;
 
-                            UnityEditor.Handles.DrawSolidRectangleWithOutline(points, fillColor, handleColor);
-                            break;
-
-                        case TouchableSurface.Box:
-                            UnityEditor.Handles.matrix = t.transform.localToWorldMatrix;
-                            UnityEditor.Handles.DrawWireCube(t.localCenter, t.bounds);
-                            break;
-                    }
+                    UnityEditor.Handles.DrawSolidRectangleWithOutline(points, fillColor, handleColor);
                 }
             }
 
@@ -67,89 +57,57 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 base.OnInspectorGUI();
 
                 NearInteractionTouchable t = (NearInteractionTouchable)target;
-
                 BoxCollider bc = t.GetComponent<BoxCollider>();
                 RectTransform rt = t.GetComponent<RectTransform>();
-
                 if (bc != null)
                 {
-                    if (t.touchableSurface == TouchableSurface.Quad)
-                    {
-                        // project size to local coordinate system
-                        Vector2 adjustedSize = new Vector2(
-                                    Vector3.Dot(bc.size, t.LocalRight),
-                                    Vector3.Dot(bc.size, t.localUp));
+                    // project size to local coordinate system
+                    Vector2 adjustedSize = new Vector2(
+                                Vector3.Dot(bc.size, t.LocalRight),
+                                Vector3.Dot(bc.size, t.localUp));
 
-                        // Resize helper
-                        if (adjustedSize.x != t.bounds.x && adjustedSize.y != t.bounds.y)
+                    // Resize helper
+                    if (adjustedSize != t.bounds)
+                    {
+                        UnityEditor.EditorGUILayout.HelpBox("Bounds do not match the BoxCollider size", UnityEditor.MessageType.Warning);
+                        if (GUILayout.Button("Fix Bounds"))
                         {
-                            UnityEditor.EditorGUILayout.HelpBox("Bounds do not match the BoxCollider size", UnityEditor.MessageType.Warning);
-                            if (GUILayout.Button("Fix Bounds"))
-                            {
-                                UnityEditor.Undo.RecordObject(t, "Fix Bounds");
-                                t.bounds = adjustedSize;
-                            }
+                            UnityEditor.Undo.RecordObject(t, "Fix Bounds");
+                            t.bounds = adjustedSize;
                         }
                     }
-                    else if (t.touchableSurface == TouchableSurface.Box)
-                    {
-                        // Resize helper
-                        if (bc.size != t.bounds)
-                        {
-                            UnityEditor.EditorGUILayout.HelpBox("Bounds do not match the BoxCollider size", UnityEditor.MessageType.Warning);
-                            if (GUILayout.Button("Fix Bounds"))
-                            {
-                                UnityEditor.Undo.RecordObject(t, "Fix Bounds");
-                                t.bounds = bc.size;
-                            }
-                        }
 
-                        // Recentre helper
-                        if (bc.center != t.localCenter)
+                    // Recentre helper
+                    if (t.localCenter != bc.center + Vector3.Scale(bc.size / 2.0f, t.localForward))
+                    {
+                        UnityEditor.EditorGUILayout.HelpBox("Center does not match the BoxCollider center", UnityEditor.MessageType.Warning);
+                        if (GUILayout.Button("Fix Center"))
                         {
-                            UnityEditor.EditorGUILayout.HelpBox("Center does not match the BoxCollider center", UnityEditor.MessageType.Warning);
-                            if (GUILayout.Button("Fix Center"))
-                            {
-                                UnityEditor.Undo.RecordObject(t, "Fix Center");
-                                t.localCenter = bc.center;
-                            }
+                            UnityEditor.Undo.RecordObject(t, "Fix Center");
+                            t.localCenter = bc.center + Vector3.Scale(bc.size / 2.0f, t.localForward);
                         }
                     }
                 }
                 else if (rt != null)
                 {
-                    if (t.touchableSurface == TouchableSurface.Quad)
+                    // Resize Helper
+                    if (rt.sizeDelta != t.bounds)
                     {
-                        // Resize helper
-                        if (rt.sizeDelta.x != t.bounds.x && rt.sizeDelta.y != t.bounds.y)
+                        UnityEditor.EditorGUILayout.HelpBox("Bounds do not match the RectTransform size", UnityEditor.MessageType.Warning);
+                        if (GUILayout.Button("Fix Bounds"))
                         {
-                            UnityEditor.EditorGUILayout.HelpBox("Bounds do not match the RectTransform size", UnityEditor.MessageType.Warning);
-                            if (GUILayout.Button("Fix Bounds"))
-                            {
-                                UnityEditor.Undo.RecordObject(t, "Fix Bounds");
-                                t.bounds = rt.sizeDelta;
-                            }
-                        }
-
-                        // Fix forward vector if Unity UI
-                        if (t.GetComponentInParent<Canvas>() != null && t.localForward != new Vector3(0, 0, -1))
-                        {
-                            UnityEditor.EditorGUILayout.HelpBox("Unity UI generally has forward facing away from the front. The LocalForward direction specified does not match the expected forward direction.", UnityEditor.MessageType.Warning);
-                            if (GUILayout.Button("Fix Forward Direction"))
-                            {
-                                UnityEditor.Undo.RecordObject(t, "Fix Forward Direction");
-                                t.localForward = new Vector3(0, 0, -1);
-                            }
+                            UnityEditor.Undo.RecordObject(t, "Fix Bounds");
+                            t.bounds = rt.sizeDelta;
                         }
                     }
-                    // Incorrect touchable surface helper
-                    else if (t.touchableSurface == TouchableSurface.Box)
+
+                    if (t.GetComponentInParent<Canvas>() != null && t.localForward != new Vector3(0, 0, -1))
                     {
-                        UnityEditor.EditorGUILayout.HelpBox("You have selected Box as the Touchable Surface but no Box Collider was found.", UnityEditor.MessageType.Warning);
-                        if (GUILayout.Button("Set Touchable Surface to Quad"))
+                        UnityEditor.EditorGUILayout.HelpBox("Unity UI generally has forward facing away from the front. The LocalForward direction specified does not match the expected forward direction.", UnityEditor.MessageType.Warning);
+                        if (GUILayout.Button("Fix Forward Direction"))
                         {
-                            UnityEditor.Undo.RecordObject(t, "Set Touchable Surface to Quad");
-                            t.touchableSurface = TouchableSurface.Quad;
+                            UnityEditor.Undo.RecordObject(t, "Fix Forward Direction");
+                            t.localForward = new Vector3(0, 0, -1);
                         }
                     }
                 }
@@ -175,8 +133,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private enum TouchableSurface
         {
-            Quad,
-            Box,
+            BoxCollider,
+            UnityUI,
             Custom = 100
         }
 
@@ -217,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The type of surface to calculate the touch point on.")]
-        private TouchableSurface touchableSurface = TouchableSurface.Quad;
+        private TouchableSurface touchableSurface = TouchableSurface.BoxCollider;
 
         public Vector3 LocalRight => Vector3.Cross(localUp, localForward);
 
@@ -227,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Local space forward direction
         /// </summary>
         [SerializeField]
-        protected Vector3 bounds = Vector3.zero;
+        protected Vector2 bounds = Vector2.zero;
 
         /// <summary>
         /// False if no collider is found on validate.
@@ -254,11 +212,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected void OnValidate()
         {
+            Debug.Assert(localForward.magnitude > 0);
+            Debug.Assert(localUp.magnitude > 0);
             string hierarchy = gameObject.transform.EnumerateAncestors(true).Aggregate("", (result, next) => next.gameObject.name + "=>" + result);
             Debug.Assert(Vector3.Dot(localForward, localUp) == 0, $"localForward and localUp not perpendicular for object {hierarchy}. Did you set Local Forward correctly?");
 
-            Debug.Assert(localForward.magnitude > 0);
-            Debug.Assert(localUp.magnitude > 0);
+            // Check initial setup
+            if (bounds == Vector2.zero)
+            {
+                if (touchableSurface == TouchableSurface.UnityUI)
+                {
+                    RectTransform rt = GetComponent<RectTransform>();
+                    if (rt != null)
+                    {
+                        // Initialize bounds to RectTransform SizeDelta
+                        bounds = rt.sizeDelta;
+                        localForward = new Vector3(0, 0, -1);
+                    }
+                }
+            }
 
             touchableCollider = GetComponent<Collider>();
             usesCollider = touchableCollider != null;
@@ -274,44 +246,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Vector3 localPoint = transform.InverseTransformPoint(samplePoint) - localCenter;
 
-            switch (touchableSurface)
+            // Get surface coordinates
+            Vector3 planeSpacePoint = new Vector3(
+                Vector3.Dot(localPoint, LocalRight),
+                Vector3.Dot(localPoint, localUp),
+                Vector3.Dot(localPoint, localForward));
+
+            // touchables currently can only be touched within the bounds of the rectangle.
+            // We return infinity to ensure that any point outside the bounds does not get touched.
+            if (planeSpacePoint.x < -bounds.x / 2 ||
+                planeSpacePoint.x > bounds.x / 2 ||
+                planeSpacePoint.y < -bounds.y / 2 ||
+                planeSpacePoint.y > bounds.y / 2)
             {
-                case TouchableSurface.Quad:
-
-                    // Get surface coordinates
-                    Vector3 planeSpacePoint = new Vector3(
-                        Vector3.Dot(localPoint, LocalRight),
-                        Vector3.Dot(localPoint, localUp),
-                        Vector3.Dot(localPoint, localForward));
-
-                    // quad touchables currently can only be touched within the bounds of the rectangle.
-                    // We return infinity to ensure that any point outside the bounds does not get touched.
-                    if (planeSpacePoint.x < -bounds.x / 2 ||
-                        planeSpacePoint.x > bounds.x / 2 ||
-                        planeSpacePoint.y < -bounds.y / 2 ||
-                        planeSpacePoint.y > bounds.y / 2)
-                    {
-                        return float.PositiveInfinity;
-                    }
-
-                    // Scale back to 3D space
-                    planeSpacePoint = transform.TransformSize(planeSpacePoint);
-
-                    return Math.Abs(planeSpacePoint.z);
-
-                case TouchableSurface.Box:
-                    Vector3 toSurface = new Vector3(
-                        Math.Max(Math.Abs(localPoint.x) - bounds.x / 2, 0),
-                        Math.Max(Math.Abs(localPoint.y) - bounds.y / 2, 0),
-                        Math.Max(Math.Abs(localPoint.z) - bounds.z / 2, 0));
-
-                    // Scale back to 3D space
-                    toSurface = transform.TransformSize(toSurface);
-
-                    return toSurface.magnitude;
+                return float.PositiveInfinity;
             }
 
-            return float.PositiveInfinity;
+            // Scale back to 3D space
+            planeSpacePoint = transform.TransformSize(planeSpacePoint);
+
+            return Math.Abs(planeSpacePoint.z);
         }
+
     }
 }
