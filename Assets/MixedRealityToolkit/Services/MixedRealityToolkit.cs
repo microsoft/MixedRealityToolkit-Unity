@@ -535,11 +535,6 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool newInstanceBeingInitialized = false;
 
         /// <summary>
-        /// Lock property for the Mixed Reality Toolkit to prevent reinitialization
-        /// </summary>
-        private static readonly object initializedLock = new object();
-
-        /// <summary>
         /// Returns the Singleton instance of the classes type.
         /// </summary>
         public static MixedRealityToolkit Instance => activeInstance;
@@ -551,51 +546,48 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            lock (initializedLock)
+            newInstanceBeingInitialized = true;
+
+            gameObject.SetActive(true);
+
+            Application.quitting += () =>
             {
-                newInstanceBeingInitialized = true;
-
-                gameObject.SetActive(true);
-
-                Application.quitting += () =>
-                {
-                    isApplicationQuitting = true;
-                };
+                isApplicationQuitting = true;
+            };
 
 #if UNITY_EDITOR
-                UnityEditor.EditorApplication.playModeStateChanged += playModeState =>
+            UnityEditor.EditorApplication.playModeStateChanged += playModeState =>
+            {
+                if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode ||
+                    playModeState == UnityEditor.PlayModeStateChange.EnteredEditMode)
                 {
-                    if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode ||
-                        playModeState == UnityEditor.PlayModeStateChange.EnteredEditMode)
-                    {
-                        isApplicationQuitting = false;
-                    }
-
-                    if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode && activeProfile == null)
-                    {
-                        Debug.Log("Stopping playmode");
-                        UnityEditor.EditorApplication.isPlaying = false;
-                        UnityEditor.Selection.activeObject = Instance;
-                        UnityEditor.EditorGUIUtility.PingObject(Instance);
-                    }
-                };
-
-                UnityEditor.EditorApplication.hierarchyChanged += () =>
-                {
-                    if (activeInstance != null)
-                    {
-                        Debug.Assert(activeInstance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
-                    }
-                };
-#endif // UNITY_EDITOR
-
-                if (HasActiveProfile)
-                {
-                    InitializeServiceLocator();
+                    isApplicationQuitting = false;
                 }
 
-                newInstanceBeingInitialized = false;
+                if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode && activeProfile == null)
+                {
+                    Debug.Log("Stopping playmode");
+                    UnityEditor.EditorApplication.isPlaying = false;
+                    UnityEditor.Selection.activeObject = Instance;
+                    UnityEditor.EditorGUIUtility.PingObject(Instance);
+                }
+            };
+
+            UnityEditor.EditorApplication.hierarchyChanged += () =>
+            {
+                if (activeInstance != null)
+                {
+                    Debug.Assert(activeInstance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
+                }
+            };
+#endif // UNITY_EDITOR
+
+            if (HasActiveProfile)
+            {
+                InitializeServiceLocator();
             }
+
+            newInstanceBeingInitialized = false;
         }
 
         /// <summary>
