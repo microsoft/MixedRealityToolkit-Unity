@@ -1067,32 +1067,45 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline")]
         protected static void UpgradeShaderForLightweightRenderPipeline()
         {
-            string shaderName = "Mixed Reality Toolkit/Standard";
-            string path = AssetDatabase.GetAssetPath(Shader.Find(shaderName));
-
-            if (!string.IsNullOrEmpty(path))
+            if (EditorUtility.DisplayDialog("Upgrade MRTK Standard Shader?", 
+                                            "This will alter the MRTK Standard Shader for use with Unity's Lightweight Render Pipeline. You cannot undo this action.", 
+                                            "Ok", 
+                                            "Cancel"))
             {
-                try
-                {
-                    string upgradedShader = File.ReadAllText(path);
-                    upgradedShader = upgradedShader.Replace("Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"ForwardBase\" }",
-                                                            "Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"LightweightForward\" }");
-                    upgradedShader = upgradedShader.Replace("//#define _LIGHTWEIGHT_RENDER_PIPELINE",
-                                                            "#define _LIGHTWEIGHT_RENDER_PIPELINE");
-                    File.WriteAllText(path, upgradedShader);
-                    AssetDatabase.Refresh();
+                string shaderName = "Mixed Reality Toolkit/Standard";
+                string path = AssetDatabase.GetAssetPath(Shader.Find(shaderName));
 
-                    Debug.LogFormat("Upgraded {0} for use with the Lightweight Render Pipeline.", path);
-                }
-                catch (Exception e)
+                if (!string.IsNullOrEmpty(path))
                 {
-                    Debug.LogException(e);
+                    try
+                    {
+                        string upgradedShader = File.ReadAllText(path);
+                        upgradedShader = upgradedShader.Replace("Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"ForwardBase\" }",
+                                                                "Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"LightweightForward\" }");
+                        upgradedShader = upgradedShader.Replace("//#define _LIGHTWEIGHT_RENDER_PIPELINE",
+                                                                "#define _LIGHTWEIGHT_RENDER_PIPELINE");
+                        File.WriteAllText(path, upgradedShader);
+                        AssetDatabase.Refresh();
+
+                        Debug.LogFormat("Upgraded {0} for use with the Lightweight Render Pipeline.", path);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                    }
+                }
+                else
+                {
+                    Debug.LogErrorFormat("Failed to get asset path to: {0}", shaderName);
                 }
             }
-            else
-            {
-                Debug.LogErrorFormat("Failed to get asset path to: {0}", shaderName);
-            }
+        }
+
+        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline", true)]
+        protected static bool UpgradeShaderForLightweightRenderPipelineValidate()
+        {
+            // If a scriptable render pipeline is not present, no need to upgrade the shader.
+            return GraphicsSettings.renderPipelineAsset != null;
         }
     }
 }
