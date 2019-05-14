@@ -51,6 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             Marker originMarker;
             if (markers.TryGetValue(markerOriginId, out originMarker))
             {
+                isDetectingMarker = false;
                 markerDetector.StopDetecting();
 
                 transform.position = originMarker.Position;

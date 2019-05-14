@@ -73,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             if (!_detecting)
             {
                 _detecting = true;
+                _markerObservations.Clear();
                 Debug.Log("Starting ArUco marker detection");
                 SetupCamera();
             }
