@@ -32,6 +32,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
 
+        /// <summary>
+        /// Number of IMixedRealityNearPointers that are active (IsInteractionEnabled == true).
+        /// </summary>
+        public int NumNearPointersActive { get; private set; }
+
+        /// <summary>
+        /// The number of pointers that support far interaction (like motion controller rays, hand rays) that 
+        /// are active (IsInteractionEnabled == true), excluding the gaze cursor
+        /// </summary>
+        public int NumFarPointersActive { get; private set; }
+        
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
@@ -428,6 +439,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return Pointer != null ? Pointer.GetHashCode() : 0;
             }
         }
+
+        private GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
 
         #region IMixedRealityService Implementation
 
@@ -829,37 +842,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return (hit1.hitObject != null) ? hit1 : hit2;
         }
-
+        
         /// <summary>
         /// Disable inactive pointers to unclutter the way for active ones.
         /// </summary>
         private void ReconcilePointers()
         {
             var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
-            if (gazePointer != null)
+            NumFarPointersActive = 0;
+            NumNearPointersActive = 0;
+
+            foreach (var pointerData in pointers)
             {
-                int numFarCursors = 0;
-                int numNearPointersActive = 0;
-                foreach (var p in pointers)
+                if (pointerData.Pointer is IMixedRealityNearPointer)
                 {
-                    if (p.Pointer != null)
+                    if (pointerData.Pointer.IsInteractionEnabled)
                     {
-                        if (p.Pointer is IMixedRealityNearPointer)
-                        {
-                            if (p.Pointer.IsInteractionEnabled)
-                            {
-                                numNearPointersActive++;
-                            }
-                        }
-                        else if (p.Pointer.BaseCursor != null)
-                        {
-                            numFarCursors++;
-                        }
+                        NumNearPointersActive++;
                     }
                 }
+                else if (pointerData.Pointer.BaseCursor != null
+                    && !(pointerData.Pointer == gazePointer)
+                    && pointerData.Pointer.IsInteractionEnabled)
+                {
+                    // We ignore the currentGazePointer here because for cases like HoloLens 1
+                    // hand input or the gamepad, we want to show the cursor still.
+                    NumFarPointersActive++;
+                }
+            }
+            if (gazePointer != null)
+            {
+                gazePointerStateMachine.UpdateState(NumNearPointersActive, NumFarPointersActive);
+
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
-                // Show the gaze cursor if there are no other pointers that are showing a cursor
-                gazePointer.IsInteractionEnabled = numFarCursors == 1 && numNearPointersActive == 0;
+                gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;
             }
         }
 
@@ -1186,6 +1202,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+
         #endregion ISourceState Implementation
+
+        #region IMixedRealitySpeechHandler Implementation
+        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
+        {
+            gazePointerStateMachine.OnSpeechKeywordRecognized(eventData);
+        }
+        #endregion
     }
 }
