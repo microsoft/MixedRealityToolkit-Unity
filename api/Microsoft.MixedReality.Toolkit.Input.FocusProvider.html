@@ -100,10 +100,11 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.html">IMixedRealityFocusProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html">IMixedRealitySourceStateHandler</a></div>
-    <div><span class="xref">IEventSystemHandler</span></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html">IMixedRealitySpeechHandler</a></div>
+    <div><span class="xref">IEventSystemHandler</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -167,7 +168,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DocLink(&quot;https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html&quot;)]
-public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider, IMixedRealitySourceStateHandler, IEventSystemHandler, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider, IMixedRealitySourceStateHandler, IMixedRealityDataProvider, IMixedRealityService, IDisposable, IMixedRealitySpeechHandler, IEventSystemHandler</code></pre>
   </div>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>There are convenience properties for getting only Gaze Pointer if needed.</p>
@@ -267,6 +268,59 @@ public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider, IMixe
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Name">BaseService.Name</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_NumFarPointersActive_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.NumFarPointersActive*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_NumFarPointersActive" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.NumFarPointersActive">NumFarPointersActive</h4>
+  <div class="markdown level1 summary"><p>The number of pointers that support far interaction (like motion controller rays, hand rays) that
+are active (IsInteractionEnabled == true), excluding the gaze cursor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int NumFarPointersActive { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_NumNearPointersActive_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.NumNearPointersActive*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_NumNearPointersActive" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.NumNearPointersActive">NumNearPointersActive</h4>
+  <div class="markdown level1 summary"><p>Number of IMixedRealityNearPointers that are active (IsInteractionEnabled == true).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int NumNearPointersActive { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_Priority_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.Priority*"></a>
@@ -570,6 +624,33 @@ This method is called once all services have been registered in the Mixed Realit
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_OnSpeechKeywordRecognized_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.OnSpeechKeywordRecognized*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_OnSpeechKeywordRecognized_Microsoft_MixedReality_Toolkit_Input_SpeechEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.OnSpeechKeywordRecognized(Microsoft.MixedReality.Toolkit.Input.SpeechEventData)">OnSpeechKeywordRecognized(SpeechEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnSpeechKeywordRecognized(SpeechEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.html">SpeechEventData</a></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_RegisterPointer_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.RegisterPointer*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_RegisterPointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.RegisterPointer(Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer)">RegisterPointer(IMixedRealityPointer)</h4>
   <div class="markdown level1 summary"><p>Registers the pointer with the Focus Manager.</p>
@@ -753,9 +834,6 @@ This method is called once all services have been registered in the Mixed Realit
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html">IMixedRealitySourceStateHandler</a>
   </div>
   <div>
-      <span class="xref">IEventSystemHandler</span>
-  </div>
-  <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a>
   </div>
   <div>
@@ -763,6 +841,12 @@ This method is called once all services have been registered in the Mixed Realit
   </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html">IMixedRealitySpeechHandler</a>
+  </div>
+  <div>
+      <span class="xref">IEventSystemHandler</span>
   </div>
 </article>
           </div>
