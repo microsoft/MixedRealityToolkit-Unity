@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>True if associated sphere pointer is near any grabbable objects, else false.</returns>
         protected virtual bool IsNearGrabbableObject()
         {
-            var focusProvider = MixedRealityToolkit.InputSystem?.FocusProvider;
+            var focusProvider = InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
                 var spherePointers = focusProvider.GetPointers<SpherePointer>();

@@ -21,7 +21,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         IMixedRealityPointerHandler,
         IMixedRealityHandJointHandler
     {
-        private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = MixedRealityToolkit.InputSystem?.EyeGazeProvider);
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
+        private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = InputSystem?.EyeGazeProvider);
         private IMixedRealityEyeGazeProvider eyeTrackingProvider = null;
 
         #region Serialized variables
@@ -242,12 +259,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             if (voiceAction_PutThis == eventData.MixedRealityInputAction)
             {
                 DragAndDrop_Start();
-                MixedRealityToolkit.InputSystem.PushModalInputHandler(gameObject);
+                InputSystem.PushModalInputHandler(gameObject);
             }
             else if (voiceAction_OverHere == eventData.MixedRealityInputAction)
             {
                 DragAndDrop_Finish();
-                MixedRealityToolkit.InputSystem.PopModalInputHandler();
+                InputSystem.PopModalInputHandler();
             }
         }
         #endregion
@@ -351,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 handPos_relative = Vector3.zero;
                 handPos_absolute = Vector3.zero;
                 DragAndDrop_Start();
-                MixedRealityToolkit.InputSystem.PushModalInputHandler(gameObject);
+                InputSystem.PushModalInputHandler(gameObject);
             }
         }
 
@@ -366,7 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 handIsPinching = false;
                 handPos_relative = Vector3.zero;
                 DragAndDrop_Finish();
-                MixedRealityToolkit.InputSystem.PopModalInputHandler();
+                InputSystem.PopModalInputHandler();
                 currEngagedHand = Handedness.None;
             }
         }
