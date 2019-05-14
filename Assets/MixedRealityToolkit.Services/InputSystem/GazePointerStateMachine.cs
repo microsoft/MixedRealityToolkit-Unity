@@ -8,8 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Helper class for managing the visibility of the gaze pointer to match windows mixed reality and HoloLens 2
     /// When application starts, gaze pointer is visible. Then when articulate hands / motion controllers
-    /// appear, hide the gaze cursor. Whenever user says the voice wake word, make the 
-    /// gaze controller appear.
+    /// appear, hide the gaze cursor. Whenever user says "select", make the gaze cursor appear.
     /// </summary>
     public class GazePointerStateMachine : IMixedRealitySpeechHandler
     {
@@ -46,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (isMotionControllerOrHandUp)
                     {
                         newState = GazePointerState.GazePointerInactive;
+                        activateGazeKeywordIsSet = false;
                     }
                     break;
                 case GazePointerState.GazePointerInactive:
