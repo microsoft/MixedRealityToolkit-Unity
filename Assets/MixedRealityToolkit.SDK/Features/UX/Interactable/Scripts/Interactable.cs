@@ -14,10 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Maintains a collection of themes that react to state changes and provide sensory feedback
     /// Passes state information and input data on to receivers that detect patterns and does stuff.
     /// </summary>
-
-    // TODO: How to handle cycle buttons
-    // TODO: plumb for gestures
-    // TODO: Add way to protect the defaultTheme from being edited and encourage users to create a new theme, maybe include a create/duplicate button
     // TODO: Make sure all shader values are batched by theme
 
     [System.Serializable]
@@ -30,6 +26,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         IMixedRealitySpeechHandler,
         IMixedRealityTouchHandler
     {
+        // enum to map touch interaction type to a click
+        public enum PhysicalPressClickBehavior
+        {
+            None = 0,
+            OnCompletion,
+            OnPress,
+            OnTouch
+        }
+
+        // a way to track pointers
+        protected InteractablePointerDataManager pointerDataManager = new InteractablePointerDataManager();
+
         /// <summary>
         /// Setup the input system
         /// </summary>
@@ -39,6 +47,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // list of pointers
         protected List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
         public List<IMixedRealityPointer> Focusers => pointers;
+
+        // list of sources
+        protected List<SourceStateEventData> sources = new List<SourceStateEventData>();
+        public List<SourceStateEventData> Sources => sources;
 
         // is the interactable enabled?
         public bool Enabled = true;
@@ -64,6 +76,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public string VoiceCommand = "";
         // does the voice command require this to have focus?
         public bool RequiresFocus = true;
+        // map touch input type to OnClick event
+        public PhysicalPressClickBehavior PhysicalPressOnClickTrigger;
 
         /// <summary>
         /// Does this interactable require focus
@@ -102,6 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool HasVoiceCommand { get; private set; }
         public bool HasPhysicalTouch { get; private set; }
         public bool HasCustom { get; private set; }
+        public bool HasGrip { get; private set; }
 
         // internal cached states
         protected State lastState;
@@ -114,6 +129,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // for advanced controls like drop-downs
         protected float rollOffTime = 0.25f;
         protected float rollOffTimer = 0.25f;
+
+        // handle near touch interaction
+        public float PhysicalPressDistance = 0.05f;
+        protected Vector3 pressStartPosition = Vector3.zero;
+        protected bool pressEventTriggered = false;
 
         // cache voice commands
         protected string[] voiceCommands;
@@ -197,8 +217,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 InputSystem.Register(gameObject);
             }
-        }
 
+            // validate states and reset if needed
+            int pointersWithFocus = 0;
+            int pointerCount = pointers.Count - 1;
+            for (int i = pointerCount; i > -1; i--)
+            {
+                if ((Interactable)pointers[i].FocusTarget != this)
+                {
+                    pointers.RemoveAt(i);
+                }
+                else
+                {
+                    pointersWithFocus++;
+                }
+            }
+
+            if (pointersWithFocus == 0)
+            {
+                ResetBaseStates();
+            }
+        }
+        
         private void OnDisable()
         {
             if (IsGlobal)
@@ -209,6 +249,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected virtual void Update()
         {
+            pointerDataManager.UpdatePointerPositions();
+
             if (rollOffTimer < rollOffTime && HasPress)
             {
                 rollOffTimer += Time.deltaTime;
@@ -231,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (runningThemesList[i].Loaded)
                 {
-                    runningThemesList[i].OnUpdate(StateManager.CurrentState().ActiveIndex, forceUpdate);
+                    runningThemesList[i].OnUpdate(StateManager.CurrentState().ActiveIndex, this, forceUpdate);
                 }
             }
 
@@ -460,7 +502,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             UpdateState();
         }
 
-
+        public virtual void SetGrip(bool grip)
+        {
+            HasGrip = grip;
+            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Grip, grip ? 1 : 0);
+            UpdateState();
+        }
 
         /// <summary>
         /// a public way to set state directly
@@ -483,6 +530,42 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected virtual void UpdateState()
         {
             StateManager.CompareStates();
+        }
+
+        /// <summary>
+        /// Reset the basic interaction states
+        /// </summary>
+        public void ResetBaseStates()
+        {
+            // reset states
+            SetFocus(false);
+            SetPress(false);
+            SetPhysicalTouch(false);
+            SetGrip(false);
+            SetGesture(false);
+            SetGestureMax(false);
+            SetVoiceCommand(false);
+
+            pointerDataManager.ClearPointerData();
+        }
+
+        /// <summary>
+        /// Reset all states in the Interactable and pointer information
+        /// </summary>
+        public void ResetAllStates()
+        {
+            pointers = new List<IMixedRealityPointer>();
+            sources = new List<SourceStateEventData>();
+            ResetBaseStates();
+            SetCollision(false);
+            SetCustom(false);
+            SetObservation(false);
+            SetObservationTargeted(false);
+            SetInteractive(false);
+            SetCustom(false);
+            SetTargeted(false);
+            SetToggled(false);
+            SetVisited(false);
         }
 
         #endregion SetButtonStates
@@ -510,7 +593,50 @@ namespace Microsoft.MixedReality.Toolkit.UI
             pointers.Remove(pointer);
         }
 
+        /// <summary>
+        /// Access the PointerManager with all the interactive pointer data.
+        /// </summary>
+        /// <returns></returns>
+        public InteractablePointerDataManager GetPointerManager()
+        {
+            return pointerDataManager;
+        }
+
         #endregion PointerManagement
+
+        #region SourceManagement
+
+        /// <summary>
+        /// Adds a source to sources
+        /// </summary>
+        /// <param name="source"></param>
+        private void AddSource(SourceStateEventData source)
+        {
+            if (!sources.Contains(source))
+            {
+                sources.Add(source);
+            }
+        }
+
+        /// <summary>
+        /// Removes a source, lost
+        /// </summary>
+        /// <param name="source"></param>
+        private void RemoveSource(SourceStateEventData source)
+        {
+            sources.Remove(source);
+        }
+
+        /// <summary>
+        /// Get the currenlt list of source
+        /// </summary>
+        /// <returns></returns>
+        public List<SourceStateEventData> GetSources()
+        {
+            return sources;
+        }
+
+        #endregion SourceManagement
 
         #region MixedRealityFocusChangedHandlers
 
@@ -524,10 +650,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (eventData.NewFocusedObject == gameObject)
             {
                 AddPointer(eventData.Pointer);
+                pointerDataManager.AddPointerData(eventData.Pointer);
             }
             else if (eventData.OldFocusedObject == gameObject)
             {
                 RemovePointer(eventData.Pointer);
+                pointerDataManager.RemovePointerData(eventData.Pointer);
             }
         }
 
@@ -573,8 +701,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
+                pointerDataManager.UpdatePointerData(eventData.Pointer, eventData.MixedRealityInputAction, false);
                 SetPress(false);
-                eventData.Use();
+                if (IsGrip(eventData.Pointer, eventData.MixedRealityInputAction))
+                {
+                    SetGrip(false);
+                }
+
+                SetGesture(false);
+
+                // if a global button is in the scene it will swallow all pointer down and ups, do we want this?
+                // This allows a global Interacable and normal interactable to exist in the same scene.
+                if (!IsGlobal)
+                    eventData.Use();
             }
         }
 
@@ -592,12 +731,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
+                pointerDataManager.UpdatePointerData(eventData.Pointer, eventData.MixedRealityInputAction, true);
                 SetPress(true);
-                eventData.Use();
+                if (IsGrip(eventData.Pointer, eventData.MixedRealityInputAction))
+                {
+                    SetGrip(true);
+                }
+
+                // See above comment in OnPointerUp
+                if (!IsGlobal)
+                    eventData.Use();
             }
         }
 
-        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+            if (!HasGesture && CanInteract() && ShouldListen(eventData.MixedRealityInputAction))
+            {
+                SetGesture(true);
+            }
+        }
 
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
@@ -626,6 +779,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     SetVisited(true);
                     StartInputTimer(false);
                     eventData.Use();
+                    pointerDataManager.UpdatePointerData(eventData.Pointer, eventData.MixedRealityInputAction, false);
                 }
                 else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
                 {
@@ -928,20 +1082,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 StartGlobalVisual(true);
                 IncreaseDimensionIndex();
+                SendVoiceCommands(VoiceCommand, 0, 1);
                 OnPointerClicked(null);
                 eventData.Use();
             }
-
-            // TODO(https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/3767): Need to merge this
-            // work below with the code above.
-            // if (Enabled && ShouldListen(eventData.MixedRealityInputAction))
-            // {
-            //     StartGlobalVisual(true);                
-            //     IncreaseDimensionIndex();
-            //     SendVoiceCommands(eventData.RecognizedText, 0, 1);
-            //     SendOnClick(null);
-            //     eventData.Use();
-            // }
         }
 
         /// <summary>
@@ -989,18 +1133,111 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion VoiceCommands
 
+        #region NearInteractionHandlers
+        /// <summary>
+        /// Is the eventData a grip action or near pointer?
+        /// </summary>
+        /// <param name="eventData"></param>
+        /// <returns></returns>
+        protected bool IsGrip(IMixedRealityPointer pointer, MixedRealityInputAction action)
+        {
+            if (action.Description.ToLower().IndexOf("grip") > -1 || pointer as IMixedRealityNearPointer != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
             SetPress(true);
+            if (PhysicalPressOnClickTrigger != PhysicalPressClickBehavior.None)
+            {
+                SetPhysicalTouch(true);
+            }
+
             eventData.Use();
+
+            pressStartPosition = eventData.InputData;
+            pressEventTriggered = false;
+
+            pointerDataManager.AddPointerData(eventData);
+
+            if (PhysicalPressOnClickTrigger == PhysicalPressClickBehavior.OnTouch)
+            {
+                SendOnClick(null);
+            }
         }
 
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
             SetPress(false);
+            if (PhysicalPressOnClickTrigger != PhysicalPressClickBehavior.None)
+            {
+                SetPhysicalTouch(false);
+            }
             eventData.Use();
+
+            pointerDataManager.RemovePointerData(eventData);
+
+            if (PhysicalPressOnClickTrigger == PhysicalPressClickBehavior.OnCompletion)
+            {
+                SendOnClick(null);
+            }
         }
 
-        void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData) { }
+        void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
+        {
+            pointerDataManager.UpdatePointerData(eventData, eventData.MixedRealityInputAction, HasPress);
+            Vector3 pressDirection = eventData.InputData - pressStartPosition;
+            float pressDistance = Vector3.Dot(pressDirection, transform.forward);
+            if (pressDistance > PhysicalPressDistance && PhysicalPressOnClickTrigger == PhysicalPressClickBehavior.OnPress && !pressEventTriggered)
+            {
+                SendOnClick(null);
+                pressEventTriggered = true;
+            }
+        }
+
+        #endregion NearInteractionHandlers
+
+        #region SourceHandlers
+        /// <summary>
+        /// Handle states related to vaailable sources and focus
+        /// </summary>
+        protected void SetSourceStates()
+        {
+            bool hasSource = sources.Count > 0;
+            bool targeted = HasFocus && hasSource;
+            bool interactive = !HasFocus && hasSource;
+            bool observationTargeted = HasFocus && !hasSource;
+            bool observation = !HasFocus && !hasSource;
+
+            SetTargeted(targeted);
+            SetInteractive(interactive);
+            SetObservationTargeted(observationTargeted);
+            SetObservation(observation);
+
+        }
+
+        /// <summary>
+        /// Capture information about sources, pointers.
+        /// Source Detected only works when global
+        /// Source Lost works when a hand is gestureing a leaves the sensor's view
+        /// </summary>
+        public void OnSourceDetected(SourceStateEventData eventData)
+        {
+            AddSource(eventData);
+            SetSourceStates();
+        }
+
+        public void OnSourceLost(SourceStateEventData eventData)
+        {
+            RemoveSource(eventData);
+            SetSourceStates();
+
+        }
+
+        #endregion SourceHandlers
     }
 }
