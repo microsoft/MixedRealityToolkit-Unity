@@ -43,6 +43,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public int NumFarPointersActive { get; private set; }
         
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
 
         #region IFocusProvider Properties
 
@@ -448,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 CreateUiRaycastCamera();
             }
 
-            foreach (var inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+            foreach (var inputSource in InputSystem.DetectedInputSources)
             {
                 RegisterPointers(inputSource);
             }
@@ -613,7 +629,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 RegisterPointer(inputSource.Pointers[i]);
 
                 // Special Registration for Gaze
-                if (inputSource.SourceId == MixedRealityToolkit.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
+                if (inputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
                 {
                     gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
                 }
@@ -643,15 +659,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+                InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
                     // Policy: only raise focus exit if no other pointers are still focusing the object
-                    MixedRealityToolkit.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
+                    InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
                 }
 
-                MixedRealityToolkit.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
+                InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -1109,7 +1125,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
-                MixedRealityToolkit.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
                 int numExits;
                 if (pendingUnfocusObject != null && pendingOverallFocusExitSet.TryGetValue(pendingUnfocusObject, out numExits))
@@ -1120,18 +1136,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        MixedRealityToolkit.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
+                        InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
                         pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
                     }
                 }
 
                 if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
                 {
-                    MixedRealityToolkit.InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
+                    InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                MixedRealityToolkit.InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);

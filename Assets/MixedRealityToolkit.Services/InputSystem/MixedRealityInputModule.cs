@@ -31,6 +31,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         /// <summary>
         /// Mapping from pointer id to event data and click state
         /// </summary>
@@ -58,24 +75,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.ActivateModule();
 
-            if (MixedRealityToolkit.InputSystem != null)
+            if (InputSystem != null)
             {
-                RaycastCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
+                RaycastCamera = InputSystem.FocusProvider.UIRaycastCamera;
 
-                foreach (IMixedRealityInputSource inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+                foreach (IMixedRealityInputSource inputSource in InputSystem.DetectedInputSources)
                 {
                     OnSourceDetected(inputSource);
                 }
 
-                MixedRealityToolkit.InputSystem.Register(gameObject);
+                InputSystem.Register(gameObject);
             }
         }
 
         public override void DeactivateModule()
         {
-            if (MixedRealityToolkit.InputSystem != null)
+            if (InputSystem != null)
             {
-                MixedRealityToolkit.InputSystem.Unregister(gameObject);
+                InputSystem.Unregister(gameObject);
 
                 foreach (var p in pointerDataToUpdate)
                 {

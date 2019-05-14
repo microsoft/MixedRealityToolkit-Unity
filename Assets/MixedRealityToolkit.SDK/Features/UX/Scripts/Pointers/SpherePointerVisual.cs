@@ -99,7 +99,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private NearInteractionGrabbable GetGrabbedObject()
         {
-            return pointer.Result?.Details.Object?.GetComponent<NearInteractionGrabbable>();
+            if (pointer.Result?.Details.Object != null)
+            {
+                return pointer.Result.Details.Object.GetComponent<NearInteractionGrabbable>();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

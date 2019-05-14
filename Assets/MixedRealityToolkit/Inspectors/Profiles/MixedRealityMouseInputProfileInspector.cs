@@ -24,19 +24,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
+            RenderTitleDescriptionAndLogo(
+                "Mouse Input settings",
+                "Settings for mouse input in the editor.");
 
-            if (GUILayout.Button("Back to Input Profile"))
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                if (GUILayout.Button("Back to Input Profile"))
+                {
+                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                }
             }
-            EditorGUILayout.Space();
+            else
+            {
+                return;
+            }
 
-            EditorGUILayout.LabelField("Mouse Input settings", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Settings for mouse input in the editor.", MessageType.Info);
             CheckProfileLock(target);
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
 
             serializedObject.Update();
 
