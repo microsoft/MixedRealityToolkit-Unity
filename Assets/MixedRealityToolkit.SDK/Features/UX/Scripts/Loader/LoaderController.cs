@@ -211,11 +211,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private float degPerSec;
 
+        private Vector3 parentNewPos = Vector3.zero;
+
         private Transform dot01;
         private Vector3 dot01NewPos = Vector3.zero;
+        private Vector3 dot01NewScale = Vector3.zero;
+        private Vector3 dot01NewRot = Vector3.zero;
 
         private Transform dot02;
         private Vector3 dot02NewPos = Vector3.zero;
+        private Vector3 dot02NewScale = Vector3.zero;
+        private Vector3 dot02NewRot = Vector3.zero;
 
         private const float tau = Mathf.PI * 2.0f;
 
@@ -242,7 +248,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void AnimateParent()
         {
-
             float cosX = Mathf.Cos(Cycles * tau) * amplitude;
             float sinY = Mathf.Sin(Cycles * tau) * amplitude;
 
@@ -252,7 +257,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 sinY = -sinY;
             }
 
-            transform.localPosition = new Vector3(cosX, sinY, 0f);
+            parentNewPos.Set(cosX, sinY, 0f);
+            transform.localPosition = parentNewPos;
 
             if (lFOsin == true)
             {
@@ -275,14 +281,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (sinCosSplitScale == true)
             {
-                dot01.localScale = new Vector3(cosScaleCalc, cosScaleCalc, cosScaleCalc);
+                dot01NewPos.Set(cosScaleCalc, cosScaleCalc, cosScaleCalc);
             }
             else
             {
-                dot01.localScale = new Vector3(sinScaleCalc, sinScaleCalc, sinScaleCalc);
+                dot01NewPos.Set(sinScaleCalc, sinScaleCalc, sinScaleCalc);
             }
 
-            dot02.localScale = new Vector3(sinScaleCalc, sinScaleCalc, sinScaleCalc);
+            dot01.localScale = dot01NewPos;
+
+            dot02NewPos.Set(sinScaleCalc, sinScaleCalc, sinScaleCalc);
+            dot02.localScale = dot02NewPos;
 
             // Set dot groups' position Offset from Parent-Null Center
             dot01NewPos.Set(dotOffset, dotOffset, 0f);
@@ -290,7 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             dot01.transform.localPosition = dot01NewPos;
             dot02.transform.localPosition = dot02NewPos;
-
         }
     }
 }

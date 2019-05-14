@@ -240,7 +240,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d084c42a5153f374597da1eaa2276709, type: 2}
+  - {fileID: 2100000, guid: 8f2fb2809320347428c67ea7c78ef4c5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -350,19 +350,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667b8706f1f4d84458d01b20e174e2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  freq: 2.78
-  amp: 0.022
+  amplitude: 0.05
+  frequency: 3
   dotOffset: 0.022
   dotSetScale: 0.022
-  LFO_sin: 0
-  LFO_cos: 0
-  LFO_freq: 1
-  LFO_amp: 0.1
-  reverseOrbit: 1
-  offsetOrbit: 0
+  lFOsin: 0
+  lFOcos: 0
+  lFOfreq: 1
+  lFOamp: 0.1
+  reverseOrbit: 0
+  invertOrbitOffset: 0
   dotSpinMultiplier: -0.36
-  dotScaleAnimation: 0.008
-  sinCosSplit: 1
+  dotScaleMultipler: 0
+  sinCosSplitScale: 0
 --- !u!1 &5301649066244700767
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,16 +499,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667b8706f1f4d84458d01b20e174e2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  freq: 2.78
-  amp: 0.022
+  amplitude: 0.05
+  frequency: 3
   dotOffset: 0.022
   dotSetScale: 0.022
-  LFO_sin: 0
-  LFO_cos: 0
-  LFO_freq: 1
-  LFO_amp: 0.1
+  lFOsin: 0
+  lFOcos: 0
+  lFOfreq: 1
+  lFOamp: 0.1
   reverseOrbit: 0
-  offsetOrbit: 0
+  invertOrbitOffset: 0
   dotSpinMultiplier: 0.36
-  dotScaleAnimation: 0.008
-  sinCosSplit: 0
+  dotScaleMultipler: 0
+  sinCosSplitScale: 0
