@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void Start()
         {
             // put it at root of scene
-            visualsRoot.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            MixedRealityPlayspace.AddChild(visualsRoot.transform);
             visualsRoot.gameObject.name = $"{gameObject.name}_NearTetherVisualsRoot";
         }
 

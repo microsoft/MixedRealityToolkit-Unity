@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         "Windows Mixed Reality Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset", 
         "MixedRealityToolkit.SDK")]
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class WindowsMixedRealitySpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver
     {
         /// <summary>
@@ -128,13 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which observed objects are parented.
         /// </summary>
         private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
-
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-
-        /// <summary>
-        /// The currently active instance of <see cref="Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.IMixedRealitySpatialAwarenessSystem"/>.
-        /// </summary>
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
 #if UNITY_WSA
         /// <inheritdoc />

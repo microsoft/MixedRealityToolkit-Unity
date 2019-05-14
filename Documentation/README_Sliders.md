@@ -1,10 +1,11 @@
 # Sliders
-![Sliders](../Documentation/Images/Sliders/MRTK_Sliders_Main.png)
+![](../Documentation/Images/Slider/MRTK_UX_Slider_Main.jpg)
 
 Sliders are UI components that allow you to continuously change a value by moving a slider on a track. Currently the Pinch Slider can be moved by directly grabbing the slider, either directly or at a distance. Sliders work on AR and VR, using motion controllers, hands, or Gesture + Voice.
 
-## Sliders Example
-You can see an example usage of sliders in the file `Assets\MixedRealityToolkit.Examples\Demos\UX\Slider\Scenes\SliderExample.unity`.
+## Example scene
+You can find examples in the **SliderExample** scene under:
+[MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes)
 
 ## How to use Sliders
 Drag and drop the **PinchSlider** prefab into the scene hierarchy. If you want to modify or create your own slider, remember to do the following:
@@ -34,6 +35,6 @@ You can directly move the starting and end points of the slider by moving the ha
 
 You can also specify the axis (in local space) of the slider via the _Slider Axis_ field
 
-If you cannot use the handles, you can instead specify the start and end points of the slider via the _Slider Start Distance_ and _Slider End Distance_ fields. These specify start / end position of slider as a distance from the slider's center, in local coordinates. This means that once you set the slider start and end distaces as you want them, you can scale the slider to be smaller or larger without needing to update the start and end distances.
+If you cannot use the handles, you can instead specify the start and end points of the slider via the _Slider Start Distance_ and _Slider End Distance_ fields. These specify start / end position of slider as a distance from the slider's center, in local coordinates. This means that once you set the slider start and end distances as you want them, you can scale the slider to be smaller or larger without needing to update the start and end distances.
 
 
