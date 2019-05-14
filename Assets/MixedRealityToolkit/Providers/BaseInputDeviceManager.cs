@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.LogError($"{name} requires a valid input system instance.");
             }
+            InputSystem = inputSystem;
 
             if (inputSystemProfile == null)
             {
@@ -40,6 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             InputSystemProfile = inputSystemProfile;
         }
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem { get; private set; }
 
         /// <summary>
         /// The input system configuration profile in use in the application.

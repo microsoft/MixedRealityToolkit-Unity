@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
 using UnityEngine;
 
@@ -26,11 +27,28 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public Material HeatmapOverlayMaterialTemplate;
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         private void Update()
         {
-            if (UseLiveInputStream && MixedRealityToolkit.InputSystem?.EyeGazeProvider?.GazeTarget == gameObject && MixedRealityToolkit.InputSystem.EyeGazeProvider.IsEyeGazeValid)
+            if (UseLiveInputStream && InputSystem?.EyeGazeProvider?.GazeTarget == gameObject && InputSystem.EyeGazeProvider.IsEyeGazeValid)
             {
-                DrawAtThisHitPos(MixedRealityToolkit.InputSystem.EyeGazeProvider.HitPosition);
+                DrawAtThisHitPos(InputSystem.EyeGazeProvider.HitPosition);
             }
         }
 

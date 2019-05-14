@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public bool Equals(MixedRealityPose other)
         {
             return Position == other.Position &&
-                   Rotation == other.Rotation;
+                   Rotation.Equals(other.Rotation);
         }
 
         public override bool Equals(object obj)
