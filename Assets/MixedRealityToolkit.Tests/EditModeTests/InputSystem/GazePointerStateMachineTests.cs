@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             TestUtilities.InitializeMixedRealityToolkitScene(true);
 
             // Initial state: gaze pointer active
-            var gsm = new GazePointerStateMachine();
+            var gsm = new GazePointerVisibilityStateMachine();
             Assert.IsTrue(gsm.IsGazePointerActive, "Gaze pointer should be visible on start");
 
             // After hand is raised, no pointer should show up;

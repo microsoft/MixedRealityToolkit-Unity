@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// When application starts, gaze pointer is visible. Then when articulate hands / motion controllers
     /// appear, hide the gaze cursor. Whenever user says "select", make the gaze cursor appear.
     /// </summary>
-    public class GazePointerStateMachine : IMixedRealitySpeechHandler
+    public class GazePointerVisibilityStateMachine : IMixedRealitySpeechHandler
     {
         private enum GazePointerState
         {

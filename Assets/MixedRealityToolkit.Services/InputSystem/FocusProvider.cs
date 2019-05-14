@@ -424,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private GazePointerStateMachine gazePointerStateMachine = new GazePointerStateMachine();
+        private GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
 
         #region IMixedRealityService Implementation
 
