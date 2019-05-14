@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// appear, hide the gaze cursor. Whenever user says the voice wake word, make the 
     /// gaze controller appear.
     /// </summary>
-    class GazePointerStateMachine : IMixedRealitySpeechHandler
+    public class GazePointerStateMachine : IMixedRealitySpeechHandler
     {
         private enum GazePointerState
         {
