@@ -259,6 +259,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected virtual void Update()
         {
+            UpdateState();
+
             pointerDataManager.UpdatePointerPositions();
 
             if (rollOffTimer < rollOffTime && HasPress)
@@ -410,14 +412,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Focus, focus ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetPress(bool press)
         {
             HasPress = press;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Pressed, press ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetDisabled(bool disabled)
@@ -425,98 +425,84 @@ namespace Microsoft.MixedReality.Toolkit.UI
             IsDisabled = disabled;
             Enabled = !disabled;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Disabled, disabled ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetTargeted(bool targeted)
         {
             IsTargeted = targeted;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Targeted, targeted ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetInteractive(bool interactive)
         {
             IsInteractive = interactive;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Interactive, interactive ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetObservationTargeted(bool targeted)
         {
             HasObservationTargeted = targeted;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.ObservationTargeted, targeted ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetObservation(bool observation)
         {
             HasObservation = observation;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Observation, observation ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetVisited(bool visited)
         {
             IsVisited = visited;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, visited ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetToggled(bool toggled)
         {
             IsToggled = toggled;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Toggled, toggled ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetGesture(bool gesture)
         {
             HasGesture = gesture;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Gesture, gesture ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetGestureMax(bool gesture)
         {
             HasGestureMax = gesture;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.GestureMax, gesture ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetCollision(bool collision)
         {
             HasCollision = collision;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Collision, collision ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetCustom(bool custom)
         {
             HasCustom = custom;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Custom, custom ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetVoiceCommand(bool voice)
         {
             HasVoiceCommand = voice;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Custom, voice ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetPhysicalTouch(bool touch)
         {
             HasPhysicalTouch = touch;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.PhysicalTouch, touch ? 1 : 0);
-            UpdateState();
         }
 
         public virtual void SetGrip(bool grip)
         {
             HasGrip = grip;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Grip, grip ? 1 : 0);
-            UpdateState();
         }
 
         /// <summary>
@@ -757,7 +743,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
-            if (!HasGesture && CanInteract() && ShouldListen(eventData.MixedRealityInputAction))
+            if (!HasGesture && CanInteract() && (ShouldListen(eventData.MixedRealityInputAction) || eventData.MixedRealityInputAction.Description == "None"))
             {
                 SetGesture(true);
             }

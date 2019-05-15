@@ -63,7 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Ease.Stop();
 
             Loaded = true;
-
         }
 
         protected float LerpFloat(float s, float e, float t)
