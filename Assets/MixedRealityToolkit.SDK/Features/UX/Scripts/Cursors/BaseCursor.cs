@@ -358,6 +358,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                // Wait until the toolkit is initialized before taking action.
+                return;
+            }
+
             FocusDetails focusDetails;
 
             if (!InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))

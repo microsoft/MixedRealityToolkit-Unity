@@ -12,7 +12,7 @@ MonoBehaviour:
   m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 7612acbc1a4a4ed0afa5f4ccbe42bee4, type: 3}
   m_Name: EyeTrackingDemoConfigurationProfile
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   isCustomProfile: 1
   targetExperienceScale: 4
   enableCameraSystem: 1
@@ -26,14 +26,14 @@ MonoBehaviour:
     reference: Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem, Microsoft.MixedReality.Toolkit.Services.InputSystem
   enableBoundarySystem: 0
   boundarySystemType:
-    reference: 
+    reference:
   boundaryVisualizationProfile: {fileID: 0}
   enableTeleportSystem: 0
   teleportSystemType:
-    reference: 
+    reference:
   enableSpatialAwarenessSystem: 0
   spatialAwarenessSystemType:
-    reference: 
+    reference:
   spatialAwarenessSystemProfile: {fileID: 0}
   diagnosticsSystemProfile: {fileID: 11400000, guid: 478436bd1083882479a52d067e98e537,
     type: 2}

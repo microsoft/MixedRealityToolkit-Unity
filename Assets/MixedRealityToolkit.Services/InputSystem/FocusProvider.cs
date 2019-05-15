@@ -449,19 +449,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!IsSetupValid) { return; }
 
-#if UNITY_EDITOR
-            var existingUiRaycastCameraObject = GameObject.Find("UIRaycastCamera");
-
-            if (existingUiRaycastCameraObject != null)
-            {
-                Debug.LogError("There's already a UIRaycastCamera in the scene. It will be ignored, so please delete it to avoid confusion.", existingUiRaycastCameraObject);
-            }
-#endif
-
             if (Application.isPlaying)
             {
                 Debug.Assert(uiRaycastCamera == null);
-                CreateUiRaycastCamera();
+                FindOrCreateUiRaycastCamera();
             }
 
             foreach (var inputSource in InputSystem.DetectedInputSources)
@@ -542,10 +533,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Utility for creating the UIRaycastCamera.
         /// </summary>
         /// <returns>The UIRaycastCamera</returns>
-        private void CreateUiRaycastCamera()
+        private void FindOrCreateUiRaycastCamera()
         {
-            var cameraObject = new GameObject { name = "UIRaycastCamera" };
-            uiRaycastCamera = cameraObject.AddComponent<Camera>();
+            GameObject cameraObject = null;
+
+            var existingUiRaycastCameraObject = GameObject.Find("UIRaycastCamera");
+            if (existingUiRaycastCameraObject != null)
+            {
+                cameraObject = existingUiRaycastCameraObject;
+            }
+            else
+            {
+                cameraObject = new GameObject { name = "UIRaycastCamera" };
+            }
+
+            uiRaycastCamera = cameraObject.EnsureComponent<Camera>();
             uiRaycastCamera.enabled = false;
             uiRaycastCamera.clearFlags = CameraClearFlags.Color;
             uiRaycastCamera.backgroundColor = new Color(0, 0, 0, 1);
@@ -564,9 +566,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             uiRaycastCamera.targetDisplay = 0;
             uiRaycastCamera.stereoTargetEye = StereoTargetEyeMask.Both;
 
-            // Set target texture to specific pixel size so that drag thresholds are treated the same regardless of underlying
-            // device display resolution.
-            uiRaycastCameraTargetTexture = new RenderTexture(128, 128, 0);
+            if (uiRaycastCameraTargetTexture == null)
+            {
+                // Set target texture to specific pixel size so that drag thresholds are treated the same regardless of underlying
+                // device display resolution.
+                uiRaycastCameraTargetTexture = new RenderTexture(128, 128, 0);
+            }
+
             uiRaycastCamera.targetTexture = uiRaycastCameraTargetTexture;
         }
 
