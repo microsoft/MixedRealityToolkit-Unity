@@ -6,26 +6,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    /// <summary>
-    /// Settings for recording input animation assets.
-    /// </summary>
-    [System.Serializable]
-    public class InputRecordingSettings
-    {
-        [SerializeField]
-        [Tooltip("Minimum movement of hand joints to record a keyframe")]
-        private float jointPositionThreshold = 0.001f;
-        public float JointPositionThreshold => jointPositionThreshold;
-        [SerializeField]
-        [Tooltip("Minimum movement of the camera to record a keyframe")]
-        private float cameraPositionThreshold = 0.002f;
-        public float CameraPositionThreshold => cameraPositionThreshold;
-        [SerializeField]
-        [Tooltip("Minimum rotation angle of the camera to record a keyframe")]
-        private float cameraRotationThreshold = Mathf.Deg2Rad * 0.5f;
-        public float CameraRotationThreshold => cameraRotationThreshold;
-    }
-
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Simulated Input Profile", fileName = "MixedRealityInputSimulationProfile", order = (int)CreateProfileMenuItemIndices.InputSimulation)]
     [MixedRealityServiceProfile(typeof(IInputSimulationService))]
     public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile
@@ -201,10 +181,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Angle per second when rotating the hand")]
         private float handRotationSpeed = 100.0f;
         public float HandRotationSpeed => handRotationSpeed;
-
-        [SerializeField]
-        [Tooltip("Settings for recording new input animation")]
-        private InputRecordingSettings recordingSettings = new InputRecordingSettings();
-        public InputRecordingSettings RecordingSettings => recordingSettings;
     }
 }

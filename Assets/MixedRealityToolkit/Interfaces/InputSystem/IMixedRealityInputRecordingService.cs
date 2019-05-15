@@ -9,20 +9,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Implements the Gaze Provider for an Input Source.
     /// </summary>
-    public interface IMixedRealityInputRecordingService
+    public interface IMixedRealityInputRecordingService : IMixedRealityInputDeviceManager
     {
+        /// <summary>
+        /// Input is being recorded.
+        /// </summary>
+        bool IsRecording { get; }
+
+        /// <summary>
+        /// Limit the size of the recording buffer.
+        /// </summary>
+        /// <remarks>
+        /// If recording is limited any input older than the RecordingBufferTimeLimit will be discarded.
+        /// </remarks>
+        bool UseBufferTimeLimit { get; }
+
         /// <summary>
         /// Size of the input recording buffer.
         /// </summary>
-        /// <remarks>
-        /// Any input older than this time span will be discarded.
-        /// </remarks>
-        float RecordingBufferLength { get; set; }
+        float RecordingBufferTimeLimit { get; }
 
         /// <summary>
-        /// Start recording input.
+        /// Start unlimited input recording.
         /// </summary>
-        void StartRecording();
+        void StartRecording(bool useTimeLimit = false);
+
+        /// <summary>
+        /// Start limited input recording.
+        /// </summary>
+        /// <param name="bufferTimeLimit">Time limit after which to discard keyframes.</param>
+        void StartRecording(float bufferTimeLimit);
 
         /// <summary>
         /// Stop recording input.
@@ -37,8 +53,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Export recorded input animation to a file.
         /// </summary>
-        /// <param name="filename">Name of the file to export to.</param>
-        /// <param name="appendTimestamp">Append the current time to the file name.</param>
-        void ExportRecordedInput(Ray eyeRay, bool appendTimestamp = true);
+        /// <remarks>
+        /// Filename is determined automatically.
+        /// </remarks>
+        void ExportRecordedInput();
+
+        /// <summary>
+        /// Export recorded input animation to a file.
+        /// </summary>
+        void ExportRecordedInput(string filename);
     }
 }

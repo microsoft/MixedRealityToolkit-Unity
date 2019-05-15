@@ -9,31 +9,28 @@ using System.IO;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public static class InputAnimationUtils
+    public static class InputAnimationRecordingUtils
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
-        private static IInputSimulationService inputSimService = null;
-        private static IInputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
 
         /// <summary>
         /// Record a keyframe at the given time for the main camera and tracked input devices.
         /// </summary>
-        public static void RecordKeyframe(InputAnimation animation, float time, InputRecordingSettings settings)
+        public static void RecordKeyframe(InputAnimation animation, float time, MixedRealityInputRecordingProfile profile)
         {
-            RecordInputHandData(animation, time, Handedness.Left, settings);
-            RecordInputHandData(animation, time, Handedness.Right, settings);
+            RecordInputHandData(animation, time, Handedness.Left, profile);
+            RecordInputHandData(animation, time, Handedness.Right, profile);
             if (CameraCache.Main)
             {
                 var cameraPose = new MixedRealityPose(CameraCache.Main.transform.position, CameraCache.Main.transform.rotation);
-                animation.AddCameraPoseKey(time, cameraPose, settings.CameraPositionThreshold, settings.CameraRotationThreshold);
+                animation.AddCameraPoseKey(time, cameraPose, profile.CameraPositionThreshold, profile.CameraRotationThreshold);
             }
         }
 
         /// <summary>
         /// Record a keyframe at the given time for a hand with the given handedness it is tracked.
         /// </summary>
-        public static bool RecordInputHandData(InputAnimation animation, float time, Handedness handedness, InputRecordingSettings settings)
+        public static bool RecordInputHandData(InputAnimation animation, float time, Handedness handedness, MixedRealityInputRecordingProfile profile)
         {
             var hand = HandJointUtils.FindHand(handedness);
             if (hand == null)
@@ -65,32 +62,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (hand.TryGetJoint((TrackedHandJoint)i, out MixedRealityPose jointPose))
                     {
-                        animation.AddHandJointKey(time, handedness, (TrackedHandJoint)i, jointPose.Position, settings.JointPositionThreshold);
+                        animation.AddHandJointKey(time, handedness, (TrackedHandJoint)i, jointPose, profile.JointPositionThreshold);
                     }
                 }
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Evaluate input animation and apply it using the input simulation service.
-        /// </summary>
-        public static void ApplyInputAnimation(InputAnimation animation, float time)
-        {
-            if (InputSimService != null)
-            {
-                InputSimService.UserInputEnabled = false;
-
-                animation.EvaluateHandData(time, Handedness.Left, InputSimService.HandDataLeft);
-                animation.EvaluateHandData(time, Handedness.Right, InputSimService.HandDataRight);
-
-                if (CameraCache.Main)
-                {
-                    MixedRealityPose cameraPose = animation.EvaluateCameraPose(time);
-                    CameraCache.Main.transform.SetPositionAndRotation(cameraPose.Position, cameraPose.Rotation);
-                }
-            }
         }
 
         /// <summary>

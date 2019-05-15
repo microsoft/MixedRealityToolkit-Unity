@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -123,6 +124,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     break;
             }
+        }
+
+        /// <summary>
+        /// Evaluate animation curves at the given time and apply them as simulated input state
+        /// </summary>
+        public void ApplyAnimatedInput(InputAnimation animation, float animationTime)
+        {
+            MixedRealityPose cameraPose = animation.EvaluateCameraPose(animationTime);
+            CameraCache.Main.transform.SetPositionAndRotation(cameraPose.Position, cameraPose.Rotation);
+
+            EvaluateHandData(HandDataLeft, animation, animationTime, Handedness.Left);
+            EvaluateHandData(HandDataRight, animation, animationTime, Handedness.Right);
+        }
+
+        private static void EvaluateHandData(SimulatedHandData handData, InputAnimation animation, float animationTime, Handedness handedness)
+        {
+            animation.EvaluateHandState(animationTime, handedness, out bool isTracked, out bool isPinching);
+            handData.Update(isTracked, isPinching,
+                (MixedRealityPose[] jointPoses) =>
+                {
+                    for (int i = 0; i < jointPoses.Length; ++i)
+                    {
+                        jointPoses[i] = animation.EvaluateHandJoint(animationTime, handedness, (TrackedHandJoint)i);
+                    }
+                });
         }
 
         /// <inheritdoc />
