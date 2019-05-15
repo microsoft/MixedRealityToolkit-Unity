@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         return dragPose.position;
                     }
-                    else if (gazeProvider.preferEyeTracking && gazeProvider.IsEyeTrackingAvailable)
+                    else if (gazeProvider.useEyeTracking && gazeProvider.IsEyeTrackingAvailable)
                     {
                         return gazeProvider.latestEyeGaze.origin;
                     }
@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         return dragPose.rotation;
                     }
-                    else if (gazeProvider.preferEyeTracking && gazeProvider.IsEyeTrackingAvailable)
+                    else if (gazeProvider.useEyeTracking && gazeProvider.IsEyeTrackingAvailable)
                     {
                         return Quaternion.LookRotation(gazeProvider.latestEyeGaze.direction);
                     }
