@@ -15,4 +15,12 @@ MonoBehaviour:
   isCustomProfile: 0
   showDiagnostics: 1
   showProfiler: 1
-  frameRateDuration: 0.1
+  showFrameInfo: 1
+  showMemoryStats: 1
+  frameSampleRate: 0.1
+  windowAnchor: 7
+  windowOffset: {x: 0.1, y: 0.1}
+  windowScale: 1
+  windowFollowSpeed: 5
+  defaultInstancedShader: {fileID: 4800000, guid: d199a2ca60343bb49ad9a41ddb45a083,
+    type: 3}

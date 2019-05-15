@@ -15,11 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
         private static bool showProfilerSettings = true;
         private SerializedProperty showProfiler;
+        private SerializedProperty showFrameInfo;
+        private SerializedProperty showMemoryStats;
         private SerializedProperty frameSampleRate;
         private SerializedProperty windowAnchor;
         private SerializedProperty windowOffset;
         private SerializedProperty windowScale;
         private SerializedProperty windowFollowSpeed;
+        private SerializedProperty defaultInstancedShader;
 
         // todo: coming soon
         // private static bool showDebugPanelSettings = true;
@@ -31,11 +34,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
             showDiagnostics = serializedObject.FindProperty("showDiagnostics");
             showProfiler = serializedObject.FindProperty("showProfiler");
+            showFrameInfo = serializedObject.FindProperty("showFrameInfo");
+            showMemoryStats = serializedObject.FindProperty("showMemoryStats");
             frameSampleRate = serializedObject.FindProperty("frameSampleRate");
             windowAnchor = serializedObject.FindProperty("windowAnchor");
             windowOffset = serializedObject.FindProperty("windowOffset");
             windowScale = serializedObject.FindProperty("windowScale");
             windowFollowSpeed = serializedObject.FindProperty("windowFollowSpeed");
+            defaultInstancedShader = serializedObject.FindProperty("defaultInstancedShader");
         }
 
         public override void OnInspectorGUI()
@@ -79,11 +85,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.PropertyField(showProfiler);
+                    EditorGUILayout.PropertyField(showFrameInfo);
+                    EditorGUILayout.PropertyField(showMemoryStats);
                     EditorGUILayout.PropertyField(frameSampleRate);
                     EditorGUILayout.PropertyField(windowAnchor);
                     EditorGUILayout.PropertyField(windowOffset);
                     EditorGUILayout.PropertyField(windowScale);
                     EditorGUILayout.PropertyField(windowFollowSpeed);
+                    EditorGUILayout.PropertyField(defaultInstancedShader);
                 }
             }
 
