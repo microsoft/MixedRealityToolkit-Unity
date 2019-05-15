@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Render the Mixed Reality Toolkit Logo.
         /// </summary>
-        protected void RenderMixedRealityToolkitLogo()
+        protected void RenderTitleDescriptionAndLogo(string title, string description)
         {
             // If we're being rendered as a sub profile, don't show the logo
             if (RenderAsSubProfile)
@@ -53,6 +53,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.Space(12f);
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
+            }
+
+            if (!string.IsNullOrEmpty(description))
+            {
+                EditorGUILayout.HelpBox(description, MessageType.Info);
+            }
         }
 
         /// <summary>

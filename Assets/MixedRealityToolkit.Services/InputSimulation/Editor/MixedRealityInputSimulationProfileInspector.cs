@@ -63,8 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false)) { return; }
-
             isCameraControlEnabled = serializedObject.FindProperty("isCameraControlEnabled");
 
             extraMouseSensitivityScale = serializedObject.FindProperty("extraMouseSensitivityScale");
@@ -116,19 +114,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
+            RenderTitleDescriptionAndLogo(
+                "Input Simulation settings",
+                "Settings for simulating input devices in the editor.");
 
-            if (GUILayout.Button("Back to Input Profile"))
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                if (GUILayout.Button("Back to Input Profile"))
+                {
+                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                }
             }
-            EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("Input Simulation settings", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Settings for simulating input devices in the editor.", MessageType.Info);
             CheckProfileLock(target);
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
 
             serializedObject.Update();
 

@@ -146,6 +146,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 continue;
                             }
 
+                            if (otherPointer is IMixedRealityNearPointer)
+                            {
+                                // Only disable far interaction pointers
+                                // It is okay for example to have two near pointers active on a single controller
+                                // like a poke pointer and a grab pointer
+                                continue;
+                            }
+
                             otherPointer.IsActive = false;
                             unassignedPointers.Remove(otherPointer);
                         }

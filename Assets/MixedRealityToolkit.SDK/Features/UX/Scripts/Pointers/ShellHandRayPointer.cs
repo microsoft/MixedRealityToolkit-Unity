@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (IsSelectPressed)
             {
-                MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+                InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
             }
 
             Gradient lineColor = LineColorNoTarget;

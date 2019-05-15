@@ -1,6 +1,3 @@
-pool:
-  name: On-Prem Unity
-
 steps:
 - powershell: |
    # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
@@ -107,6 +104,31 @@ steps:
    $editor = Get-ChildItem ${Env:Unity2018.3.7f1} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
    
    $outDir = "$(Build.ArtifactStagingDirectory)\build"
+   $logFile = New-Item -Path "$outDir\build\build_x86.log" -ItemType File -Force
+   
+   $sceneList = "Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity"
+   
+   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild -sceneList $sceneList -logFile $($logFile.FullName) -batchMode -x86 -buildOutput $outDir -buildTarget WSAPlayer -scriptingBackend 2" -PassThru
+   $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
+   
+   while (-not $proc.HasExited -and $ljob.HasMoreData)
+   {
+       Receive-Job $ljob
+       Start-Sleep -Milliseconds 200
+   }
+   Receive-Job $ljob
+   
+   Stop-Job $ljob
+   
+   Remove-Job $ljob
+   Stop-Process $proc
+  displayName: 'Build UWP x86 (.NET) For NuGet'
+
+- powershell: |
+   # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
+   $editor = Get-ChildItem ${Env:Unity2018.3.7f1} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+   
+   $outDir = "$(Build.ArtifactStagingDirectory)\build"
    $logFile = New-Item -Path "$outDir\build\retargeting_log.log" -ItemType File -Force
    
    $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -batchmode -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.AssetScriptReferenceRetargeter.RetargetAssets -logFile $($logFile.FullName) -nographics -quit" -PassThru
@@ -162,7 +184,7 @@ steps:
     testResultsFiles: 'test*.xml'
     failTaskOnFailedTests: true
 
-- task: NuGetCommand@2
+- task: 333b11bd-d341-40d9-afcf-b32d5ce6f23b@2
   displayName: 'NuGet pack'
   inputs:
     command: pack
@@ -176,7 +198,7 @@ steps:
     PathtoPublish: '$(Build.SourcesDirectory)\artifacts'
     ArtifactName: 'mrtk-unity-packages'
 
-- task: NuGetCommand@2
+- task: 333b11bd-d341-40d9-afcf-b32d5ce6f23b@2
   displayName: 'NuGet push'
   inputs:
     command: push

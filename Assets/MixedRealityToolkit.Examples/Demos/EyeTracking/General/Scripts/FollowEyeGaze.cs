@@ -17,12 +17,29 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         private float defaultDistanceInMeters = 2f;
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         private void Update()
         {
             // Update GameObject to the current eye gaze position at a given distance
-            if (MixedRealityToolkit.InputSystem?.EyeGazeProvider?.IsEyeGazeValid == true)
+            if (InputSystem?.EyeGazeProvider?.IsEyeGazeValid == true)
             {
-                GameObject target = MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeTarget;
+                GameObject target = InputSystem.EyeGazeProvider.GazeTarget;
                 if (target != null)
                 {
                     // Show the object at the center of the currently looked at target.
@@ -37,14 +54,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     else
                     {
                         // Show the object at the hit position of the user's eye gaze ray with the target.
-                        gameObject.transform.position = MixedRealityToolkit.InputSystem.EyeGazeProvider.HitPosition;
+                        gameObject.transform.position = InputSystem.EyeGazeProvider.HitPosition;
 
                     }
                 }
                 else
                 {
                     // If no target is hit, show the object at a default distance along the gaze ray.
-                    gameObject.transform.position = MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeOrigin + MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
+                    gameObject.transform.position = InputSystem.EyeGazeProvider.GazeOrigin + InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
                 }
             }
         }

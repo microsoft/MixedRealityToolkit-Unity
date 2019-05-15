@@ -206,58 +206,47 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         #region Vector2
 
         [Test]
-        public void Test07_TestVector2Changed()
+        public void Test07_TestVector2()
         {
-            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.DualAxis, DeviceInputType.None, MixedRealityInputAction.None);
-            var testValue1 = Vector2.one;
-            var testValue2 = Vector2.zero;
+            bool[] invertAxisValues = { true, false };
+            Vector2[] vectorValues = { new Vector2(1, 1), new Vector2(1, -1) };
 
-            var initialValue = interaction.Vector2Data;
-
-            Assert.True(initialValue == Vector2.zero);
-            Assert.IsFalse(interaction.Changed);
-
-            interaction.Vector2Data = testValue1;
-
-            Assert.IsTrue(interaction.Changed);
-
-            var setValue1 = interaction.Vector2Data;
-
-            Assert.True(setValue1 == testValue1);
-            Assert.IsFalse(interaction.Changed);
-
-            interaction.Vector2Data = testValue2;
-
-            Assert.IsTrue(interaction.Changed);
-
-            var setValue2 = interaction.Vector2Data;
-
-            Assert.True(setValue2 == testValue2);
-            Assert.IsFalse(interaction.Changed);
+            foreach (var invertXAxis in invertAxisValues)
+            {
+                foreach (var invertYAxis in invertAxisValues)
+                {
+                    foreach (var value in vectorValues)
+                    {
+                        Test07_TestVector2_internal(invertXAxis, invertYAxis, value);
+                    }
+                }
+            }
         }
-
-        [Test]
-        public void Test08_TestVector2NoChange()
+            
+        private static void Test07_TestVector2_internal(bool invertXAxis, bool invertYAxis, Vector2 vectorValue)
         {
-            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.DualAxis, DeviceInputType.None, MixedRealityInputAction.None);
-            var testValue = Vector2.one;
+            string msg = string.Format("invertXAxis: {0}, invertYAxis: {1}, vectorValue: {2}", invertXAxis, invertYAxis, vectorValue);
 
-            var initialValue = interaction.Vector2Data;
+            var i = new MixedRealityInteractionMapping(
+                1, string.Empty, AxisType.DualAxis, DeviceInputType.None, MixedRealityInputAction.None, invertXAxis: invertXAxis, invertYAxis: invertYAxis);
 
-            Assert.True(initialValue == Vector2.zero);
-            Assert.IsFalse(interaction.Changed);
+            // Test initial state
+            Assert.AreEqual(Vector2.zero, i.Vector2Data, msg);
+            Assert.IsFalse(i.Changed, msg);
 
-            interaction.Vector2Data = testValue;
+            // Test change
+            i.Vector2Data = vectorValue;
+            Vector2 invertedValue = vectorValue * new Vector2(invertXAxis ? -1f : 1f, invertYAxis ? -1f : 1f);
+            Assert.AreEqual(invertedValue, i.Vector2Data, msg);
+            Assert.IsTrue(i.Changed, msg);
 
-            Assert.IsTrue(interaction.Changed);
+            // Test Changed gets reset after querying
+            Assert.IsFalse(i.Changed, msg);
 
-            // Make sure the second time we query it's false
-            Assert.IsFalse(interaction.Changed);
-
-            interaction.Vector2Data = testValue;
-
-            // Make sure if we set the same value it's false
-            Assert.IsFalse(interaction.Changed);
+            // Test no change
+            i.Vector2Data = vectorValue;
+            Assert.AreEqual(invertedValue, i.Vector2Data, msg);
+            Assert.IsFalse(i.Changed, msg);
         }
 
         #endregion Vector2
