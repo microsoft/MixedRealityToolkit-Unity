@@ -14,14 +14,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         [MenuItem("Spectator View/Update All Asset Caches", priority = 100)]
         public static void UpdateAllAssetCaches()
         {
-            var sceneManager = Object.FindObjectOfType<SynchronizedSceneManager>();
+            var sceneManager = SynchronizedSceneManager.Instance;
+            if (sceneManager == null)
+            {
+                Debug.LogWarning("SynchronizedSceneManager was not found in scene. Is the SynchronizedSceneManager active in the current scene?");
+                return;
+            }
+
             sceneManager.UpdateAllAssetCaches();
         }
 
         [MenuItem("Spectator View/Clear All Asset Caches", priority = 101)]
         public static void ClearAllAssetCaches()
         {
-            var sceneManager = Object.FindObjectOfType<SynchronizedSceneManager>();
+            var sceneManager = SynchronizedSceneManager.Instance;
+            if (sceneManager == null)
+            {
+                Debug.LogWarning("SynchronizedSceneManager was not found in scene. Is the SynchronizedSceneManager active in the current scene?");
+                return;
+            }
+
             sceneManager.UpdateAllAssetCaches();
         }
 
@@ -73,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             if (prefab == null)
             {
                 GameObject hierarchyPrefab = new GameObject(SynchronizedSceneManager.SettingsPrefabName);
-                hierarchyPrefab.AddComponent<SynchronizedClientSettings>();
+                hierarchyPrefab.AddComponent<BroadcasterSettings>();
 
                 AssetCache.EnsureAssetDirectoryExists();
 #if UNITY_2018_3_OR_NEWER

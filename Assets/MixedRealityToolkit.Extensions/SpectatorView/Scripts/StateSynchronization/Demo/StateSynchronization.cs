@@ -30,20 +30,32 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected string broadcasterIpAddress = "127.0.0.1";
 
+        /// <summary>
+        /// SynchronizedSceneManager MonoBehaviour
+        /// </summary>
+        [Tooltip("SynchronizedSceneManager")]
         [SerializeField]
         protected SynchronizedSceneManager synchronizedSceneManager;
 
+        /// <summary>
+        /// Broadcaster MonoBehaviour
+        /// </summary>
+        [Tooltip("Broadcaster MonoBehaviour")]
         [SerializeField]
-        protected SynchronizedClient userClient;
+        protected Broadcaster broadcaster;
 
+        /// <summary>
+        /// Observer MonoBehaviour
+        /// </summary>
+        [Tooltip("Observer MonoBehaviour")]
         [SerializeField]
-        protected RemoteClient observerClient;
+        protected Observer observer;
 
-        void Start()
+        private void Start()
         {
             if (synchronizedSceneManager == null ||
-                userClient == null ||
-                observerClient == null)
+                broadcaster == null ||
+                observer == null)
             {
                 Debug.LogError("StateSynchronization scene isn't configured correctly");
                 return;
@@ -60,22 +72,36 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
+#if UNITY_EDITOR
+        private void Update()
+        {
+            if (Role == Role.Observer)
+            {
+                Camera.main.transform.localPosition = Observer.Instance.transform.position;
+                Camera.main.transform.localRotation = Observer.Instance.transform.rotation;
+            }
+        }
+#endif
+
         private void RunAsBroadcaster()
         {
-            userClient.gameObject.SetActive(true);
-            observerClient.gameObject.SetActive(false);
+            broadcaster.gameObject.SetActive(true);
+            observer.gameObject.SetActive(false);
 
+            // The SynchronizedSceneManager needs to be enabled after the broadcaster/observer
             synchronizedSceneManager.gameObject.SetActive(true);
         }
 
         private void RunAsObserver()
         {
-            userClient.gameObject.SetActive(false);
-            observerClient.gameObject.SetActive(true);
+            broadcaster.gameObject.SetActive(false);
+            observer.gameObject.SetActive(true);
 
+            // The SynchronizedSceneManager needs to be enabled after the broadcaster/observer
             synchronizedSceneManager.gameObject.SetActive(true);
 
-            observerClient.ConnectTo(broadcasterIpAddress);
+            // Make sure the SynchronizedSceneManger is enabled prior to connecting the observer
+            observer.ConnectTo(broadcasterIpAddress);
         }
     }
 }

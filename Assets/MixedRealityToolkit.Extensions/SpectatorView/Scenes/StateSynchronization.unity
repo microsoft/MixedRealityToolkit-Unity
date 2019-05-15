@@ -260,7 +260,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &685059957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,11 +723,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 080592ca1eeef704dac0a5d91bc664c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Role: 1
-  broadcasterIpAddress: 10.89.160.74
+  Role: 0
+  broadcasterIpAddress: 10.124.204.150
   synchronizedSceneManager: {fileID: 685059976}
-  userClient: {fileID: 2075391329}
-  observerClient: {fileID: 2043021341}
+  broadcaster: {fileID: 2075391329}
+  observer: {fileID: 2043021341}
 --- !u!1 &1869681819
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,7 +804,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1869681819}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -821,7 +821,7 @@ GameObject:
   - component: {fileID: 2043021342}
   - component: {fileID: 2043021341}
   m_Layer: 0
-  m_Name: RemoteClient - Observer
+  m_Name: Observer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -867,7 +867,7 @@ GameObject:
   - component: {fileID: 2075391329}
   - component: {fileID: 2075391331}
   m_Layer: 0
-  m_Name: SynchronizedClient - Broadcaster
+  m_Name: Broadcaster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

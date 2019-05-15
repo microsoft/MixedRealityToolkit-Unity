@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// This class observes changes and updates content on a spectator device.
     /// </summary>
-    public class RemoteClient : Singleton<RemoteClient>
+    public class Observer : Singleton<Observer>
     {
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
             else
             {
-                Debug.LogError("Connection manager not specified for RemoteClient.");
+                Debug.LogError("Connection manager not specified for Observer.");
             }
         }
 
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private void NetMgr_OnConnected(SocketEndpoint endpoint)
         {
             currentConnection = endpoint;
-            Debug.Log("RemoteClient Connected!");
+            Debug.Log("Observer Connected!");
 
             if (SynchronizedSceneManager.IsInitialized)
             {
@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             using (BinaryWriter writer = new BinaryWriter(stream))
             {
                 // It doesn't matter what the content of this message is, it just can't conflict with other commands
-                // sent in this channel and read by the SynchronizedClient.
+                // sent in this channel and read by the Broadcaster.
                 writer.Write("♥");
                 writer.Flush();
 

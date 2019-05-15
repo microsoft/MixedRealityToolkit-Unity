@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// This class observes changes and updates content on a user device.
     /// </summary>
-    public class SynchronizedClient : Singleton<SynchronizedClient>
+    public class Broadcaster : Singleton<Broadcaster>
     {
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             UpdateExtension();
 
-            if (HasConnections && SynchronizedClientSettings.IsInitialized && SynchronizedClientSettings.Instance && SynchronizedClientSettings.Instance.AutomaticallySynchronizeAllGameObjects)
+            if (HasConnections && BroadcasterSettings.IsInitialized && BroadcasterSettings.Instance && BroadcasterSettings.Instance.AutomaticallySynchronizeAllGameObjects)
             {
                 for (int i = 0; i < SceneManager.sceneCount; i++)
                 {

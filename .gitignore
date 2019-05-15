@@ -90,5 +90,5 @@ Packages/
 # ===================================== #
 # State Synchronization Generated Files #
 # ===================================== #
-Assets/Generated.StateSynchronization.AssetCache.meta
-Assets/Generated.StateSynchronization.AssetCache/
+Assets/Generated.StateSynchronization.AssetCaches.meta
+Assets/Generated.StateSynchronization.AssetCaches/

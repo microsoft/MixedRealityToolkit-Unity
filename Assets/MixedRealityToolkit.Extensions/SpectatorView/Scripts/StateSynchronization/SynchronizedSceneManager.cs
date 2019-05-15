@@ -104,10 +104,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            if (SynchronizedClient.IsInitialized)
+            if (Broadcaster.IsInitialized)
             {
-                SynchronizedClient.Instance.Connected += OnClientConnected;
-                SynchronizedClient.Instance.Disconnected += OnClientDisconnected;
+                Broadcaster.Instance.Connected += OnClientConnected;
+                Broadcaster.Instance.Disconnected += OnClientDisconnected;
             }
 
             StartCoroutine(RunEndOfFrameUpdates());
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public void Send(IEnumerable<SocketEndpoint> endpoints, byte[] message)
         {
-            if (SynchronizedClient.IsInitialized && SynchronizedClient.Instance.HasConnections)
+            if (Broadcaster.IsInitialized && Broadcaster.Instance.HasConnections)
             {
                 foreach (SocketEndpoint endpoint in endpoints)
                 {
@@ -321,9 +321,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                 if (framesToSkipForBuffering == 0)
                 {
-                    if (SynchronizedClient.IsInitialized && SynchronizedClient.Instance != null)
+                    if (Broadcaster.IsInitialized && Broadcaster.Instance != null)
                     {
-                        int bytesQueued = SynchronizedClient.Instance.OutputBytesQueued;
+                        int bytesQueued = Broadcaster.Instance.OutputBytesQueued;
                         if (bytesQueued > MaximumQueuedByteCount)
                         {
                             framesToSkipForBuffering = frameSkippingStride;
@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             UpdateFrameSkippingVotes(-1);
                         }
 
-                        SynchronizedClient.Instance.OnFrameCompleted();
+                        Broadcaster.Instance.OnFrameCompleted();
                     }
 
                     SocketEndpointConnectionDelta connectionDelta = GetFrameConnectionDelta();
@@ -387,7 +387,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 {
                     framesToSkipForBuffering--;
 
-                    int bytesQueued = SynchronizedClient.Instance.OutputBytesQueued;
+                    int bytesQueued = Broadcaster.Instance.OutputBytesQueued;
                     if (bytesQueued <= MaximumQueuedByteCount)
                     {
                         // We're about to skip a frame but the buffer is currently under the capacity threshold for skipping.

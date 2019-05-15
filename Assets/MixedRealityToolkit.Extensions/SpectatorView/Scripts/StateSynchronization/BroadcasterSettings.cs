@@ -6,9 +6,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     /// <summary>
-    /// Settings used by a <see cref="SynchronizedClient"/>
+    /// Settings used by a <see cref="Broadcaster"/>
     /// </summary>
-    public class SynchronizedClientSettings : Singleton<SynchronizedClientSettings>
+    public class BroadcasterSettings : Singleton<BroadcasterSettings>
     {
         /// <summary>
         /// Determines whether or not all GameObjects are synchronized or only those with a SynchronizedGameObjectHierarchy are synchronized.
