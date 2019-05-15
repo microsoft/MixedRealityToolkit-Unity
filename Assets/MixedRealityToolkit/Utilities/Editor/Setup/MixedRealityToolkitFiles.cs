@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -53,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         private const string MixedRealityToolkitDirectory = "MixedRealityToolkit";
+        private const string MRTK_PACKAGE_ID = "com.microsoft.mixedrealitytoolkit";
 
         private readonly static HashSet<string> mrtkFolders = new HashSet<string>();
         private readonly static Task searchForFoldersTask;
@@ -76,8 +78,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         static MixedRealityToolkitFiles()
         {
-            string path = Application.dataPath;
-            searchForFoldersTask = Task.Run(() => SearchForFoldersAsync(path));
+            if (AssetDatabase.IsValidFolder($"Packages/{MRTK_PACKAGE_ID}"))
+            {
+                mrtkFolders.Add(Path.GetFullPath($"Packages/{MRTK_PACKAGE_ID}"));
+                searchForFoldersTask = Task.CompletedTask;
+            }
+            else
+            {
+                string path = Application.dataPath;
+                searchForFoldersTask = Task.Run(() => SearchForFoldersAsync(path));
+            }
         }
 
         private static void SearchForFoldersAsync(string rootPath)
@@ -101,7 +111,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="absolutePath">The absolute path to the project/</param>
         /// <returns>The project relative path.</returns>
         /// <remarks>This doesn't produce paths that contain step out '..' relative paths.</remarks>
-        public static string GetAssetDatabasePath(string absolutePath) => FormatSeparatorsForUnity(absolutePath).Replace(Application.dataPath, "Assets");
+        public static string GetAssetDatabasePath(string absolutePath)
+        {
+            if (absolutePath.Contains(MRTK_PACKAGE_ID))
+            {
+                string packageRelativePath = absolutePath.Split(new string[] { MRTK_PACKAGE_ID }, StringSplitOptions.None)[1];
+                return $"Packages/{MRTK_PACKAGE_ID}" + packageRelativePath;
+            }
+            else
+            {
+                return FormatSeparatorsForUnity(absolutePath).Replace(Application.dataPath, "Assets");
+            }
+        }
 
         /// <summary>
         /// Returns files from all folder instances of the MRTK folder relative path.
