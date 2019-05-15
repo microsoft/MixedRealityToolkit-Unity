@@ -686,8 +686,11 @@ namespace Microsoft.MixedReality.Toolkit
                 // Set the instance to active
                 MixedRealityToolkit.activeInstance = toolkitInstance;
                 toolkitInstances.Add(toolkitInstance);
-                toolkitInstance.InitializeInstance();
                 toolkitInstance.name = ActiveInstanceGameObjectName;
+                if (!toolkitInstance.HasProfileAndIsInitialized)
+                {   // Initialize the instance, if we haven't already
+                    toolkitInstance.InitializeInstance();
+                }
                 return;
             }
 
@@ -732,6 +735,11 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void SetInstanceInactive(MixedRealityToolkit toolkitInstance)
         {
+            if (toolkitInstance == null)
+            {   // Don't do anything.
+                return;
+            }
+
             if (toolkitInstance == activeInstance)
             {   // If this is the active instance, we need to break it down
                 toolkitInstance.DestroyAllServices();
