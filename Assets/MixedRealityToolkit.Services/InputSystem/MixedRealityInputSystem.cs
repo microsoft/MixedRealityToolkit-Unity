@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (Registrar.RegisterDataProvider<IMixedRealityInputDeviceManager>(
                         configuration.ComponentType.Type,
-                        configuration.SupportedPlatforms,
+                        configuration.RuntimePlatform,
                         args))
                     {
                         deviceManagers.Add(Registrar.GetDataProvider<IMixedRealityInputDeviceManager>(configuration.ComponentName));

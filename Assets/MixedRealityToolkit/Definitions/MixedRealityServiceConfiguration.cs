@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit
             this.componentName = componentName;
             this.priority = priority;
             this.runtimePlatform = supportedPlatforms.Convert();
-            this.supportedPlatforms = supportedPlatforms;
+            this._runtimePlatform = supportedPlatforms;
             this.configurationProfile = configurationProfile;
         }
 
@@ -59,19 +59,19 @@ namespace Microsoft.MixedReality.Toolkit
         [Implements(typeof(IPlatformSupport), TypeGrouping.ByNamespaceFlat)]
         private SystemType[] runtimePlatform;
 
-        private IPlatformSupport[] supportedPlatforms;
+        private IPlatformSupport[] _runtimePlatform;
 
         /// <inheritdoc />
-        public IPlatformSupport[] SupportedPlatforms
+        public IPlatformSupport[] RuntimePlatform
         {
             get
             {
-                if (supportedPlatforms == null)
+                if (_runtimePlatform == null)
                 {
-                    supportedPlatforms = runtimePlatform.Convert();
+                    _runtimePlatform = runtimePlatform.Convert();
                 }
 
-                return supportedPlatforms;
+                return _runtimePlatform;
             }
         }
 

@@ -443,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit
                     if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
                     {
                         object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
-                        if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.SupportedPlatforms, args))
+                        if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args))
                         {
                             Debug.LogError($"Failed to register {configuration.ComponentName}");
                         }

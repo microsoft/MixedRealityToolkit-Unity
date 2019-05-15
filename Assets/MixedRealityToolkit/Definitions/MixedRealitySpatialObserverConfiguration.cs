@@ -34,19 +34,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         private SystemType[] runtimePlatform;
 
         /// <inheritdoc />
-        private IPlatformSupport[] supportedPlatforms;
+        private IPlatformSupport[] _runtimePlatform;
 
         /// <inheritdoc />
-        public IPlatformSupport[] SupportedPlatforms
+        public IPlatformSupport[] RuntimePlatform
         {
             get
             {
-                if (supportedPlatforms == null)
+                if (_runtimePlatform == null)
                 {
-                    supportedPlatforms = runtimePlatform.Convert();
+                    _runtimePlatform = runtimePlatform.Convert();
                 }
 
-                return supportedPlatforms;
+                return _runtimePlatform;
             }
         }
 
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             this.componentName = componentName;
             this.priority = priority;
             this.runtimePlatform = runtimePlatform.Convert();
-            this.supportedPlatforms = runtimePlatform;
+            this._runtimePlatform = runtimePlatform;
             this.observerProfile = configurationProfile;
         }
     }
