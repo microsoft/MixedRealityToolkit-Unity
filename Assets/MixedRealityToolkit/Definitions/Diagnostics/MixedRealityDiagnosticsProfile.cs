@@ -99,14 +99,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         public float WindowFollowSpeed => windowFollowSpeed;
 
         [SerializeField]
-        [Tooltip("A shader that the diagnostics system can use to render objects with instanced color support.")]
-        private Shader defaultInstancedShader = null;
+        [Tooltip("A material that the diagnostics system can use to render objects with instanced color support.")]
+        private Material defaultInstancedMaterial = null;
 
         /// <summary>
-        /// A shader that the diagnostics system can use to render objects with instanced color support.
-        /// A asset reference is required here to make sure the shader is pulled into player builds.
+        /// A material that the diagnostics system can use to render objects with instanced color support.
+        /// A asset reference is required here to make sure the shader permutation is pulled into player builds.
         /// </summary>
-        public Shader DefaultInstancedShader => defaultInstancedShader;
+        public Material DefaultInstancedMaterial => defaultInstancedMaterial;
 
         
     }

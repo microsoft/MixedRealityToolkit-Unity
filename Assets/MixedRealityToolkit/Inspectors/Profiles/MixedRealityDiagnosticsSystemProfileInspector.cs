@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
         private SerializedProperty windowOffset;
         private SerializedProperty windowScale;
         private SerializedProperty windowFollowSpeed;
-        private SerializedProperty defaultInstancedShader;
+        private SerializedProperty defaultInstancedMaterial;
 
         // todo: coming soon
         // private static bool showDebugPanelSettings = true;
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
             windowOffset = serializedObject.FindProperty("windowOffset");
             windowScale = serializedObject.FindProperty("windowScale");
             windowFollowSpeed = serializedObject.FindProperty("windowFollowSpeed");
-            defaultInstancedShader = serializedObject.FindProperty("defaultInstancedShader");
+            defaultInstancedMaterial = serializedObject.FindProperty("defaultInstancedMaterial");
         }
 
         public override void OnInspectorGUI()
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
                     EditorGUILayout.PropertyField(windowOffset);
                     EditorGUILayout.PropertyField(windowScale);
                     EditorGUILayout.PropertyField(windowFollowSpeed);
-                    EditorGUILayout.PropertyField(defaultInstancedShader);
+                    EditorGUILayout.PropertyField(defaultInstancedMaterial);
                 }
             }
 
