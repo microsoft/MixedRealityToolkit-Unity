@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     using (MemoryStream stream = new MemoryStream(d))
                     using (BinaryReader reader = new BinaryReader(stream))
                     {
-                        SynchronizedSceneManager.Instance.ReceiveMessage(currentConnection, reader);
+                        StateSynchronizationSceneManager.Instance.ReceiveMessage(currentConnection, reader);
                     }
                 }
                 lastDisplayedPackageTimeStamp = frames[0].TimeStamp;
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         using (MemoryStream stream = new MemoryStream(d))
                         using (BinaryReader reader = new BinaryReader(stream))
                         {
-                            SynchronizedSceneManager.Instance.LerpReceiveMessage(reader, lerpVal);
+                            StateSynchronizationSceneManager.Instance.LerpReceiveMessage(reader, lerpVal);
                         }
                     }
                     lastLerpTimeStamp = displayTime;

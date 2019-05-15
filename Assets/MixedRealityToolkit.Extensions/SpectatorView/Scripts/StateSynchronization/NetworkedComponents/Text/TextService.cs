@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class TextService : SynchronizedComponentService<TextService, RemoteText>
+    internal class TextService : ComponentBroadcasterService<TextService, TextObserver>
     {
         public static readonly ShortID ID = new ShortID("UTX");
 
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedText>(typeof(Text)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<TextBroadcaster>(typeof(Text)));
         }
 
         public Guid GetFontId(Font font)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class LightService : SynchronizedComponentService<LightService, RemoteLight>
+    internal class LightService : ComponentBroadcasterService<LightService, LightObserver>
     {
         public static readonly ShortID ID = new ShortID("LIT");
 
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedLight>(typeof(Light)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<LightBroadcaster>(typeof(Light)));
         }
     }
 }

@@ -7,7 +7,7 @@ using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class TextMeshProUGUIService : SynchronizedComponentService<TextMeshProUGUIService, RemoteTextMeshProUGUI>
+    internal class TextMeshProUGUIService : ComponentBroadcasterService<TextMeshProUGUIService, TextMeshProUGUIObserver>
     {
         public static readonly ShortID ID = new ShortID("TMU");
 
@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 #if STATESYNC_TEXTMESHPRO
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedTextMeshProUGUI>(typeof(TextMeshProUGUI)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<TextMeshProUGUIBroadcaster>(typeof(TextMeshProUGUI)));
         }
 #endif
     }

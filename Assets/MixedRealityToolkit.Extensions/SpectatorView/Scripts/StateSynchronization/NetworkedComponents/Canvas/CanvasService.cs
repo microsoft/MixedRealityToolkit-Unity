@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class CanvasService : SynchronizedComponentService<CanvasService, RemoteCanvas>
+    internal class CanvasService : ComponentBroadcasterService<CanvasService, CanvasObserver>
     {
         public static readonly ShortID ID = new ShortID("CAN");
 
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedCanvas>(typeof(Canvas)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<CanvasBroadcaster>(typeof(Canvas)));
         }
     }
 }

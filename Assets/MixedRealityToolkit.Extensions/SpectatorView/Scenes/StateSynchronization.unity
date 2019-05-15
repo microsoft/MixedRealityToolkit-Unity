@@ -513,7 +513,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1399172230}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &685059978
 MonoBehaviour:
@@ -647,7 +647,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &909550036
 Transform:
   m_ObjectHideFlags: 0
@@ -686,7 +686,7 @@ GameObject:
   - component: {fileID: 1399172230}
   - component: {fileID: 1399172231}
   m_Layer: 0
-  m_Name: StateSynchronization
+  m_Name: StateSynchronizationDemo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -704,9 +704,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 621974540}
-  - {fileID: 685059977}
   - {fileID: 2075391330}
   - {fileID: 2043021342}
+  - {fileID: 685059977}
   - {fileID: 909550036}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -723,11 +723,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 080592ca1eeef704dac0a5d91bc664c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Role: 0
-  broadcasterIpAddress: 10.124.204.150
-  synchronizedSceneManager: {fileID: 685059976}
+  Role: 1
+  broadcasterIpAddress: 10.89.160.74
+  StateSynchronizationSceneManager: {fileID: 685059976}
   broadcaster: {fileID: 2075391329}
   observer: {fileID: 2043021341}
+  synchronizedContent: {fileID: 909550035}
 --- !u!1 &1869681819
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,7 +854,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1399172230}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2075391328
 GameObject:
@@ -899,7 +900,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1399172230}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2075391331
 MonoBehaviour:

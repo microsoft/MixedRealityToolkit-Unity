@@ -11,14 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     public class BroadcasterSettings : Singleton<BroadcasterSettings>
     {
         /// <summary>
-        /// Determines whether or not all GameObjects are synchronized or only those with a SynchronizedGameObjectHierarchy are synchronized.
+        /// Determines whether or not all GameObjects are synchronized or only those with a GameObjectHierarchyBroadcaster are synchronized.
         /// </summary>
         [SerializeField]
-        [Tooltip("Determines whether or not all GameObjects are synchronized or only those with a SynchronizedGameObjectHierarchy are synchronized.")]
+        [Tooltip("Determines whether or not all GameObjects are synchronized or only those with a GameObjectHierarchyBroadcaster are synchronized.")]
         private bool automaticallySynchronizeAllGameObjects = false;
 
         /// <summary>
-        /// Determines whether or not all GameObjects are synchronized or only those with a SynchronizedGameObjectHierarchy are synchronized.
+        /// Determines whether or not all GameObjects are synchronized or only those with a GameObjectHierarchyBroadcaster are synchronized.
         /// </summary>
         public bool AutomaticallySynchronizeAllGameObjects
         {

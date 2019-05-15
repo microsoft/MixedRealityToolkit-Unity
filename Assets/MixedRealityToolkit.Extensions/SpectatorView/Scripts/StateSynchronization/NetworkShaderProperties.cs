@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                 if (connectionDelta.AddedConnections.Count > 0)
                 {
-                    SynchronizedSceneManager.Instance.SendGlobalShaderProperties(assetCache.CustomGlobalShaderProperties, connectionDelta.AddedConnections);
+                    StateSynchronizationSceneManager.Instance.SendGlobalShaderProperties(assetCache.CustomGlobalShaderProperties, connectionDelta.AddedConnections);
                 }
 
                 if (connectionDelta.ContinuedConnections.Count > 0)
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                     if (changedProperties.Count > 0)
                     {
-                        SynchronizedSceneManager.Instance.SendGlobalShaderProperties(changedProperties, connectionDelta.ContinuedConnections);
+                        StateSynchronizationSceneManager.Instance.SendGlobalShaderProperties(changedProperties, connectionDelta.ContinuedConnections);
                     }
                 }
             }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class ImageService : SynchronizedComponentService<ImageService, RemoteImage>, IAssetCache
+    internal class ImageService : ComponentBroadcasterService<ImageService, ImageObserver>, IAssetCache
     {
         public static readonly ShortID ID = new ShortID("IMG");
 
@@ -25,12 +25,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedImage>(typeof(Image)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<ImageBroadcaster>(typeof(Image)));
         }
 
         public override void LerpRead(BinaryReader message, GameObject mirror, float lerpVal)
         {
-            RemoteImage comp = mirror.GetComponent<RemoteImage>();
+            ImageObserver comp = mirror.GetComponent<ImageObserver>();
             if (comp)
                 comp.LerpRead(message, lerpVal);
         }

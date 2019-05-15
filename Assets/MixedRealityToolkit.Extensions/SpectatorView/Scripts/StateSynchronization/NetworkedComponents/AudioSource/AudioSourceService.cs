@@ -11,7 +11,7 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class AudioSourceService : SynchronizedComponentService<AudioSourceService, RemoteAudioSource>, IAssetCache
+    internal class AudioSourceService : ComponentBroadcasterService<AudioSourceService, AudioSourceObserver>, IAssetCache
     {
         public static readonly ShortID ID = new ShortID("AUD");
 
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedAudioSource>(typeof(AudioSource)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<AudioSourceBroadcaster>(typeof(AudioSource)));
         }
 
         public Guid GetAudioClipId(AudioClip clip)

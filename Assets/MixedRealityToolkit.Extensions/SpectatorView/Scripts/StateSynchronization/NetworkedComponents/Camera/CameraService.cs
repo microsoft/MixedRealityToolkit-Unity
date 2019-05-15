@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class CameraService : SynchronizedComponentService<CameraService, RemoteCamera>
+    internal class CameraService : ComponentBroadcasterService<CameraService, CameraObserver>
     {
         public static readonly ShortID ID = new ShortID("CAM");
 
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedCamera>(typeof(Camera)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<CameraBroadcaster>(typeof(Camera)));
         }
     }
 }

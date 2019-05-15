@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class MeshFilterService : SynchronizedComponentService<MeshFilterService, RemoteMeshFilter>
+    internal class MeshFilterService : ComponentBroadcasterService<MeshFilterService, MeshFilterObserver>
     {
         public static readonly ShortID ID = new ShortID("MSF");
 
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedMeshFilter>(typeof(MeshFilter), typeof(MeshRenderer)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<MeshFilterBroadcaster>(typeof(MeshFilter), typeof(MeshRenderer)));
         }
     }
 }

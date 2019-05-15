@@ -9,9 +9,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class DefaultSynchronizationPerformanceParameters : SynchronizationPerformanceParameters
+    internal class DefaultStateSynchronizationPerformanceParameters : StateSynchronizationPerformanceParameters
     {
-        private static DefaultSynchronizationPerformanceParameters _Instance;
+        private static DefaultStateSynchronizationPerformanceParameters _Instance;
         private readonly ConditionalWeakTable<Material, MaterialMutationMonitor> mutationMonitor = new ConditionalWeakTable<Material, MaterialMutationMonitor>();
         private HashSet<MaterialPropertyKey> continuouslyUpdatedMaterialProperties = new HashSet<MaterialPropertyKey>();
 
@@ -35,13 +35,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             _Instance = null;
         }
 
-        public static DefaultSynchronizationPerformanceParameters Instance
+        public static DefaultStateSynchronizationPerformanceParameters Instance
         {
             get
             {
                 if (_Instance == null)
                 {
-                    _Instance = FindObjectOfType<DefaultSynchronizationPerformanceParameters>();
+                    _Instance = FindObjectOfType<DefaultStateSynchronizationPerformanceParameters>();
                 }
                 return _Instance;
             }

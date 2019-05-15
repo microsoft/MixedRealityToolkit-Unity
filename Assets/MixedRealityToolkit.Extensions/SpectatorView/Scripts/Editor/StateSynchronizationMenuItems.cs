@@ -6,6 +6,7 @@ using UnityEditor;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor
 {
@@ -14,43 +15,65 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         [MenuItem("Spectator View/Update All Asset Caches", priority = 100)]
         public static void UpdateAllAssetCaches()
         {
-            var sceneManager = SynchronizedSceneManager.Instance;
-            if (sceneManager == null)
+            bool assetCacheFound = false;
+            var scene = SceneManager.GetActiveScene();
+            foreach (GameObject root in scene.GetRootGameObjects())
             {
-                Debug.LogWarning("SynchronizedSceneManager was not found in scene. Is the SynchronizedSceneManager active in the current scene?");
+                foreach (IAssetCache assetCache in root.GetComponentsInChildren<IAssetCache>(includeInactive: true))
+                {
+                    assetCacheFound = true;
+                    assetCache.UpdateAssetCache();
+                }
+            }
+
+            if (!assetCacheFound)
+            {
+                Debug.LogWarning("No asset caches were found in the scene. Unable to update asset caches.");
                 return;
             }
 
-            sceneManager.UpdateAllAssetCaches();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Asset caches updated.");
         }
 
         [MenuItem("Spectator View/Clear All Asset Caches", priority = 101)]
         public static void ClearAllAssetCaches()
         {
-            var sceneManager = SynchronizedSceneManager.Instance;
-            if (sceneManager == null)
+            bool assetCacheFound = false;
+            var scene = SceneManager.GetActiveScene();
+            foreach (GameObject root in scene.GetRootGameObjects())
             {
-                Debug.LogWarning("SynchronizedSceneManager was not found in scene. Is the SynchronizedSceneManager active in the current scene?");
+                foreach (IAssetCache assetCache in root.GetComponentsInChildren<IAssetCache>(includeInactive: true))
+                {
+                    assetCacheFound = true;
+                    assetCache.ClearAssetCache();
+                }
+            }
+
+            if (!assetCacheFound)
+            {
+                Debug.LogWarning("No asset caches were found in the scene. Unable to clear asset caches.");
                 return;
             }
 
-            sceneManager.UpdateAllAssetCaches();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Asset caches cleared.");
         }
 
         [MenuItem("Spectator View/Edit Global Performance Parameters", priority = 200)]
         private static void EditGlobalPerformanceParameters()
         {
-            GameObject prefab = Resources.Load<GameObject>(SynchronizedSceneManager.DefaultSynchronizationPerformanceParametersPrefabName);
+            GameObject prefab = Resources.Load<GameObject>(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName);
             if (prefab == null)
             {
-                GameObject hierarchyPrefab = new GameObject(SynchronizedSceneManager.DefaultSynchronizationPerformanceParametersPrefabName);
-                hierarchyPrefab.AddComponent<DefaultSynchronizationPerformanceParameters>();
+                GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName);
+                hierarchyPrefab.AddComponent<DefaultStateSynchronizationPerformanceParameters>();
 
                 AssetCache.EnsureAssetDirectoryExists();
 #if UNITY_2018_3_OR_NEWER
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(SynchronizedSceneManager.DefaultSynchronizationPerformanceParametersPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName, ".prefab"));
 #else
-                prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(SynchronizedSceneManager.DefaultSynchronizationPerformanceParametersPrefabName, ".prefab"), hierarchyPrefab);
+                prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(StateSynchronizationSceneManager.DefaultSynchronizationPerformanceParametersPrefabName, ".prefab"), hierarchyPrefab);
 #endif
                 Object.DestroyImmediate(hierarchyPrefab);
             }
@@ -61,16 +84,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         [MenuItem("Spectator View/Edit Custom Network Services", priority = 201)]
         private static void EditCustomShaderProperties()
         {
-            GameObject prefab = Resources.Load<GameObject>(SynchronizedSceneManager.CustomNetworkServicesPrefabName);
+            GameObject prefab = Resources.Load<GameObject>(StateSynchronizationSceneManager.CustomNetworkServicesPrefabName);
             if (prefab == null)
             {
-                GameObject hierarchyPrefab = new GameObject(SynchronizedSceneManager.CustomNetworkServicesPrefabName);
+                GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.CustomNetworkServicesPrefabName);
 
                 AssetCache.EnsureAssetDirectoryExists();
 #if UNITY_2018_3_OR_NEWER
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(SynchronizedSceneManager.CustomNetworkServicesPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(StateSynchronizationSceneManager.CustomNetworkServicesPrefabName, ".prefab"));
 #else
-                prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(SynchronizedSceneManager.CustomNetworkServicesPrefabName, ".prefab"), hierarchyPrefab);
+                prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(StateSynchronizationSceneManager.CustomNetworkServicesPrefabName, ".prefab"), hierarchyPrefab);
 #endif
                 Object.DestroyImmediate(hierarchyPrefab);
             }
@@ -81,39 +104,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         [MenuItem("Spectator View/Edit Settings", priority = 202)]
         private static void EditCustomSettingsProperties()
         {
-            GameObject prefab = Resources.Load<GameObject>(SynchronizedSceneManager.SettingsPrefabName);
+            GameObject prefab = Resources.Load<GameObject>(StateSynchronizationSceneManager.SettingsPrefabName);
             if (prefab == null)
             {
-                GameObject hierarchyPrefab = new GameObject(SynchronizedSceneManager.SettingsPrefabName);
+                GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.SettingsPrefabName);
                 hierarchyPrefab.AddComponent<BroadcasterSettings>();
 
                 AssetCache.EnsureAssetDirectoryExists();
 #if UNITY_2018_3_OR_NEWER
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(SynchronizedSceneManager.SettingsPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(StateSynchronizationSceneManager.SettingsPrefabName, ".prefab"));
 #else
-                prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(SynchronizedSceneManager.SettingsPrefabName, ".prefab"), hierarchyPrefab);
+                prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(StateSynchronizationSceneManager.SettingsPrefabName, ".prefab"), hierarchyPrefab);
 #endif
                 Object.DestroyImmediate(hierarchyPrefab);
             }
 
             Selection.activeObject = prefab;
-        }
-
-        private static string ConvertToResourcePath(string assetPath)
-        {
-            string resourcesFolderName = "MixedRealityToolkit.Extensions/SpectatorView/Resources/";
-            string lowerAssetPath = assetPath.ToLowerInvariant();
-            int resIdx = lowerAssetPath.LastIndexOf(resourcesFolderName);
-            if (resIdx >= 0)
-            {
-                assetPath = assetPath.Substring(resIdx + resourcesFolderName.Length);
-                int dotIdx = assetPath.LastIndexOf('.');
-                if (dotIdx >= 0)
-                {
-                    assetPath = assetPath.Substring(0, dotIdx);
-                }
-            }
-            return assetPath;
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class SkinnedMeshRendererService : SynchronizedComponentService<SkinnedMeshRendererService, RemoteSkinnedMeshRenderer>
+    internal class SkinnedMeshRendererService : ComponentBroadcasterService<SkinnedMeshRendererService, SkinnedMeshRendererObserver>
     {
         public static readonly ShortID ID = new ShortID("SKN");
 
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedSkinnedMeshRenderer>(typeof(SkinnedMeshRenderer)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<SkinnedMeshRendererBroadcaster>(typeof(SkinnedMeshRenderer)));
         }
     }
 }

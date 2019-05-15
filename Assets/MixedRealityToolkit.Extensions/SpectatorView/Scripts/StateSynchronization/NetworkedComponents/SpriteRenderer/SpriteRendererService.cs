@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class SpriteRendererService : SynchronizedComponentService<SpriteRendererService, RemoteSpriteRenderer>
+    internal class SpriteRendererService : ComponentBroadcasterService<SpriteRendererService, SpriteRendererObserver>
     {
         public static readonly ShortID ID = new ShortID("SPR");
 
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedSpriteRenderer>(typeof(SpriteRenderer)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<SpriteRendererBroadcaster>(typeof(SpriteRenderer)));
         }
     }
 }

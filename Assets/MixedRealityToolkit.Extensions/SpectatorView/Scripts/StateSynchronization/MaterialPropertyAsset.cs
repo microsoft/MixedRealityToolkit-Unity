@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             string propertyName = message.ReadString();
             MaterialPropertyType propertyType = (MaterialPropertyType)message.ReadByte();
             Material mat = materials[materialIndex];
-            DefaultSynchronizationPerformanceParameters.Instance?.NotifyMaterialMutated(mat, propertyName);
+            DefaultStateSynchronizationPerformanceParameters.Instance?.NotifyMaterialMutated(mat, propertyName);
             switch (propertyType)
             {
                 case MaterialPropertyType.Color:

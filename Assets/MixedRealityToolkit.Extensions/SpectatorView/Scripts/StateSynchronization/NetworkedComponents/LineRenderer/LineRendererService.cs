@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class LineRendererService : SynchronizedComponentService<LineRendererService, RemoteLineRenderer>
+    internal class LineRendererService : ComponentBroadcasterService<LineRendererService, LineRendererObserver>
     {
         public static readonly ShortID ID = new ShortID("LIN");
 
@@ -14,12 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedLineRenderer>(typeof(LineRenderer)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<LineRendererBroadcaster>(typeof(LineRenderer)));
         }
 
         public override void LerpRead(BinaryReader message, GameObject mirror, float lerpVal)
         {
-            RemoteLineRenderer comp = mirror.GetComponent<RemoteLineRenderer>();
+            LineRendererObserver comp = mirror.GetComponent<LineRendererObserver>();
             if (comp)
                 comp.LerpRead(message, lerpVal);
         }

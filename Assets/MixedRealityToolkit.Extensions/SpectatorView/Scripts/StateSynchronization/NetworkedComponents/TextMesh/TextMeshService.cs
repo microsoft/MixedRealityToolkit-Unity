@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class TextMeshService : SynchronizedComponentService<TextMeshService, RemoteTextMesh>, IAssetCache
+    internal class TextMeshService : ComponentBroadcasterService<TextMeshService, TextMeshObserver>, IAssetCache
     {
         public static readonly ShortID ID = new ShortID("TXT");
 
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedTextMesh>(typeof(TextMesh), typeof(MeshRenderer)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<TextMeshBroadcaster>(typeof(TextMesh), typeof(MeshRenderer)));
         }
 
         public Guid GetFontId(Font font)

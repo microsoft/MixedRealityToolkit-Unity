@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class CanvasRendererService : SynchronizedComponentService<CanvasRendererService, RemoteCanvasRenderer>
+    internal class CanvasRendererService : ComponentBroadcasterService<CanvasRendererService, CanvasRendererObserver>
     {
         public static readonly ShortID ID = new ShortID("CVR");
 
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedCanvasRenderer>(typeof(CanvasRenderer)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<CanvasRendererBroadcaster>(typeof(CanvasRenderer)));
         }
     }
 }

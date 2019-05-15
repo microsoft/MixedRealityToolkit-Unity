@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     case "SYNC":
                         {
                             reader.ReadSingle(); // float time
-                            SynchronizedSceneManager.Instance.ReceiveMessage(data.Endpoint, reader);
+                            StateSynchronizationSceneManager.Instance.ReceiveMessage(data.Endpoint, reader);
                         }
                         break;
                 }
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     Scene scene = SceneManager.GetSceneAt(i);
                     foreach (GameObject root in scene.GetRootGameObjects())
                     {
-                        ComponentExtensions.EnsureComponent<SynchronizedTransform>(root);
+                        ComponentExtensions.EnsureComponent<TransformBroadcaster>(root);
                     }
                 }
             }
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 {
                     message.Write("Perf");
 
-                    SynchronizationPerformanceMonitor.Instance.WriteMessage(message);
+                    StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message);
                     message.Flush();
                     connectionManager.Broadcast(memoryStream.ToArray());
                 }

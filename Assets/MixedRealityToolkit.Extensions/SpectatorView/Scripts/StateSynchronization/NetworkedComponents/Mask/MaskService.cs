@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class MaskService : SynchronizedComponentService<MaskService, RemoteMask>
+    internal class MaskService : ComponentBroadcasterService<MaskService, MaskObserver>
     {
         public static readonly ShortID ID = new ShortID("MSK");
 
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedMask>(typeof(Mask)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<MaskBroadcaster>(typeof(Mask)));
         }
     }
 }

@@ -8,7 +8,7 @@ using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class TextMeshProService : SynchronizedComponentService<TextMeshProService, RemoteTextMeshPro>, IAssetCache
+    internal class TextMeshProService : ComponentBroadcasterService<TextMeshProService, TextMeshProObserver>, IAssetCache
     {
         public static readonly ShortID ID = new ShortID("TMP");
 
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            SynchronizedSceneManager.Instance.RegisterService(this, new SynchronizedComponentDefinition<SynchronizedTextMeshPro>(typeof(TextMeshPro)));
+            StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<TextMeshProBroadcaster>(typeof(TextMeshPro)));
         }
 
         public Guid GetFontId(TMP_FontAsset font)

@@ -79,9 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             currentConnection = endpoint;
             Debug.Log("Observer Connected!");
 
-            if (SynchronizedSceneManager.IsInitialized)
+            if (StateSynchronizationSceneManager.IsInitialized)
             {
-                SynchronizedSceneManager.Instance.MarkSceneDirty();
+                StateSynchronizationSceneManager.Instance.MarkSceneDirty();
             }
 
             hologramSynchronizer.Reset(currentConnection);
