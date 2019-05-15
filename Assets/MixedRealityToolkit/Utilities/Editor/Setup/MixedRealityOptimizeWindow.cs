@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -25,14 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         };
 
         private Vector2 windowScrollPosition = new Vector2();
-        private bool showProjectOptimizations = true;
-        private bool showSceneOptimizations = true;
-        private bool showShaderOptimizations = true;
 
         // Project Optimizations
         private bool singlePassInstanced = true;
         private bool enableDepthBufferSharing = true;
-        private bool enable16BitDepthBuffer = true;
+        //private bool enable16BitDepthBuffer = true;
 
         // Scene Optimizations
         private bool disableRealtimeGlobalIllumination = true;
@@ -75,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         };
 
         // NOTE: These array must match the number of enums in PerformanceTarget
+        private readonly string[] PerformanceTargetEnums = { "AR Headsets", "VR Standalone", "VR Tethered" };
         private readonly string[] PerformanceTargetDescriptions = {
             "Suggest performance optimizations for AR devices with mobile class specifications",
             "Suggest performance optimizations for mobile VR devices with mobile class specifications",
@@ -144,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.LabelField("This tool automates the process of updating your project, currently open scene, and material assets to recommended settings for Mixed Reality", EditorStyles.wordWrappedLabel);
                 EditorGUILayout.Space();
 
-                PerfTarget = (PerformanceTarget)EditorGUILayout.EnumPopup("Performance Target", this.PerfTarget);
+                PerfTarget = (PerformanceTarget)EditorGUILayout.Popup("Performance Target", (int)this.PerfTarget, PerformanceTargetEnums);
                 EditorGUILayout.HelpBox(PerformanceTargetDescriptions[(int)PerfTarget], MessageType.Info);
                 EditorGUILayout.Space();
 
@@ -288,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(lastAnalyzedTime == null ? "Click analysis button for MRTK to scan your currently opened scene" : "Scanned " + GetRelativeTime(lastAnalyzedTime));
 
-                    if (GUILayout.Button("Analyze Scene", GUILayout.Width(200f)))
+                    if (GUILayout.Button("Analyze Scene", GUILayout.Width(160f)))
                     {
                         AnalyzeScene();
                         lastAnalyzedTime = DateTime.UtcNow;

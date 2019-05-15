@@ -16,10 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
 #if UNITY_2019
         PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled = enableDepthBuffer;
-
-        PlayerSettings.VRWindowsMixedReality.depthBufferFormat = set16BitDepthBuffer ? 
-            PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit :
-            PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat24Bit;
 #else
             var playerSettings = GetSettingsObject("PlayerSettings");
             ChangeProperty(playerSettings,
