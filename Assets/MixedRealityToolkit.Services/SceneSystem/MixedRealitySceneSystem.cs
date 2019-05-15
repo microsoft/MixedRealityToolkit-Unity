@@ -449,7 +449,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     }
                     sceneOpProgress = Mathf.Clamp01(SceneOpProgress / totalSceneOps);
 
-                    SetSceneOpProgress(sceneOpProgress, sceneType);
+                    SetSceneOpProgress(true, sceneOpProgress, sceneType);
 
                     await Task.Yield();
                 }

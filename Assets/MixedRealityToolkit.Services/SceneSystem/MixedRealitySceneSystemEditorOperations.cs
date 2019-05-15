@@ -621,7 +621,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             for (int i = 0; i < EditorSceneManager.sceneCountInBuildSettings; i++)
             {
-                string sceneName = GetSceneNameFromScenePath(SceneUtilities.GetScenePathByBuildIndex(i));
+                string sceneName = SceneUtilities.GetSceneNameFromScenePath(SceneUtility.GetScenePathByBuildIndex(i));
                 if (!nonContentSceneNames.Contains(sceneName))
                 {
                     sceneNames.Add(sceneName);
