@@ -147,9 +147,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return controller;
             }
 
+            var supportedControllerType = GetCurrentControllerType(joystickName);
+            IMixedRealityPointer[] pointers = RequestPointers(supportedControllerType, Handedness.None);
             Type controllerType;
 
-            switch (GetCurrentControllerType(joystickName))
+            switch (supportedControllerType)
             {
                 default:
                     return null;
@@ -161,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     break;
             }
 
-            var inputSource = inputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller", sourceType: InputSourceType.Controller);
+            var inputSource = inputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller", pointers, InputSourceType.Controller);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
 
             if (detectedController == null)
@@ -175,6 +177,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 // Controller failed to be setup correctly.
                 // Return null so we don't raise the source detected.
                 return null;
+            }
+
+            foreach (var pointer in pointers)
+            {
+                pointer.Controller = detectedController;
             }
 
             ActiveControllers.Add(joystickName, detectedController);
