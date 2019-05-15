@@ -1,0 +1,21 @@
+{
+	"name": "com.microsoft.mixedrealitytoolkit.sdk",
+	"displayName": "Mixed Reality Toolkit SDK",
+	"version": "2.0.0",
+	"unity": "2018.3",
+	"description": "SDK for Mixed Reality Toolkit",
+	"keywords": [
+		"mrtk",
+		"microsoft",
+		"mixed",
+		"reality",
+		"augmented",
+		"virtual"
+	],
+	"author": "Microsoft Corporation",
+	"dependencies": {
+		"com.microsoft.mixedrealitytoolkit.services": "2.0.0",
+		"com.microsoft.mixedrealitytoolkit": "2.0.0",
+		"com.unity.textmeshpro": "1.3.0",
+	}
+}
