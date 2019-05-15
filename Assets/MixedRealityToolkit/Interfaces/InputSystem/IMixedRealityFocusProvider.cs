@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Implements the Focus Provider for handling focus of pointers.
     /// </summary>
-    public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider
+    public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider, IMixedRealitySpeechHandler
     {
         /// <summary>
         /// Maximum distance at which all pointers can collide with a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>, unless it has an override extent.
