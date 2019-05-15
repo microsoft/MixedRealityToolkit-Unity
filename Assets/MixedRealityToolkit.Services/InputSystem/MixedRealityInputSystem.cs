@@ -144,7 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (profile.PointerProfile.GazeProviderType?.Type != null)
                 {
                     GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                    GazeProvider.InputSystem = this;
                     GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
                     // Current implementation implements both provider types in one concrete class.
                     EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;

@@ -1,6 +1,3 @@
-pool:
-  name: On-Prem Unity
-
 steps:
 - powershell: |
    # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
@@ -15,12 +16,29 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         private float defaultDistanceInMeters = 2f;
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         private void Update()
         {
-            if (MixedRealityToolkit.InputSystem?.GazeProvider != null)
+            if (InputSystem?.GazeProvider != null)
             {
-                gameObject.transform.position = MixedRealityToolkit.InputSystem.GazeProvider.GazeOrigin + MixedRealityToolkit.InputSystem.GazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
+                gameObject.transform.position = InputSystem.GazeProvider.GazeOrigin + InputSystem.GazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
             }
         }
     }
-}
+} 
