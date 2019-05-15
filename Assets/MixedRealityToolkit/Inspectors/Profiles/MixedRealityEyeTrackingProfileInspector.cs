@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
@@ -25,18 +25,23 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
+            RenderTitleDescriptionAndLogo(
+                "Eye tracking settings",
+                "Configuration for eye tracking settings");
 
-            if (GUILayout.Button("Back to Registered Service Providers Profile"))
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile;
+                if (GUILayout.Button("Back to Registered Service Providers Profile"))
+                {
+                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile;
+                }
             }
-            EditorGUILayout.Space();
+            else
+            {
+                return;
+            }
 
-            EditorGUILayout.LabelField("Eye tracking settings", EditorStyles.boldLabel);
             CheckProfileLock(target);
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
 
             serializedObject.Update();
 

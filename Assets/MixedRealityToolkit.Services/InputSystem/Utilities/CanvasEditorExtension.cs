@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
     /// Helper class to get CanvasUtility onto Canvas objects.
     /// </summary>
     [CustomEditor(typeof(Canvas))]
-    public class CanvasEditorExtension : Editor
+    public class CanvasEditorExtension : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

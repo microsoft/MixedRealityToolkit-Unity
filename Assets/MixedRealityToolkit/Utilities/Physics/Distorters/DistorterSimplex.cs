@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Physics
 {
+    /// <summary>
+    /// A Distorter that randomly distorts points.
+    /// </summary>
     public class DistorterSimplex : Distorter
     {
         private readonly FastSimplexNoise noise = new FastSimplexNoise();

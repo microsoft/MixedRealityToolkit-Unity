@@ -1,0 +1,19 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Core.Inspectors",
+        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
+        "Microsoft.MixedReality.Toolkit.Services.InputSimulation"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

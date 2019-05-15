@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Implements the Focus Provider for handling focus of pointers.
     /// </summary>
-    public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider
+    public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider, IMixedRealitySpeechHandler
     {
         /// <summary>
         /// Maximum distance at which all pointers can collide with a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>, unless it has an override extent.
@@ -24,14 +24,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// The Camera the <see href="https://docs.unity3d.com/ScriptReference/EventSystems.EventSystem.html">EventSystem</see> uses to raycast against.
-        /// <para><remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks></para>
         /// </summary>
+        /// <remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks>
         Camera UIRaycastCamera { get; }
 
         /// <summary>
         /// Gets the currently focused object for the pointing source.
-        /// <para><remarks>If the pointing source is not registered, then the Gaze's Focused <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is returned.</remarks></para>
         /// </summary>
+        /// <remarks>If the pointing source is not registered, then the Gaze's Focused <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is returned.</remarks>
         /// <param name="pointingSource"></param>
         /// <returns>Currently Focused Object.</returns>
         GameObject GetFocusedObject(IMixedRealityPointer pointingSource);
