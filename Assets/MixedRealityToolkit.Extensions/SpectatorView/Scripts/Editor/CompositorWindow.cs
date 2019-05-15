@@ -24,6 +24,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         private const int textureRenderModeSplit = 1;
         private const int horizontalFrameRectangleMargin = 50;
         private const int lowQueuedOutputFrameWarningMark = 6;
+        private const string trackingLostStatusMessage = "Tracking lost";
+        private const string trackingStalledStatusMessage = "No tracking update in over a second";
+        private const string locatingWorldAnchorStatusMessage = "Locating world anchor...";
+        private const string locatedWorldAnchorStatusMessage = "Located";
         private Vector2 scrollPosition;
         private int renderFrameWidth;
         private int renderFrameHeight;
@@ -122,19 +126,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     string anchorStatusMessage;
                     if (!cameraNetworkManager.HasTracking)
                     {
-                        anchorStatusMessage = "Tracking lost";
+                        anchorStatusMessage = trackingLostStatusMessage;
                     }
                     else if (cameraNetworkManager.IsTrackingStalled)
                     {
-                        anchorStatusMessage = "No tracking update in over a second";
+                        anchorStatusMessage = trackingStalledStatusMessage;
                     }
                     else if (!cameraNetworkManager.IsAnchorLocated)
                     {
-                        anchorStatusMessage = "Locating world anchor...";
+                        anchorStatusMessage = locatingWorldAnchorStatusMessage;
                     }
                     else
                     {
-                        anchorStatusMessage = "Located";
+                        anchorStatusMessage = locatedWorldAnchorStatusMessage;
                     }
 
                     GUILayout.Label($"Anchor status: {anchorStatusMessage}");
