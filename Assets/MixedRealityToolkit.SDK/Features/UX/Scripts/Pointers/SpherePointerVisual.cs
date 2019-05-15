@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void Start()
         {
             // put it at root of scene
-            visualsRoot.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            MixedRealityPlayspace.AddChild(visualsRoot.transform);
             visualsRoot.gameObject.name = $"{gameObject.name}_NearTetherVisualsRoot";
         }
 
@@ -99,7 +99,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private NearInteractionGrabbable GetGrabbedObject()
         {
-            return pointer.Result?.Details.Object?.GetComponent<NearInteractionGrabbable>();
+            if (pointer.Result?.Details.Object != null)
+            {
+                return pointer.Result.Details.Object.GetComponent<NearInteractionGrabbable>();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

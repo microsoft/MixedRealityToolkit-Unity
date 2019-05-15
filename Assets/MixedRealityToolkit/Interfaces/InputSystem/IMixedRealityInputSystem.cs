@@ -115,8 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Generates a new unique input source id.<para/>
-        /// <remarks>All Input Sources are required to call this method in their constructor or initialization.</remarks>
         /// </summary>
+        /// <remarks>All Input Sources are required to call this method in their constructor or initialization.</remarks>
         /// <returns>a new unique Id for the input source.</returns>
         uint GenerateNewSourceId();
 
@@ -182,8 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Raise the pre-focus changed event.
-        /// <remarks>This event is useful for doing logic before the focus changed event.</remarks>
         /// </summary>
+        /// <remarks>This event is useful for doing logic before the focus changed event.</remarks>
         /// <param name="pointer">The pointer that the focus change event is raised on.</param>
         /// <param name="oldFocusedObject">The old focused object.</param>
         /// <param name="newFocusedObject">The new focused object.</param>
@@ -227,6 +227,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null);
 
         #endregion Pointer Down
+
+        #region Pointer Dragged
+
+        /// <summary>
+        /// Raise the pointer dragged event.
+        /// </summary>
+        /// <param name="pointer">The pointer where the event originates.</param>
+        /// <param name="inputAction"></param>
+        /// <param name="handedness"></param>
+        /// <param name="inputSource"></param>
+        void RaisePointerDragged(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null);
+
+        #endregion Pointer Dragged
 
         #region Pointer Click
 

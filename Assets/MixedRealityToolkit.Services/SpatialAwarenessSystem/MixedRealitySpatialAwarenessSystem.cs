@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// <summary>
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem
     {
         public MixedRealitySpatialAwarenessSystem(
@@ -136,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
         /// <summary>
-        ///  The collection of registered spatial awareness observers.
+        /// The collection of registered spatial awareness observers.
         /// </summary>
         private List<IMixedRealitySpatialAwarenessObserver> observers = new List<IMixedRealitySpatialAwarenessObserver>();
 

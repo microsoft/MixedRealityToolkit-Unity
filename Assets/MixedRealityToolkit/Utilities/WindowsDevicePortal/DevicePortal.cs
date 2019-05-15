@@ -754,8 +754,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
         /// <summary>
         /// This Utility method finalizes the URL and formats the HTTPS string if needed.
-        /// <remarks>Local Machine will be changed to 127.0.1:10080 for HoloLens connections.</remarks>
         /// </summary>
+        /// <remarks>Local Machine will be changed to 127.0.1:10080 for HoloLens connections.</remarks>
         /// <param name="targetUrl">The target URL i.e. 128.128.128.128</param>
         /// <returns>The finalized URL with http/https prefix.</returns>
         public static string FinalizeUrl(string targetUrl)

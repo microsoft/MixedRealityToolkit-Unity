@@ -2,7 +2,7 @@
 
 The Mixed Reality Toolkit is a collaborative project containing contributions from individuals around the world.
 
-## Special Thanks
+## Special thanks
 
 The Mixed Reality Toolkit team would like to extend a special thank you to contributors **Stephen Hodgson** and **Simon Jackson** for contributions above and beyond the call of duty to bring MRTK v2 into reality!
 

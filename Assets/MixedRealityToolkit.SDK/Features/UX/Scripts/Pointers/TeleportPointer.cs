@@ -76,6 +76,20 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
 
+        private IMixedRealityTeleportSystem teleportSystem = null;
+
+        protected IMixedRealityTeleportSystem TeleportSystem
+        {
+            get
+            {
+                if (teleportSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityTeleportSystem>(out teleportSystem); 
+                }
+                return teleportSystem;
+            }
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -85,9 +99,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 gravityDistorter = GetComponent<DistorterGravity>();
             }
 
-            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
+            if (MixedRealityToolkit.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
             {
-                MixedRealityToolkit.TeleportSystem.Register(gameObject);
+                TeleportSystem.Register(gameObject);
             }
         }
 
@@ -97,9 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             if (lateRegisterTeleport && MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled)
             {
-                if (MixedRealityToolkit.TeleportSystem == null)
+                if (TeleportSystem == null)
                 {
-                    await new WaitUntil(() => MixedRealityToolkit.TeleportSystem != null);
+                    await new WaitUntil(() => TeleportSystem != null);
 
                     // We've been destroyed during the await.
                     if (this == null)
@@ -116,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 }
 
                 lateRegisterTeleport = false;
-                MixedRealityToolkit.TeleportSystem.Register(gameObject);
+                TeleportSystem.Register(gameObject);
             }
         }
 
@@ -124,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             base.OnDisable();
 
-            MixedRealityToolkit.TeleportSystem?.Unregister(gameObject);
+            TeleportSystem?.Unregister(gameObject);
         }
 
         private Vector2 currentInputPosition = Vector2.zero;
@@ -229,6 +243,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         public override void OnPostSceneQuery()
         {
+            if (IsSelectPressed)
+            {
+                InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+            }
+
             // Use the results from the last update to set our NavigationResult
             float clearWorldLength = 0f;
             TeleportSurfaceResult = TeleportSurfaceResult.None;
@@ -332,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     {
                         teleportEnabled = true;
 
-                        MixedRealityToolkit.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                        TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
                     }
                     else if (canMove)
                     {
@@ -357,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                             {
                                 canMove = false;
                                 // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
-                                MixedRealityToolkit.Instance.MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
+                                MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
                             }
                             else // We may be trying to strafe backwards.
                             {
@@ -371,10 +390,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                                 if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
                                 {
                                     canMove = false;
-                                    var height = MixedRealityToolkit.Instance.MixedRealityPlayspace.position.y;
-                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityToolkit.Instance.MixedRealityPlayspace.position;
+                                    var height = MixedRealityPlayspace.Position.y;
+                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityPlayspace.Position;
                                     newPosition.y = height;
-                                    MixedRealityToolkit.Instance.MixedRealityPlayspace.position = newPosition;
+                                    MixedRealityPlayspace.Position = newPosition;
                                 }
                             }
                         }
@@ -398,7 +417,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                         TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                     {
-                        MixedRealityToolkit.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                        TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
                     }
                 }
 
@@ -406,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    MixedRealityToolkit.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                    TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                 }
             }
 
