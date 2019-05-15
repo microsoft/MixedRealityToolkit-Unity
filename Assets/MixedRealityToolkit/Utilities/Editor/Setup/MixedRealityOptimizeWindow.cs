@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Shader], BoldLargeTitle);
             using (new EditorGUI.IndentLevelScope())
             {
-                EditorGUILayout.LabelField("The Unity standard shader is generally not performant or optimized for Mixed Reality development. The MRTK Standard shader can be a more performant option."
+                EditorGUILayout.LabelField("The Unity standard shader is generally not performant or optimized for Mixed Reality development. The MRTK Standard shader can be a more performant option. "
                 + "This tool allows developers to discover and automatically convert materials in their project to the replacement shader option below. It is recommended to utilize the MRTK Standard Shader."
                     , EditorStyles.wordWrappedLabel);
                 EditorGUILayout.Space();
@@ -491,11 +491,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             for (int i = 0; i < guids.Length; i++)
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
-                Material asset = AssetDatabase.LoadAssetAtPath<Material>(assetPath);
-
-                if (CanConvertMaterial(asset))
+                if (assetPath.EndsWith(".mat"))
                 {
-                    discoveredMaterials.Add(asset);
+                    Material asset = AssetDatabase.LoadAssetAtPath<Material>(assetPath);
+
+                    if (CanConvertMaterial(asset))
+                    {
+                        discoveredMaterials.Add(asset);
+                    }
                 }
             }
         }
@@ -521,7 +524,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private bool CanConvertMaterial(Material asset)
         {
-            return asset != null && ((asset.shader != replacementShader && (!onlyUnityShader || asset.shader == unityStandardShader))
+            return asset != null
+                && ((asset.shader != replacementShader && (!onlyUnityShader || asset.shader == unityStandardShader))
                         || asset.shader == errorShader);
         }
 
