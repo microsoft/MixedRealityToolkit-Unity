@@ -73,8 +73,7 @@ namespace Microsoft.MixedReality.Toolkit
             Type[] runtimePlatforms,
             string name = "",
             string defaultProfilePath = "",
-            string packageFolder = "MixedRealityToolkit"
-            )
+            string packageFolder = "MixedRealityToolkit")
         {
             Name = name;
             RuntimePlatforms = runtimePlatforms;
