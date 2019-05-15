@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     pointer.IsActive = true;
                     unassignedPointers.Remove(pointer);
 
-                    if (pointer.InputSourceParent != null && pointerByInputSourceParent.ContainsKey(pointer.InputSourceParent))
+                    if (pointer.InputSourceParent != null)
                     {
                         foreach (IMixedRealityPointer otherPointer in pointerByInputSourceParent[pointer.InputSourceParent])
                         {

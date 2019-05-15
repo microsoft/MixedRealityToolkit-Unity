@@ -18,9 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         InputSystemGlobalListener,
         IMixedRealityGazeProvider,
         IMixedRealityEyeGazeProvider,
-        IMixedRealityInputHandler,
-        IMixedRealityInputHandler<Vector2>,
-        IMixedRealityInputHandler<MixedRealityPose>
+        IMixedRealityInputHandler
     {
         private const float VelocityThreshold = 0.1f;
 
@@ -96,20 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return useEyeTracking; }
             set { useEyeTracking = value; }
         }
-
-        [SerializeField]
-        [Tooltip("Action that will raise the pointer down event for the gaze pointer.")]
-        /// <summary>
-        /// Action that will raise the pointer down event for the gaze pointer.
-        /// </summary>
-        private MixedRealityInputAction pointerDownAction = MixedRealityInputAction.None;
-
-        [SerializeField]
-        [Tooltip("Pose action used to drive the gaze pointer while dragging.")]
-        /// <summary>
-        /// Pose action used to drive the gaze pointer while dragging. If no action is set, gaze will be used.
-        /// </summary>
-        private MixedRealityInputAction pointerDragAction = MixedRealityInputAction.None;
 
         /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
@@ -189,13 +173,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private readonly Transform gazeTransform;
             private readonly BaseRayStabilizer stabilizer;
             private readonly GazeProvider gazeProvider;
-            private readonly MixedRealityInputAction pointerDownAction;
-            private readonly MixedRealityInputAction pointerDragAction;
 
-            public InternalGazePointer(
-                GazeProvider gazeProvider, string pointerName, IMixedRealityInputSource inputSourceParent, LayerMask[] raycastLayerMasks, 
-                float pointerExtent, Transform gazeTransform, BaseRayStabilizer stabilizer, 
-                MixedRealityInputAction pointerDownAction, MixedRealityInputAction pointerDragAction)
+            public InternalGazePointer(GazeProvider gazeProvider, string pointerName, IMixedRealityInputSource inputSourceParent, LayerMask[] raycastLayerMasks, float pointerExtent, Transform gazeTransform, BaseRayStabilizer stabilizer)
                     : base(pointerName, inputSourceParent)
             {
                 this.gazeProvider = gazeProvider;
@@ -203,8 +182,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 this.pointerExtent = pointerExtent;
                 this.gazeTransform = gazeTransform;
                 this.stabilizer = stabilizer;
-                this.pointerDownAction = pointerDownAction;
-                this.pointerDragAction = pointerDragAction;
                 IsInteractionEnabled = true;
             }
 
@@ -225,8 +202,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 set { pointerExtent = value; }
             }
 
+            // Is the pointer currently down
+            private bool isDown = false;
+
             // Input source that raised pointer down
-            private IMixedRealityInputSource dragInputSource;
+            private IMixedRealityInputSource currentInputSource;
 
             // Handedness of the input source that raised pointer down
             private Handedness currentHandedness = Handedness.None;
@@ -243,19 +223,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <inheritdoc />
             public override void OnPreSceneQuery()
             {
-                Vector3 newGazeOrigin = Position;
-                Vector3 newGazeNormal = Rotation * Vector3.forward;
+                Vector3 newGazeOrigin = Vector3.zero;
+                Vector3 newGazeNormal = Vector3.zero;
 
                 if (gazeProvider.useEyeTracking && gazeProvider.IsEyeTrackingAvailable)
                 {
                     gazeProvider.gazeInputSource.SourceType = InputSourceType.Eyes;
+                    newGazeOrigin = gazeProvider.latestEyeGaze.origin;
+                    newGazeNormal = gazeProvider.latestEyeGaze.direction;
                 }
                 else
                 {
                     gazeProvider.gazeInputSource.SourceType = InputSourceType.Head;
+                    newGazeOrigin = gazeTransform.position;
+                    newGazeNormal = gazeTransform.forward;
 
                     // Update gaze info from stabilizer
-                    if (stabilizer != null && dragInputSource == null)
+                    if (stabilizer != null)
                     {
                         stabilizer.UpdateStability(gazeTransform.localPosition, gazeTransform.localRotation * Vector3.forward);
                         newGazeOrigin = gazeTransform.parent.TransformPoint(stabilizer.StablePosition);
@@ -267,13 +251,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
 
                 gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
-
-                // REMOVE
-                {
-                    Vector3 origin = Rays[0].Origin;
-                    origin.y += .01f;
-                    Debug.DrawRay(origin, Rays[0].Direction, Color.red);
-                }
             }
 
             public override void OnPostSceneQuery()
@@ -291,39 +268,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                if (dragInputSource != null)
+                if (isDown)
                 {
-                    InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, dragInputSource);
+                    InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
                 }
-
-                // REMOVE
-                Debug.DrawRay(Position, Rotation * Vector3.forward, Color.magenta);
             }
 
             public override void OnPreCurrentPointerTargetChange()
             {
             }
 
-            // Pointer pose while dragging
-            private Pose dragPose;
-
             /// <inheritdoc />
             public override Vector3 Position
             {
                 get
                 {
-                    if (dragInputSource != null && pointerDragAction != MixedRealityInputAction.None)
-                    {
-                        return dragPose.position;
-                    }
-                    else if (gazeProvider.useEyeTracking && gazeProvider.IsEyeTrackingAvailable)
-                    {
-                        return gazeProvider.latestEyeGaze.origin;
-                    }
-                    else
-                    {
-                        return gazeTransform.position;
-                    }
+                    return gazeTransform.position;
                 }
             }
 
@@ -332,27 +292,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 get
                 {
-                    if (dragInputSource != null && pointerDragAction != MixedRealityInputAction.None) 
-                    {
-                        return dragPose.rotation;
-                    }
-                    else if (gazeProvider.useEyeTracking && gazeProvider.IsEyeTrackingAvailable)
-                    {
-                        return Quaternion.LookRotation(gazeProvider.latestEyeGaze.direction);
-                    }
-                    else
-                    {
-                        return gazeTransform.rotation;
-                    }
+                    return gazeTransform.rotation;
                 }
             }
 
             #endregion IMixedRealityPointer Implementation
-
-            private bool isPointerJustDown = true;
-
-            // Pointer pose relative to the drag input source.
-            private Pose poseInDragInputSource;
 
             /// <summary>
             /// Press this pointer. This sends a pointer down event across the input system.
@@ -362,18 +306,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="inputSource"></param>
             public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
-                if (mixedRealityInputAction == pointerDownAction && dragInputSource == null)
-                {
-                    // Use current pose as initial drag pose. Must be done before setting the drag input source, otherwise Position and Rotation will return the drag pose.
-                    dragPose.position = Position;
-                    dragPose.rotation = Rotation;
-
-                    currentHandedness = handedness;
-                    dragInputSource = inputSource;
-                    isPointerJustDown = true;
-
-                    gazeProvider.InputSystem?.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
-                }
+                isDown = true;
+                currentHandedness = handedness;
+                currentInputSource = inputSource;
+                gazeProvider.InputSystem?.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
             }
 
             /// <summary>
@@ -384,48 +320,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="inputSource"></param>
             public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
-                if (mixedRealityInputAction == pointerDownAction && inputSource == dragInputSource)
-                {
-                    currentHandedness = Handedness.None;
-                    dragInputSource = null;
-                    gazeProvider.InputSystem?.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);
-                    gazeProvider.InputSystem?.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
-                }
-            }
-            public void OnInputChanged(InputEventData<Vector2> eventData)
-            {
-                if (dragInputSource != null && dragInputSource == eventData.InputSource && eventData.MixedRealityInputAction == pointerDragAction)
-                {
-                    dragPose.rotation = dragPose.rotation * Quaternion.Euler(eventData.InputData.y, eventData.InputData.x, 0);
-
-                    // REMOVE
-                    Debug.DrawRay(Position, Rotation * Vector3.forward, Color.green);
-                }
-            }
-
-            public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
-            {
-                if (dragInputSource != null && dragInputSource == eventData.InputSource && eventData.MixedRealityInputAction == pointerDragAction)
-                {
-                    if (isPointerJustDown)
-                    {
-                        // Store pointer pose relative to the input source pose
-                        isPointerJustDown = false;
-                        var pointerPose = new Pose(Position, Rotation);
-                        var invInputSourceRotation = Quaternion.Inverse(eventData.InputData.Rotation);
-                        var invInputSourcePose = new Pose(invInputSourceRotation * -eventData.InputData.Position, invInputSourceRotation);
-                        poseInDragInputSource = pointerPose.GetTransformedBy(invInputSourcePose);
-                    }
-                    else
-                    {
-                        // Apply changes in the input source pose to the pointer drag pose
-                        var inputSourcePose = new Pose(eventData.InputData.Position, eventData.InputData.Rotation);
-                        dragPose = poseInDragInputSource.GetTransformedBy(inputSourcePose);
-
-                        // REMOVE
-                        Debug.DrawRay(Position, Rotation * Vector3.forward, Color.green);
-                    }
-                }
+                isDown = false;
+                currentHandedness = Handedness.None;
+                currentInputSource = null;
+                gazeProvider.InputSystem?.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);
+                gazeProvider.InputSystem?.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
             }
         }
 
@@ -558,15 +457,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
-        public void OnInputChanged(InputEventData<Vector2> eventData)
-        {
-            gazePointer.OnInputChanged(eventData);
-        }
-
-        public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
-        {
-            gazePointer.OnInputChanged(eventData);
-        }
 
         #endregion IMixedRealityInputHandler Implementation
 
@@ -581,7 +471,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Debug.Assert(gazeTransform != null, "No gaze transform to raycast from!");
 
-            gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer, pointerDownAction, pointerDragAction);
+            gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
 
             if ((GazeCursor == null) &&
                 (GazeCursorPrefab != null))
