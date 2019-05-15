@@ -13,6 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public Material[] mats;
         public int cur;
 
+        public void Start()
+        {
+            if (rend == null)
+            {
+                rend = GetComponent<MeshRenderer>();
+            }
+        }
+
         public void Increment()
         {
             if (mats != null && mats.Length > 0)
@@ -23,6 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     rend.material = mats[cur];
                 }
             }
+        }
+
+        public void RandomColor()
+        {
+            rend.material.color = UnityEngine.Random.ColorHSV();
         }
     }
 }

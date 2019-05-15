@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // handle scale of main cursor go
-            float distance = Vector3.Distance(MixedRealityToolkit.InputSystem.GazeProvider.GazeOrigin, transform.position);
+            float distance = Vector3.Distance(InputSystem.GazeProvider.GazeOrigin, transform.position);
             float smoothScaling = 1 - DefaultCursorDistance * distanceScaleFactor;
             transform.localScale = initialScale * (distance * distanceScaleFactor + smoothScaling);
         }

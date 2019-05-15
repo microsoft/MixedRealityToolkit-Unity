@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c2ae5b12da63c4e970fcb70eead958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneToBeLoaded: mrtk_eyes_02_TargetSelection
+  SceneToBeLoaded: EyeTrackingDemo-02-TargetSelection
 --- !u!1 &1596409283154020
 GameObject:
   m_ObjectHideFlags: 0

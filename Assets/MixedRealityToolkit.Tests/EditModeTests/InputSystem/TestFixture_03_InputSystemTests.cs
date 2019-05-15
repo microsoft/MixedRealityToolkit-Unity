@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = inputSystemProfile;
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile, MixedRealityToolkit.Instance.MixedRealityPlayspace));
+            MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile));
 
             // Tests
             Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveSystems);

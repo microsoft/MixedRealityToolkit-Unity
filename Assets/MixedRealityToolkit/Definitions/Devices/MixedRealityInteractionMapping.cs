@@ -9,8 +9,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Maps the capabilities of controllers, linking the Physical inputs of a controller to a Logical construct in a runtime project<para/>
-    /// <remarks>One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
+    /// <remarks>
+    /// One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.
+    /// </remarks>
     [Serializable]
     public class MixedRealityInteractionMapping
     {
@@ -401,22 +403,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Debug.LogError($"SetVector2Value is only valid for AxisType.DualAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
                 }
 
-                if (invertXAxis || invertYAxis)
-                {
-                    float invertXAxisFactor = invertXAxis ? -1f : 1f;
-                    float invertYAxisFactor = invertYAxis ? -1f : 1f;
-
-                    Changed = !vector2Data.x.Equals(value.x * invertXAxisFactor) &&
-                              !vector2Data.y.Equals(value.y * invertYAxisFactor);
-
-                    vector2Data.x = value.x * invertXAxisFactor;
-                    vector2Data.y = value.y * invertYAxisFactor;
-                }
-                else
-                {
-                    Changed = vector2Data != value;
-                    vector2Data = value;
-                }
+                Vector2 newValue = value * new Vector2(invertXAxis ? -1f : 1f, invertYAxis ? -1f : 1f);
+                Changed = vector2Data != newValue;
+                vector2Data = newValue;
             }
         }
 

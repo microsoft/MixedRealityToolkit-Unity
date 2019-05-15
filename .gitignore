@@ -86,3 +86,8 @@ Assets/packages.config.meta
 Assets/Packages/
 Assets/Packages.meta
 Packages/
+
+# =========================================== #
+# Asset Script Reference Retargeter Generated #
+# =========================================== #
+NuGet/

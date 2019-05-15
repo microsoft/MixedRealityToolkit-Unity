@@ -1,4 +1,4 @@
-# Getting started with the Mixed Reality Toolkit
+# Getting Started with MRTK
 
 ![](../Documentation/Images/MRTK_Logo_Rev.png)
 
@@ -11,35 +11,44 @@ To get started with the Mixed Reality Toolkit you will need:
 * [Visual Studio 2017](http://dev.windows.com/downloads)
 * [Unity 2018.3.x](https://unity3d.com/get-unity/download/archive)
 * [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
-* You don't need this to simulate in Unity Editor or run in VR, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need [Windows SDK 18362+](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK).
+* You don't need this to simulate in Unity Editor or run in VR, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
 
 
 ## Get the latest MRTK Unity packages
 1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
 2. Under Assets, download both `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` and `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
-> The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will be available via the Unity package manager.
+
+For additional delivery mechanisms, please see [Downloading the MRTK](DownloadingTheMRTK.md).
+
+## Switch your Unity project to the target platform
+The next step **Import MRTK packages into your Unity project** will apply changes to your project specifically for the platform that is selected in the project at that moment you import them. 
+
+You should make sure that you select the correct platform before following the next step.
+
+For instance, if you want to create a HoloLens application, switch to Universal Windows Platform:
+- Open menu : File > Build Settings
+- Select **Universal Windows Platform** in the **Platform** list
+- Click on the **Switch Platform** button
 
 ## Import MRTK packages into your Unity project
-1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. 
-
-> We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.
+1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.
 
 2. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
 
 3. Import `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` following the same steps as above. The examples package is optional but contains useful demonstration scenes for current MRTK features.
 
-> After importing the Foundation package, you may see a setup prompt like the following:
-> 
-> ![](../Documentation/Images/MRTK_UnitySetupPrompt.png)
-> 
-> MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:
-> * Enable XR Settings for your current platform (enabling the XR checkbox).
-> * Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).
->
-> Accepting these options is completely optional, but recommended.
+After importing the Foundation package, you may see a setup prompt like the following:
+
+![](../Documentation/Images/MRTK_UnitySetupPrompt.png)
+ 
+MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:
+ * Enable XR Settings for your current platform (enabling the XR checkbox).
+ * Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).
+
+Accepting these options is completely optional, but recommended.
 
 
-> Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
+Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
 
 
 ## Open and run the HandInteractionExamples scene in editor
@@ -90,12 +99,7 @@ Click "OK".
 
 ![](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
 
-> **Note**  Note that the other configuration profiles in this picker are from other scenes in the examples 
-package. If you did not install the examples package, you would not have been prompted to 
-choose a specific profile (as the foundation package only contains a single
-MixedRealityToolkitConfigurationProfile - the default one). The other profiles are part of their
-respective example scenes (for example, the HandInteractionAllExampleMixedRealityToolkitConfigurationProfile)
-is part of the [HandInteractionExamples scene](README_HandInteractionExamples.md).
+> **NOTE**: Note that the other configuration profiles in this picker are from other scenes in the examples package. If you did not install the examples package, you would not have been prompted to choose a specific profile (as the foundation package only contains a single MixedRealityToolkitConfigurationProfile - the default one). The other profiles are part of their respective example scenes (for example, the HandInteractionAllExampleMixedRealityToolkitConfigurationProfile) is part of the [HandInteractionExamples scene](README_HandInteractionExamples.md).
 
 You will then see the following in your Scene hierarchy:
 
@@ -105,10 +109,10 @@ Which contains the following:
 
 * Mixed Reality Toolkit - The toolkit itself, providing the central configuration entry point for the entire framework.
 * MixedRealityPlayspace - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
-* The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDK's
+* The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs
 
-> **Note** While working in your scene, **DO NOT move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
-> If you need to move the players start point, then **move the scene content and NOT the camera**!
+**Note** While working in your scene, **DO NOT move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
+If you need to move the players start point, then **move the scene content and NOT the camera**!
 
 6. Hit play and test out hand simulation by pressing spacebar.
 
@@ -125,7 +129,7 @@ Here are some suggested next steps:
 * Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
 * Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md).
 
-## Building blocks for UI and Interactions
+## Building blocks for UI and interactions
 |  [![Button](../Documentation/Images/Button/MRTK_Button_Main.png)](README_Button.md) [Button](README_Button.md) | [![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)](README_BoundingBox.md) [Bounding Box](README_BoundingBox.md) | [![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)](README_ManipulationHandler.md) [Manipulation Handler](README_ManipulationHandler.md) |
 |:--- | :--- | :--- |
 | A button control which supports various input methods including HoloLens2's articulated hand | Standard UI for manipulating objects in 3D space | Script for manipulating objects with one or two hands |

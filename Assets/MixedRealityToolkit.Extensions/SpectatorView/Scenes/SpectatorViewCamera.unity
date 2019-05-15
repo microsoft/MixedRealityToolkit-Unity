@@ -194,6 +194,9 @@ GameObject:
   - component: {fileID: 1937314664}
   - component: {fileID: 1937314666}
   - component: {fileID: 1937314665}
+  - component: {fileID: 1937314668}
+  - component: {fileID: 1937314667}
+  - component: {fileID: 1937314669}
   m_Layer: 0
   m_Name: Spectator View Pose Provider
   m_TagString: Untagged
@@ -265,6 +268,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listeningPort: 7502
+--- !u!114 &1937314667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937314661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbce40d33e599cc4e8160e9072726b89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1937314668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937314661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf25eb2cb885c4d4b8c8d044a80f4447, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1937314669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937314661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74847b432cd730c4d896483060087a77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1940026536
 GameObject:
   m_ObjectHideFlags: 0

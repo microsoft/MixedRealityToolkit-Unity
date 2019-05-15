@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 2.0.0-Beta2
+  bundleVersion: 2.0.0-RC1-Refresh
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -592,7 +592,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
-  metroCertificateNotAfter: 80ddccd29f8bd501
+  metroCertificateNotAfter: 80b15b7b5218d601
   metroApplicationDescription: Microsoft.MixedReality.Toolkit
   wsaImages: {}
   metroTileShortName: MixedRealityToolkit

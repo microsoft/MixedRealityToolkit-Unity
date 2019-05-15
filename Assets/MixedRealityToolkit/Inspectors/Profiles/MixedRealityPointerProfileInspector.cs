@@ -36,11 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             pointingExtent = serializedObject.FindProperty("pointingExtent");
             pointingRaycastLayerMasks = serializedObject.FindProperty("pointingRaycastLayerMasks");
             pointerOptions = serializedObject.FindProperty("pointerOptions");
@@ -63,21 +58,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
-            {
-                return;
-            }
+            RenderTitleDescriptionAndLogo(
+                "Pointer Profile",
+                "Pointers attach themselves onto controllers as they are initialized.");
 
-            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
-                return;
+                if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+                {
+                    return;
+                }
             }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Pointer Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Pointers attach themselves onto controllers as they are initialized.", MessageType.Info);
-            EditorGUILayout.Space();
 
             CheckProfileLock(target);
             serializedObject.Update();
@@ -127,7 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.Space();
                     EditorGUILayout.PropertyField(gazeCursorPrefab);
                     EditorGUILayout.PropertyField(gazeProviderType);
-                    EditorGUILayout.PropertyField(showCursorWithEyeGaze);
 
                     EditorGUILayout.Space();
                     if (GUILayout.Button("Customize Gaze Provider Settings"))

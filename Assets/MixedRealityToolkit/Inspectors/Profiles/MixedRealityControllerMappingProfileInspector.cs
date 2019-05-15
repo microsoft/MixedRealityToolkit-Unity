@@ -67,8 +67,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            RenderTitleDescriptionAndLogo(
+                "Controller Input Mapping",
+                "Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
+                "You'll want to define all your Input Actions first. They can then be wired up to hardware sensors, controllers, gestures, and other input devices.");
+
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
                 return;
             }
@@ -86,11 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 return;
             }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Controller Input Mapping", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
-                                    "You'll want to define all your Input Actions first. They can then be wired up to hardware sensors, controllers, gestures, and other input devices.", MessageType.Info);
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
