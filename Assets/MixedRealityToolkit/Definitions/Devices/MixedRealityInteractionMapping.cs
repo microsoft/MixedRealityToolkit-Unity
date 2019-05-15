@@ -349,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Debug.LogError($"SetBoolValue is only valid for AxisType.Digital, AxisType.SingleAxis, or AxisType.DualAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
                 }
 
-                Changed = boolData != value;
+                Changed = value || value != boolData;
                 boolData = value;
             }
         }
@@ -372,16 +372,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Debug.LogError($"SetFloatValue is only valid for AxisType.SingleAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
                 }
 
-                if (invertXAxis)
-                {
-                    Changed = !floatData.Equals(value * -1f);
-                    floatData = value * -1f;
-                }
-                else
-                {
-                    Changed = !floatData.Equals(value);
-                    floatData = value;
-                }
+                float newValue = (invertXAxis ? -1f : 1f) * value;
+                Changed = newValue != 0f || newValue != floatData;
+                floatData = newValue;
             }
         }
 
@@ -404,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 Vector2 newValue = value * new Vector2(invertXAxis ? -1f : 1f, invertYAxis ? -1f : 1f);
-                Changed = vector2Data != newValue;
+                Changed = newValue != Vector2.zero || newValue != vector2Data;
                 vector2Data = newValue;
             }
         }
