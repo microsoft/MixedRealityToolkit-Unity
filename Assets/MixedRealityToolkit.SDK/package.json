@@ -16,6 +16,6 @@
 	"dependencies": {
 		"com.microsoft.mixedrealitytoolkit.services": "2.0.0",
 		"com.microsoft.mixedrealitytoolkit": "2.0.0",
-		"com.unity.textmeshpro": "1.3.0",
+		"com.unity.textmeshpro": "1.3.0"
 	}
 }
