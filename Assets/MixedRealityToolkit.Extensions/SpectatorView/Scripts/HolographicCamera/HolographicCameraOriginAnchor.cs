@@ -28,13 +28,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             }
         }
 
-        private void Start()
+        private void Awake()
         {
             worldAnchorManager = GetComponent<WorldAnchorManager>();
             worldAnchorManager.AttachAnchor(gameObject, AnchorName);
 
             tcpConnectionManager = GetComponent<TCPConnectionManager>();
             tcpConnectionManager.OnReceive += TcpConnectionManager_OnReceive;
+        }
+
+        private void OnDestroy()
+        {
+            tcpConnectionManager.OnReceive -= TcpConnectionManager_OnReceive;
         }
 
         private void TcpConnectionManager_OnReceive(IncomingMessage data)
