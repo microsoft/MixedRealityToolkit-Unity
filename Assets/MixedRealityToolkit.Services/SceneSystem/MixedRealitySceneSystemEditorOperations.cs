@@ -199,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 // Only update this once in a while to avoid being obnoxious
                 foreach (SceneInfo lightingScene in profile.LightingScenes)
                 {   // Make sure ALL lighting scenes are added to build settings
-                    if (!loaded && lightingScene.Name == LightingSceneName)
+                    if (!loaded && lightingScene.Name == ActiveLightingScene)
                     {
                         if (LoadSceneInEditor(lightingScene, false, out Scene editorScene) && updateActiveScene)
                         {
@@ -621,7 +621,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             for (int i = 0; i < EditorSceneManager.sceneCountInBuildSettings; i++)
             {
-                string sceneName = GetSceneNameFromScenePath(SceneUtility.GetScenePathByBuildIndex(i));
+                string sceneName = GetSceneNameFromScenePath(SceneUtilities.GetScenePathByBuildIndex(i));
                 if (!nonContentSceneNames.Contains(sceneName))
                 {
                     sceneNames.Add(sceneName);

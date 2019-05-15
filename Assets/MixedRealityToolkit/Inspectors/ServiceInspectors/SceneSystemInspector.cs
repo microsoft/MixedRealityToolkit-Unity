@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     continue;
                 }
 
-                bool selected = lightingScene.Name == sceneSystem.LightingSceneName;
+                bool selected = lightingScene.Name == sceneSystem.ActiveLightingScene;
 
                 GUI.color = selected ? enabledColor : disabledColor;
                 if (GUILayout.Button(lightingScene.Name, EditorStyles.toolbarButton) && !selected && !Application.isPlaying)
