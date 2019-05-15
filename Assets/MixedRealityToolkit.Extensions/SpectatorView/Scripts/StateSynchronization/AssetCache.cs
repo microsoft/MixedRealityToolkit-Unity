@@ -15,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     internal abstract class AssetCache : ScriptableObject
     {
+        const string assetCacheDirectory = "Generated.StateSynchronization.AssetCache";
+
         public static TAssetCache LoadAssetCache<TAssetCache>()
             where TAssetCache : AssetCache
         {
@@ -23,19 +25,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public static string GetAssetPath(string assetName, string assetExtension)
         {
-            return "Assets/SpectatorViewAssets/Resources/" + assetName + assetExtension;
+            return $"Assets/{assetCacheDirectory}/Resources/" + assetName + assetExtension;
         }
 
         public static void EnsureAssetDirectoryExists()
         {
 #if UNITY_EDITOR
-            if (!AssetDatabase.IsValidFolder("Assets/SpectatorViewAssets"))
+            if (!AssetDatabase.IsValidFolder( $"Assets/{assetCacheDirectory}"))
             {
-                AssetDatabase.CreateFolder("Assets", "SpectatorViewAssets");
+                AssetDatabase.CreateFolder("Assets", $"{assetCacheDirectory}");
             }
-            if (!AssetDatabase.IsValidFolder("Assets/SpectatorViewAssets/Resources"))
+            if (!AssetDatabase.IsValidFolder($"Assets/{assetCacheDirectory}/Resources"))
             {
-                AssetDatabase.CreateFolder("Assets/SpectatorViewAssets", "Resources");
+                AssetDatabase.CreateFolder($"Assets/{assetCacheDirectory}", "Resources");
             }
 #endif
         }

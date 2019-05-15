@@ -1,21 +1,21 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView",
-    "references": [
-        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection",
-        "Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture",
-        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording",
-        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing",
-        "Unity.XR.ARFoundation",
-        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker",
-        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer",
-        "Unity.TextMeshPro"
-    ],
-    "optionalUnityReferences": [],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": []
+  "name": "Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView",
+  "references": [
+    "Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection",
+    "Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture",
+    "Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording",
+    "Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing",
+    "Unity.XR.ARFoundation",
+    "Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker",
+    "Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer",
+    "Unity.TextMeshPro"
+  ],
+  "optionalUnityReferences": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": []
 }

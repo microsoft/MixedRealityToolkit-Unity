@@ -481,23 +481,39 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [ContextMenu("Update All Asset Caches")]
         public void UpdateAllAssetCaches()
         {
-            foreach (var asset in GetComponents<IAssetCache>())
+            var assetCaches = GetComponents<IAssetCache>();
+            if (assetCaches.Length == 0)
+            {
+                Debug.LogWarning("No asset caches were found in the scene");
+                return;
+            }
+
+            foreach (var asset in assetCaches)
             {
                 asset.UpdateAssetCache();
             }
 
             AssetDatabase.SaveAssets();
+            Debug.Log("Updated all asset caches.");
         }
 
         [ContextMenu("Clear All Asset Caches")]
         public void ClearAllAssetCaches()
         {
-            foreach (var asset in GetComponents<IAssetCache>())
+            var assetCaches = GetComponents<IAssetCache>();
+            if (assetCaches.Length == 0)
+            {
+                Debug.LogWarning("No asset caches were found in the scene");
+                return;
+            }
+
+            foreach (var asset in assetCaches)
             {
                 asset.ClearAssetCache();
             }
 
             AssetDatabase.SaveAssets();
+            Debug.Log("Cleared all asset caches.");
         }
 #endif
     }

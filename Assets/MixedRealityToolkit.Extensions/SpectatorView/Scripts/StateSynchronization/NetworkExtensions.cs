@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal static class NetworkExtensions
+    public static class NetworkExtensions
     {
         public static void Write(this BinaryWriter message, Guid value)
         {
