@@ -233,17 +233,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 // We want the controller to follow the Playspace, so fold in the playspace transform here to 
                 // put the controller pose into world space.
-                var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-                if (playspace != null)
-                {
-                    currentPointerPose.Position = playspace.TransformPoint(currentPointerPosition);
-                    currentPointerPose.Rotation = playspace.rotation * currentPointerRotation;
-                }
-                else
-                {
-                    currentPointerPose.Position = currentPointerPosition;
-                    currentPointerPose.Rotation = currentPointerRotation;
-                }
+                currentPointerPose.Position = MixedRealityPlayspace.TransformPoint(currentPointerPosition);
+                currentPointerPose.Rotation = MixedRealityPlayspace.Rotation * currentPointerRotation;
             }
 
             // Update the interaction data source
@@ -271,17 +262,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
                         interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
 
-                        var playspace = GetPlayspace();
-                        if (playspace != null)
-                        {
-                            currentGripPose.Position = playspace.TransformPoint(currentGripPosition);
-                            currentGripPose.Rotation = Quaternion.Euler(playspace.TransformDirection(currentGripRotation.eulerAngles));
-                        }
-                        else
-                        {
-                            currentGripPose.Position = currentGripPosition;
-                            currentGripPose.Rotation = currentGripRotation;
-                        }
+                        currentGripPose.Position = MixedRealityPlayspace.TransformPoint(currentGripPosition);
+                        currentGripPose.Rotation = Quaternion.Euler(MixedRealityPlayspace.TransformDirection(currentGripRotation.eulerAngles));
 
                         // Update the interaction data source
                         interactionMapping.PoseData = currentGripPose;

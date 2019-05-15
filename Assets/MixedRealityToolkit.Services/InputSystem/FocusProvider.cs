@@ -13,8 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// The focus provider handles the focused objects per input source.
-    /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
+    /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
     public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider
     {
         public FocusProvider(
@@ -25,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
-        private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
+        private readonly Dictionary<GameObject, int> pendingOverallFocusExitSet = new Dictionary<GameObject, int>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
@@ -131,8 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Cached <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> reference to the new raycast position.
-        /// <remarks>Only used to update UI raycast results.</remarks>
         /// </summary>
+        /// <remarks>Only used to update UI raycast results.</remarks>
         private Vector3 newUiRaycastPosition = Vector3.zero;
 
         /// <summary>
@@ -271,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Pointer.OnPreCurrentPointerTargetChange();
 
                     // Set to default:
-                    Pointer.IsTargetPositionLockedOnFocusLock = true; 
+                    Pointer.IsTargetPositionLockedOnFocusLock = true;
                 }
 
                 PreviousPointerTarget = CurrentPointerTarget;
@@ -320,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     focusDetails.NormalLocalSpace = Vector3.zero;
                 }
             }
-            
+
             /// <summary>
             /// Update focus information while focus is locked. If the object is moving,
             /// this updates the hit point to its new world transform.
@@ -582,7 +583,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 mediator = Activator.CreateInstance(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
             }
-            
+
             if (mediator != null)
             {
                 mediator.RegisterPointers(inputSource.Pointers);
@@ -628,12 +629,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
+                MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+
                 if (!objectIsStillFocusedByOtherPointer)
                 {
                     // Policy: only raise focus exit if no other pointers are still focusing the object
                     MixedRealityToolkit.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
                 }
-                MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+
+                MixedRealityToolkit.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -702,7 +706,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     MixedRealityRaycaster.DebugEnabled = pointerProfile.DebugDrawPointingRays;
 
                     Color rayColor;
-
                     if ((pointerProfile.DebugDrawPointingRayColors != null) && (pointerProfile.DebugDrawPointingRayColors.Length > 0))
                     {
                         rayColor = pointerProfile.DebugDrawPointingRayColors[pointerCount++ % pointerProfile.DebugDrawPointingRayColors.Length];
@@ -710,6 +713,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     else
                     {
                         rayColor = Color.green;
+                    }
+
+                    if (!pointer.Pointer.IsActive)
+                    {
+                        // Only draw pointers that are currently active, but make sure to 
+                        // increment color even if pointer is disabled so that the color for e.g. the 
+                        // sphere pointer or the poke pointer remains consistent.
+                        continue;
                     }
 
                     Debug.DrawRay(pointer.StartPoint, (pointer.Details.Point - pointer.StartPoint), rayColor);
@@ -829,7 +840,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                     }
                 }
-                // The gaze cursor's visibility is controlled by IsInteractionEnabled 
+                // The gaze cursor's visibility is controlled by IsInteractionEnabled
                 // Show the gaze cursor if there are no other pointers that are showing a cursor
                 gazePointer.IsInteractionEnabled = numFarCursors == 1 && numNearPointersActive == 0;
             }
@@ -896,7 +907,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 // Policy: in order for an collider to be near interactable it must have
                                 // a NearInteractionGrabbable component on it.
-                                // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap, 
+                                // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap,
                                 //        but there may be other pointers using the same query type which have different semantics.
                                 if (collider.GetComponent<NearInteractionGrabbable>() == null)
                                 {
@@ -1039,7 +1050,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (pointer.PreviousPointerTarget != null)
                     {
-                        pendingOverallFocusExitSet.Add(pointer.PreviousPointerTarget);
+                        int numExits;
+                        if (pendingOverallFocusExitSet.TryGetValue(pointer.PreviousPointerTarget, out numExits))
+                        {
+                            pendingOverallFocusExitSet[pointer.PreviousPointerTarget] = numExits + 1;
+                        }
+                        else
+                        {
+                            pendingOverallFocusExitSet.Add(pointer.PreviousPointerTarget, 1);
+                        }
                     }
 
                     if (pointer.CurrentPointerTarget != null)
@@ -1049,11 +1068,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            // Early out if there have been no focus changes
+            if (pendingPointerSpecificFocusChange.Count == 0)
+            {
+                return;
+            }
+
             // ... but now we trim out objects whose overall focus was maintained the same by a different pointer:
 
             foreach (var pointer in pointers)
             {
-                pendingOverallFocusExitSet.Remove(pointer.CurrentPointerTarget);
+                if (pointer.CurrentPointerTarget != null)
+                {
+                    pendingOverallFocusExitSet.Remove(pointer.CurrentPointerTarget);
+                }
                 pendingOverallFocusEnterSet.Remove(pointer.PreviousPointerTarget);
             }
 
@@ -1066,10 +1094,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 MixedRealityToolkit.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
-                if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
+                int numExits;
+                if (pendingUnfocusObject != null && pendingOverallFocusExitSet.TryGetValue(pendingUnfocusObject, out numExits))
                 {
-                    MixedRealityToolkit.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
-                    pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
+                    if (numExits > 1)
+                    {
+                        pendingOverallFocusExitSet[pendingUnfocusObject] = numExits - 1;
+                    }
+                    else
+                    {
+                        MixedRealityToolkit.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
+                        pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
+                    }
                 }
 
                 if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))

@@ -21,11 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityInputSystem InputSystem { set; }
 
         /// <summary>
-        /// The transform of the Mixed Reality Playspace
-        /// </summary>
-        Transform Playspace { set; }
-
-        /// <summary>
         /// The Gaze Input Source for the provider.
         /// </summary>
         IMixedRealityInputSource GazeInputSource { get; }

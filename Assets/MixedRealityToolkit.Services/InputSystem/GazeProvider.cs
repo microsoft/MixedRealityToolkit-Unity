@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -80,21 +81,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("True to prefer eye tracking over head gaze, when available.")]
-        private bool preferEyeTracking = false;
+        [Tooltip("If true, eye-based tracking will be used when available. Requires the 'Gaze Input' permission and device eye calibration to have been run.")]
+        [Help("When enabling eye tracking, please follow the instructions at " 
+               + "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/EyeTracking/EyeTracking_BasicSetup.html#eye-tracking-requirements "
+               + "to set up 'Gaze Input' capabilities through Visual Studio.", "", false)]
+        [FormerlySerializedAs("preferEyeTracking")]
+        private bool useEyeTracking = false;
 
         /// <inheritdoc />
         public bool UseEyeTracking
         {
-            get { return preferEyeTracking; }
-            set { preferEyeTracking = value; }
+            get { return useEyeTracking; }
+            set { useEyeTracking = value; }
         }
 
         /// <inheritdoc />
         public IMixedRealityInputSystem InputSystem { private get; set; }
-
-        /// <inheritdoc />
-        public Transform Playspace { private get; set; }
 
         /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
@@ -227,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 newGazeOrigin = Vector3.zero;
                 Vector3 newGazeNormal = Vector3.zero;
 
-                if (gazeProvider.preferEyeTracking && gazeProvider.IsEyeTrackingAvailable)
+                if (gazeProvider.useEyeTracking && gazeProvider.IsEyeTrackingAvailable)
                 {
                     gazeProvider.gazeInputSource.SourceType = InputSourceType.Eyes;
                     newGazeOrigin = gazeProvider.latestEyeGaze.origin;
@@ -477,7 +479,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if ((GazeCursor == null) &&
                 (GazeCursorPrefab != null))
             {
-                GameObject cursor = Instantiate(GazeCursorPrefab, Playspace);
+                GameObject cursor = Instantiate(GazeCursorPrefab);
+                MixedRealityPlayspace.AddChild(cursor.transform);
                 SetGazeCursor(cursor);
             }
 
