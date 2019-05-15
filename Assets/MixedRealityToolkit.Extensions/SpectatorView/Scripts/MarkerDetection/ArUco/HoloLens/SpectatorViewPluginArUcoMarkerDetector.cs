@@ -32,7 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         private SpectatorViewPluginAPI _api;
         private bool _detecting = false;
         private Dictionary<int, List<Marker>> _markerObservations;
-        protected int _requiredObservations = 5;
+        protected int _requiredObservations = 8;
+        protected int _requiredInliers = 8;
+        protected int _maximumObservationsToBuffer = 16;
+        protected float _maximumPostionDistanceStandardDeviation = 0.001f;
+        protected float _maximumRotationAngleStandardDeviation = 0.25f;
         private Dictionary<int, Marker> _nextMarkerUpdate;
 
         protected void Start()
@@ -179,6 +183,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         }
 
                         _markerObservations[markerPair.Key].Add(markerPair.Value);
+                        if (_markerObservations[markerPair.Key].Count > _maximumObservationsToBuffer)
+                        {
+                            _markerObservations[markerPair.Key].RemoveAt(0);
+                        }
                     }
 
                     var validMarkers = new Dictionary<int, Marker>();
@@ -187,8 +195,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         if (observationPair.Value.Count >= _requiredObservations)
                         {
                             var averageMarker = CalcAverageMarker(observationPair.Value);
-                            validMarkers[averageMarker.Id] = averageMarker;
-                            observationPair.Value.Clear();
+
+                            var inliers = CalculateInlierMarkerSet(observationPair.Value, averageMarker);
+                            if (inliers.Count >= _requiredInliers)
+                            {
+                                var averageInlierMarker = CalcAverageMarker(inliers);
+
+                                double positionStandardDeviation, rotationStandardDeviation;
+                                CalculateStandardDeviations(inliers, averageInlierMarker, out positionStandardDeviation, out rotationStandardDeviation);
+                                if (positionStandardDeviation <= _maximumPostionDistanceStandardDeviation && rotationStandardDeviation <= _maximumRotationAngleStandardDeviation)
+                                {
+                                    LogMessagesAboutMarker("final", observationPair.Value, inliers, averageMarker, averageInlierMarker);
+
+                                    validMarkers[averageMarker.Id] = averageMarker;
+                                    observationPair.Value.Clear();
+                                }
+                                else
+                                {
+                                    LogMessagesAboutMarker("rejected", observationPair.Value, inliers, averageMarker, averageInlierMarker);
+                                }
+                            }
                         }
                     }
 
@@ -196,6 +222,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 }
             }
 #endif
+        }
+
+        private void LogMessagesAboutMarker(string markerState, List<Marker> allMarkers, List<Marker> inlierMarkers, Marker averageMarker, Marker averageInlierMarker)
+        {
+            double positionStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => (marker.Position - averageMarker.Position).magnitude);
+            double rotationStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => Quaternion.Angle(marker.Rotation, averageMarker.Rotation));
+
+            double inlierPositionStandardDeviation = StandardDeviation(inlierMarkers, averageInlierMarker, marker => (marker.Position - averageInlierMarker.Position).magnitude);
+            double inlierRotationStandardDeviation = StandardDeviation(inlierMarkers, averageInlierMarker, marker => Quaternion.Angle(marker.Rotation, averageInlierMarker.Rotation));
+
+            Debug.Log($"Calculated {markerState} marker position with {inlierMarkers.Count} markers out of {allMarkers.Count} available. Initial position standard deviation was {positionStandardDeviation} and rotation was {rotationStandardDeviation}. After outliers, position deviation was {inlierPositionStandardDeviation} and rotation was {inlierRotationStandardDeviation}. Final position was {averageInlierMarker.Position} which is {(averageInlierMarker.Position - averageMarker.Position).magnitude} away from original pose.");
         }
 
         private static Marker CalcAverageMarker(List<Marker> markers)
@@ -228,6 +265,52 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             Debug.Log(text);
             Debug.Log("Mean Quaternion: " + mean.x + ", " + mean.y + ", " + mean.z + ", " + mean.w);
             return mean;
+        }
+
+        private static List<Marker> CalculateInlierMarkerSet(List<Marker> allMarkers, Marker averageMarker)
+        {
+            double positionStandardDeviation, rotationStandardDeviation;
+            CalculateStandardDeviations(allMarkers, averageMarker, out positionStandardDeviation, out rotationStandardDeviation);
+
+            List<Marker> inliers = new List<Marker>(allMarkers.Count);
+            for (int i = 0; i < allMarkers.Count; i++)
+            {
+                if (IsMarkerInlier(allMarkers[i], averageMarker, positionStandardDeviation, rotationStandardDeviation))
+                {
+                    inliers.Add(allMarkers[i]);
+                }
+                else
+                {
+                    Debug.Log($"Found an outlier: {allMarkers[i].Position} was {(allMarkers[i].Position - averageMarker.Position).magnitude} away and {Quaternion.Angle(allMarkers[i].Rotation, averageMarker.Rotation)} degrees from average. Standard deviation was pos:{positionStandardDeviation} and rot:{rotationStandardDeviation}");
+                }
+            }
+
+            return inliers;
+        }
+
+        private static void CalculateStandardDeviations(List<Marker> allMarkers, Marker averageMarker, out double positionStandardDeviation, out double rotationStandardDeviation)
+        {
+            positionStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => (marker.Position - averageMarker.Position).magnitude);
+            rotationStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => Quaternion.Angle(marker.Rotation, averageMarker.Rotation));
+        }
+
+        private static bool IsMarkerInlier(Marker candidate, Marker averageMarker, double positionStandardDeviation, double rotationStandardDeviation)
+        {
+            return (candidate.Position - averageMarker.Position).magnitude < 1.5 * positionStandardDeviation &&
+                Quaternion.Angle(candidate.Rotation, averageMarker.Rotation) < 1.5 * rotationStandardDeviation;
+        }
+
+        private static double StandardDeviation<T>(IReadOnlyList<T> values, T meanValue, Func<T, double> evaluator)
+        {
+            double sum = 0;
+            double meanValueDouble = evaluator(meanValue);
+            for (int i = 0; i < values.Count; i++)
+            {
+                double delta = evaluator(values[i]) - meanValueDouble;
+                sum += (delta * delta);
+            }
+
+            return Math.Sqrt(sum / values.Count);
         }
     }
 }
