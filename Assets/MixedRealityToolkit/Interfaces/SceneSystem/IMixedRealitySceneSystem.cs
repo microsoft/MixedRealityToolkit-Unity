@@ -11,61 +11,100 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// <summary>
     /// Interface for managing scenes in Unity.
     /// Scenes are divided into three categories: Manager, Lighting and Content.
-    /// 
+    ///
     /// The Manager scene is loaded first and remains loaded for the duration of the app.
     /// Only one Manager scene is ever loaded, and no scene operation will ever unload it.
-    /// 
+    ///
     /// The Lighting scene is a largely empty scene which controls lighting settings.
     /// Ambient lighting, skybox, sun direction, etc. A default lighting scene is loaded on initialization.
     /// After that the active lighting scene may be changed at any time via SetLightingScene.
     /// Only one lighting scene can ever be loaded at a time.
-    /// 
+    ///
     /// Content scenes are everything else. These can be loaded and unloaded at will in any combination.
-    /// 
+    ///
     /// The scene actions provided improve on unity's SceneManagement events by ensuring that scenes
     /// are considered valid before the action is invoked.
     /// </summary>
     public interface IMixedRealitySceneSystem : IMixedRealityEventSystem, IMixedRealityEventSource, IMixedRealityDataProvider
     {
         #region Actions
-        
-        /// <summary>
-        /// Called when scene is has been loaded, activated and is valid.
-        /// Called for all scene types (content, lighting & manager)
-        /// </summary>
-        Action<Scene> OnSceneLoaded { get; set; }
 
         /// <summary>
-        /// Called when a content scene has been loaded, activated and is valid.
-        /// If multiple scenes have been loaded in one operation, this is called for each loaded scene.
+        /// Called just before a set of content scenes is loaded.
+        /// Includes names of all scenes about to be loaded.
         /// </summary>
-        Action<Scene> OnContentLoaded { get; set; }
+        Action<IEnumerable<string>> OnWillLoadContent { get; set; }
+
+        /// <summary>
+        /// Called when a set of content scenes have been loaded, activated and are valid.
+        /// Includes names of all scenes loaded.
+        /// </summary>
+        Action<IEnumerable<string>> OnContentLoaded { get; set; }
+
+
+        /// <summary>
+        /// Called just before a set of content scenes will be unloaded.
+        /// Includes names of all scenes about to be unloaded.
+        /// </summary>
+        Action<IEnumerable<string>> OnWillUnloadContent { get; set; }
+
+        /// <summary>
+        /// Called after a set of content scenes have been completely unloaded.
+        /// Includes names of all scenes about to be unloaded.
+        /// </summary>
+        Action<IEnumerable<string>> OnContentUnloaded { get; set; }
+
+        /// <summary>
+        /// Called just before lighting scene is loaded.
+        /// Includes name of scene.
+        /// </summary>
+        Action<string> OnWillLoadLighting { get; set; }
 
         /// <summary>
         /// Called when a lighting scene has been loaded, activated and is valid.
+        /// Includes scene name.
         /// </summary>
-        Action<Scene> OnLightingLoaded { get; set; }
-
-        /// <summary>
-        /// Called just before a content scene unload operation begins.
-        /// If multiple scenes have been unloaded in one operation, this is called for each scene.
-        /// </summary>
-        Action<Scene> OnWillUnloadContent { get; set; }
+        Action<string> OnLightingLoaded { get; set; }
 
         /// <summary>
         /// Called just before a lighting scene unload operation begins.
+        /// Includes scene name.
         /// </summary>
-        Action<Scene> OnWillUnloadLighting { get; set; }
-
-        /// <summary>
-        /// Called after a content scene has been completely unloaded.
-        /// </summary>
-        Action<string> OnContentUnloaded { get; set; }
+        Action<string> OnWillUnloadLighting { get; set; }
 
         /// <summary>
         /// Called after a lighting scene has been completely unloaded.
+        /// Includes scene name.
         /// </summary>
         Action<string> OnLightingUnloaded { get; set; }
+
+        /// <summary>
+        /// Called just prior to a scene being loaded.
+        /// Called for all scene types (content, lighting & manager)
+        /// Includes scene name
+        /// </summary>
+        Action<string> OnWillLoadScene { get; set; }
+
+        /// <summary>
+        /// Called when scene has been loaded, activated and is valid.
+        /// Called for all scene types (content, lighting & manager)
+        /// Includes scene name
+        /// </summary>
+        Action<string> OnSceneLoaded { get; set; }
+
+        /// <summary>
+        /// Called jus before a scene will be unloaded unloaded
+        /// Called for all scene types (content, lighting & manager)
+        /// Includes scene name
+        /// </summary>
+        Action<string> OnWillUnloadScene { get; set; }
+
+        /// <summary>
+        /// Called when scene has been unloaded
+        /// Called for all scene types (content, lighting & manager)
+        /// Includes scene name
+        /// </summary>
+        Action<string> OnSceneUnloaded { get; set; }
 
         #endregion
 
@@ -90,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         bool WaitingToProceed { get; }
 
         /// <summary>
-        /// Name of the currently loaded lighting scene. 
+        /// Name of the currently loaded lighting scene.
         /// If a transition is in progress, this reports the target lighting scene we're transitioning to.
         /// </summary>
         string ActiveLightingScene { get; }
@@ -98,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         #endregion
 
         #region Scene Operations
-        
+
         /// <summary>
         /// Async method to load the scenes by name.
         /// If a scene operation is in progress, no action will be taken.
@@ -180,6 +219,26 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <param name="lightingSceneName">The name of the lighting scene.</param>
         /// <param name="transitionType">The transition type to use. See LightingSceneTransitionType for information about each transition type.</param>
         void SetLightingScene(string lightingSceneName, LightingSceneTransitionType transitionType = LightingSceneTransitionType.None);
+
+        #endregion
+
+        #region Utilities
+
+        /// <summary>
+        /// Returns a set of scenes by name.
+        /// Useful for processing events.
+        /// </summary>
+        /// <param name="sceneNames"></param>
+        /// <returns></returns>
+        IEnumerable<Scene> GetScenes(IEnumerable<string> sceneNames);
+
+        /// <summary>
+        /// Returns a scene by name.
+        /// Useful for processing events.
+        /// </summary>
+        /// <param name="sceneName"></param>
+        /// <returns></returns>
+        Scene GetScene(string sceneName);
 
         #endregion
     }
