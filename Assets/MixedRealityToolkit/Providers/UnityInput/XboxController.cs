@@ -64,17 +64,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             if (Enabled)
             {
+                // Move controller in plane perpendicular to camera direction using the left thumb stick
                 float movementSpeed = 0.01f;
                 float h = UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_1);
                 float v = UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_2);
                 poseInCamera.position += new Vector3(h, -v, 0) * movementSpeed;
 
+                // Rotate controller using the right thumb stick
                 float rotationSpeed = 1.0f;
                 float yaw = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_4);
                 float pitch = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_5);
-                poseInCamera.rotation *= Quaternion.AngleAxis(yaw, Vector3.up);
-                poseInCamera.rotation *= Quaternion.AngleAxis(pitch, Vector3.right);
+                poseInCamera.rotation *= Quaternion.Euler(pitch, yaw, 0);
 
+                // Set world space pose
                 Pose pose = poseInCamera.GetTransformedBy(CameraCache.Main.transform);
                 CurrentControllerPosition = pose.position;
                 CurrentControllerPose.Position = CurrentControllerPosition;
