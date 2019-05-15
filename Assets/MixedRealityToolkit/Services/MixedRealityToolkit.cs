@@ -488,6 +488,9 @@ namespace Microsoft.MixedReality.Toolkit
             // We'll enforce that here, then tracking can update it to the appropriate position later.
             CameraCache.Main.transform.position = Vector3.zero;
 
+            // This will create the playspace
+            Transform playspace = MixedRealityPlayspace.Transform;
+
             bool addedComponents = false;
             if (!Application.isPlaying)
             {

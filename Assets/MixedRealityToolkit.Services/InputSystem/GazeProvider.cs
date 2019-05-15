@@ -112,9 +112,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private MixedRealityInputAction pointerDragAction = MixedRealityInputAction.None;
 
         /// <inheritdoc />
-        public IMixedRealityInputSystem InputSystem { private get; set; }
-
-        /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
         {
             get
@@ -296,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (dragInputSource != null)
                 {
-                    MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, dragInputSource);
+                    InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, dragInputSource);
                 }
 
                 // REMOVE
