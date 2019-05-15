@@ -1,13 +1,13 @@
-# CI build for developer builds.
+# CI build for release packages.
 
 variables:
   UnityVersion: Unity2018.3.7f1
   MRTKVersion: 2.0.0
 
 pool:
-  name: On-Prem Unity
+  name: Analog On-Prem
   demands:
-  - Unity2018.3.7f1
+  - Unity2018.3.7f1  # variable expansion not allowed here
 
 steps:
 - template: templates/common.yml
