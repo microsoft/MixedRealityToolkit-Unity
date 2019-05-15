@@ -29,13 +29,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float JointPositionThreshold => jointPositionThreshold;
 
         [SerializeField]
+        [Tooltip("Minimum movement of hand joints to record a keyframe")]
+        private float jointRotationThreshold = 0.02f;
+        public float JointRotationThreshold => jointRotationThreshold;
+
+        [SerializeField]
         [Tooltip("Minimum movement of the camera to record a keyframe")]
         private float cameraPositionThreshold = 0.002f;
         public float CameraPositionThreshold => cameraPositionThreshold;
 
         [SerializeField]
         [Tooltip("Minimum rotation angle of the camera to record a keyframe")]
-        private float cameraRotationThreshold = Mathf.Deg2Rad * 0.5f;
+        private float cameraRotationThreshold = 0.02f;
         public float CameraRotationThreshold => cameraRotationThreshold;
     }
 }

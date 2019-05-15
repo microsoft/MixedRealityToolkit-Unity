@@ -9,6 +9,11 @@ using System.IO;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    public class InputAnimationTarget : UnityEngine.Object
+    {
+
+    }
+
     public static class InputAnimationRecordingUtils
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
@@ -62,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (hand.TryGetJoint((TrackedHandJoint)i, out MixedRealityPose jointPose))
                     {
-                        animation.AddHandJointKey(time, handedness, (TrackedHandJoint)i, jointPose, profile.JointPositionThreshold);
+                        animation.AddHandJointKey(time, handedness, (TrackedHandJoint)i, jointPose, profile.JointPositionThreshold, profile.JointRotationThreshold);
                     }
                 }
             }
@@ -115,6 +120,61 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             curve.keys = keys;
+        }
+
+        public static void AnimationClipToStream(AnimationClip clip, Stream stream)
+        {
+            var writer = new BinaryWriter(stream);
+
+            CurveToStream(clip, reader, "Hand.Left.IsTracked");
+            CurveToStream(clip, reader, "Hand.Right.IsTracked");
+            CurveToStream(clip, reader, "Hand.Left.IsPinching");
+            CurveToStream(clip, reader, "Hand.Right.IsPinching");
+            JointCurvesToStream(clip, reader, "Hand.Left.Joints");
+            JointCurvesToStream(clip, reader, "Hand.Right.Joints");
+        }
+
+        public static void AnimationClipFromStream(AnimationClip clip, Stream stream)
+        {
+            // This is necessary in order to be able to use SetCurve at runtime, see
+            // https://docs.unity3d.com/2018.3/Documentation/ScriptReference/AnimationClip.SetCurve.html
+            clip.legacy = true;
+
+            var reader = new BinaryReader(stream);
+
+            CurveFromStream(clip, reader, "Hand.Left.IsTracked");
+            CurveFromStream(clip, reader, "Hand.Right.IsTracked");
+            CurveFromStream(clip, reader, "Hand.Left.IsPinching");
+            CurveFromStream(clip, reader, "Hand.Right.IsPinching");
+            JointCurvesFromStream(clip, reader, "Hand.Left.Joints");
+            JointCurvesFromStream(clip, reader, "Hand.Right.Joints");
+        }
+
+        private static void CurveFromStream(AnimationClip clip, BinaryReader reader, string propertyName)
+        {
+            var curve = new AnimationCurve();
+            DeserializeAnimationCurve(reader, curve);
+            clip.SetCurve("", typeof(InputAnimationTarget), propertyName, curve);
+        }
+
+        private static void PoseCurvesFromStream(AnimationClip clip, BinaryReader reader, string propertyName)
+        {
+            CurveFromStream(clip, reader, propertyName + ".Position.x");
+            CurveFromStream(clip, reader, propertyName + ".Position.y");
+            CurveFromStream(clip, reader, propertyName + ".Position.z");
+
+            CurveFromStream(clip, reader, propertyName + ".Rotation.x");
+            CurveFromStream(clip, reader, propertyName + ".Rotation.y");
+            CurveFromStream(clip, reader, propertyName + ".Rotation.z");
+            CurveFromStream(clip, reader, propertyName + ".Rotation.w");
+        }
+
+        private static void JointCurvesFromStream(AnimationClip clip, BinaryReader reader, string propertyName)
+        {
+            for (int i = 0; i < jointCount; ++i)
+            {
+                PoseCurvesFromStream(clip, reader, propertyName + $"[{i}]");
+            }
         }
     }
 }

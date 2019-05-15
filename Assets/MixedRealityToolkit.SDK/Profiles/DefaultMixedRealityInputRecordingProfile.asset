@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityInputRecordingProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  outputFilename: InputAnimation
+  appendTimestamp: 1
   jointPositionThreshold: 0.001
+  jointRotationThreshold: 0.02
   cameraPositionThreshold: 0.002
-  cameraRotationThreshold: 0.008726646
+  cameraRotationThreshold: 0.02

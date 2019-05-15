@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var clip = new AnimationClip();
 
-            // asset.InputAnimation.FromStream(fs);
+            InputAnimationRecordingUtils.AnimationClipFromStream(clip, stream);
 
             return clip;
         }

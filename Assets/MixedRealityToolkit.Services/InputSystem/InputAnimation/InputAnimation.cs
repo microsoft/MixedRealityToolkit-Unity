@@ -150,15 +150,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Add a keyframe for one hand joint.
         /// </summary>
-        public void AddHandJointKey(float time, Handedness handedness, TrackedHandJoint joint, MixedRealityPose jointPose, float positionThreshold)
+        public void AddHandJointKey(float time, Handedness handedness, TrackedHandJoint joint, MixedRealityPose jointPose, float positionThreshold, float rotationThreshold)
         {
             if (handedness == Handedness.Left)
             {
-                AddHandJointKey(time, joint, jointPose, handJointCurvesLeft, positionThreshold);
+                AddHandJointKey(time, joint, jointPose, handJointCurvesLeft, positionThreshold, rotationThreshold);
             }
             else if (handedness == Handedness.Right)
             {
-                AddHandJointKey(time, joint, jointPose, handJointCurvesRight, positionThreshold);
+                AddHandJointKey(time, joint, jointPose, handJointCurvesRight, positionThreshold, rotationThreshold);
             }
         }
 
@@ -195,12 +195,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// Add a keyframe for one hand joint.
-        private void AddHandJointKey(float time, TrackedHandJoint joint, MixedRealityPose jointPose, AnimationCurve[] jointCurves, float positionThreshold)
+        private void AddHandJointKey(float time, TrackedHandJoint joint, MixedRealityPose jointPose, AnimationCurve[] jointCurves, float positionThreshold, float rotationThreshold)
         {
-            int curveIndex = (int)joint * 3;
+            int curveIndex = (int)joint * 7;
             AddFloatKeyFiltered(jointCurves[curveIndex + 0], time, jointPose.Position.x, positionThreshold);
             AddFloatKeyFiltered(jointCurves[curveIndex + 1], time, jointPose.Position.y, positionThreshold);
             AddFloatKeyFiltered(jointCurves[curveIndex + 2], time, jointPose.Position.z, positionThreshold);
+
+            AddFloatKeyFiltered(jointCurves[curveIndex + 3], time, jointPose.Rotation.x, rotationThreshold);
+            AddFloatKeyFiltered(jointCurves[curveIndex + 4], time, jointPose.Rotation.x, rotationThreshold);
+            AddFloatKeyFiltered(jointCurves[curveIndex + 5], time, jointPose.Rotation.x, rotationThreshold);
+            AddFloatKeyFiltered(jointCurves[curveIndex + 6], time, jointPose.Rotation.x, rotationThreshold);
 
             duration = Mathf.Max(duration, time);
         }
@@ -623,6 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var reader = new BinaryReader(stream);
             var formatter = new BinaryFormatter();
 
+            duration = 0.0f;
             ReadAnimationCurve(reader, handTrackedCurveLeft);
             ReadAnimationCurve(reader, handTrackedCurveRight);
             ReadAnimationCurve(reader, handPinchCurveLeft);
@@ -650,6 +656,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void ReadAnimationCurve(BinaryReader reader, AnimationCurve curve)
         {
             InputAnimationRecordingUtils.DeserializeAnimationCurve(reader, curve);
+
+            duration = Mathf.Max(duration, curve.Duration());
         }
 
         private void ReadAnimationCurveArray(BinaryReader reader, AnimationCurve[] curves)
@@ -659,5 +667,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 ReadAnimationCurve(reader, curve);
             }
         }
+
     }
 }
