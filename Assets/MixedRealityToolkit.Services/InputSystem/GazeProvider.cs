@@ -399,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (dragInputSource != null && dragInputSource == eventData.InputSource && eventData.MixedRealityInputAction == pointerDragAction)
                 {
-                    dragPose.rotation = dragPose.rotation * Quaternion.Euler(0, eventData.InputData.x, 0);
+                    dragPose.rotation = dragPose.rotation * Quaternion.Euler(eventData.InputData.y, eventData.InputData.x, 0);
 
                     // REMOVE
                     Debug.DrawRay(Position, Rotation * Vector3.forward, Color.green);
