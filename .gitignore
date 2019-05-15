@@ -86,3 +86,9 @@ Assets/packages.config.meta
 Assets/Packages/
 Assets/Packages.meta
 Packages/
+
+# ===================================== #
+# State Synchronization Generated Files #
+# ===================================== #
+Assets/Generated.StateSynchronization.AssetCache.meta
+Assets/Generated.StateSynchronization.AssetCache/
