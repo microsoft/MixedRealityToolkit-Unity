@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 685059957}
   - component: {fileID: 685059978}
   m_Layer: 0
-  m_Name: StateSynchronizationAssets
+  m_Name: StateSynchronization Assets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
