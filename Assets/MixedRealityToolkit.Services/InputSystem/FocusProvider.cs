@@ -32,6 +32,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
 
+        /// <summary>
+        /// Number of IMixedRealityNearPointers that are active (IsInteractionEnabled == true).
+        /// </summary>
+        public int NumNearPointersActive { get; private set; }
+
+        /// <summary>
+        /// The number of pointers that support far interaction (like motion controller rays, hand rays) that 
+        /// are active (IsInteractionEnabled == true), excluding the gaze cursor
+        /// </summary>
+        public int NumFarPointersActive { get; private set; }
+        
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         #region IFocusProvider Properties
 
         /// <inheritdoc />
@@ -412,6 +440,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
@@ -434,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 CreateUiRaycastCamera();
             }
 
-            foreach (var inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+            foreach (var inputSource in InputSystem.DetectedInputSources)
             {
                 RegisterPointers(inputSource);
             }
@@ -599,7 +629,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 RegisterPointer(inputSource.Pointers[i]);
 
                 // Special Registration for Gaze
-                if (inputSource.SourceId == MixedRealityToolkit.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
+                if (inputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
                 {
                     gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
                 }
@@ -629,15 +659,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+                InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
                     // Policy: only raise focus exit if no other pointers are still focusing the object
-                    MixedRealityToolkit.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
+                    InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
                 }
 
-                MixedRealityToolkit.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
+                InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -812,37 +842,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return (hit1.hitObject != null) ? hit1 : hit2;
         }
-
+        
         /// <summary>
         /// Disable inactive pointers to unclutter the way for active ones.
         /// </summary>
         private void ReconcilePointers()
         {
             var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
-            if (gazePointer != null)
+            NumFarPointersActive = 0;
+            NumNearPointersActive = 0;
+
+            foreach (var pointerData in pointers)
             {
-                int numFarCursors = 0;
-                int numNearPointersActive = 0;
-                foreach (var p in pointers)
+                if (pointerData.Pointer is IMixedRealityNearPointer)
                 {
-                    if (p.Pointer != null)
+                    if (pointerData.Pointer.IsInteractionEnabled)
                     {
-                        if (p.Pointer is IMixedRealityNearPointer)
-                        {
-                            if (p.Pointer.IsInteractionEnabled)
-                            {
-                                numNearPointersActive++;
-                            }
-                        }
-                        else if (p.Pointer.BaseCursor != null)
-                        {
-                            numFarCursors++;
-                        }
+                        NumNearPointersActive++;
                     }
                 }
+                else if (pointerData.Pointer.BaseCursor != null
+                    && !(pointerData.Pointer == gazePointer)
+                    && pointerData.Pointer.IsInteractionEnabled)
+                {
+                    // We ignore the currentGazePointer here because for cases like HoloLens 1
+                    // hand input or the gamepad, we want to show the cursor still.
+                    NumFarPointersActive++;
+                }
+            }
+            if (gazePointer != null)
+            {
+                gazePointerStateMachine.UpdateState(NumNearPointersActive, NumFarPointersActive);
+
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
-                // Show the gaze cursor if there are no other pointers that are showing a cursor
-                gazePointer.IsInteractionEnabled = numFarCursors == 1 && numNearPointersActive == 0;
+                gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;
             }
         }
 
@@ -1092,7 +1125,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
-                MixedRealityToolkit.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
                 int numExits;
                 if (pendingUnfocusObject != null && pendingOverallFocusExitSet.TryGetValue(pendingUnfocusObject, out numExits))
@@ -1103,18 +1136,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        MixedRealityToolkit.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
+                        InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
                         pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
                     }
                 }
 
                 if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
                 {
-                    MixedRealityToolkit.InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
+                    InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                MixedRealityToolkit.InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
@@ -1169,6 +1202,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+
         #endregion ISourceState Implementation
+
+        #region IMixedRealitySpeechHandler Implementation
+        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
+        {
+            gazePointerStateMachine.OnSpeechKeywordRecognized(eventData);
+        }
+        #endregion
     }
 }

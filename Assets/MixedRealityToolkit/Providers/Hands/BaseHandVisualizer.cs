@@ -18,14 +18,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly Dictionary<TrackedHandJoint, Transform> joints = new Dictionary<TrackedHandJoint, Transform>();
         protected MeshFilter handMeshFilter;
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         private void OnEnable()
         {
-            MixedRealityToolkit.InputSystem?.Register(gameObject);
+            InputSystem?.Register(gameObject);
         }
 
         private void OnDisable()
         {
-            MixedRealityToolkit.InputSystem?.Unregister(gameObject);
+            InputSystem?.Unregister(gameObject);
         }
 
         private void OnDestroy()

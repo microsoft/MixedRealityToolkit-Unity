@@ -29,11 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             opaqueNearClip = serializedObject.FindProperty("nearClipPlaneOpaqueDisplay");
             opaqueClearFlags = serializedObject.FindProperty("cameraClearFlagsOpaqueDisplay");
             opaqueBackgroundColor = serializedObject.FindProperty("backgroundColorOpaqueDisplay");
@@ -47,20 +42,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
-            {
-                return;
-            }
+            RenderTitleDescriptionAndLogo(
+                "Camera Profile",
+                "The Camera Profile helps configure cross platform camera settings.");
 
-            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
-                return;
+                if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
+                {
+                    return;
+                }
             }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Camera Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("The Camera Profile helps configure cross platform camera settings.", MessageType.Info);
 
             CheckProfileLock(target);
 

@@ -13,7 +13,6 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 * **Supports a wide range of platforms**, including
   * Microsoft HoloLens
   * Microsoft HoloLens 2
-  * Microsoft Immersive headsets (IHMD)
   * Windows Mixed Reality headsets
   * OpenVR headsets (HTC Vive / Oculus Rift)
 
@@ -51,6 +50,8 @@ Find this readme, other documentation articles and the MRTK api reference on our
 | Various object positioning behaviors such as tag-along, body-lock, constant view size and surface magnetism | Script for lay out an array of objects in a three-dimensional shape | Annotation UI with flexible anchor/pivot system which can be used for labeling motion controllers and object. |
 |  [![App Bar](Documentation/Images/AppBar/MRTK_AppBar_Main.png)](Documentation/README_AppBar.md) [App Bar](Documentation/README_AppBar.md) | [![Pointers](Documentation/Images/Pointers/MRTK_Pointer_Main.png)](Documentation/README_Pointers.md) [Pointers](Documentation/README_Pointers.md) | [![Fingertip Visualization](Documentation/Images/Fingertip/MRTK_FingertipVisualization_Main.png)](Documentation/README_FingertipVisualization.md) [Fingertip Visualization](Documentation/README_FingertipVisualization.md) |
 | UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
+|  [![Slider](Documentation/Images/Slider/MRTK_UX_Slider_Main.jpg)](Documentation/README_Sliders.md) [Slider](Documentation/README_Sliders.md) | [![MRTK Standard Shader](Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg)](Documentation/README_MRTKStandardShader.md) [MRTK Standard Shader](Documentation/README_MRTKStandardShader.md) | [![Hand Joint Chaser](Documentation/Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg)](Documentation/README_HandJointChaser.md) [Hand Joint Chaser](Documentation/README_HandJointChaser.md) |
+| Slider UI for adjusting values supporting direct hand tracking interaction | MRTK's Standard shader supports various Fluent design elements with performance | Demonstrates how to use Solver to attach objects to the hand joints |
 |  [![Eye Tracking: Target Selection](Documentation/Images/EyeTracking/mrtk_et_targetselect.png)](Documentation/EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](Documentation/EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](Documentation/Images/EyeTracking/mrtk_et_navigation.png)](Documentation/EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](Documentation/EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)](Documentation/EyeTracking/EyeTracking_Visualization.md) [Eye Tracking: Heat Map](Documentation/EyeTracking/EyeTracking_Visualization.md) |
 | Combine eyes, voice and hand input to quickly and effortlessly select holograms across your scene | Learn how to auto scroll text or fluently zoom into focused content based on what you are looking at| Examples for logging, loading and visualizing what users have been looking at in your app |
 
@@ -63,17 +64,17 @@ You can find  other example scenes under [**Assets/MixedRealityToolkit.Examples/
 
 # Engage with the Community
 
-Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
+- Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
 
-Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) using the **MRTK** tag.
+- Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) using the **MRTK** tag.
 
-Search for [known issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) or file a [new issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
+- Search for [known issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) or file a [new issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
 
-Join our weekly community shiproom to hear directly from the feature team. (link coming soon) 
+- Join our weekly community shiproom to hear directly from the feature team. (link coming soon) 
 
-Deep dive into project plan and learn how you can contribute to MRTK in our [wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki). 
+- Deep dive into project plan and learn how you can contribute to MRTK in our [wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki). 
 
-For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
+- For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). 
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

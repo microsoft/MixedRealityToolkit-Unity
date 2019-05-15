@@ -63,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Initialize()
         {
+            ArticulatedHandPose.LoadGesturePoses();
         }
 
         /// <inheritdoc />
@@ -97,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (profile.SimulateEyePosition)
             {
-                MixedRealityToolkit.InputSystem?.EyeGazeProvider?.UpdateEyeGaze(null, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), System.DateTime.UtcNow);
+                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(null, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), System.DateTime.UtcNow);
             }
 
             switch (profile.HandSimulationMode)
@@ -249,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SupportedControllerType st = simulationMode == HandSimulationMode.Gestures ? SupportedControllerType.GGVHand : SupportedControllerType.ArticulatedHand;
             IMixedRealityPointer[] pointers = RequestPointers(st, handedness);
 
-            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
+            var inputSource = InputSystem?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
             switch (simulationMode)
             {
                 case HandSimulationMode.Articulated:
@@ -283,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 controller.InputSource.Pointers[i].Controller = controller;
             }
 
-            MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+            InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
 
             trackedHands.Add(handedness, controller);
             UpdateActiveControllers();
@@ -296,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var controller = GetHandDevice(handedness);
             if (controller != null)
             {
-                MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
 
                 trackedHands.Remove(handedness);
                 UpdateActiveControllers();
@@ -307,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             foreach (var controller in trackedHands.Values)
             {
-                MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
             }
             trackedHands.Clear();
             UpdateActiveControllers();

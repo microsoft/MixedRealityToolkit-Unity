@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -145,7 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (profile.PointerProfile.GazeProviderType?.Type != null)
                 {
                     GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                    GazeProvider.InputSystem = this;
                     GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
                     // Current implementation implements both provider types in one concrete class.
                     EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
@@ -1294,6 +1292,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, command);
+
+            FocusProvider?.OnSpeechKeywordRecognized(speechEventData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
