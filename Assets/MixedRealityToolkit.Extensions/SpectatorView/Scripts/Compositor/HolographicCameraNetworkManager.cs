@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
     public class HolographicCameraNetworkManager : MonoBehaviour
     {
         private TCPConnectionManager connectionManager;
+        private const float trackingStalledReceiveDelay = 1.0f;
         private float lastReceivedPoseTime = -1;
         private readonly Dictionary<string, ICalibrationParser> calibrationParsers = new Dictionary<string, ICalibrationParser>();
 
@@ -28,21 +29,68 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         [Tooltip("The port that the " + nameof(HolographicCamera.TCPNetworkListener) + " listens for connections on.")]
         private int remotePort = 7502;
 
+        private SocketEndpoint currentConnection;
+        private string holoLensName;
+        private string holoLensIPAddress;
+        private bool hasTracking;
+        private bool isAnchorLocated;
+
+        /// <summary>
+        /// Gets the name of the HoloLens running on the holographic camera rig.
+        /// </summary>
+        public string HoloLensName => holoLensName;
+
+        /// <summary>
+        /// Gets the IP address reported by the HoloLens running on the holographic camera rig.
+        /// </summary>
+        public string HoloLensIPAddress => holoLensIPAddress;
+
+        /// <summary>
+        /// Gets the local IP address reported by the socket used to connect to the holographic camera rig.
+        /// </summary>
+        public string ConnectedIPAddress => currentConnection?.Address;
+
+        /// <summary>
+        /// Gets the last-reported tracking status of the HoloLens running on the holographic camera rig.
+        /// </summary>
+        public bool HasTracking => hasTracking;
+
+        /// <summary>
+        /// Gets the last-reported status of whether or not the WorldAnchor used for spatial position sharing is located
+        /// on the holographic camera rig.
+        /// </summary>
+        public bool IsAnchorLocated => isAnchorLocated;
+
         private void Awake()
         {
             connectionManager = GetComponent<TCPConnectionManager>();
             connectionManager.OnConnected += ConnectionManager_OnConnected;
+            connectionManager.OnDisconnected += ConnectionManager_OnDisconnected;
             connectionManager.OnReceive += ConnectionManager_OnReceive;
         }
 
         private void OnDestroy()
         {
             connectionManager.DisconnectAll();
+
+            connectionManager.OnConnected -= ConnectionManager_OnConnected;
+            connectionManager.OnDisconnected -= ConnectionManager_OnDisconnected;
+            connectionManager.OnReceive -= ConnectionManager_OnReceive;
         }
 
         private void ConnectionManager_OnConnected(SocketEndpoint endpoint)
         {
+            currentConnection = endpoint;
             lastReceivedPoseTime = Time.time;
+            compositionManager.ResetPoseSynchronization();
+        }
+
+        private void ConnectionManager_OnDisconnected(SocketEndpoint endpoint)
+        {
+            if (currentConnection == endpoint)
+            {
+                currentConnection = null;
+            }
         }
 
         public void RegisterCalibrationParser(string calibrationType, ICalibrationParser parser)
@@ -59,6 +107,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         /// Gets whether or not a network connection to the holographic camera is pending.
         /// </summary>
         public bool IsConnecting => connectionManager != null && connectionManager.IsConnecting && !connectionManager.HasConnections;
+
+        /// <summary>
+        /// Gets whether or not the receipt of new poses from the camera has stalled for an unexpectedly-large time.
+        /// </summary>
+        public bool IsTrackingStalled => IsConnected && (Time.time - lastReceivedPoseTime) > trackingStalledReceiveDelay;
 
         /// <summary>
         /// Connects to the holographic camera rig with the provided remote IP address.
@@ -105,6 +158,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                             {
                                 compositionManager.EnableHolographicCamera(transform, calibrationData);
                             }
+                        }
+                        break;
+                    case "DeviceInfo":
+                        {
+                            holoLensName = reader.ReadString();
+                            holoLensIPAddress = reader.ReadString();
+                        }
+                        break;
+                    case "Status":
+                        {
+                            hasTracking = reader.ReadBoolean();
+                            isAnchorLocated = reader.ReadBoolean();
                         }
                         break;
                 }

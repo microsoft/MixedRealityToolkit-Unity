@@ -24,6 +24,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         private const int textureRenderModeSplit = 1;
         private const int horizontalFrameRectangleMargin = 50;
         private const int lowQueuedOutputFrameWarningMark = 6;
+        private const string trackingLostStatusMessage = "Tracking lost";
+        private const string trackingStalledStatusMessage = "No tracking update in over a second";
+        private const string locatingWorldAnchorStatusMessage = "Locating world anchor...";
+        private const string locatedWorldAnchorStatusMessage = "Located";
         private Vector2 scrollPosition;
         private int renderFrameWidth;
         private int renderFrameHeight;
@@ -94,7 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             EditorGUILayout.BeginVertical("Box");
             {
                 Color titleColor;
-                if (cameraNetworkManager != null && cameraNetworkManager.IsConnected)
+                if (cameraNetworkManager != null &&
+                    cameraNetworkManager.IsConnected &&
+                    cameraNetworkManager.HasTracking &&
+                    cameraNetworkManager.IsAnchorLocated &&
+                    !cameraNetworkManager.IsTrackingStalled)
                 {
                     titleColor = Color.green;
                 }
@@ -106,6 +114,35 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
                 if (cameraNetworkManager != null && cameraNetworkManager.IsConnected)
                 {
+                    if (cameraNetworkManager.ConnectedIPAddress == cameraNetworkManager.HoloLensIPAddress)
+                    {
+                        GUILayout.Label($"Connected to {cameraNetworkManager.HoloLensName} ({cameraNetworkManager.HoloLensIPAddress})");
+                    }
+                    else
+                    {
+                        GUILayout.Label($"Connected to {cameraNetworkManager.HoloLensName} ({cameraNetworkManager.ConnectedIPAddress} -> {cameraNetworkManager.HoloLensIPAddress})");
+                    }
+
+                    string anchorStatusMessage;
+                    if (!cameraNetworkManager.HasTracking)
+                    {
+                        anchorStatusMessage = trackingLostStatusMessage;
+                    }
+                    else if (cameraNetworkManager.IsTrackingStalled)
+                    {
+                        anchorStatusMessage = trackingStalledStatusMessage;
+                    }
+                    else if (!cameraNetworkManager.IsAnchorLocated)
+                    {
+                        anchorStatusMessage = locatingWorldAnchorStatusMessage;
+                    }
+                    else
+                    {
+                        anchorStatusMessage = locatedWorldAnchorStatusMessage;
+                    }
+
+                    GUILayout.Label($"Anchor status: {anchorStatusMessage}");
+
                     if (GUILayout.Button(new GUIContent("Disconnect", "Disconnects the network connection to the holographic camera.")))
                     {
                         cameraNetworkManager.Disconnect();
