@@ -138,7 +138,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             interaction.BoolData = testValue;
 
-            // Make sure if we set the same value it's false
+            // Make sure if we set again the true value it's true
+            Assert.IsTrue(interaction.Changed);
+
+            // Make sure setting the false value twice reports no change
+            interaction.BoolData = false;
+            Assert.IsTrue(interaction.Changed);
+            interaction.BoolData = false;
             Assert.IsFalse(interaction.Changed);
         }
 
@@ -197,7 +203,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             interaction.FloatData = testValue;
 
-            // Make sure if we set the same value it's false
+            // Make sure if we set the same non-zero value it's true
+            Assert.IsTrue(interaction.Changed);
+
+            // Make sure setting a zero value twice reports no change
+            interaction.FloatData = 0f;
+            Assert.IsTrue(interaction.Changed);
+            interaction.FloatData = 0f;
             Assert.IsFalse(interaction.Changed);
         }
 
@@ -209,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         public void Test07_TestVector2()
         {
             bool[] invertAxisValues = { true, false };
-            Vector2[] vectorValues = { new Vector2(1, 1), new Vector2(1, -1) };
+            Vector2[] vectorValues = { Vector2.zero, new Vector2(1, 1), new Vector2(1, -1) };
 
             foreach (var invertXAxis in invertAxisValues)
             {
@@ -238,15 +250,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             i.Vector2Data = vectorValue;
             Vector2 invertedValue = vectorValue * new Vector2(invertXAxis ? -1f : 1f, invertYAxis ? -1f : 1f);
             Assert.AreEqual(invertedValue, i.Vector2Data, msg);
-            Assert.IsTrue(i.Changed, msg);
+            if (vectorValue != Vector2.zero)
+            {
+                Assert.IsTrue(i.Changed, msg);
+            }
+            else
+            {
+                Assert.IsFalse(i.Changed, msg);
+            }
 
             // Test Changed gets reset after querying
             Assert.IsFalse(i.Changed, msg);
 
-            // Test no change
+            // Test setting the same value again
             i.Vector2Data = vectorValue;
             Assert.AreEqual(invertedValue, i.Vector2Data, msg);
-            Assert.IsFalse(i.Changed, msg);
+            if (vectorValue != Vector2.zero)
+            {
+                Assert.IsTrue(i.Changed, msg);
+            }
+            else
+            {
+                Assert.IsFalse(i.Changed, msg);
+            }
         }
 
         #endregion Vector2
