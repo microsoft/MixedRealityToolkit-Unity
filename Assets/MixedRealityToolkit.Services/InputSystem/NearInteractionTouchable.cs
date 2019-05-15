@@ -12,12 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Add a NearInteractionTouchable to your scene and configure a touchable surface
     /// in order to get PointerDown and PointerUp events whenever a PokePointer touches this surface.
-    ///
-    /// Technical details:
-    /// Provides a listing of near field touch proximity bounds.
-    /// This is used to detect if a contact point is near an object to turn on near field interactions
     /// </summary>
-    public class NearInteractionTouchable : MonoBehaviour
+    public class NearInteractionTouchable : BaseNearInteractionTouchable
     {
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(NearInteractionTouchable))]
@@ -63,8 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     // project size to local coordinate system
                     Vector2 adjustedSize = new Vector2(
-                                Vector3.Dot(bc.size, t.LocalRight),
-                                Vector3.Dot(bc.size, t.localUp));
+                                Math.Abs(Vector3.Dot(bc.size, t.LocalRight)),
+                                Math.Abs(Vector3.Dot(bc.size, t.localUp)));
 
                     // Resize helper
                     if (adjustedSize != t.bounds)
@@ -138,11 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Custom = 100
         }
 
-        public static IReadOnlyCollection<NearInteractionTouchable> Instances { get { return instances.AsReadOnly(); } }
-        private static readonly List<NearInteractionTouchable> instances = new List<NearInteractionTouchable>();
-
-        public bool ColliderEnabled { get { return !usesCollider || touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
-
         /// <summary>
         /// Local space forward direction
         /// </summary>
@@ -166,14 +157,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected Vector3 localCenter = Vector3.zero;
 
         [SerializeField]
-        private TouchableEventType eventsToReceive = TouchableEventType.Touch;
-
-        /// <summary>
-        /// The type of event to receive.
-        /// </summary>
-        public TouchableEventType EventsToReceive => eventsToReceive;
-
-        [SerializeField]
         [Tooltip("The type of surface to calculate the touch point on.")]
         private TouchableSurface touchableSurface = TouchableSurface.BoxCollider;
 
@@ -186,29 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         protected Vector2 bounds = Vector2.zero;
-
-        /// <summary>
-        /// False if no collider is found on validate.
-        /// This is used to avoid the perf cost of a null check with the collider.
-        /// </summary>
-        private bool usesCollider = false;
-
-        /// <summary>
-        /// The collider used by this touchable.
-        /// </summary>
-        [SerializeField]
-        [FormerlySerializedAs("collider")]
-        private Collider touchableCollider;
-
-        protected void OnEnable()
-        {
-            instances.Add(this);
-        }
-
-        protected void OnDisable()
-        {
-            instances.Remove(this);
-        }
 
         protected void OnValidate()
         {
@@ -242,8 +202,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bounds.y = Mathf.Max(bounds.y, 0);
         }
 
-        public virtual float DistanceToSurface(Vector3 samplePoint)
+        public override float DistanceToSurface(Vector3 samplePoint, out Vector3 normal)
         {
+            normal = Forward;
+
             Vector3 localPoint = transform.InverseTransformPoint(samplePoint) - localCenter;
 
             // Get surface coordinates
