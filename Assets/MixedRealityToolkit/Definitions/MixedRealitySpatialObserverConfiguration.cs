@@ -30,11 +30,25 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public uint Priority => priority;
 
         [SerializeField]
-        [EnumFlags]
-        private SupportedPlatforms runtimePlatform;
+        [Implements(typeof(IPlatformSupport), TypeGrouping.ByNamespaceFlat)]
+        private SystemType[] runtimePlatform;
 
         /// <inheritdoc />
-        public SupportedPlatforms RuntimePlatform => runtimePlatform;
+        private IPlatformSupport[] supportedPlatforms;
+
+        /// <inheritdoc />
+        public IPlatformSupport[] SupportedPlatforms
+        {
+            get
+            {
+                if (supportedPlatforms == null)
+                {
+                    supportedPlatforms = runtimePlatform.Convert();
+                }
+
+                return supportedPlatforms;
+            }
+        }
 
         [SerializeField]
         private BaseSpatialAwarenessObserverProfile observerProfile;
@@ -56,13 +70,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             SystemType componentType,
             string componentName,
             uint priority,
-            SupportedPlatforms runtimePlatform,
+            IPlatformSupport[] runtimePlatform,
             BaseSpatialAwarenessObserverProfile configurationProfile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
             this.priority = priority;
-            this.runtimePlatform = runtimePlatform;
+            this.runtimePlatform = runtimePlatform.Convert();
+            this.supportedPlatforms = runtimePlatform;
             this.observerProfile = configurationProfile;
         }
     }

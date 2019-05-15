@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The runtime platform(s) to run this service.
         /// </summary>
-        public virtual SupportedPlatforms RuntimePlatforms { get; }
+        public virtual Type[] RuntimePlatforms { get; }
 
         /// <summary>
         /// The file path to the default profile asset relative to the package folder.
@@ -70,13 +70,14 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="defaultProfilePath">The relative path to the default profile asset.</param>
         /// <param name="packageFolder">The package folder to which the path is relative.</param>
         public MixedRealityExtensionServiceAttribute(
-            SupportedPlatforms runtimePlatforms,
+            Type[] runtimePlatforms,
             string name = "",
             string defaultProfilePath = "",
-            string packageFolder = "MixedRealityToolkit")
+            string packageFolder = "MixedRealityToolkit"
+            )
         {
-            RuntimePlatforms = runtimePlatforms;
             Name = name;
+            RuntimePlatforms = runtimePlatforms;
             DefaultProfilePath = defaultProfilePath;
             PackageFolder = packageFolder;
         }

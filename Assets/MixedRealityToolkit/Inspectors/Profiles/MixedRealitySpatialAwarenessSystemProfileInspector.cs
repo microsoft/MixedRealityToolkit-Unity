@@ -184,7 +184,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                 {
                     observerName.stringValue = !string.IsNullOrWhiteSpace(observerAttribute.Name) ? observerAttribute.Name : type.Name;
                     configurationProfile.objectReferenceValue = observerAttribute.DefaultProfile;
-                    runtimePlatform.intValue = (int)observerAttribute.RuntimePlatforms;
+                    throw new System.NotImplementedException();
+                    //runtimePlatform.intValue = (int)observerAttribute.RuntimePlatforms;
                 }
                 else
                 {

@@ -312,7 +312,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 {
                     providerName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : type.Name;
                     configurationProfile.objectReferenceValue = providerAttribute.DefaultProfile;
-                    runtimePlatform.intValue = (int)providerAttribute.RuntimePlatforms;
+                    throw new System.NotImplementedException();
+
+                    //runtimePlatform.intValue = (int)providerAttribute.RuntimePlatforms;
                 }
                 else
                 {

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
-        SupportedPlatforms.WindowsEditor,
+        new[] { typeof(WindowsEditor) },
         "Input Simulation Service",
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]

@@ -30,6 +30,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The runtime platform(s) to run this service.
         /// </summary>
-        SupportedPlatforms RuntimePlatform { get; }
+        IPlatformSupport[] SupportedPlatforms { get; }
     }
 }

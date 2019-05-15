@@ -25,13 +25,14 @@ namespace Microsoft.MixedReality.Toolkit
             SystemType componentType,
             string componentName,
             uint priority,
-            SupportedPlatforms runtimePlatform,
+            IPlatformSupport[] supportedPlatforms,
             BaseMixedRealityProfile configurationProfile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
             this.priority = priority;
-            this.runtimePlatform = runtimePlatform;
+            this.runtimePlatform = supportedPlatforms.Convert();
+            this.supportedPlatforms = supportedPlatforms;
             this.configurationProfile = configurationProfile;
         }
 
@@ -54,12 +55,25 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public uint Priority => priority;
 
-        [EnumFlags]
         [SerializeField]
-        private SupportedPlatforms runtimePlatform;
+        [Implements(typeof(IPlatformSupport), TypeGrouping.ByNamespaceFlat)]
+        private SystemType[] runtimePlatform;
+
+        private IPlatformSupport[] supportedPlatforms;
 
         /// <inheritdoc />
-        public SupportedPlatforms RuntimePlatform => runtimePlatform;
+        public IPlatformSupport[] SupportedPlatforms
+        {
+            get
+            {
+                if (supportedPlatforms == null)
+                {
+                    supportedPlatforms = runtimePlatform.Convert();
+                }
+
+                return supportedPlatforms;
+            }
+        }
 
         [SerializeField]
         private BaseMixedRealityProfile configurationProfile;

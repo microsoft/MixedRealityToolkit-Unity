@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
-        (SupportedPlatforms)(-1),  // All platforms supported by Unity
+        null,
         "Unity Touch Device Manager")]
     public class UnityTouchDeviceManager : BaseInputDeviceManager
     {

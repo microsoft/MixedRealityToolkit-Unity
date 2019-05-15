@@ -175,7 +175,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 MixedRealityExtensionServiceAttribute.Find(componentType) is MixedRealityExtensionServiceAttribute attr)
             {
                 configurationProfile.objectReferenceValue = attr.DefaultProfile;
-                runtimePlatform.intValue = (int)attr.RuntimePlatforms;
+                throw new System.NotImplementedException();
+
+                //runtimePlatform.intValue = (int)attr.RuntimePlatforms;
             }
 
             serializedObject.ApplyModifiedProperties();

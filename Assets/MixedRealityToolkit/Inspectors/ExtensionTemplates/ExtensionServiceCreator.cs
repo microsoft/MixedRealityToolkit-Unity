@@ -5,6 +5,7 @@ using Microsoft.CSharp;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using UnityEditor;
@@ -50,7 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public string ServiceName;
             public bool UsesProfile;
             public bool UsesInspector;
-            public SupportedPlatforms Platforms;
+            [Implements(typeof(IPlatformSupport), TypeGrouping.ByNamespaceFlat)]
+            public SystemType[] Platforms;
             public CreationStage Stage;
             public string ServiceFolderPath;
             public string InspectorFolderPath;
@@ -105,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             set { state.UsesInspector = value; }
         }
 
-        public SupportedPlatforms Platforms
+        public SystemType[] Platforms
         {
             get { return state.Platforms; }
             set { state.Platforms = value; }
@@ -382,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             errors.Clear();
 
-            if ((int)Platforms == 0)
+            if (Platforms == null)
             {
                 errors.Add("Service must support at least one platform.");
             }
@@ -569,7 +571,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             state.UsesProfile = true;
             state.UsesInspector = true;
             state.Stage = CreationStage.SelectNameAndPlatform;
-            state.Platforms = SupportedPlatforms.LinuxStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal;
+            state.Platforms = new[] { new SystemType(typeof(LinuxStandalone)), new SystemType(typeof(MacStandalone)), new SystemType(typeof(WindowsStandalone)), new SystemType(typeof(WindowsUniversal)) };
         }
 
         private bool AssetExists(string assetPath, string assetName, string extension)
@@ -590,10 +592,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             scriptContents = scriptContents.Replace(ExtensionNamespaceSearchString, DefaultExtensionNamespace);
 
             List<string> platformValues = new List<string>();
-            foreach (SupportedPlatforms platform in Enum.GetValues(typeof(SupportedPlatforms)))
+
+            var supportTypes = AppDomain.CurrentDomain.GetAssemblies()
+                            .SelectMany(s => s.GetTypes())
+                            .Where(p => typeof(IPlatformSupport).IsAssignableFrom(p));
+
+            foreach (var supportType in supportTypes)
             {
-                if ((platform & Platforms) != 0)
-                    platformValues.Add("SupportedPlatforms." + platform.ToString());
+                foreach(var platform in Platforms)
+                {
+                    if (supportType == platform)
+                        platformValues.Add("SupportedPlatforms." + supportType.ToString());
+                }
             }
             scriptContents = scriptContents.Replace(SupportedPlatformsSearchString, String.Join("|", platformValues.ToArray()));
 

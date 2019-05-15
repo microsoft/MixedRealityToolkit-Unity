@@ -125,7 +125,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Choose which platforms your service will support.", EditorStyles.miniLabel);
 
-            creator.Platforms = (SupportedPlatforms)EditorGUILayout.EnumFlagsField("Platforms", creator.Platforms);
+            throw new System.NotImplementedException();
+
+            //creator.Platforms = (SupportedPlatforms)EditorGUILayout.EnumFlagsField("Platforms", creator.Platforms);
             readyToProgress &= creator.ValidatePlatforms(errors);
             foreach (string error in errors)
             {
@@ -377,7 +379,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Add spaces between camel case service name
             componentName.stringValue = System.Text.RegularExpressions.Regex.Replace(creator.ServiceName, "(\\B[A-Z])", " $1");
             configurationProfile.objectReferenceValue = creator.ProfileInstance;
-            runtimePlatform.intValue = (int)creator.Platforms;
+            throw new System.NotImplementedException();
+
+            //runtimePlatform.intValue = (int)creator.Platforms;
 
             servicesProfileObject.ApplyModifiedProperties();
 

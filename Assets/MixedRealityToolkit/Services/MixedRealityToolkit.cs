@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool RegisterService<T>(
             Type concreteType, 
-            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), 
+            IPlatformSupport[] supportedPlatforms = null,
             params object[] args) where T : IMixedRealityService
         {
             if (isApplicationQuitting)
@@ -164,11 +164,7 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-#if !UNITY_EDITOR
-            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
-#else
-            if (!UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
-#endif
+            if (!supportedPlatforms.IsPlatformSupported())
             {
                 return false;
             }
@@ -282,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool RegisterDataProvider<T>(
             Type concreteType,
-            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
+            IPlatformSupport[] supportedPlatforms = null,
             params object[] args) where T : IMixedRealityDataProvider
         {
             return RegisterService<T>(concreteType, supportedPlatforms, args);
@@ -447,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit
                     if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
                     {
                         object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
-                        if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args))
+                        if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.SupportedPlatforms, args))
                         {
                             Debug.LogError($"Failed to register {configuration.ComponentName}");
                         }

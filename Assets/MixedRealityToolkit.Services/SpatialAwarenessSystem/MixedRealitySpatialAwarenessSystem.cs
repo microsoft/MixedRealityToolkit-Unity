@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
                     if (Registrar.RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
                         configuration.ComponentType.Type,
-                        configuration.RuntimePlatform,
+                        configuration.SupportedPlatforms,
                         args))
                     {
                         observers.Add(Registrar.GetDataProvider<IMixedRealitySpatialAwarenessObserver>(configuration.ComponentName));
