@@ -28,13 +28,13 @@ MonoBehaviour:
   - Name: LightingScene1
     Path: Assets/TemporaryTests/LightingScene1.unity
     Included: 1
-    BuildIndex: 3
+    BuildIndex: 1
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 7e54e36c44f826c438c95da79f8de638, type: 3}
   - Name: LightingScene2
     Path: Assets/TemporaryTests/LightingScene2.unity
     Included: 1
-    BuildIndex: 4
+    BuildIndex: 2
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: e658a4e789b58a845ad62b898384adc0, type: 3}
   - Name: LightingScene3
@@ -47,13 +47,13 @@ MonoBehaviour:
   - Name: ContentScene1
     Path: Assets/TemporaryTests/ContentScene1.unity
     Included: 1
-    BuildIndex: 1
+    BuildIndex: 3
     Tag: Respawn
     Asset: {fileID: 3671201678493226958, guid: 2844642a986b5dd449f363846d781df0, type: 3}
   - Name: ContentScene2
     Path: Assets/TemporaryTests/ContentScene2.unity
     Included: 1
-    BuildIndex: 2
+    BuildIndex: 4
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 8d232b45a4965814e88d9b4eccc34ba9, type: 3}
   - Name: ContentScene3

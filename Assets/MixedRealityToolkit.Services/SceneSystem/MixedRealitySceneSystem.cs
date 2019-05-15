@@ -272,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 // See if scene exists
                 Scene scene;
                 int sceneIndex;
-                if (!SceneUtilities.FindScene(sceneName, out scene, out sceneIndex))
+                if (!RuntimeSceneUtils.FindScene(sceneName, out scene, out sceneIndex))
                 {
                     Debug.LogError("Can't load invalid scene " + sceneName);
                 }
@@ -399,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 // See if scene exists
                 Scene scene;
                 int sceneIndex;
-                if (!SceneUtilities.FindScene(sceneName, out scene, out sceneIndex))
+                if (!RuntimeSceneUtils.FindScene(sceneName, out scene, out sceneIndex))
                 {
                     Debug.LogError("Can't unload invalid scene " + sceneName);
                 }
@@ -636,7 +636,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public Scene GetScene(string sceneName)
         {
             Scene scene = default(Scene);
-            SceneUtilities.FindScene(sceneName, out scene, out int sceneIndex);
+            RuntimeSceneUtils.FindScene(sceneName, out scene, out int sceneIndex);
             return scene;
         }
 
@@ -658,36 +658,5 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         #endregion
-    }
-
-    public static class SceneUtilities
-    {
-        public static string GetSceneNameFromScenePath(string scenePath)
-        {
-            return System.IO.Path.GetFileNameWithoutExtension(scenePath);
-        }
-
-        public static bool FindScene(string sceneName, out Scene scene, out int sceneIndex)
-        {
-            scene = default(Scene);
-            sceneIndex = -1;
-            // This is the only method to get all scenes (including unloaded)
-            List<Scene> allScenesInProject = new List<Scene>();
-            for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
-            {
-                // This absurdity is necessary due to a long-standing Unity bug
-                // https://issuetracker.unity3d.com/issues/scenemanager-dot-getscenebybuildindex-dot-name-returns-an-empty-string-if-scene-is-not-loaded
-
-                string pathToScene = SceneUtility.GetScenePathByBuildIndex(i);
-                string checkSceneName = System.IO.Path.GetFileNameWithoutExtension(pathToScene);
-                if (checkSceneName == sceneName)
-                {
-                    scene = SceneManager.GetSceneByBuildIndex(i);
-                    sceneIndex = i;
-                    return true;
-                }
-            }
-            return false;
-        }
     }
 }
