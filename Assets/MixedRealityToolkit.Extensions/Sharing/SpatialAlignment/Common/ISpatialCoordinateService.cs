@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
+namespace Microsoft.MixedReality.SpatialAlignment.Common
 {
     /// <summary>
     /// This service is used to discover, track and create coordinates.
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
         /// <summary>
         /// Gets or sets whether this coordiante service should be discovering/tracking coordinates.
         /// </summary>
-        bool IsTracking { get; set; }
+        bool IsTracking { get; }
 
         /// <summary>
         /// Gets a set of all known coordinates to this service.
@@ -31,10 +31,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
         IEnumerable<ISpatialCoordinate> KnownCoordinates { get; }
 
         /// <summary>
-        /// Attempts to get a coordinate object based on an Id.
+        /// Begins search for all coordinates.
         /// </summary>
-        /// <returns>The coordinate if it was succesfully retrieved, otherwise null.</returns>
-        Task<ISpatialCoordinate> TryGetCoordinateByIdAsync(string id, CancellationToken cancellationToken);
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to be used for cancellation (stopping) of the discovery task.</param>
+        /// <returns>The set of coordinates discovered during this session.</returns>
+        Task<IEnumerable<ISpatialCoordinate>> DiscoverCoordinatesAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Begins locating specific coordinates (provided by Ids).
+        /// </summary>
+        /// <param name="coordinateIds">The coordinate ids to discover.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to be used for cancellation (stopping) of the locating task.</param>
+        /// <returns>The set of coordinates discovered during this session.</returns>
+        Task<IEnumerable<ISpatialCoordinate>> LocateCoordinatesAsync(string[] coordinateIds, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Stops all currently discovery or location operations.
+        /// </summary>
+        void StopAllTracking();
 
         /// <summary>
         /// Attempts to create a new coordinate with this service.

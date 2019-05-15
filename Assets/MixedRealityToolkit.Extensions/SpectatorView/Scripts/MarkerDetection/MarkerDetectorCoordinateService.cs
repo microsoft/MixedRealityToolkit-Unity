@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -33,16 +33,11 @@ namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.Marke
                     if (marker != value)
                     {
                         marker = value;
-                        IsLocated = marker != null;
                     }
                 }
             }
 
-            public new bool IsLocated
-            {
-                get => base.IsLocated;
-                set => base.IsLocated = value;
-            }
+            public override LocatedState State => marker == null ? LocatedState.Resolved : LocatedState.Tracking;
 
             public SpatialCoordinate(int id)
                 : base(id) { }
@@ -135,10 +130,17 @@ namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.Marke
             return Task.FromResult(toReturn);
         }
 
-        protected override async Task RunTrackingAsync(CancellationToken cancellationToken)
+        protected override Task OnDiscoverCoordinatesAsync(Action<int, ISpatialCoordinate> onNewCoordinate, CancellationToken cancellationToken)
         {
-            ThrowIfDisposed();
+            markerDetector.StartDetecting();
 
+            await Task.Delay(-1, cancellationToken).IgnoreCancellation();
+
+            markerDetector.StopDetecting();
+        }
+
+        protected override Task OnLocateCoordinatesAsync(Action<int, ISpatialCoordinate> onNewCoordinate, string[] coordinateIds, CancellationToken cancellationToken)
+        {
             markerDetector.StartDetecting();
 
             await Task.Delay(-1, cancellationToken).IgnoreCancellation();

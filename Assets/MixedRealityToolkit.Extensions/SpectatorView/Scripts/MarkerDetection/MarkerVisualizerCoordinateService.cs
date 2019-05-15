@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
 using System;
 using System.Numerics;
 using System.Threading;
@@ -18,15 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     {
         private class SpatialCoordinate : SpatialCoordinateBase<int>
         {
+            private readonly IMarkerVisual markerVisual;
+
+            private LocatedState locatedState = LocatedState.Resolved;
             private UnityEngine.Matrix4x4 worldToCoordinate;
             private UnityEngine.Quaternion worldToCoordinateRotation;
             private UnityEngine.Quaternion coordinateToWorldRotation;
-
-            public new bool IsLocated
-            {
-                get => base.IsLocated;
-                set => base.IsLocated = value;
-            }
 
             public UnityEngine.Matrix4x4 WorldToCoordinate
             {
@@ -38,8 +35,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
             }
 
-            public SpatialCoordinate(int id)
-                : base(id) { }
+            /// <inheritdoc/>
+            public override LocatedState State => locatedState;
+
+            public SpatialCoordinate(int id, IMarkerVisual markerVisual)
+                : base(id) { this.markerVisual = markerVisual; }
 
             public override Vector3 CoordinateToWorldSpace(Vector3 vector) => worldToCoordinate.inverse.MultiplyPoint(vector.AsUnityVector()).AsNumericsVector();
 
@@ -48,6 +48,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             public override Vector3 WorldToCoordinateSpace(Vector3 vector) => worldToCoordinate.MultiplyPoint(vector.AsUnityVector()).AsNumericsVector();
 
             public override Quaternion WorldToCoordinateSpace(Quaternion quaternion) => (worldToCoordinateRotation * quaternion.AsUnityQuaternion()).AsNumericsQuaternion();
+
+            public void ShowMarker()
+            {
+                markerVisual.ShowMarker(Id);
+                locatedState = LocatedState.Tracking;
+            }
+
+            public void HideMarker()
+            {
+                locatedState = LocatedState.Resolved;
+                markerVisual.HideMarker();
+            }
         }
 
         private readonly IMarkerVisual markerVisual;
@@ -70,20 +82,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             IsTracking = false;
         }
 
-        protected override async Task RunTrackingAsync(CancellationToken cancellationToken)
+        protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
-            markerCoordinate = new SpatialCoordinate(generateMarkerId()) { IsLocated = true };
+            markerCoordinate = new SpatialCoordinate(generateMarkerId(), markerVisual);
             OnNewCoordinate(markerCoordinate.Id, markerCoordinate);
 
-            markerVisual.ShowMarker(markerCoordinate.Id);
+            markerCoordinate.ShowMarker();
 
             // TODO we can probably get rid of UpdateTick and use a Unity synchronization context here to wait frames
             await Task.Delay(-1, cancellationToken).IgnoreCancellation();
 
-            markerVisual.HideMarker();
-            markerCoordinate.IsLocated = false;
+            markerCoordinate.HideMarker();
             markerCoordinate = null;
         }
 

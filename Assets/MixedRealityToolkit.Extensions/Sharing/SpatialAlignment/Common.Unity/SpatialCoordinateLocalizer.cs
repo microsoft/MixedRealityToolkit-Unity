@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
+namespace Microsoft.MixedReality.SpatialAlignment.Common
 {
     /// <summary>
     /// Very simple consumer of <see cref="ISpatialCoordinate"/> to demonstrate usage.
@@ -19,19 +19,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
         private bool autoToggleActive = false;
 
         [Tooltip("The relative location to the coordinate at which to position the targetRoot.")]
-        public Vector3 CoordinateRelativePosition;
+        public Vector3 CoordinateRelativePosition = Vector3.zero;
 
         [Tooltip("The relative orientation to the coordinate with which to orient the targetRoot.")]
-        public Quaternion CoordinateRelativeRotation;
+        public Quaternion CoordinateRelativeRotation = Quaternion.identity;
 
         /// <summary>
         /// The coordinate to use for position the targetRoot.
         /// </summary>
         public ISpatialCoordinate Coordinate { get; set; }
 
+        private void Awake()
+        {
+            if (targetRoot is null)
+            {
+                targetRoot = gameObject;
+            }
+        }
+
         private void Update()
         {
-            bool isEnabled = Coordinate?.IsLocated ?? false;
+            bool isEnabled = (Coordinate?.State ?? LocatedState.Tracking) == LocatedState.Tracking;
 
             if (isEnabled)
             {
