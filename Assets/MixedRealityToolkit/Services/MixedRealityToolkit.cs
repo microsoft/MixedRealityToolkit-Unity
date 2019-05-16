@@ -27,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit
     /// The Profile can be swapped out at any time to meet the needs of your project.
     /// </summary>
     [DisallowMultipleComponent]
-    [ExecuteAlways]
     public class MixedRealityToolkit : MonoBehaviour, IMixedRealityServiceRegistrar
     {
 #region Mixed Reality Toolkit Profile configuration
@@ -696,8 +695,8 @@ namespace Microsoft.MixedReality.Toolkit
                 // Set the instance to active
                 MixedRealityToolkit.activeInstance = toolkitInstance;
                 toolkitInstances.Add(toolkitInstance);
-                toolkitInstance.InitializeInstance();
                 toolkitInstance.name = ActiveInstanceGameObjectName;
+                toolkitInstance.InitializeInstance();
                 return;
             }
 
@@ -742,6 +741,11 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void SetInstanceInactive(MixedRealityToolkit toolkitInstance)
         {
+            if (toolkitInstance == null)
+            {   // Don't do anything.
+                return;
+            }
+
             if (toolkitInstance == activeInstance)
             {   // If this is the active instance, we need to break it down
                 toolkitInstance.DestroyAllServices();
