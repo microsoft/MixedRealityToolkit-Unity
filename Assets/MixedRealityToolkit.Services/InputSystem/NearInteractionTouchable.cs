@@ -170,8 +170,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         protected Vector2 bounds = Vector2.zero;
 
-        protected void OnValidate()
+        protected new void OnValidate()
         {
+            base.OnValidate();
+
             Debug.Assert(localForward.magnitude > 0);
             Debug.Assert(localUp.magnitude > 0);
             string hierarchy = gameObject.transform.EnumerateAncestors(true).Aggregate("", (result, next) => next.gameObject.name + "=>" + result);
@@ -191,9 +193,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
             }
-
-            touchableCollider = GetComponent<Collider>();
-            usesCollider = touchableCollider != null;
 
             localForward = localForward.normalized;
             localUp = localUp.normalized;

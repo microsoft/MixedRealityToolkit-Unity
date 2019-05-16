@@ -9,15 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class PokePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
         [SerializeField]
-        protected float distBack;
-
-        [SerializeField]
-        protected float distFront;
-
-        [SerializeField]
-        protected float debounceThreshold;
-
-        [SerializeField]
         protected LineRenderer line;
 
         [SerializeField]
@@ -37,9 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected void OnValidate()
         {
-            Debug.Assert(distBack > 0, this);
-            Debug.Assert(distFront > 0, this);
-            Debug.Assert(debounceThreshold > 0, this);
             Debug.Assert(line != null, this);
             Debug.Assert(visuals != null, this);
         }
@@ -61,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Check proximity
             BaseNearInteractionTouchable newClosestTouchable = null;
             {
-                closestDistance = distFront; // NOTE: Start at distFront for cutoff
+                closestDistance = float.PositiveInfinity;
                 foreach (var prox in BaseNearInteractionTouchable.Instances)
                 {
                     if (prox.ColliderEnabled)
@@ -78,10 +66,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            // Build ray (poke from in front to the back of the pointer position)
-            Vector3 start = Position - distBack * -closestNormal;
-            Vector3 end = Position + distFront * -closestNormal;
-            Rays[0].UpdateRayStep(ref start, ref end);
+            if (newClosestTouchable != null)
+            {
+                // Build ray (poke from in front to the back of the pointer position)
+                Vector3 start = Position - newClosestTouchable.DistBack * -closestNormal;
+                Vector3 end = Position + newClosestTouchable.DistFront * -closestNormal;
+                Rays[0].UpdateRayStep(ref start, ref end);
+
+                line.SetPosition(0, Position);
+                line.SetPosition(1, end);
+            }
 
             // Check if the currently touched object is still part of the new touchable.
             if (currentTouchableObjectDown != null)
@@ -91,9 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     TryRaisePokeUp(Result.CurrentPointerTarget, Position);
                 }
             }
-
-            line.SetPosition(0, Position);
-            line.SetPosition(1, end);
 
             // Set new touchable only now: If we have to raise a poke-up event for the previous touchable object,
             // we need to to so using the previous touchable in TryRaisePokeUp().
@@ -109,9 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (Result?.CurrentPointerTarget != null)
             {
-                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - distBack;
+                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - closestProximityTouchable.DistBack;
                 bool newIsDown = (distToFront < 0);
-                bool newIsUp = (distToFront > debounceThreshold);
+                bool newIsUp = (distToFront > closestProximityTouchable.DebounceThreshold);
 
                 if (newIsDown)
                 {

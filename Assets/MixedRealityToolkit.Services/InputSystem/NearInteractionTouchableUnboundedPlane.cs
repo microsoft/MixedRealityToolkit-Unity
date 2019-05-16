@@ -51,12 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         protected Vector3 localPoint = Vector3.zero;
 
-        protected void OnValidate()
+        protected new void OnValidate()
         {
-            localNormal = localNormal.normalized;
+            base.OnValidate();
 
-            touchableCollider = GetComponent<Collider>();
-            usesCollider = touchableCollider != null;
+            localNormal = localNormal.normalized;
         }
 
         public override float DistanceToSurface(Vector3 samplePoint, out Vector3 normal)

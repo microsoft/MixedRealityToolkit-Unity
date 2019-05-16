@@ -44,6 +44,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [FormerlySerializedAs("collider")]
         protected Collider touchableCollider;
 
+        [SerializeField]
+        protected float distBack = 0.25f;
+
+        [SerializeField]
+        protected float distFront = 0.2f;
+
+        [SerializeField]
+        protected float debounceThreshold = 0.01f;
+
+        public float DistBack => distBack;
+
+        public float DistFront => distFront;
+
+        public float DebounceThreshold => debounceThreshold;
+
         protected void OnEnable()
         {
             instances.Add(this);
@@ -52,6 +67,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected void OnDisable()
         {
             instances.Remove(this);
+        }
+
+        protected void OnValidate()
+        {
+            distBack = Math.Max(distBack, 0);
+            distFront = Math.Max(distFront, 0);
+            debounceThreshold = Math.Max(debounceThreshold, 0);
+
+            touchableCollider = GetComponent<Collider>();
+            usesCollider = touchableCollider != null;
         }
 
         public abstract float DistanceToSurface(Vector3 samplePoint, out Vector3 normal);

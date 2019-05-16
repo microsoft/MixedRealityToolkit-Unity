@@ -15,12 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class NearInteractionTouchableVolume : BaseNearInteractionTouchable
     {
-        protected void OnValidate()
-        {
-            touchableCollider = GetComponent<Collider>();
-            usesCollider = touchableCollider != null;
-        }
-
         public override float DistanceToSurface(Vector3 samplePoint, out Vector3 normal)
         {
             if (usesCollider)
