@@ -59,7 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Setup
             CleanupScene();
 
-            new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
 
             if (!MixedRealityToolkit.IsInitialized)
             {
