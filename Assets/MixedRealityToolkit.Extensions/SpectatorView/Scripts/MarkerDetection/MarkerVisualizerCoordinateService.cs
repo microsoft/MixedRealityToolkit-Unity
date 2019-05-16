@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
+using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using System;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
 {
     /// <summary>
     /// A variant of marker based <see cref="ISpatialCoordinateService"/> implementation. This one tracks coordinates displayed on the screen of current mobile device.
@@ -18,15 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     {
         private class SpatialCoordinate : SpatialCoordinateBase<int>
         {
+            private readonly IMarkerVisual markerVisual;
+
+            private LocatedState locatedState = LocatedState.Resolved;
             private UnityEngine.Matrix4x4 worldToCoordinate;
             private UnityEngine.Quaternion worldToCoordinateRotation;
             private UnityEngine.Quaternion coordinateToWorldRotation;
-
-            public new bool IsLocated
-            {
-                get => base.IsLocated;
-                set => base.IsLocated = value;
-            }
 
             public UnityEngine.Matrix4x4 WorldToCoordinate
             {
@@ -38,8 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
             }
 
-            public SpatialCoordinate(int id)
-                : base(id) { }
+            /// <inheritdoc/>
+            public override LocatedState State => locatedState;
+
+            public SpatialCoordinate(int id, IMarkerVisual markerVisual)
+                : base(id) { this.markerVisual = markerVisual; }
 
             public override Vector3 CoordinateToWorldSpace(Vector3 vector) => worldToCoordinate.inverse.MultiplyPoint(vector.AsUnityVector()).AsNumericsVector();
 
@@ -48,56 +47,60 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             public override Vector3 WorldToCoordinateSpace(Vector3 vector) => worldToCoordinate.MultiplyPoint(vector.AsUnityVector()).AsNumericsVector();
 
             public override Quaternion WorldToCoordinateSpace(Quaternion quaternion) => (worldToCoordinateRotation * quaternion.AsUnityQuaternion()).AsNumericsQuaternion();
+
+            public void ShowMarker()
+            {
+                markerVisual.ShowMarker(Id);
+                locatedState = LocatedState.Tracking;
+            }
+
+            public void HideMarker()
+            {
+                locatedState = LocatedState.Resolved;
+                markerVisual.HideMarker();
+            }
         }
 
         private readonly IMarkerVisual markerVisual;
         private readonly UnityEngine.Transform markerInWorldSpace;
-        private readonly Func<int> generateMarkerId;
 
         private SpatialCoordinate markerCoordinate;
+
+        protected override bool SupportsDiscovery => false;
 
         public MarkerVisualizerCoordinateService(IMarkerVisual markerVisual, UnityEngine.Transform markerInWorldSpace, Func<int> generateMarkerId)
         {
             this.markerVisual = markerVisual ?? throw new ArgumentNullException(nameof(generateMarkerId));
             this.markerInWorldSpace = markerInWorldSpace;
-            this.generateMarkerId = generateMarkerId ?? throw new ArgumentNullException(nameof(generateMarkerId));
         }
 
         protected override void OnManagedDispose()
         {
             base.OnManagedDispose();
-
-            IsTracking = false;
         }
 
-        protected override async Task RunTrackingAsync(CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
+        protected override bool TryParse(string id, out int result) => int.TryParse(id, out result);
 
-            markerCoordinate = new SpatialCoordinate(generateMarkerId()) { IsLocated = true };
+        protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, int[] idsToLocate)
+        {
+            if (idsToLocate == null || idsToLocate.Length < 1)
+            {
+                throw new ArgumentNullException($"{nameof(MarkerVisualizerCoordinateService)} depends on ids so that it could visualize them, at least one should be provided.");
+            }
+
+            markerCoordinate = new SpatialCoordinate(idsToLocate[0], markerVisual);
             OnNewCoordinate(markerCoordinate.Id, markerCoordinate);
 
-            markerVisual.ShowMarker(markerCoordinate.Id);
+            markerCoordinate.ShowMarker();
 
-            // TODO we can probably get rid of UpdateTick and use a Unity synchronization context here to wait frames
-            await Task.Delay(-1, cancellationToken).IgnoreCancellation();
-
-            markerVisual.HideMarker();
-            markerCoordinate.IsLocated = false;
-            markerCoordinate = null;
-        }
-
-        /// <summary>
-        /// Call this method each frame to process the marker position/rotation update.
-        /// </summary>
-        public void UpdateTick()
-        {
-            ThrowIfDisposed();
-
-            if (markerCoordinate != null)
+            while (cancellationToken.IsCancellationRequested)
             {
                 markerCoordinate.WorldToCoordinate = markerInWorldSpace.worldToLocalMatrix;
+                await Task.Delay(1, cancellationToken).IgnoreCancellation(); // Wait a frame, this is how Unity synchronization context will let you wait for next frame
             }
+
+            markerCoordinate.HideMarker();
+            markerCoordinate = null;
         }
     }
 }

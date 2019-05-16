@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
+namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 {
     /// <summary>
     /// This service is used to discover, track and create coordinates.
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
         /// <summary>
         /// Gets or sets whether this coordiante service should be discovering/tracking coordinates.
         /// </summary>
-        bool IsTracking { get; set; }
+        bool IsTracking { get; }
 
         /// <summary>
         /// Gets a set of all known coordinates to this service.
@@ -31,14 +31,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
         IEnumerable<ISpatialCoordinate> KnownCoordinates { get; }
 
         /// <summary>
-        /// Attempts to get a coordinate object based on an Id.
+        /// Begins search for coordinates, optionally priortizing a set of ids.
         /// </summary>
-        /// <returns>The coordinate if it was succesfully retrieved, otherwise null.</returns>
-        Task<ISpatialCoordinate> TryGetCoordinateByIdAsync(string id, CancellationToken cancellationToken);
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to be used for cancellation (stopping) of the discovery task.</param>
+        /// <param name="coordinateIds">The optional set to prioritize discovery of ids to.</param>
+        /// <returns>The set of coordinates discovered during this session.</returns>
+        Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate = null);
 
         /// <summary>
         /// Attempts to create a new coordinate with this service.
         /// </summary>
+        /// <param name="id">Attempts to set id on the spatial coordinate, if possible.</param>
         /// <param name="localPosition">Position at which the coordinate should be created.</param>
         /// <param name="localRotation">Orientation the coordinate should be created with.</param>
         /// <returns>The coordinate if the coordinate was succesfully created, otherwise null.</returns>

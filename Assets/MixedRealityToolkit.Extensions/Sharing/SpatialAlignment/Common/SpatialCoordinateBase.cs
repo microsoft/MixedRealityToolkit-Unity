@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Numerics;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
+namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 {
     /// <summary>
     /// Helper base class for implementations of <see cref="ISpatialCoordinate"/>.
@@ -11,6 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
     /// <typeparam name="TKey">The type of Id for this coordinate.</typeparam>
     public abstract class SpatialCoordinateBase<TKey> : ISpatialCoordinate
     {
+        public event Action StateChanged;
+
         private readonly string stringId;
 
         /// <inheritdoc />
@@ -22,13 +25,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
         public TKey Id { get; }
 
         /// <inheritdoc />
-        public virtual bool IsLocated { get; protected set; }
+        public virtual LocatedState State { get { return LocatedState.Resolved; } }
 
         public SpatialCoordinateBase(TKey id)
         {
             stringId = id.ToString();
             Id = id;
         }
+
+        protected void OnStateChanged() => StateChanged?.Invoke();
 
         /// <inheritdoc />
         public abstract Vector3 CoordinateToWorldSpace(Vector3 vector);

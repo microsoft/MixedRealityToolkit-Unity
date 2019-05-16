@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
+using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.MarkerDetection
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
 {
     /// <summary>
     /// A marker detection based implementation of <see cref="ISpatialCoordinateService"/>.
@@ -33,16 +32,11 @@ namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.Marke
                     if (marker != value)
                     {
                         marker = value;
-                        IsLocated = marker != null;
                     }
                 }
             }
 
-            public new bool IsLocated
-            {
-                get => base.IsLocated;
-                set => base.IsLocated = value;
-            }
+            public override LocatedState State => marker == null ? LocatedState.Resolved : LocatedState.Tracking;
 
             public SpatialCoordinate(int id)
                 : base(id) { }
@@ -72,8 +66,9 @@ namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.Marke
 
         protected override void OnManagedDispose()
         {
+            base.OnManagedDispose();
+
             markerDetector.MarkersUpdated -= OnMarkersUpdated;
-            IsTracking = false;
         }
 
         private void OnMarkersUpdated(Dictionary<int, Marker> markers)
@@ -114,34 +109,38 @@ namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.Marke
             }
         }
 
-        /// <summary>
-        /// Returns an existingly tracked <see cref="ISpatialCoordinate"/> or a new one that will be used when the marker with the id is seen.
-        /// </summary>
-        public override Task<ISpatialCoordinate> TryGetCoordinateByIdAsync(string markerId, CancellationToken cancellationToken)
+        protected override bool TryParse(string id, out int result) => int.TryParse(id, out result);
+
+        protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, int[] idsToLocate = null)
         {
-            ThrowIfDisposed();
-
-            ISpatialCoordinate toReturn = null;
-            if (int.TryParse(markerId, out int id))
-            {
-                if (!knownCoordinates.TryGetValue(id, out toReturn))
-                {
-                    SpatialCoordinate spatialCoordinate = new SpatialCoordinate(id);
-                    OnNewCoordinate(id, spatialCoordinate);
-                    toReturn = spatialCoordinate;
-                }
-            }
-
-            return Task.FromResult(toReturn);
-        }
-
-        protected override async Task RunTrackingAsync(CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
             markerDetector.StartDetecting();
 
-            await Task.Delay(-1, cancellationToken).IgnoreCancellation();
+            if (idsToLocate != null)
+            {
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    bool allFound = true;
+                    foreach (int id in idsToLocate)
+                    {
+                        if (!knownCoordinates.TryGetValue(id, out ISpatialCoordinate coordinate) || coordinate.State == LocatedState.Unresolved)
+                        {
+                            allFound = false;
+                            break;
+                        }
+                    }
+
+                    if (allFound)
+                    {
+                        break;
+                    }
+
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken).IgnoreCancellation();
+                }
+            }
+            else
+            {
+                await Task.Delay(-1, cancellationToken).IgnoreCancellation();
+            }
 
             markerDetector.StopDetecting();
         }

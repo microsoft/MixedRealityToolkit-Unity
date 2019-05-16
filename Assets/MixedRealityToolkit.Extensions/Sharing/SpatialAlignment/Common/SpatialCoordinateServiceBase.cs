@@ -3,13 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
+namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 {
     /// <summary>
     /// Helper base class for <see cref="ISpatialCoordinateService"/> implementations.
@@ -20,8 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
         /// <inheritdoc />
         public event Action<ISpatialCoordinate> CoordinatedDiscovered;
 
-        private CancellationTokenSource trackingCTS = null;
+        private readonly object discoveryLockObject = new object();
+        private readonly CancellationTokenSource disposedCTS = new CancellationTokenSource();
+
         private bool isTracking;
+
+        protected readonly ConcurrentDictionary<TKey, ISpatialCoordinate> knownCoordinates = new ConcurrentDictionary<TKey, ISpatialCoordinate>();
 
         /// <inheritdoc />
         public bool IsTracking
@@ -31,30 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
                 ThrowIfDisposed();
                 return isTracking;
             }
-            set
-            {
-                ThrowIfDisposed();
-
-                if (isTracking != value)
-                {
-                    trackingCTS?.Cancel();
-                    trackingCTS?.Dispose();
-                    trackingCTS = null;
-
-                    if (value)
-                    {
-                        CancellationTokenSource cts = new CancellationTokenSource();
-                        trackingCTS = cts;
-
-                        RunTrackingAsync(cts.Token).FireAndForget();
-                    }
-
-                    isTracking = value;
-                }
-            }
         }
 
-        protected readonly Dictionary<TKey, ISpatialCoordinate> knownCoordinates = new Dictionary<TKey, ISpatialCoordinate>();
+        protected virtual bool SupportsDiscovery => true;
 
         /// <inheritdoc />
         public IEnumerable<ISpatialCoordinate> KnownCoordinates
@@ -71,6 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
         {
             base.OnManagedDispose();
 
+            // Notify of dispose to any existing operations
+            disposedCTS.Cancel();
+            disposedCTS.Dispose();
+
             knownCoordinates.Clear();
         }
 
@@ -81,8 +69,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
         {
             ThrowIfDisposed();
 
-            knownCoordinates.Add(id, spatialCoordinate);
-            CoordinatedDiscovered?.Invoke(spatialCoordinate);
+            lock (discoveryLockObject)
+            {
+                if (!isTracking)
+                {
+                    throw new InvalidOperationException("We aren't tracking, and shouldn't expect additional coordinates to be discovered.");
+                }
+            }
+
+            if (knownCoordinates.TryAdd(id, spatialCoordinate))
+            {
+                CoordinatedDiscovered?.Invoke(spatialCoordinate);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Coordinate with id '{id}' already discovered.");
+            }
         }
 
         /// <inheritdoc />
@@ -102,16 +104,45 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
         }
 
         /// <inheritdoc />
-        public virtual Task<ISpatialCoordinate> TryGetCoordinateByIdAsync(string id, CancellationToken cancellationToken)
+        public async Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate = null)
         {
-            ThrowIfDisposed();
+            if (!SupportsDiscovery)
+            {
+                return false;
+            }
 
-            return Task.FromResult<ISpatialCoordinate>(null);
+            lock (discoveryLockObject)
+            {
+                ThrowIfDisposed();
+
+                if (isTracking)
+                {
+                    return false;
+                }
+
+                isTracking = true;
+            }
+
+            try
+            {
+                using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(disposedCTS.Token, cancellationToken))
+                {
+                    await OnDiscoverCoordinatesAsync(cts.Token).IgnoreCancellation();
+                }
+
+                return true;
+            }
+            finally
+            {
+                isTracking = false;
+            }
         }
+
+        protected abstract bool TryParse(string id, out TKey result);
 
         /// <summary>
         /// Implement this method for the logic begin and end tracking (when <see cref="CancellationToken"/> is cancelled).
         /// </summary>
-        protected abstract Task RunTrackingAsync(CancellationToken cancellationToken);
+        protected abstract Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, TKey[] idsToLocate = null);
     }
 }
