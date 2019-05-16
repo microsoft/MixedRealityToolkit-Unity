@@ -89,6 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             return false;
         }
 
+        public void SetMarkerSize(float markerSize)
+        {
+            _markerSize = markerSize;
+        }
+
         /// <summary>
         /// Assesses the provided image for ArUco markers
         /// </summary>
