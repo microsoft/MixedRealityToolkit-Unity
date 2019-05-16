@@ -29,6 +29,34 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.color = enabledColor;
 
             EditorGUILayout.LabelField("Lighting Scene", EditorStyles.boldLabel);
+            List<SceneInfo> lightingScenes = new List<SceneInfo>(sceneSystem.LightingScenes);
+            if (lightingScenes.Count == 0)
+            {
+                EditorGUILayout.LabelField("(No lighting scenes found)", EditorStyles.miniLabel);
+            }
+            else
+            {
+                RenderLightingScenes(sceneSystem, lightingScenes);
+            }
+            EditorGUILayout.Space();
+
+            GUI.color = enabledColor;
+            EditorGUILayout.LabelField("Content Scenes", EditorStyles.boldLabel);
+            List<SceneInfo> contentScenes = new List<SceneInfo>(sceneSystem.ContentScenes);
+            if (contentScenes.Count == 0)
+            {
+                EditorGUILayout.LabelField("(No content scenes found)", EditorStyles.miniLabel);
+            }
+            else
+            {
+                RenderContentScenes(sceneSystem, contentScenes); 
+            }
+
+            EditorGUILayout.Space();
+        }
+
+        private void RenderLightingScenes(MixedRealitySceneSystem sceneSystem, List<SceneInfo> lightingScenes)
+        {
             if (!Application.isPlaying)
             {
                 EditorGUILayout.HelpBox("Select the active lighting scene by clicking its name.", MessageType.Info);
@@ -36,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             EditorGUILayout.Space();
             EditorGUILayout.BeginVertical();
-            foreach (SceneInfo lightingScene in sceneSystem.LightingScenes)
+            foreach (SceneInfo lightingScene in lightingScenes)
             {
                 if (lightingScene.IsEmpty)
                 {
@@ -54,11 +82,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
             EditorGUILayout.EndVertical();
-            EditorGUILayout.Space();
+        }
 
-            GUI.color = enabledColor;
-
-            EditorGUILayout.LabelField("Content Scenes", EditorStyles.boldLabel);
+        private void RenderContentScenes(MixedRealitySceneSystem sceneSystem, List<SceneInfo> contentScenes)
+        {
             if (!Application.isPlaying)
             {
                 EditorGUILayout.HelpBox("You can load / unload scenes in the editor by clicking on their tags or names", MessageType.Info);
@@ -134,8 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
             EditorGUI.EndDisabledGroup();
-
-            EditorGUILayout.Space();
         }
     }
 }

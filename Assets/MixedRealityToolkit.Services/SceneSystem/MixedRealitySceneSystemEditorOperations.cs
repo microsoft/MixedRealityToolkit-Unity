@@ -4,6 +4,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -18,9 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     public partial class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem
     {
 #if UNITY_EDITOR
-
         private bool updatingSettingsOnEditorChanged = false;
         private const float lightingUpdateInterval = 5f;
+        private const float managerSceneInstanceCheckInterval = 2f;
+        private const int editorApplicationUpdateTickInterval = 5;
         // These get set to dirty based on what we're doing in editor
         private bool activeSceneDirty = false;
         private bool buildSettingsDirty = false;
@@ -29,8 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private EditorBuildSettingsScene[] cachedBuildScenes = new EditorBuildSettingsScene[0];
         // Checking for the manager scene via root game objects is very expensive
         // So only do it once in a while
-        private float managerSceneInstanceCheckInterval = 2f;
         private float managerSceneInstanceCheckTime;
+        private int editorApplicationUpdateTicks;
 
         private void OnEditorInitialize()
         {
@@ -64,7 +67,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         private void EditorApplicationUpdate()
         {
-            CheckForChanges();
+            editorApplicationUpdateTicks++;
+            if (editorApplicationUpdateTicks > editorApplicationUpdateTickInterval)
+            {
+                editorApplicationUpdateTicks = 0;
+                CheckForChanges();
+            }
         }
 
         private void EditorApplicationPlayModeStateChanged(PlayModeStateChange change)
@@ -109,6 +117,16 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         private void CheckForChanges()
         {
+            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile)
+            {
+                return;
+            }
+
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSceneSystemEnabled)
+            {
+                return;
+            }
+
             if (updatingSettingsOnEditorChanged || EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling)
             {   // Make sure we don't double up on our updates via events we trigger during updates
                 return;
@@ -152,28 +170,55 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     managerSceneInstanceCheckTime = Time.realtimeSinceStartup + managerSceneInstanceCheckInterval;
                     // Check for an MRTK instance
                     bool foundToolkitInstance = false;
-                    foreach (GameObject rootGameObject in scene.GetRootGameObjects())
+
+                    try
                     {
-                        MixedRealityToolkit instance = rootGameObject.GetComponent<MixedRealityToolkit>();
-                        if (instance != null)
+                        foreach (GameObject rootGameObject in scene.GetRootGameObjects())
                         {
-                            foundToolkitInstance = true;
-                            // If we found an instance, and it's not the active instance, activate it now
-                            if (instance != MixedRealityToolkit.Instance)
+                            MixedRealityToolkit instance = rootGameObject.GetComponent<MixedRealityToolkit>();
+                            if (instance != null)
                             {
-                                Debug.LogWarning("Setting the manager scene MixedRealityToolkit instance to the active instance.");
-                                MixedRealityToolkit.SetActiveInstance(instance);
+                                foundToolkitInstance = true;
+                                // If we found an instance, and it's not the active instance, activate it now
+                                if (instance != MixedRealityToolkit.Instance)
+                                {
+                                    Debug.LogWarning("Setting the manager scene MixedRealityToolkit instance to the active instance.");
+                                    MixedRealityToolkit.SetActiveInstance(instance);
+                                }
+                                break;
                             }
-                            break;
                         }
+                    }
+                    catch (Exception)
+                    {
+                        // This can happen if the scene isn't valid
+                        // Not an issue - we'll take care of it on the next update.
                     }
 
                     if (!foundToolkitInstance)
                     {
-                        Debug.LogWarning("Didn't find a MixedRealityToolkit instance in your manager scene. Creating one now.");
                         GameObject mrtkGo = new GameObject("MixedRealityToolkit");
-                        mrtkGo.AddComponent<MixedRealityToolkit>();
-                        SceneManager.MoveGameObjectToScene(mrtkGo, scene);
+                        MixedRealityToolkit toolkitInstance = mrtkGo.AddComponent<MixedRealityToolkit>();
+                        // Set the config profile to use the same profile as the current instance
+                        toolkitInstance.ActiveProfile = MixedRealityToolkit.Instance.ActiveProfile;
+
+                        try
+                        {
+                            SceneManager.MoveGameObjectToScene(mrtkGo, scene);
+                            // Set the scene as dirty
+                            EditorSceneManager.MarkSceneDirty(scene);
+                        }
+                        catch (Exception)
+                        {
+                            // This can happen if the scene isn't valid
+                            // Not an issue - we'll take care of it on the next update.
+                            // Destroy the new manager
+                            GameObject.DestroyImmediate(mrtkGo);
+                            return;
+                        }
+
+                        MixedRealityToolkit.SetActiveInstance(toolkitInstance);
+                        Debug.LogWarning("Didn't find a MixedRealityToolkit instance in your manager scene. Creating one now.");
                     }
                 }
             }

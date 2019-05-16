@@ -8,9 +8,14 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.Reflection;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 
-namespace Microsoft.MixedReality.Toolkit.SceneSystem
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
+    /// <summary>
+    /// Utilities for loading / saving scenes in editor via SceneInfo.
+    /// Because SceneInfo is defined in MixedRealityToolkit, this can't be kept in Editor utilities.
+    /// </summary>
     public static class EditorSceneUtils
     {
         /// <summary>
@@ -21,6 +26,36 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             First,
             None,
             Last,
+        }
+
+        public static SceneInfo CreateAndSaveScene(string sceneName, string path = null)
+        {
+            SceneInfo sceneInfo = default(SceneInfo);
+
+            if (!EditorSceneManager.EnsureUntitledSceneHasBeenSaved("Save untitled scene before proceeding?"))
+            {
+                return sceneInfo;
+            }
+
+            Scene newScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+
+            if (string.IsNullOrEmpty(path))
+            {
+                path = "Assets/" + sceneName + ".unity";
+            }
+
+            if (!EditorSceneManager.SaveScene(newScene, path))
+            {
+                Debug.LogError("Couldn't create and save scene " + sceneName + " at path " + path);
+                return sceneInfo;
+            }
+
+            SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+            sceneInfo.Asset = sceneAsset;
+            sceneInfo.Name = sceneAsset.name;
+            sceneInfo.Path = path;
+
+            return sceneInfo;
         }
 
         /// <summary>
@@ -143,11 +178,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             try
             {
                 editorScene = EditorSceneManager.GetSceneByName(sceneInfo.Name);
-                if (!editorScene.isLoaded)
-                {
-                    string scenePath = AssetDatabase.GetAssetOrScenePath(sceneInfo.Asset);
-                    EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
-                }
+                string scenePath = AssetDatabase.GetAssetOrScenePath(sceneInfo.Asset);
+                EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
 
                 if (setAsFirst && EditorSceneManager.loadedSceneCount >= 1)
                 {   // Move the scene to first in order in the heirarchy
@@ -290,8 +322,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                 if (GetLightmapAndRenderSettings(out targetLightmapSettings, out targetRenderSettings))
                 {
-                    madeChanges |= CopySerializedObject(sourceLightmapSettings, targetLightmapSettings);
-                    madeChanges |= CopySerializedObject(sourceRenderSettings, targetRenderSettings);
+                    madeChanges |= SerializedObjectUtils.CopySerializedObject(sourceLightmapSettings, targetLightmapSettings);
+                    madeChanges |= SerializedObjectUtils.CopySerializedObject(sourceRenderSettings, targetRenderSettings);
                 }
             }
 
@@ -347,40 +379,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             lightmapSettings = new SerializedObject(lightmapSettingsObject);
             renderSettings = new SerializedObject(renderSettingsObject);
             return true;
-        }
-
-        /// <summary>
-        /// Copies properties of one serialized object to another (without undo)
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public static bool CopySerializedObject(SerializedObject source, SerializedObject target)
-        {
-            bool madeChanges = false;
-            SerializedProperty sourceProp = source.GetIterator();
-            while (sourceProp.NextVisible(true))
-            {
-                switch (sourceProp.name)
-                {
-                    // This is an odd case where the value is constantly modified, resulting in constant changes.
-                    // It's not apparent how this affects rendering.
-                    case "m_IndirectSpecularColor":
-                        continue;
-
-                    default:
-                        break;
-                }
-
-                madeChanges |= target.CopyFromSerializedPropertyIfDifferent(sourceProp);
-            }
-
-            if (madeChanges)
-            {
-                target.ApplyModifiedPropertiesWithoutUndo();
-            }
-
-            return madeChanges;
         }
 
         /// <summary>

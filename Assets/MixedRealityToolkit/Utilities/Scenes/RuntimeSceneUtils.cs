@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-namespace Microsoft.MixedReality.Toolkit.SceneSystem
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public static class RuntimeSceneUtils
     {

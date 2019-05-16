@@ -34,6 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         public IEnumerable<string> ContentTags { get { return contentTags; } }
 
+        public int NumLightingScenes { get { return lightingScenes.Count; } }
+
+        public int NumContentScenes { get { return contentScenes.Count; } }
+
         [SerializeField]
         [Tooltip("Using a manager scene ensures a MixedRealityToolkit instance will always be loaded first in your application. It also ensures that this scene and instance will never be unloaded.")]
         private bool useManagerScene = true;

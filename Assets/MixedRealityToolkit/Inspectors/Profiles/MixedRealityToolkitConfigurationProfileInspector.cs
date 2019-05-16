@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
@@ -215,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.PropertyField(enableCameraSystem);
                     EditorGUILayout.PropertyField(cameraSystemType);
-                    changed |= RenderProfile(cameraProfile);
+                    changed |= RenderProfile(cameraProfile, true, typeof(IMixedRealityCameraSystem));
                 }
             }
 
@@ -301,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.PropertyField(enableSceneSystem);
                     EditorGUILayout.PropertyField(sceneSystemType);
-                    changed |= RenderProfile(sceneSystemProfile);
+                    changed |= RenderProfile(sceneSystemProfile, true, typeof(IMixedRealitySceneSystem));
                 }
             }
 
