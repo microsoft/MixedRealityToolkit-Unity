@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.SpatialAlignment.Common
+namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 {
     /// <summary>
     /// Very simple consumer of <see cref="ISpatialCoordinate"/> to demonstrate usage.
