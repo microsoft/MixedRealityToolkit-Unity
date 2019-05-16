@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Wireframe refers to the thin linkage between the handles. When the handles are invisible
         /// the wireframe looks like an outline box around an object.
         /// </remarks> 
-        private enum WireframeType
+        public enum WireframeType
         {
             Cubic = 0,
             Cylindrical
@@ -217,14 +217,54 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Shape used for wireframe display")]
         private WireframeType wireframeShape = WireframeType.Cubic;
+        public WireframeType WireframeShape
+        {
+            get { return wireframeShape; }
+            set
+            {
+                if (wireframeShape != value)
+                {
+                    wireframeShape = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("Material used for wireframe display")]
         private Material wireframeMaterial;
+        public Material WireframeMaterial
+        {
+            get { return wireframeMaterial; }
+            set
+            {
+                if (wireframeMaterial != value)
+                {
+                    wireframeMaterial = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
+
         [SerializeField]
         [FormerlySerializedAs("linkRadius")]
         [Tooltip("Radius for wireframe edges")]
         private float wireframeEdgeRadius = 0.005f;
-
+        public float WireframeEdgeRadius
+        {
+            get { return wireframeEdgeRadius; }
+            set
+            {
+                if (wireframeEdgeRadius != value)
+                {
+                    wireframeEdgeRadius = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
         [Header("Handles")]
         [SerializeField]
         [Tooltip("Material applied to handles when they are not in a grabbed state")]
