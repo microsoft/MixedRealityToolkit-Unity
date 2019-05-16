@@ -32,12 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         private SpectatorViewPluginAPI _api;
         private bool _detecting = false;
         private Dictionary<int, List<Marker>> _markerObservations;
-        protected int _requiredObservations = 8;
-        protected int _requiredInliers = 8;
-        protected int _maximumObservationsToBuffer = 16;
-        protected float _maximumPostionDistanceStandardDeviation = 0.001f;
-        protected float _maximumRotationAngleStandardDeviation = 0.25f;
         private Dictionary<int, Marker> _nextMarkerUpdate;
+
+        public MarkerDetectionCompletionStrategy DetectionCompletionStrategy { get; set; } = new MovingMarkerDetectionCompletionStrategy();
 
         protected void Start()
         {
@@ -56,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         {
             if (_detecting)
             {
-                if(_holoLensCamera.State == CameraState.Ready &&
+                if (_holoLensCamera.State == CameraState.Ready &&
                     !_holoLensCamera.TakeSingle())
                 {
                     Debug.LogError("Failed to take photo with HoloLensCamera, Camera State: " + _holoLensCamera.State.ToString());
@@ -183,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         }
 
                         _markerObservations[markerPair.Key].Add(markerPair.Value);
-                        if (_markerObservations[markerPair.Key].Count > _maximumObservationsToBuffer)
+                        if (_markerObservations[markerPair.Key].Count > DetectionCompletionStrategy.MaximumMarkerCount)
                         {
                             _markerObservations[markerPair.Key].RemoveAt(0);
                         }
@@ -192,29 +189,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                     var validMarkers = new Dictionary<int, Marker>();
                     foreach (var observationPair in _markerObservations)
                     {
-                        if (observationPair.Value.Count >= _requiredObservations)
+                        Marker completedMarker;
+                        if (DetectionCompletionStrategy.TryCompleteDetection(observationPair.Value, out completedMarker))
                         {
-                            var averageMarker = CalcAverageMarker(observationPair.Value);
-
-                            var inliers = CalculateInlierMarkerSet(observationPair.Value, averageMarker);
-                            if (inliers.Count >= _requiredInliers)
-                            {
-                                var averageInlierMarker = CalcAverageMarker(inliers);
-
-                                double positionStandardDeviation, rotationStandardDeviation;
-                                CalculateStandardDeviations(inliers, averageInlierMarker, out positionStandardDeviation, out rotationStandardDeviation);
-                                if (positionStandardDeviation <= _maximumPostionDistanceStandardDeviation && rotationStandardDeviation <= _maximumRotationAngleStandardDeviation)
-                                {
-                                    LogMessagesAboutMarker("final", observationPair.Value, inliers, averageMarker, averageInlierMarker);
-
-                                    validMarkers[averageMarker.Id] = averageMarker;
-                                    observationPair.Value.Clear();
-                                }
-                                else
-                                {
-                                    LogMessagesAboutMarker("rejected", observationPair.Value, inliers, averageMarker, averageInlierMarker);
-                                }
-                            }
+                            validMarkers[completedMarker.Id] = completedMarker;
+                            observationPair.Value.Clear();
                         }
                     }
 
@@ -224,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
 #endif
         }
 
-        private void LogMessagesAboutMarker(string markerState, List<Marker> allMarkers, List<Marker> inlierMarkers, Marker averageMarker, Marker averageInlierMarker)
+        private static void LogMessagesAboutMarker(string markerState, IReadOnlyList<Marker> allMarkers, IReadOnlyList<Marker> inlierMarkers, Marker averageMarker, Marker averageInlierMarker)
         {
             double positionStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => (marker.Position - averageMarker.Position).magnitude);
             double rotationStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => Quaternion.Angle(marker.Rotation, averageMarker.Rotation));
@@ -235,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             Debug.Log($"Calculated {markerState} marker position with {inlierMarkers.Count} markers out of {allMarkers.Count} available. Initial position standard deviation was {positionStandardDeviation} and rotation was {rotationStandardDeviation}. After outliers, position deviation was {inlierPositionStandardDeviation} and rotation was {inlierRotationStandardDeviation}. Final position was {averageInlierMarker.Position} which is {(averageInlierMarker.Position - averageMarker.Position).magnitude} away from original pose.");
         }
 
-        private static Marker CalcAverageMarker(List<Marker> markers)
+        private static Marker CalculateAverageMarker(IReadOnlyList<Marker> markers)
         {
             var count = (float)markers.Count;
             var averagePos = Vector3.zero;
@@ -248,11 +227,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 id = marker.Id;
             }
 
-            var averageRot = CalcAverageQuaternion(rotations.ToArray());
+            var averageRot = CalculateAverageQuaternion(rotations.ToArray());
             return new Marker(id, averagePos, averageRot);
         }
 
-        private static Quaternion CalcAverageQuaternion(Quaternion[] quaternions)
+        private static Quaternion CalculateAverageQuaternion(Quaternion[] quaternions)
         {
             Quaternion mean = quaternions[0];
             var text = "Quaternions: ";
@@ -267,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             return mean;
         }
 
-        private static List<Marker> CalculateInlierMarkerSet(List<Marker> allMarkers, Marker averageMarker)
+        private static List<Marker> CalculateInlierMarkerSet(IReadOnlyList<Marker> allMarkers, Marker averageMarker)
         {
             double positionStandardDeviation, rotationStandardDeviation;
             CalculateStandardDeviations(allMarkers, averageMarker, out positionStandardDeviation, out rotationStandardDeviation);
@@ -288,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             return inliers;
         }
 
-        private static void CalculateStandardDeviations(List<Marker> allMarkers, Marker averageMarker, out double positionStandardDeviation, out double rotationStandardDeviation)
+        private static void CalculateStandardDeviations(IReadOnlyList<Marker> allMarkers, Marker averageMarker, out double positionStandardDeviation, out double rotationStandardDeviation)
         {
             positionStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => (marker.Position - averageMarker.Position).magnitude);
             rotationStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => Quaternion.Angle(marker.Rotation, averageMarker.Rotation));
@@ -311,6 +290,75 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             }
 
             return Math.Sqrt(sum / values.Count);
+        }
+
+        public abstract class MarkerDetectionCompletionStrategy
+        {
+            public abstract bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker);
+
+            public abstract int MaximumMarkerCount { get; }
+        }
+
+        public sealed class StationaryMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
+        {
+            private int _requiredObservations = 5;
+            private int _requiredInliers = 5;
+            private int _maximumObservationsToBuffer = 20;
+            private float _maximumPositionDistanceStandardDeviation = 0.001f;
+            private float _maximumRotationAngleStandardDeviation = 0.25f;
+
+            public override int MaximumMarkerCount => _maximumObservationsToBuffer;
+
+            public override bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker)
+            {
+                if (markers.Count >= _requiredObservations)
+                {
+                    var averageMarker = CalculateAverageMarker(markers);
+
+                    var inliers = CalculateInlierMarkerSet(markers, averageMarker);
+                    if (inliers.Count >= _requiredInliers)
+                    {
+                        var averageInlierMarker = CalculateAverageMarker(inliers);
+
+                        double positionStandardDeviation, rotationStandardDeviation;
+                        CalculateStandardDeviations(inliers, averageInlierMarker, out positionStandardDeviation, out rotationStandardDeviation);
+                        if (positionStandardDeviation <= _maximumPositionDistanceStandardDeviation && rotationStandardDeviation <= _maximumRotationAngleStandardDeviation)
+                        {
+                            completedMarker = averageInlierMarker;
+                            LogMessagesAboutMarker("final", markers, inliers, averageMarker, averageInlierMarker);
+                            return true;
+                        }
+                        else
+                        {
+                            LogMessagesAboutMarker("rejected", markers, inliers, averageMarker, averageInlierMarker);
+                        }
+                    }
+                }
+
+                completedMarker = null;
+                return false;
+            }
+        }
+
+        public sealed class MovingMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
+        {
+            private int _requiredObservations = 5;
+
+            public override int MaximumMarkerCount => _requiredObservations;
+
+            public override bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker)
+            {
+                if (markers.Count >= _requiredObservations)
+                {
+                    completedMarker = CalculateAverageMarker(markers);
+                    return true;
+                }
+                else
+                {
+                    completedMarker = null;
+                    return false;
+                }
+            }
         }
     }
 }
