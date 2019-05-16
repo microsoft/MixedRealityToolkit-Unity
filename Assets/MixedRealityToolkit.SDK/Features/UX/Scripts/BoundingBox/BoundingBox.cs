@@ -269,26 +269,126 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Material applied to handles when they are not in a grabbed state")]
         private Material handleMaterial;
+        public Material HandleMaterial
+        {
+            get { return handleMaterial; }
+            set
+            {
+                if (handleMaterial != value)
+                {
+                    handleMaterial = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("Material applied to handles while they are a grabbed")]
         private Material handleGrabbedMaterial;
+
+        public Material HandleGrabbedMaterial
+        {
+            get { return handleGrabbedMaterial; }
+            set
+            {
+                if (handleGrabbedMaterial != value)
+                {
+                    handleGrabbedMaterial = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("Prefab used to display scale handles in corners. If not set, boxes will be displayed instead")]
         GameObject scaleHandlePrefab = null;
+
+        public GameObject ScaleHandlePrefab
+        {
+            get { return scaleHandlePrefab; }
+            set
+            {
+                if (scaleHandlePrefab != value)
+                {
+                    scaleHandlePrefab = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("Prefab used to display scale handles in corners for 2D slate. If not set, boxes will be displayed instead")]
         GameObject scaleHandleSlatePrefab = null;
+
+        public GameObject ScaleHandleSlatePrefab
+        {
+            get { return scaleHandleSlatePrefab; }
+            set
+            {
+                if (scaleHandleSlatePrefab != value)
+                {
+                    scaleHandleSlatePrefab = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
+
         [SerializeField]
         [FormerlySerializedAs("cornerRadius")]
         [Tooltip("Size of the cube collidable used in scale handles")]
         private float scaleHandleSize = 0.03f;
+
+        public float ScaleHandleSize
+        {
+            get { return scaleHandleSize; }
+            set
+            {
+                if (scaleHandleSize != value)
+                {
+                    scaleHandleSize = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead")]
         GameObject rotationHandlePrefab = null;
+        public GameObject RotationHandleSlatePrefab
+        {
+            get { return rotationHandlePrefab; }
+            set
+            {
+                if (rotationHandlePrefab != value)
+                {
+                    rotationHandlePrefab = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
         [SerializeField]
         [FormerlySerializedAs("ballRadius")]
         [Tooltip("Radius of the sphere collidable used in rotation handles")]
         private float rotationHandleDiameter = 0.035f;
+        public float RotationHandleDiameter
+        {
+            get { return rotationHandleDiameter; }
+            set
+            {
+                if (rotationHandleDiameter != value)
+                {
+                    rotationHandleDiameter = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
 
         [SerializeField]
         [Tooltip("Check to show scale handles")]
