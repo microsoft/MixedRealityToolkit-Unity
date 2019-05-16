@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c33e3b76d6c5c0e48bb3b6ee686c7fd6, type: 3}
-  m_Name: FocusPressTouchGripStates
+  m_Name: FocusPressTouchGrabStates
   m_EditorClassIdentifier: 
   StateList:
   - Name: Default
@@ -38,7 +38,7 @@ MonoBehaviour:
     Bit: 16
     Value: 0
     ActiveIndex: 4
-  - Name: Grip
+  - Name: Grab
     Index: 15
     Bit: 32
     Value: 0

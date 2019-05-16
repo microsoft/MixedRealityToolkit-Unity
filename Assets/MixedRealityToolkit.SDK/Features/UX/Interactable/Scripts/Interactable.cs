@@ -49,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public List<IMixedRealityPointer> Focusers => pointers;
 
         // list of sources
-        protected List<SourceStateEventData> sources = new List<SourceStateEventData>();
-        public List<SourceStateEventData> Sources => sources;
+        protected HashSet<SourceStateEventData> sources = new HashSet<SourceStateEventData>();
+        public HashSet<SourceStateEventData> Sources => sources;
 
         // is the interactable enabled?
         public bool Enabled = true;
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool HasVoiceCommand { get; private set; }
         public bool HasPhysicalTouch { get; private set; }
         public bool HasCustom { get; private set; }
-        public bool HasGrip { get; private set; }
+        public bool HasGrab { get; private set; }
 
         // internal cached states
         protected State lastState;
@@ -499,10 +499,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.PhysicalTouch, touch ? 1 : 0);
         }
 
-        public virtual void SetGrip(bool grip)
+        public virtual void SetGrab(bool grab)
         {
-            HasGrip = grip;
-            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Grip, grip ? 1 : 0);
+            HasGrab = grab;
+            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Grab, grab ? 1 : 0);
         }
 
         /// <summary>
@@ -537,7 +537,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetFocus(false);
             SetPress(false);
             SetPhysicalTouch(false);
-            SetGrip(false);
+            SetGrab(false);
             SetGesture(false);
             SetGestureMax(false);
             SetVoiceCommand(false);
@@ -551,7 +551,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void ResetAllStates()
         {
             pointers = new List<IMixedRealityPointer>();
-            sources = new List<SourceStateEventData>();
+            sources = new HashSet<SourceStateEventData>();
             ResetBaseStates();
             SetCollision(false);
             SetCustom(false);
@@ -600,40 +600,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion PointerManagement
 
-        #region SourceManagement
-
-        /// <summary>
-        /// Adds a source to sources
-        /// </summary>
-        /// <param name="source"></param>
-        private void AddSource(SourceStateEventData source)
-        {
-            if (!sources.Contains(source))
-            {
-                sources.Add(source);
-            }
-        }
-
-        /// <summary>
-        /// Removes a source, lost
-        /// </summary>
-        /// <param name="source"></param>
-        private void RemoveSource(SourceStateEventData source)
-        {
-            sources.Remove(source);
-        }
-
-        /// <summary>
-        /// Get the currenlt list of source
-        /// </summary>
-        /// <returns></returns>
-        public List<SourceStateEventData> GetSources()
-        {
-            return sources;
-        }
-
-        #endregion SourceManagement
-
         #region MixedRealityFocusChangedHandlers
 
         public void OnBeforeFocusChange(FocusEventData eventData)
@@ -660,7 +626,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion MixedRealityFocusChangedHandlers
 
         #region MixedRealityFocusHandlers
-
+        
         public void OnFocusEnter(FocusEventData eventData)
         {
             if (CanInteract())
@@ -695,15 +661,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            bool isGrip = IsGrip(eventData.Pointer, eventData.MixedRealityInputAction);
+            bool isGrab = IsGrab(eventData.Pointer, eventData.MixedRealityInputAction);
 
-            if (ShouldListen(eventData.MixedRealityInputAction) || isGrip)
+            if (ShouldListen(eventData.MixedRealityInputAction) || isGrab)
             {
                 pointerDataManager.UpdatePointerData(eventData.Pointer, eventData.MixedRealityInputAction, false);
                 SetPress(false);
-                if (isGrip)
+                if (isGrab)
                 {
-                    SetGrip(false);
+                    SetGrab(false);
                 }
                 
                 SetGesture(false);
@@ -727,13 +693,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            bool isGrip = IsGrip(eventData.Pointer, eventData.MixedRealityInputAction);
+            bool isGrab = IsGrab(eventData.Pointer, eventData.MixedRealityInputAction);
 
-            if (ShouldListen(eventData.MixedRealityInputAction) || isGrip)
+            if (ShouldListen(eventData.MixedRealityInputAction) || isGrab)
             {
                 pointerDataManager.UpdatePointerData(eventData.Pointer, eventData.MixedRealityInputAction, true);
                 SetPress(true);
-                SetGrip(isGrip);
+                SetGrab(isGrab);
 
                 // See above comment in OnPointerUp
                 if (!IsGlobal)
@@ -1133,13 +1099,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region NearInteractionHandlers
         /// <summary>
-        /// Is the eventData a grip action or near pointer?
+        /// Is the eventData a grab action or near pointer?
         /// </summary>
         /// <param name="eventData"></param>
         /// <returns></returns>
-        protected bool IsGrip(IMixedRealityPointer pointer, MixedRealityInputAction action)
+        protected bool IsGrab(IMixedRealityPointer pointer, MixedRealityInputAction action)
         {
-            if (action.Description.ToLower().IndexOf("grip") > -1 || pointer as IMixedRealityNearPointer != null)
+            if (action.Description.ToLower().IndexOf("grip") > -1 || action.Description.ToLower().IndexOf("grab") > -1 || pointer as IMixedRealityNearPointer != null)
             {
                 return true;
             }
@@ -1225,13 +1191,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            AddSource(eventData);
+            sources.Add(eventData);
             SetSourceStates();
         }
 
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            RemoveSource(eventData);
+            sources.Remove(eventData);
             SetSourceStates();
 
         }

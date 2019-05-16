@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             /// <summary>
             /// Interactable was grabbed, near interaction grabbable
             /// </summary>
-            Grip,
+            Grab,
             /// <summary>
             /// Custom placeholder for anything
             /// </summary>
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             new State(){ Index = 12, Name = "Collision", ActiveIndex = -1, Bit = 0, Value = 0},
             new State(){ Index = 13, Name = "VoiceCommand", ActiveIndex = -1, Bit = 0, Value = 0},
             new State(){ Index = 14, Name = "PhysicalTouch", ActiveIndex = -1, Bit = 0, Value = 0},
-            new State(){ Index = 15, Name = "Grip", ActiveIndex = -1, Bit = 0, Value = 0},
+            new State(){ Index = 15, Name = "Grab", ActiveIndex = -1, Bit = 0, Value = 0},
             new State(){ Index = 16, Name = "Custom", ActiveIndex = -1, Bit = 0, Value = 0}
         };
 

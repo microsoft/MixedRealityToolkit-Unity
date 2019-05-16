@@ -12,9 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected InteractableThemePropertyValue startScaleValue = new InteractableThemePropertyValue();
 
         protected float timer = 0;
-        protected bool hasGrip;
-        protected float gripPercentage;
-        protected bool gripTransition;
+        protected bool hasGrab;
+        protected float grabPercentage;
+        protected bool grabTransition;
 
         public InteractableGrabScaleTheme()
         {
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 },
                 new InteractableCustomSetting()
                 {
-                    Name = "GripTimer",
+                    Name = "GrabTimer",
                     Type = InteractableThemePropertyValueTypes.Float,
                     Value = new InteractableThemePropertyValue() { Float = 0.3f }
                 }
@@ -83,60 +83,60 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
             
-            Vector3 maxGripScale = CustomSettings[0].Value.Vector3;
-            float gripTime = CustomSettings[1].Value.Float;
-            Vector3 gripScale = Vector3.Scale(startScaleValue.Vector3, maxGripScale);
+            Vector3 maxGrabScale = CustomSettings[0].Value.Vector3;
+            float grabTime = CustomSettings[1].Value.Float;
+            Vector3 grabScale = Vector3.Scale(startScaleValue.Vector3, maxGrabScale);
             
-            if (source.HasGrip)
+            if (source.HasGrab)
             {
-                if (!hasGrip)
+                if (!hasGrab)
                 {
                     timer = 0;
                 }
 
                 timer += Time.deltaTime;
-                gripPercentage = Mathf.Clamp01(timer / gripTime);
-                Host.transform.localScale = Vector3.Lerp(startScaleValue.Vector3, gripScale, gripPercentage);
-                hasGrip = true;
-                gripTransition = true;
+                grabPercentage = Mathf.Clamp01(timer / grabTime);
+                Host.transform.localScale = Vector3.Lerp(startScaleValue.Vector3, grabScale, grabPercentage);
+                hasGrab = true;
+                grabTransition = true;
             }
             else
             {
-                if (gripTransition)
+                if (grabTransition)
                 {
                     // ending
-                    gripTransition = false;
+                    grabTransition = false;
                     if (!Ease.Enabled)
                     {
                         Host.transform.localScale = startScaleValue.Vector3;
-                        gripPercentage = 0;
+                        grabPercentage = 0;
                     }
                     else
                     {
-                        timer = Ease.LerpTime - Ease.LerpTime * gripPercentage;
+                        timer = Ease.LerpTime - Ease.LerpTime * grabPercentage;
                     }
                 }
-                else if (Ease.Enabled && timer < Ease.LerpTime && gripPercentage > 0)
+                else if (Ease.Enabled && timer < Ease.LerpTime && grabPercentage > 0)
                 {
                     timer += Time.deltaTime;
                     float percent = 1 - Mathf.Clamp01(timer / Ease.LerpTime);
-                    Host.transform.localScale = Vector3.Lerp(startScaleValue.Vector3, gripScale, Ease.Curve.Evaluate(percent));
+                    Host.transform.localScale = Vector3.Lerp(startScaleValue.Vector3, grabScale, Ease.Curve.Evaluate(percent));
                 }
 
                 // is there a transition from physical press?
-                hasGrip = timer < Ease.LerpTime;
+                hasGrab = timer < Ease.LerpTime;
             }
         }
 
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
-            if (!hasGrip && Host != null)
+            if (!hasGrab && Host != null)
             {
                 Host.transform.localScale = Vector3.Lerp(property.StartValue.Vector3, Vector3.Scale(startScaleValue.Vector3, property.Values[index].Vector3), percentage);
             }
             else
             {
-                // there is near interaction grip so make sure Ease is not running
+                // there is near interaction grab so make sure Ease is not running
                 Ease.Stop();
             }
         }

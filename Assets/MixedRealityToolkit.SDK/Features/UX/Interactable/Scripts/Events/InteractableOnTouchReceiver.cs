@@ -7,7 +7,8 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// A basic touch event receiver
+    /// A basic touch event receiver for detecting Physical Touch state changes in the Interactable
+    /// When the physical touch states change, these events are triggered.
     /// </summary>
     public class InteractableOnTouchReceiver : ReceiverBase
     {
@@ -24,11 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
-            bool changed = state.CurrentState() != lastState;
-
             bool hadTouch = state.GetState(InteractableStates.InteractableStateEnum.PhysicalTouch).Value > 0;
 
-            if (this.hadTouch != hadTouch && changed)
+            if (this.hadTouch != hadTouch)
             {
                 if (hadTouch)
                 {

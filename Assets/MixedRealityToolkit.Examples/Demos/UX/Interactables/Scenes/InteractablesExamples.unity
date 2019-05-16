@@ -877,11 +877,11 @@ Transform:
   - {fileID: 1332690819}
   - {fileID: 79737368}
   - {fileID: 1190688397}
+  - {fileID: 1730808682}
   - {fileID: 1070904456}
   - {fileID: 519184499}
   - {fileID: 1870333360}
   - {fileID: 1992958651}
-  - {fileID: 1730808682}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -935,7 +935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4558003219915732, guid: 29a6f5316e0868e47adff5eee8945193, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29a6f5316e0868e47adff5eee8945193, type: 3}
@@ -976,7 +976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4359496519673794, guid: d12fcfca48d5bea4885b7957a82235f8, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d12fcfca48d5bea4885b7957a82235f8, type: 3}
@@ -1968,7 +1968,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4896987550614830, guid: 50eb8d97f29f335409ec2df393ed6cc5, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50eb8d97f29f335409ec2df393ed6cc5, type: 3}
@@ -2445,7 +2445,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1590642584}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.345, y: -0.135, z: 0.359}
+  m_LocalPosition: {x: 0.427, y: -0.135, z: 0.359}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1075411924}
@@ -2822,7 +2822,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4897534128531766, guid: 0ceaaf28e492a284fbf57901d04075ad, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceaaf28e492a284fbf57901d04075ad, type: 3}
@@ -2936,7 +2936,7 @@ Transform:
   - {fileID: 846309149}
   - {fileID: 1590642585}
   m_Father: {fileID: 561651893}
-  m_RootOrder: 15
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1736250032
 GameObject:
@@ -3022,7 +3022,9 @@ MonoBehaviour:
     speech prompt\n\u2022Toggle Switch \u2013 a toggle switch UI control example\n\u2022Checkbox
     - an example of a checkbox toggle control\n\u2022Radial and Radial Set - an example
     of a button collection or tab system where only one button can be toggled at a
-    time"
+    time\n\u2022 Near interaction examples for grab, physical press, physical press
+    ring and a sample of using near interaction state in a theme\n\u2022 Immersive
+    mesh based button samples coffee cup, push button, bucky, balloon."
 --- !u!222 &1736250035
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3638,7 +3640,7 @@ PrefabInstance:
     - target: {fileID: 2959665192573611208, guid: f9f52a7a06b9b6247a9a7ca621c72aff,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.057
+      value: -0.101
       objectReference: {fileID: 0}
     - target: {fileID: 2959665192573611208, guid: f9f52a7a06b9b6247a9a7ca621c72aff,
         type: 3}
@@ -3689,6 +3691,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955177971037425424, guid: f9f52a7a06b9b6247a9a7ca621c72aff,
+        type: 3}
+      propertyPath: localForward.z
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9f52a7a06b9b6247a9a7ca621c72aff, type: 3}
@@ -3784,7 +3791,7 @@ PrefabInstance:
     - target: {fileID: 6956884833964320612, guid: e7b58958a288a68488c207e4b0657743,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.335
+      value: -0.389
       objectReference: {fileID: 0}
     - target: {fileID: 6956884833964320612, guid: e7b58958a288a68488c207e4b0657743,
         type: 3}
@@ -3904,6 +3911,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8622528416301150197, guid: 8bb41ea9e771b9f4384ae9874a355b66,
+        type: 3}
+      propertyPath: PhysicalPressDistance
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8622528416301150154, guid: 8bb41ea9e771b9f4384ae9874a355b66,
+        type: 3}
+      propertyPath: localForward.z
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bb41ea9e771b9f4384ae9874a355b66, type: 3}
