@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// This class observes changes and updates content on a spectator device.
     /// </summary>
-    public class Observer : Singleton<Observer>
+    public class StateSynchronizationObserver : Singleton<StateSynchronizationObserver>
     {
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             if (connectionManager != null)
             {
-                connectionManager.OnConnected += NetMgr_OnConnected;
+                connectionManager.OnConnected += OnConnected;
                 connectionManager.OnReceive += OnReceive;
                 connectionManager.OnDisconnected += OnDisconnected;
 
@@ -70,11 +70,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             if (connectionManager != null)
             {
+                connectionManager.OnConnected -= OnConnected;
+                connectionManager.OnReceive -= OnReceive;
+                connectionManager.OnDisconnected -= OnDisconnected;
+                connectionManager.StopListening();
                 connectionManager.DisconnectAll();
             }
         }
 
-        private void NetMgr_OnConnected(SocketEndpoint endpoint)
+        private void OnConnected(SocketEndpoint endpoint)
         {
             currentConnection = endpoint;
             Debug.Log("Observer Connected!");

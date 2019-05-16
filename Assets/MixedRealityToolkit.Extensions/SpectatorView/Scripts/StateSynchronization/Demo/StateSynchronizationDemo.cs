@@ -38,31 +38,31 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         protected StateSynchronizationSceneManager StateSynchronizationSceneManager;
 
         /// <summary>
-        /// Broadcaster MonoBehaviour
+        /// StateSynchronizationBroadcaster MonoBehaviour
         /// </summary>
-        [Tooltip("Broadcaster MonoBehaviour")]
+        [Tooltip("StateSynchronizationBroadcaster MonoBehaviour")]
         [SerializeField]
-        protected Broadcaster broadcaster;
+        protected StateSynchronizationBroadcaster stateSynchronizationBroadcaster;
 
         /// <summary>
-        /// Observer MonoBehaviour
+        /// StateSynchronizationObserver MonoBehaviour
         /// </summary>
-        [Tooltip("Observer MonoBehaviour")]
+        [Tooltip("StateSynchronizationObserver MonoBehaviour")]
         [SerializeField]
-        protected Observer observer;
+        protected StateSynchronizationObserver stateSynchronizationObserver;
 
         /// <summary>
         /// Content to enable in the broadcaster application
         /// </summary>
         [Tooltip("Content to enable in the broadcaster application")]
         [SerializeField]
-        protected GameObject synchronizedContent;
+        protected GameObject broadcastedContent;
 
         private void Start()
         {
             if (StateSynchronizationSceneManager == null ||
-                broadcaster == null ||
-                observer == null)
+                stateSynchronizationBroadcaster == null ||
+                stateSynchronizationObserver == null)
             {
                 Debug.LogError("StateSynchronization scene isn't configured correctly");
                 return;
@@ -84,17 +84,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (Role == Role.Observer)
             {
-                Camera.main.transform.localPosition = Observer.Instance.transform.position;
-                Camera.main.transform.localRotation = Observer.Instance.transform.rotation;
+                Camera.main.transform.localPosition = StateSynchronizationObserver.Instance.transform.position;
+                Camera.main.transform.localRotation = StateSynchronizationObserver.Instance.transform.rotation;
             }
         }
 #endif
 
         private void RunAsBroadcaster()
         {
-            synchronizedContent.SetActive(true);
-            broadcaster.gameObject.SetActive(true);
-            observer.gameObject.SetActive(false);
+            broadcastedContent.SetActive(true);
+            stateSynchronizationBroadcaster.gameObject.SetActive(true);
+            stateSynchronizationObserver.gameObject.SetActive(false);
 
             // The StateSynchronizationSceneManager needs to be enabled after the broadcaster/observer
             StateSynchronizationSceneManager.gameObject.SetActive(true);
@@ -102,15 +102,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void RunAsObserver()
         {
-            synchronizedContent.SetActive(false);
-            broadcaster.gameObject.SetActive(false);
-            observer.gameObject.SetActive(true);
+            // All content in the observer scene should be dynamically setup/created, so we hide scene content here
+            broadcastedContent.SetActive(false);
+
+            stateSynchronizationBroadcaster.gameObject.SetActive(false);
+            stateSynchronizationObserver.gameObject.SetActive(true);
 
             // The StateSynchronizationSceneManager needs to be enabled after the broadcaster/observer
             StateSynchronizationSceneManager.gameObject.SetActive(true);
 
-            // Make sure the SynchronizedSceneManger is enabled prior to connecting the observer
-            observer.ConnectTo(broadcasterIpAddress);
+            // Make sure the StateSynchronizationSceneManager is enabled prior to connecting the observer
+            stateSynchronizationObserver.ConnectTo(broadcasterIpAddress);
         }
     }
 }

@@ -84,14 +84,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         [MenuItem("Spectator View/Edit Custom Network Services", priority = 201)]
         private static void EditCustomShaderProperties()
         {
-            GameObject prefab = Resources.Load<GameObject>(StateSynchronizationSceneManager.CustomNetworkServicesPrefabName);
+            GameObject prefab = Resources.Load<GameObject>(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName);
             if (prefab == null)
             {
-                GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.CustomNetworkServicesPrefabName);
+                GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName);
 
                 AssetCache.EnsureAssetDirectoryExists();
 #if UNITY_2018_3_OR_NEWER
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(StateSynchronizationSceneManager.CustomNetworkServicesPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName, ".prefab"));
 #else
                 prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(StateSynchronizationSceneManager.CustomNetworkServicesPrefabName, ".prefab"), hierarchyPrefab);
 #endif

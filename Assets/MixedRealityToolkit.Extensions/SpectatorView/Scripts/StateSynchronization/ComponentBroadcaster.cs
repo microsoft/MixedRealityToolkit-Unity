@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         IComponentBroadcasterService ComponentBroadcasterService { get; }
 
         /// <summary>
-        /// The components synchronized transform
+        /// The components transform broadcaster
         /// </summary>
         TransformBroadcaster TransformBroadcaster { get; }
 

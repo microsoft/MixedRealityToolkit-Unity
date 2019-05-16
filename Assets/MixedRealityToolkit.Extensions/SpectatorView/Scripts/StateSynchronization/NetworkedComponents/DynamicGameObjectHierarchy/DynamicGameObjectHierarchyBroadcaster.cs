@@ -15,17 +15,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private class PerConnectionInstantiationState
         {
-            public bool remoteObjectCreated;
+            public bool observerObjectCreated;
             public bool sendInstantiationRequest;
             public bool sendTransformHierarchyBinding;
         }
 
         public static class ChangeType
         {
-            public const byte CreateRemoteObject = 0x0;
-            public const byte RemoteObjectCreated = 0x1;
+            public const byte CreateObserverObject = 0x0;
+            public const byte ObserverObjectCreated = 0x1;
             public const byte BindTransformHierarchy = 0x2;
-            public const byte RemoteHierarchyBound = 0x3;
+            public const byte ObserverHierarchyBound = 0x3;
         }
 
         protected GameObject DynamicObject
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         protected override bool ShouldSendChanges(SocketEndpoint endpoint)
         {
-            // We always need to send changes for dynamic components to negotiate the remote instantiation
+            // We always need to send changes for dynamic components to negotiate the observer instantiation
             return true;
         }
 
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 {
                     perConnectionInstantiationState.Add(endpoint, new PerConnectionInstantiationState
                     {
-                        remoteObjectCreated = false,
+                        observerObjectCreated = false,
                         sendInstantiationRequest = true
                     });
                 }
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         {
                             ComponentBroadcasterService.WriteHeader(message, this);
 
-                            message.Write((byte)ChangeType.CreateRemoteObject);
+                            message.Write((byte)ChangeType.CreateObserverObject);
                             WriteInstantiationRequestParameters(message);
 
                             message.Flush();
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             foreach (KeyValuePair<SocketEndpoint, PerConnectionInstantiationState> state in perConnectionInstantiationState)
             {
-                if (state.Value.remoteObjectCreated)
+                if (state.Value.observerObjectCreated)
                 {
                     state.Value.sendTransformHierarchyBinding = true;
                 }
@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             foreach (KeyValuePair<SocketEndpoint, PerConnectionInstantiationState> state in perConnectionInstantiationState)
             {
                 TransformBroadcaster.BlockedConnections.Add(state.Key);
-                state.Value.remoteObjectCreated = false;
+                state.Value.observerObjectCreated = false;
                 state.Value.sendInstantiationRequest = true;
             }
         }
@@ -182,12 +182,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             switch (changeType)
             {
-                case ChangeType.RemoteObjectCreated:
+                case ChangeType.ObserverObjectCreated:
                     {
                         PerConnectionInstantiationState state;
                         if (perConnectionInstantiationState.TryGetValue(sendingEndpoint, out state))
                         {
-                            state.remoteObjectCreated = true;
+                            state.observerObjectCreated = true;
 
                             if (DynamicObject != null)
                             {
@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         }
                     }
                     break;
-                case ChangeType.RemoteHierarchyBound:
+                case ChangeType.ObserverHierarchyBound:
                     if (DynamicObject != null)
                     {
                         DynamicObject.GetComponent<TransformBroadcaster>().BlockedConnections.Remove(sendingEndpoint);

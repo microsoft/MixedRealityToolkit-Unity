@@ -15,14 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         [SerializeField]
         [Tooltip("Determines whether or not all GameObjects are synchronized or only those with a GameObjectHierarchyBroadcaster are synchronized.")]
-        private bool automaticallySynchronizeAllGameObjects = false;
+        private bool automaticallyBroadcastAllGameObjects = false;
 
         /// <summary>
         /// Determines whether or not all GameObjects are synchronized or only those with a GameObjectHierarchyBroadcaster are synchronized.
         /// </summary>
-        public bool AutomaticallySynchronizeAllGameObjects
+        public bool AutomaticallyBroadcastAllGameObjects
         {
-            get { return automaticallySynchronizeAllGameObjects; }
+            get { return automaticallyBroadcastAllGameObjects; }
         }
     }
 }

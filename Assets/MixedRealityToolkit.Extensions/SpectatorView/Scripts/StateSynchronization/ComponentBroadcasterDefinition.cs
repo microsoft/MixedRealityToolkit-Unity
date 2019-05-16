@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     internal abstract class ComponentBroadcasterDefinition
     {
-        public abstract void EnsureSynchronized(GameObject gameObject, out bool changesDetected);
+        public abstract void EnsureComponentBroadcastersCreated(GameObject gameObject, out bool changesDetected);
         public abstract bool IsTransformBroadcasterController { get; }
     }
 
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             this.requiredComponents = requiredComponents;
         }
 
-        public override void EnsureSynchronized(GameObject gameObject, out bool changesDetected)
+        public override void EnsureComponentBroadcastersCreated(GameObject gameObject, out bool changesDetected)
         {
             changesDetected = false;
 

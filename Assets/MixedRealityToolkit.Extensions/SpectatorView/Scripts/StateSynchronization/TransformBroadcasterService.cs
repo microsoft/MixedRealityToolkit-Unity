@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         /// <summary>
-        /// Cleans synchronization logic for the provided game object
+        /// Cleans up state synchronization logic for the provided game object
         /// </summary>
         /// <param name="mirror"></param>
         public override void Destroy(GameObject mirror)
@@ -36,10 +36,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         /// <summary>
-        /// Provides a network message to the game objects remote transform for interpolation
+        /// Provides a network message to the game objects transform observer for interpolation
         /// </summary>
         /// <param name="message">network message</param>
-        /// <param name="mirror">game object that has remote transform</param>
+        /// <param name="mirror">game object that has transform observer</param>
         /// <param name="lerpVal">interpolation value</param>
         public override void LerpRead(BinaryReader message, GameObject mirror, float lerpVal)
         {

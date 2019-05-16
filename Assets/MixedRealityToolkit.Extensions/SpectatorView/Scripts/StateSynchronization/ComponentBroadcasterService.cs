@@ -52,8 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// Abstract class for services that manage <see cref="IComponentBroadcaster"/>
     /// </summary>
     /// <typeparam name="ServiceType">The service type used for defining a singleton of said service</typeparam>
-    /// <typeparam name="RemoteType">The <see cref="IComponentObserver"/> type that the service manages</typeparam>
-    public abstract class ComponentBroadcasterService<ServiceType, RemoteType> : Singleton<ServiceType>, IComponentBroadcasterService where ServiceType : Singleton<ServiceType> where RemoteType : UnityEngine.Component, IComponentObserver
+    /// <typeparam name="ObserverType">The <see cref="IComponentObserver"/> type that the service manages</typeparam>
+    public abstract class ComponentBroadcasterService<ServiceType, ObserverType> : Singleton<ServiceType>, IComponentBroadcasterService where ServiceType : Singleton<ServiceType> where ObserverType : UnityEngine.Component, IComponentObserver
     {
         /// <summary>
         /// Ensures that the <see cref="IComponentObserver"/> type defined for the service exists for the provided game object
@@ -61,13 +61,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <param name="mirror"></param>
         public virtual void Create(GameObject mirror)
         {
-            ComponentExtensions.EnsureComponent<RemoteType>(mirror);
+            ComponentExtensions.EnsureComponent<ObserverType>(mirror);
         }
 
         /// Ensures that the <see cref="IComponentObserver"/> type defined for the service is removed from the provided game object
         public virtual void Destroy(GameObject mirror)
         {
-            RemoteType comp = mirror.GetComponent<RemoteType>();
+            ObserverType comp = mirror.GetComponent<ObserverType>();
             if (comp != null)
             {
                 Destroy(comp);
@@ -79,10 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         /// <param name="sendingEndpoint">Endpoint that sent the message</param>
         /// <param name="message">network message</param>
-        /// <param name="mirror">game object to synchronize</param>
+        /// <param name="mirror">game object to broadcast</param>
         public virtual void Read(SocketEndpoint sendingEndpoint, BinaryReader message, GameObject mirror)
         {
-            RemoteType comp = ComponentExtensions.EnsureComponent<RemoteType>(mirror);
+            ObserverType comp = ComponentExtensions.EnsureComponent<ObserverType>(mirror);
             comp.Read(sendingEndpoint, message);
         }
 
@@ -90,12 +90,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// Relays the <see cref="IComponentObserver"/> defined for the game object a network message for interpolating
         /// </summary>
         /// <param name="message">network message</param>
-        /// <param name="mirror">game object to synchronize</param>
+        /// <param name="mirror">game object to broadcast</param>
         /// <param name="lerpVal">interpolation value</param>
-        public virtual void LerpRead(BinaryReader message, GameObject mirror, float lerpVal)
-        {
-            return;
-        }
+        public virtual void LerpRead(BinaryReader message, GameObject mirror, float lerpVal) { }
 
         /// <summary>
         /// Writes <see cref="IComponentBroadcaster"/> information to a network message for sending to other devices

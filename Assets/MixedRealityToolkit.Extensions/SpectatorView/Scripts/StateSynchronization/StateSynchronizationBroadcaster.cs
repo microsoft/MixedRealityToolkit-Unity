@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// This class observes changes and updates content on a user device.
     /// </summary>
-    public class Broadcaster : Singleton<Broadcaster>
+    public class StateSynchronizationBroadcaster : Singleton<StateSynchronizationBroadcaster>
     {
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
@@ -56,10 +56,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         protected virtual void SetupNetworkConnectionManager()
         {
-            connectionManager.OnConnected += NetMgr_OnConnected;
-            connectionManager.OnDisconnected += NetMgr_OnDisconnected;
-            connectionManager.OnReceive += NetMgr_OnReceive;
-            connectionManager.StartListening(Port);
+            if (connectionManager != null)
+            {
+                connectionManager.OnConnected += OnConnected;
+                connectionManager.OnDisconnected += OnDisconnected;
+                connectionManager.OnReceive += OnReceive;
+                connectionManager.StartListening(Port);
+            }
+            else
+            {
+                Debug.LogWarning("Connection Manager not defined for Broadcaster.");
+            }
         }
 
         protected override void OnDestroy()
@@ -70,21 +77,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         protected virtual void CleanUpNetworkConnectionManager()
         {
-            connectionManager.StopListening();
-            connectionManager.DisconnectAll();
+            if (connectionManager != null)
+            {
+                connectionManager.OnConnected -= OnConnected;
+                connectionManager.OnDisconnected -= OnDisconnected;
+                connectionManager.OnReceive -= OnReceive;
+                connectionManager.StopListening();
+                connectionManager.DisconnectAll();
+            }
         }
 
-        protected void NetMgr_OnConnected(SocketEndpoint endpoint)
+        protected void OnConnected(SocketEndpoint endpoint)
         {
             Connected?.Invoke(endpoint);
         }
 
-        protected void NetMgr_OnDisconnected(SocketEndpoint endpoint)
+        protected void OnDisconnected(SocketEndpoint endpoint)
         {
             Disconnected?.Invoke(endpoint);
         }
 
-        protected void NetMgr_OnReceive(IncomingMessage data)
+        protected void OnReceive(IncomingMessage data)
         {
             using (MemoryStream stream = new MemoryStream(data.Data))
             using (BinaryReader reader = new BinaryReader(stream))
@@ -133,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             UpdateExtension();
 
-            if (HasConnections && BroadcasterSettings.IsInitialized && BroadcasterSettings.Instance && BroadcasterSettings.Instance.AutomaticallySynchronizeAllGameObjects)
+            if (HasConnections && BroadcasterSettings.IsInitialized && BroadcasterSettings.Instance && BroadcasterSettings.Instance.AutomaticallyBroadcastAllGameObjects)
             {
                 for (int i = 0; i < SceneManager.sceneCount; i++)
                 {

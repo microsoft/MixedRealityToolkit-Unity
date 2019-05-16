@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class NetworkShaderProperties : Singleton<NetworkShaderProperties>
+    internal class GlobalShaderPropertiesBroadcaster : Singleton<GlobalShaderPropertiesBroadcaster>
     {
         private object[] previousValues;
         private List<GlobalMaterialPropertyAsset> changedProperties = new List<GlobalMaterialPropertyAsset>();

@@ -12,13 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
-            if (Broadcaster.IsInitialized)
+            if (StateSynchronizationBroadcaster.IsInitialized)
             {
-                Broadcaster.Instance.Connected += OnConnected;
+                StateSynchronizationBroadcaster.Instance.Connected += OnConnected;
 
                 // If we have connted to other devices, make sure we immediately
                 // add a new TransformBroadcaster.
-                if (Broadcaster.Instance.HasConnections)
+                if (StateSynchronizationBroadcaster.Instance.HasConnections)
                 {
                     OnConnected(null);
                 }
@@ -27,9 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnDestroy()
         {
-            if (Broadcaster.IsInitialized && Broadcaster.Instance != null)
+            if (StateSynchronizationBroadcaster.IsInitialized && StateSynchronizationBroadcaster.Instance != null)
             {
-                Broadcaster.Instance.Connected -= OnConnected;
+                StateSynchronizationBroadcaster.Instance.Connected -= OnConnected;
             }
         }
 

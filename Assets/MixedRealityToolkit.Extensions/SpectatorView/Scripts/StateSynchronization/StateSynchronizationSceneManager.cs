@@ -27,30 +27,33 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private bool shouldClearScene;
 
         public const string DefaultStateSynchronizationPerformanceParametersPrefabName = "DefaultStateSynchronizationPerformanceParameters";
-        public const string CustomNetworkServicesPrefabName = "CustomNetworkServices";
+        public const string CustomBroadcasterServicesPrefabName = "CustomBroadcasterServices";
         public const string SettingsPrefabName = "StateSynchronizationSettings";
 
         private Dictionary<short, GameObject> objectMirrors = new Dictionary<short, GameObject>();
 
-        private Dictionary<ShortID, IComponentBroadcasterService> ComponentBroadcasterServices = new Dictionary<ShortID, IComponentBroadcasterService>();
+        private Dictionary<ShortID, IComponentBroadcasterService> componentBroadcasterServices = new Dictionary<ShortID, IComponentBroadcasterService>();
 
         private readonly List<SocketEndpoint> addedConnections = new List<SocketEndpoint>();
         private readonly List<SocketEndpoint> removedConnections = new List<SocketEndpoint>();
         private readonly List<SocketEndpoint> continuedConnections = new List<SocketEndpoint>();
 
-        private List<IComponentBroadcaster> frameUpdatedComponents = new List<IComponentBroadcaster>();
-
-        public IReadOnlyList<IComponentBroadcaster> FrameUpdatedComponents
+        private List<IComponentBroadcaster> broadcasterComponents = new List<IComponentBroadcaster>();
+        public IReadOnlyList<IComponentBroadcaster> BroadcasterComponents
         {
-            get { return frameUpdatedComponents; }
+            get { return broadcasterComponents; }
         }
 
-        public List<ComponentBroadcasterDefinition> ComponentBroadcasterDefinitions = new List<ComponentBroadcasterDefinition>();
+        private List<ComponentBroadcasterDefinition> componentBroadcasterDefinitions = new List<ComponentBroadcasterDefinition>();
+        public IReadOnlyList<ComponentBroadcasterDefinition> ComponentBroadcasterDefinitions
+        {
+            get { return componentBroadcasterDefinitions; }
+        }
 
         public void RegisterService(IComponentBroadcasterService service, ComponentBroadcasterDefinition componentDefinition)
         {
-            ComponentBroadcasterDefinitions.Add(componentDefinition);
-            ComponentBroadcasterServices.Add(service.GetID(), service);
+            componentBroadcasterDefinitions.Add(componentDefinition);
+            componentBroadcasterServices.Add(service.GetID(), service);
         }
 
         public Transform RootTransform
@@ -62,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             base.Awake();
 
-            GameObject customServices = Resources.Load<GameObject>(CustomNetworkServicesPrefabName);
+            GameObject customServices = Resources.Load<GameObject>(CustomBroadcasterServicesPrefabName);
             if (customServices != null)
             {
                 Instantiate(customServices, null);
@@ -99,15 +102,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public void AddComponentBroadcaster(IComponentBroadcaster ComponentBroadcaster)
         {
-            frameUpdatedComponents.Add(ComponentBroadcaster);
+            broadcasterComponents.Add(ComponentBroadcaster);
         }
 
         private void Start()
         {
-            if (Broadcaster.IsInitialized)
+            if (StateSynchronizationBroadcaster.IsInitialized)
             {
-                Broadcaster.Instance.Connected += OnClientConnected;
-                Broadcaster.Instance.Disconnected += OnClientDisconnected;
+                StateSynchronizationBroadcaster.Instance.Connected += OnClientConnected;
+                StateSynchronizationBroadcaster.Instance.Disconnected += OnClientDisconnected;
             }
 
             StartCoroutine(RunEndOfFrameUpdates());
@@ -138,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             objectMirrors.Clear();
-            frameUpdatedComponents.Clear();
+            broadcasterComponents.Clear();
         }
 
         public void WriteHeader(BinaryWriter message)
@@ -149,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public void Send(IEnumerable<SocketEndpoint> endpoints, byte[] message)
         {
-            if (Broadcaster.IsInitialized && Broadcaster.Instance.HasConnections)
+            if (StateSynchronizationBroadcaster.IsInitialized && StateSynchronizationBroadcaster.Instance.HasConnections)
             {
                 foreach (SocketEndpoint endpoint in endpoints)
                 {
@@ -210,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
 
                 IComponentBroadcasterService componentService;
-                if (ComponentBroadcasterServices.TryGetValue(typeID, out componentService))
+                if (componentBroadcasterServices.TryGetValue(typeID, out componentService))
                 {
                     short id = reader.ReadInt16();
                     ComponentBroadcasterChangeType changeType = (ComponentBroadcasterChangeType)reader.ReadByte();
@@ -248,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             ShortID typeID = reader.ReadShortID();
 
             IComponentBroadcasterService componentService;
-            if (ComponentBroadcasterServices.TryGetValue(typeID, out componentService))
+            if (componentBroadcasterServices.TryGetValue(typeID, out componentService))
             {
                 short id = reader.ReadInt16();
                 ComponentBroadcasterChangeType changeType = (ComponentBroadcasterChangeType)reader.ReadByte();
@@ -321,9 +324,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                 if (framesToSkipForBuffering == 0)
                 {
-                    if (Broadcaster.IsInitialized && Broadcaster.Instance != null)
+                    if (StateSynchronizationBroadcaster.IsInitialized && StateSynchronizationBroadcaster.Instance != null)
                     {
-                        int bytesQueued = Broadcaster.Instance.OutputBytesQueued;
+                        int bytesQueued = StateSynchronizationBroadcaster.Instance.OutputBytesQueued;
                         if (bytesQueued > MaximumQueuedByteCount)
                         {
                             framesToSkipForBuffering = frameSkippingStride;
@@ -339,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             UpdateFrameSkippingVotes(-1);
                         }
 
-                        Broadcaster.Instance.OnFrameCompleted();
+                        StateSynchronizationBroadcaster.Instance.OnFrameCompleted();
                     }
 
                     SocketEndpointConnectionDelta connectionDelta = GetFrameConnectionDelta();
@@ -348,31 +351,31 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     // components
                     UpdateDestroyedComponents(connectionDelta);
 
-                    for (int i = frameUpdatedComponents.Count - 1; i >= 0; i--)
+                    for (int i = broadcasterComponents.Count - 1; i >= 0; i--)
                     {
-                        frameUpdatedComponents[i].ResetFrame();
+                        broadcasterComponents[i].ResetFrame();
                     }
 
                     if (connectionDelta.HasConnections)
                     {
-                        if (NetworkShaderProperties.IsInitialized && NetworkShaderProperties.Instance != null)
+                        if (GlobalShaderPropertiesBroadcaster.IsInitialized && GlobalShaderPropertiesBroadcaster.Instance != null)
                         {
-                            NetworkShaderProperties.Instance.OnFrameCompleted(connectionDelta);
+                            GlobalShaderPropertiesBroadcaster.Instance.OnFrameCompleted(connectionDelta);
                         }
 
-                        for (int i = 0; i < frameUpdatedComponents.Count; i++)
+                        for (int i = 0; i < broadcasterComponents.Count; i++)
                         {
-                            if (!IsComponentDestroyed(frameUpdatedComponents[i]))
+                            if (!IsComponentDestroyed(broadcasterComponents[i]))
                             {
-                                frameUpdatedComponents[i].ProcessNewConnections(connectionDelta);
+                                broadcasterComponents[i].ProcessNewConnections(connectionDelta);
                             }
                         }
 
-                        for (int i = 0; i < frameUpdatedComponents.Count; i++)
+                        for (int i = 0; i < broadcasterComponents.Count; i++)
                         {
-                            if (!IsComponentDestroyed(frameUpdatedComponents[i]))
+                            if (!IsComponentDestroyed(broadcasterComponents[i]))
                             {
-                                frameUpdatedComponents[i].OnFrameCompleted(connectionDelta);
+                                broadcasterComponents[i].OnFrameCompleted(connectionDelta);
                             }
                         }
                     }
@@ -387,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 {
                     framesToSkipForBuffering--;
 
-                    int bytesQueued = Broadcaster.Instance.OutputBytesQueued;
+                    int bytesQueued = StateSynchronizationBroadcaster.Instance.OutputBytesQueued;
                     if (bytesQueued <= MaximumQueuedByteCount)
                     {
                         // We're about to skip a frame but the buffer is currently under the capacity threshold for skipping.
@@ -400,12 +403,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void UpdateDestroyedComponents(SocketEndpointConnectionDelta connectionDelta)
         {
-            for (int i = frameUpdatedComponents.Count - 1; i >= 0; i--)
+            for (int i = broadcasterComponents.Count - 1; i >= 0; i--)
             {
-                if (IsComponentDestroyed(frameUpdatedComponents[i]))
+                if (IsComponentDestroyed(broadcasterComponents[i]))
                 {
-                    SendComponentDestruction(connectionDelta.ContinuedConnections, frameUpdatedComponents[i]);
-                    frameUpdatedComponents.RemoveAt(i);
+                    SendComponentDestruction(connectionDelta.ContinuedConnections, broadcasterComponents[i]);
+                    broadcasterComponents.RemoveAt(i);
                 }
             }
         }
@@ -439,9 +442,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void CheckForFinalDisconnect()
         {
-            if (continuedConnections.Count == 0 && FrameUpdatedComponents.Count > 0)
+            if (continuedConnections.Count == 0 && BroadcasterComponents.Count > 0)
             {
-                foreach (MonoBehaviour component in FrameUpdatedComponents.OfType<MonoBehaviour>())
+                foreach (MonoBehaviour component in BroadcasterComponents.OfType<MonoBehaviour>())
                 {
                     Destroy(component);
                 }

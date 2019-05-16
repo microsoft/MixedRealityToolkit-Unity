@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        protected abstract void CreateRemoteObject(BinaryReader message);
+        protected abstract void CreateObserverObject(BinaryReader message);
 
         private void OnDynamicObjectCreated()
         {
@@ -39,10 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 Singleton<TComponentService>.Instance.WriteHeader(writer, GetComponent<TransformObserver>());
 
-                writer.Write(DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.RemoteObjectCreated);
+                writer.Write(DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.ObserverObjectCreated);
 
                 writer.Flush();
-                Observer.Instance.SendComponentMessage(stream.ToArray());
+                StateSynchronizationObserver.Instance.SendComponentMessage(stream.ToArray());
             }
         }
 
@@ -57,19 +57,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             switch (changeType)
             {
-                case DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.CreateRemoteObject:
-                    CreateRemoteObject(message);
+                case DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.CreateObserverObject:
+                    CreateObserverObject(message);
                     break;
                 case DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.BindTransformHierarchy:
-                    BindRemoteHierarchy(message);
+                    BindObserverHierarchy(message);
                     break;
             }
         }
 
-        private void BindRemoteHierarchy(BinaryReader message)
+        private void BindObserverHierarchy(BinaryReader message)
         {
-            var remoteHierarchy = ReadRemoteHierarchyTransformIDs(message);
-            ApplyChildTransforms(DynamicObject.transform, remoteHierarchy);
+            var observerHierarchy = ReadObserverHierarchyTransformIDs(message);
+            ApplyChildTransforms(DynamicObject.transform, observerHierarchy);
 
             DynamicObject.SetActive(true);
 
@@ -78,14 +78,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 Singleton<TComponentService>.Instance.WriteHeader(writer, GetComponent<TransformObserver>());
 
-                writer.Write(DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.RemoteHierarchyBound);
+                writer.Write(DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.ObserverHierarchyBound);
 
                 writer.Flush();
-                Observer.Instance.SendComponentMessage(stream.ToArray());
+                StateSynchronizationObserver.Instance.SendComponentMessage(stream.ToArray());
             }
         }
 
-        public static TransformObserverInfo[] ReadRemoteHierarchyTransformIDs(BinaryReader message)
+        public static TransformObserverInfo[] ReadObserverHierarchyTransformIDs(BinaryReader message)
         {
             int childCount = message.ReadInt32();
             TransformObserverInfo[] list = new TransformObserverInfo[childCount];
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     Id = id
                 };
                     
-                childTransformInfo.Children = ReadRemoteHierarchyTransformIDs(message);
+                childTransformInfo.Children = ReadObserverHierarchyTransformIDs(message);
                 list[i] = childTransformInfo;
 
             }
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (transform.childCount != childTransformInfos.Length)
             {
-                Debug.LogError("Client dynamic object does not have the same number of children as the remote dynamic object at child " + transform.name);
+                Debug.LogError("Client dynamic object does not have the same number of children as the observer dynamic object at child " + transform.name);
             }
             else
             {
@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     Transform childTransform = transform.GetChild(i);
                     if (childTransform.name != childTransformInfos[i].Name)
                     {
-                        Debug.LogError("Client dynamic object " + transform.name + " has child object named " + childTransformInfos[i].Name + " but remote dynamic object has child named " + childTransform.name);
+                        Debug.LogError("Client dynamic object " + transform.name + " has child object named " + childTransformInfos[i].Name + " but observer dynamic object has child named " + childTransform.name);
                     }
                     else
                     {

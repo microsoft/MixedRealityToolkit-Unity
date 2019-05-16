@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         /// <summary>
-        /// Returns the unique id for the synchronized transform
+        /// Returns the unique id for the broadcasted transform
         /// </summary>
         public short Id
         {
@@ -440,7 +440,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 if (componentDefinition.IsTransformBroadcasterController)
                 {
                     bool changesDetected;
-                    componentDefinition.EnsureSynchronized(cachedGameObject, out changesDetected);
+                    componentDefinition.EnsureComponentBroadcastersCreated(cachedGameObject, out changesDetected);
                 }
             }
         }
@@ -459,7 +459,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         if (!componentDefinition.IsTransformBroadcasterController)
                         {
                             bool changesDetected;
-                            componentDefinition.EnsureSynchronized(cachedGameObject, out changesDetected);
+                            componentDefinition.EnsureComponentBroadcastersCreated(cachedGameObject, out changesDetected);
                             anyChangesDetected |= changesDetected;
                         }
                     }
