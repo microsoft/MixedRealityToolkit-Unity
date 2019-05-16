@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public Vector3 Direction;
         public float Distance;
         public float Percentage;
-        public bool HasTouch;
+        public bool HasPress;
         public float MaxDistance;
         public Vector3 ProjectedDirection;
         public Vector3 PressedValue;

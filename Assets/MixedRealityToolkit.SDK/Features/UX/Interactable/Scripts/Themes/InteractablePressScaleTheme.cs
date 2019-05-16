@@ -97,16 +97,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 Host.transform.localScale = Vector3.Lerp(startScaleValue.Vector3, maxPressScale, pressData.Percentage);
                 pressData.PressedValue = Host.transform.localScale;
 
-                pressData.HasTouch = true;
+                pressData.HasPress = true;
                 hasPress = true;
             }
             else
             {
-                if (pressData.HasTouch)
+                if (pressData.HasPress)
                 {
                     // ending
                     pressData.Direction = Vector3.zero;
-                    pressData.HasTouch = false;
+                    pressData.HasPress = false;
                     if (!Ease.Enabled)
                     {
                         Host.transform.localScale = startScaleValue.Vector3;

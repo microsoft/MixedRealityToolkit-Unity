@@ -89,16 +89,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 Host.transform.localPosition = startValue.Vector3 + Host.transform.InverseTransformDirection(pressData.ProjectedDirection) * pressData.Percentage;
                 pressData.PressedValue = Host.transform.localPosition;
 
-                pressData.HasTouch = true;
+                pressData.HasPress = true;
                 hasPress = true;
             }
             else
             {
-                if (pressData.HasTouch)
+                if (pressData.HasPress)
                 {
                     // ending
                     pressData.Direction = Vector3.zero;
-                    pressData.HasTouch = false;
+                    pressData.HasPress = false;
                     if (!Ease.Enabled)
                     {
                         Host.transform.localPosition = startValue.Vector3;

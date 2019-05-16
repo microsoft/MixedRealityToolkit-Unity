@@ -130,6 +130,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected float rollOffTime = 0.25f;
         protected float rollOffTimer = 0.25f;
 
+        protected InteractablePressData pressData;
+
         // handle near touch interaction
         public float PhysicalPressDistance = 0.05f;
         protected Vector3 pressStartPosition = Vector3.zero;
@@ -166,6 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 handlers.Add(handler);
             }
         }
+        
 
         public void RemoveHandler(IInteractableHandler handler)
         {
@@ -219,6 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetupEvents();
             SetupThemes();
             SetupStates();
+            pressData = new InteractablePressData();
         }
 
         private void OnEnable()
@@ -261,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             UpdateState();
 
-            pointerDataManager.UpdatePointerPositions();
+            //pointerDataManager.UpdatePointerPositions();
 
             if (rollOffTimer < rollOffTime && HasPress)
             {
@@ -593,10 +597,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Access the PointerManager with all the interactive pointer data.
         /// </summary>
         /// <returns></returns>
-        public InteractablePointerDataManager GetPointerManager()
-        {
-            return pointerDataManager;
-        }
+        public InteractablePointerDataManager PointerManager => pointerDataManager;
 
         #endregion PointerManagement
 
@@ -673,6 +674,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 
                 SetGesture(false);
+                if (pointerDataManager.PointerData.Count < 1)
+                {
+                    pressData = new InteractablePressData();
+                }
 
                 // if a global button is in the scene it will swallow all pointer down and ups, do we want this?
                 // This allows a global Interacable and normal interactable to exist in the same scene.
@@ -706,12 +711,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     eventData.Use();
             }
         }
-
+        
         public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
+            // check if gesture started, dragged a min distance
             if (!HasGesture && CanInteract() && (ShouldListen(eventData.MixedRealityInputAction) || eventData.MixedRealityInputAction.Description == "None"))
             {
-                SetGesture(true);
+                pressData.ProjectedDirection = Vector3.one;
+                pressData.MaxDistance = 0.2f;
+                pressData = InteractablePointerDataManager.GetPointerPressData(this, pressData);
+                pressData.HasPress = true;
+                if (Mathf.Abs(pressData.Distance) > 0.01f)
+                {
+                    SetGesture(true);
+                }
             }
         }
 
@@ -1201,7 +1214,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetSourceStates();
 
         }
-
         #endregion SourceHandlers
     }
 }

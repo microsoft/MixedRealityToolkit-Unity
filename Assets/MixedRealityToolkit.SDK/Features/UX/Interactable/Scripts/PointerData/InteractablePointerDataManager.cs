@@ -20,10 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Get the current list of pointer data
         /// </summary>
         /// <returns></returns>
-        public Dictionary<uint, InteractablePointerData> GetPointerData()
-        {
-            return pointerData;
-        }
+        public Dictionary<uint, InteractablePointerData> PointerData => pointerData;
 
         /// <summary>
         /// add pointerData, interaction started - focus
@@ -42,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public static InteractablePressData GetPressData(Interactable source, InteractablePressData data)
         {
-            Dictionary<uint, InteractablePointerData> pointers = source.GetPointerManager().GetPointerData();
+            Dictionary<uint, InteractablePointerData> pointers = source.PointerManager.PointerData;
             Vector3 position = Vector3.zero;
 
             foreach (InteractablePointerData pointer in pointers.Values)
@@ -51,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     IMixedRealityHand hand = (IMixedRealityHand)pointer.Hand.Controller;
                     MixedRealityPose pose = new MixedRealityPose();
+                    Debug.Log(hand);
                     if (hand != null && hand.TryGetJoint(TrackedHandJoint.IndexTip, out pose))
                     {
                         position = pose.Position;
@@ -58,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            if (!data.HasTouch)
+            if (!data.HasPress)
             {
                 // starting
                 data.StartPosition = position;
@@ -67,7 +65,31 @@ namespace Microsoft.MixedReality.Toolkit.UI
             data.Direction = position - data.StartPosition;
             float distance = Vector3.Dot(data.Direction, data.ProjectedDirection.normalized);
             distance = Mathf.Clamp(distance, 0, data.MaxDistance);
-            
+            data.Distance = distance;
+            data.Percentage = distance / data.MaxDistance;
+            return data;
+        }
+
+        public static InteractablePressData GetPointerPressData(Interactable source, InteractablePressData data)
+        {
+            Dictionary<uint, InteractablePointerData> pointers = source.PointerManager.PointerData;
+            Vector3 position = Vector3.zero;
+
+            foreach (InteractablePointerData pointer in pointers.Values)
+            {
+                position = pointer.Pointer.Position;
+            }
+
+            if (!data.HasPress)
+            {
+                // starting
+                data.StartPosition = position;
+            }
+
+            data.Direction = position - data.StartPosition;
+            float distance = Vector3.Dot(data.Direction, data.ProjectedDirection.normalized);
+            distance = Mathf.Clamp(distance, 0, data.MaxDistance);
+            data.Distance = distance;
             data.Percentage = distance / data.MaxDistance;
             return data;
         }
