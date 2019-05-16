@@ -22,11 +22,11 @@ namespace Microsoft.MixedReality.SpatialAlignment.Common
         public event Action<ISpatialCoordinate> CoordinatedDiscovered;
 
         private readonly object discoveryLockObject = new object();
-
-        private CancellationTokenSource trackingCTS = null;
-        private ConcurrentBag<ISpatialCoordinate> discoveredCoordinates = null;
+        private readonly CancellationTokenSource disposedCTS = new CancellationTokenSource();
 
         private bool isTracking;
+
+        protected readonly ConcurrentDictionary<TKey, ISpatialCoordinate> knownCoordinates = new ConcurrentDictionary<TKey, ISpatialCoordinate>();
 
         /// <inheritdoc />
         public bool IsTracking
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.SpatialAlignment.Common
             }
         }
 
-        protected readonly ConcurrentDictionary<TKey, ISpatialCoordinate> knownCoordinates = new ConcurrentDictionary<TKey, ISpatialCoordinate>();
+        protected virtual bool SupportsDiscovery => true;
 
         /// <inheritdoc />
         public IEnumerable<ISpatialCoordinate> KnownCoordinates
@@ -55,20 +55,30 @@ namespace Microsoft.MixedReality.SpatialAlignment.Common
         {
             base.OnManagedDispose();
 
+            // Notify of dispose to any existing operations
+            disposedCTS.Cancel();
+            disposedCTS.Dispose();
+
             knownCoordinates.Clear();
-            StopAllTracking();
         }
 
         /// <summary>
         /// Adds a coordinate to be tracked by this service.
         /// </summary>
-        private void OnNewCoordinate(TKey id, ISpatialCoordinate spatialCoordinate)
+        protected void OnNewCoordinate(TKey id, ISpatialCoordinate spatialCoordinate)
         {
             ThrowIfDisposed();
 
+            lock (discoveryLockObject)
+            {
+                if (!isTracking)
+                {
+                    throw new InvalidOperationException("We aren't tracking, and shouldn't expect additional coordinates to be discovered.");
+                }
+            }
+
             if (knownCoordinates.TryAdd(id, spatialCoordinate))
             {
-                discoveredCoordinates.Add(spatialCoordinate);
                 CoordinatedDiscovered?.Invoke(spatialCoordinate);
             }
             else
@@ -94,96 +104,45 @@ namespace Microsoft.MixedReality.SpatialAlignment.Common
         }
 
         /// <inheritdoc />
-        public void StopAllTracking()
+        public async Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate = null)
         {
-            lock (discoveryLockObject)
+            if (!SupportsDiscovery)
             {
-                trackingCTS?.Cancel();
-                trackingCTS?.Dispose();
-                trackingCTS = null;
-
-                isTracking = false;
+                return false;
             }
-        }
 
-        /// <inheritdoc />
-        public async Task<IEnumerable<ISpatialCoordinate>> DiscoverCoordinatesAsync(CancellationToken cancellationToken)
-        {
-            CancellationToken trackingToken;
             lock (discoveryLockObject)
             {
                 ThrowIfDisposed();
+
                 if (isTracking)
                 {
-                    throw new InvalidOperationException("Discovery or Location is already running, please cancel that operation first.");
+                    return false;
                 }
 
                 isTracking = true;
-
-                discoveredCoordinates = new ConcurrentBag<ISpatialCoordinate>();
-                trackingCTS = new CancellationTokenSource();
-                trackingToken = trackingCTS.Token;
             }
 
             try
             {
-                using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(trackingToken, cancellationToken))
+                using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(disposedCTS.Token, cancellationToken))
                 {
-                    await OnDiscoverCoordinatesAsync(OnNewCoordinate, cts.Token).IgnoreCancellation();
+                    await OnDiscoverCoordinatesAsync(cts.Token).IgnoreCancellation();
                 }
 
-                return discoveredCoordinates;
+                return true;
             }
             finally
             {
                 isTracking = false;
-                discoveredCoordinates = null;
             }
         }
 
-        /// <inheritdoc />
-        public async Task<IEnumerable<ISpatialCoordinate>> LocateCoordinatesAsync(string[] coordinateIds, CancellationToken cancellationToken)
-        {
-            CancellationToken trackingToken;
-            lock (discoveryLockObject)
-            {
-                ThrowIfDisposed();
-                if (isTracking)
-                {
-                    throw new InvalidOperationException("Discovery or Location is already running, please cancel that operation first.");
-                }
-
-                isTracking = true;
-
-                discoveredCoordinates = new ConcurrentBag<ISpatialCoordinate>();
-                trackingCTS = new CancellationTokenSource();
-                trackingToken = trackingCTS.Token;
-            }
-
-            try
-            {
-                using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(trackingToken, cancellationToken))
-                {
-                    await OnLocateCoordinatesAsync(OnNewCoordinate, coordinateIds, cts.Token).IgnoreCancellation();
-                }
-
-                return discoveredCoordinates;
-            }
-            finally
-            {
-                isTracking = false;
-                discoveredCoordinates = null;
-            }
-        }
+        protected abstract bool TryParse(string id, out TKey result);
 
         /// <summary>
         /// Implement this method for the logic begin and end tracking (when <see cref="CancellationToken"/> is cancelled).
         /// </summary>
-        protected abstract Task OnDiscoverCoordinatesAsync(Action<TKey, ISpatialCoordinate> onNewCoordinate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Implement this method for the logic begin and end tracking (when <see cref="CancellationToken"/> is cancelled).
-        /// </summary>
-        protected abstract Task OnLocateCoordinatesAsync(Action<TKey, ISpatialCoordinate> onNewCoordinate, string[] coordinateIds, CancellationToken cancellationToken);
+        protected abstract Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, TKey[] idsToLocate = null);
     }
 }

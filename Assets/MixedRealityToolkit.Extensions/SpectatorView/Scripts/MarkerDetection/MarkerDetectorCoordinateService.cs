@@ -67,8 +67,9 @@ namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.Marke
 
         protected override void OnManagedDispose()
         {
+            base.OnManagedDispose();
+
             markerDetector.MarkersUpdated -= OnMarkersUpdated;
-            IsTracking = false;
         }
 
         private void OnMarkersUpdated(Dictionary<int, Marker> markers)
@@ -109,41 +110,38 @@ namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.Marke
             }
         }
 
-        /// <summary>
-        /// Returns an existingly tracked <see cref="ISpatialCoordinate"/> or a new one that will be used when the marker with the id is seen.
-        /// </summary>
-        public override Task<ISpatialCoordinate> TryGetCoordinateByIdAsync(string markerId, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
+        protected override bool TryParse(string id, out int result) => int.TryParse(id, out result);
 
-            ISpatialCoordinate toReturn = null;
-            if (int.TryParse(markerId, out int id))
+        protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, int[] idsToLocate = null)
+        {
+            markerDetector.StartDetecting();
+
+            if (idsToLocate != null)
             {
-                if (!knownCoordinates.TryGetValue(id, out toReturn))
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    SpatialCoordinate spatialCoordinate = new SpatialCoordinate(id);
-                    OnNewCoordinate(id, spatialCoordinate);
-                    toReturn = spatialCoordinate;
+                    bool allFound = true;
+                    foreach (int id in idsToLocate)
+                    {
+                        if (!knownCoordinates.TryGetValue(id, out ISpatialCoordinate coordinate) || coordinate.State == LocatedState.Unresolved)
+                        {
+                            allFound = false;
+                            break;
+                        }
+                    }
+
+                    if (allFound)
+                    {
+                        break;
+                    }
+
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken).IgnoreCancellation();
                 }
             }
-
-            return Task.FromResult(toReturn);
-        }
-
-        protected override Task OnDiscoverCoordinatesAsync(Action<int, ISpatialCoordinate> onNewCoordinate, CancellationToken cancellationToken)
-        {
-            markerDetector.StartDetecting();
-
-            await Task.Delay(-1, cancellationToken).IgnoreCancellation();
-
-            markerDetector.StopDetecting();
-        }
-
-        protected override Task OnLocateCoordinatesAsync(Action<int, ISpatialCoordinate> onNewCoordinate, string[] coordinateIds, CancellationToken cancellationToken)
-        {
-            markerDetector.StartDetecting();
-
-            await Task.Delay(-1, cancellationToken).IgnoreCancellation();
+            else
+            {
+                await Task.Delay(-1, cancellationToken).IgnoreCancellation();
+            }
 
             markerDetector.StopDetecting();
         }

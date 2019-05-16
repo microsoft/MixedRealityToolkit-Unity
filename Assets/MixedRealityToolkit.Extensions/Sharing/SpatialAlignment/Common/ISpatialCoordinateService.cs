@@ -31,28 +31,17 @@ namespace Microsoft.MixedReality.SpatialAlignment.Common
         IEnumerable<ISpatialCoordinate> KnownCoordinates { get; }
 
         /// <summary>
-        /// Begins search for all coordinates.
+        /// Begins search for coordinates, optionally priortizing a set of ids.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> to be used for cancellation (stopping) of the discovery task.</param>
+        /// <param name="coordinateIds">The optional set to prioritize discovery of ids to.</param>
         /// <returns>The set of coordinates discovered during this session.</returns>
-        Task<IEnumerable<ISpatialCoordinate>> DiscoverCoordinatesAsync(CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Begins locating specific coordinates (provided by Ids).
-        /// </summary>
-        /// <param name="coordinateIds">The coordinate ids to discover.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to be used for cancellation (stopping) of the locating task.</param>
-        /// <returns>The set of coordinates discovered during this session.</returns>
-        Task<IEnumerable<ISpatialCoordinate>> LocateCoordinatesAsync(string[] coordinateIds, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Stops all currently discovery or location operations.
-        /// </summary>
-        void StopAllTracking();
+        Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate = null);
 
         /// <summary>
         /// Attempts to create a new coordinate with this service.
         /// </summary>
+        /// <param name="id">Attempts to set id on the spatial coordinate, if possible.</param>
         /// <param name="localPosition">Position at which the coordinate should be created.</param>
         /// <param name="localRotation">Orientation the coordinate should be created with.</param>
         /// <returns>The coordinate if the coordinate was succesfully created, otherwise null.</returns>

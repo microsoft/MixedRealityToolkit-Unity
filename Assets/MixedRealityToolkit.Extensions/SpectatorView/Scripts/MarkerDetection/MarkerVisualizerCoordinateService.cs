@@ -64,51 +64,44 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private readonly IMarkerVisual markerVisual;
         private readonly UnityEngine.Transform markerInWorldSpace;
-        private readonly Func<int> generateMarkerId;
 
         private SpatialCoordinate markerCoordinate;
+
+        protected override bool SupportsDiscovery => false;
 
         public MarkerVisualizerCoordinateService(IMarkerVisual markerVisual, UnityEngine.Transform markerInWorldSpace, Func<int> generateMarkerId)
         {
             this.markerVisual = markerVisual ?? throw new ArgumentNullException(nameof(generateMarkerId));
             this.markerInWorldSpace = markerInWorldSpace;
-            this.generateMarkerId = generateMarkerId ?? throw new ArgumentNullException(nameof(generateMarkerId));
         }
 
         protected override void OnManagedDispose()
         {
             base.OnManagedDispose();
-
-            IsTracking = false;
         }
 
-        protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
+        protected override bool TryParse(string id, out int result) => int.TryParse(id, out result);
 
-            markerCoordinate = new SpatialCoordinate(generateMarkerId(), markerVisual);
+        protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, int[] idsToLocate)
+        {
+            if (idsToLocate == null || idsToLocate.Length < 1)
+            {
+                throw new ArgumentNullException($"{nameof(MarkerVisualizerCoordinateService)} depends on ids so that it could visualize them, at least one should be provided.");
+            }
+
+            markerCoordinate = new SpatialCoordinate(idsToLocate[0], markerVisual);
             OnNewCoordinate(markerCoordinate.Id, markerCoordinate);
 
             markerCoordinate.ShowMarker();
 
-            // TODO we can probably get rid of UpdateTick and use a Unity synchronization context here to wait frames
-            await Task.Delay(-1, cancellationToken).IgnoreCancellation();
+            while (cancellationToken.IsCancellationRequested)
+            {
+                markerCoordinate.WorldToCoordinate = markerInWorldSpace.worldToLocalMatrix;
+                await Task.Delay(1, cancellationToken).IgnoreCancellation(); // Wait a frame
+            }
 
             markerCoordinate.HideMarker();
             markerCoordinate = null;
-        }
-
-        /// <summary>
-        /// Call this method each frame to process the marker position/rotation update.
-        /// </summary>
-        public void UpdateTick()
-        {
-            ThrowIfDisposed();
-
-            if (markerCoordinate != null)
-            {
-                markerCoordinate.WorldToCoordinate = markerInWorldSpace.worldToLocalMatrix;
-            }
         }
     }
 }
