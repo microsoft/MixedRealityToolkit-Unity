@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UniversalWindows : IPlatformSupport
 {
-    public bool Check()
+    public bool IsThisEditorOrRuntimePlatform()
     {
 #if UNITY_EDITOR
         var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
@@ -14,15 +14,8 @@ public class UniversalWindows : IPlatformSupport
         return Application.platform == RuntimePlatform.XboxOne || Application.platform == RuntimePlatform.WSAPlayerARM || Application.platform == RuntimePlatform.WSAPlayerX86 || Application.platform == RuntimePlatform.WSAPlayerX64;
 #endif
     }
-    public bool Check(RuntimePlatform runtimePlatform)
+    public bool IsThisTheCurrentRuntimePlatform(RuntimePlatform runtimePlatform)
     {
-        return (runtimePlatform == RuntimePlatform.XboxOne || runtimePlatform == RuntimePlatform.WSAPlayerARM || runtimePlatform == RuntimePlatform.WSAPlayerX86 || runtimePlatform == RuntimePlatform.WSAPlayerX64) && Check();
+        return (runtimePlatform == RuntimePlatform.XboxOne || runtimePlatform == RuntimePlatform.WSAPlayerARM || runtimePlatform == RuntimePlatform.WSAPlayerX86 || runtimePlatform == RuntimePlatform.WSAPlayerX64) && IsThisEditorOrRuntimePlatform();
     }
-
-#if UNITY_EDITOR
-    public bool Check(BuildTarget buildTarget)
-    {
-        return (buildTarget == BuildTarget.XboxOne || buildTarget == BuildTarget.WSAPlayer) && Check();
-    }
-#endif
 }

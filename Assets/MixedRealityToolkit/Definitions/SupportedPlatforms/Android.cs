@@ -5,25 +5,17 @@ using UnityEngine;
 
 public class Android : IPlatformSupport
 {
-    public bool Check()
+    public bool IsThisEditorOrRuntimePlatform()
     {
 #if UNITY_EDITOR
-        var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-        return activeBuildTarget == BuildTarget.Android;
+        return EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android;
 #else
         return Application.platform == RuntimePlatform.Android;
 #endif
     }
 
-    public bool Check(RuntimePlatform runtimePlatform)
+    public bool IsThisTheCurrentRuntimePlatform(RuntimePlatform runtimePlatform)
     {
-        return runtimePlatform == RuntimePlatform.Android && Check();
+        return runtimePlatform == RuntimePlatform.Android && IsThisEditorOrRuntimePlatform();
     }
-
-#if UNITY_EDITOR
-    public bool Check(BuildTarget buildTarget)
-    {
-        return buildTarget == BuildTarget.Android && Check();
-    }
-#endif
 }

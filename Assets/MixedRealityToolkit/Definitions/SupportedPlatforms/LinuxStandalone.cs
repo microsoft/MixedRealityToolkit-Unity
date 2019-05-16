@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LinuxStandalone : IPlatformSupport
 {
-    public bool Check()
+    public bool IsThisEditorOrRuntimePlatform()
     {
 #if UNITY_EDITOR
         var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
@@ -15,15 +15,8 @@ public class LinuxStandalone : IPlatformSupport
 #endif
     }
 
-    public bool Check(RuntimePlatform runtimePlatform)
+    public bool IsThisTheCurrentRuntimePlatform(RuntimePlatform runtimePlatform)
     {
-        return (runtimePlatform == RuntimePlatform.LinuxEditor || runtimePlatform == RuntimePlatform.LinuxPlayer) && Check();
+        return (runtimePlatform == RuntimePlatform.LinuxEditor || runtimePlatform == RuntimePlatform.LinuxPlayer) && IsThisEditorOrRuntimePlatform();
     }
-
-#if UNITY_EDITOR
-    public bool Check(BuildTarget buildTarget)
-    {
-        return (buildTarget == BuildTarget.StandaloneLinux || buildTarget == BuildTarget.StandaloneLinux64 || buildTarget == BuildTarget.StandaloneLinuxUniversal) && Check();
-    }
-#endif
 }
