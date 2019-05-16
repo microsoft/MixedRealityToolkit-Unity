@@ -142,7 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (flattenAxis != value)
                 {
                     flattenAxis = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -159,7 +158,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (Vector3.Distance(boxPadding, value) > float.Epsilon)
                 {
                     boxPadding = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -175,14 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (boxMaterial != value)
                 {
                     boxMaterial = value;
-                    if (boxDisplay != null)
-                    {
-                        ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
-                    }
-                    else
-                    {
-                        AddBoxDisplay();
-                    }
+                    CreateRig();
                 }
             }
         }
@@ -209,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (showWireframe != value)
                 {
                     showWireframe = value;
-                    ResetHandleVisibility();
+                    CreateRig();
                 }
             }
         }
@@ -225,7 +216,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (wireframeShape != value)
                 {
                     wireframeShape = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -242,7 +232,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (wireframeMaterial != value)
                 {
                     wireframeMaterial = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -260,7 +249,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (wireframeEdgeRadius != value)
                 {
                     wireframeEdgeRadius = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -277,7 +265,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (handleMaterial != value)
                 {
                     handleMaterial = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -295,7 +282,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (handleGrabbedMaterial != value)
                 {
                     handleGrabbedMaterial = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -313,7 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (scaleHandlePrefab != value)
                 {
                     scaleHandlePrefab = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -331,7 +316,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (scaleHandleSlatePrefab != value)
                 {
                     scaleHandleSlatePrefab = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -350,7 +334,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (scaleHandleSize != value)
                 {
                     scaleHandleSize = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -367,7 +350,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (rotationHandlePrefab != value)
                 {
                     rotationHandlePrefab = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -384,7 +366,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (rotationHandleDiameter != value)
                 {
                     rotationHandleDiameter = value;
-                    DestroyRig();
                     CreateRig();
                 }
             }
@@ -485,6 +466,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Debug only. Component used to display debug messages")]
         public TextMesh debugText;
 
+        [SerializeField]
+        private bool hideElementsInInspector = true;
+        public bool HideElementsInInspector
+        {
+            get { return hideElementsInInspector; }
+            set
+            {
+                if (hideElementsInInspector != value)
+                {
+                    hideElementsInInspector = value;
+                    CreateRig();
+                }
+            }
+        }
+
         [Header("Events")]
         public UnityEvent RotateStarted;
         public UnityEvent RotateStopped;
@@ -512,7 +508,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 currentBoundsExtents;
 
         private BoundsCalculationMethod boundsMethod;
-        private bool hideElementsInInspector = true;
+
+
 
         private List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
         private List<Transform> links;
