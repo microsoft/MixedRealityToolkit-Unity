@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e037c4fc4a42ee64da92c21623c52892
+guid: 84f15391eead30b468412ca77386c970
 ScriptedImporter:
   fileIDToRecycleName:
     7400000: animation
@@ -7,4 +7,4 @@ ScriptedImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-  script: {fileID: 11500000, guid: cc544b44a4f6b51458b7e2db53236110, type: 3}
+  script: {fileID: 11500000, guid: cab2276269e515841879fbfbef14711a, type: 3}

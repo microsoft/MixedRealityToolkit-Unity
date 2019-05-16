@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
-
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
@@ -75,7 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     AnimationClip clip = null;
                     using (FileStream fs = new FileStream(filepath, FileMode.Open))
                     {
-                        clip = InputAnimationConverterUtils.ConvertFromBinary(fs);
+                        clip = new AnimationClip();
+                        InputAnimationSerializationUtils.AnimationClipFromStream(clip, fs);
                     }
 
                     if (clip)
@@ -110,15 +109,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     string outputPath = EditorUtility.SaveFilePanelInProject(
                         "Select output path",
-                        String.Format("InputAnimationClip.{0}", InputAnimationConverterUtils.Extension),
-                        InputAnimationConverterUtils.Extension,
+                        String.Format("InputAnimationClip.{0}", InputAnimationSerializationUtils.Extension),
+                        InputAnimationSerializationUtils.Extension,
                         "Input animation binary data saved",
                         Path.GetDirectoryName(AssetDatabase.GetAssetPath(clip)));
                     if (outputPath.Length > 0)
                     {
                         using (FileStream fs = new FileStream(outputPath, FileMode.Create))
                         {
-                            InputAnimationConverterUtils.ConvertToBinary(fs, clip);
+                            InputAnimationSerializationUtils.AnimationClipToStream(clip, fs);
                         }
                     }
                 }
@@ -539,5 +538,3 @@ namespace Microsoft.MixedReality.Toolkit.Input
 //         }
     }
 }
-
-#endif

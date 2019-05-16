@@ -12,28 +12,10 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public static class InputAnimationConverterUtils
-    {
-        public const string Extension = "bin";
-
-        public static AnimationClip ConvertFromBinary(Stream stream)
-        {
-            var clip = new AnimationClip();
-
-            InputAnimationRecordingUtils.AnimationClipFromStream(clip, stream);
-
-            return clip;
-        }
-
-        public static void ConvertToBinary(Stream stream, AnimationClip clip)
-        {
-        }
-    }
-
     /// <summary>
     /// Importer to construct an input animation asset from binary data.
     /// </summary>
-    [ScriptedImporter(1, InputAnimationConverterUtils.Extension)]
+    [ScriptedImporter(1, InputAnimationSerializationUtils.Extension)]
     public class InputAnimationImporter : ScriptedImporter
     {
         /// <inheritdoc/>
@@ -41,7 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (FileStream fs = new FileStream(ctx.assetPath, FileMode.Open))
             {
-                var asset = InputAnimationConverterUtils.ConvertFromBinary(fs);
+                var asset = new AnimationClip();
+                InputAnimationSerializationUtils.AnimationClipFromStream(asset, fs);
 
                 ctx.AddObjectToAsset("animation", asset);
                 ctx.SetMainObject(asset);

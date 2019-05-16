@@ -2,9 +2,9 @@ fileFormatVersion: 2
 guid: 56704c4d7391c9341aa6ac2c4a13fdef
 ScriptedImporter:
   fileIDToRecycleName:
-    7400000: animation
+    2186277476908879412: ImportLogs
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-  script: {fileID: 11500000, guid: cc544b44a4f6b51458b7e2db53236110, type: 3}
+  script: {fileID: 11500000, guid: cab2276269e515841879fbfbef14711a, type: 3}

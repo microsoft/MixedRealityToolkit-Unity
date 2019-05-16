@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         BaseInputDeviceManager,
         IMixedRealityInputRecordingService
     {
+        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -143,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         PruneBuffer();
                     }
 
-                    InputAnimationRecordingUtils.RecordKeyframe(recordingBuffer, Time.time, InputRecordingProfile);
+                    RecordKeyframe();
                 }
             }
         }
@@ -157,6 +159,69 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Record a keyframe at the given time for the main camera and tracked input devices.
+        /// </summary>
+        private void RecordKeyframe()
+        {
+            float time = Time.time;
+            var profile = InputRecordingProfile;
+
+            RecordInputHandData(Handedness.Left);
+            RecordInputHandData(Handedness.Right);
+            if (CameraCache.Main)
+            {
+                var cameraPose = new MixedRealityPose(CameraCache.Main.transform.position, CameraCache.Main.transform.rotation);
+                recordingBuffer.AddCameraPoseKey(time, cameraPose, profile.CameraPositionThreshold, profile.CameraRotationThreshold);
+            }
+        }
+
+        /// <summary>
+        /// Record a keyframe at the given time for a hand with the given handedness it is tracked.
+        /// </summary>
+        private bool RecordInputHandData(Handedness handedness)
+        {
+            float time = Time.time;
+            var profile = InputRecordingProfile;
+
+            var hand = HandJointUtils.FindHand(handedness);
+            if (hand == null)
+            {
+                recordingBuffer.AddHandStateKey(time, handedness, false, false);
+                return false;
+            }
+
+            bool isTracked = (hand.TrackingState == TrackingState.Tracked);
+
+            // Extract extra information from current interactions
+            bool isPinching = false;
+            for (int i = 0; i < hand.Interactions?.Length; i++)
+            {
+                var interaction = hand.Interactions[i];
+                switch (interaction.InputType)
+                {
+                    case DeviceInputType.Select:
+                        isPinching = interaction.BoolData;
+                        break;
+                }
+            }
+
+            recordingBuffer.AddHandStateKey(time, handedness, isTracked, isPinching);
+
+            if (isTracked)
+            {
+                for (int i = 0; i < jointCount; ++i)
+                {
+                    if (hand.TryGetJoint((TrackedHandJoint)i, out MixedRealityPose jointPose))
+                    {
+                        recordingBuffer.AddHandJointKey(time, handedness, (TrackedHandJoint)i, jointPose, profile.JointPositionThreshold, profile.JointRotationThreshold);
+                    }
+                }
+            }
+
+            return true;
+        }
+
         /// <inheritdoc />
         public void ExportRecordedInput()
         {
@@ -166,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 string filename;
                 if (profile.AppendTimestamp)
                 {
-                    filename = String.Format("{0}-{1}.{2}", profile.OutputFilename, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), InputAnimationConverterUtils.Extension);
+                    filename = String.Format("{0}-{1}.{2}", profile.OutputFilename, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), InputAnimationSerializationUtils.Extension);
                 }
                 else
                 {

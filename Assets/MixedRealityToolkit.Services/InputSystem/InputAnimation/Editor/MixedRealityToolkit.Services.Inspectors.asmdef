@@ -1,0 +1,14 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Services.InputSystem.InputAnimation.Editor",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
