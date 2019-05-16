@@ -109,16 +109,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (Result?.CurrentPointerTarget != null)
             {
-                float dist = Vector3.Distance(Result.StartPoint, Result.Details.Point) - distBack;
-                bool newIsDown = (dist < debounceThreshold);
+                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - distBack;
+                bool newIsDown = (distToFront < 0);
+                bool newIsUp = (distToFront > debounceThreshold);
 
                 if (newIsDown)
                 {
                     TryRaisePokeDown(Result.CurrentPointerTarget, Position);
                 }
-                else
+                else if (currentTouchableObjectDown != null)
                 {
-                    TryRaisePokeUp(Result.CurrentPointerTarget, Position);
+                    if (newIsUp)
+                    {
+                        TryRaisePokeUp(Result.CurrentPointerTarget, Position);
+                    }
+                    else
+                    {
+                        TryRaisePokeDown(Result.CurrentPointerTarget, Position);
+                    }
                 }
             }
 
