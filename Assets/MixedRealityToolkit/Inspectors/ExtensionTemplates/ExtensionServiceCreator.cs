@@ -384,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             errors.Clear();
 
-            if (Platforms == null)
+            if (Platforms == null || Platforms.Length == 0)
             {
                 errors.Add("Service must support at least one platform.");
             }
@@ -593,19 +593,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             List<string> platformValues = new List<string>();
 
-            var supportTypes = AppDomain.CurrentDomain.GetAssemblies()
-                            .SelectMany(s => s.GetTypes())
-                            .Where(p => typeof(IPlatformSupport).IsAssignableFrom(p));
+            var supportedPlatformTypeNames = IPlatformSupportExtension.GetSupportedPlatformNames();
+            var supportedPlatformTypes = IPlatformSupportExtension.GetSupportedPlatformTypes();
 
-            foreach (var supportType in supportTypes)
+            for (int i = 0; i < supportedPlatformTypes.Length; i++)
             {
                 foreach(var platform in Platforms)
                 {
-                    if (supportType == platform)
-                        platformValues.Add("SupportedPlatforms." + supportType.ToString());
+                    if (supportedPlatformTypes[i] == platform.Type)
+                        platformValues.Add("typeof(" + supportedPlatformTypeNames[i] + ')');
                 }
             }
-            scriptContents = scriptContents.Replace(SupportedPlatformsSearchString, String.Join("|", platformValues.ToArray()));
+
+            var text = "new[] { " + String.Join(", ", platformValues.ToArray()) + " }";
+            scriptContents = scriptContents.Replace(SupportedPlatformsSearchString, text);
 
             if (string.IsNullOrEmpty(scriptContents))
             {

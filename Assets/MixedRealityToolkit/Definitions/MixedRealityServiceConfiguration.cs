@@ -25,14 +25,14 @@ namespace Microsoft.MixedReality.Toolkit
             SystemType componentType,
             string componentName,
             uint priority,
-            IPlatformSupport[] supportedPlatforms,
+            IPlatformSupport[] runtimePlatform,
             BaseMixedRealityProfile configurationProfile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
             this.priority = priority;
-            this.runtimePlatform = supportedPlatforms.Convert();
-            this._runtimePlatform = supportedPlatforms;
+            this.runtimePlatform = runtimePlatform.Convert();
+            this._runtimePlatform = runtimePlatform;
             this.configurationProfile = configurationProfile;
         }
 

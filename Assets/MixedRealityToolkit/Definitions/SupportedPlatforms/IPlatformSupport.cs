@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -50,5 +52,25 @@ public static class IPlatformSupportExtension
         }
 
         return systemTypes;
+    }
+
+    public static Type[] GetSupportedPlatformTypes()
+    {
+        return (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                from type in assembly.GetTypes()
+                where typeof(IPlatformSupport).IsAssignableFrom(type)
+                where type != typeof(IPlatformSupport)
+                orderby type.Name
+                select type).ToArray();
+    }
+
+    public static string[] GetSupportedPlatformNames()
+    {
+        return (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                from type in assembly.GetTypes()
+                where typeof(IPlatformSupport).IsAssignableFrom(type)
+                where type != typeof(IPlatformSupport)
+                orderby type.Name
+                select type.Name).ToArray();
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -19,6 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const int docLinkWidth = 200;
 
         private ExtensionServiceCreator creator = new ExtensionServiceCreator();
+        private int creatorPlatformMask;
+        private string[] creatorPlatformNames;
+        private Type[] creatorPlatformTypes;
         private List<string> errors = new List<string>();
         private bool registered = false;
         private int numEllipses = 0;
@@ -54,6 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 creator = new ExtensionServiceCreator();
 
             creator.LoadStoredState();
+            creatorPlatformNames = IPlatformSupportExtension.GetSupportedPlatformNames();
+            creatorPlatformTypes = IPlatformSupportExtension.GetSupportedPlatformTypes();
         }
 
         private void OnGUI()
@@ -124,10 +130,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Choose which platforms your service will support.", EditorStyles.miniLabel);
+            creatorPlatformMask = EditorGUILayout.MaskField(creatorPlatformMask, creatorPlatformNames);
+            if (creatorPlatformMask != 0)
+                creator.Platforms = new SystemType[MathExtensions.CountBits(creatorPlatformMask)];
+            int arrayIndex = 0;
+            for (int i = 0; i < creatorPlatformTypes.Length; i++)
+            {
+                if ((creatorPlatformMask & 1 << i) != 0)
+                {
+                    creator.Platforms[arrayIndex++] = creatorPlatformTypes[i];
+                }
+            }
 
-            throw new System.NotImplementedException();
-
-            //creator.Platforms = (SupportedPlatforms)EditorGUILayout.EnumFlagsField("Platforms", creator.Platforms);
             readyToProgress &= creator.ValidatePlatforms(errors);
             foreach (string error in errors)
             {
@@ -379,9 +393,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Add spaces between camel case service name
             componentName.stringValue = System.Text.RegularExpressions.Regex.Replace(creator.ServiceName, "(\\B[A-Z])", " $1");
             configurationProfile.objectReferenceValue = creator.ProfileInstance;
-            throw new System.NotImplementedException();
 
-            //runtimePlatform.intValue = (int)creator.Platforms;
+            
+            runtimePlatform.arraySize = creator.Platforms.Length;
+            for (int i = 0; i < creator.Platforms.Length; i++)
+            {
+                runtimePlatform.InsertArrayElementAtIndex(i);
+                var arrayEntry = runtimePlatform.GetArrayElementAtIndex(i).FindPropertyRelative("reference");
+                arrayEntry.stringValue = creator.Platforms[i].Type.AssemblyQualifiedName;
+            }
 
             servicesProfileObject.ApplyModifiedProperties();
 
