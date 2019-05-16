@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [TearDown]
         public void CleanupMixedRealityToolkitTests()
         {
-            TestUtilities.CleanupScene();
+            TestUtilities.CreateScenes();
         }
     }
 }

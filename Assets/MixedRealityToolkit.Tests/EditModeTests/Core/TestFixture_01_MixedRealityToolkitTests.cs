@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Tests.Services;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Core
@@ -15,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [Test]
         public void Test_01_InitializeMixedRealityToolkit()
         {
-            TestUtilities.CleanupScene();
+            TestUtilities.CreateScenes();
             new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             MixedRealityToolkit.ConfirmInitialized();
 
@@ -27,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [Test]
         public void Test_02_TestNoMixedRealityConfigurationFound()
         {
-            TestUtilities.CleanupScene();
+            TestUtilities.CreateScenes();
             new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             MixedRealityToolkit.ConfirmInitialized();
 
@@ -592,10 +593,88 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             }
         }
 
+        #region Multiple Instances Tests
+
+        [Test]
+        public void Test_08_01_CreateMultipleInstances()
+        {
+            TestUtilities.InitializeMixedRealityToolkitScene();
+
+            MixedRealityToolkit secondInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit thirdInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+
+            Assert.AreNotEqual(secondInstance, MixedRealityToolkit.Instance);
+            Assert.AreNotEqual(thirdInstance, MixedRealityToolkit.Instance);
+            Assert.IsFalse(secondInstance.IsActiveInstance);
+            Assert.IsFalse(thirdInstance.IsActiveInstance);
+        }
+
+        [Test]
+        public void Test_08_02_SwitchBetweenActiveInstances()
+        {
+            TestUtilities.InitializeMixedRealityToolkitScene();
+
+            MixedRealityToolkit secondInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit thirdInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+
+            Assert.AreNotEqual(secondInstance, MixedRealityToolkit.Instance);
+            Assert.AreNotEqual(thirdInstance, MixedRealityToolkit.Instance);
+            Assert.IsFalse(secondInstance.IsActiveInstance);
+            Assert.IsFalse(thirdInstance.IsActiveInstance);
+
+            MixedRealityToolkit.SetActiveInstance(secondInstance);
+
+            Assert.AreEqual(secondInstance, MixedRealityToolkit.Instance);
+            Assert.IsTrue(secondInstance.IsActiveInstance);
+
+            MixedRealityToolkit.SetActiveInstance(thirdInstance);
+
+            Assert.AreEqual(thirdInstance, MixedRealityToolkit.Instance);
+            Assert.IsTrue(thirdInstance.IsActiveInstance);
+        }
+
+        [Test]
+        public void Test_08_03_DestroyActiveInstance()
+        {
+            TestUtilities.InitializeMixedRealityToolkitScene();
+
+            MixedRealityToolkit secondInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+
+            GameObject.DestroyImmediate(MixedRealityToolkit.Instance.gameObject);
+
+            Assert.NotNull(MixedRealityToolkit.Instance);
+            Assert.AreEqual(secondInstance, MixedRealityToolkit.Instance);
+            Assert.IsTrue(secondInstance.IsActiveInstance);
+        }
+
+        [Test]
+        public void Test_08_04_CreateMultipleInstancesInMultipleScenes()
+        {
+            TestUtilities.CreateScenes(3);
+
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene scene = SceneManager.GetSceneAt(i);
+                SceneManager.SetActiveScene(scene);
+
+                TestUtilities.InitializeMixedRealityToolkit();
+            }
+
+            foreach (MixedRealityToolkit instance in GameObject.FindObjectsOfType<MixedRealityToolkit>())
+            {
+                MixedRealityToolkit.SetActiveInstance(instance);
+                
+                Assert.AreEqual(instance, MixedRealityToolkit.Instance);
+                Assert.IsTrue(instance.IsActiveInstance);
+            }
+        }
+
+        #endregion
+
         [TearDown]
         public void CleanupMixedRealityToolkitTests()
         {
-            TestUtilities.CleanupScene();
+            TestUtilities.TearDownScenes();
         }
     }
 }
