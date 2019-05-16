@@ -28,13 +28,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 touchableCollider = GetComponent<Collider>();
 
                 Vector3 closest = touchableCollider.ClosestPoint(samplePoint);
-                normal = (closest - samplePoint);
-                float dist = normal.magnitude;
-                normal.Normalize();
-                return dist;
+
+                normal = (samplePoint - closest);
+                if (normal == Vector3.zero)
+                {
+                    // inside object, use vector to centre as normal
+                    normal = samplePoint - transform.TransformVector(touchableCollider.bounds.center);
+                    normal.Normalize();
+                    return 0;
+                }
+                else
+                {
+                    float dist = normal.magnitude;
+                    normal.Normalize();
+                    return dist;
+                }
             }
 
-            normal = Vector3.zero;
+            normal = Vector3.forward;
             return float.PositiveInfinity;
         }
     }
