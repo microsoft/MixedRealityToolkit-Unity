@@ -84,6 +84,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     SerializedProperty observerName = observer.FindPropertyRelative("componentName");
                     observerName.stringValue = $"New spatial observer {list.arraySize - 1}";
 
+                    SerializedProperty priority = observer.FindPropertyRelative("priority");
+                    priority.intValue = 0;
+
                     SerializedProperty runtimePlatform = observer.FindPropertyRelative("runtimePlatform");
                     runtimePlatform.objectReferenceValue = null;
 

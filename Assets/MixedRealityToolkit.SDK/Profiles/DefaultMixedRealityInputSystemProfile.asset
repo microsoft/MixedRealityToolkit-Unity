@@ -52,9 +52,9 @@ MonoBehaviour:
     componentName: Windows Speech Input
     priority: 0
     runtimePlatform:
+    - reference: UniversalWindows, Microsoft.MixedReality.Toolkit
     - reference: WindowsEditor, Microsoft.MixedReality.Toolkit
     - reference: WindowsStandalone, Microsoft.MixedReality.Toolkit
-    - reference: UniversalWindows, Microsoft.MixedReality.Toolkit
     deviceManagerProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider,
@@ -62,9 +62,9 @@ MonoBehaviour:
     componentName: Windows Dictation Input
     priority: 0
     runtimePlatform:
+    - reference: UniversalWindows, Microsoft.MixedReality.Toolkit
     - reference: WindowsEditor, Microsoft.MixedReality.Toolkit
     - reference: WindowsStandalone, Microsoft.MixedReality.Toolkit
-    - reference: UniversalWindows, Microsoft.MixedReality.Toolkit
     deviceManagerProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Input.HandJointService, Microsoft.MixedReality.Toolkit

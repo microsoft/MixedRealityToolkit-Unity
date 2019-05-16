@@ -215,6 +215,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     SerializedProperty providerName = dataProvider.FindPropertyRelative("componentName");
                     providerName.stringValue = $"New data provider {list.arraySize - 1}";
 
+                    SerializedProperty priority = dataProvider.FindPropertyRelative("priority");
+                    priority.intValue = 0;
+
                     SerializedProperty configurationProfile = dataProvider.FindPropertyRelative("deviceManagerProfile");
                     configurationProfile.objectReferenceValue = null;
 

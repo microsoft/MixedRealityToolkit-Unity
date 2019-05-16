@@ -392,6 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             componentTypeReference.stringValue = creator.ServiceType.AssemblyQualifiedName;
             // Add spaces between camel case service name
             componentName.stringValue = System.Text.RegularExpressions.Regex.Replace(creator.ServiceName, "(\\B[A-Z])", " $1");
+            priority.intValue = 0;
             configurationProfile.objectReferenceValue = creator.ProfileInstance;
 
             
