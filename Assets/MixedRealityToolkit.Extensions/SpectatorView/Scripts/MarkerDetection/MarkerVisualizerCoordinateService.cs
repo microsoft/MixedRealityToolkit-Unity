@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
             while (cancellationToken.IsCancellationRequested)
             {
                 markerCoordinate.WorldToCoordinate = markerInWorldSpace.worldToLocalMatrix;
-                await Task.Delay(1, cancellationToken).IgnoreCancellation(); // Wait a frame
+                await Task.Delay(1, cancellationToken).IgnoreCancellation(); // Wait a frame, this is how Unity synchronization context will let you wait for next frame
             }
 
             markerCoordinate.HideMarker();
