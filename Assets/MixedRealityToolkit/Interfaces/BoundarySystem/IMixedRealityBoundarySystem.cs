@@ -14,6 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
     public interface IMixedRealityBoundarySystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {
         /// <summary>
+        /// Typed representation of the ConfigurationProfile property.
+        /// </summary>
+        MixedRealityBoundaryVisualizationProfile Profile { get; }
+        /// <summary>
         /// The scale (ex: World Scale) of the experience.
         /// </summary>
         ExperienceScale Scale { get; set; }

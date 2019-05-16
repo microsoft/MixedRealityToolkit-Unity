@@ -290,6 +290,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         private int ignoreRaycastLayerValue = 2;
 
         /// <inheritdoc/>
+        public MixedRealityBoundaryVisualizationProfile Profile => ConfigurationProfile as MixedRealityBoundaryVisualizationProfile;
+
+        /// <inheritdoc/>
         public ExperienceScale Scale { get; set; }
 
         /// <inheritdoc/>

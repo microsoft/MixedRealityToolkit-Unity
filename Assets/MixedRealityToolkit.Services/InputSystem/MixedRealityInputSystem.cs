@@ -37,6 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public HashSet<IMixedRealityController> DetectedControllers { get; } = new HashSet<IMixedRealityController>();
 
+        /// <inheritdoc />
+        public MixedRealityInputSystemProfile Profile => ConfigurationProfile as MixedRealityInputSystemProfile;
+
         private IMixedRealityFocusProvider focusProvider = null;
 
         /// <inheritdoc />
