@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class WindowsEditor : IPlatformSupport
 {
-    public bool IsThisEditorOrRuntimePlatform()
+    public bool IsEditorOrRuntimePlatform()
     {
         return Application.platform == RuntimePlatform.WindowsEditor;
     }
-    public bool IsThisTheCurrentRuntimePlatform(RuntimePlatform runtimePlatform)
+    public bool IsCurrentRuntimePlatformSameAs(RuntimePlatform runtimePlatform)
     {
-        return runtimePlatform == RuntimePlatform.WindowsEditor && IsThisEditorOrRuntimePlatform();
+        return runtimePlatform == RuntimePlatform.WindowsEditor && IsEditorOrRuntimePlatform();
     }
 }

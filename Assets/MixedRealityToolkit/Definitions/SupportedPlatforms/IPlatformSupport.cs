@@ -9,9 +9,9 @@ using UnityEditor;
 
 public interface IPlatformSupport
 {
-    bool IsThisEditorOrRuntimePlatform();
+    bool IsEditorOrRuntimePlatform();
 
-    bool IsThisTheCurrentRuntimePlatform(RuntimePlatform runtimePlatform);
+    bool IsCurrentRuntimePlatformSameAs(RuntimePlatform runtimePlatform);
 }
 
 public static class IPlatformSupportExtension
@@ -25,7 +25,7 @@ public static class IPlatformSupportExtension
 
         foreach (var item in platformSupports)
         {
-            if (item.IsThisEditorOrRuntimePlatform())
+            if (item.IsEditorOrRuntimePlatform())
                 return true;
         }
 

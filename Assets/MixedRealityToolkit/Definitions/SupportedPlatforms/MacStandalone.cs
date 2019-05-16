@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MacStandalone : IPlatformSupport
 {
-    public bool IsThisEditorOrRuntimePlatform()
+    public bool IsEditorOrRuntimePlatform()
     {
 #if UNITY_EDITOR
         var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
@@ -14,8 +14,8 @@ public class MacStandalone : IPlatformSupport
         return Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor;
 #endif
     }
-    public bool IsThisTheCurrentRuntimePlatform(RuntimePlatform runtimePlatform)
+    public bool IsCurrentRuntimePlatformSameAs(RuntimePlatform runtimePlatform)
     {
-        return (runtimePlatform == RuntimePlatform.OSXPlayer || runtimePlatform == RuntimePlatform.OSXEditor) && IsThisEditorOrRuntimePlatform();
+        return (runtimePlatform == RuntimePlatform.OSXPlayer || runtimePlatform == RuntimePlatform.OSXEditor) && IsEditorOrRuntimePlatform();
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WindowsStandalone : IPlatformSupport
 {
-    public bool IsThisEditorOrRuntimePlatform()
+    public bool IsEditorOrRuntimePlatform()
     {
 #if UNITY_EDITOR
         var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
@@ -14,8 +14,8 @@ public class WindowsStandalone : IPlatformSupport
         return Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor;
 #endif
     }
-    public bool IsThisTheCurrentRuntimePlatform(RuntimePlatform runtimePlatform)
+    public bool IsCurrentRuntimePlatformSameAs(RuntimePlatform runtimePlatform)
     {
-        return (runtimePlatform == RuntimePlatform.WindowsPlayer || runtimePlatform == RuntimePlatform.WindowsEditor) && IsThisEditorOrRuntimePlatform();
+        return (runtimePlatform == RuntimePlatform.WindowsPlayer || runtimePlatform == RuntimePlatform.WindowsEditor) && IsEditorOrRuntimePlatform();
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Android : IPlatformSupport
 {
-    public bool IsThisEditorOrRuntimePlatform()
+    public bool IsEditorOrRuntimePlatform()
     {
 #if UNITY_EDITOR
         return EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android;
@@ -14,8 +14,8 @@ public class Android : IPlatformSupport
 #endif
     }
 
-    public bool IsThisTheCurrentRuntimePlatform(RuntimePlatform runtimePlatform)
+    public bool IsCurrentRuntimePlatformSameAs(RuntimePlatform runtimePlatform)
     {
-        return runtimePlatform == RuntimePlatform.Android && IsThisEditorOrRuntimePlatform();
+        return runtimePlatform == RuntimePlatform.Android && IsEditorOrRuntimePlatform();
     }
 }
