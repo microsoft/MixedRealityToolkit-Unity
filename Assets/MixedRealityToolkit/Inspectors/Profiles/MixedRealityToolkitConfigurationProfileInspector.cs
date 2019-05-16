@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -114,7 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Warning);
                 if (GUILayout.Button("Click here to add Mixed Reality Toolkit instance to scene"))
                 {
-                    new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                    MixedRealityInspectorUtility.AddMixedRealityToolkitToScene();
+                    EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
                 }
             }
 

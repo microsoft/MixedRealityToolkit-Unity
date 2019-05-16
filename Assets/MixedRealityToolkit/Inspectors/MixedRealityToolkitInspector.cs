@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -120,14 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [MenuItem("Mixed Reality Toolkit/Add to Scene and Configure...")]
         public static void CreateMixedRealityToolkitGameObject()
         {
-            if (MixedRealityToolkit.IsInitialized)
-            {
-                EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
-                return;
-            }
-
-            Selection.activeObject = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
-            Debug.Assert(MixedRealityToolkit.IsInitialized);
+            MixedRealityInspectorUtility.AddMixedRealityToolkitToScene();
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
         }
 
