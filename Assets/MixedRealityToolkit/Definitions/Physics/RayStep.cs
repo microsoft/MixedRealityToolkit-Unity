@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
             float traveledDistance = 0;
             float stepLength = 0;
-            RayStep currentStep = default;
+            RayStep currentStep = new RayStep();
 
 
             foreach (var step in steps)

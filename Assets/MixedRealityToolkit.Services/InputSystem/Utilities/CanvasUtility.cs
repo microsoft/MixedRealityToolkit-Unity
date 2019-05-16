@@ -52,6 +52,23 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
         }
 #endif
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         private void Start()
         {
             Canvas canvas = GetComponent<Canvas>();
@@ -61,8 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
             {
                 if (canvas.worldCamera == null)
                 {
-                    Debug.Assert(MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera != null, this);
-                    canvas.worldCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
+                    Debug.Assert(InputSystem?.FocusProvider?.UIRaycastCamera != null, this);
+                    canvas.worldCamera = InputSystem?.FocusProvider?.UIRaycastCamera;
 
                     if (EventSystem.current == null)
                     {

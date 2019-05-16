@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         newGaze = SmoothGaze(newGaze);
                     }
 
-                    MixedRealityToolkit.InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);
+                    InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);
                 }
             }
 #endif // WINDOWS_UWP

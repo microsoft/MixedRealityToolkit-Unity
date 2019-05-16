@@ -40,6 +40,12 @@ namespace Microsoft.MixedReality.Toolkit
         /// </returns>
         public static bool AddService<T>(T serviceInstance, IMixedRealityServiceRegistrar registrar) where T : IMixedRealityService
         {
+            if (serviceInstance == null)
+            {
+                // Adding a null service instance is not supported.
+                return false;
+            }
+
             if (serviceInstance is IMixedRealityDataProvider)
             {
                 // Data providers are generally not used by application code. Services that intend for clients to

@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Windows.Input;
 using UnityEngine;
+using System;
 
 #if UNITY_WSA
 using System.Collections.Generic;
@@ -590,7 +591,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (args.state.source.kind == InteractionSourceKind.Voice)
             {
-                GetController(args.state.source)?.UpdateController(args.state);
+                var controller = GetController(args.state.source);
+                if (controller != null)
+                {
+                    controller.UpdateController(args.state);
+                    // On WMR, the voice recognizer does not actually register the phrase 'select'
+                    // when you add it to the speech commands profile. Therefore, simulate
+                    // the "select" voice command running to ensure that we get a select voice command
+                    // registered. This is used by FocusProvider to detect when the select pointer is active
+                    InputSystem?.RaiseSpeechCommandRecognized(controller.InputSource, RecognitionConfidenceLevel.High, TimeSpan.MinValue, DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
+                }
             }
         }
 
