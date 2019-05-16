@@ -86,3 +86,14 @@ Assets/packages.config.meta
 Assets/Packages/
 Assets/Packages.meta
 Packages/
+
+# ===================================== #
+# State Synchronization Generated Files #
+# ===================================== #
+Assets/Generated.StateSynchronization.AssetCaches.meta
+Assets/Generated.StateSynchronization.AssetCaches/
+
+# =========================================== #
+# Asset Script Reference Retargeter Generated #
+# =========================================== #
+NuGet/

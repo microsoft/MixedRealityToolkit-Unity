@@ -54,6 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void OnPointerDown(MixedRealityPointerEventData eventData) { }
 
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
             if (eventData.MixedRealityInputAction != selectAction)

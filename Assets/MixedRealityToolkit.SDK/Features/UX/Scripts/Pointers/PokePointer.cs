@@ -107,6 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnPostSceneQuery()
         {
+            base.OnPostSceneQuery();
+
             if (Result?.CurrentPointerTarget != null)
             {
                 float dist = Vector3.Distance(Result.StartPoint, Result.Details.Point) - distBack;
@@ -155,11 +157,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                     {
-                        MixedRealityToolkit.InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
+                        InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
                     }
                     else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                     {
-                        MixedRealityToolkit.InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, touchPosition);
+                        InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, touchPosition);
                     }
                 }
             }
@@ -177,11 +179,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                 {
-                    MixedRealityToolkit.InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
+                    InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
+                    InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
                 }
                 else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
-                    MixedRealityToolkit.InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, touchPosition);
+                    InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, touchPosition);
                 }
 
                 currentTouchableObjectDown = null;
@@ -204,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
-                    MixedRealityToolkit.InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
+                    InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
                 }
             }
         }
@@ -246,6 +249,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             TryRaisePokeUp();
 
             base.OnSourceLost(eventData);
+        }
+
+        public override void OnInputDown(InputEventData eventData)
+        {
+            // Poke pointer should not respond when a button is pressed or hand is pinched
+            // It should only dispatch events based on collision with touchables.
+        }
+
+        public override void OnInputUp(InputEventData eventData)
+        {
+            // Poke pointer should not respond when a button is released or hand is un-pinched
+            // It should only dispatch events based on collision with touchables.
         }
     }
 }
