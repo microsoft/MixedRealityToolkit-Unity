@@ -21,6 +21,11 @@ public static class IPlatformSupportExtension
 {
     public static bool IsPlatformSupported(this IPlatformSupport[] platformSupports)
     {
+        if (platformSupports == null)
+        {
+            return true;
+        }
+
         foreach (var item in platformSupports)
         {
             if (item.Check())
