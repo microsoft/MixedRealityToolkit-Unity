@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         #region IMixedRealityDiagnosticsSystem
 
         /// <inheritdoc />
-        public MixedRealityDiagnosticsProfile Profile => ConfigurationProfile as MixedRealityDiagnosticsProfile;
+        public MixedRealityDiagnosticsProfile DiagnosticsSystemProfile => ConfigurationProfile as MixedRealityDiagnosticsProfile;
 
         private bool showDiagnostics;
 

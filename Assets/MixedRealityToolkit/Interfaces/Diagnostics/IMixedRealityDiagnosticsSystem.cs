@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <summary>
         /// Typed representation of the ConfigurationProfile property.
         /// </summary>
-        MixedRealityDiagnosticsProfile Profile { get; }
+        MixedRealityDiagnosticsProfile DiagnosticsSystemProfile { get; }
 
         /// <summary>
         /// Enable / disable diagnostic display.

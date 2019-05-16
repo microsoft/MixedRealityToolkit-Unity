@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Typed representation of the ConfigurationProfile property.
         /// </summary>
-        MixedRealityInputSystemProfile Profile { get; }
+        MixedRealityInputSystemProfile InputSystemProfile { get; }
 
         /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.

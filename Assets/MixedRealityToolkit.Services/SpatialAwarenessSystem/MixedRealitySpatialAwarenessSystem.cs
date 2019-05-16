@@ -175,6 +175,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             return nextSourceId++;
         }
 
+        /// <inheritdoc/>
+        public MixedRealitySpatialAwarenessSystemProfile SpatialAwarenessSystemProfile => ConfigurationProfile as MixedRealitySpatialAwarenessSystemProfile;
+
         /// <inheritdoc />
         public IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers()
         {
