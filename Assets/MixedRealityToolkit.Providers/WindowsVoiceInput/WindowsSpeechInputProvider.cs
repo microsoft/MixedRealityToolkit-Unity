@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
-        new[] { typeof(WindowsStandalone), typeof(WindowsUniversal) },
+        new[] { typeof(WindowsStandalone), typeof(UniversalWindows) },
         "Windows Speech Input")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Speech.html")]
     public class WindowsSpeechInputProvider : BaseInputDeviceManager, IMixedRealitySpeechSystem

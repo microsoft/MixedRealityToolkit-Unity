@@ -571,7 +571,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             state.UsesProfile = true;
             state.UsesInspector = true;
             state.Stage = CreationStage.SelectNameAndPlatform;
-            state.Platforms = new[] { new SystemType(typeof(LinuxStandalone)), new SystemType(typeof(MacStandalone)), new SystemType(typeof(WindowsStandalone)), new SystemType(typeof(WindowsUniversal)) };
+            state.Platforms = new[] { new SystemType(typeof(LinuxStandalone)), new SystemType(typeof(MacStandalone)), new SystemType(typeof(WindowsStandalone)), new SystemType(typeof(UniversalWindows)) };
         }
 
         private bool AssetExists(string assetPath, string assetName, string extension)

@@ -3,7 +3,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-public class WindowsUniversal : IPlatformSupport
+public class UniversalWindows : IPlatformSupport
 {
     public bool Check()
     {
