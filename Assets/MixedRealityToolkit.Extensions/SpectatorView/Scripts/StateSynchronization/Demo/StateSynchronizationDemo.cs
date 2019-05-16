@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
@@ -236,14 +238,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             guids.Remove(token);
         }
-    }
-
-    internal class ArUcoLocalizationMechanism : HostCoordinateLocalizationMechanism
-    {
-        
-        protected override ISpatialCoordinateService SpatialCoordinateService => throw new NotImplementedException();
-
-
     }
 
     /// <summary>
