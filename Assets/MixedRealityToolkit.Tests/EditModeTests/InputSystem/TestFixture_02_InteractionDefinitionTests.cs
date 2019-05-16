@@ -122,23 +122,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         public void Test04_TestBoolNoChange()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None);
-            var testValue = true;
 
             var initialValue = interaction.BoolData;
 
             Assert.IsFalse(initialValue);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.BoolData = testValue;
+            interaction.BoolData = true;
 
             Assert.IsTrue(interaction.Changed);
 
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
 
-            interaction.BoolData = testValue;
+            interaction.BoolData = true;
 
-            // Make sure if we set again the true value it's true
+            // Make sure setting the value to true a second time is reported as change, as it is indicative of an active input.
             Assert.IsTrue(interaction.Changed);
 
             // Make sure setting the false value twice reports no change
@@ -256,6 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             }
             else
             {
+                // Setting to zero again should not report change
                 Assert.IsFalse(i.Changed, msg);
             }
 
