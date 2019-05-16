@@ -4860,6 +4860,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityOptimizeWindow.PerformanceTarget.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityOptimizeWindow.PerformanceTarget.html",
+          "hash": "9Y0l8o+4D4EQ6eP5IpZnqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityOptimizeWindow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityOptimizeWindow.html",
+          "hash": "pZAyyLomB8hM5o/eCYeAXQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityPosePropertyDrawer.yml",
       "output": {
         ".html": {
@@ -5212,7 +5236,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.html",
-          "hash": "vD2Wi1ywWOOgljrWFcXWtw=="
+          "hash": "6MojjJyvLUTLAQSD4hjm6w=="
         }
       },
       "is_incremental": false,
@@ -12228,6 +12252,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityOptimizeUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityOptimizeUtils.html",
+          "hash": "fCJA4/DvT7LuTksqMMsCSg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.yml",
       "output": {
         ".html": {
@@ -12424,7 +12460,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.html",
-          "hash": "9vWePkG5TSVS1RMJsn8YBA=="
+          "hash": "FfGcIfUz5XJCXQKbMdwB9g=="
         }
       },
       "is_incremental": false,
@@ -14524,7 +14560,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "qrOfcnZbMPC9dKqGOTOoFw=="
+          "hash": "sNbZEy924hdbk5eF1wEWAA=="
         }
       },
       "is_incremental": false,
@@ -14576,16 +14612,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 92,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 882,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -14595,11 +14632,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 885,
           "skipped_file_count": 0
         }
       }
