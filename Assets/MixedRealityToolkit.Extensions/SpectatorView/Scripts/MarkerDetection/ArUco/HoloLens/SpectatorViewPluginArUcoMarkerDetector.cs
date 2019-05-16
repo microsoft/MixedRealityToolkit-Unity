@@ -28,13 +28,39 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         [SerializeField]
         private float _markerSize = 0.03f;
 
+        [Tooltip("Whether or not the marker is stationary or moving during detection")]
+        [SerializeField]
+        private MarkerPositionBehavior _markerPositionBehavior = MarkerPositionBehavior.Moving;
+
         private HoloLensCamera _holoLensCamera;
         private SpectatorViewPluginAPI _api;
         private bool _detecting = false;
         private Dictionary<int, List<Marker>> _markerObservations;
         private Dictionary<int, Marker> _nextMarkerUpdate;
+        private MarkerDetectionCompletionStrategy _detectionCompletionStrategy;
 
-        public MarkerDetectionCompletionStrategy DetectionCompletionStrategy { get; set; } = new MovingMarkerDetectionCompletionStrategy();
+        /// <inheritdoc />
+        public MarkerPositionBehavior MarkerPositionBehavior
+        {
+            get
+            {
+                return _markerPositionBehavior;
+            }
+            set
+            {
+                if (_markerPositionBehavior != value)
+                {
+                    _markerPositionBehavior = value;
+
+                    UpdateDetectionCompletionStrategy();
+                }
+            }
+        }
+
+        private void Awake()
+        {
+            UpdateDetectionCompletionStrategy();
+        }
 
         protected void Start()
         {
@@ -180,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         }
 
                         _markerObservations[markerPair.Key].Add(markerPair.Value);
-                        if (_markerObservations[markerPair.Key].Count > DetectionCompletionStrategy.MaximumMarkerSampleCount)
+                        if (_markerObservations[markerPair.Key].Count > _detectionCompletionStrategy.MaximumMarkerSampleCount)
                         {
                             _markerObservations[markerPair.Key].RemoveAt(0);
                         }
@@ -190,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                     foreach (var observationPair in _markerObservations)
                     {
                         Marker completedMarker;
-                        if (DetectionCompletionStrategy.TryCompleteDetection(observationPair.Value, out completedMarker))
+                        if (_detectionCompletionStrategy.TryCompleteDetection(observationPair.Value, out completedMarker))
                         {
                             validMarkers[completedMarker.Id] = completedMarker;
                             observationPair.Value.Clear();
@@ -201,6 +227,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 }
             }
 #endif
+        }
+
+        private void UpdateDetectionCompletionStrategy()
+        {
+            if (MarkerPositionBehavior == MarkerPositionBehavior.Moving)
+            {
+                _detectionCompletionStrategy = new MovingMarkerDetectionCompletionStrategy();
+            }
+            else
+            {
+                _detectionCompletionStrategy = new StationaryMarkerDetectionCompletionStrategy();
+            }
         }
 
         private static void LogMessagesAboutMarker(string markerState, IReadOnlyList<Marker> allMarkers, IReadOnlyList<Marker> inlierMarkers, Marker averageMarker, Marker averageInlierMarker)
@@ -296,7 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// Class which contains the logic for whether or not a set of detected marker poses is a satisfactory estimate of the
         /// true position of the marker.
         /// </summary>
-        public abstract class MarkerDetectionCompletionStrategy
+        private abstract class MarkerDetectionCompletionStrategy
         {
             /// <summary>
             /// Determines if the list of gathered markers is a representative sample, and if so computes the completed marker position.
@@ -317,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// out noisy data to try to guarantee that the detected marker is actually aligned with the physical
         /// marker.
         /// </summary>
-        public sealed class StationaryMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
+        private sealed class StationaryMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
         {
             private const int _requiredObservations = 5;
             private const int _requiredInlierCount = 5;
@@ -372,7 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// Multiple markers are averaged but heuristics are not used to try to lock the marker to within
         /// a distance and rotation threshold.
         /// </summary>
-        public sealed class MovingMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
+        private sealed class MovingMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
         {
             private int _requiredObservations = 5;
 

@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.WorldAnchors;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
         private const string AnchorName = "WorldRoot";
         private WorldAnchorManager worldAnchorManager;
         private TCPConnectionManager tcpConnectionManager;
-        private SpectatorViewPluginArUcoMarkerDetector markerDetector;
+        private IMarkerDetector markerDetector;
         private bool isDetectingMarker;
 
         public bool IsDetectingMarker => isDetectingMarker;
@@ -46,8 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             tcpConnectionManager = GetComponent<TCPConnectionManager>();
             tcpConnectionManager.OnReceive += TcpConnectionManager_OnReceive;
 
-            markerDetector = GetComponent<SpectatorViewPluginArUcoMarkerDetector>();
-            markerDetector.DetectionCompletionStrategy = new SpectatorViewPluginArUcoMarkerDetector.StationaryMarkerDetectionCompletionStrategy();
+            markerDetector = GetComponent<IMarkerDetector>();
             markerDetector.MarkersUpdated += MarkerDetector_MarkersUpdated;
         }
 
