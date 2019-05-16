@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.IO;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
@@ -79,8 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             yzflip[1, 1] = -1;
             yzflip[2, 2] = -1;
 
-            Matrix4x4 projMat = ProjectionMatrixToUnity((yzflip * affine * projection).transpose);
-            camera.projectionMatrix = ProjectionMatrixToUnity(projMat);
+            camera.projectionMatrix = ProjectionMatrixToUnity((yzflip * affine * projection).transpose);
         }
 
         private static Matrix4x4 ProjectionMatrixToUnity(Matrix4x4 m)
