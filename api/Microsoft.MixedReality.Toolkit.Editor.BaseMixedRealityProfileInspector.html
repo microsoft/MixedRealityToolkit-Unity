@@ -105,34 +105,13 @@
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_CreateCopyProfileValues_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.CreateCopyProfileValues*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_CreateCopyProfileValues" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.CreateCopyProfileValues">CreateCopyProfileValues()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_CreateCustomProfile_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.CreateCustomProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_CreateCustomProfile_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.CreateCustomProfile(Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)">CreateCustomProfile(BaseMixedRealityProfile)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected static void CreateCopyProfileValues()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.OnEnable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.OnEnable">OnEnable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void OnEnable()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderProfile_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderProfile*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderProfile_SerializedProperty_GUIContent_System_Boolean_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderProfile(SerializedProperty,GUIContent,System.Boolean,System.Type)">RenderProfile(SerializedProperty, GUIContent, Boolean, Type)</h4>
-  <div class="markdown level1 summary"><p>Renders a <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true, Type serviceType = null)</code></pre>
+    <pre><code class="lang-csharp hljs">protected static BaseMixedRealityProfile CreateCustomProfile(BaseMixedRealityProfile sourceProfile)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -145,28 +124,52 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">SerializedProperty</span></td>
-        <td><span class="parametername">property</span></td>
-        <td><p>the <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a> property.</p>
-</td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a></td>
+        <td><span class="parametername">sourceProfile</span></td>
+        <td></td>
       </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><span class="xref">GUIContent</span></td>
-        <td><span class="parametername">guiContent</span></td>
-        <td><p>The GUIContent for the field.</p>
-</td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
+    </thead>
+    <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">showAddButton</span></td>
-        <td><p>Optional flag to hide the create button.</p>
-</td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a></td>
+        <td></td>
       </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_IsProfileLock_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.IsProfileLock*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_IsProfileLock_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.IsProfileLock(Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)">IsProfileLock(BaseMixedRealityProfile)</h4>
+  <div class="markdown level1 summary"><p>Checks if the profile is locked</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static bool IsProfileLock(BaseMixedRealityProfile profile)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">serviceType</span></td>
-        <td><p>Optional service type to limit available profile types.</p>
-</td>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a></td>
+        <td><span class="parametername">profile</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -181,7 +184,57 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>True, if the profile changed.</p>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.OnEnable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.OnEnable">OnEnable()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnEnable()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderFoldout_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderFoldout*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderFoldout_System_Boolean__System_String_System_Action_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderFoldout(System.Boolean@,System.String,System.Action)">RenderFoldout(ref Boolean, String, Action)</h4>
+  <div class="markdown level1 summary"><p>Render Bold/HelpBox style Foldout</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static void RenderFoldout(ref bool currentState, string title, Action renderContent)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">currentState</span></td>
+        <td><p>reference bool for current visibility state of foldout</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">title</span></td>
+        <td><p>Title in foldout</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td><span class="parametername">renderContent</span></td>
+        <td><p>code to execute to render inside of foldout</p>
 </td>
       </tr>
     </tbody>
@@ -189,13 +242,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderProfile_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderProfile*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderProfile_SerializedProperty_System_Boolean_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderProfile(SerializedProperty,System.Boolean,System.Type)">RenderProfile(SerializedProperty, Boolean, Type)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderProfile_SerializedProperty_System_Boolean_System_Boolean_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderProfile(SerializedProperty,System.Boolean,System.Boolean,System.Type)">RenderProfile(SerializedProperty, Boolean, Boolean, Type)</h4>
   <div class="markdown level1 summary"><p>Renders a <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, Type serviceType = null)</code></pre>
+    <pre><code class="lang-csharp hljs">protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, bool renderProfileInBox = false, Type serviceType = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -216,7 +269,13 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">showAddButton</span></td>
-        <td><p>Optional flag to hide the create button.</p>
+        <td><p>If true, draw the clone button, if false, don't</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">renderProfileInBox</span></td>
+        <td><p>if true, render box around profile content, if false, don't</p>
 </td>
       </tr>
       <tr>
