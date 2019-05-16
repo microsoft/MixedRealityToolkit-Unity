@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [Test]
         public void Test_01_InitializeMixedRealityToolkit()
         {
-            TestUtilities.CleanupScene();
+            TestUtilities.CreateScenes();
             MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
             MixedRealityToolkit.ConfirmInitialized();
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [Test]
         public void Test_02_TestNoMixedRealityConfigurationFound()
         {
-            TestUtilities.CleanupScene();
+            TestUtilities.CreateScenes();
             MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
             MixedRealityToolkit.ConfirmInitialized();
@@ -643,6 +643,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit secondInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
 
             GameObject.DestroyImmediate(MixedRealityToolkit.Instance.gameObject);
+
+            MixedRealityToolkit.SetActiveInstance(secondInstance);
 
             Assert.NotNull(MixedRealityToolkit.Instance);
             Assert.AreEqual(secondInstance, MixedRealityToolkit.Instance);
