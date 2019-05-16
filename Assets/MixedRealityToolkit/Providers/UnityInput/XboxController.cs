@@ -64,13 +64,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             if (Enabled)
             {
-                // Move controller in plane perpendicular to camera direction using the left thumb stick
+                // Move controller in plane perpendicular to camera direction using the left thumbstick
                 float movementSpeed = 0.01f;
                 float h = UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_1);
                 float v = UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_2);
                 poseInCamera.position += new Vector3(h, -v, 0) * movementSpeed;
 
-                // Rotate controller using the right thumb stick
+                // Rotate controller using the right thumbstick
                 float rotationSpeed = 1.0f;
                 float yaw = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_4);
                 float pitch = rotationSpeed * UnityEngine.Input.GetAxis(ControllerMappingLibrary.AXIS_5);
@@ -78,11 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                 // Set world space pose
                 Pose pose = poseInCamera.GetTransformedBy(CameraCache.Main.transform);
-                CurrentControllerPosition = pose.position;
-                CurrentControllerPose.Position = CurrentControllerPosition;
-                CurrentControllerRotation = pose.rotation;
-                CurrentControllerPose.Rotation = CurrentControllerRotation;
+                CurrentControllerPose.Position = pose.position;
+                CurrentControllerPose.Rotation = pose.rotation;
 
+                // Update base controller after updating the pose as it is used to raise the input events
                 base.UpdateController();
             }
         }
