@@ -21,6 +21,7 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
         // verify bbox can be created at scale of 1
         var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.GetComponent<MeshRenderer>().material.color = Color.black;
+        cube.transform.position = Vector3.forward * 5;
         bbox = cube.AddComponent<BoundingBox>();
         bbox.HideElementsInInspector = false;
         bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;

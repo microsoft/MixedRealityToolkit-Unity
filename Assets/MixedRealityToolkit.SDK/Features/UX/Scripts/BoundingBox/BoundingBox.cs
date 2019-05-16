@@ -1177,11 +1177,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Bounds GetSingleObjectBounds(GameObject gameObject)
         {
             Bounds bounds = new Bounds(Vector3.zero, Vector3.zero);
-            Component[] components = gameObject.GetComponents<Component>();
-            if (components.Length < 3)
-            {
-                return bounds;
-            }
             BoxCollider boxCollider;
             boxCollider = gameObject.GetComponent<BoxCollider>();
             if (boxCollider == null)
