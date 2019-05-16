@@ -16,8 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [Test]
         public void Test_01_InitializeMixedRealityToolkit()
         {
-            TestUtilities.CreateScenes();
-            new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            TestUtilities.CleanupScene();
+            MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
             MixedRealityToolkit.ConfirmInitialized();
 
             // Tests
@@ -28,8 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [Test]
         public void Test_02_TestNoMixedRealityConfigurationFound()
         {
-            TestUtilities.CreateScenes();
-            new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            TestUtilities.CleanupScene();
+            MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
             MixedRealityToolkit.ConfirmInitialized();
 
             MixedRealityToolkit.Instance.ActiveProfile = null;
@@ -244,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(new TestDataProvider1(null, null, testName1, 10));
             MixedRealityToolkit.Instance.RegisterService<ITestDataProvider2>(new TestDataProvider2(null, null, testName2, 10));
 
-            // Retrieve 
+            // Retrieve
             var dataProvider1 = (TestDataProvider1)MixedRealityToolkit.Instance.GetService<ITestDataProvider1>(testName1);
             var dataProvider2 = (TestDataProvider2)MixedRealityToolkit.Instance.GetService<ITestDataProvider2>(testName2);
 
@@ -663,7 +665,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             foreach (MixedRealityToolkit instance in GameObject.FindObjectsOfType<MixedRealityToolkit>())
             {
                 MixedRealityToolkit.SetActiveInstance(instance);
-                
+
                 Assert.AreEqual(instance, MixedRealityToolkit.Instance);
                 Assert.IsTrue(instance.IsActiveInstance);
             }

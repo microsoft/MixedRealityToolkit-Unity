@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 string path = additiveTestSceneTemporarySavePath.Replace("#", i.ToString());
                 SceneAsset additiveTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
                 if (additiveTestSceneAsset != null)
-                {                   
+                {
                     AssetDatabase.DeleteAsset(path);
                 }
             }
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     for (int i = 1; i < numScenesToCreate; i++)
                     {
                         string path = additiveTestSceneTemporarySavePath.Replace("#", additiveTestScenesList.Count.ToString());
-                        // Create subsequent scenes additively        
+                        // Create subsequent scenes additively
                         Scene additiveScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
                         additiveTestScenesList.Add(additiveScene);
                         // Save the scene (temporarily) so we can load additively on top of it
@@ -113,9 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkit(useDefaultProfile);
         }
 
-        public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
-        {
-            new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
 
             if (!MixedRealityToolkit.IsInitialized)
             {
