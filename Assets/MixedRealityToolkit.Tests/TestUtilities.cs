@@ -115,11 +115,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
         {
-            MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
-            MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
-
             if (!MixedRealityToolkit.IsInitialized)
             {
+                MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
                 MixedRealityToolkit.ConfirmInitialized();
             }
 
