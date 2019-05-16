@@ -19,6 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent RuleActionContent = new GUIContent("Rule Input Action:", "The Action that will be raised when the criteria is met");
         private static readonly GUIContent CriteriaContent = new GUIContent("Action Criteria:", "The Criteria that must be met in order to raise the new Action");
 
+        private const string ProfileTitle = "Input Action Rule Settings";
+        private const string ProfileDescription = "Input Action Rules help define alternative Actions that will be raised based on specific criteria.\n\n" +
+                                    "You can create new rules by assigning a base Input Action below, then assigning the criteria you'd like to meet. When the criteria is met, the Rule's Action will be raised with the criteria value.\n\n" +
+                                    "Note: Rules can only be created for the same axis constraints.";
+
         private SerializedProperty inputActionRulesDigital;
         private SerializedProperty inputActionRulesSingleAxis;
         private SerializedProperty inputActionRulesDualAxis;
@@ -88,13 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Input Action Rules Profile",
-                "Input Action Rules help define alternative Actions that will be raised based on specific criteria.\n\n" +
-                "You can create new rules by assigning a base Input Action below, then assigning the criteria you'd like to meet. When the criteria is met, the Rule's Action will be raised with the criteria value.\n\n" +
-                "Note: Rules can only be created for the same axis constraints.");
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
@@ -102,39 +101,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-
-                DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
-
                 return;
             }
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 EditorGUILayout.HelpBox("No Input Actions profile was specified.", MessageType.Error);
-
-                DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile);
-
                 return;
             }
 
-            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
-            {
-                return;
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Input Action Rules Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Input Action Rules help define alternative Actions that will be raised based on specific criteria.\n\n" +
-                                    "You can create new rules by assigning a base Input Action below, then assigning the criteria you'd like to meet. When the criteria is met, the Rule's Action will be raised with the criteria value.\n\n" +
-                                    "Note: Rules can only be created for the same axis constraints.", MessageType.Info);
-
-            EditorGUILayout.Space();
-
-            CheckProfileLock(target);
-
-            var isGuiLocked = !(MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile);
+            bool wasGUIlocked = GUI.enabled;
+            bool isGuiLocked = wasGUIlocked && !IsProfileLock((BaseMixedRealityProfile)target);
             GUI.enabled = isGuiLocked;
-
             serializedObject.Update();
 
             selectedBaseActionId = RenderBaseInputAction(selectedBaseActionId, out currentBaseAction);
@@ -157,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                           currentBaseAction.AxisConstraint != AxisType.None &&
                           currentBaseAction.AxisConstraint != AxisType.Raw;
 
-            if (GUILayout.Button(RuleAddButtonContent, EditorStyles.miniButton))
+            if (RenderIndentedButton(RuleAddButtonContent, EditorStyles.miniButton))
             {
                 AddRule();
                 ResetCriteria();
@@ -179,6 +157,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             EditorGUIUtility.wideMode = isWideMode;
             serializedObject.ApplyModifiedProperties();
+
+            GUI.enabled = wasGUIlocked;
         }
 
         private bool RuleExists()
@@ -452,7 +432,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             action = MixedRealityInputAction.None;
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(BaseActionContent, GUILayout.Width(128));
+            EditorGUILayout.LabelField(BaseActionContent);
             EditorGUI.BeginChangeCheck();
 
             if (!isLocked)
