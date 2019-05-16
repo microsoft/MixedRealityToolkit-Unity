@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+            if (InputSystemProfile == null)
             {
                 Debug.LogError("The Input system is missing the required Input System Profile!");
                 return;
