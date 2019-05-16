@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
-using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
 using UnityEditor;
@@ -10,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 {
     [CustomEditor(typeof(MixedRealitySpatialAwarenessSystemProfile))]
-    public class MixedRealitySpatialAwarenessSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+    public class MixedRealitySpatialAwarenessSystemProfileInspector : BaseMixedRealityToolkitRuntimePlatformConfigurationProfileInspector
     {
         private static readonly GUIContent AddObserverContent = new GUIContent("+ Add Spatial Observer", "Add Spatial Observer");
         private static readonly GUIContent RemoveObserverContent = new GUIContent("-", "Remove Spatial Observer");
@@ -31,6 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
             observerConfigurations = serializedObject.FindProperty("observerConfigurations");
 
             observerFoldouts = new bool[observerConfigurations.arraySize];
+
+            GatherSupportedPlatforms(observerConfigurations);
         }
 
         public override void OnInspectorGUI()
@@ -84,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     observerName.stringValue = $"New spatial observer {list.arraySize - 1}";
 
                     SerializedProperty runtimePlatform = observer.FindPropertyRelative("runtimePlatform");
-                    runtimePlatform.intValue = -1;
+                    runtimePlatform.objectReferenceValue = null;
 
                     SerializedProperty configurationProfile = observer.FindPropertyRelative("observerProfile");
                     configurationProfile.objectReferenceValue = null;
@@ -140,12 +141,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                                 {
                                     serializedObject.ApplyModifiedProperties();
                                     System.Type type = ((MixedRealitySpatialAwarenessSystemProfile)serializedObject.targetObject).ObserverConfigurations[i].ComponentType.Type;
-                                    ApplyObserverConfiguration(type, observerName, observerProfile, runtimePlatform);
+                                    ApplyObserverConfiguration(type, observerName, observerProfile, runtimePlatform, i);
                                     break;
                                 }
 
                                 EditorGUI.BeginChangeCheck();
-                                EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
+                                RenderSupportedPlatforms(runtimePlatform, i, RuntimePlatformContent);
                                 changed |= EditorGUI.EndChangeCheck();
 
                                 System.Type serviceType = null;
@@ -171,11 +172,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                 }
             }
         }
+
         private void ApplyObserverConfiguration(
             System.Type type, 
             SerializedProperty observerName,
             SerializedProperty configurationProfile,
-            SerializedProperty runtimePlatform)
+            SerializedProperty runtimePlatform,
+            int index)
         {
             if (type != null)
             {
@@ -184,8 +187,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                 {
                     observerName.stringValue = !string.IsNullOrWhiteSpace(observerAttribute.Name) ? observerAttribute.Name : type.Name;
                     configurationProfile.objectReferenceValue = observerAttribute.DefaultProfile;
-                    throw new System.NotImplementedException();
-                    //runtimePlatform.intValue = (int)observerAttribute.RuntimePlatforms;
+                    ApplyMaskToProperty(runtimePlatform, runtimePlatformMasks[index]);
+
                 }
                 else
                 {

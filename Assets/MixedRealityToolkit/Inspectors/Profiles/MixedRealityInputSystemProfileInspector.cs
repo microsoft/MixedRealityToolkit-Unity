@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
-using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
 using UnityEditor;
@@ -11,7 +10,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityInputSystemProfile))]
-    public class MixedRealityInputSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+    public class MixedRealityInputSystemProfileInspector : BaseMixedRealityToolkitRuntimePlatformConfigurationProfileInspector
     {
         private static readonly GUIContent AddProviderContent = new GUIContent("+ Add Data Provider", "Add Data Provider");
         private static readonly GUIContent RemoveProviderContent = new GUIContent("-", "Remove Data Provider");
@@ -49,10 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private static bool[] providerFoldouts;
 
-        private static string[] runtimePlatformNames;
-        private static Type[] runtimePlatformTypes;
-        private static int[] runtimePlatformMasks;
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -76,49 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             providerFoldouts = new bool[dataProviderConfigurations.arraySize];
 
-            GatherSupportedPlatforms();
-        }
-
-        private void GatherSupportedPlatforms()
-        {
-            runtimePlatformTypes = IPlatformSupportExtension.GetSupportedPlatformTypes();
-            runtimePlatformNames = IPlatformSupportExtension.GetSupportedPlatformNames();
-
-            runtimePlatformMasks = new int[dataProviderConfigurations.arraySize];
-            SerializedProperty supportedPlatformsArray;
-            string platformName;
-            for (int i = 0; i < dataProviderConfigurations.arraySize; i++)
-            {
-                supportedPlatformsArray = dataProviderConfigurations.GetArrayElementAtIndex(i).FindPropertyRelative("runtimePlatform");
-                
-                for (int j = 0; j < runtimePlatformTypes.Length; j++)
-                {
-                    platformName = SystemType.GetReference(runtimePlatformTypes[j]);
-                    for (int k = 0; k < supportedPlatformsArray.arraySize; k++)
-                    {
-                        if (platformName.Equals(supportedPlatformsArray.GetArrayElementAtIndex(k).FindPropertyRelative("reference").stringValue))
-                        {
-                            runtimePlatformMasks[i] |= 1 << j;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void GenerateSupportedPlatformMask(SerializedProperty supportedPlatformsArray)
-        {
-            string platformName;
-            for (int j = 0; j < runtimePlatformTypes.Length; j++)
-            {
-                platformName = SystemType.GetReference(runtimePlatformTypes[j]);
-                for (int k = 0; k < supportedPlatformsArray.arraySize; k++)
-                {
-                    if (platformName.Equals(supportedPlatformsArray.GetArrayElementAtIndex(k).FindPropertyRelative("reference").stringValue))
-                    {
-                        runtimePlatformMasks[j] |= 1 << j;
-                    }
-                }
-            }
+            GatherSupportedPlatforms(dataProviderConfigurations);
         }
 
         public override void OnInspectorGUI()
@@ -324,9 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                 }
 
                                 EditorGUI.BeginChangeCheck();
-
-                                RenderSupportedPlatforms(runtimePlatform, i);
-
+                                RenderSupportedPlatforms(runtimePlatform, i, RuntimePlatformContent);
                                 changed |= EditorGUI.EndChangeCheck();
 
                                 System.Type serviceType = null;
@@ -348,12 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
             }
-        }
-
-        private void RenderSupportedPlatforms(SerializedProperty runtimePlatform, int index)
-        {
-            runtimePlatformMasks[index] = EditorGUILayout.MaskField(RuntimePlatformContent, runtimePlatformMasks[index], runtimePlatformNames);
-            ApplyMaskToProperty(runtimePlatform, runtimePlatformMasks[index]);
         }
 
         private void ApplyDataProviderConfiguration(
@@ -378,19 +323,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
 
                 serializedObject.ApplyModifiedProperties();
-            }
-        }
-
-        private void ApplyMaskToProperty(SerializedProperty runtimePlatform, int runtimePlatformBitMask)
-        {
-            runtimePlatform.arraySize = MathExtensions.CountBits(runtimePlatformBitMask);
-            int arrayIndex = 0;
-            for (int i = 0; i < runtimePlatformTypes.Length; i++)
-            {
-                if ((runtimePlatformBitMask & 1 << i) != 0)
-                {
-                    runtimePlatform.GetArrayElementAtIndex(arrayIndex++).FindPropertyRelative("reference").stringValue = SystemType.GetReference(runtimePlatformTypes[i]);
-                }
             }
         }
     }

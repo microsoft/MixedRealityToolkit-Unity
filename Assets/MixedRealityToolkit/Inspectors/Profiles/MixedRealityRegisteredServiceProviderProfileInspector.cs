@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(MixedRealityRegisteredServiceProvidersProfile))]
-    public class MixedRealityRegisteredServiceProviderProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+    public class MixedRealityRegisteredServiceProviderProfileInspector : BaseMixedRealityToolkitRuntimePlatformConfigurationProfileInspector
     {
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Unregister");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Register a new Service Provider");
@@ -23,6 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             configurations = serializedObject.FindProperty("configurations");
             configFoldouts = new bool[configurations.arraySize];
+
+            GatherSupportedPlatforms(configurations);
         }
 
         public override void OnInspectorGUI()
@@ -59,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 var priority = managerConfig.FindPropertyRelative("priority");
                 priority.intValue = 10;
                 var runtimePlatform = managerConfig.FindPropertyRelative("runtimePlatform");
-                runtimePlatform.intValue = -1;
+                runtimePlatform.objectReferenceValue = null;
                 var configurationProfile = managerConfig.FindPropertyRelative("configurationProfile");
                 configurationProfile.objectReferenceValue = null;
                 serializedObject.ApplyModifiedProperties();
@@ -127,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         // Try to assign default configuration profile when type changes.
                         serializedObject.ApplyModifiedProperties();
-                        AssignDefaultConfigurationValues(((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType, configurationProfile, runtimePlatform);
+                        AssignDefaultConfigurationValues(((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType, configurationProfile, runtimePlatform, i);
                         changed = true;
 
                         GUILayout.EndVertical();
@@ -136,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     EditorGUI.BeginChangeCheck();
                     EditorGUILayout.PropertyField(priority);
-                    EditorGUILayout.PropertyField(runtimePlatform);
+                    RenderSupportedPlatforms(runtimePlatform, i);
 
                     changed |= EditorGUI.EndChangeCheck();
 
@@ -166,18 +168,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        private void AssignDefaultConfigurationValues(System.Type componentType, SerializedProperty configurationProfile, SerializedProperty runtimePlatform)
+        private void AssignDefaultConfigurationValues(
+            Type componentType,
+            SerializedProperty configurationProfile,
+            SerializedProperty runtimePlatform,
+            int index
+            )
         {
             configurationProfile.objectReferenceValue = null;
-            runtimePlatform.intValue = -1;
+            runtimePlatform.objectReferenceValue = null;
 
             if (componentType != null &&
                 MixedRealityExtensionServiceAttribute.Find(componentType) is MixedRealityExtensionServiceAttribute attr)
             {
                 configurationProfile.objectReferenceValue = attr.DefaultProfile;
-                throw new System.NotImplementedException();
-
-                //runtimePlatform.intValue = (int)attr.RuntimePlatforms;
+                ApplyMaskToProperty(runtimePlatform, runtimePlatformMasks[index]);
             }
 
             serializedObject.ApplyModifiedProperties();
