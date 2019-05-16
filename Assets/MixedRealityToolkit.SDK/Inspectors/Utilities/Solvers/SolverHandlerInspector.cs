@@ -50,13 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                 {
                     EditorGUILayout.PropertyField(trackedHandJointProperty);
                 }
-                else if (trackedObjectProperty.enumValueIndex == (int)TrackedObjectType.MotionControllerLeft ||
-                    trackedObjectProperty.enumValueIndex == (int)TrackedObjectType.MotionControllerRight)
-                {
-                    // TODO: Add tracked controller element back in. Pending visualization system updates.
-                    // EditorGUILayout.PropertyField(trackedControllerElementProperty);
-                }
-
                 trackedObjectChanged = EditorGUI.EndChangeCheck();
             }
 

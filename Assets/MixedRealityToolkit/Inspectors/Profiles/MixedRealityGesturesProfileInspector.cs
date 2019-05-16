@@ -86,9 +86,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
+            RenderTitleDescriptionAndLogo(
+                "Gesture Input",
+                "This gesture map is any and all movements of part the user's body, especially a hand or the head, that raise actions through the input system." +
+                "\n\nNote: Defined controllers can look up the list of gestures and raise the events based on specific criteria.");
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile)) { return; }
 
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
@@ -103,10 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 return;
             }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Gesture Input", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("This gesture map is any and all movements of part the user's body, especially a hand or the head, that raise actions through the input system.\n\nNote: Defined controllers can look up the list of gestures and raise the events based on specific criteria.", MessageType.Info);
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {

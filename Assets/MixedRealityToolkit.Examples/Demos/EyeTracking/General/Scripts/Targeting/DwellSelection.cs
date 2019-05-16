@@ -279,6 +279,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
         }
 
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
         {
             ResetDwellFeedback();
