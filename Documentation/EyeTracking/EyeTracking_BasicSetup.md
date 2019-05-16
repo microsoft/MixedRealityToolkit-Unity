@@ -7,10 +7,10 @@ Alternatively, you can check out our already configured [MRTK Eye Tracking Examp
 For Eye Tracking to work correctly, the following requirements must be met:
 
 1. An _'Eye Gaze Data Provider'_ must be added to the input system. This provides eye tracking data from the platform.
-2. The _'Gaze Input'_ capability must be enabled in the application manifest. **Currently this is only available in Visual Studio.**
-3. The HoloLens **must** be calibrated for the current user under system settings.
-4. The GazeProvider must have its "Use Eye Tracking" property set to true. Note that true is the default value (so no special
+2. The GazeProvider must have its "Use Eye Tracking" property set to true. Note that true is the default value (so no special
    action is required unless you have actively unchecked this property.)
+3. The _'Gaze Input'_ capability must be enabled in the application manifest. **Currently this is only available in Visual Studio.**
+4. The HoloLens **must** be calibrated for the current user under system settings.
 
 
 **IMPORTANT:** If any of the above requirements are not met, the application will automatically fall back to head-based gaze tracking.
