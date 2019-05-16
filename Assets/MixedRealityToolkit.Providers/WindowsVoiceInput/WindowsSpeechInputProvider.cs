@@ -159,7 +159,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             {
                 StopRecognition();
                 keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
-                keywordRecognizer.Dispose();
             }
         }
 
@@ -173,6 +172,15 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
         }
 #endif // UNITY_EDITOR
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                keywordRecognizer?.Dispose();
+            }
+        }
 
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
