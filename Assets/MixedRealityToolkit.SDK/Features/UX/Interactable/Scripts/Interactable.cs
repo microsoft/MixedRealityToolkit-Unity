@@ -927,7 +927,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void LoadStates(string statesAssetName)
         {
             string[] stateLocations = AssetDatabase.FindAssets(statesAssetName);
-            Debug.Assert(stateLocations.Length > 0, $"Interactable.LoadStates loading {statesAssetName} but no no {statesAssetName}.asset found");
+            Debug.Assert(stateLocations.Length > 0, $"Interactable.LoadStates loading {statesAssetName} but no {statesAssetName}.asset found");
             string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
             States = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
         }
