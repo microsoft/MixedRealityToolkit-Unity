@@ -130,6 +130,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Minimum scaling allowed relative to the initial size")]
         private float scaleMinimum = 0.2f;
 
+        /// <summary>
+        /// Public property for the scale maximum, in the target's local scale.
+        /// Set this value with SetScaleLimits.
+        /// </summary>
+        public float ScaleMaximum
+        {
+            get
+            {
+                return maximumScale != null ? maximumScale.x : scaleMaximum;
+            }
+        }
+
+        /// <summary>
+        /// Public property for the scale minimum, in the target's local scale.
+        /// Set this value with SetScaleLimits.
+        /// </summary>
+        public float ScaleMinimum
+        {
+            get
+            {
+                return minimumScale != null ? minimumScale.x : scaleMinimum;
+            }
+        }
+
         [Header("Box Display")]
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
@@ -610,6 +634,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void UnhighlightWires()
         {
             ResetHandleVisibility();
+        }
+
+        /// <summary>
+        /// Sets the minimum/maximum scale for the bounding box at runtime.
+        /// </summary>
+        /// <param name="min">Minimum scale</param>
+        /// <param name="max">Maximum scale</param>
+        /// <param name="relativeToInitialState">If true the values will be multiplied by the current target scale. If false they will be in absolute local scale.</param>
+        public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
+        {
+            scaleMaximum = max;
+            scaleMinimum = min;
+
+            // Update the absolute min/max
+            var target = Target;
+            if (target != null)
+            {
+                if (relativeToInitialState)
+                {
+                    maximumScale = target.transform.localScale * scaleMaximum;
+                    minimumScale = target.transform.localScale * scaleMinimum;
+                }
+                else
+                {
+                    maximumScale = new Vector3(scaleMaximum, scaleMaximum, scaleMaximum);
+                    minimumScale = new Vector3(scaleMinimum, scaleMinimum, scaleMinimum);
+                }
+            }
         }
 
         #endregion
