@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         }
 
                         _markerObservations[markerPair.Key].Add(markerPair.Value);
-                        if (_markerObservations[markerPair.Key].Count > DetectionCompletionStrategy.MaximumMarkerCount)
+                        if (_markerObservations[markerPair.Key].Count > DetectionCompletionStrategy.MaximumMarkerSampleCount)
                         {
                             _markerObservations[markerPair.Key].RemoveAt(0);
                         }
@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             return mean;
         }
 
-        private static List<Marker> CalculateInlierMarkerSet(IReadOnlyList<Marker> allMarkers, Marker averageMarker)
+        private static List<Marker> CalculateInlierMarkerSet(IReadOnlyList<Marker> allMarkers, Marker averageMarker, double markerInlierStandardDeviationThreshold)
         {
             double positionStandardDeviation, rotationStandardDeviation;
             CalculateStandardDeviations(allMarkers, averageMarker, out positionStandardDeviation, out rotationStandardDeviation);
@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             List<Marker> inliers = new List<Marker>(allMarkers.Count);
             for (int i = 0; i < allMarkers.Count; i++)
             {
-                if (IsMarkerInlier(allMarkers[i], averageMarker, positionStandardDeviation, rotationStandardDeviation))
+                if (IsMarkerInlier(allMarkers[i], averageMarker, positionStandardDeviation, rotationStandardDeviation, markerInlierStandardDeviationThreshold))
                 {
                     inliers.Add(allMarkers[i]);
                 }
@@ -273,10 +273,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             rotationStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => Quaternion.Angle(marker.Rotation, averageMarker.Rotation));
         }
 
-        private static bool IsMarkerInlier(Marker candidate, Marker averageMarker, double positionStandardDeviation, double rotationStandardDeviation)
+        private static bool IsMarkerInlier(Marker candidate, Marker averageMarker, double positionStandardDeviation, double rotationStandardDeviation, double markerInlierStandardDeviationThreshold)
         {
-            return (candidate.Position - averageMarker.Position).magnitude < 1.5 * positionStandardDeviation &&
-                Quaternion.Angle(candidate.Rotation, averageMarker.Rotation) < 1.5 * rotationStandardDeviation;
+            return (candidate.Position - averageMarker.Position).magnitude < markerInlierStandardDeviationThreshold * positionStandardDeviation &&
+                Quaternion.Angle(candidate.Rotation, averageMarker.Rotation) < markerInlierStandardDeviationThreshold * rotationStandardDeviation;
         }
 
         private static double StandardDeviation<T>(IReadOnlyList<T> values, T meanValue, Func<T, double> evaluator)
@@ -292,22 +292,41 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             return Math.Sqrt(sum / values.Count);
         }
 
+        /// <summary>
+        /// Class which contains the logic for whether or not a set of detected marker poses is a satisfactory estimate of the
+        /// true position of the marker.
+        /// </summary>
         public abstract class MarkerDetectionCompletionStrategy
         {
+            /// <summary>
+            /// Determines if the list of gathered markers is a representative sample, and if so computes the completed marker position.
+            /// </summary>
+            /// <param name="markers">A set of sampled positions and rotations of a physical marker.</param>
+            /// <param name="completedMarker">A pose for the physical marker computed from the sampled positions.</param>
+            /// <returns></returns>
             public abstract bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker);
 
-            public abstract int MaximumMarkerCount { get; }
+            /// <summary>
+            /// Gets the maximum number of marker samples that should be stored.
+            /// </summary>
+            public abstract int MaximumMarkerSampleCount { get; }
         }
 
+        /// <summary>
+        /// Strategy for detecting a marker that is known to be stationary. Heuristics are used to filter
+        /// out noisy data to try to guarantee that the detected marker is actually aligned with the physical
+        /// marker.
+        /// </summary>
         public sealed class StationaryMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
         {
-            private int _requiredObservations = 5;
-            private int _requiredInliers = 5;
-            private int _maximumObservationsToBuffer = 20;
-            private float _maximumPositionDistanceStandardDeviation = 0.001f;
-            private float _maximumRotationAngleStandardDeviation = 0.25f;
+            private const int _requiredObservations = 5;
+            private const int _requiredInlierCount = 5;
+            private const int _maximumMarkerSampleCount = 15;
+            private const float _maximumPositionDistanceStandardDeviation = 0.001f;
+            private const float _maximumRotationAngleStandardDeviation = 0.25f;
+            private const float _markerInlierStandardDeviationThreshold = 1.5f;
 
-            public override int MaximumMarkerCount => _maximumObservationsToBuffer;
+            public override int MaximumMarkerSampleCount => _maximumMarkerSampleCount;
 
             public override bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker)
             {
@@ -315,11 +334,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 {
                     var averageMarker = CalculateAverageMarker(markers);
 
-                    var inliers = CalculateInlierMarkerSet(markers, averageMarker);
-                    if (inliers.Count >= _requiredInliers)
+                    // Find a set of markers that are inliers (within a threshold of the average marker).
+                    // This is used to reject spurious marker detections outside the norm to prevent them from polluting
+                    // the final marker result.
+                    var inliers = CalculateInlierMarkerSet(markers, averageMarker, _markerInlierStandardDeviationThreshold);
+                    if (inliers.Count >= _requiredInlierCount)
                     {
+                        // Recompute the average marker using only the set of inliers.
                         var averageInlierMarker = CalculateAverageMarker(inliers);
 
+                        // Determine the standard deviation of the distance from the average marker and the angular
+                        // delta from the average marker, and then see if that falls within the required threshold.
+                        // If it does, we can stop. Otherwise, continue to gather samples until we get a set that
+                        // does fall within the threshold.
                         double positionStandardDeviation, rotationStandardDeviation;
                         CalculateStandardDeviations(inliers, averageInlierMarker, out positionStandardDeviation, out rotationStandardDeviation);
                         if (positionStandardDeviation <= _maximumPositionDistanceStandardDeviation && rotationStandardDeviation <= _maximumRotationAngleStandardDeviation)
@@ -340,11 +367,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             }
         }
 
+        /// <summary>
+        /// Strategy for detecting a marker that is known to be non-stationary (e.g. held in someone's hand).
+        /// Multiple markers are averaged but heuristics are not used to try to lock the marker to within
+        /// a distance and rotation threshold.
+        /// </summary>
         public sealed class MovingMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
         {
             private int _requiredObservations = 5;
 
-            public override int MaximumMarkerCount => _requiredObservations;
+            public override int MaximumMarkerSampleCount => _requiredObservations;
 
             public override bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker)
             {
