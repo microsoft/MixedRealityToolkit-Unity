@@ -31,6 +31,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         /// <summary>
         /// Mapping from pointer id to event data and click state
         /// </summary>
@@ -58,24 +75,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.ActivateModule();
 
-            if (MixedRealityToolkit.InputSystem != null)
+            if (InputSystem != null)
             {
-                RaycastCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
+                RaycastCamera = InputSystem.FocusProvider.UIRaycastCamera;
 
-                foreach (IMixedRealityInputSource inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+                foreach (IMixedRealityInputSource inputSource in InputSystem.DetectedInputSources)
                 {
                     OnSourceDetected(inputSource);
                 }
 
-                MixedRealityToolkit.InputSystem.Register(gameObject);
+                InputSystem.Register(gameObject);
             }
         }
 
         public override void DeactivateModule()
         {
-            if (MixedRealityToolkit.InputSystem != null)
+            if (InputSystem != null)
             {
-                MixedRealityToolkit.InputSystem.Unregister(gameObject);
+                InputSystem.Unregister(gameObject);
 
                 foreach (var p in pointerDataToUpdate)
                 {
@@ -253,6 +270,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerDataToUpdate[pointerId].nextPressState = PointerEventData.FramePressState.Pressed;
         }
 
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
         {
         }
@@ -273,9 +292,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var pointer = inputSource.Pointers[i];
                 if (pointer.InputSourceParent == inputSource)
                 {
+                    // This !ContainsKey is only necessary due to inconsistent initialization of
+                    // various input providers and this class's ActivateModule() call.
                     int pointerId = (int)pointer.PointerId;
-                    Debug.Assert(!pointerDataToUpdate.ContainsKey(pointerId));
-                    pointerDataToUpdate.Add(pointerId, new PointerData(pointer, eventSystem));
+                    if (!pointerDataToUpdate.ContainsKey(pointerId))
+                    {
+                        pointerDataToUpdate.Add(pointerId, new PointerData(pointer, eventSystem));
+                    }
                 }
             }
         }

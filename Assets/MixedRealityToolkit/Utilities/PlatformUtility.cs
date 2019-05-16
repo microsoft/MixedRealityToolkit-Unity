@@ -37,6 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 case RuntimePlatform.LinuxEditor:
                     supportedPlatforms |= SupportedPlatforms.LinuxStandalone;
                     break;
+                case RuntimePlatform.Android:
+                    supportedPlatforms |= SupportedPlatforms.Android;
+                    break;
             }
 
             return supportedPlatforms;
@@ -80,6 +83,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 case UnityEditor.BuildTarget.StandaloneLinux64:
                 case UnityEditor.BuildTarget.StandaloneLinuxUniversal:
                     supportedPlatforms |= SupportedPlatforms.LinuxStandalone;
+                    break;
+                case UnityEditor.BuildTarget.Android:
+                    supportedPlatforms |= SupportedPlatforms.Android;
                     break;
             }
 

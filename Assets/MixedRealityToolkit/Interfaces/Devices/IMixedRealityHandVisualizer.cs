@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Hand visualization definition, used to provide access to hand joint objects.

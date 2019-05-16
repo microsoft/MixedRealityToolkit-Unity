@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
 
-#if !UNITY_EDITOR && UNITY_WSA
+#if !UNITY_EDITOR
 using Windows.Networking;
 using Windows.Networking.Connectivity;
+#endif
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.HolographicCamera
@@ -20,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
     [RequireComponent(typeof(HolographicCameraOriginAnchor))]
     public class HolographicCameraStatusMonitor : MonoBehaviour
     {
+#if UNITY_WSA
         TCPConnectionManager tcpConnectionManager = null;
         HolographicCameraOriginAnchor originAnchor = null;
 
@@ -57,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
                 message.Write("Status");
-                message.Write((byte)WorldManager.state);
+                message.Write(WorldManager.state == PositionalLocatorState.Active);
                 message.Write(originAnchor.IsAnchorLocated);
                 message.Write(originAnchor.IsDetectingMarker);
 
@@ -119,5 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 #endif
             return ipAddress;
         }
+#endif
     }
 }

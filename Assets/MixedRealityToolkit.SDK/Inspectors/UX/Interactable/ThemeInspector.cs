@@ -14,11 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Inspector for themes, and used by Interactable
     /// </summary>
-
-    // TODO: !!!!! need to make sure we refresh the shader list when the target changes
-
-    // FIX : when adding a new setting, the rendered values is a dupe of the previous values in the list, but the dropdown is default.
-
+    
 #if UNITY_EDITOR
     [CustomEditor(typeof(Theme))]
     public class ThemeInspector : UnityEditor.Editor
@@ -355,9 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
                         }
                     }
-
-                    //TODO: make sure shader has currently selected property
-
+                    
                     List<ShaderPropertyType> shaderPropFilter = new List<ShaderPropertyType>();
                     // do we need a propId?
                     if (properties[i].Type == InteractableThemePropertyValueTypes.Color)
@@ -767,7 +761,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             GUIStyle box = InspectorUIUtility.Box(0);
             if (themeObj != null)
             {
-                box = InspectorUIUtility.Box(30);
+                box = InspectorUIUtility.Box(34);
                 themeObj.Update();
             }
 

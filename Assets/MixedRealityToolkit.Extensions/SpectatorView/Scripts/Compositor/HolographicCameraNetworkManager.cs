@@ -8,7 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.XR.WSA;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
 {
@@ -33,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private SocketEndpoint currentConnection;
         private string holoLensName;
         private string holoLensIPAddress;
-        private PositionalLocatorState holoLensTrackingState;
+        private bool hasTracking;
         private bool isAnchorLocated;
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         /// <summary>
         /// Gets the last-reported tracking status of the HoloLens running on the holographic camera rig.
         /// </summary>
-        public bool HasTracking => holoLensTrackingState == PositionalLocatorState.Active;
+        public bool HasTracking => hasTracking;
 
         /// <summary>
         /// Gets the last-reported status of whether or not the WorldAnchor used for spatial position sharing is located
@@ -169,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                         break;
                     case "Status":
                         {
-                            holoLensTrackingState = (PositionalLocatorState)reader.ReadByte();
+                            hasTracking = reader.ReadBoolean();
                             isAnchorLocated = reader.ReadBoolean();
                         }
                         break;

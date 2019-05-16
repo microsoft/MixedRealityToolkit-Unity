@@ -3,8 +3,10 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.WorldAnchors
 {

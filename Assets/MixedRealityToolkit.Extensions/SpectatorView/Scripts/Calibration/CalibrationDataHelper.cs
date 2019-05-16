@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 #elif UNITY_WSA
             return Windows.Storage.KnownFolders.DocumentsLibrary.Path;
 #else
-            return String.empty;
+            return string.Empty;
 #endif
         }
 

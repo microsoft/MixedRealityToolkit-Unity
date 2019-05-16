@@ -8,7 +8,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.HolographicCamera
 {
@@ -16,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
     [RequireComponent(typeof(TCPConnectionManager))]
     public class HolographicCameraOriginAnchor : MonoBehaviour
     {
+#if UNITY_WSA
         private const int markerOriginId = 0;
         private const string AnchorName = "WorldRoot";
         private WorldAnchorManager worldAnchorManager;
@@ -34,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             }
         }
 
-        private void Start()
+        private void Awake()
         {
             worldAnchorManager = GetComponent<WorldAnchorManager>();
             worldAnchorManager.AttachAnchor(gameObject, AnchorName);
@@ -58,6 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
                 transform.rotation = originMarker.Rotation;
                 worldAnchorManager.AttachAnchor(gameObject, AnchorName);
             }
+        }
+
+        private void OnDestroy()
+        {
+            tcpConnectionManager.OnReceive -= TcpConnectionManager_OnReceive;
         }
 
         private void TcpConnectionManager_OnReceive(IncomingMessage data)
@@ -86,5 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
                 }
             }
         }
+#endif
     }
 }
