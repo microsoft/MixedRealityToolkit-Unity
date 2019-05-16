@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Enum which describes how an object's boundingbox is to be flattened.
         /// </summary>
-        private enum FlattenModeType
+        public enum FlattenModeType
         {
             DoNotFlatten = 0,
             /// <summary>
@@ -134,19 +134,86 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
         private FlattenModeType flattenAxis = FlattenModeType.DoNotFlatten;
+        public FlattenModeType FlattenAxis
+        {
+            get { return flattenAxis; }
+            set
+            {
+                if (flattenAxis != value)
+                {
+                    flattenAxis = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
         [SerializeField]
         [FormerlySerializedAs("wireframePadding")]
         [Tooltip("Extra padding added to the actual Target bounds")]
         private Vector3 boxPadding = Vector3.zero;
+        public Vector3 BoxPadding
+        {
+            get { return boxPadding; }
+            set
+            {
+                if (Vector3.Distance(boxPadding, value) > float.Epsilon)
+                {
+                    boxPadding = value;
+                    DestroyRig();
+                    CreateRig();
+                }
+            }
+        }
         [SerializeField]
         [Tooltip("Material used to display the bounding box. If set to null no bounding box will be displayed")]
         private Material boxMaterial = null;
+        public Material BoxMaterial
+        {
+            get { return boxMaterial; }
+            set
+            {
+                if (boxMaterial != value)
+                {
+                    boxMaterial = value;
+                    if (boxDisplay != null)
+                    {
+                        ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
+                    }
+                    else
+                    {
+                        AddBoxDisplay();
+                    }
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("Material used to display the bounding box when grabbed. If set to null no change will occur when grabbed.")]
         private Material boxGrabbedMaterial = null;
+
+        public Material BoxGrabbedMaterial
+        {
+            get { return boxGrabbedMaterial; }
+            set { boxGrabbedMaterial = value; }
+        }
+
         [SerializeField]
         [Tooltip("Show a wireframe around the bounding box when checked. Wireframe parameters below have no effect unless this is checked")]
         private bool showWireframe = true;
+
+        public bool ShowWireFrame
+        {
+            get { return showWireframe; }
+            set
+            {
+                if (showWireframe != value)
+                {
+                    showWireframe = value;
+                    ResetHandleVisibility();
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("Shape used for wireframe display")]
         private WireframeType wireframeShape = WireframeType.Cubic;
@@ -267,6 +334,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Check to draw a tether point from the handles to the hand when manipulating.")]
         private bool drawTetherWhenManipulating = true;
+
+        public bool DrawTetherWhenManipulating
+        {
+            get { return drawTetherWhenManipulating; }
+            set { drawTetherWhenManipulating = value; }
+        }
 
         [Header("Debug")]
         [Tooltip("Debug only. Component used to display debug messages")]
@@ -573,7 +646,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void AddCorners()
         {
             bool isFlattened = (flattenAxis != FlattenModeType.DoNotFlatten);
-            
+
             // Flattened but missing custom 2D handle prefab OR Not flattened but missing custom 3D handle prefab.
             if ((isFlattened && (scaleHandleSlatePrefab == null)) || (scaleHandlePrefab == null))
             {
@@ -641,7 +714,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     GameObject cornerVisuals = Instantiate(isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab, visualsScale.transform);
                     cornerVisuals.name = "visuals";
 
-                    if(isFlattened)
+                    if (isFlattened)
                     {
                         // Rotate 2D slate handle asset for proper orientation
                         cornerVisuals.transform.Rotate(0, 0, -90);
