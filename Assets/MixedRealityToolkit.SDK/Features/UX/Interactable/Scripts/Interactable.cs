@@ -35,7 +35,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Setup the input system
         /// </summary>
         private static IMixedRealityInputSystem inputSystem = null;
-        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>());
+        protected static IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (InputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return InputSystem;
+            }
+        }
 
         // list of pointers
         protected List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
@@ -155,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            MixedRealityInputAction[] actions = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+            MixedRealityInputAction[] actions = InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
 
             descriptionsArray = new string[actions.Length];
             for (int i = 0; i < actions.Length; i++)
@@ -782,7 +792,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <returns></returns>
         public static MixedRealityInputAction ResolveInputAction(int index)
         {
-            MixedRealityInputAction[] actions = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+            MixedRealityInputAction[] actions = InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
             index = Mathf.Clamp(index, 0, actions.Length - 1);
             return actions[index];
         }
