@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (States == null)
             {
                 Debug.Log("Interactable instantiated at runtime, loading default states");
-                LoadStates("DefaultInteractableStates");
+                States = Resources.Load<States>("DefaultInteractableStates");
             }
             InputAction = ResolveInputAction(InputActionId);
             SetupEvents();
@@ -917,19 +917,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             yield return new WaitForSeconds(time);
             inputTimer = null;
-        }
-
-        /// <summary>
-        /// Sets the states of the interactable to be asset that matches the given asset name
-        /// If more than one asset name is found, uses the first found asset.
-        /// </summary>
-        /// <param name="statesAssetName">The name of the interactable states asset</param>
-        public void LoadStates(string statesAssetName)
-        {
-            string[] stateLocations = AssetDatabase.FindAssets(statesAssetName);
-            Debug.Assert(stateLocations.Length > 0, $"Interactable.LoadStates loading {statesAssetName} but no no {statesAssetName}.asset found");
-            string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
-            States = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
         }
 
         #endregion InteractableUtilities
