@@ -17,10 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class NearInteractionTouchableUnboundedPlane : BaseNearInteractionTouchable
     {
 #if UNITY_EDITOR
+        private readonly Color handleColor = Color.white;
+
         [UnityEditor.CustomEditor(typeof(NearInteractionTouchableUnboundedPlane))]
         public class Editor : UnityEditor.Editor
         {
-            private readonly Color handleColor = Color.white;
 
             protected virtual void OnSceneGUI()
             {
@@ -28,14 +29,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (Event.current.type == EventType.Repaint)
                 {
-                    UnityEditor.Handles.color = handleColor;
-
+                    UnityEditor.Handles.color = t.handleColor;
                     Vector3 center = t.transform.TransformPoint(t.localPoint);
 
                     float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
                     UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(t.transform.rotation * t.localNormal), arrowSize, EventType.Repaint);
                 }
             }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = handleColor;
+
+            Vector3 center = transform.TransformPoint(localPoint);
+            Vector3 forward = transform.TransformVector(localNormal).normalized;
+            Vector3 up = Vector3.Cross(Vector3.Cross(forward, Vector3.up), forward).normalized;
+            Vector3 right = Vector3.Cross(up, forward);
+
+            Gizmos.DrawRay(center, right + up);
+            Gizmos.DrawRay(center, right - up);
+            Gizmos.DrawRay(center, -right + up);
+            Gizmos.DrawRay(center, -right - up);
         }
 #endif
 
