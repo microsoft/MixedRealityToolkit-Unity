@@ -8,6 +8,9 @@ using Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
 
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleToAttribute("Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor")]
+
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     /// <summary>

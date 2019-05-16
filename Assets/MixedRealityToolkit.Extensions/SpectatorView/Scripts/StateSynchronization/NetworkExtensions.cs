@@ -2,13 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.StateSynchronization
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     /// <summary>
     /// Extension methods for writing structured CLR and Unity objects to BinaryWriter and reading those
@@ -110,6 +107,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
         public static Color32 ReadColor32(this BinaryReader message)
         {
             return new Color32(message.ReadByte(), message.ReadByte(), message.ReadByte(), message.ReadByte());
+        }
+
+        public static ShortID ReadShortID(this BinaryReader message)
+        {
+            return new ShortID(message.ReadUInt16());
         }
 
         public static void Write(this BinaryWriter message, Vector3[] array)
