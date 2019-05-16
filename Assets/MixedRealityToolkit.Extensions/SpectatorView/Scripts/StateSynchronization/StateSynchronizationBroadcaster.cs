@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,12 +16,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class StateSynchronizationBroadcaster : Singleton<StateSynchronizationBroadcaster>
     {
+        private readonly Dictionary<SocketEndpoint, ConnectedObserver> connectedObservers = new Dictionary<SocketEndpoint, ConnectedObserver>();
+
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
         /// </summary>
         [Tooltip("Network connection manager that facilitates sending data between devices.")]
         [SerializeField]
         protected TCPConnectionManager connectionManager;
+
+        [SerializeField]
+        private GameObject anchorPrefab = null;
 
         /// <summary>
         /// Port used for sending data.
@@ -39,6 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
+
+        internal LocalizationMechanismBase LocalizationMechanism { get; set; }
 
         protected override void Awake()
         {
@@ -89,11 +98,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         protected void OnConnected(SocketEndpoint endpoint)
         {
+            ConnectedObserver connectedObserver = new ConnectedObserver(Role.Broadcaster, endpoint, () => Instantiate(anchorPrefab));
+            connectedObservers.Add(endpoint, connectedObserver);
             Connected?.Invoke(endpoint);
+
+            connectedObserver.LocalizeAsync(LocalizationMechanism).FireAndForget();
         }
 
         protected void OnDisconnected(SocketEndpoint endpoint)
         {
+            if (!connectedObservers.TryGetValue(endpoint, out ConnectedObserver connectedObserver))
+            {
+                Debug.LogError("Got a disconnection event for an observer which we didn't register as connected.");
+            }
+            else
+            {
+                connectedObserver.Dispose();
+            }
+
             Disconnected?.Invoke(endpoint);
         }
 
@@ -109,6 +131,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         {
                             reader.ReadSingle(); // float time
                             StateSynchronizationSceneManager.Instance.ReceiveMessage(data.Endpoint, reader);
+                        }
+                        break;
+                    case ConnectedObserver.LocalizationMessageHeader:
+                        {
+                            if (!connectedObservers.TryGetValue(data.Endpoint, out ConnectedObserver connectedObserver))
+                            {
+                                Debug.LogError("Received a message for an obserer not registered as a connectedObserver.");
+                            }
+                            else
+                            {
+                                connectedObserver.ReceiveMessage(reader);
+                            }
                         }
                         break;
                 }

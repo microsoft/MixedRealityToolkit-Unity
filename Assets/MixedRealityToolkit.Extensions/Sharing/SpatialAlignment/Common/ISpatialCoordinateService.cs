@@ -31,12 +31,20 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         IEnumerable<ISpatialCoordinate> KnownCoordinates { get; }
 
         /// <summary>
+        /// A method for retrieving a known coordinate by id.
+        /// </summary>
+        /// <param name="id">Coordinate Id.</param>
+        /// <param name="spatialCoordinate">The spatial coordinate that is know by this service instance.</param>
+        /// <returns>True if it was able to get it, false if not.</returns>
+        bool TryGetKnownCoordinate(string id, out ISpatialCoordinate spatialCoordinate);
+
+        /// <summary>
         /// Begins search for coordinates, optionally priortizing a set of ids.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> to be used for cancellation (stopping) of the discovery task.</param>
         /// <param name="coordinateIds">The optional set to prioritize discovery of ids to.</param>
         /// <returns>The set of coordinates discovered during this session.</returns>
-        Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate = null);
+        Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, params string[] idsToLocate);
 
         /// <summary>
         /// Attempts to create a new coordinate with this service.

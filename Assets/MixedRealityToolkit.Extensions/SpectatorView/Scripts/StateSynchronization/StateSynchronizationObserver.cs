@@ -27,6 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected int port = 7410;
 
+        [SerializeField]
+        private GameObject anchorPrefab = null;
+
         private SocketEndpoint currentConnection = null;
         private double[] averageTimePerFeature;
         private const float heartbeatTimeInterval = 0.1f;
@@ -34,6 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
+
+        private ConnectedObserver connectedObserver = null;
+
+        internal LocalizationMechanismBase LocalizationMechanism { get; set; }
 
         protected override void Awake()
         {
@@ -68,6 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             base.OnDestroy();
 
+            connectedObserver?.Dispose();
+            connectedObserver = null;
+
             if (connectionManager != null)
             {
                 connectionManager.OnConnected -= OnConnected;
@@ -80,8 +90,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnConnected(SocketEndpoint endpoint)
         {
+            if (currentConnection != null || connectedObserver != null)
+            {
+                Debug.LogError("We just connected, yet the current observer or connection weren't null");
+
+                connectedObserver?.Dispose();
+                connectedObserver = null;
+
+                currentConnection = null;
+            }
+
             currentConnection = endpoint;
             Debug.Log("Observer Connected!");
+
+            connectedObserver = new ConnectedObserver(Role.Observer, endpoint, () => Instantiate(anchorPrefab));
 
             if (StateSynchronizationSceneManager.IsInitialized)
             {
@@ -93,6 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnDisconnected(SocketEndpoint endpoint)
         {
+            connectedObserver?.Dispose();
+            connectedObserver = null;
+
             currentConnection = null;
         }
 
@@ -156,6 +181,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                                 averageTimePerFeature[i] = reader.ReadSingle();
                             }
                         }
+                        break;
+
+                    case ConnectedObserver.LocalizationMessageHeader:
+                        connectedObserver.ReceiveMessage(reader);
                         break;
                 }
             }
