@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
                 }
-                return InputSystem;
+                return inputSystem;
             }
         }
 
