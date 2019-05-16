@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void TestHandAndSpeechBehaviour()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();

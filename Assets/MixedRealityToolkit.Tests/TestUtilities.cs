@@ -31,6 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.ConfirmInitialized();
         }
 
+        /// <summary>
+        /// Destroyes all scene assets that were created over the course of testing
+        /// </summary>
         public static void TearDownScenes()
         {
 #if UNITY_EDITOR
@@ -54,6 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #endif
         }
 
+        /// <summary>
+        /// Creates a number of scenes and loads them additively for testing. Must create a minimum of 1.
+        /// </summary>
+        /// <param name="numScenesToCreate"></param>
         public static void CreateScenes(int numScenesToCreate = 1)
         {
             Debug.Assert(numScenesToCreate > 0);
@@ -106,7 +113,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
         }
 
-        public static void InitializeMixedRealityToolkitScene(bool useDefaultProfile = false, int numScenesToCreate = 1)
+        /// <summary>
+        /// Creates the requested number of scenes, then creates one instance of the MixedRealityToolkit in the active scene.
+        /// </summary>
+        /// <param name="useDefaultProfile"></param>
+        /// <param name="numScenesToCreate"></param>
+        public static void InitializeMixedRealityToolkitAndCreateScenes(bool useDefaultProfile = false, int numScenesToCreate = 1)
         {
             // Setup
             CreateScenes(numScenesToCreate);
