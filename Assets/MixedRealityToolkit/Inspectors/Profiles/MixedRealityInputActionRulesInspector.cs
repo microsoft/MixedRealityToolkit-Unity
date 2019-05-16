@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
 
             bool wasGUIlocked = GUI.enabled;
-            bool isGuiLocked = wasGUIlocked && !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool isGuiLocked = wasGUIlocked && !IsProfileLock((BaseMixedRealityProfile)target);
             GUI.enabled = isGuiLocked;
             serializedObject.Update();
 

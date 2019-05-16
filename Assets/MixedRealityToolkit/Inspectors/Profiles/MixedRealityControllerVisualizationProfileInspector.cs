@@ -22,11 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             new GUIContent("Right Hand"),
         };
 
-        private static bool showVisualizationProperties = true;
         private SerializedProperty renderMotionControllers;
         private SerializedProperty defaultControllerVisualizationType;
 
-        private static bool showModelProperties = true;
         private SerializedProperty useDefaultModels;
         private SerializedProperty globalLeftHandedControllerModel;
         private SerializedProperty globalRightHandedControllerModel;
@@ -84,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
 
             bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.LabelField("Visualization Settings", EditorStyles.boldLabel);

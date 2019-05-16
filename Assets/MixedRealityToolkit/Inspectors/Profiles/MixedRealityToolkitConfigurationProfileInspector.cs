@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
             }
 
-            bool isGUIEnabled = !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool isGUIEnabled = !IsProfileLock((BaseMixedRealityProfile)target);
             GUI.enabled = isGUIEnabled;
 
             EditorGUI.BeginChangeCheck();

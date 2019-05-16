@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             RenderList(configurations);

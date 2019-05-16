@@ -21,9 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
         private static readonly String BaseMixedRealityProfileClassName = typeof(BaseMixedRealityProfile).Name;
 
-        //private static BaseMixedRealityProfile profile;
-        //private static SerializedObject targetProfile;
-        //private static BaseMixedRealityProfile profileToCopy;
         private static StringBuilder dropdownKeyBuilder = new StringBuilder();
 
         protected virtual void OnEnable()
@@ -33,9 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // Either when we are recompiling, or the inspector window is hidden behind another one, the target can get destroyed (null) and thereby will raise an ArgumentException when accessing serializedObject. For now, just return.
                 return;
             }
-
-            //targetProfile = serializedObject;
-            //profile = target as BaseMixedRealityProfile;
         }
 
         /// <summary>
@@ -68,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUI.indentLevel++;
                     EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                         subProfileEditor.OnInspectorGUI();
-                    EditorGUILayout.Space();
+                        EditorGUILayout.Space();
                     EditorGUILayout.EndVertical();
                     EditorGUI.indentLevel--;
                 EditorGUILayout.EndHorizontal();
@@ -162,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     var renderedProfile = property.objectReferenceValue as BaseMixedRealityProfile;
                     Debug.Assert(renderedProfile != null);
                     Debug.Assert(profile != null, "No profile was set in OnEnable. Did you forget to call base.OnEnable in a derived profile class?");
-
+                    
                     if (GUILayout.Button(new GUIContent("Clone", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(42f)))
                     {
                         MixedRealityProfileCloneWindow.OpenWindow(profile, renderedProfile, property);
@@ -323,11 +317,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Checks if the profile is locked and displays a warning.
+        /// Checks if the profile is locked
         /// </summary>
         /// <param name="target"></param>
         /// <param name="lockProfile"></param>
-        protected static bool CheckProfileLock(BaseMixedRealityProfile profile)
+        protected static bool IsProfileLock(BaseMixedRealityProfile profile)
         {
             return MixedRealityPreferences.LockProfiles && !profile.IsCustomProfile;
         }

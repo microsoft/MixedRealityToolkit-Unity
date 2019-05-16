@@ -27,6 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static GUIContent WarningIconContent = null;
 
+        /// <summary>
+        /// Internal enum used for back navigation along profile hiearchy. 
+        /// Indicates what type of parent profile the current profile will return to for going back
+        /// </summary>
         protected enum BackProfileType
         {
             Configuration,
@@ -158,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             bool result = false;
             GUILayout.BeginHorizontal();
-            GUILayout.Space(EditorGUI.indentLevel * 15);
+                GUILayout.Space(EditorGUI.indentLevel * 15);
                 result = renderButton();
             GUILayout.EndHorizontal();
             return result;

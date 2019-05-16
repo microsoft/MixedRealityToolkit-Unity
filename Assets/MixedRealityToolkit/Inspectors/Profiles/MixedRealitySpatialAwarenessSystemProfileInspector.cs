@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
             }
 
             bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             using (new EditorGUI.IndentLevelScope())

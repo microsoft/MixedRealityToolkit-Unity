@@ -18,16 +18,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private const string ProfileTitle = "Pointer Settings";
         private const string ProfileDescription = "Pointers attach themselves onto controllers as they are initialized.";
 
-        private static bool showPointerProperties = true;
         private SerializedProperty pointingExtent;
         private SerializedProperty pointingRaycastLayerMasks;
         private static bool showPointerOptionProperties = true;
         private SerializedProperty pointerOptions;
         private ReorderableList pointerOptionList;
-        private static bool showPointerDebugProperties = true;
         private SerializedProperty debugDrawPointingRays;
         private SerializedProperty debugDrawPointingRayColors;
-        private static bool showGazeProperties = true;
         private SerializedProperty gazeCursorPrefab;
         private SerializedProperty gazeProviderType;
         private SerializedProperty showCursorWithEyeGaze;
@@ -73,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
 
             bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
 
             serializedObject.Update();
             currentlySelectedPointerOption = -1;
@@ -88,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 if (RenderIndentedButton("Customize Gaze Provider Settings"))
                 {
-                    // TODO: Check if inspector locked?
                     Selection.activeObject = CameraCache.Main.gameObject;
                 }
             }

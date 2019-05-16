@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             serializedObject.Update();
 
             bool wasGUIEnabled = GUI.enabled;
-            bool isGUIEnabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
+            bool isGUIEnabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             GUI.enabled = isGUIEnabled;
 
             EditorGUILayout.PropertyField(isCameraControlEnabled);

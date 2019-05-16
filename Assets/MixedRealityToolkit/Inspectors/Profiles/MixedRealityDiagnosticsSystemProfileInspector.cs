@@ -11,10 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
     [CustomEditor(typeof(MixedRealityDiagnosticsProfile))]
     public class MixedRealityDiagnosticsSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private static bool showGeneralSettings = true;
         private SerializedProperty showDiagnostics;
-
-        private static bool showProfilerSettings = true;
         private SerializedProperty showProfiler;
         private SerializedProperty frameSampleRate;
         private SerializedProperty windowAnchor;
@@ -50,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
             }
 
             bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !CheckProfileLock((BaseMixedRealityProfile)target);
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
             EditorGUILayout.Space();
