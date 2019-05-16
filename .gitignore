@@ -92,3 +92,8 @@ Packages/
 # ===================================== #
 Assets/Generated.StateSynchronization.AssetCaches.meta
 Assets/Generated.StateSynchronization.AssetCaches/
+
+# =========================================== #
+# Asset Script Reference Retargeter Generated #
+# =========================================== #
+NuGet/

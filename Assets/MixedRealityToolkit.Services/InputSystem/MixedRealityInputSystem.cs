@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,29 +12,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/>
     /// </summary>
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
     public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem
     {
         public MixedRealityInputSystem(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealityInputSystemProfile profile,
-            Transform playspace) : base(registrar, profile)
+            MixedRealityInputSystemProfile profile) : base(registrar, profile)
         {
             if (registrar == null)
             {
                 Debug.LogError("The MixedRealityInputSystem object requires a valid IMixedRealityServiceRegistrar instance.");
             }
-
-            if (playspace == null)
-            {
-                Debug.LogError("The MixedRealityInputSystem object requires a valid playspace Transform.");
-            }
-            Playspace = playspace;
         }
-
-        /// <summary>
-        /// The transform of the playspace scene object.
-        /// </summary>
-        private Transform Playspace = null;
 
         /// <inheritdoc />
         public event Action InputEnabled;
@@ -156,8 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (profile.PointerProfile.GazeProviderType?.Type != null)
                 {
                     GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                    GazeProvider.InputSystem = this;
-                    GazeProvider.Playspace = Playspace;
                     GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
                     // Current implementation implements both provider types in one concrete class.
                     EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
@@ -214,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < profile.DataProviderConfigurations.Length; i++)
                 {
                     MixedRealityInputDataProviderConfiguration configuration = profile.DataProviderConfigurations[i];
-                    object[] args = { Registrar, this, profile, Playspace, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
+                    object[] args = { Registrar, this, profile, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
 
                     if (Registrar.RegisterDataProvider<IMixedRealityInputDeviceManager>(
                         configuration.ComponentType.Type,
@@ -418,8 +404,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Register a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen to events that will receive all input events, regardless
         /// of which other <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s might have handled the event beforehand.
-        /// <remarks>Useful for listening to events when the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is currently not being raycasted against by the <see cref="FocusProvider"/>.</remarks>
         /// </summary>
+        /// <remarks>Useful for listening to events when the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is currently not being raycasted against by the <see cref="FocusProvider"/>.</remarks>
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)
         {
@@ -877,6 +863,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion Pointer Down
 
+        #region Pointer Dragged
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerDraggedEventHandler =
+            delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<MixedRealityPointerEventData>(eventData);
+                handler.OnPointerDragged(casted);
+            };
+
+        /// <inheritdoc />
+        public void RaisePointerDragged(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
+        {
+            pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+
+            HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler);
+        }
+
+        #endregion Pointer Dragged
+
         #region Pointer Click
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnInputClickedEventHandler =
@@ -1287,6 +1292,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, command);
+
+            FocusProvider?.OnSpeechKeywordRecognized(speechEventData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);

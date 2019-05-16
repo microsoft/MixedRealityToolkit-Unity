@@ -10,6 +10,8 @@ typically identify a problematic scenario, measure the problem (using some sort 
 dig into the hotspots (using that profiling tool), test out a fix to that hotspot, and then repeat
 until performance is within desired bounds.
 
+**[Recommended Settings for Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/recommended-settings-for-unity)**
+
 **[Introduction to Unity performance optimization for beginners](https://www.youtube.com/watch?v=1e5WY2qf600)**
 
 For people completely new to performance optimization, this is a great video to watch.
@@ -36,16 +38,15 @@ that you can first try as you explore the WPA tools.
 
 As a platform built on Unity, all the other performance recommendations for building mixed reality experiences are relevant here:
 
+* [Understanding Performance for Mixed Reality](https://docs.microsoft.com/en-us/windows/mixed-reality/understanding-performance-for-mixed-reality)
 * [Performance recommendations for Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/performance-recommendations-for-unity)
-* [Performance recommendations for immersive headset apps](https://docs.microsoft.com/en-us/windows/mixed-reality/performance-recommendations-for-immersive-headset-apps)
-* [Performance recommendations for HoloLens apps](https://docs.microsoft.com/en-us/windows/mixed-reality/performance-recommendations-for-hololens-apps)
 
 ## Common Considerations
 
 ### Use Single Pass Instanced Rendering 
 
 This recommendation is called out in 
-[other](https://docs.microsoft.com/en-us/windows/mixed-reality/performance-recommendations-for-immersive-headset-apps)
+[other](https://docs.microsoft.com/en-us/windows/mixed-reality/recommended-settings-for-unity)
 resources, but is worth repeating here because enabling this is crucial for performant mixed reality applications.
 For more information on what Single Pass Instanced Rendering is, check out the Unity docs on 
 [Single Pass Stereo rendering](https://docs.unity3d.com/Manual/SinglePassStereoRendering.html)

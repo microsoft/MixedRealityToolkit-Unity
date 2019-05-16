@@ -199,16 +199,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         /// </summary>
         public void DisconnectAll()
         {
-            if (clientConnection != null)
-            {
-                clientConnection.Disconnect();
-                clientConnection = null;
-            }
-
+            // Make sure the client stops before attempting to disconnect
+            // anything else. Otherwise, a race condition could cause the client
+            // to automatically reconnect to the disconnected endpoints.
             if (client != null)
             {
                 client.Stop();
                 client = null;
+            }
+
+            if (clientConnection != null)
+            {
+                clientConnection.Disconnect();
+                clientConnection = null;
             }
 
             foreach (SocketEndpoint endpoint in serverConnections.Values)

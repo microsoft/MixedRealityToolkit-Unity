@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
+    /// <summary>
+    /// Extension methods for writing structured CLR and Unity objects to BinaryWriter and reading those
+    /// values from BinaryReader.
+    /// </summary>
     public static class NetworkExtensions
     {
         public static void Write(this BinaryWriter message, Guid value)

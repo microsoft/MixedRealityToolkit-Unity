@@ -143,6 +143,8 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  isTouching: 0
+  isPressing: 0
 --- !u!114 &1598528672386795578
 MonoBehaviour:
   m_ObjectHideFlags: 0

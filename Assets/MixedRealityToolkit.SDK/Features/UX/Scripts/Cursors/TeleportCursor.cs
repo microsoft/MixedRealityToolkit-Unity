@@ -85,9 +85,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             FocusDetails focusDetails;
 
-            if (!MixedRealityToolkit.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
+            if (!InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                if (MixedRealityToolkit.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                if (InputSystem.FocusProvider.IsPointerRegistered(Pointer))
                 {
                     Debug.LogError($"{gameObject.name}: Unable to get focus details for {pointer.GetType().Name}!");
                 }

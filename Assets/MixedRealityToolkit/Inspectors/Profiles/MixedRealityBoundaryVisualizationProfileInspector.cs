@@ -49,11 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             boundaryHeight = serializedObject.FindProperty("boundaryHeight");
 
             showFloor = serializedObject.FindProperty("showFloor");
@@ -80,27 +75,17 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
-            {
-                return;
-            }
+            RenderTitleDescriptionAndLogo(
+                "Boundary Visualization Options",
+                "Boundary visualizations can help users stay oriented and comfortable in the experience.");
 
-            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
             {
-                return;
+                if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
+                {
+                    return;
+                }
             }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Boundary Visualization Options", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Boundary visualizations can help users stay oriented and comfortable in the experience.", MessageType.Info);
-            // Boundary settings depend on the experience scale
-            if (MixedRealityToolkit.Instance.ActiveProfile.TargetExperienceScale != ExperienceScale.Room)
-            {
-                EditorGUILayout.Space();
-                EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Warning);
-            }
-            EditorGUILayout.Space();
 
             CheckProfileLock(target);
 
