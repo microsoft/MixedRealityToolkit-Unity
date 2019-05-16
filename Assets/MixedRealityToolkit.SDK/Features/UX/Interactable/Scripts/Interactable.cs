@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -180,11 +181,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         #endregion InspectorHelpers
 
-        #region MonoBehaviorImplimentation
+        #region MonoBehaviorImplementation
 
         protected virtual void Awake()
         {
-            //State = new InteractableStates(InteractableStates.Default);
+
+            if (States == null)
+            {
+                Debug.Log("Interactable instantiated at runtime, loading default states");
+                LoadStates("DefaultInteractableStates");
+            }
             InputAction = ResolveInputAction(InputActionId);
             SetupEvents();
             SetupThemes();
@@ -913,6 +919,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             inputTimer = null;
         }
 
+        /// <summary>
+        /// Sets the states of the interactable to be asset that matches the given asset name
+        /// If more than one asset name is found, uses the first found asset.
+        /// </summary>
+        /// <param name="statesAssetName">The name of the interactable states asset</param>
+        public void LoadStates(string statesAssetName)
+        {
+            string[] stateLocations = AssetDatabase.FindAssets(statesAssetName);
+            Debug.Assert(stateLocations.Length > 0, $"Interactable.LoadStates loading {statesAssetName} but no no {statesAssetName}.asset found");
+            string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
+            States = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
+        }
+
         #endregion InteractableUtilities
 
         #region VoiceCommands
@@ -989,6 +1008,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion VoiceCommands
 
+        #region IMixedRealityTouchHandler
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
             SetPress(true);
@@ -1002,5 +1022,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData) { }
+        #endregion
     }
 }
