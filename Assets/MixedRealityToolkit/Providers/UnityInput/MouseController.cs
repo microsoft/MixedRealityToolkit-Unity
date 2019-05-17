@@ -50,7 +50,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         private MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
 
         private MixedRealityMouseInputProfile mouseInputProfile = null;
-        private MixedRealityMouseInputProfile MouseInputProfile => mouseInputProfile ?? (mouseInputProfile = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>()?.MouseInputProfile);
+        private MixedRealityMouseInputProfile MouseInputProfile
+        {
+            get
+            {
+                if (mouseInputProfile == null)
+                {
+                    // Get the profile from the input system's registered mouse device manager.
+                    IMixedRealityMouseDeviceManager mouseManager = InputSystem?.GetDataProvider<IMixedRealityMouseDeviceManager>();
+                    mouseInputProfile = mouseManager?.MouseInputProfile;
+                }
+                return mouseInputProfile;
+            }
+        }
+        //=> mouseInputProfile ?? (mouseInputProfile = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>()?.MouseInputProfile);
 
         /// <summary>
         /// Update controller.

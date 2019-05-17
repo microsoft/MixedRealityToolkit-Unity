@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// If more than one data provider is registered under the specified name, the first will be returned.
         /// </remarks>
-        T GetObserver<T>(string name) where T : IMixedRealityInputDeviceManager;
+        T GetDataProvider<T>(string name = null) where T : IMixedRealityInputDeviceManager;
 
         /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.

@@ -297,13 +297,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public T GetObserver<T>(string name) where T : IMixedRealityInputDeviceManager
+        public T GetDataProvider<T>(string name = null) where T : IMixedRealityInputDeviceManager
         {
             for (int i = 0; i < deviceManagers.Count; i++)
             {
-                if ((deviceManagers[i] is T) && (deviceManagers[i].Name == name))
+                if (deviceManagers[i] is T)
                 {
-                    return (T)deviceManagers[i];
+                    if ((name == null) || (deviceManagers[i].Name == name))
+                    {
+                        return (T)deviceManagers[i];
+                    }
                 }
             }
 
