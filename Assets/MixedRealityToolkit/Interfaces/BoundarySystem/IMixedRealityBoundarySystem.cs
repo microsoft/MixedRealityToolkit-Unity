@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// Typed representation of the ConfigurationProfile property.
         /// </summary>
         MixedRealityBoundaryVisualizationProfile BoundaryVisualizationProfile { get; }
+
         /// <summary>
         /// The scale (ex: World Scale) of the experience.
         /// </summary>

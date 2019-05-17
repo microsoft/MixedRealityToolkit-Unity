@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            MixedRealityHandTrackingProfile handTrackingProfile = InputSystem?.InputSystemProfile?.HandTrackingProfile;
+            MixedRealityHandTrackingProfile handTrackingProfile = InputSystem?.InputSystemProfile.HandTrackingProfile;
             if (handTrackingProfile != null && !handTrackingProfile.EnableHandJointVisualization)
             {
                 // clear existing joint gameobjects / meshes
