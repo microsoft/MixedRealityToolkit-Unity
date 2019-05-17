@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (InputSystem == null)
+                if (inputSystem == null)
                 {
                     MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
                 }
