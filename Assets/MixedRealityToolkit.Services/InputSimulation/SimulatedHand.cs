@@ -83,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected readonly Quaternion[] jointOrientations = new Quaternion[jointCount];
         protected readonly Vector3[] jointPositions = new Vector3[jointCount];
+        protected readonly Vector3[] jointPositionVelocities = new Vector3[jointCount];
         protected readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
 
         /// <summary>
@@ -117,6 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
+                    jointPositions[i] = Vector3.SmoothDamp(jointPoses[handJoint].Position, jointPositions[i], ref jointPositionVelocities[i], 0.15f);
                     jointPoses[handJoint] = new MixedRealityPose(jointPositions[i], jointOrientations[i]);
                 }
             }
