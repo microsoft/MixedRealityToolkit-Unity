@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
                 seenIds.Add(pair.Key);
                 if (knownCoordinates.TryGetValue(pair.Key, out ISpatialCoordinate spatialCoordinate))
                 {
-                    DebugLog("We have a coordiante for it, updating marker instance.");
+                    DebugLog("We have a coordinate for it, updating marker instance.");
                     ((SpatialCoordinate)spatialCoordinate).Marker = pair.Value;
                 }
                 else

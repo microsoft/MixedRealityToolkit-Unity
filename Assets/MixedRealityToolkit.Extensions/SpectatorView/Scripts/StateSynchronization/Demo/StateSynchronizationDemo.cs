@@ -23,9 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         public Role Role = Role.Broadcaster;
 
-        [Tooltip("Localization mechanism to use for sptially localizing the SpectatorView participants.")]
+        [Tooltip("Localization mechanism to use for spatially localizing the SpectatorView participants.")]
         [SerializeField]
-        private LocalizationMechanismBase localizationMechanism = null;
+        private SpatialLocalizationMechanismBase spatialLocalizationMechanizm = null;
 
         /// <summary>
         /// Broadcaster ip address
@@ -72,8 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return;
             }
 
-            stateSynchronizationBroadcaster.LocalizationMechanism = localizationMechanism;
-            stateSynchronizationObserver.LocalizationMechanism = localizationMechanism;
+            stateSynchronizationBroadcaster.SpatialLocalizationMechanism = spatialLocalizationMechanizm;
+            stateSynchronizationObserver.SpatialLocalizationMechanism = spatialLocalizationMechanizm;
 
             switch (Role)
             {

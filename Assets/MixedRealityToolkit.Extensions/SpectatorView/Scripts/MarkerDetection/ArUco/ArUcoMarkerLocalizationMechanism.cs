@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
     /// <summary>
     /// Localization mechanism based on ArUco marker detection
     /// </summary>
-    internal class ArUcoMarkerLocalizationMechanism : HostCoordinateLocalizationMechanism
+    internal class ArUcoMarkerLocalizationMechanism : BroadcasterCoordinateSpatialLocalizationMechanism
     {
         private ISpatialCoordinateService spatialCoordinateService = null;
 

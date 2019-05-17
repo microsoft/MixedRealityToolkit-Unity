@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <summary>
         /// Const string to be used for sending networking messages.
         /// </summary>
-        public const string LocalizationMessageHeader = "LOCALIZE";
+        public const string SpatialLocalizationMessageHeader = "LOCALIZE";
 
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken cancellationToken;
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// Localizes this observer with the connected party using the given mechanism.
         /// </summary>
         /// <param name="localizationMechanism">The mechanism to use for localization.</param>
-        public async Task LocalizeAsync(LocalizationMechanismBase localizationMechanism)
+        public async Task LocalizeAsync(SpatialLocalizationMechanismBase localizationMechanism)
         {
             DebugLog("Started LocalizeAsync");
 
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     using (MemoryStream memoryStream = new MemoryStream())
                     using (BinaryWriter writer = new BinaryWriter(memoryStream))
                     {
-                        writer.Write(LocalizationMessageHeader);
+                        writer.Write(SpatialLocalizationMessageHeader);
 
                         callback(writer);
                         socketEndpoint.Send(memoryStream.ToArray());
@@ -122,9 +122,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     processIncomingMessages = null;
                 }
 
-                DebugLog("Deinitializing");
-                localizationMechanism.Deinitialize(role, token);
-                DebugLog("Deinitialized");
+                DebugLog("Uninitializing.");
+                localizationMechanism.Uninitialize(role, token);
+                DebugLog("Uninitialized.");
             }
         }
 

@@ -11,10 +11,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     /// <summary>
-    /// Helper class to enable localization between two entities on SpectatorView.
+    /// Helper class to enable spatial localization between two entities on SpectatorView.
     /// </summary>
     /// <remarks>In the future this would move to SpatialLocalization in a better form, abstraction-wise.</remarks>
-    internal abstract class LocalizationMechanismBase : MonoBehaviour
+    internal abstract class SpatialLocalizationMechanismBase : MonoBehaviour
     {
         private string typeName;
 
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         /// <summary>
-        /// Start a new localization session, and return a token for that session.
+        /// Start a new spatial localization session, and return a token for that session.
         /// </summary>
         /// <param name="role">The role of the requesting entity.</param>
         /// <param name="cancellationToken">The cancellation token to cancel this async operation.</param>
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         /// <param name="role">The role of the requesting entity.</param>
         /// <param name="token">The token representing the session.</param>
-        internal abstract void Deinitialize(Role role, Guid token);
+        internal abstract void Uninitialize(Role role, Guid token);
 
         /// <summary>
         /// Handles incoming message for the session.

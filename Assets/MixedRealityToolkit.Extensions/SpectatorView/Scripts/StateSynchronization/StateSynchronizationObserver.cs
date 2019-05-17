@@ -47,9 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private ConnectedObserver connectedObserver = null;
 
         /// <summary>
-        /// The Localization method to be used by the observer.
+        /// The spatial localization method to be used by the observer.
         /// </summary>
-        internal LocalizationMechanismBase LocalizationMechanism { get; set; }
+        internal SpatialLocalizationMechanismBase SpatialLocalizationMechanism { get; set; }
 
         protected override void Awake()
         {
@@ -132,10 +132,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             hologramSynchronizer.Reset(currentConnection);
 
-            if (LocalizationMechanism != null)
+            if (SpatialLocalizationMechanism != null)
             {
-                DebugLog("Localizing observer");
-                connectedObserver.LocalizeAsync(LocalizationMechanism).FireAndForget();
+                DebugLog("Spatially localizing observer");
+                connectedObserver.LocalizeAsync(SpatialLocalizationMechanism).FireAndForget();
             }
         }
 
@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         }
                         break;
 
-                    case ConnectedObserver.LocalizationMessageHeader:
+                    case ConnectedObserver.SpatialLocalizationMessageHeader:
                         DebugLog("Passing message to observer");
                         connectedObserver.ReceiveMessage(reader);
                         break;

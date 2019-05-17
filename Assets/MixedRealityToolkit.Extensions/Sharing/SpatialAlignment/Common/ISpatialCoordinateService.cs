@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         event Action<ISpatialCoordinate> CoordinatedDiscovered;
 
         /// <summary>
-        /// Gets or sets whether this coordiante service should be discovering/tracking coordinates.
+        /// Gets or sets whether this coordinate service should be discovering/tracking coordinates.
         /// </summary>
         bool IsTracking { get; }
 
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         /// A key based lookup for a known coordinate.
         /// </summary>
         /// <param name="id">The identifier of the coordinate to look up.</param>
-        /// <param name="spatialCoordinate">The out parameter that will be field with found coordinate, or null otherwise.</param>
+        /// <param name="spatialCoordinate">The out parameter that will be filled with found coordinate, or null otherwise.</param>
         /// <returns>Returns true if coordinate was found (known locally), false otherwise.</returns>
         bool TryGetKnownCoordinate(string id, out ISpatialCoordinate spatialCoordinate);
 

@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,12 +11,11 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     /// <summary>
-    /// Helper localization method here the host finds a QR code and gives it to the observer
+    /// Helper spatial localization method where the host finds a coordinate and gives its id to the observer
     /// </summary>
-    internal abstract class HostCoordinateLocalizationMechanism : LocalizationMechanismBase
+    internal abstract class BroadcasterCoordinateSpatialLocalizationMechanism : SpatialLocalizationMechanismBase
     {
         private readonly object lockObject = new object();
-        private readonly List<Guid> guids = new List<Guid>();
         private Task<ISpatialCoordinate> initializeBroadcasterCoordinateTask = null;
         private TaskCompletionSource<string> observerCoordinateIdToLookFor = null;
 
@@ -25,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// The spatial coordinate service for sub class to instantiate and this helper base to rely on.
         /// </summary>
         protected abstract ISpatialCoordinateService SpatialCoordinateService { get; }
-        
+
         /// <summary>
         /// The logic for the host to figure out which coordinate to use for localizing with observer.
         /// </summary>
@@ -38,14 +36,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             using (CancellationTokenSource cts = new CancellationTokenSource())
             {
                 TaskCompletionSource<ISpatialCoordinate> coordinateTCS = new TaskCompletionSource<ISpatialCoordinate>();
-                void coordianteDiscovered(ISpatialCoordinate coord)
+                void coordinateDiscovered(ISpatialCoordinate coord)
                 {
                     DebugLog("Coordinate found", token);
                     coordinateTCS.SetResult(coord);
                     cts.Cancel();
                 }
 
-                SpatialCoordinateService.CoordinatedDiscovered += coordianteDiscovered;
+                SpatialCoordinateService.CoordinatedDiscovered += coordinateDiscovered;
                 try
                 {
                     DebugLog("Starting to look for coordinates", token);
@@ -60,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 finally
                 {
                     DebugLog("Unsubscribing from coordinate discovered", token);
-                    SpatialCoordinateService.CoordinatedDiscovered -= coordianteDiscovered;
+                    SpatialCoordinateService.CoordinatedDiscovered -= coordinateDiscovered;
                 }
             }
         }
@@ -98,7 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             DebugLog($"Added guid and returning.", token);
-            guids.Add(token);
             return token;
         }
 
@@ -122,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <inheritdoc/>
         internal override async Task<ISpatialCoordinate> LocalizeAsync(Role role, Guid token, Action<Action<BinaryWriter>> sendMessage, CancellationToken cancellationToken)
         {
-            DebugLog("Beginning localization", token);
+            DebugLog("Beginning spatial localization", token);
             ISpatialCoordinate coordinateToReturn = null;
 
             switch (role)
@@ -163,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         /// <inheritdoc/>
-        internal override void Deinitialize(Role role, Guid token)
+        internal override void Uninitialize(Role role, Guid token)
         {
             DebugLog($"Deinitializing: {role}", token);
             switch (role)
@@ -173,8 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 case Role.Observer:
                     break;
             }
-
-            guids.Remove(token);
         }
     }
 }

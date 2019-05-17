@@ -53,9 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
 
         /// <summary>
-        /// The Localization method to be used by the observer.
+        /// The spatial localization method to be used by the observer.
         /// </summary>
-        internal LocalizationMechanismBase LocalizationMechanism { get; set; }
+        internal SpatialLocalizationMechanismBase SpatialLocalizationMechanism { get; set; }
 
         protected override void Awake()
         {
@@ -120,11 +120,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             connectedObservers.Add(endpoint, connectedObserver);
             Connected?.Invoke(endpoint);
 
-            DebugLog($"Broadcaster kicking off localization on observer from {endpoint.Address}.");
+            DebugLog($"Broadcaster kicking off spatial localization on observer from {endpoint.Address}.");
 
-            if (LocalizationMechanism != null)
+            if (SpatialLocalizationMechanism != null)
             {
-                connectedObserver.LocalizeAsync(LocalizationMechanism).FireAndForget();
+                connectedObserver.LocalizeAsync(SpatialLocalizationMechanism).FireAndForget();
             }
         }
 
@@ -156,9 +156,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             StateSynchronizationSceneManager.Instance.ReceiveMessage(data.Endpoint, reader);
                         }
                         break;
-                    case ConnectedObserver.LocalizationMessageHeader:
+                    case ConnectedObserver.SpatialLocalizationMessageHeader:
                         {
-                            DebugLog("Got localization message");
+                            DebugLog("Got spatial localization message");
                             if (!connectedObservers.TryGetValue(data.Endpoint, out ConnectedObserver connectedObserver))
                             {
                                 Debug.LogError("Received a message for an obserer not registered as a connectedObserver.");
