@@ -35,6 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             visualProfiler = diagnosticVisualizationParent.AddComponent<MixedRealityToolkitVisualProfiler>();
             visualProfiler.WindowParent = diagnosticVisualizationParent.transform;
             visualProfiler.IsVisible = ShowProfiler;
+            visualProfiler.FrameInfoVisible = ShowFrameInfo;
+            visualProfiler.MemoryStatsVisible = ShowMemoryStats;
             visualProfiler.FrameSampleRate = FrameSampleRate;
             visualProfiler.WindowAnchor = WindowAnchor;
             visualProfiler.WindowOffset = WindowOffset;
@@ -59,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             // Apply profile settings
             ShowDiagnostics = profile.ShowDiagnostics;
             ShowProfiler = profile.ShowProfiler;
+            ShowFrameInfo = profile.ShowFrameInfo;
+            ShowMemoryStats = profile.ShowMemoryStats;
             FrameSampleRate = profile.FrameSampleRate;
             WindowAnchor = profile.WindowAnchor;
             WindowOffset = profile.WindowOffset;
@@ -130,6 +134,52 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     if (visualProfiler != null)
                     {
                         visualProfiler.IsVisible = value;
+                    }
+                }
+            }
+        }
+
+        private bool showFrameInfo;
+
+        /// <inheritdoc />
+        public bool ShowFrameInfo
+        {
+            get
+            {
+                return showFrameInfo;
+            }
+
+            set
+            {
+                if (value != showFrameInfo)
+                {
+                    showFrameInfo = value;
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.FrameInfoVisible = value;
+                    }
+                }
+            }
+        }
+
+        private bool showMemoryStats;
+
+        /// <inheritdoc />
+        public bool ShowMemoryStats
+        {
+            get
+            {
+                return showMemoryStats;
+            }
+
+            set
+            {
+                if (value != showMemoryStats)
+                {
+                    showMemoryStats = value;
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.MemoryStatsVisible = value;
                     }
                 }
             }
