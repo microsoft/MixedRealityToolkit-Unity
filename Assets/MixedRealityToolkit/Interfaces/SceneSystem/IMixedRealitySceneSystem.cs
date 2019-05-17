@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         Action<string> OnSceneLoaded { get; set; }
 
         /// <summary>
-        /// Called jus before a scene will be unloaded unloaded
+        /// Called just before a scene will be unloaded unloaded
         /// Called for all scene types (content, lighting & manager)
         /// Includes scene name
         /// </summary>
