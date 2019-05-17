@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#define MAFINC_ANCHOR_CHILD
-
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
@@ -409,7 +407,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
-#if MAFINC_ANCHOR_CHILD
+        /// <summary>
+        /// Internal component to monitor the WorldAnchor's transform, apply the MixedRealityPlayspace transform,
+        /// and apply it to its parent.
+        /// </summary>
         private class PlayspaceAdapter : MonoBehaviour
         {
             /// <summary>
@@ -431,6 +432,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 return new Pose(lhs.position + lhs.rotation * rhs.position, lhs.rotation * rhs.rotation);
             }
 
+            /// <summary>
+            /// Compute and set the parent's transform.
+            /// </summary>
             private void Update()
             {
                 Pose worldFromPlayspace = new Pose(MixedRealityPlayspace.Position, MixedRealityPlayspace.Rotation);
@@ -439,9 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 transform.parent.position = parentPose.position;
                 transform.parent.rotation = parentPose.rotation;
             }
-
         }
-#endif // MAFINC_ANCHOR_CHILD
 
         /// <summary>
         /// Issue a request to the Surface Observer to begin baking the mesh.
@@ -458,21 +460,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             {
                 newMesh = SpatialAwarenessMeshObject.Create(null, MeshPhysicsLayer, meshName, surfaceId.handle);
 
-#if !MAFINC_ANCHOR_CHILD
-                worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
-#else // MAFINC_ANCHOR_CHILD
-                // mafinc 
-                // add a child to newMesh.GameObject.transform
-                // add WorldAnchor to child
-                // add adapter component to child
-                //  * adapter sets parent (newMesh.GameObject) transform to playspace.transform * transform (because this.transform is world anchor)
-
+                // The WorldAnchor component places its object exactly where the anchor is in the same space as the camera. 
+                // But the meshes should show up transformed by the MixedRealityPlayspace transform, the same one that modifies the camera.
+                // So rather than put the WorldAnchor on the meshes GameObject, the WorldAnchor is placed out of the way in the scene,
+                // and its transform is concatenated with the Playspace transform to give the mesh's transform.
+                // That adapting the WorldAnchor's transform into playspace is done by the intermal PlayspaceAdapter component.
+                // 
                 GameObject anchorHolder = new GameObject(meshName + "_anchor");
                 anchorHolder.AddComponent<PlayspaceAdapter>(); // replace with required component?
                 worldAnchor = anchorHolder.AddComponent<WorldAnchor>(); // replace with required component and GetComponent()? 
                 anchorHolder.transform.SetParent(newMesh.GameObject.transform, false);
-
-#endif // MAFINC_ANCHOR_CHILD
             }
             else
             {
@@ -483,16 +480,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 newMesh.Id = surfaceId.handle;
                 newMesh.GameObject.SetActive(true);
 
-#if !MAFINC_ANCHOR_CHILD
-                worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
-#else // MAFINC_ANCHOR_CHILD
-                // mafinc
-                // assert there is exactly one child of newMesh.GameObject
-                // get worldAnchor component from newMesh.GameObject.transform.GetChild(0).gameObject            
+                // There should be exactly one child on the newMesh.GameObject, and that is the GameObject added above
+                // to hold the WorldAnchor component and adapter.
                 Debug.Assert(newMesh.GameObject.transform.childCount == 1, "Expecting a single child holding the WorldAnchor");
                 worldAnchor = newMesh.GameObject.transform.GetChild(0).gameObject.GetComponent<WorldAnchor>();
-
-#endif // MAFINC_ANCHOR_CHILD
             }
 
             Debug.Assert(worldAnchor != null);
