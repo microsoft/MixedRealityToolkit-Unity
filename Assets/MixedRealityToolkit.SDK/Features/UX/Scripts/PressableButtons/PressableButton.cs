@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            touchPoints.Clear()
+            touchPoints.Clear();
         }
 
         private void Update()
