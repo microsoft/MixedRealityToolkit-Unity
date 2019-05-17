@@ -19,7 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "The keyboard key that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a keyboard key is pressed or keyword is recognized.");
 
-        private static bool showGeneralProperties = true;
+        private const string ProfileTitle = "Speech Settings";
+        private const string ProfileDescription = "Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.";
+
         private SerializedProperty recognizerStartBehaviour;
         private SerializedProperty recognitionConfidenceLevel;
 
@@ -50,11 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Speech Commands",
-                "Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.");
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
@@ -62,18 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-
-                DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
-
                 return;
             }
-
-            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
-            {
-                return;
-            }
-
-            CheckProfileLock(target);
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
@@ -81,21 +69,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
-            EditorGUILayout.Space();
-            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
-            if (showGeneralProperties)
+            EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(recognizerStartBehaviour);
-                    EditorGUILayout.PropertyField(recognitionConfidenceLevel);
-                }
+                EditorGUILayout.PropertyField(recognizerStartBehaviour);
+                EditorGUILayout.PropertyField(recognitionConfidenceLevel);
             }
 
             EditorGUILayout.Space();
-            showSpeechCommands = EditorGUILayout.Foldout(showSpeechCommands, "Speech Commands", true);
+            showSpeechCommands = EditorGUILayout.Foldout(showSpeechCommands, "Speech Commands", true, MixedRealityStylesUtility.BoldFoldoutStyle);
             if (showSpeechCommands)
             {
                 using (new EditorGUI.IndentLevelScope())
@@ -105,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = wasGUIEnabled;
         }
 
         private static void RenderList(SerializedProperty list)
@@ -112,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
 
-            if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton))
+            if (RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
             {
                 list.arraySize += 1;
                 var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);
