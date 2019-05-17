@@ -7,70 +7,86 @@ using UnityEngine;
 
 public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHandler
 {
-    BoundingBox bbox;
-    private bool signal;
+    [SerializeField]
+    private TextMesh statusText;
+
+    private bool speechTriggeredFalg;
+    private Vector3 cubePosition = new Vector3(0, 0, 2);
+
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
         base.Start();
         StartCoroutine(Sequence());
     }
 
+    private void SetStatus(string status)
+    {
+        Debug.Assert(statusText != null, "statusText on BoundingBoxTest should not be null");
+        statusText.text = $"Test {status}\nPress '1' or say 'select' to continue";
+    }
+
     private IEnumerator Sequence()
     {
-        // verify bbox can be created at scale of 1
         var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.GetComponent<MeshRenderer>().material.color = Color.black;
-        cube.transform.position = Vector3.forward * 5;
-        bbox = cube.AddComponent<BoundingBox>();
+        cube.transform.position = cubePosition;
+
+        SetStatus("Instantiate BoundingBox");
+        BoundingBox bbox = cube.AddComponent<BoundingBox>();
         bbox.HideElementsInInspector = false;
         bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
         var mh = cube.AddComponent<ManipulationHandler>();
-
-        Debug.Log("FlattenX");
         yield return WaitForSpeechCommand();
+
+        SetStatus("FlattenX");
         bbox.FlattenAxis = BoundingBox.FlattenModeType.FlattenX;
-        Debug.Log("FlattenY");
         yield return WaitForSpeechCommand();
+
+        SetStatus("FlattenY");
         bbox.FlattenAxis = BoundingBox.FlattenModeType.FlattenY;
-        Debug.Log("FlattenNone");
         yield return WaitForSpeechCommand();
+
+        SetStatus("FlattenNone");
         bbox.FlattenAxis = BoundingBox.FlattenModeType.DoNotFlatten;
-
-        Debug.Log("BoxPadding .2");
         yield return WaitForSpeechCommand();
+
+        SetStatus("BoxPadding 0.2f");
         bbox.BoxPadding = new Vector3(0.2f, 0.2f, 0.2f);
-        Debug.Log("BoxPadding 0");
         yield return WaitForSpeechCommand();
-        bbox.BoxPadding = Vector3.zero;
 
-        Debug.Log("scalehandle widget");
+        SetStatus("BoxPadding 0");
+        bbox.BoxPadding = Vector3.zero;
         yield return WaitForSpeechCommand();
+
+        SetStatus("Set scale handle widget prefab");
         bbox.ScaleHandleSize = 0.03f;
         bbox.ScaleHandlePrefab = LoadAsset<GameObject>("MRTK_BoundingBox_ScaleWidget");
-
-        Debug.Log("handles red");
         yield return WaitForSpeechCommand();
+
+        SetStatus("Handles red");
         bbox.HandleMaterial = LoadAsset<Material>("MRTK_Standard_Red");
-
-        Debug.Log("BBox material cyan");
         yield return WaitForSpeechCommand();
+
+        SetStatus("BBox material cyan");
         bbox.BoxMaterial = LoadAsset<Material>("MRTK_Standard_Cyan");
-        Debug.Log("BBox material none");
         yield return WaitForSpeechCommand();
+
+        SetStatus("BBox material none");
         bbox.BoxMaterial = null;
-
-        Debug.Log("BBox grabbed green");
         yield return WaitForSpeechCommand();
+
+        SetStatus("BBox grabbed material green");
         bbox.BoxGrabbedMaterial = LoadAsset<Material>("MRTK_Standard_Emerald");
-
-        Debug.Log("Wireframe radius 0.1");
         yield return WaitForSpeechCommand();
+
+        SetStatus("Wireframe radius 0.1");
         bbox.WireframeEdgeRadius = 0.1f;
-
-        Debug.Log("Wireframe shape cylinder");
         yield return WaitForSpeechCommand();
+
+        SetStatus("Wireframe shape cylinder");
         bbox.WireframeShape = BoundingBox.WireframeType.Cylindrical;
+        yield return WaitForSpeechCommand();
     }
 
     private T LoadAsset<T>(string s) where T : UnityEngine.Object
@@ -82,18 +98,18 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
 
     private IEnumerator WaitForSpeechCommand()
     {
-        while (!signal)
+        while (!speechTriggeredFalg)
         {
             yield return null;
         }
-        signal = false;
+        speechTriggeredFalg = false;
     }
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (eventData.Command.Keyword.Equals("Select", System.StringComparison.CurrentCultureIgnoreCase))
         {
-            signal = true;
+            speechTriggeredFalg = true;
         }
     }
 }
