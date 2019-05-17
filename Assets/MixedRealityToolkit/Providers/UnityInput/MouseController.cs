@@ -63,7 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return mouseInputProfile;
             }
         }
-        //=> mouseInputProfile ?? (mouseInputProfile = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>()?.MouseInputProfile);
 
         /// <summary>
         /// Update controller.
