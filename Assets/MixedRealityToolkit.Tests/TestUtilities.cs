@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Destroyes all scene assets that were created over the course of testing
+        /// Destroys all scene assets that were created over the course of testing
         /// </summary>
         public static void TearDownScenes()
         {
