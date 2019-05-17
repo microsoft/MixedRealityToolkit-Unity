@@ -290,8 +290,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.InternetClient, false);
             }
 #endif // UNITY_EDITOR
+        }
 
-            if (Application.isPlaying)
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
             {
                 dictationRecognizer?.Dispose();
             }
