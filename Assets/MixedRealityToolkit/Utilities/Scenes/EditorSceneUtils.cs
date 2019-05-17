@@ -226,6 +226,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             for (int i = 0; i < EditorSceneManager.sceneCount; i++)
             {
                 Scene openScene = EditorSceneManager.GetSceneAt(i);
+                if (!openScene.isLoaded)
+                {   // Oh, Unity.
+                    continue;
+                }
+
                 foreach (GameObject rootGameObject in openScene.GetRootGameObjects())
                     yield return rootGameObject;
             }
