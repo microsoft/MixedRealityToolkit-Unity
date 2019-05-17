@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// True if the scene system is loading or unloading content scenes.
         /// Manager and lighting scenes are ignored.
         /// </summary>
-        bool SceneOpInProgress { get; }
+        bool SceneOperationInProgress { get; }
 
         /// <summary>
         /// Progress of the current scene operation, from 0-1.
