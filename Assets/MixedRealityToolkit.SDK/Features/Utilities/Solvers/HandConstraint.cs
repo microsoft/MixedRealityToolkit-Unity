@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
@@ -12,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// </summary>
     public class HandConstraint : Solver, IMixedRealitySourceStateHandler
     {
+        [Header("Hand Constraint")]
         [SerializeField]
         [Tooltip("TODO")]
         private bool billboard = true;
@@ -22,44 +24,62 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("TODO")]
-        private bool displayOnPalmUp = true;
+        private bool activateOnPalmUp = true;
+
+        [SerializeField]
+        [Tooltip("TODO")]
+        private UnityEvent onHandPresent;
+
+        [SerializeField]
+        [Tooltip("TODO")]
+        private UnityEvent onHandNotPresent;
 
         private InputSystemGlobalListener.Implementation inputSystemGlobalListener = new InputSystemGlobalListener.Implementation();
         private List<IMixedRealityHand> activeHands = new List<IMixedRealityHand>();
+        private bool handPresent = false;
 
         public override void SolverUpdate()
         {
+            bool snap = false;
+
             if (transitionBetweenHands)
             {
-                TransitionBetweenHands();
+                snap = TransitionBetweenHands();
             }
 
             GoalPosition = SolverHandler.TransformTarget.position;
             GoalRotation = billboard ? CameraCache.Main.transform.rotation : SolverHandler.TransformTarget.rotation;
 
-            UpdateWorkingPositionToGoal();
-            UpdateWorkingRotationToGoal();
+            if (snap)
+            {
+                SnapTo(GoalPosition, GoalRotation);
+            }
+            else
+            {
+                UpdateWorkingPositionToGoal();
+                UpdateWorkingRotationToGoal();
+            }
         }
 
-        private void TransitionBetweenHands()
+        private bool TransitionBetweenHands()
         {
+            IMixedRealityHand activeHand = null;
+
             foreach (var hand in activeHands)
             {
-                TrackedObjectType trackedObjectType;
-
-                if (HandIsValid(hand) && HandednessToTrackedObjectType(hand.ControllerHandedness, out trackedObjectType))
+                if (HandIsValid(hand))
                 {
-                    ChangeTrackedObjectType(trackedObjectType);
-                    return;
+                    activeHand = hand;
+                    break;
                 }
             }
 
-            ChangeTrackedObjectType(null);
+            return ChangeTrackedObjectType(activeHand);
         }
 
         private bool HandIsValid(IMixedRealityHand hand)
         {
-            if (displayOnPalmUp)
+            if (activateOnPalmUp)
             {
                 MixedRealityPose pose;
 
@@ -73,17 +93,39 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return true;
         }
 
-        private void ChangeTrackedObjectType(TrackedObjectType? trackedObjectType)
+        private bool ChangeTrackedObjectType(IMixedRealityHand hand)
         {
-            // TODO show/hide
-            if (trackedObjectType != null)
+            if (hand != null)
             {
-                SolverHandler.TrackedObjectToReference = trackedObjectType.Value;
+                TrackedObjectType trackedObjectType;
+
+                if (HandednessToTrackedObjectType(hand.ControllerHandedness, out trackedObjectType))
+                {
+                    SolverHandler.TrackedObjectToReference = trackedObjectType;
+
+                    if (!handPresent)
+                    {
+                        onHandPresent.Invoke();
+                        handPresent = true;
+
+                        return true;
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("Failed to change the tracked object type because an IMixedRealityHand could not be resolved to a TrackedObjectType.");
+                }
             }
             else
             {
-
+                if (handPresent)
+                {
+                    onHandNotPresent.Invoke();
+                    handPresent = false;
+                }
             }
+
+            return false;
         }
 
         private static bool HandednessToTrackedObjectType(Handedness handedness, out TrackedObjectType trackedObjectType)
@@ -114,6 +156,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected virtual async void Start()
         {
             await inputSystemGlobalListener.Start(gameObject);
+
+            // Initially a hand is not present.
+            onHandNotPresent.Invoke();
+            handPresent = false;
         }
 
         protected virtual void OnDisable()
