@@ -28,6 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         private const string trackingStalledStatusMessage = "No tracking update in over a second";
         private const string locatingWorldAnchorStatusMessage = "Locating world anchor...";
         private const string locatedWorldAnchorStatusMessage = "Located";
+        private const string calibrationLoadedMessage = "Loaded";
+        private const string calibrationNotLoadedMessage = "No camera calibration received";
         private Vector2 scrollPosition;
         private int renderFrameWidth;
         private int renderFrameHeight;
@@ -93,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
         private void NetworkConnectionGUI()
         {
+            CompositionManager compositionManager = GetCompositionManager();
             HolographicCameraNetworkManager cameraNetworkManager = GetHolographicCameraNetworkManager();
 
             EditorGUILayout.BeginVertical("Box");
@@ -102,7 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     cameraNetworkManager.IsConnected &&
                     cameraNetworkManager.HasTracking &&
                     cameraNetworkManager.IsAnchorLocated &&
-                    !cameraNetworkManager.IsTrackingStalled)
+                    !cameraNetworkManager.IsTrackingStalled &&
+                    compositionManager != null &&
+                    compositionManager.IsCalibrationDataLoaded)
                 {
                     titleColor = Color.green;
                 }
@@ -142,6 +147,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     }
 
                     GUILayout.Label($"Anchor status: {anchorStatusMessage}");
+
+                    string calibrationStatusMessage;
+                    if (compositionManager != null && compositionManager.IsCalibrationDataLoaded)
+                    {
+                        calibrationStatusMessage = calibrationLoadedMessage;
+                    }
+                    else
+                    {
+                        calibrationStatusMessage = calibrationNotLoadedMessage;
+                    }
+
+                    GUILayout.Label($"Calibration status: {calibrationStatusMessage}");
 
                     if (GUILayout.Button(new GUIContent("Disconnect", "Disconnects the network connection to the holographic camera.")))
                     {
