@@ -127,6 +127,23 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private IMixedRealityEyeSaccadeProvider eyeSaccadeProvider = null;
         #endregion
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         public abstract void Initialize();
         public abstract float ComputePanSpeed(float cursorPosInOneDir, float maxSpeed, float minDistFromCenterForAutoPan);
         public abstract int ZoomDir(bool zoomIn);
@@ -567,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            foreach (var pointer in MixedRealityToolkit.InputSystem.GazeProvider.GazeInputSource.Pointers)
+            foreach (var pointer in InputSystem.GazeProvider.GazeInputSource.Pointers)
             {
                 pointer.IsFocusLocked = false;
             }

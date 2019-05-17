@@ -22,6 +22,29 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
+            MixedRealityToolkit instance = (MixedRealityToolkit)target;
+
+            if (MixedRealityToolkit.Instance == null)
+            {   // See if an active instance exists at all. If it doesn't register this instance pre-emptively.
+                MixedRealityToolkit.SetActiveInstance(instance);
+            }
+
+            if (!instance.IsActiveInstance)
+            {
+                EditorGUILayout.HelpBox("This instance of the toolkt is inactive. There can only be one active instance loaded at any time.", MessageType.Warning);
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Select Active Instance"))
+                {
+                    UnityEditor.Selection.activeGameObject = MixedRealityToolkit.Instance.gameObject;
+                }
+                if (GUILayout.Button("Make this the Active Instance"))
+                {
+                    MixedRealityToolkit.SetActiveInstance(instance);
+                }
+                EditorGUILayout.EndHorizontal();
+                return;
+            }
+
             serializedObject.Update();
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(activeProfile);
@@ -97,7 +120,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [MenuItem("Mixed Reality Toolkit/Add to Scene and Configure...")]
         public static void CreateMixedRealityToolkitGameObject()
         {
-            Selection.activeObject = MixedRealityToolkit.Instance;
+            if (MixedRealityToolkit.IsInitialized)
+            {
+                EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
+                return;
+            }
+
+            Selection.activeObject = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             Debug.Assert(MixedRealityToolkit.IsInitialized);
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
         }

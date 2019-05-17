@@ -16,17 +16,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         public void Test_01_InitializeMixedRealityToolkit()
         {
             TestUtilities.CleanupScene();
+            MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
             MixedRealityToolkit.ConfirmInitialized();
 
             // Tests
-            GameObject gameObject = GameObject.Find(nameof(MixedRealityToolkit));
-            Assert.AreEqual(nameof(MixedRealityToolkit), gameObject.name);
+            GameObject gameObject = MixedRealityToolkit.Instance.gameObject;
+            Assert.IsNotNull(gameObject);
         }
 
         [Test]
         public void Test_02_TestNoMixedRealityConfigurationFound()
         {
             TestUtilities.CleanupScene();
+            MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
             MixedRealityToolkit.ConfirmInitialized();
 
             MixedRealityToolkit.Instance.ActiveProfile = null;

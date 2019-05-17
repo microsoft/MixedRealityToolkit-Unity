@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         [Tooltip("Should the objects in the collection be rotated / how should they be rotated")]
         [SerializeField]
-        private OrientationType orientType = OrientationType.FaceOrigin;
+        private OrientationType orientType = OrientationType.None;
 
         /// <summary>
         /// Should the objects in the collection face the origin of the collection
