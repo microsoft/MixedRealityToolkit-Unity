@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     [InitializeOnLoad]
     public class EditorProjectUtilities
     {
-        private static string MinUnityVersion = "2018.4";
+        private static readonly string MinUnityVersion = "2018.4";
 
         /// <summary>
         /// Static constructor that allows for executing code on project load.
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!EditorUtility.DisplayDialog(
                 "Mixed Reality Toolkit",
-                $"The Mixed Reality Toolkit requires Unity {MinUnityVersion} or newer (2018.3 will likley continue to work).\n\nUsing an older version of Unity may result in compile errors or incorrect behavior.",
+                $"The Mixed Reality Toolkit requires Unity {MinUnityVersion} or newer (2018.3 will likely continue to work).\n\nUsing an older version of Unity may result in compile errors or incorrect behavior.",
                 "Continue", "Close Editor"))
             {
                 EditorApplication.Exit(0);
