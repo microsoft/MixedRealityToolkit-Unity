@@ -11,13 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// Provides a solver that constrains to hands with behaviors common to hand constrained UI.
     /// </summary>
+    [RequireComponent(typeof(InputSystemGlobalListener))]
     public class HandConstraint : Solver, IMixedRealitySourceStateHandler
     {
         [Header("Hand Constraint")]
-        [SerializeField]
-        [Tooltip("TODO")]
-        private bool billboard = true;
-
         [SerializeField]
         [Tooltip("TODO")]
         private bool transitionBetweenHands = true;
@@ -34,8 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [Tooltip("TODO")]
         private UnityEvent onHandNotPresent;
 
-        private InputSystemGlobalListener.Implementation inputSystemGlobalListener = new InputSystemGlobalListener.Implementation();
-        private List<IMixedRealityHand> activeHands = new List<IMixedRealityHand>();
+        private List<IMixedRealityHand> handStack = new List<IMixedRealityHand>();
         private bool handPresent = false;
 
         public override void SolverUpdate()
@@ -48,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             GoalPosition = SolverHandler.TransformTarget.position;
-            GoalRotation = billboard ? CameraCache.Main.transform.rotation : SolverHandler.TransformTarget.rotation;
+            GoalRotation = SolverHandler.TransformTarget.rotation;
 
             if (snap)
             {
@@ -65,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             IMixedRealityHand activeHand = null;
 
-            foreach (var hand in activeHands)
+            foreach (var hand in handStack)
             {
                 if (HandIsValid(hand))
                 {
@@ -101,7 +97,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 if (HandednessToTrackedObjectType(hand.ControllerHandedness, out trackedObjectType))
                 {
-                    SolverHandler.TrackedObjectToReference = trackedObjectType;
+                    if (SolverHandler.TrackedObjectToReference != trackedObjectType)
+                    {
+                        SolverHandler.TrackedObjectToReference = trackedObjectType;
+                        SolverHandler.AdditionalOffset = -SolverHandler.AdditionalOffset;
+
+                        // Move the currently tracked hand to the top of the stack.
+                        handStack.Remove(hand);
+                        handStack.Insert(0, hand);
+                    }
 
                     if (!handPresent)
                     {
@@ -146,25 +150,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         #region MonoBehaviour Implementation
 
-        protected override void OnEnable()
+        protected void Start()
         {
-            base.OnEnable();
-
-            inputSystemGlobalListener.OnEnable(gameObject);
-        }
-
-        protected virtual async void Start()
-        {
-            await inputSystemGlobalListener.Start(gameObject);
-
             // Initially a hand is not present.
             onHandNotPresent.Invoke();
             handPresent = false;
-        }
-
-        protected virtual void OnDisable()
-        {
-            inputSystemGlobalListener.OnDisable(gameObject);
         }
 
         #endregion MonoBehaviour Implementation
@@ -175,9 +165,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             var hand = eventData.Controller as IMixedRealityHand;
 
-            if (hand != null)
+            if (hand != null && !handStack.Contains(hand))
             {
-                activeHands.Add(hand);
+                handStack.Add(hand);
             }
         }
 
@@ -187,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             if (hand != null)
             {
-                activeHands.Remove(hand);
+                handStack.Remove(hand);
             }
         }
 
