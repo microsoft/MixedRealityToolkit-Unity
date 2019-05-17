@@ -38,6 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         HashSet<IMixedRealityController> DetectedControllers { get; }
 
         /// <summary>
+        /// Typed representation of the ConfigurationProfile property.
+        /// </summary>
+        MixedRealityInputSystemProfile InputSystemProfile { get; }
+
+        /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.
         /// </summary>
         IMixedRealityFocusProvider FocusProvider { get; }
