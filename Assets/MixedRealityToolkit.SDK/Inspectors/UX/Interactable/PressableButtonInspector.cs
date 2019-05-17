@@ -53,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty releaseDistanceDelta;
 
         private SerializedProperty movingButtonVisuals;
+        private SerializedProperty useLocalSpaceDistances;
 
         private static Vector3[] startPlaneVertices = new Vector3[4];
         private static Vector3[] endPlaneVertices = new Vector3[4];
@@ -78,6 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             pressDistance = serializedObject.FindProperty("pressDistance");
             releaseDistanceDelta = serializedObject.FindProperty("releaseDistanceDelta");
             movingButtonVisuals = serializedObject.FindProperty("movingButtonVisuals");
+            useLocalSpaceDistances = serializedObject.FindProperty("useLocalSpaceDistances");
 
             touchable = button.GetComponent<NearInteractionTouchable>();
         }
@@ -122,16 +124,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // All the planes should be drawn within the button cage. But the distance planes are relative to the 
             // initial transform projected onto the box collider.
-            Vector3 initialPositionLocal = transform.InverseTransformPoint(button.InitialPosition);
-
+            Vector3 initialPositionLocal = transform.InverseTransformPoint(button.InitialPosition) ;
+            
             // Project the initial position onto the ray that goes through the touch cage center.
             Vector3 initialPosLocal = Vector3.Project(initialPositionLocal - info.TouchCageLocalBounds.center, pressDirLocal) + info.TouchCageLocalBounds.center;
             info.PushRayLocal = new Ray(initialPosLocal, pressDirLocal);
 
-            info.StartPushDistance = startPushDistance.floatValue;
-            info.MaxPushDistance = maxPushDistance.floatValue;
-            info.PressDistance = pressDistance.floatValue;
-            info.ReleaseDistance = pressDistance.floatValue - releaseDistanceDelta.floatValue;
+            bool useLocalSpace = useLocalSpaceDistances.boolValue;
+            info.StartPushDistance = useLocalSpace ? startPushDistance.floatValue : startPushDistance.floatValue / transform.lossyScale.z;
+            info.MaxPushDistance = useLocalSpace ? maxPushDistance.floatValue : maxPushDistance.floatValue / transform.lossyScale.z;
+            info.PressDistance = useLocalSpace ? pressDistance.floatValue : pressDistance.floatValue / transform.lossyScale.z;
+            info.ReleaseDistance = useLocalSpace ? pressDistance.floatValue - releaseDistanceDelta.floatValue : (pressDistance.floatValue - releaseDistanceDelta.floatValue) / transform.lossyScale.z;
 
             return info;
         }
@@ -206,10 +209,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 Undo.RecordObject(target, "Modify PressableButton");
 
-                startPushDistance.floatValue = info.StartPushDistance;
-                maxPushDistance.floatValue = info.MaxPushDistance;
-                pressDistance.floatValue = info.PressDistance;
-                releaseDistanceDelta.floatValue = info.PressDistance - info.ReleaseDistance;
+                startPushDistance.floatValue = useLocalSpaceDistances.boolValue ? info.StartPushDistance : info.StartPushDistance * transform.lossyScale.z;
+                maxPushDistance.floatValue = useLocalSpaceDistances.boolValue ? info.MaxPushDistance : info.MaxPushDistance * transform.lossyScale.z; 
+                pressDistance.floatValue = useLocalSpaceDistances.boolValue ? info.PressDistance : info.PressDistance * transform.lossyScale.z;
+                releaseDistanceDelta.floatValue = useLocalSpaceDistances.boolValue ? info.PressDistance - info.ReleaseDistance : (info.PressDistance - info.ReleaseDistance) * transform.lossyScale.z;
 
                 /*boxColliderSize.vector3Value = new Vector3(info.TouchCageLocalBounds.size.x, info.TouchCageLocalBounds.size.y, newInfo.TouchCageSize);
                 boxColliderCenter.vector3Value = new Vector3(info.TouchCageLocalBounds.center.x, info.TouchCageLocalBounds.center.y, newInfo.TouchCageCenter);
@@ -278,9 +281,48 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return distance;
         }
 
+        /// <summary>
+        /// Trigger function for plane distance world to/from local space conversion
+        /// </summary>
+        public void onTriggerPlaneDistanceConversion()
+        {
+            useLocalSpaceDistances.boolValue = !useLocalSpaceDistances.boolValue;
+            Vector3 worldPressDir = touchable == null ? transform.forward : touchable.Forward * -1.0f;
+            float worldToLocalScale = transform.InverseTransformVector(worldPressDir).magnitude;
+
+            Undo.RecordObject(target, "Modify PressableButton");
+
+            if (!useLocalSpaceDistances.boolValue)
+            {
+                startPushDistance.floatValue /= worldToLocalScale;
+                maxPushDistance.floatValue /= worldToLocalScale;
+                pressDistance.floatValue /= worldToLocalScale;
+                releaseDistanceDelta.floatValue /= worldToLocalScale;
+            }
+            else
+            {
+                startPushDistance.floatValue *= worldToLocalScale;
+                maxPushDistance.floatValue *= worldToLocalScale;
+                pressDistance.floatValue *= worldToLocalScale;
+                releaseDistanceDelta.floatValue *= worldToLocalScale;
+            }
+            serializedObject.ApplyModifiedProperties();
+
+            currentInfo = GatherCurrentInfo();
+            DrawButtonInfo(currentInfo, EditingEnabled);
+        }
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
+
+            bool useLocalDistances = useLocalSpaceDistances.boolValue;
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField(useLocalDistances ? "Plane Distances are in local space" : "Plane Distances are in world space", EditorStyles.boldLabel);
+            if (GUILayout.Button(useLocalDistances ? "Convert Distances to World Space" : "Convert Distances to Local Space") && EditingEnabled)
+            {
+                onTriggerPlaneDistanceConversion();
+            }
 
             if (Application.isPlaying)
             {
