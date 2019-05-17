@@ -34,7 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
     {
         private Vector2 scrollPosition;
 
-        private static string holographicCameraIPAddressKey = $"{nameof(CalibrationTestWindow)}.{nameof(holographicCameraIPAddress)}";
+        private static readonly string holographicCameraIPAddressKey = $"{nameof(CalibrationTestWindow)}.{nameof(holographicCameraIPAddress)}";
+        private static readonly string calibrationPlaybackIndexFilePathPreferenceKey = $"{nameof(CalibrationTestWindow)}.{nameof(indexFilePath)}";
+        private static readonly string calibrationPlaybackCalibrationFilePathPreferenceKey = $"{nameof(CalibrationTestWindow)}.{nameof(calibrationFilePath)}";
+
         private const int startStopRecordingButtonWidth = 200;
         private const int startStopRecordingButtonHeight = 100;
         private const string indexFileName = "index.json";
@@ -78,6 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             base.OnEnable();
 
             holographicCameraIPAddress = PlayerPrefs.GetString(holographicCameraIPAddressKey, "localhost");
+            indexFilePath = PlayerPrefs.GetString(calibrationPlaybackIndexFilePathPreferenceKey, string.Empty);
+            calibrationFilePath = PlayerPrefs.GetString(calibrationPlaybackCalibrationFilePathPreferenceKey, string.Empty);
+
             recordingForRecording.FrameWidth = renderFrameWidth;
             recordingForRecording.FrameHeight = renderFrameHeight;
 
@@ -88,6 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         private void OnDisable()
         {
             PlayerPrefs.SetString(holographicCameraIPAddressKey, holographicCameraIPAddress);
+            PlayerPrefs.SetString(calibrationPlaybackIndexFilePathPreferenceKey, indexFilePath);
+            PlayerPrefs.SetString(calibrationPlaybackCalibrationFilePathPreferenceKey, calibrationFilePath);
             PlayerPrefs.Save();
         }
 
