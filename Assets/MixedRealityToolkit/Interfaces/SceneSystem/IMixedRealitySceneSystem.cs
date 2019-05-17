@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         Action<IEnumerable<string>> OnContentUnloaded { get; set; }
 
         /// <summary>
-        /// Called just before lighting scene is loaded.
+        /// Called just before a lighting scene is loaded.
         /// Includes name of scene.
         /// </summary>
         Action<string> OnWillLoadLighting { get; set; }
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         Action<string> OnLightingUnloaded { get; set; }
 
         /// <summary>
-        /// Called just prior to a scene being loaded.
+        /// Called just before a scene is loaded.
         /// Called for all scene types (content, lighting & manager)
         /// Includes scene name
         /// </summary>
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         Action<string> OnSceneLoaded { get; set; }
 
         /// <summary>
-        /// Called just before a scene will be unloaded unloaded
+        /// Called just before a scene will be unloaded
         /// Called for all scene types (content, lighting & manager)
         /// Includes scene name
         /// </summary>
