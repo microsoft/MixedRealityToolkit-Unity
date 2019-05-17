@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class StateSynchronizationObserver : Singleton<StateSynchronizationObserver>
     {
-        [Tooltip("Toggle to enable troublshooting logging.")]
+        [Tooltip("Toggle to enable troubleshooting logging.")]
         [SerializeField]
         private bool debugLogging = false;
 
@@ -132,8 +132,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             hologramSynchronizer.Reset(currentConnection);
 
-            DebugLog("Localizing observer");
-            connectedObserver.LocalizeAsync(LocalizationMechanism).FireAndForget();
+            if (LocalizationMechanism != null)
+            {
+                DebugLog("Localizing observer");
+                connectedObserver.LocalizeAsync(LocalizationMechanism).FireAndForget();
+            }
         }
 
         private void OnDisconnected(SocketEndpoint endpoint)

@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     {
         private readonly Dictionary<SocketEndpoint, ConnectedObserver> connectedObservers = new Dictionary<SocketEndpoint, ConnectedObserver>();
 
-        [Tooltip("Toggle to enable troublshooting logging.")]
+        [Tooltip("Toggle to enable troubleshooting logging.")]
         [SerializeField]
         private bool debugLogging = false;
 
@@ -122,7 +122,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             DebugLog($"Broadcaster kicking off localization on observer from {endpoint.Address}.");
 
-            connectedObserver.LocalizeAsync(LocalizationMechanism).FireAndForget();
+            if (LocalizationMechanism != null)
+            {
+                connectedObserver.LocalizeAsync(LocalizationMechanism).FireAndForget();
+            }
         }
 
         protected void OnDisconnected(SocketEndpoint endpoint)
