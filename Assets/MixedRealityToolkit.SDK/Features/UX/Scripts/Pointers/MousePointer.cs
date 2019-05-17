@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (mouseInputProfile == null)
                 {
                     // Get the profile from the input system's registered mouse device manager.
-                    IMixedRealityMouseDeviceManager mouseManager = InputSystem?.GetDataProvider<IMixedRealityMouseDeviceManager>();
+                    IMixedRealityMouseDeviceManager mouseManager = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityMouseDeviceManager>();
                     mouseInputProfile = mouseManager?.MouseInputProfile;
                 }
                 return mouseInputProfile;

@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Start();
 
-            dictationSystem = InputSystem?.GetDataProvider<IMixedRealityDictationSystem>();
+            dictationSystem = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityDictationSystem>();
             Debug.Assert(dictationSystem != null, "No dictation system found. In order to use dictation, add a dictation system like 'Windows Dictation Input Provider' to the Data Providers in the Input System profile");
 
             if (startRecordingOnStart)
