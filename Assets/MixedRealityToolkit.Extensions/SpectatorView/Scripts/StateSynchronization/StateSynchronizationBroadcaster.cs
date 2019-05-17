@@ -28,6 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private GameObject anchorPrefab = null;
 
+        [SerializeField]
+        private bool debugLogging = false;
+
         /// <summary>
         /// Port used for sending data.
         /// </summary>
@@ -96,11 +99,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
+        private void DebugLog(string message)
+        {
+            if (debugLogging)
+            {
+                Debug.Log($"StateSynchronizationBroadcaster - {connectedObservers.Count} Connections : {message}");
+            }
+        }
+
         protected void OnConnected(SocketEndpoint endpoint)
         {
-            ConnectedObserver connectedObserver = new ConnectedObserver(Role.Broadcaster, endpoint, () => Instantiate(anchorPrefab));
+            DebugLog($"Broadcaster received connection from {endpoint.Address}.");
+
+            ConnectedObserver connectedObserver = new ConnectedObserver(Role.Broadcaster, endpoint, () => Instantiate(anchorPrefab), debugLogging);
             connectedObservers.Add(endpoint, connectedObserver);
             Connected?.Invoke(endpoint);
+
+            DebugLog($"Broadcaster kicking off localization on observer from {endpoint.Address}.");
 
             connectedObserver.LocalizeAsync(LocalizationMechanism).FireAndForget();
         }
@@ -135,12 +150,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         break;
                     case ConnectedObserver.LocalizationMessageHeader:
                         {
+                            DebugLog("Got localization message");
                             if (!connectedObservers.TryGetValue(data.Endpoint, out ConnectedObserver connectedObserver))
                             {
                                 Debug.LogError("Received a message for an obserer not registered as a connectedObserver.");
                             }
                             else
                             {
+                                DebugLog("Passing message to observer");
                                 connectedObserver.ReceiveMessage(reader);
                             }
                         }

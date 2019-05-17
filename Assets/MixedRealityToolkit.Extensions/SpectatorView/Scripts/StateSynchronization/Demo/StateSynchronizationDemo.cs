@@ -2,9 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
@@ -31,33 +29,53 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private readonly Role role;
         private readonly SocketEndpoint socketEndpoint;
         private readonly Func<GameObject> createAnchor;
+        private readonly bool debugLogging;
 
         private Action<BinaryReader> processIncomingMessages = null;
         private GameObject observerGO = null;
 
-        public ConnectedObserver(Role role, SocketEndpoint socketEndpoint, Func<GameObject> createAnchor)
+        public ConnectedObserver(Role role, SocketEndpoint socketEndpoint, Func<GameObject> createAnchor, bool debugLogging)
         {
             cancellationToken = cancellationTokenSource.Token;
 
             this.role = role;
             this.socketEndpoint = socketEndpoint;
             this.createAnchor = createAnchor;
+            this.debugLogging = debugLogging;
+        }
+
+        private void DebugLog(string message)
+        {
+            if (debugLogging)
+            {
+                Debug.Log($"ConnectedObserver [{role} - Connection: {socketEndpoint.Address}]: {message}");
+            }
         }
 
         public async Task LocalizeAsync(LocalizationMechanismBase localizationMechanism)
         {
+            DebugLog("Started LocalizeAsync");
+
+            DebugLog("Initializing with LocalizationMechanism.");
             // Tell the localization mechanism to initialize, this could create anchor if need be
             Guid token = await localizationMechanism.InitializeAsync(role, cancellationToken);
+            DebugLog("Initialized with LocalizationMechanism");
 
             try
             {
                 lock (cancellationTokenSource)
                 {
-                    processIncomingMessages = r => localizationMechanism.ProcessIncomingMessage(role, token, r);
+                    processIncomingMessages = r =>
+                    {
+                        DebugLog("Passing on incoming message");
+                        localizationMechanism.ProcessIncomingMessage(role, token, r);
+                    };
                 }
 
+                DebugLog("Telling LocalizationMechanims to begin localizng");
                 ISpatialCoordinate coordinate = await localizationMechanism.LocalizeAsync(role, token, (callback) => // Allows localization mechanism to tell spectator what to do
                 {
+                    DebugLog("Sending message to connected client");
                     using (MemoryStream memoryStream = new MemoryStream())
                     using (BinaryWriter writer = new BinaryWriter(memoryStream))
                     {
@@ -65,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                         callback(writer);
                         socketEndpoint.Send(memoryStream.ToArray());
+                        DebugLog("Sent Message");
                     }
                 }, cancellationToken);
 
@@ -74,12 +93,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
                 else
                 {
+                    DebugLog("Creating Visual Anchor");
                     lock (cancellationTokenSource)
                     {
                         if (!cancellationToken.IsCancellationRequested)
                         {
                             observerGO = createAnchor();
                             observerGO.AddComponent<SpatialCoordinateLocalizer>().Coordinate = coordinate;
+                            DebugLog("Anchor created, coordinate set");
                         }
                     }
                 }
@@ -91,7 +112,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     processIncomingMessages = null;
                 }
 
+                DebugLog("Deinitializing");
                 localizationMechanism.Deinitialize(role, token);
+                DebugLog("Deinitialized");
             }
         }
 
@@ -107,6 +130,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             base.OnManagedDispose();
 
+            DebugLog("Disposed");
+
             cancellationTokenSource.Cancel();
             cancellationTokenSource.Dispose();
 
@@ -120,6 +145,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
     internal abstract class LocalizationMechanismBase : MonoBehaviour
     {
+        private string typeName;
+
+        [SerializeField]
+        protected bool debugLogging = false;
+
+        private string TypeName => typeName ?? (typeName = GetType().Name);
+
+        protected void DebugLog(string message, Guid token)
+        {
+            if (debugLogging)
+            {
+                Debug.Log($"{TypeName} - {token}: {message}");
+            }
+        }
+
         internal abstract Task<Guid> InitializeAsync(Role role, CancellationToken cancellationToken);
 
         internal abstract void Deinitialize(Role role, Guid token);
@@ -138,79 +178,118 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         protected abstract ISpatialCoordinateService SpatialCoordinateService { get; }
 
-        protected virtual async Task<ISpatialCoordinate> GetHostCoordinateAsync()
+        protected virtual async Task<ISpatialCoordinate> GetHostCoordinateAsync(Guid token)
         {
-            TaskCompletionSource<ISpatialCoordinate> coordinateTCS = new TaskCompletionSource<ISpatialCoordinate>();
-            void coordianteDiscovered(ISpatialCoordinate coord) { coordinateTCS.SetResult(coord); }
+            DebugLog("Getting host coordinate", token);
 
-            SpatialCoordinateService.CoordinatedDiscovered += coordianteDiscovered;
-            try
+            using (CancellationTokenSource cts = new CancellationTokenSource())
             {
-                return await coordinateTCS.Task;
-            }
-            finally
-            {
-                SpatialCoordinateService.CoordinatedDiscovered -= coordianteDiscovered;
+                TaskCompletionSource<ISpatialCoordinate> coordinateTCS = new TaskCompletionSource<ISpatialCoordinate>();
+                void coordianteDiscovered(ISpatialCoordinate coord)
+                {
+                    DebugLog("Coordinate found", token);
+                    coordinateTCS.SetResult(coord);
+                    cts.Cancel();
+                }
+
+                SpatialCoordinateService.CoordinatedDiscovered += coordianteDiscovered;
+                try
+                {
+                    DebugLog("Starting to look for coordinates", token);
+                    await SpatialCoordinateService.TryDiscoverCoordinatesAsync(cts.Token);
+                    DebugLog("Stopped looking for coordinates", token);
+
+
+                    DebugLog("Awaiting found coordiante", token);
+                    // Don't necessarily need to await here
+                    return await coordinateTCS.Task;
+                }
+                finally
+                {
+                    DebugLog("Unsubscribing from coordinate discovered", token);
+                    SpatialCoordinateService.CoordinatedDiscovered -= coordianteDiscovered;
+                }
             }
         }
 
         internal async override Task<Guid> InitializeAsync(Role role, CancellationToken cancellationToken)
         {
-            Guid toReturn = new Guid();
+            Guid token = Guid.NewGuid();
+            DebugLog("Begining initialization", token);
             if (role == Role.Broadcaster)
             {
+                DebugLog("Broadcaster", token);
                 lock (lockObject)
                 {
+                    DebugLog("Checking for host init task", token);
                     if (initializeBroadcasterCoordinateTask == null)
                     {
-                        initializeBroadcasterCoordinateTask = GetHostCoordinateAsync();
+                        DebugLog("Creating new host init task", token);
+                        initializeBroadcasterCoordinateTask = GetHostCoordinateAsync(token);
+                        DebugLog("Host init task created", token);
                     }
                 }
 
+                DebugLog("Waiting for init or cancellation.", token);
                 // Wait for broadcaster to initialize (which happens once and won't be cancelled), or until this request was cancelled.
                 await Task.WhenAny(Task.Delay(-1, cancellationToken), initializeBroadcasterCoordinateTask);
-
+                DebugLog("Got Init task finished", token);
                 //We have the coordinate after this step has finished
             }
             else if (role == Role.Observer)
             {
+                DebugLog("Observer reset task completion source", token);
+                observerCoordinateIdToLookFor?.SetCanceled();
                 observerCoordinateIdToLookFor = new TaskCompletionSource<string>();
             }
 
-            guids.Add(toReturn);
-            return toReturn;
+            DebugLog($"Added guid and returning.", token);
+            guids.Add(token);
+            return token;
         }
 
         internal override void ProcessIncomingMessage(Role role, Guid token, BinaryReader r)
         {
+            DebugLog("Processing incoming message", token);
             switch (role)
             {
                 case Role.Broadcaster:
                     break;
                 case Role.Observer:
-                    observerCoordinateIdToLookFor.TrySetResult(r.ReadString());
+                    string result = r.ReadString();
+                    DebugLog($"Incoming message string: {result}, setting as coordinate id.", token);
+                    observerCoordinateIdToLookFor.TrySetResult(result);
+                    DebugLog("Set coordinate id.", token);
                     break;
             }
         }
 
         internal override async Task<ISpatialCoordinate> LocalizeAsync(Role role, Guid token, Action<Action<BinaryWriter>> sendMessage, CancellationToken cancellationToken)
         {
+            DebugLog("Beginning localization", token);
             ISpatialCoordinate coordinateToReturn = null;
 
             switch (role)
             {
                 case Role.Broadcaster:
+                    DebugLog("Broadcaster getting initialized coordinate", token);
                     coordinateToReturn = initializeBroadcasterCoordinateTask.Result;
+                    DebugLog($"Sending coordinate id: {coordinateToReturn.Id}", token);
                     sendMessage(writer => writer.Write(coordinateToReturn.Id));
+                    DebugLog("Message sent.", token);
                     break;
                 case Role.Observer:
+                    DebugLog("Spectator waiting for coord id to be sent over", token);
                     await Task.WhenAny(observerCoordinateIdToLookFor.Task, Task.Delay(-1, cancellationToken)); //If we get cancelled, or get a token
 
+                    DebugLog("Coordinate id received, reading.", token);
                     // Now we have coordinateId in TaskCompletionSource
                     string id = observerCoordinateIdToLookFor.Task.Result;
+                    DebugLog($"Coordinate id: {id}, starting discovery.", token);
 
                     if (await SpatialCoordinateService.TryDiscoverCoordinatesAsync(cancellationToken, id))
                     {
+                        DebugLog("Discovery complete, retrieving reference to ISpatialCoordinate", token);
                         if (!SpatialCoordinateService.TryGetKnownCoordinate(id, out coordinateToReturn))
                         {
                             Debug.LogError("We discovered, but for some reason failed to get coordinate from service.");
@@ -223,11 +302,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     break;
             }
 
+            DebugLog("Returning coordinate.", token);
             return coordinateToReturn;
         }
 
         internal override void Deinitialize(Role role, Guid token)
         {
+            DebugLog($"Deinitializing: {role}", token);
             switch (role)
             {
                 case Role.Broadcaster:

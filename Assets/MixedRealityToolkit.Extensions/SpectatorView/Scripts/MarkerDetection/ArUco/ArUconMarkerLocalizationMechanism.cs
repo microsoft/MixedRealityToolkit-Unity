@@ -2,6 +2,7 @@
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection;
+using System;
 using UnityEngine;
 
 namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.MarkerDetection.ArUco
@@ -17,7 +18,8 @@ namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.Marke
 
         private void Awake()
         {
-            spatialCoordinateService = new MarkerDetectorCoordinateService(arucoMarkerDetector);
+            DebugLog("Awake", Guid.Empty);
+            spatialCoordinateService = new MarkerDetectorCoordinateService(arucoMarkerDetector, debugLogging);
         }
     }
 }

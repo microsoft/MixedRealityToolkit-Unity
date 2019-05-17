@@ -756,10 +756,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 080592ca1eeef704dac0a5d91bc664c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Role: 0
+  Role: 1
   localizationMechanism: {fileID: 1399172233}
   broadcasterIpAddress: 10.89.160.74
-  stateSynchronizationSceneManager: {fileID: 0}
+  stateSynchronizationSceneManager: {fileID: 685059976}
   stateSynchronizationBroadcaster: {fileID: 2075391329}
   stateSynchronizationObserver: {fileID: 2043021341}
   broadcastedContent: {fileID: 909550035}
@@ -788,6 +788,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 118d29b9f26383b429c376bfa8e5bc7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugLogging: 1
   arucoMarkerDetector: {fileID: 1399172232}
 --- !u!1 &1869681819
 GameObject:
@@ -940,6 +941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f820ead9dbb8f244b5614cf48d6247d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugLogging: 1
   connectionManager: {fileID: 621974541}
   port: 7410
   anchorPrefab: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
@@ -991,6 +993,7 @@ MonoBehaviour:
   connectionManager: {fileID: 621974541}
   anchorPrefab: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
     type: 3}
+  debugLogging: 1
   Port: 7410
 --- !u!4 &2075391330
 Transform:

@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             }
 
             TKey[] ids = null;
-            if (idsToLocate != null || idsToLocate.Length == 0)
+            if (idsToLocate != null && idsToLocate.Length > 0)
             {
                 ids = new TKey[idsToLocate.Length];
                 for (int i = 0; i < idsToLocate.Length; i++)
