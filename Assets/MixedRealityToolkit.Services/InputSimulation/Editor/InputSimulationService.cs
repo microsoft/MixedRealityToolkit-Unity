@@ -49,10 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public InputSimulationService(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile inputSystemProfile,
             string name, 
             uint priority, 
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <inheritdoc />
         public override IMixedRealityController[] GetActiveControllers()
