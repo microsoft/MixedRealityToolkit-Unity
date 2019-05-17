@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
+using System;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -15,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Get a game object following the hand joint.
         /// </summary>
+        [Obsolete("Use HandJointUtils.TryGetJointPose instead of this")]
         bool TryGetJointTransform(TrackedHandJoint joint, out Transform jointTransform);
     }
 }
