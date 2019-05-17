@@ -1287,6 +1287,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnSpeechKeywordRecognized(casted);
             };
 
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityBaseInputHandler> OnSpeechKeywordRecognizedWithActionEventHandler =
+            delegate (IMixedRealityBaseInputHandler handler, BaseEventData eventData)
+            {
+                var speechData = ExecuteEvents.ValidateEventData<SpeechEventData>(eventData);
+                Debug.Assert(speechData.MixedRealityInputAction != MixedRealityInputAction.None);
+
+                var speechHandler = handler as IMixedRealitySpeechHandler;
+                if (speechHandler != null)
+                {
+                    speechHandler.OnSpeechKeywordRecognized(speechData);
+                }
+
+                var actionHandler = handler as IMixedRealityInputActionHandler;
+                if (actionHandler != null)
+                {
+                    actionHandler.OnActionStarted(speechData);
+                    actionHandler.OnActionEnded(speechData);
+                }
+            };
+
         /// <inheritdoc />
         public void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SpeechCommands command)
         {
@@ -1296,7 +1316,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             FocusProvider?.OnSpeechKeywordRecognized(speechEventData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
+            if (command.Action == MixedRealityInputAction.None)
+            {
+                HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
+            }
+            else
+            {
+                HandleEvent(speechEventData, OnSpeechKeywordRecognizedWithActionEventHandler);
+            }
         }
 
         #endregion Speech Keyword Events
