@@ -307,9 +307,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 releaseDistanceDelta.floatValue *= worldToLocalScale;
             }
             serializedObject.ApplyModifiedProperties();
-
-            currentInfo = GatherCurrentInfo();
-            DrawButtonInfo(currentInfo, EditingEnabled);
         }
 
         public override void OnInspectorGUI()

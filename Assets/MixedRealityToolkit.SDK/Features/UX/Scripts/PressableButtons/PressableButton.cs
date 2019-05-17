@@ -52,11 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
         private bool enforceFrontPush = true;
 
-        [SerializeField]
-        [HideInInspector]
-        [Tooltip("All distances defining the push of the button will be in local space")]
-        private bool useLocalSpaceDistances = false;
-		
+        [HideInInspector]  
+        public bool useLocalSpaceDistances = false;	
 
         /// <summary>
         /// The position from where the button starts to move.
