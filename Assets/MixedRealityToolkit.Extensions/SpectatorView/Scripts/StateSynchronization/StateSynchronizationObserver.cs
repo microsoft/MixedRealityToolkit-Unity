@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class StateSynchronizationObserver : Singleton<StateSynchronizationObserver>
     {
+        [Tooltip("Toggle to enable troubleshooting logging.")]
+        [SerializeField]
+        private bool debugLogging = false;
+
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
         /// </summary>
@@ -27,6 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected int port = 7410;
 
+        [Tooltip("The prefab visual that will represent the coordinate used to synchronize.")]
+        [SerializeField]
+        private GameObject anchorPrefab = null;
+
         private SocketEndpoint currentConnection = null;
         private double[] averageTimePerFeature;
         private const float heartbeatTimeInterval = 0.1f;
@@ -34,6 +43,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
+
+        private ConnectedObserver connectedObserver = null;
+
+        /// <summary>
+        /// The spatial localization method to be used by the observer.
+        /// </summary>
+        internal SpatialLocalizationMechanismBase SpatialLocalizationMechanism { get; set; }
 
         protected override void Awake()
         {
@@ -64,9 +80,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             hologramSynchronizer.UpdateHolograms();
         }
 
+        private void DebugLog(string message)
+        {
+            if (debugLogging)
+            {
+                string connectedState = currentConnection != null ? $"Connected - {currentConnection.Address}" : "Not Connected";
+                Debug.Log($"StateSynchronizationObserver - {connectedState}: {message}");
+            }
+        }
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
+
+            DebugLog("Disposing observer.");
+            connectedObserver?.Dispose();
+            connectedObserver = null;
 
             if (connectionManager != null)
             {
@@ -80,19 +109,42 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnConnected(SocketEndpoint endpoint)
         {
+            if (currentConnection != null || connectedObserver != null)
+            {
+                Debug.LogError("We just connected, yet the current observer or connection weren't null");
+
+                DebugLog("Disposing observer.");
+                connectedObserver?.Dispose();
+                connectedObserver = null;
+
+                currentConnection = null;
+            }
+
             currentConnection = endpoint;
             Debug.Log("Observer Connected!");
 
+            connectedObserver = new ConnectedObserver(Role.Observer, endpoint, () => Instantiate(anchorPrefab), debugLogging);
+            DebugLog("Created ConnectedObserver.");
             if (StateSynchronizationSceneManager.IsInitialized)
             {
                 StateSynchronizationSceneManager.Instance.MarkSceneDirty();
             }
 
             hologramSynchronizer.Reset(currentConnection);
+
+            if (SpatialLocalizationMechanism != null)
+            {
+                DebugLog("Spatially localizing observer");
+                connectedObserver.LocalizeAsync(SpatialLocalizationMechanism).FireAndForget();
+            }
         }
 
         private void OnDisconnected(SocketEndpoint endpoint)
         {
+            DebugLog("Disconnected, disposing observer");
+            connectedObserver?.Dispose();
+            connectedObserver = null;
+
             currentConnection = null;
         }
 
@@ -156,6 +208,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                                 averageTimePerFeature[i] = reader.ReadSingle();
                             }
                         }
+                        break;
+
+                    case ConnectedObserver.SpatialLocalizationMessageHeader:
+                        DebugLog("Passing message to observer");
+                        connectedObserver.ReceiveMessage(reader);
                         break;
                 }
             }

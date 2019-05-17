@@ -23,50 +23,57 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         public Role Role = Role.Broadcaster;
 
+        [Tooltip("Localization mechanism to use for spatially localizing the SpectatorView participants.")]
+        [SerializeField]
+        private SpatialLocalizationMechanismBase spatialLocalizationMechanizm = null;
+
         /// <summary>
         /// Broadcaster ip address
         /// </summary>
         [Tooltip("Broadcaster ip address")]
         [SerializeField]
-        protected string broadcasterIpAddress = "127.0.0.1";
+        private string broadcasterIpAddress = "127.0.0.1";
 
         /// <summary>
         /// StateSynchronizationSceneManager MonoBehaviour
         /// </summary>
         [Tooltip("StateSynchronizationSceneManager")]
         [SerializeField]
-        protected StateSynchronizationSceneManager StateSynchronizationSceneManager;
+        private StateSynchronizationSceneManager stateSynchronizationSceneManager = null;
 
         /// <summary>
         /// StateSynchronizationBroadcaster MonoBehaviour
         /// </summary>
         [Tooltip("StateSynchronizationBroadcaster MonoBehaviour")]
         [SerializeField]
-        protected StateSynchronizationBroadcaster stateSynchronizationBroadcaster;
+        private StateSynchronizationBroadcaster stateSynchronizationBroadcaster = null;
 
         /// <summary>
         /// StateSynchronizationObserver MonoBehaviour
         /// </summary>
         [Tooltip("StateSynchronizationObserver MonoBehaviour")]
         [SerializeField]
-        protected StateSynchronizationObserver stateSynchronizationObserver;
+        private StateSynchronizationObserver stateSynchronizationObserver = null;
 
         /// <summary>
         /// Content to enable in the broadcaster application
         /// </summary>
         [Tooltip("Content to enable in the broadcaster application")]
         [SerializeField]
-        protected GameObject broadcastedContent;
+        private GameObject broadcastedContent = null;
 
         private void Start()
         {
-            if (StateSynchronizationSceneManager == null ||
+            if (stateSynchronizationSceneManager == null ||
                 stateSynchronizationBroadcaster == null ||
                 stateSynchronizationObserver == null)
             {
                 Debug.LogError("StateSynchronization scene isn't configured correctly");
                 return;
             }
+
+            stateSynchronizationBroadcaster.SpatialLocalizationMechanism = spatialLocalizationMechanizm;
+            stateSynchronizationObserver.SpatialLocalizationMechanism = spatialLocalizationMechanizm;
 
             switch (Role)
             {
@@ -97,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             stateSynchronizationObserver.gameObject.SetActive(false);
 
             // The StateSynchronizationSceneManager needs to be enabled after the broadcaster/observer
-            StateSynchronizationSceneManager.gameObject.SetActive(true);
+            stateSynchronizationSceneManager.gameObject.SetActive(true);
         }
 
         private void RunAsObserver()
@@ -109,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             stateSynchronizationObserver.gameObject.SetActive(true);
 
             // The StateSynchronizationSceneManager needs to be enabled after the broadcaster/observer
-            StateSynchronizationSceneManager.gameObject.SetActive(true);
+            stateSynchronizationSceneManager.gameObject.SetActive(true);
 
             // Make sure the StateSynchronizationSceneManager is enabled prior to connecting the observer
             stateSynchronizationObserver.ConnectTo(broadcasterIpAddress);

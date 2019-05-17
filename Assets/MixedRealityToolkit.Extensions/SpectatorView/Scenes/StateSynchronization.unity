@@ -717,6 +717,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1399172230}
   - component: {fileID: 1399172231}
+  - component: {fileID: 1399172233}
+  - component: {fileID: 1399172232}
   m_Layer: 0
   m_Name: StateSynchronizationDemo
   m_TagString: Untagged
@@ -754,12 +756,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 080592ca1eeef704dac0a5d91bc664c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Role: 0
+  Role: 1
+  localizationMechanism: {fileID: 1399172233}
   broadcasterIpAddress: 10.89.160.74
-  StateSynchronizationSceneManager: {fileID: 685059976}
+  stateSynchronizationSceneManager: {fileID: 685059976}
   stateSynchronizationBroadcaster: {fileID: 2075391329}
   stateSynchronizationObserver: {fileID: 2043021341}
   broadcastedContent: {fileID: 909550035}
+--- !u!114 &1399172232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399172229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a244e3e3278e0a24fa787aef94e0e017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _markerSize: 0.03
+--- !u!114 &1399172233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399172229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 118d29b9f26383b429c376bfa8e5bc7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugLogging: 0
+  arucoMarkerDetector: {fileID: 1399172232}
 --- !u!1 &1869681819
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,8 +941,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f820ead9dbb8f244b5614cf48d6247d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugLogging: 0
   connectionManager: {fileID: 621974541}
   port: 7410
+  anchorPrefab: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
+    type: 3}
 --- !u!4 &2043021342
 Transform:
   m_ObjectHideFlags: 0
@@ -957,7 +990,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e82979a845c4c8469ffdce5ca285d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugLogging: 0
   connectionManager: {fileID: 621974541}
+  anchorPrefab: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
+    type: 3}
   Port: 7410
 --- !u!4 &2075391330
 Transform:
