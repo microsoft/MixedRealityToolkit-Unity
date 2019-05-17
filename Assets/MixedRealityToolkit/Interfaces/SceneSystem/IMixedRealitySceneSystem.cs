@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         Action<IEnumerable<string>> OnContentUnloaded { get; set; }
 
         /// <summary>
-        /// Called just before lighting scene is loaded.
+        /// Called just before a lighting scene is loaded.
         /// Includes name of scene.
         /// </summary>
         Action<string> OnWillLoadLighting { get; set; }
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         Action<string> OnLightingUnloaded { get; set; }
 
         /// <summary>
-        /// Called just prior to a scene being loaded.
+        /// Called just before a scene is loaded.
         /// Called for all scene types (content, lighting & manager)
         /// Includes scene name
         /// </summary>
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         Action<string> OnSceneLoaded { get; set; }
 
         /// <summary>
-        /// Called jus before a scene will be unloaded unloaded
+        /// Called just before a scene will be unloaded
         /// Called for all scene types (content, lighting & manager)
         /// Includes scene name
         /// </summary>
@@ -114,13 +114,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// True if the scene system is loading or unloading content scenes.
         /// Manager and lighting scenes are ignored.
         /// </summary>
-        bool SceneOpInProgress { get; }
+        bool SceneOperationInProgress { get; }
 
         /// <summary>
         /// Progress of the current scene operation, from 0-1.
         /// A scene operation may include multiple concurrently loaded scenes.
         /// </summary>
-        float SceneOpProgress { get; }
+        float SceneOperationProgress { get; }
 
         /// <summary>
         /// True when content has been loaded with an activation token and AllowSceneActivation has not been set to true.
