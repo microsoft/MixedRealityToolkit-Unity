@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#define MAFINC_ANCHOR_CHILD
+
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
@@ -407,6 +409,40 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
+#if MAFINC_ANCHOR_CHILD
+        private class PlayspaceAdapter : MonoBehaviour
+        {
+            /// <summary>
+            /// Compute concatenation of lhs * rhs such that lhs * (rhs * v) = Concat(lhs, rhs) * v
+            /// </summary>
+            /// <remarks>
+            /// Start defining pose * vector = pose.p + pose.r * vector
+            /// lhs * (rhs * v)
+            /// = lhs * (rhs.p + rhs.r * v)
+            /// = lhs.p + lhs.r * (rhs.p + rhs.r * v) 
+            /// = lhs.p + lhs.r * rhs.p + lhs.r * rhs.r * v
+            /// = Pose(lhs.p + lhs.r * rhs.p, lhs.r * rhs.r) * v
+            /// </remarks>
+            /// <param name="lhs">Second transform to apply</param>
+            /// <param name="rhs">First transform to apply</param>
+            /// <returns></returns>
+            private static Pose Concatenate(Pose lhs, Pose rhs)
+            {
+                return new Pose(lhs.position + lhs.rotation * rhs.position, lhs.rotation * rhs.rotation);
+            }
+
+            private void Update()
+            {
+                Pose worldFromPlayspace = new Pose(MixedRealityPlayspace.Position, MixedRealityPlayspace.Rotation);
+                Pose anchorPose = new Pose(transform.position, transform.rotation);
+                Pose parentPose = Concatenate(worldFromPlayspace, anchorPose);
+                transform.parent.position = parentPose.position;
+                transform.parent.rotation = parentPose.rotation;
+            }
+
+        }
+#endif // MAFINC_ANCHOR_CHILD
+
         /// <summary>
         /// Issue a request to the Surface Observer to begin baking the mesh.
         /// </summary>
@@ -422,7 +458,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             {
                 newMesh = SpatialAwarenessMeshObject.Create(null, MeshPhysicsLayer, meshName, surfaceId.handle);
 
+#if !MAFINC_ANCHOR_CHILD
                 worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
+#else // MAFINC_ANCHOR_CHILD
+                // mafinc 
+                // add a child to newMesh.GameObject.transform
+                // add WorldAnchor to child
+                // add adapter component to child
+                //  * adapter sets parent (newMesh.GameObject) transform to playspace.transform * transform (because this.transform is world anchor)
+
+                GameObject anchorHolder = new GameObject(meshName + "_anchor");
+                anchorHolder.AddComponent<PlayspaceAdapter>(); // replace with required component?
+                worldAnchor = anchorHolder.AddComponent<WorldAnchor>(); // replace with required component and GetComponent()? 
+                anchorHolder.transform.SetParent(newMesh.GameObject.transform, false);
+
+#endif // MAFINC_ANCHOR_CHILD
             }
             else
             {
@@ -433,7 +483,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 newMesh.Id = surfaceId.handle;
                 newMesh.GameObject.SetActive(true);
 
+#if !MAFINC_ANCHOR_CHILD
                 worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
+#else // MAFINC_ANCHOR_CHILD
+                // mafinc
+                // assert there is exactly one child of newMesh.GameObject
+                // get worldAnchor component from newMesh.GameObject.transform.GetChild(0).gameObject            
+                Debug.Assert(newMesh.GameObject.transform.childCount == 1, "Expecting a single child holding the WorldAnchor");
+                worldAnchor = newMesh.GameObject.transform.GetChild(0).gameObject.GetComponent<WorldAnchor>();
+
+#endif // MAFINC_ANCHOR_CHILD
             }
 
             Debug.Assert(worldAnchor != null);
@@ -631,11 +690,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         }
 #endif // UNITY_WSA
 
-        /// <summary>
-        /// Applies the mesh display option to existing meshes when modified at runtime.
-        /// </summary>
-        /// <param name="option">The <see cref="SpatialAwarenessMeshDisplayOptions"/> to apply to the meshes.</param>
-        private void ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions option)
+                /// <summary>
+                /// Applies the mesh display option to existing meshes when modified at runtime.
+                /// </summary>
+                /// <param name="option">The <see cref="SpatialAwarenessMeshDisplayOptions"/> to apply to the meshes.</param>
+                private void ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions option)
         {
             bool enable = (option != SpatialAwarenessMeshDisplayOptions.None);
 
