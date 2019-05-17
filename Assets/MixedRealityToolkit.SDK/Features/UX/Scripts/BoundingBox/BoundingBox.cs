@@ -615,6 +615,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
+        private readonly string rigRootName = "rigRoot";
 
         #endregion Private Properties
 
@@ -1126,7 +1127,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Bounds bounds = new Bounds();
 
-            if (Target.transform.childCount == 0)
+            int targetChildCount = 0;
+            for (int i = 0; i < Target.transform.childCount; i++)
+            {
+                if(!Target.transform.GetChild(i).name.Equals(rigRootName))
+                {
+                    targetChildCount++;
+                }
+            }
+            if (targetChildCount == 0)
             {
                 bounds = GetSingleObjectBounds(Target);
                 boundsMethod = BoundsCalculationMethod.Collider;
@@ -1286,7 +1295,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         private void InitializeDataStructures()
         {
-            rigRoot = new GameObject("rigRoot").transform;
+            rigRoot = new GameObject(rigRootName).transform;
             rigRoot.parent = transform;
             if (hideElementsInInspector == true)
             {
