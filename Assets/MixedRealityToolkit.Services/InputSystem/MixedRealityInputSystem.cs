@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/>
     /// </summary>
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
-    public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem
+    public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem, IMixedRealityDataProviderAccess
     {
         public MixedRealityInputSystem(
             IMixedRealityServiceRegistrar registrar,
@@ -274,14 +274,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region GetDataProvider(s) Implementation
         /// <inheritdoc />
-        public IReadOnlyList<IMixedRealityInputDeviceManager> GetDataProviders()
+        public IReadOnlyList<IMixedRealityDataProvider> GetDataProviders()
         {
             return new List<IMixedRealityInputDeviceManager>(deviceManagers) as IReadOnlyList<IMixedRealityInputDeviceManager>;
         }
 
         /// <inheritdoc />
-        public IReadOnlyList<T> GetDataProviders<T>() where T : IMixedRealityInputDeviceManager
+        public IReadOnlyList<T> GetDataProviders<T>() where T : IMixedRealityDataProvider
         {
+            if (!(typeof(T) is IMixedRealityInputDeviceManager)) { return null; }
+
             List<T> selected = new List<T>();
 
             for (int i = 0; i < deviceManagers.Count; i++)
@@ -296,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public IMixedRealityInputDeviceManager GetDataProvider(string name)
+        public IMixedRealityDataProvider GetDataProvider(string name)
         {
             for (int i = 0; i < deviceManagers.Count; i++)
             {
@@ -310,8 +312,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public T GetDataProvider<T>(string name = null) where T : IMixedRealityInputDeviceManager
+        public T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
         {
+            if (!(typeof(T) is IMixedRealityInputDeviceManager)) { return default(T); }
+
             for (int i = 0; i < deviceManagers.Count; i++)
             {
                 if (deviceManagers[i] is T)
