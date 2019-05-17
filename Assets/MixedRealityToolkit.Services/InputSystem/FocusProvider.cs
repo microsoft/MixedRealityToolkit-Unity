@@ -615,9 +615,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             IMixedRealityPointerMediator mediator = null;
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
+            if (InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
             {
-                mediator = Activator.CreateInstance(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
+                mediator = Activator.CreateInstance(InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
             }
 
             if (mediator != null)

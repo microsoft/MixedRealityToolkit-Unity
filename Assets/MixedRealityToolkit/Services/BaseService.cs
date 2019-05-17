@@ -21,6 +21,9 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual uint Priority { get; protected set; } = DefaultPriority;
 
         /// <inheritdoc />
+        public virtual BaseMixedRealityProfile ConfigurationProfile { get; protected set; } = null;
+
+        /// <inheritdoc />
         public virtual void Initialize() { }
 
         /// <inheritdoc />
