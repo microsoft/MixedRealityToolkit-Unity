@@ -460,12 +460,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             {
                 newMesh = SpatialAwarenessMeshObject.Create(null, MeshPhysicsLayer, meshName, surfaceId.handle);
 
-                // The WorldAnchor component places its object exactly where the anchor is in the same space as the camera. 
-                // But the meshes should show up transformed by the MixedRealityPlayspace transform, the same one that modifies the camera.
-                // So rather than put the WorldAnchor on the meshes GameObject, the WorldAnchor is placed out of the way in the scene,
-                // and its transform is concatenated with the Playspace transform to give the mesh's transform.
-                // That adapting the WorldAnchor's transform into playspace is done by the intermal PlayspaceAdapter component.
-                // 
+                // The WorldAnchor component places its object where the anchor is in the same space as the camera. 
+                // But since the camera is repositioned by the MixedRealityPlayspace's transform, the meshes' transforms
+                // should also the WorldAnchor position repositioned by the MixedRealityPlayspace's transform.
+                // So rather than put the WorldAnchor on the mesh's GameObject, the WorldAnchor is placed out of the way in the scene,
+                // and its transform is concatenated with the Playspace transform to compute the transform on the mesh's object.
+                // That adapting the WorldAnchor's transform into playspace is done by the internal PlayspaceAdapter component.
+                // The GameObject the WorldAnchor is placed on is unimportant, but it is convenient for cleanup to make it a child
+                // of the GameObject whose transform will track it.
                 GameObject anchorHolder = new GameObject(meshName + "_anchor");
                 anchorHolder.AddComponent<PlayspaceAdapter>(); // replace with required component?
                 worldAnchor = anchorHolder.AddComponent<WorldAnchor>(); // replace with required component and GetComponent()? 
