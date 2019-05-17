@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
+using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
@@ -114,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     () => {
                         EditorGUILayout.PropertyField(enableCameraSystem);
                         EditorGUILayout.PropertyField(cameraSystemType);
-                        return RenderProfile(cameraProfile);
+                        return RenderProfile(cameraProfile, true, false, typeof(IMixedRealityCameraSystem));
                     },
                     () => {
                          EditorGUILayout.PropertyField(enableInputSystem);
@@ -149,12 +150,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
                         EditorGUILayout.PropertyField(enableDiagnosticsSystem);
                         EditorGUILayout.PropertyField(diagnosticsSystemType);
-                        return RenderProfile(diagnosticsSystemProfile);
+                        return RenderProfile(diagnosticsSystemProfile, true, false, typeof(IMixedRealityDiagnosticsSystem));
                     },
                     () => {
                         EditorGUILayout.PropertyField(enableSceneSystem);
                         EditorGUILayout.PropertyField(sceneSystemType);
-                        return RenderProfile(sceneSystemProfile);
+                        return RenderProfile(sceneSystemProfile, true, false, typeof(IMixedRealitySceneSystem));
                     },
                     () => {
                         return RenderProfile(registeredServiceProvidersProfile);

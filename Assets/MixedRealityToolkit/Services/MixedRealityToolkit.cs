@@ -747,12 +747,13 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             if (toolkitInstance == activeInstance)
-            {   // If this is the active instance, we need to break it down
+            {   // If this was the active instance, un-register the active instance
+                // Break down all services
                 toolkitInstance.DestroyAllServices();
                 toolkitInstance.ClearCoreSystemCache();
-                // If this was the active instance, un-register the active instance
                 MixedRealityToolkit.activeInstance = null;
             }
+
             toolkitInstance.name = InactiveInstanceGameObjectName;
         }
 

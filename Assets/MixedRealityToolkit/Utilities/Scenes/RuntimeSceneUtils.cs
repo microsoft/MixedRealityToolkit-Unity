@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -13,6 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return System.IO.Path.GetFileNameWithoutExtension(scenePath);
         }
 
+        /// <summary>
+        /// Finds a scene in our build settings by name.
+        /// </summary>
+        /// <param name="sceneName"></param>
+        /// <param name="scene"></param>
+        /// <param name="sceneIndex"></param>
+        /// <returns></returns>
         public static bool FindScene(string sceneName, out Scene scene, out int sceneIndex)
         {
             scene = default(Scene);
@@ -33,6 +42,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Returns all root GameObjects in all loaded scenes.
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<GameObject> GetRootGameObjectsInLoadedScenes()
+        {
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene loadedScene = SceneManager.GetSceneAt(i);
+                foreach (GameObject rootGameObject in loadedScene.GetRootGameObjects())
+                    yield return rootGameObject;
+            }
+            yield break;
         }
     }
 }

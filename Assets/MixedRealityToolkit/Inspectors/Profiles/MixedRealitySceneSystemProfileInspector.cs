@@ -34,7 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected override void OnEnable()
         {
             base.OnEnable();
-            
+
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                return;
+            }
+                        
             useManagerScene = serializedObject.FindProperty("useManagerScene");
             managerScene = serializedObject.FindProperty("managerScene");
 
@@ -57,6 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                return;
+            }
+
             RenderMixedRealityToolkitLogo();
             /*    "Scene System",
                 "The Scene System Profile helps configure your scene settings.");*/

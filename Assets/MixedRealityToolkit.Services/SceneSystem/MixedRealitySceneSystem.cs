@@ -90,10 +90,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         #region Properties
 
         /// <inheritdoc />
-        public bool SceneOpInProgress { get; private set; }
+        public bool SceneOperationInProgress { get; private set; } = false;
 
         /// <inheritdoc />
-        public float SceneOpProgress { get; private set; }
+        public float SceneOperationProgress { get; private set; } = 0;
 
         /// <inheritdoc />
         public string ActiveLightingScene { get; private set; } = string.Empty;
@@ -145,10 +145,26 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         /// <inheritdoc />
+        public override void Enable()
+        {
+#if UNITY_EDITOR
+            OnEditorDisable();
+#endif
+        }
+
+        /// <inheritdoc />
         public override void Disable()
         {
 #if UNITY_EDITOR
             OnEditorDisable();
+#endif
+        }
+
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+#if UNITY_EDITOR
+            OnEditorDestroy();
 #endif
         }
 
@@ -349,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         }
                     }
 
-                    sceneOpProgress = Mathf.Clamp01(SceneOpProgress / totalSceneOps);
+                    sceneOpProgress = Mathf.Clamp01(SceneOperationProgress / totalSceneOps);
 
                     SetSceneOpProgress(true, sceneOpProgress, sceneType);
 
@@ -448,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         sceneOpProgress += unloadSceneOps[i].progress;
                         completedAllSceneOps &= unloadSceneOps[i].isDone;
                     }
-                    sceneOpProgress = Mathf.Clamp01(SceneOpProgress / totalSceneOps);
+                    sceneOpProgress = Mathf.Clamp01(SceneOperationProgress / totalSceneOps);
 
                     SetSceneOpProgress(true, sceneOpProgress, sceneType);
 
@@ -485,8 +501,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     break;
 
                 case SceneType.Content:
-                    SceneOpInProgress = inProgress;
-                    SceneOpProgress = progress;
+                    SceneOperationInProgress = inProgress;
+                    SceneOperationProgress = progress;
                     break;
 
                 case SceneType.Lighting:
@@ -505,7 +521,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                 case SceneType.Content:
                     // Content scene ops can only proceed if another scene op is not in progress
-                    return !SceneOpInProgress;
+                    return !SceneOperationInProgress;
 
                 case SceneType.Lighting:
                     // Lighting scene ops can always proceed

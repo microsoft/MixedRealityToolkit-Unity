@@ -35,9 +35,40 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private float managerSceneInstanceCheckTime;
         private int editorApplicationUpdateTicks;
 
+        private static int instanceIDCount;
+
+        private int instanceID = -1;
+
         private void OnEditorInitialize()
         {
-            // Subscribe to editor events
+            instanceID = instanceIDCount++;
+
+            SubscribeToEditorEvents();
+            cachedBuildScenes = EditorBuildSettings.scenes;
+            UpdateBuildSettings();
+        }
+
+        private void OnEditorEnable()
+        {
+            SubscribeToEditorEvents();
+            cachedBuildScenes = EditorBuildSettings.scenes;
+            UpdateBuildSettings();
+        }
+
+        private void OnEditorDisable()
+        {
+            UnsubscribeToEditorEvents();
+        }
+
+        private void OnEditorDestroy()
+        {
+            UnsubscribeToEditorEvents();
+        }
+
+        private void SubscribeToEditorEvents()
+        {
+            Debug.Log("Subscribing in " + instanceID);
+            
             EditorApplication.playModeStateChanged += EditorApplicationPlayModeStateChanged;
             EditorApplication.projectChanged += EditorApplicationProjectChanged;
             EditorApplication.hierarchyChanged += EditorApplicationHeirarcyChanged;
@@ -46,13 +77,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             EditorSceneManager.newSceneCreated += EditorSceneManagerNewSceneCreated;
             EditorSceneManager.sceneOpened += EditorSceneManagerSceneOpened;
             EditorSceneManager.sceneClosed += EditorSceneManagerSceneClosed;
-
-            cachedBuildScenes = EditorBuildSettings.scenes;
-            UpdateBuildSettings();
         }
 
-        private void OnEditorDisable()
+        private void UnsubscribeToEditorEvents()
         {
+            Debug.Log("Unsubscribing in " + instanceID);
+
             EditorApplication.playModeStateChanged -= EditorApplicationPlayModeStateChanged;
             EditorApplication.projectChanged -= EditorApplicationProjectChanged;
             EditorApplication.hierarchyChanged -= EditorApplicationHeirarcyChanged;
@@ -179,11 +209,23 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                             if (instance != null)
                             {
                                 foundToolkitInstance = true;
-                                // If we found an instance, and it's not the active instance, activate it now
+                                // If we found an instance, and it's not the active instance, we probably want to activate it
                                 if (instance != MixedRealityToolkit.Instance)
-                                {
-                                    Debug.LogWarning("Setting the manager scene MixedRealityToolkit instance to the active instance.");
-                                    MixedRealityToolkit.SetActiveInstance(instance);
+                                {   // The only exception would be if the new instance has a different profile than the current instance
+                                    // If that's the case, we could end up ping-ponging between two sets of manager scenes
+                                    if (!instance.HasActiveProfile)
+                                    {   // If it doesn't have a profile, set it to our current profile
+                                        instance.ActiveProfile = MixedRealityToolkit.Instance.ActiveProfile;
+                                    }
+                                    else if (instance.ActiveProfile != MixedRealityToolkit.Instance.ActiveProfile)
+                                    {
+                                        Debug.LogWarning("The active profile of the instance in your manager scene is different from the profile that loaded your scene. This is not recommended.");
+                                    }
+                                    else
+                                    {
+                                        Debug.LogWarning("Setting the manager scene MixedRealityToolkit instance to the active instance.");
+                                        MixedRealityToolkit.SetActiveInstance(instance);
+                                    }
                                 }
                                 break;
                             }

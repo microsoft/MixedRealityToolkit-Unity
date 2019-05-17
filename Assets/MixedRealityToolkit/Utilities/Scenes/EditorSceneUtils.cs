@@ -178,6 +178,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             try
             {
                 editorScene = EditorSceneManager.GetSceneByName(sceneInfo.Name);
+
+                if (editorScene.isLoaded)
+                {   // Already open - no need to do anything!
+                    return true;
+                }
+
                 string scenePath = AssetDatabase.GetAssetOrScenePath(sceneInfo.Asset);
                 EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
 
@@ -209,6 +215,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Returns all root GameObjects in all open scenes.
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<GameObject> GetRootGameObjectsInLoadedScenes()
+        {
+            for (int i = 0; i < EditorSceneManager.sceneCount; i++)
+            {
+                Scene openScene = EditorSceneManager.GetSceneAt(i);
+                foreach (GameObject rootGameObject in openScene.GetRootGameObjects())
+                    yield return rootGameObject;
+            }
+            yield break;
         }
 
         /// <summary>
