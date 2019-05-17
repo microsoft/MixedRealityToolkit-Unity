@@ -19,9 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
         protected int renderFrameWidth;
         protected int renderFrameHeight;
+        protected float aspect;
         private float uiFrameWidth = 100;
         private float uiFrameHeight = 100;
-        private float aspect;
 
         private const string trackingLostStatusMessage = "Tracking lost";
         private const string trackingStalledStatusMessage = "No tracking update in over a second";

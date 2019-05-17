@@ -33,6 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         public bool IsCalibrationDataLoaded { get; private set; }
 
         /// <summary>
+        /// Gets the calibration data loaded by the camera.
+        /// </summary>
+        public ICalibrationData CalibrationData => calibrationData;
+
+        /// <summary>
         /// Gets or sets the texture depth used for the RenderTextures used during compositing.
         /// </summary>
         [Header("Hologram Settings")]

@@ -37,8 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         private static string holographicCameraIPAddressKey = $"{nameof(CalibrationTestWindow)}.{nameof(holographicCameraIPAddress)}";
         private const int startStopRecordingButtonWidth = 200;
         private const int startStopRecordingButtonHeight = 100;
-        private const int startStopRecordingButtonRightMargin = 30;
         private const string indexFileName = "index.json";
+        private const float scrollBarWidth = 30.0f;
 
         private bool isRecording;
 
@@ -46,10 +46,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         private float recordingStartTime;
         private float nextRecordingFrameTime;
 
-        private CalibrationRecording recording = new CalibrationRecording()
+        private bool isPlaying;
+        private float currentTime;
+        private int currentFrameIndex;
+        private Texture2D imageTexture;
+        private GameObject testCube;
+        private ICalibrationData previousCalibrationData;
+        private ICalibrationData calibrationDataForPlayback;
+
+        private string indexFilePath;
+        private string calibrationFilePath;
+
+        private bool isIndexFileParsed;
+        private bool isCalibrationDataParsed;
+
+        private CalibrationRecording recordingForRecording = new CalibrationRecording()
         {
             Poses = new List<CalibrationRecordingPose>()
         };
+
+        private CalibrationRecording recordingForPlayback;
 
         [MenuItem("Spectator View/Calibration Test", false, 1)]
         public static void ShowCalibrationRecordingWindow()
@@ -62,8 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             base.OnEnable();
 
             holographicCameraIPAddress = PlayerPrefs.GetString(holographicCameraIPAddressKey, "localhost");
-            recording.FrameWidth = renderFrameWidth;
-            recording.FrameHeight = renderFrameHeight;
+            recordingForRecording.FrameWidth = renderFrameWidth;
+            recordingForRecording.FrameHeight = renderFrameHeight;
+
+            UpdateIndexFileForPlayback();
+            UpdateCalibrationFileForPlayback();
         }
 
         private void OnDisable()
@@ -72,20 +91,68 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             PlayerPrefs.Save();
         }
 
+        protected override void Update()
+        {
+            base.Update();
+
+            CompositionManager compositionManager = GetCompositionManager();
+            if (compositionManager == null && compositionManager.TextureManager == null)
+            {
+                IsPlaying = false;
+            }
+
+            if (IsPlaying)
+            {
+                currentTime += Time.deltaTime;
+                if (currentFrameIndex == recordingForPlayback.Poses.Count - 1)
+                {
+                    currentFrameIndex = 0;
+                    currentTime = 0;
+                    ApplyFrame(currentFrameIndex);
+                }
+                else
+                {
+                    for (int i = currentFrameIndex + 1; i < recordingForPlayback.Poses.Count; i++)
+                    {
+                        if (recordingForPlayback.Poses[i].FrameTime - recordingForPlayback.Poses[0].FrameTime <= currentTime)
+                        {
+                            currentFrameIndex = i;
+                            ApplyFrame(currentFrameIndex);
+                        }
+                    }
+                }
+            }
+        }
+
         private void OnGUI()
         {
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
             {
                 EditorGUILayout.BeginHorizontal();
                 {
-                    EditorGUILayout.BeginVertical();
+                    EditorGUILayout.BeginVertical(GUILayout.Width((position.width - scrollBarWidth) / 2));
                     {
                         RenderTitle("Recording", Color.green);
 
-                        EditorGUILayout.BeginVertical("Box");
+                        EditorGUILayout.BeginVertical("Box", GUILayout.MinHeight(250.0f));
                         {
                             HolographicCameraNetworkConnectionGUI();
+
+                            GUILayout.FlexibleSpace();
+
                             RecordControllerGUI();
+                        }
+                        EditorGUILayout.EndVertical();
+                    }
+                    EditorGUILayout.EndVertical();
+
+                    EditorGUILayout.BeginVertical(GUILayout.Width((position.width - scrollBarWidth) / 2));
+                    {
+                        RenderTitle("Playback", Color.green);
+
+                        EditorGUILayout.BeginVertical("Box", GUILayout.MinHeight(250.0f));
+                        {
+                            PlaybackControllerGUI();
                         }
                         EditorGUILayout.EndVertical();
                     }
@@ -93,6 +160,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 }
                 EditorGUILayout.EndHorizontal();
 
+                if (IsPlaying)
+                {
+                    RenderTitle($"Playback [{currentFrameIndex} / {recordingForPlayback.Poses.Count}]", Color.green);
+                }
+                else if (IsRecording)
+                {
+                    RenderTitle($"Recording [{recordingForRecording.Poses.Count} frames]", Color.green);
+                }
+                else
+                {
+                    RenderTitle("Preview", Color.yellow);
+                }
                 CompositeTextureGUI(textureRenderModeComposite);
             }
             EditorGUILayout.EndScrollView();
@@ -115,9 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                         {
                             IsRecording = false;
                         }
-
-                        GUILayout.Space(startStopRecordingButtonRightMargin);
-                        GUILayout.Label($"Recorded {recording.Poses.Count} frames");
                     }
                     GUILayout.EndHorizontal();
                 }
@@ -133,17 +209,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                         }
 
                         GUI.enabled = true;
-
-                        if (!string.IsNullOrEmpty(currentRecordingSubdirectoryName))
-                        {
-                            GUILayout.Space(startStopRecordingButtonRightMargin);
-                            GUILayout.BeginVertical();
-                            {
-                                GUILayout.Label($"Recording complete: {currentRecordingSubdirectoryName}");
-                            }
-                            GUILayout.EndVertical();
-                        }
-
                     }
                     GUILayout.EndHorizontal();
                 }
@@ -151,12 +216,71 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             EditorGUILayout.EndVertical();
         }
 
+        private void PlaybackControllerGUI()
+        {
+            GUILayout.BeginVertical("Box");
+            {
+                RenderTitle("Playback Parameters", Color.green);
+
+                GUILayout.Label("Recording index file location");
+                IndexFilePath = EditorGUILayout.TextField(IndexFilePath);
+
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+
+                GUILayout.Label("Calibration file");
+                CalibrationFilePath = EditorGUILayout.TextField(CalibrationFilePath);
+            }
+            GUILayout.EndVertical();
+
+            GUILayout.FlexibleSpace();
+
+            GUILayout.BeginVertical("Box");
+            {
+                GUILayout.BeginHorizontal();
+                {
+                    CompositionManager compositionManager = GetCompositionManager();
+                    GUI.enabled = CanPlay;
+                    if (IsPlaying)
+                    {
+                        if (GUILayout.Button("Stop", GUILayout.Width(startStopRecordingButtonWidth), GUILayout.Height(startStopRecordingButtonHeight)))
+                        {
+                            IsPlaying = false;
+                        }
+                    }
+                    else
+                    {
+                        if (GUILayout.Button("Play", GUILayout.Width(startStopRecordingButtonWidth), GUILayout.Height(startStopRecordingButtonHeight)))
+                        {
+                            IsPlaying = true;
+                        }
+                    }
+                    GUI.enabled = true;
+                }
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndVertical();
+        }
+
         private bool CanRecord
         {
             get
             {
                 HolographicCameraNetworkManager cameraNetworkManager = GetHolographicCameraNetworkManager();
-                return cameraNetworkManager != null && cameraNetworkManager.IsConnected;
+                return cameraNetworkManager != null && cameraNetworkManager.IsConnected && !IsPlaying;
+            }
+        }
+
+        private bool CanPlay
+        {
+            get
+            {
+                CompositionManager compositionManager = GetCompositionManager();
+                return compositionManager != null &&
+                       compositionManager.TextureManager != null &&
+                       !IsRecording &&
+                       isCalibrationDataParsed &&
+                       isIndexFileParsed;
             }
         }
 
@@ -173,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
                     if (isRecording)
                     {
-                        recording.Poses.Clear();
+                        recordingForRecording.Poses.Clear();
                         currentRecordingSubdirectoryName = DateTime.Now.ToString("s").Replace(':', '.');
                         recordingStartTime = Time.time;
                         nextRecordingFrameTime = recordingStartTime;
@@ -184,16 +308,102 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     {
                         compositionManager.TextureManager.TextureRenderCompleted -= Instance_TextureRenderCompleted;
 
-                        if (recording.Poses.Count > 0)
+                        if (recordingForRecording.Poses.Count > 0)
                         {
                             string rootFolder, targetFolder;
                             GetRecordingDirectories(out rootFolder, out targetFolder);
                             string indexPath = Path.Combine(targetFolder, indexFileName);
 
-                            File.WriteAllText(indexPath, JsonUtility.ToJson(recording));
+                            File.WriteAllText(indexPath, JsonUtility.ToJson(recordingForRecording));
+
+                            IndexFilePath = indexPath;
                         }
                     }
                 }
+            }
+        }
+
+        private bool IsPlaying
+        {
+            get { return isPlaying; }
+            set
+            {
+                if (isPlaying != value)
+                {
+                    isPlaying = value;
+
+                    if (isPlaying)
+                    {
+                        StartPlayback();
+                    }
+                    else
+                    {
+                        StopPlayback();
+                    }
+                }
+            }
+        }
+
+        private string IndexFilePath
+        {
+            get { return indexFilePath; }
+            set
+            {
+                if (indexFilePath != value)
+                {
+                    indexFilePath = value;
+                    UpdateIndexFileForPlayback();
+                }
+            }
+        }
+
+        private void UpdateIndexFileForPlayback()
+        {
+            isIndexFileParsed = false;
+
+            try
+            {
+                recordingForPlayback = JsonUtility.FromJson<CalibrationRecording>(File.ReadAllText(indexFilePath));
+                isIndexFileParsed = true;
+            }
+            catch
+            {
+            }
+        }
+
+        private string CalibrationFilePath
+        {
+            get { return calibrationFilePath; }
+            set
+            {
+                if (calibrationFilePath != value)
+                {
+                    calibrationFilePath = value;
+                    UpdateCalibrationFileForPlayback();
+                }
+            }
+        }
+
+        private void UpdateCalibrationFileForPlayback()
+        {
+            isCalibrationDataParsed = false;
+            try
+            {
+                if (!string.IsNullOrEmpty(calibrationFilePath))
+                {
+                    byte[] calibrationDataPayload = File.ReadAllBytes(calibrationFilePath);
+
+                    CalculatedCameraCalibration calibration;
+                    if (CalculatedCameraCalibration.TryDeserialize(calibrationDataPayload, out calibration))
+                    {
+                        calibrationDataForPlayback = new CalibrationData(calibration.Intrinsics, calibration.Extrinsics);
+
+                        isCalibrationDataParsed = true;
+                    }
+                }
+            }
+            catch
+            {
             }
         }
 
@@ -214,13 +424,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     Directory.CreateDirectory(targetFolder);
                 }
 
-                string fileName = Path.Combine(targetFolder, $"{recording.Poses.Count}.raw");
+                string fileName = Path.Combine(targetFolder, $"{recordingForRecording.Poses.Count}.raw");
 
                 UnityCompositorInterface.TakeRawPicture(fileName);
 
-                recording.Poses.Add(new CalibrationRecordingPose
+                recordingForRecording.Poses.Add(new CalibrationRecordingPose
                 {
-                    FrameFileNumber = recording.Poses.Count,
+                    FrameFileNumber = recordingForRecording.Poses.Count,
                     FrameTime = Time.time,
                     CameraPosition = compositionManager.transform.parent.localPosition,
                     CameraRotationEuler = compositionManager.transform.parent.localRotation.eulerAngles,
@@ -234,6 +444,58 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         {
             rootFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CalibrationVideos");
             targetFolder = Path.Combine(rootFolder, currentRecordingSubdirectoryName);
+        }
+
+        private void StartPlayback()
+        {
+            currentTime = 0;
+            currentFrameIndex = 0;
+            recordingForPlayback = JsonUtility.FromJson<CalibrationRecording>(File.ReadAllText(indexFilePath));
+            ApplyFrame(currentFrameIndex);
+
+            CompositionManager compositionManager = GetCompositionManager();
+            HolographicCameraNetworkManager networkManager = GetHolographicCameraNetworkManager();
+
+            previousCalibrationData = compositionManager.CalibrationData;
+            compositionManager.EnableHolographicCamera(networkManager.transform, calibrationDataForPlayback);
+
+            testCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testCube.transform.localScale = Vector3.one * 0.1f;
+            testCube.transform.localPosition = new Vector3(0.0f, 0.0f, 0.05f);
+        }
+
+        private void StopPlayback()
+        {
+            CompositionManager compositionManager = GetCompositionManager();
+            HolographicCameraNetworkManager networkManager = GetHolographicCameraNetworkManager();
+
+            if (compositionManager != null && compositionManager.TextureManager != null)
+            {
+                compositionManager.TextureManager.SetOverrideColorTexture(null);
+                compositionManager.ClearOverridePose();
+
+                compositionManager.EnableHolographicCamera(networkManager.transform, previousCalibrationData);
+                Destroy(testCube);
+            }
+
+            testCube = null;
+        }
+
+        private void ApplyFrame(int frameIndex)
+        {
+            CompositionManager compositionManager = GetCompositionManager();
+
+            string directory = Path.GetDirectoryName(indexFilePath);
+            string frameFile = Path.Combine(directory, $"{recordingForPlayback.Poses[frameIndex].FrameFileNumber}.raw");
+            if (imageTexture == null)
+            {
+                imageTexture = new Texture2D(recordingForPlayback.FrameWidth, recordingForPlayback.FrameHeight, TextureFormat.BGRA32, false);
+            }
+            imageTexture.LoadRawTextureData(File.ReadAllBytes(frameFile));
+            imageTexture.Apply();
+            aspect = ((float)imageTexture.width) / imageTexture.height;
+            compositionManager.TextureManager.SetOverrideColorTexture(imageTexture);
+            compositionManager.SetOverridePose(recordingForPlayback.Poses[frameIndex].CameraPosition, Quaternion.Euler(recordingForPlayback.Poses[frameIndex].CameraRotationEuler));
         }
     }
 }
