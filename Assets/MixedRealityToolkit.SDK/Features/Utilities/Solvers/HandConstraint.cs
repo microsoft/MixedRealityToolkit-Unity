@@ -25,25 +25,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("TODO")]
-        private UnityEvent onHandPresent;
+        private float palmFacingThreshold = 0.3f;
 
         [SerializeField]
         [Tooltip("TODO")]
-        private UnityEvent onHandNotPresent;
+        private UnityEvent onHandActivate;
 
+        [SerializeField]
+        [Tooltip("TODO")]
+        private UnityEvent onHandDeactivate;
+
+        private bool handActive = false;
         private List<IMixedRealityHand> handStack = new List<IMixedRealityHand>();
-        private bool handPresent = false;
 
         public override void SolverUpdate()
         {
-            bool snap = false;
+            bool snap = HandActivationUpdate();
 
-            if (transitionBetweenHands)
-            {
-                snap = TransitionBetweenHands();
-            }
-
-            GoalPosition = SolverHandler.TransformTarget.position;
+            GoalPosition = CalculateGoalPosition();
             GoalRotation = SolverHandler.TransformTarget.rotation;
 
             if (snap)
@@ -57,13 +56,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
-        private bool TransitionBetweenHands()
+        private bool HandActivationUpdate()
         {
             IMixedRealityHand activeHand = null;
 
             foreach (var hand in handStack)
             {
-                if (HandIsValid(hand))
+                if (IsHandActive(hand))
                 {
                     activeHand = hand;
                     break;
@@ -73,15 +72,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return ChangeTrackedObjectType(activeHand);
         }
 
-        private bool HandIsValid(IMixedRealityHand hand)
+        private bool IsHandActive(IMixedRealityHand hand)
         {
+            // If transitioning between hands is not allowed, make sure the TrackedObjectType matches the hand.
+            if (!transitionBetweenHands)
+            {
+                TrackedObjectType trackedObjectType;
+
+                if (HandednessToTrackedObjectType(hand.ControllerHandedness, out trackedObjectType))
+                {
+                    if (trackedObjectType != SolverHandler.TrackedObjectToReference)
+                    {
+                        return false;
+                    }
+                }
+            }
+
             if (activateOnPalmUp)
             {
                 MixedRealityPose pose;
 
                 if (hand.TryGetJoint(TrackedHandJoint.Palm, out pose))
                 {
-                    const float palmFacingThreshold = 0.3f;
                     return Vector3.Dot(pose.Up, CameraCache.Main.transform.forward) > palmFacingThreshold;
                 }
             }
@@ -107,10 +119,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         handStack.Insert(0, hand);
                     }
 
-                    if (!handPresent)
+                    if (!handActive)
                     {
-                        onHandPresent.Invoke();
-                        handPresent = true;
+                        onHandActivate.Invoke();
+                        handActive = true;
 
                         return true;
                     }
@@ -122,14 +134,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
             else
             {
-                if (handPresent)
+                if (handActive)
                 {
-                    onHandNotPresent.Invoke();
-                    handPresent = false;
+                    onHandDeactivate.Invoke();
+                    handActive = false;
                 }
             }
 
             return false;
+        }
+
+        private Vector3 CalculateGoalPosition()
+        {
+            // TODO, maintain distance from hand.
+            return SolverHandler.TransformTarget.position;
         }
 
         private static bool HandednessToTrackedObjectType(Handedness handedness, out TrackedObjectType trackedObjectType)
@@ -152,9 +170,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         protected void Start()
         {
-            // Initially a hand is not present.
-            onHandNotPresent.Invoke();
-            handPresent = false;
+            // Initially a hand is not active.
+            onHandDeactivate.Invoke();
+            handActive = false;
         }
 
         #endregion MonoBehaviour Implementation
