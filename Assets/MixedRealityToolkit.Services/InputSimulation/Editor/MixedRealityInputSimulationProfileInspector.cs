@@ -59,6 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty holdStartDuration;
         private SerializedProperty manipulationStartThreshold;
 
+        private const string ProfileTitle = "Input Simulation Settings";
+        private const string ProfileDescription = "Settings for simulating input devices in the editor.";
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -114,25 +117,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Input Simulation settings",
-                "Settings for simulating input devices in the editor.");
-
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
-                if (GUILayout.Button("Back to Input Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
-                }
+                return;
             }
-
-            CheckProfileLock(target);
 
             serializedObject.Update();
 
-            bool isGUIEnabled = GUI.enabled;
+            bool wasGUIEnabled = GUI.enabled;
+            bool isGUIEnabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
+            GUI.enabled = isGUIEnabled;
 
-            GUILayout.Space(12f);
             EditorGUILayout.PropertyField(isCameraControlEnabled);
             {
                 EditorGUILayout.BeginVertical("Label");
@@ -157,10 +152,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GUI.enabled = isGUIEnabled;
             }
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(simulateEyePosition);
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(handSimulationMode);
             {
                 EditorGUILayout.BeginVertical("Label");
@@ -200,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 EditorGUILayout.Space();
 
                 EditorGUILayout.EndVertical();
-                GUI.enabled = isGUIEnabled;
+                GUI.enabled = wasGUIEnabled;
             }
 
             serializedObject.ApplyModifiedProperties();

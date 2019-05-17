@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Action", "Add New Action");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The Name of the Action.");
         private static readonly GUIContent AxisConstraintContent = new GUIContent("Axis Constraint", "Optional Axis Constraint for this input source.");
+        private const string ProfileTitle = "Input Action Settings";
+        private const string ProfileDescription = "Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
+                                    "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.";
 
         private static Vector2 scrollPosition = Vector2.zero;
 
@@ -29,40 +32,33 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Input Actions",
-                "Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
-                "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.");
-
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
-                if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
-                {
-                    EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-
-                    DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
-
-                    return;
-                }
-
-                if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
-                {
-                    return;
-                }
+                return;
             }
 
-            CheckProfileLock(target);
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
 
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
+
             RenderList(inputActionList);
+
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = wasGUIEnabled;
         }
 
         private static void RenderList(SerializedProperty list)
         {
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
-            if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton))
+
+            if (RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
             {
                 list.arraySize += 1;
                 var inputAction = list.GetArrayElementAtIndex(list.arraySize - 1);

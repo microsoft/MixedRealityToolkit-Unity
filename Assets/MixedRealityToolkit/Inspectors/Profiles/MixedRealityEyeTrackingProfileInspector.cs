@@ -14,6 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private SerializedProperty smoothEyeTracking;
 
+        private const string ProfileTitle = "Eye tracking Settings";
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -25,31 +27,19 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Eye tracking settings",
-                "Configuration for eye tracking settings");
-
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
-            {
-                if (GUILayout.Button("Back to Registered Service Providers Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile;
-                }
-            }
-            else
+            if (!RenderProfileHeader(ProfileTitle, string.Empty, BackProfileType.RegisteredServices))
             {
                 return;
             }
 
-            CheckProfileLock(target);
-
             serializedObject.Update();
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(smoothEyeTracking);
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = true;
         }
     }
 }

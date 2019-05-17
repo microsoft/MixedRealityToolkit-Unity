@@ -15,16 +15,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     {
         private static readonly GUIContent ControllerTypeContent = new GUIContent("Controller Type", "The type of Controller this pointer will attach itself to at runtime.");
 
-        private static bool showPointerProperties = true;
+        private const string ProfileTitle = "Pointer Settings";
+        private const string ProfileDescription = "Pointers attach themselves onto controllers as they are initialized.";
+
         private SerializedProperty pointingExtent;
         private SerializedProperty pointingRaycastLayerMasks;
         private static bool showPointerOptionProperties = true;
         private SerializedProperty pointerOptions;
         private ReorderableList pointerOptionList;
-        private static bool showPointerDebugProperties = true;
         private SerializedProperty debugDrawPointingRays;
         private SerializedProperty debugDrawPointingRayColors;
-        private static bool showGazeProperties = true;
         private SerializedProperty gazeCursorPrefab;
         private SerializedProperty gazeProviderType;
         private SerializedProperty showCursorWithEyeGaze;
@@ -58,76 +58,64 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Pointer Profile",
-                "Pointers attach themselves onto controllers as they are initialized.");
-
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
-                if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
-                {
-                    return;
-                }
+                return;
             }
 
-            CheckProfileLock(target);
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
+
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
+
             serializedObject.Update();
             currentlySelectedPointerOption = -1;
 
             EditorGUILayout.Space();
-            showPointerProperties = EditorGUILayout.Foldout(showPointerProperties, "Pointer Settings", true);
-            if (showPointerProperties)
+            EditorGUILayout.LabelField("Gaze Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.PropertyField(gazeCursorPrefab);
+                EditorGUILayout.PropertyField(gazeProviderType);
+                EditorGUILayout.Space();
+
+                if (RenderIndentedButton("Customize Gaze Provider Settings"))
                 {
-                    EditorGUILayout.PropertyField(pointingExtent);
-                    EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
-                    EditorGUILayout.PropertyField(pointerMediator);
+                    Selection.activeObject = CameraCache.Main.gameObject;
+                }
+            }
 
-                    EditorGUILayout.Space();
-                    showPointerOptionProperties = EditorGUILayout.Foldout(showPointerOptionProperties, "Pointer Options", true);
-                    if (showPointerOptionProperties)
-                    {
-                        using (new EditorGUI.IndentLevelScope())
-                        {
-                            pointerOptionList.DoLayoutList();
-                        }
-                    }
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Pointer Settings", EditorStyles.boldLabel);
+            {
+                EditorGUILayout.PropertyField(pointingExtent);
+                EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
+                EditorGUILayout.PropertyField(pointerMediator);
 
-                    EditorGUILayout.Space();
-                    showPointerDebugProperties = EditorGUILayout.Foldout(showPointerDebugProperties, "Debug Settings", true);
-                    if (showPointerDebugProperties)
+                EditorGUILayout.Space();
+                showPointerOptionProperties = EditorGUILayout.Foldout(showPointerOptionProperties, "Pointer Options", true);
+                if (showPointerOptionProperties)
+                {
+                    using (new EditorGUI.IndentLevelScope())
                     {
-                        using (new EditorGUI.IndentLevelScope())
-                        {
-                            EditorGUILayout.PropertyField(debugDrawPointingRays);
-                            EditorGUILayout.PropertyField(debugDrawPointingRayColors, true);
-                        }
+                        pointerOptionList.DoLayoutList();
                     }
                 }
             }
 
             EditorGUILayout.Space();
-            showGazeProperties = EditorGUILayout.Foldout(showGazeProperties, "Gaze Settings", true);
-            if (showGazeProperties)
+            EditorGUILayout.LabelField("Debug Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.HelpBox("The gaze provider uses the default settings above, but further customization of the gaze can be done on the Gaze Provider.", MessageType.Info);
-
-                    EditorGUILayout.Space();
-                    EditorGUILayout.PropertyField(gazeCursorPrefab);
-                    EditorGUILayout.PropertyField(gazeProviderType);
-
-                    EditorGUILayout.Space();
-                    if (GUILayout.Button("Customize Gaze Provider Settings"))
-                    {
-                        Selection.activeObject = CameraCache.Main.gameObject;
-                    }
-                }
+                EditorGUILayout.PropertyField(debugDrawPointingRays);
+                EditorGUILayout.PropertyField(debugDrawPointingRayColors, true);
             }
             
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = wasGUIEnabled;
         }
 
         private void DrawPointerOptionElement(Rect rect, int index, bool isActive, bool isFocused)

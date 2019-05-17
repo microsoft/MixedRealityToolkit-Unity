@@ -10,13 +10,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomEditor(typeof(MixedRealityCameraProfile))]
     public class MixedRealityCameraProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private static bool showOpaqueProperties = true;
         private SerializedProperty opaqueNearClip;
         private SerializedProperty opaqueClearFlags;
         private SerializedProperty opaqueBackgroundColor;
         private SerializedProperty opaqueQualityLevel;
 
-        private static bool showTransparentProperties = true;
         private SerializedProperty transparentNearClip;
         private SerializedProperty transparentClearFlags;
         private SerializedProperty transparentBackgroundColor;
@@ -24,6 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
         private readonly GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
+
+        private const string ProfileTitle = "Camera Settings";
+        private const string ProfileDescription = "The Camera Profile helps configure cross platform camera settings.";
 
         protected override void OnEnable()
         {
@@ -42,59 +43,45 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Camera Profile",
-                "The Camera Profile helps configure cross platform camera settings.");
-
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
             {
-                if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-                {
-                    return;
-                }
+                return;
             }
 
-            CheckProfileLock(target);
-
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
-          
+
             EditorGUILayout.Space();
-            showOpaqueProperties = EditorGUILayout.Foldout(showOpaqueProperties, "Opaque Display Settings", true);
-            if (showOpaqueProperties)
+            EditorGUILayout.LabelField("Opaque Display Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.PropertyField(opaqueNearClip, nearClipTitle);
+                EditorGUILayout.PropertyField(opaqueClearFlags, clearFlagsTitle);
+
+                if ((CameraClearFlags)opaqueClearFlags.intValue == CameraClearFlags.Color)
                 {
-                    EditorGUILayout.PropertyField(opaqueNearClip, nearClipTitle);
-                    EditorGUILayout.PropertyField(opaqueClearFlags, clearFlagsTitle);
-
-                    if ((CameraClearFlags)opaqueClearFlags.intValue == CameraClearFlags.Color)
-                    {
-                        opaqueBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", opaqueBackgroundColor.colorValue);
-                    }
-
-                    opaqueQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", opaqueQualityLevel.intValue, QualitySettings.names);
+                    opaqueBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", opaqueBackgroundColor.colorValue);
                 }
+
+                opaqueQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", opaqueQualityLevel.intValue, QualitySettings.names);
             }
 
             EditorGUILayout.Space();
-            showTransparentProperties = EditorGUILayout.Foldout(showTransparentProperties, "Transparent Display Settings", true);
-            if (showTransparentProperties)
+            EditorGUILayout.LabelField("Transparent Display Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.PropertyField(transparentNearClip, nearClipTitle);
+                EditorGUILayout.PropertyField(transparentClearFlags, clearFlagsTitle);
+
+                if ((CameraClearFlags)transparentClearFlags.intValue == CameraClearFlags.Color)
                 {
-                    EditorGUILayout.PropertyField(transparentNearClip, nearClipTitle);
-                    EditorGUILayout.PropertyField(transparentClearFlags, clearFlagsTitle);
-
-                    if ((CameraClearFlags)transparentClearFlags.intValue == CameraClearFlags.Color)
-                    {
-                        transparentBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", transparentBackgroundColor.colorValue);
-                    }
-
-                    holoLensQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", holoLensQualityLevel.intValue, QualitySettings.names);
+                    transparentBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", transparentBackgroundColor.colorValue);
                 }
+
+                holoLensQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", holoLensQualityLevel.intValue, QualitySettings.names);
             }
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = wasGUIEnabled;
         }
     }
 }
