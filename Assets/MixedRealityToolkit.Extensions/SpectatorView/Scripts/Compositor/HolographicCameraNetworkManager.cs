@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         {
             currentConnection = endpoint;
             lastReceivedPoseTime = Time.time;
-            compositionManager.ResetPoseSynchronization();
+            compositionManager.ResetOnNewCameraConnection();
         }
 
         private void ConnectionManager_OnDisconnected(SocketEndpoint endpoint)
