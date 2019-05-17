@@ -62,12 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
             AssignControllerMappings(DefaultInteractions);
-            if (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.GesturesProfile != null)
+            if (InputSystem?.InputSystemProfile.GesturesProfile != null)
             {
-                for (int i = 0; i < MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.Gestures.Length; i++)
+                for (int i = 0; i < InputSystem.InputSystemProfile.GesturesProfile.Gestures.Length; i++)
                 {
-                    var gesture = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.Gestures[i];
+                    var gesture = InputSystem.InputSystemProfile.GesturesProfile.Gestures[i];
 
                     switch (gesture.GestureType)
                     {

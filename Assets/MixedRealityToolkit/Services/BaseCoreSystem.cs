@@ -12,17 +12,12 @@ namespace Microsoft.MixedReality.Toolkit
         {
             Registrar = registrar;
             ConfigurationProfile = profile;
-            Priority = 5; // Core systems have a higher default priority than other services   
+            Priority = 5; // Core systems have a higher default priority than other services
         }
 
         /// <summary>
         /// The service registrar instance that registered this service.
         /// </summary>
         protected IMixedRealityServiceRegistrar Registrar { get; set; } = null;
-
-        /// <summary>
-        /// Configuration Profile
-        /// </summary>
-        protected BaseMixedRealityProfile ConfigurationProfile { get; set; } = null;
     }
 }

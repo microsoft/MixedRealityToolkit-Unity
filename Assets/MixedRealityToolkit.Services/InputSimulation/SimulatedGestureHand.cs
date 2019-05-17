@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             initializedFromProfile = true;
 
-            var gestureProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.GesturesProfile;
+            var gestureProfile = InputSystem?.InputSystemProfile?.GesturesProfile;
             if (gestureProfile != null)
             {
                 for (int i = 0; i < gestureProfile.Gestures.Length; i++)
