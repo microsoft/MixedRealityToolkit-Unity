@@ -187,7 +187,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (States == null)
             {
-                Debug.Log("Interactable instantiated at runtime, loading default states");
                 States = States.GetDefaultInteractableStates();
             }
             InputAction = ResolveInputAction(InputActionId);
