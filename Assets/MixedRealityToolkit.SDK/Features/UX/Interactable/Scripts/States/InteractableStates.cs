@@ -96,6 +96,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             new State(){ Index = 13, Name = "Custom", ActiveIndex = -1, Bit = 0, Value = 0}
         };
 
+        public InteractableStates()
+        {
+            base.allStates = allStates;
+            currentState = allStates[0];
+        }
+
         public InteractableStates(State defaultState) : base(defaultState)
         {
             base.allStates = allStates;
