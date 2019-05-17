@@ -5,11 +5,11 @@ MRTK Standard shading system utilizes a single, flexible shader that can achieve
 
 ## Example Scenes
 You can find the shader material examples in the **MaterialGallery** scene under:
-[MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes) All materials in this scene are using the MRTK/Standard shader.
+[MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes) All materials in this scene are using the MRTK/Standard shader.
 
 ![materialgallery](../Documentation/Images/MRTKStandardShader/MRTK_MaterialGallery.jpg)
 
-You can find a comparison scene to compare and test the MRTK/Standard shader against the Unity/Standard shader example in the **StandardMaterialComparison** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
+You can find a comparison scene to compare and test the MRTK/Standard shader against the Unity/Standard shader example in the **StandardMaterialComparison** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
 
 ![comparison](../Documentation/Images/MRTKStandardShader/MRTK_StandardMaterialComparison.gif)
 
@@ -17,7 +17,7 @@ You can find a comparison scene to compare and test the MRTK/Standard shader aga
 
 The MRTK/Standard shading system is an "uber shader" that uses [Unity's shader program variant feature](https://docs.unity3d.com/Manual/SL-MultipleProgramVariants.html) to auto-generate optimal shader code based on material properties. When a user selects material properties in the material inspector they only incur performance cost for features they have enabled.
 
-A custom material inspector exists for the MRTK/Standard shader called **MixedRealityStandardShaderGUI.cs** under: [MixedRealityToolkit/Inspectors/](MixedRealityToolkit/Inspectors/) The inspector automatically enables/disables shader features based on user selection and aides in setting up render state. For more information about each feature please hover over each property in the Unity Editor for a tooltip.
+A custom material inspector exists for the MRTK/Standard shader called **MixedRealityStandardShaderGUI.cs**. The inspector automatically enables/disables shader features based on user selection and aides in setting up render state. For more information about each feature please hover over each property in the Unity Editor for a tooltip.
 
 ![materialinspector](../Documentation/Images/MRTKStandardShader/MRTK_MaterialInspector.jpg)
 
@@ -36,11 +36,11 @@ For static lighting the shader will respect lightmaps built by Unity's [Lightmap
 
 ### Hover Light
 
-A Hover Light is a Fluent Design System paradigm that mimics a "point light" hovering near the surface of an object. Often used for far away cursor lighting the application can control the properties of a Hover Light via the **HoverLight.cs** behavior under: [MixedRealityToolkit/Utilities/](MixedRealityToolkit/Utilities/) Up to 3 Hover Lights are supported at a time.
+A Hover Light is a Fluent Design System paradigm that mimics a "point light" hovering near the surface of an object. Often used for far away cursor lighting the application can control the properties of a Hover Light via the [**HoverLight.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.HoverLight). Up to 3 Hover Lights are supported at a time.
 
 ### Proximity Light
 
-A Proximity Light is a Fluent Design System paradigm that mimics a "gradient inverse point light" hovering near the surface of an object. Often used for near cursor lighting the application can control the properties of a Proximity Light via the **ProximityLight.cs** behavior under: [MixedRealityToolkit/Utilities/](MixedRealityToolkit/Utilities/) Up to 2 Proximity Lights are supported at a time.
+A Proximity Light is a Fluent Design System paradigm that mimics a "gradient inverse point light" hovering near the surface of an object. Often used for near cursor lighting the application can control the properties of a Proximity Light via the [**ProximityLight.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight). Up to 2 Proximity Lights are supported at a time.
 
 ## Lightweight Scriptable Render Pipeline Support
 
