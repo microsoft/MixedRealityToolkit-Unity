@@ -57,9 +57,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Scene System",
-                "The Scene System Profile helps configure your scene settings.");
+            RenderMixedRealityToolkitLogo();
+            /*    "Scene System",
+                "The Scene System Profile helps configure your scene settings.");*/
 
             if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, true))
             {
@@ -68,8 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     return;
                 }
             }
-
-            CheckProfileLock(target);
 
             serializedObject.Update();
 
