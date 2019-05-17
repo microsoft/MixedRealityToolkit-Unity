@@ -1,9 +1,11 @@
 # MRTK Standard Shader
-![](../Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg)
+
+![Standard shader examples](../Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg)
 
 MRTK Standard shading system utilizes a single, flexible shader that can achieve visuals similar to Unity's Standard Shader, implement [Fluent Design System](https://www.microsoft.com/design/fluent/) principles, and remain performant on mixed reality devices.
 
 ## Example Scenes
+
 You can find the shader material examples in the **MaterialGallery** scene under:
 [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes) All materials in this scene are using the MRTK/Standard shader.
 
@@ -26,12 +28,15 @@ A custom material inspector exists for the MRTK/Standard shader called **MixedRe
 The MRTK/Standard uses a simple approximation for lighting. Because this shader does not calculate for physical correctness and energy conservation, it renders quickly and efficient. Blinn-Phong is the primary lighting technique which is blended with Fresnel and image based lighting to approximate physically based lighting. The shader supports the following lighting techniques:
 
 ### Directional Light
+
 The shader will respect the direction, color, and intensity of the first Unity Directional Light in the scene (if enabled). Dynamic point lights, spot lights, or any other Unity light will not be considered in real time lighting.
 
 ### Spherical Harmonics
+
 The shader will use Light Probes to approximate lights in the scene using [Spherical Harmonics](https://docs.unity3d.com/Manual/LightProbes-TechnicalInformation.html) if enabled. Spherical harmonics calculations are performed per vertex to reduce calculation cost.
 
 ### Lightmapping
+
 For static lighting the shader will respect lightmaps built by Unity's [Lightmapping system](https://docs.unity3d.com/Manual/Lightmapping.html) simply mark the renderer as static (or lightmap static) to use lightmaps.
 
 ### Hover Light
@@ -50,7 +55,7 @@ To perform the MRTK upgrade select: **Mixed Reality Toolkit -> Utilities -> Upgr
 
 ![lwrpupgrade](../Documentation/Images/MRTKStandardShader/MRTK_LWRPUpgrade.jpg)
 
-After the upgrade occurs the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occured please check the console for: **Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Lightweight Render Pipeline.**
+After the upgrade occurs the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occurred please check the console for: **Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Lightweight Render Pipeline.**
 
 ## Texture Combiner
 
