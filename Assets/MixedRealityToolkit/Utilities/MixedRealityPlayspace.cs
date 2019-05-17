@@ -166,7 +166,6 @@ namespace Microsoft.MixedReality.Toolkit
         [InitializeOnLoadMethod]
         public static void InitializeOnLoad()
         {
-            Debug.Log("InitializeOnLoad");
             if (!subscribedToEditorEvents)
             {
                 EditorSceneManager.sceneOpened += EditorSceneManagerSceneOpened;
@@ -184,8 +183,6 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            Debug.Log("EditorSceneManagerSceneClosed");
-
             if (mixedRealityPlayspace == null)
             {   // If we unloaded our playspace, see if another one exists
                 SearchForAndEnableExistingPlayspace(EditorSceneUtils.GetRootGameObjectsInLoadedScenes());
@@ -198,8 +195,6 @@ namespace Microsoft.MixedReality.Toolkit
             {   // Let the runtime scene management handle this
                 return;
             }
-
-            Debug.Log("EditorSceneManagerSceneOpened");
 
             if (mixedRealityPlayspace == null)
             {
@@ -215,7 +210,6 @@ namespace Microsoft.MixedReality.Toolkit
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void RuntimeInitializeOnLoadMethod()
         {
-            Debug.Log("RuntimeInitializeOnLoadMethod");
             if (!subscribedToEvents)
             {
                 SceneManager.sceneLoaded += SceneManagerSceneLoaded;
@@ -226,7 +220,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void SceneManagerSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
-            Debug.Log("SceneManager scene loaded");
             if (mixedRealityPlayspace == null)
             {
                 SearchForAndEnableExistingPlayspace(RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes());
@@ -269,7 +262,6 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     if (!enabledOne)
                     {
-                        Debug.Log("Found existing " + Name + " in newly loaded scene.");
                         mixedRealityPlayspace = rootGameObject.transform;
                         mixedRealityPlayspace.gameObject.SetActive(true);
                         enabledOne = true;
