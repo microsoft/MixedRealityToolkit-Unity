@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected int port = 7410;
 
-        [Tooltip("The anchor prefab.")]
+        [Tooltip("The prefab visual that will represent the coordinate used to synchronize.")]
         [SerializeField]
         private GameObject anchorPrefab = null;
 
