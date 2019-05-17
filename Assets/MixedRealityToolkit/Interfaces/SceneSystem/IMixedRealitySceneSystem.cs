@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// Progress of the current scene operation, from 0-1.
         /// A scene operation may include multiple concurrently loaded scenes.
         /// </summary>
-        float SceneOpProgress { get; }
+        float SceneOperationProgress { get; }
 
         /// <summary>
         /// True when content has been loaded with an activation token and AllowSceneActivation has not been set to true.
