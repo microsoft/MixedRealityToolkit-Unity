@@ -27,10 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         public TextureManager TextureManager => textureManager;
 
         /// <summary>
-        /// Gets whether or not the holographic camera rig is connected and sending poses
-        /// for the camera to the compositor.
+        /// Gets whether or not a holographic camera rig has sent calibration data
+        /// that has been loaded to set up the virtual camera pose for rendering.
         /// </summary>
-        public bool IsHolographicCameraConnected { get; set; }
+        public bool IsCalibrationDataLoaded { get; private set; }
 
         /// <summary>
         /// Gets or sets the texture depth used for the RenderTextures used during compositing.
@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
        
         private void Start()
         {
-            IsHolographicCameraConnected = false;
+            IsCalibrationDataLoaded = false;
             spectatorCamera = GetComponent<Camera>();
 
 #if !UNITY_EDITOR
@@ -382,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             UnityCompositorInterface.SetCompositeFrameIndex(CurrentCompositeFrame);
 
             #region Spectator View Transform
-            if (IsHolographicCameraConnected && transform.parent != null)
+            if (IsCalibrationDataLoaded && transform.parent != null)
             {
                 //Update time syncronizer
                 {
@@ -478,15 +478,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             calibrationData.SetUnityCameraExtrinstics(transform);
             calibrationData.SetUnityCameraIntrinsics(GetComponent<Camera>());
 
-            IsHolographicCameraConnected = true;
+            IsCalibrationDataLoaded = true;
 #endif
         }
 
         /// <summary>
         /// Clears cached information about synchronized poses and time offsets.
         /// </summary>
-        public void ResetPoseSynchronization()
+        public void ResetOnNewCameraConnection()
         {
+            IsCalibrationDataLoaded = false;
             timeSynchronizer.Reset();
             poseCache.Reset();
         }
