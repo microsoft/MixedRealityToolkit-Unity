@@ -22,7 +22,7 @@ ModelImporter:
       name: Shadow
     second: {fileID: 2100000, guid: fc1b6cd8da653e3448dcdb722ada2ebc, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

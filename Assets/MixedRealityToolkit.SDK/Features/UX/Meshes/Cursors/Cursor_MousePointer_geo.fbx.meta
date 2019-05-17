@@ -16,7 +16,7 @@ ModelImporter:
       name: pasted__dx11Shader80
     second: {fileID: 2100000, guid: 2137afd1049cf61428db6f7025881422, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
