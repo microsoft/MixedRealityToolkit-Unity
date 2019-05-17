@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class StateSynchronizationObserver : Singleton<StateSynchronizationObserver>
     {
+        [Tooltip("Toggle to enable troublshooting logging.")]
         [SerializeField]
         private bool debugLogging = false;
 
@@ -31,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected int port = 7410;
 
+        [Tooltip("The anchor prefab.")]
         [SerializeField]
         private GameObject anchorPrefab = null;
 
@@ -44,6 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private ConnectedObserver connectedObserver = null;
 
+        /// <summary>
+        /// The Localization method to be used by the observer.
+        /// </summary>
         internal LocalizationMechanismBase LocalizationMechanism { get; set; }
 
         protected override void Awake()

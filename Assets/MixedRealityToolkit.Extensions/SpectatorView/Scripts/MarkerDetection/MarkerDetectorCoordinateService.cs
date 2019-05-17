@@ -77,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
         protected override void OnManagedDispose()
         {
             base.OnManagedDispose();
+
             DebugLog("Disposed");
             markerDetector.MarkersUpdated -= OnMarkersUpdated;
         }

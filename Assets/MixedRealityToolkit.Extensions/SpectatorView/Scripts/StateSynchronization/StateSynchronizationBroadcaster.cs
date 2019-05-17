@@ -18,6 +18,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     {
         private readonly Dictionary<SocketEndpoint, ConnectedObserver> connectedObservers = new Dictionary<SocketEndpoint, ConnectedObserver>();
 
+        [Tooltip("Toggle to enable troublshooting logging.")]
+        [SerializeField]
+        private bool debugLogging = false;
+
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
         /// </summary>
@@ -25,11 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected TCPConnectionManager connectionManager;
 
+        [Tooltip("The anchor prefab.")]
         [SerializeField]
         private GameObject anchorPrefab = null;
-
-        [SerializeField]
-        private bool debugLogging = false;
 
         /// <summary>
         /// Port used for sending data.
@@ -50,6 +52,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
 
+        /// <summary>
+        /// The Localization method to be used by the observer.
+        /// </summary>
         internal LocalizationMechanismBase LocalizationMechanism { get; set; }
 
         protected override void Awake()

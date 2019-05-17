@@ -31,11 +31,11 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         IEnumerable<ISpatialCoordinate> KnownCoordinates { get; }
 
         /// <summary>
-        /// A method for retrieving a known coordinate by id.
+        /// A key based lookup for a known coordinate.
         /// </summary>
-        /// <param name="id">Coordinate Id.</param>
-        /// <param name="spatialCoordinate">The spatial coordinate that is know by this service instance.</param>
-        /// <returns>True if it was able to get it, false if not.</returns>
+        /// <param name="id">The identifier of the coordinate to look up.</param>
+        /// <param name="spatialCoordinate">The out parameter that will be field with found coordinate, or null otherwise.</param>
+        /// <returns>Returns true if coordinate was found (known locally), false otherwise.</returns>
         bool TryGetKnownCoordinate(string id, out ISpatialCoordinate spatialCoordinate);
 
         /// <summary>

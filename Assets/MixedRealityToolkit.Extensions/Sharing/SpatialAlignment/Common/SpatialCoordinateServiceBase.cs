@@ -62,6 +62,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             knownCoordinates.Clear();
         }
 
+        /// <inheritdoc />
         public bool TryGetKnownCoordinate(string id, out ISpatialCoordinate spatialCoordinate)
         {
             if (!TryParse(id, out TKey key))

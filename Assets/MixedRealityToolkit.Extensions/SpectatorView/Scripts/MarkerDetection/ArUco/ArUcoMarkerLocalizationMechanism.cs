@@ -1,19 +1,26 @@
-﻿using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection;
 using System;
 using UnityEngine;
 
-namespace Assets.MRTK.MixedRealityToolkit.Extensions.SpectatorView.Scripts.MarkerDetection.ArUco
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
 {
-    internal class ArUconMarkerLocalizationMechanism : HostCoordinateLocalizationMechanism
+    /// <summary>
+    /// Localization mechanism based on ArUco marker detection
+    /// </summary>
+    internal class ArUcoMarkerLocalizationMechanism : HostCoordinateLocalizationMechanism
     {
         private ISpatialCoordinateService spatialCoordinateService = null;
 
+        [Tooltip("The reference to Aruco marker detector.")]
         [SerializeField]
         private SpectatorViewPluginArUcoMarkerDetector arucoMarkerDetector = null;
 
+        /// <inheritdoc/>
         protected override ISpatialCoordinateService SpatialCoordinateService => spatialCoordinateService;
 
         private void Awake()
