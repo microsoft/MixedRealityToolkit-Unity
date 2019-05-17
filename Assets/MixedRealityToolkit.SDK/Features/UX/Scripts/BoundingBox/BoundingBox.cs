@@ -10,7 +10,7 @@ using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    public class BoundingBox : BaseFocusHandler,
+    public class BoundingBox : MonoBehaviour,
         IMixedRealityPointerHandler,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
@@ -1733,6 +1733,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 DropController();
             }
+        }
+
+        void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
+        {
         }
 
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
