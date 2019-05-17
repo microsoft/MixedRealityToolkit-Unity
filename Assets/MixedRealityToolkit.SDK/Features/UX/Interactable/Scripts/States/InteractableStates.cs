@@ -153,6 +153,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return stateList.ToArray();
         }
 
+        /// <summary>
+        /// Returns the default states for InteractableStates.
+        /// Default states are set on an interactable when it is created and no other list of 
+        /// states is specified.
+        /// Default States should match "DefaultStates" scriptable object in Interactable
+        /// </summary>
+        /// <returns></returns>
         public virtual List<State> GetDefaultStates()
         {
             List<State> result = new List<State>();
