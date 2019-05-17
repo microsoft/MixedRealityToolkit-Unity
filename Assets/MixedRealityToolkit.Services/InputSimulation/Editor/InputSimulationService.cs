@@ -148,19 +148,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion BaseInputDeviceManager Implementation
 
-        /// <summary>
-        /// Return the service profile and ensure that the type is correct
-        /// </summary>
+        private MixedRealityInputSimulationProfile inputSimulationProfile = null;
+
+        /// <inheritdoc/>
         public MixedRealityInputSimulationProfile InputSimulationProfile
         {
             get
+            {
+                if (inputSimulationProfile == null)
                 {
-                var profile = ConfigurationProfile as MixedRealityInputSimulationProfile;
-                if (!profile)
-                {
-                    Debug.LogError("Profile for Input Simulation Service must be a MixedRealityInputSimulationProfile");
+                    inputSimulationProfile = ConfigurationProfile as MixedRealityInputSimulationProfile;
                 }
-                return profile;
+                return inputSimulationProfile;
             }
         }
 
