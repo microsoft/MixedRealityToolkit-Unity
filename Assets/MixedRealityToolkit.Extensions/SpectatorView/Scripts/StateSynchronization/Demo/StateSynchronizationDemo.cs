@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         public Role Role = Role.Broadcaster;
 
+        [Tooltip("Localization mechanism to use for sptially localizing the SpectatorView participants.")]
         [SerializeField]
         private LocalizationMechanismBase localizationMechanism = null;
 
