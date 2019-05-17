@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         event Action<ISpatialCoordinate> CoordinatedDiscovered;
 
         /// <summary>
-        /// Gets or sets whether this coordiante service should be discovering/tracking coordinates.
+        /// Gets or sets whether this coordinate service should be discovering/tracking coordinates.
         /// </summary>
         bool IsTracking { get; }
 
@@ -31,12 +31,20 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         IEnumerable<ISpatialCoordinate> KnownCoordinates { get; }
 
         /// <summary>
+        /// A key based lookup for a known coordinate.
+        /// </summary>
+        /// <param name="id">The identifier of the coordinate to look up.</param>
+        /// <param name="spatialCoordinate">The out parameter that will be filled with found coordinate, or null otherwise.</param>
+        /// <returns>Returns true if coordinate was found (known locally), false otherwise.</returns>
+        bool TryGetKnownCoordinate(string id, out ISpatialCoordinate spatialCoordinate);
+
+        /// <summary>
         /// Begins search for coordinates, optionally priortizing a set of ids.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> to be used for cancellation (stopping) of the discovery task.</param>
         /// <param name="coordinateIds">The optional set to prioritize discovery of ids to.</param>
         /// <returns>The set of coordinates discovered during this session.</returns>
-        Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate = null);
+        Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, params string[] idsToLocate);
 
         /// <summary>
         /// Attempts to create a new coordinate with this service.
