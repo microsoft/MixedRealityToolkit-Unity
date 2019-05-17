@@ -23,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             IMixedRealityServiceRegistrar registrar,
             BaseMixedRealityProfile profile = null) : base(registrar, profile)
         {
-            cameraProfile = (MixedRealityCameraProfile)profile;
         }
 
         /// <summary>
@@ -50,7 +49,21 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc />
         public string SourceName { get; } = "Mixed Reality Camera System";
 
-        private MixedRealityCameraProfile cameraProfile;
+        private MixedRealityCameraProfile cameraProfile = null;
+
+        /// <inheritdoc/>
+        public MixedRealityCameraProfile CameraProfile
+        {
+            get
+            {
+                if (cameraProfile == null)
+                {
+                    cameraProfile = ConfigurationProfile as MixedRealityCameraProfile;
+                }
+                return cameraProfile;
+            }
+        }
+
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
 
@@ -92,10 +105,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// </summary>
         private void ApplySettingsForOpaqueDisplay()
         {
-            CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsOpaqueDisplay;
-            CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneOpaqueDisplay;
-            CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorOpaqueDisplay;
-            QualitySettings.SetQualityLevel(cameraProfile.OpaqueQualityLevel, false);
+            CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsOpaqueDisplay;
+            CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneOpaqueDisplay;
+            CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorOpaqueDisplay;
+            QualitySettings.SetQualityLevel(CameraProfile.OpaqueQualityLevel, false);
         }
 
         /// <summary>
@@ -103,10 +116,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// </summary>
         private void ApplySettingsForTransparentDisplay()
         {
-            CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsTransparentDisplay;
-            CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorTransparentDisplay;
-            CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneTransparentDisplay;
-            QualitySettings.SetQualityLevel(cameraProfile.HoloLensQualityLevel, false);
+            CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
+            CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
+            CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
+            QualitySettings.SetQualityLevel(CameraProfile.HoloLensQualityLevel, false);
         }
 
         /// <inheritdoc />
