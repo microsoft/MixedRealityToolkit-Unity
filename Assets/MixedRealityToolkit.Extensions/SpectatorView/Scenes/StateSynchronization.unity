@@ -757,7 +757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Role: 1
-  localizationMechanism: {fileID: 1399172233}
+  spatialLocalizationMechanizm: {fileID: 1399172233}
   broadcasterIpAddress: 10.89.160.74
   stateSynchronizationSceneManager: {fileID: 685059976}
   stateSynchronizationBroadcaster: {fileID: 2075391329}
@@ -776,6 +776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _markerSize: 0.03
+  _markerPositionBehavior: 1
 --- !u!114 &1399172233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -788,7 +789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 118d29b9f26383b429c376bfa8e5bc7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugLogging: 0
+  debugLogging: 1
   arucoMarkerDetector: {fileID: 1399172232}
 --- !u!1 &1869681819
 GameObject:
