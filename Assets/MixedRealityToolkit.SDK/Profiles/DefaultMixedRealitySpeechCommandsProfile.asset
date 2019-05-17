@@ -28,5 +28,5 @@ MonoBehaviour:
     keyCode: 49
     action:
       id: 1
-      description: Toggle Diagnostics
-      axisConstraint: 0
+      description: Select
+      axisConstraint: 2
