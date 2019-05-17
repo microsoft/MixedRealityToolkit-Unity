@@ -26,17 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public static States GetDefaultInteractableStates()
         {
             States result = new States();
-            List<State> defaultStates = new List<State>();
 
             InteractableStates allInteractableStates = new InteractableStates();
-            defaultStates.Add(allInteractableStates.GetState(InteractableStates.InteractableStateEnum.Default));
-            defaultStates.Add(allInteractableStates.GetState(InteractableStates.InteractableStateEnum.Focus));
-            defaultStates.Add(allInteractableStates.GetState(InteractableStates.InteractableStateEnum.Pressed));
-            defaultStates.Add(allInteractableStates.GetState(InteractableStates.InteractableStateEnum.Disabled));
 
             result.StateType = Type.GetType(typeof(InteractableStates).AssemblyQualifiedName);
             result.StateOptions = InteractableTypeFinder.Find(candidateStateTypes, TypeRestriction.AllowBase);
-            result.StateList = defaultStates;
+            result.StateList = allInteractableStates.GetDefaultStates();
             result.DefaultIndex = 0;
             return result;
         }

@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 
+using System.Collections.Generic;
+
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
@@ -149,6 +151,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public override State[] GetStates()
         {
             return stateList.ToArray();
+        }
+
+        public virtual List<State> GetDefaultStates()
+        {
+            List<State> result = new List<State>();
+            result.Add(GetState(InteractableStateEnum.Default));
+            result.Add(GetState(InteractableStateEnum.Focus));
+            result.Add(GetState(InteractableStateEnum.Pressed));
+            result.Add(GetState(InteractableStateEnum.Disabled));
+            return result;
         }
     }
 }
