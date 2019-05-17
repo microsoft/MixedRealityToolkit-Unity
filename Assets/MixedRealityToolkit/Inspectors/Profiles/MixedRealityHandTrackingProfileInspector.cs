@@ -19,6 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableHandMeshVisualization;
         private SerializedProperty enableHandJointVisualization;
 
+        private const string ProfileTitle = "Hand Tracking Settings";
+        private const string ProfileDescription = "Use this for platform-specific hand tracking settings.";
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -33,23 +36,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Hand tracking settings",
-                "Use this for platform-specific hand tracking settings.");
-
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
-                if (GUILayout.Button("Back to Input Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
-                }
+                return;
             }
 
-            CheckProfileLock(target);
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
 
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
-            GUILayout.Space(12f);
             EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(jointPrefab);
             EditorGUILayout.PropertyField(palmPrefab);
@@ -59,6 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.PropertyField(enableHandJointVisualization);
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = wasGUIEnabled;
         }
     }
 }
