@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit
         private const string Name = "MixedRealityPlayspace";
 
         private static Transform mixedRealityPlayspace;
-        
+
         /// <summary>
         /// The transform of the playspace.
         /// </summary>

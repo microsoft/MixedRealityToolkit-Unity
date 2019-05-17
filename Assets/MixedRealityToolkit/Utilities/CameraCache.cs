@@ -22,7 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 if (cachedCamera != null)
                 {
-                    return cachedCamera;
+                    if (cachedCamera.gameObject.activeInHierarchy)
+                    {   // If the cached camera is active, return it
+                        // Otherwise, our playspace may have been disabled
+                        // We'll have to search for the next available
+                        return cachedCamera;
+                    }
                 }
 
                 // If the cached camera is null, search for main
