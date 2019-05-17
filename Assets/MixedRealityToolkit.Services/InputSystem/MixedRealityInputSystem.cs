@@ -259,6 +259,59 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion IMixedRealityService Implementation
 
+        #region GetDataProvider(s) Implementation
+        /// <inheritdoc />
+        public IReadOnlyList<IMixedRealityInputDeviceManager> GetDataProviders()
+        {
+            return new List<IMixedRealityInputDeviceManager>(deviceManagers) as IReadOnlyList<IMixedRealityInputDeviceManager>;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<T> GetDataProviders<T>() where T : IMixedRealityInputDeviceManager
+        {
+            List<T> selected = new List<T>();
+
+            for (int i = 0; i < deviceManagers.Count; i++)
+            {
+                if (deviceManagers[i] is T)
+                {
+                    selected.Add((T)deviceManagers[i]);
+                }
+            }
+
+            return selected;
+        }
+
+        /// <inheritdoc />
+        public IMixedRealityInputDeviceManager GetDataProvider(string name)
+        {
+            for (int i = 0; i < deviceManagers.Count; i++)
+            {
+                if (deviceManagers[i].Name == name)
+                {
+                    return deviceManagers[i];
+                }
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc />
+        public T GetObserver<T>(string name) where T : IMixedRealityInputDeviceManager
+        {
+            for (int i = 0; i < deviceManagers.Count; i++)
+            {
+                if ((deviceManagers[i] is T) && (deviceManagers[i].Name == name))
+                {
+                    return (T)deviceManagers[i];
+                }
+            }
+
+            return default(T);
+        }
+
+        #endregion GetDataProvider(s) Implementation
+
         #region IMixedRealityEventSystem Implementation
 
         /// <inheritdoc />
