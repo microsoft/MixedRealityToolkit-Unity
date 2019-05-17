@@ -191,6 +191,5 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                 currentConnection.Send(memoryStream.ToArray());
             }
         }
-        
     }
 }

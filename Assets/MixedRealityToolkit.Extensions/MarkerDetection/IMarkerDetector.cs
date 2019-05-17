@@ -22,6 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
         event MarkersUpdatedHandler MarkersUpdated;
 
         /// <summary>
+        /// Determines how the marker is expected to be positioned
+        /// during detection.
+        /// </summary>
+        MarkerPositionBehavior MarkerPositionBehavior { get; set; }
+
+        /// <summary>
         /// Starts marker detection
         /// </summary>
         void StartDetecting();

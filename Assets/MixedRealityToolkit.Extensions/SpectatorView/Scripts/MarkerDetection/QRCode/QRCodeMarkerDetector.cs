@@ -54,6 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         public void SetMarkerSize(float markerSize){}
 
         /// <inheritdoc />
+        public MarkerPositionBehavior MarkerPositionBehavior { get; set; }
+
+        /// <inheritdoc />
         public void StartDetecting()
         {
 #if ENABLE_QRCODES

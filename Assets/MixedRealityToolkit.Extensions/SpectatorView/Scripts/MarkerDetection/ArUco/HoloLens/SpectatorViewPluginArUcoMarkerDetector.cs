@@ -28,12 +28,39 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         [SerializeField]
         private float _markerSize = 0.03f;
 
+        [Tooltip("Whether or not the marker is stationary or moving during detection")]
+        [SerializeField]
+        private MarkerPositionBehavior _markerPositionBehavior = MarkerPositionBehavior.Moving;
+
         private HoloLensCamera _holoLensCamera;
         private SpectatorViewPluginAPI _api;
         private bool _detecting = false;
         private Dictionary<int, List<Marker>> _markerObservations;
-        protected int _requiredObservations = 5;
         private Dictionary<int, Marker> _nextMarkerUpdate;
+        private MarkerDetectionCompletionStrategy _detectionCompletionStrategy;
+
+        /// <inheritdoc />
+        public MarkerPositionBehavior MarkerPositionBehavior
+        {
+            get
+            {
+                return _markerPositionBehavior;
+            }
+            set
+            {
+                if (_markerPositionBehavior != value)
+                {
+                    _markerPositionBehavior = value;
+
+                    UpdateDetectionCompletionStrategy();
+                }
+            }
+        }
+
+        private void Awake()
+        {
+            UpdateDetectionCompletionStrategy();
+        }
 
         protected void Start()
         {
@@ -52,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         {
             if (_detecting)
             {
-                if(_holoLensCamera.State == CameraState.Ready &&
+                if (_holoLensCamera.State == CameraState.Ready &&
                     !_holoLensCamera.TakeSingle())
                 {
                     Debug.LogError("Failed to take photo with HoloLensCamera, Camera State: " + _holoLensCamera.State.ToString());
@@ -179,15 +206,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         }
 
                         _markerObservations[markerPair.Key].Add(markerPair.Value);
+                        if (_markerObservations[markerPair.Key].Count > _detectionCompletionStrategy.MaximumMarkerSampleCount)
+                        {
+                            _markerObservations[markerPair.Key].RemoveAt(0);
+                        }
                     }
 
                     var validMarkers = new Dictionary<int, Marker>();
                     foreach (var observationPair in _markerObservations)
                     {
-                        if (observationPair.Value.Count >= _requiredObservations)
+                        Marker completedMarker;
+                        if (_detectionCompletionStrategy.TryCompleteDetection(observationPair.Value, out completedMarker))
                         {
-                            var averageMarker = CalcAverageMarker(observationPair.Value);
-                            validMarkers[averageMarker.Id] = averageMarker;
+                            validMarkers[completedMarker.Id] = completedMarker;
                             observationPair.Value.Clear();
                         }
                     }
@@ -198,7 +229,30 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
 #endif
         }
 
-        private static Marker CalcAverageMarker(List<Marker> markers)
+        private void UpdateDetectionCompletionStrategy()
+        {
+            if (MarkerPositionBehavior == MarkerPositionBehavior.Moving)
+            {
+                _detectionCompletionStrategy = new MovingMarkerDetectionCompletionStrategy();
+            }
+            else
+            {
+                _detectionCompletionStrategy = new StationaryMarkerDetectionCompletionStrategy();
+            }
+        }
+
+        private static void LogMessagesAboutMarker(string markerState, IReadOnlyList<Marker> allMarkers, IReadOnlyList<Marker> inlierMarkers, Marker averageMarker, Marker averageInlierMarker)
+        {
+            double positionStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => (marker.Position - averageMarker.Position).magnitude);
+            double rotationStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => Quaternion.Angle(marker.Rotation, averageMarker.Rotation));
+
+            double inlierPositionStandardDeviation = StandardDeviation(inlierMarkers, averageInlierMarker, marker => (marker.Position - averageInlierMarker.Position).magnitude);
+            double inlierRotationStandardDeviation = StandardDeviation(inlierMarkers, averageInlierMarker, marker => Quaternion.Angle(marker.Rotation, averageInlierMarker.Rotation));
+
+            Debug.Log($"Calculated {markerState} marker position with {inlierMarkers.Count} markers out of {allMarkers.Count} available. Initial position standard deviation was {positionStandardDeviation} and rotation was {rotationStandardDeviation}. After outliers, position deviation was {inlierPositionStandardDeviation} and rotation was {inlierRotationStandardDeviation}. Final position was {averageInlierMarker.Position} which is {(averageInlierMarker.Position - averageMarker.Position).magnitude} away from original pose.");
+        }
+
+        private static Marker CalculateAverageMarker(IReadOnlyList<Marker> markers)
         {
             var count = (float)markers.Count;
             var averagePos = Vector3.zero;
@@ -211,11 +265,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 id = marker.Id;
             }
 
-            var averageRot = CalcAverageQuaternion(rotations.ToArray());
+            var averageRot = CalculateAverageQuaternion(rotations.ToArray());
             return new Marker(id, averagePos, averageRot);
         }
 
-        private static Quaternion CalcAverageQuaternion(Quaternion[] quaternions)
+        private static Quaternion CalculateAverageQuaternion(Quaternion[] quaternions)
         {
             Quaternion mean = quaternions[0];
             var text = "Quaternions: ";
@@ -228,6 +282,153 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             Debug.Log(text);
             Debug.Log("Mean Quaternion: " + mean.x + ", " + mean.y + ", " + mean.z + ", " + mean.w);
             return mean;
+        }
+
+        private static List<Marker> CalculateInlierMarkerSet(IReadOnlyList<Marker> allMarkers, Marker averageMarker, double markerInlierStandardDeviationThreshold)
+        {
+            double positionStandardDeviation, rotationStandardDeviation;
+            CalculateStandardDeviations(allMarkers, averageMarker, out positionStandardDeviation, out rotationStandardDeviation);
+
+            List<Marker> inliers = new List<Marker>(allMarkers.Count);
+            for (int i = 0; i < allMarkers.Count; i++)
+            {
+                if (IsMarkerInlier(allMarkers[i], averageMarker, positionStandardDeviation, rotationStandardDeviation, markerInlierStandardDeviationThreshold))
+                {
+                    inliers.Add(allMarkers[i]);
+                }
+                else
+                {
+                    Debug.Log($"Found an outlier: {allMarkers[i].Position} was {(allMarkers[i].Position - averageMarker.Position).magnitude} away and {Quaternion.Angle(allMarkers[i].Rotation, averageMarker.Rotation)} degrees from average. Standard deviation was pos:{positionStandardDeviation} and rot:{rotationStandardDeviation}");
+                }
+            }
+
+            return inliers;
+        }
+
+        private static void CalculateStandardDeviations(IReadOnlyList<Marker> allMarkers, Marker averageMarker, out double positionStandardDeviation, out double rotationStandardDeviation)
+        {
+            positionStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => (marker.Position - averageMarker.Position).magnitude);
+            rotationStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => Quaternion.Angle(marker.Rotation, averageMarker.Rotation));
+        }
+
+        private static bool IsMarkerInlier(Marker candidate, Marker averageMarker, double positionStandardDeviation, double rotationStandardDeviation, double markerInlierStandardDeviationThreshold)
+        {
+            return (candidate.Position - averageMarker.Position).magnitude < markerInlierStandardDeviationThreshold * positionStandardDeviation &&
+                Quaternion.Angle(candidate.Rotation, averageMarker.Rotation) < markerInlierStandardDeviationThreshold * rotationStandardDeviation;
+        }
+
+        private static double StandardDeviation<T>(IReadOnlyList<T> values, T meanValue, Func<T, double> evaluator)
+        {
+            double sum = 0;
+            double meanValueDouble = evaluator(meanValue);
+            for (int i = 0; i < values.Count; i++)
+            {
+                double delta = evaluator(values[i]) - meanValueDouble;
+                sum += (delta * delta);
+            }
+
+            return Math.Sqrt(sum / values.Count);
+        }
+
+        /// <summary>
+        /// Class which contains the logic for whether or not a set of detected marker poses is a satisfactory estimate of the
+        /// true position of the marker.
+        /// </summary>
+        private abstract class MarkerDetectionCompletionStrategy
+        {
+            /// <summary>
+            /// Determines if the list of gathered markers is a representative sample, and if so computes the completed marker position.
+            /// </summary>
+            /// <param name="markers">A set of sampled positions and rotations of a physical marker.</param>
+            /// <param name="completedMarker">A pose for the physical marker computed from the sampled positions.</param>
+            /// <returns></returns>
+            public abstract bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker);
+
+            /// <summary>
+            /// Gets the maximum number of marker samples that should be stored.
+            /// </summary>
+            public abstract int MaximumMarkerSampleCount { get; }
+        }
+
+        /// <summary>
+        /// Strategy for detecting a marker that is known to be stationary. Heuristics are used to filter
+        /// out noisy data to try to guarantee that the detected marker is actually aligned with the physical
+        /// marker.
+        /// </summary>
+        private sealed class StationaryMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
+        {
+            private const int _requiredObservations = 5;
+            private const int _requiredInlierCount = 5;
+            private const int _maximumMarkerSampleCount = 15;
+            private const float _maximumPositionDistanceStandardDeviation = 0.001f;
+            private const float _maximumRotationAngleStandardDeviation = 0.25f;
+            private const float _markerInlierStandardDeviationThreshold = 1.5f;
+
+            public override int MaximumMarkerSampleCount => _maximumMarkerSampleCount;
+
+            public override bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker)
+            {
+                if (markers.Count >= _requiredObservations)
+                {
+                    var averageMarker = CalculateAverageMarker(markers);
+
+                    // Find a set of markers that are inliers (within a threshold of the average marker).
+                    // This is used to reject spurious marker detections outside the norm to prevent them from polluting
+                    // the final marker result.
+                    var inliers = CalculateInlierMarkerSet(markers, averageMarker, _markerInlierStandardDeviationThreshold);
+                    if (inliers.Count >= _requiredInlierCount)
+                    {
+                        // Recompute the average marker using only the set of inliers.
+                        var averageInlierMarker = CalculateAverageMarker(inliers);
+
+                        // Determine the standard deviation of the distance from the average marker and the angular
+                        // delta from the average marker, and then see if that falls within the required threshold.
+                        // If it does, we can stop. Otherwise, continue to gather samples until we get a set that
+                        // does fall within the threshold.
+                        double positionStandardDeviation, rotationStandardDeviation;
+                        CalculateStandardDeviations(inliers, averageInlierMarker, out positionStandardDeviation, out rotationStandardDeviation);
+                        if (positionStandardDeviation <= _maximumPositionDistanceStandardDeviation && rotationStandardDeviation <= _maximumRotationAngleStandardDeviation)
+                        {
+                            completedMarker = averageInlierMarker;
+                            LogMessagesAboutMarker("final", markers, inliers, averageMarker, averageInlierMarker);
+                            return true;
+                        }
+                        else
+                        {
+                            LogMessagesAboutMarker("rejected", markers, inliers, averageMarker, averageInlierMarker);
+                        }
+                    }
+                }
+
+                completedMarker = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Strategy for detecting a marker that is known to be non-stationary (e.g. held in someone's hand).
+        /// Multiple markers are averaged but heuristics are not used to try to lock the marker to within
+        /// a distance and rotation threshold.
+        /// </summary>
+        private sealed class MovingMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
+        {
+            private int _requiredObservations = 5;
+
+            public override int MaximumMarkerSampleCount => _requiredObservations;
+
+            public override bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker)
+            {
+                if (markers.Count >= _requiredObservations)
+                {
+                    completedMarker = CalculateAverageMarker(markers);
+                    return true;
+                }
+                else
+                {
+                    completedMarker = null;
+                    return false;
+                }
+            }
         }
     }
 }

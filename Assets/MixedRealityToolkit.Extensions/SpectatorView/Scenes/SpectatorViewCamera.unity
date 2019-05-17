@@ -717,6 +717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _markerSize: 0.03
+  _markerPositionBehavior: 0
 --- !u!1 &1940026536
 GameObject:
   m_ObjectHideFlags: 0

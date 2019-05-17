@@ -66,6 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
         private void OnDestroy()
         {
             tcpConnectionManager.OnReceive -= TcpConnectionManager_OnReceive;
+            markerDetector.MarkersUpdated -= MarkerDetector_MarkersUpdated;
+
         }
 
         private void TcpConnectionManager_OnReceive(IncomingMessage data)
