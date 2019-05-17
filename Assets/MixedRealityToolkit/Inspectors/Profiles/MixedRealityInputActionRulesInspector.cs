@@ -31,8 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty inputActionRulesQuaternionAxis;
         private SerializedProperty inputActionRulesPoseAxis;
 
-        private int[] baseActionIds;
-        private string[] baseActionLabels;
+        private int[] baseActionIds = new int[0];
+        private string[] baseActionLabels = new string[0];
 
         // These are marked as static because this inspector will reset itself every refresh
         // because it can be rendered as a sub-profile and thus OnEnable() is called everytime
