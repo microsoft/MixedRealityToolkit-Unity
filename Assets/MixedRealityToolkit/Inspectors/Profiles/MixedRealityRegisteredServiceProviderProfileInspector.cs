@@ -30,19 +30,24 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
+            RenderProfileHeader(ProfileTitle, ProfileDescription);
+
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                return;
+                serializedObject.Update();
+
+                RenderList(configurations);
+
+                serializedObject.ApplyModifiedProperties();
             }
+        }
 
-            bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
-            serializedObject.Update();
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
 
-            RenderList(configurations);
-
-            serializedObject.ApplyModifiedProperties();
-            GUI.enabled = wasGUIEnabled;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile == profile;
         }
 
         private void RenderList(SerializedProperty list)
@@ -146,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         serviceType = (target as MixedRealityRegisteredServiceProvidersProfile).Configurations[i].ComponentType;
                     }
 
-                    changed |= RenderProfile(configurationProfile, true, true, serviceType);
+                    changed |= RenderProfile(configurationProfile, null, true, true, serviceType);
 
                     EditorGUI.indentLevel--;
 

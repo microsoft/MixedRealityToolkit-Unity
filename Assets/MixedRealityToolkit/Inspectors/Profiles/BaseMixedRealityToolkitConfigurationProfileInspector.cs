@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -16,16 +14,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         public bool RenderAsSubProfile { get; set; }
 
-        [SerializeField]
-        private Texture2D logoLightTheme = null;
-
-        [SerializeField]
-        private Texture2D logoDarkTheme = null;
-
-        [SerializeField]
-        private static Texture helpIcon = null;
-
         private static GUIContent WarningIconContent = null;
+
+        /// <summary>
+        /// Helper function to determine if the current profile is assigned to the active instance of MRTK
+        /// </summary>
+        /// <returns></returns>
+        protected abstract bool IsProfileInActiveInstance();
 
         /// <summary>
         /// Internal enum used for back navigation along profile hiearchy. 
@@ -35,28 +30,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             Configuration,
             Input,
+            SpatialAwareness,
             RegisteredServices
+        };
+
+        // NOTE: Must match number of elements in BackProfileType
+        protected readonly string[] BackProfileDescriptions = {
+            "Back to Configuration Profile",
+            "Back to Input Profile",
+            "Back to Spatial Awareness Profile",
+            "Back to Registered Service Providers Profile"
         };
 
         protected virtual void Awake()
         {
-            string assetPath = "StandardAssets/Textures";
-
-            if (logoLightTheme == null)
-            {
-                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_Black.png"), typeof(Texture2D));
-            }
-
-            if (logoDarkTheme == null)
-            {
-                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_White.png"), typeof(Texture2D));
-            }
-
-            if (helpIcon == null)
-            {
-                helpIcon = EditorGUIUtility.IconContent("_Help").image;
-            }
-
             if (WarningIconContent == null)
             {
                 WarningIconContent = new GUIContent(EditorGUIUtility.IconContent("console.warnicon").image,
@@ -67,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Render the Mixed Reality Toolkit Logo.
         /// </summary>
-        protected void RenderMixedRealityToolkitLogo()
+        protected void RenderMRTKLogo()
         {
             // If we're being rendered as a sub profile, don't show the logo
             if (RenderAsSubProfile)
@@ -75,31 +62,31 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.Label(EditorGUIUtility.isProSkin ? logoDarkTheme : logoLightTheme, GUILayout.MaxHeight(96f));
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.Space(3f);
+            MixedRealityEditorUtility.RenderMixedRealityToolkitLogo();
         }
-
 
         protected bool DrawBacktrackProfileButton(BackProfileType returnProfileTarget = BackProfileType.Configuration)
         {
-            string backText = string.Empty;
+            // We cannot select the correct profile if there is no instance
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                return false;
+            }
+
+            string backText = BackProfileDescriptions[(int)returnProfileTarget];
             BaseMixedRealityProfile backProfile = null;
             switch (returnProfileTarget)
             {
                 case BackProfileType.Configuration:
-                    backText = "Back to Configuration Profile";
                     backProfile = MixedRealityToolkit.Instance.ActiveProfile;
                     break;
                 case BackProfileType.Input:
-                    backText = "Back to Input Profile";
                     backProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
                     break;
+                case BackProfileType.SpatialAwareness:
+                    backProfile = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile;
+                    break;
                 case BackProfileType.RegisteredServices:
-                    backText = "Back to Registered Service Providers Profile";
                     backProfile = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile;
                     break;
             }
@@ -131,63 +118,44 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Helper function to render buttons correctly indented according to EditorGUI.indentLevel since GUILayout component don't respond naturally
-        /// </summary>
-        /// <param name="buttonText">text to place in button</param>
-        /// <param name="options">layout options</param>
-        /// <returns>true if button clicked, false if otherwise</returns>
-        protected static bool RenderIndentedButton(string buttonText, params GUILayoutOption[] options)
-        {
-            return RenderIndentedButton(() => { return GUILayout.Button(buttonText, options); });
-        }
-
-        /// <summary>
-        /// Helper function to render buttons correctly indented according to EditorGUI.indentLevel since GUILayout component don't respond naturally
-        /// </summary>
-        /// <param name="content">What to draw in button</param>
-        /// <param name="style">Style configuration for button</param>
-        /// <param name="options">layout options</param>
-        /// <returns>true if button clicked, false if otherwise</returns>
-        protected static bool RenderIndentedButton(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
-        {
-            return RenderIndentedButton(() => { return GUILayout.Button(content, style, options); });
-        }
-
-        /// <summary>
-        /// Helper function to support primary overloaded version of this functionality
-        /// </summary>
-        /// <param name="renderButton">The code to render button correctly based on parameter types passed</param>
-        /// <returns>true if button clicked, false if otherwise</returns>
-        private static bool RenderIndentedButton(Func<bool> renderButton)
-        {
-            bool result = false;
-            GUILayout.BeginHorizontal();
-                GUILayout.Space(EditorGUI.indentLevel * 15);
-                result = renderButton();
-            GUILayout.EndHorizontal();
-            return result;
-        }
-
-        /// <summary>
         /// Helper function to render header correctly for all profiles
         /// </summary>
         /// <param name="title">Title of profile</param>
         /// <param name="description">profile tooltip describing purpose</param>
+        /// <param name="isProfileInitialized">profile properties are full initialized for rendering</param>
         /// <param name="backText">Text for back button if not rendering as sub-profile</param>
         /// <param name="backProfile">Target profile to return to if not rendering as sub-profile</param>
-        /// <returns>true to render rest of profile as-is or false if profile/MRTK is in a state to not render rest of profile contents</returns>
-        protected bool RenderProfileHeader(string title, string description, BackProfileType returnProfileTarget = BackProfileType.Configuration)
+        protected void RenderProfileHeader(string title, string description, bool isProfileInitialized = true, BackProfileType returnProfileTarget = BackProfileType.Configuration)
         {
-            RenderMixedRealityToolkitLogo();
+            RenderMRTKLogo();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            var profile = target as BaseMixedRealityProfile;
+            if (!RenderAsSubProfile && !profile.IsCustomProfile)
             {
-                return false;
+                EditorGUILayout.HelpBox("Default Mixed Reality Toolkit profiles cannot be edited", MessageType.Warning);
+                // TODO: Place clone button. MixedRealityProfileCloneWindow requires parent profile though which is not known here
+                //EditorGUILayout.HelpBox("Default MRTK profiles cannot be edited. Create a clone of this profile to modify settings.", MessageType.Warning);
             }
-
-            if (DrawBacktrackProfileButton(returnProfileTarget))
+            else
             {
-                return false;
+                if (!isProfileInitialized && profile.IsCustomProfile)
+                {
+                    EditorGUILayout.HelpBox("Some properties may not be editable in this profile. Please refer to the error messages below to resolve editing.", MessageType.Warning);
+                }
+
+                MixedRealityInspectorUtility.CheckMixedRealityConfigured();
+
+                if (MixedRealityToolkit.IsInitialized)
+                {
+                    if (IsProfileInActiveInstance())
+                    {
+                        DrawBacktrackProfileButton(returnProfileTarget);
+                    }
+                    else if (!isProfileInitialized)
+                    {
+                        EditorGUILayout.HelpBox("This profile is not assigned to the active MRTK instance in this scene. Some properties may not be editable", MessageType.Error);
+                    }
+                }
             }
 
             EditorGUILayout.BeginHorizontal();
@@ -195,8 +163,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
+        }
 
-            return true;
+        /// <summary>
+        /// If MRTK is in scene & input system is disabled, then show error message
+        /// </summary>
+        protected void RenderMixedRealityInputConfigured()
+        {
+            if (MixedRealityToolkit.IsInitialized && !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+            }
         }
     }
 }

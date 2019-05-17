@@ -41,40 +41,44 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
-            {
-                return;
-            }
+            RenderProfileHeader(ProfileTitle, ProfileDescription);
 
-            bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
-            serializedObject.Update();
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                EditorGUILayout.PropertyField(showDiagnostics);
-                if(!showDiagnostics.boolValue)
+                serializedObject.Update();
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
                 {
-                    EditorGUILayout.Space();
-                    EditorGUILayout.HelpBox("Diagnostic visualizations have been globally disabled.", MessageType.Info);
-                    EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(showDiagnostics);
+                    if (!showDiagnostics.boolValue)
+                    {
+                        EditorGUILayout.Space();
+                        EditorGUILayout.HelpBox("Diagnostic visualizations have been globally disabled.", MessageType.Info);
+                        EditorGUILayout.Space();
+                    }
                 }
-            }
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Profiler Settings", EditorStyles.boldLabel);
-            {
-                EditorGUILayout.PropertyField(showProfiler);
-                EditorGUILayout.PropertyField(frameSampleRate);
-                EditorGUILayout.PropertyField(windowAnchor);
-                EditorGUILayout.PropertyField(windowOffset);
-                EditorGUILayout.PropertyField(windowScale);
-                EditorGUILayout.PropertyField(windowFollowSpeed);
-            }
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Profiler Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.PropertyField(showProfiler);
+                    EditorGUILayout.PropertyField(frameSampleRate);
+                    EditorGUILayout.PropertyField(windowAnchor);
+                    EditorGUILayout.PropertyField(windowOffset);
+                    EditorGUILayout.PropertyField(windowScale);
+                    EditorGUILayout.PropertyField(windowFollowSpeed);
+                }
 
-            serializedObject.ApplyModifiedProperties();
-            GUI.enabled = wasGUIEnabled;
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
+
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile;
         }
     }
 }

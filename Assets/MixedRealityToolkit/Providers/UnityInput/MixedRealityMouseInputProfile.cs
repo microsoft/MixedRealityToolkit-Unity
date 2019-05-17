@@ -11,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [MixedRealityServiceProfile(typeof(MouseDeviceManager))]
     public class MixedRealityMouseInputProfile : BaseMixedRealityProfile
     {
-        [Header("Mouse Input Settings")]
         [SerializeField]
         [Range(0.1f, 10f)]
         [Tooltip("Mouse cursor speed multiplier that gets applied to the mouse delta.")]
