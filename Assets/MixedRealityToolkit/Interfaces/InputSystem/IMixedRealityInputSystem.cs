@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.
-        /// </summary>  
+        /// </summary>
         IMixedRealityFocusProvider FocusProvider { get; }
 
         /// <summary>
