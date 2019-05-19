@@ -1,5 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections.Generic;
@@ -547,19 +546,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 currentRotationAxis;
 
         // Scale of the target at the beginning of the current manipulation
-        private Vector3 initialScale;
-
+        private Vector3 initialScaleOnGrabStart;
         // Position of the target at the beginning of the current manipulation
-        private Vector3 initialPosition;
+        private Vector3 initialPositionOnGrabStart;
+        // Point that was initially grabbed in OnPointerDown()
+        private Vector3 initialGrabPoint;
+        // Current position of the grab point
+        private Vector3 currentGrabPoint;
 
+        
+        // Scale of the target at startup (in Start())
+        private Vector3 initialScaleAtStart;
         private Vector3 maximumScale;
         private Vector3 minimumScale;
 
-        // Point that was initially grabbed in OnPointerDown()
-        private Vector3 initialGrabPoint;
-
-        // Current position of the grab point
-        private Vector3 currentGrabPoint;
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
         private Vector3 grabPointInPointer;
@@ -642,7 +642,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="min">Minimum scale</param>
         /// <param name="max">Maximum scale</param>
-        /// <param name="relativeToInitialState">If true the values will be multiplied by the current target scale. If false they will be in absolute local scale.</param>
+        /// <param name="relativeToInitialState">If true the values will be multiplied by scale of target at startup. If false they will be in absolute local scale.</param>
         public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
         {
             scaleMaximum = max;
@@ -654,8 +654,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (relativeToInitialState)
                 {
-                    maximumScale = target.transform.localScale * scaleMaximum;
-                    minimumScale = target.transform.localScale * scaleMinimum;
+                    maximumScale = initialScaleAtStart * scaleMaximum;
+                    minimumScale = initialScaleAtStart * scaleMinimum;
                 }
                 else
                 {
@@ -671,6 +671,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void Start()
         {
             CreateRig();
+            CaptureInitialState();
 
             if (activation == BoundingBoxActivationType.ActivateByProximityAndPointer ||
                 activation == BoundingBoxActivationType.ActivateByProximity ||
@@ -708,7 +709,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             DestroyRig();
             SetMaterials();
             InitializeDataStructures();
-            CaptureInitialState();
             SetBoundingBoxCollider();
             UpdateBounds();
             AddCorners();
@@ -796,15 +796,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     float currentDist = Vector3.Dot(currentGrabPoint - oppositeCorner, diagonalDir);
                     float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
 
-                    Vector3 newScale = initialScale * scaleFactor;
+                    Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
                     Vector3 clampedScale = ClampScale(newScale);
                     if (clampedScale != newScale)
                     {
-                        scaleFactor = clampedScale[0] / initialScale[0];
+                        scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
                     }
 
                     Target.transform.localScale = clampedScale;
-                    Target.transform.position = initialPosition * scaleFactor + (1 - scaleFactor) * oppositeCorner;
+                    Target.transform.position = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
                 }
             }
         }
@@ -1340,8 +1340,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var target = Target;
             if (target != null)
             {
-                maximumScale = Target.transform.localScale * scaleMaximum;
-                minimumScale = Target.transform.localScale * scaleMinimum;
+                initialScaleAtStart = target.transform.localScale;
+
+                maximumScale = initialScaleAtStart * scaleMaximum;
+                minimumScale = initialScaleAtStart * scaleMinimum;
                 isChildOfTarget = transform.IsChildOf(target.transform);
             }
         }
@@ -1781,8 +1783,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     currentPointer = eventData.Pointer;
                     initialGrabPoint = currentPointer.Result.Details.Point;
                     currentGrabPoint = initialGrabPoint;
-                    initialScale = Target.transform.localScale;
-                    initialPosition = Target.transform.position;
+                    initialScaleOnGrabStart = Target.transform.localScale;
+                    initialPositionOnGrabStart = Target.transform.position;
                     grabPointInPointer = Quaternion.Inverse(eventData.Pointer.Rotation) * (initialGrabPoint - currentPointer.Position);
 
                     SetHighlighted(grabbedHandleTransform);
