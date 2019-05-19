@@ -64,6 +64,14 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             bbox.FlattenAxis = BoundingBox.FlattenModeType.DoNotFlatten;
             yield return WaitForSpeechCommand();
 
+            SetStatus("ShowWireframe false");
+            bbox.ShowWireFrame = false;
+            yield return WaitForSpeechCommand();
+
+            SetStatus("ShowWireframe true");
+            bbox.ShowWireFrame = true;
+            yield return WaitForSpeechCommand();
+
             SetStatus("BoxPadding 0.2f");
             bbox.BoxPadding = new Vector3(0.2f, 0.2f, 0.2f);
             yield return WaitForSpeechCommand();
