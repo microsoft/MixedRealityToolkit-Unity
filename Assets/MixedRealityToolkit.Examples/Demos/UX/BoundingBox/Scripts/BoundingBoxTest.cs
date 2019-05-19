@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
 
     private bool speechTriggeredFalg;
     private Vector3 cubePosition = new Vector3(0, 0, 2);
+    private BoundingBox bbox;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -26,7 +28,14 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
     private void SetStatus(string status)
     {
         Debug.Assert(statusText != null, "statusText on BoundingBoxTest should not be null");
-        statusText.text = $"Test {status}\nPress '1' or say 'select' to continue";
+        StringBuilder b = new StringBuilder();
+        b.AppendLine($"Test {status}");
+        if (bbox != null)
+        {
+            b.AppendLine($"minscale: {bbox.ScaleMinimum} maxscale: {bbox.ScaleMaximum}");
+        }
+        b.AppendLine($"Press '1' or say 'select' to continue");
+        statusText.text = b.ToString();
     }
 
     private IEnumerator Sequence()
@@ -37,7 +46,7 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             cube.transform.position = cubePosition;
 
             SetStatus("Instantiate BoundingBox");
-            BoundingBox bbox = cube.AddComponent<BoundingBox>();
+            bbox = cube.AddComponent<BoundingBox>();
             bbox.HideElementsInInspector = false;
             bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
             var mh = cube.AddComponent<ManipulationHandler>();
