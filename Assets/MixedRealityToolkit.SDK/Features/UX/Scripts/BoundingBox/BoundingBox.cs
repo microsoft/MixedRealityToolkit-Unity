@@ -746,6 +746,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Destroy(transform.gameObject);
                 }
                 balls.Clear();
+                balls = null;
             }
 
             if (links != null)
@@ -755,6 +756,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Destroy(transform.gameObject);
                 }
                 links.Clear();
+                links = null;
             }
 
             if (corners != null)
@@ -764,6 +766,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Destroy(transform.gameObject);
                 }
                 corners.Clear();
+                corners = null;
             }
 
             if (rigRoot != null)
