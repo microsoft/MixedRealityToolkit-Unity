@@ -244,6 +244,11 @@ namespace Microsoft.MixedReality.Toolkit
             // Our task is to search for any additional play spaces that may have been loaded, and disable them.
             foreach (GameObject rootGameObject in rootGameObjects)
             {
+                if (rootGameObject == mixedRealityPlayspace.gameObject)
+                {   // Don't disable our existing playspace
+                    continue;
+                }
+
                 if (rootGameObject.name.Equals(Name))
                 {
                     rootGameObject.SetActive(false);

@@ -46,6 +46,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         private MixedRealitySceneSystemProfile profile;
+       
+        // Internal scene operation info
+        private bool managerSceneOpInProgress;
+        private bool lightingSceneOpInProgress;
+        private float managerSceneOpProgress;
+        private float lightingSceneOpProgress;
 
         #region Actions
 
@@ -134,14 +140,24 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public override void Initialize()
         {
+#if UNITY_EDITOR
+            OnEditorInitialize();
+#endif
+
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+
+            if (profile.UseManagerScene)
+            {
+                SetManagerScene(profile.ManagerScene.Name);
+            }
+
             if (profile.UseLightingScene)
             {
                 SetLightingScene(profile.DefaultLightingScene.Name, LightingSceneTransitionType.None);
             }
-
-#if UNITY_EDITOR
-            OnEditorInitialize();
-#endif
         }
 
         /// <inheritdoc />
@@ -256,6 +272,21 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 // Unload the other lighting scenes
                 await UnloadContent(lightingSceneNames);
             }
+        }
+
+        /// <summary>
+        /// Loads the manager scene.
+        /// </summary>
+        /// <param name="managerSceneName"></param>
+        private async void SetManagerScene(string managerSceneName)
+        {
+            Scene scene = SceneManager.GetSceneByName(managerSceneName);
+            if (scene.IsValid() && !scene.isLoaded)
+            {   // If the manager scene is already loaded, don't proceed.
+                return;
+            }
+
+            await LoadScenesInternal(new string[] { managerSceneName }, SceneType.Manager);
         }
 
         /// <summary>
@@ -380,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 scenesLoadedAndActivated = true;
                 foreach (int sceneIndex in validIndexes)
                 {
-                    Scene scene = SceneManager.GetSceneAt(sceneIndex);
+                    Scene scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
                     scenesLoadedAndActivated &= (scene.IsValid() & scene.isLoaded);
                 }
                 await Task.Yield();
@@ -479,7 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 scenesUnloaded = true;
                 foreach (int sceneIndex in validIndexes)
                 {
-                    Scene scene = SceneManager.GetSceneAt(sceneIndex);
+                    Scene scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
                     scenesUnloaded &= !scene.isLoaded;
                 }
                 await Task.Yield();
@@ -497,7 +528,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             switch (sceneType)
             {
                 case SceneType.Manager:
-                    // Do nothing
+                    managerSceneOpInProgress = inProgress;
+                    managerSceneOpProgress = progress;
                     break;
 
                 case SceneType.Content:
@@ -506,8 +538,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     break;
 
                 case SceneType.Lighting:
-                    // Do nothing
+                    lightingSceneOpInProgress = inProgress;
+                    lightingSceneOpProgress = progress;
                     break;
+
+                default:
+                    throw new NotImplementedException();
             }
         }
 
@@ -516,16 +552,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             switch (sceneType)
             {
                 case SceneType.Manager:
-                    // Manager scene ops can always proceed
-                    return true;
+                    return !managerSceneOpInProgress;
 
                 case SceneType.Content:
-                    // Content scene ops can only proceed if another scene op is not in progress
                     return !SceneOperationInProgress;
 
                 case SceneType.Lighting:
-                    // Lighting scene ops can always proceed
-                    return true;
+                    return !lightingSceneOpInProgress;
 
                 default:
                     throw new NotImplementedException();
