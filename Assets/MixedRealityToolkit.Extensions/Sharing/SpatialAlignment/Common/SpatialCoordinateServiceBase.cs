@@ -84,7 +84,8 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             {
                 if (!isTracking)
                 {
-                    throw new InvalidOperationException("We aren't tracking, and shouldn't expect additional coordinates to be discovered.");
+                    UnityEngine.Debug.LogWarning("New coordinate discovered, but spatial coordinate service was not tracking");
+                    return;
                 }
             }
 
@@ -94,7 +95,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             }
             else
             {
-                throw new InvalidOperationException($"Coordinate with id '{id}' already discovered.");
+                UnityEngine.Debug.LogWarning($"Unexpected behavior, coordinate {id} was rediscovered.");
             }
         }
 
@@ -156,9 +157,11 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 
                 return true;
             }
-            finally
+            catch (Exception e)
             {
+                UnityEngine.Debug.LogWarning($"Exception thrown when trying to discover coordinate: {e.ToString()}");
                 isTracking = false;
+                throw e;
             }
         }
 

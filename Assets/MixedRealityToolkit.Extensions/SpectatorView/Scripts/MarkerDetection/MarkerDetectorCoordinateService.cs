@@ -160,7 +160,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
                         await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken).IgnoreCancellation();
                     }
 
-                    DebugLog("We have been told to stop");
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        DebugLog("We have been told to stop");
+                    }
                 }
                 else
                 {
