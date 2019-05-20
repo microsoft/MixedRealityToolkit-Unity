@@ -12,4 +12,5 @@ pool:
 steps:
 - template: templates/common.yml
 - template: templates/package.yml
+- template: templates/releasesigning.yml
 - template: templates/end.yml
