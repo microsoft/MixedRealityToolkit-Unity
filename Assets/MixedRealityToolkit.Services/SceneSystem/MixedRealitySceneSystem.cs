@@ -191,7 +191,15 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public override void Update()
         {
-
+            // Ensure the lighting scene is active, if we're using one.
+            if (profile.UseLightingScene)
+            {
+                Scene scene;
+                if (RuntimeSceneUtils.FindScene(ActiveLightingScene, out scene, out int sceneIndex))
+                {
+                    RuntimeSceneUtils.SetActiveScene(scene);
+                }
+            }
         }
 
         #endregion
@@ -263,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             ActiveLightingScene = newLightingSceneName;
-
+             
             if (Application.isPlaying)
             {
                 List<string> lightingSceneNames = new List<string>();
