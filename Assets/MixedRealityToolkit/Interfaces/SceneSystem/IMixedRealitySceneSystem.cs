@@ -80,28 +80,28 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         /// <summary>
         /// Called just before a scene is loaded.
-        /// Called for all scene types (content, lighting & manager)
+        /// Called for all scene types (content, lighting and manager)
         /// Includes scene name
         /// </summary>
         Action<string> OnWillLoadScene { get; set; }
 
         /// <summary>
         /// Called when scene has been loaded, activated and is valid.
-        /// Called for all scene types (content, lighting & manager)
+        /// Called for all scene types (content, lighting and manager)
         /// Includes scene name
         /// </summary>
         Action<string> OnSceneLoaded { get; set; }
 
         /// <summary>
         /// Called just before a scene will be unloaded
-        /// Called for all scene types (content, lighting & manager)
+        /// Called for all scene types (content, lighting and manager)
         /// Includes scene name
         /// </summary>
         Action<string> OnWillUnloadScene { get; set; }
 
         /// <summary>
         /// Called when scene has been unloaded
-        /// Called for all scene types (content, lighting & manager)
+        /// Called for all scene types (content, lighting and manager)
         /// Includes scene name
         /// </summary>
         Action<string> OnSceneUnloaded { get; set; }
@@ -121,6 +121,17 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// A scene operation may include multiple concurrently loaded scenes.
         /// </summary>
         float SceneOperationProgress { get; }
+
+        /// <summary>
+        /// True if the scene system is transitioning from one lighting scene to anthother.
+        /// Lighting operations will not impede other operations.
+        /// </summary>
+        bool LightingOperationInProgress { get; }
+
+        /// <summary>
+        /// Progress of current lighting operation, from 0-1
+        /// </summary>
+        float LightingOperationProgress { get; }
 
         /// <summary>
         /// True when content has been loaded with an activation token and AllowSceneActivation has not been set to true.

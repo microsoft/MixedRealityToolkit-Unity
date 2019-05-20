@@ -49,9 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
        
         // Internal scene operation info
         private bool managerSceneOpInProgress;
-        private bool lightingSceneOpInProgress;
         private float managerSceneOpProgress;
-        private float lightingSceneOpProgress;
 
         #region Actions
 
@@ -100,6 +98,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         /// <inheritdoc />
         public float SceneOperationProgress { get; private set; } = 0;
+
+        /// <inheritdoc />
+        public bool LightingOperationInProgress { get; private set; } = false;
+
+        /// <inheritdoc />
+        public float LightingOperationProgress { get; private set; } = 0;
 
         /// <inheritdoc />
         public string ActiveLightingScene { get; private set; } = string.Empty;
@@ -245,6 +249,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return;
             }
 
+            if (!CanSceneOpProceed(SceneType.Lighting))
+            {
+                Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");
+                return;
+            }
+
             SceneInfo lightingScene;
             if (!string.IsNullOrEmpty(newLightingSceneName) && !profile.GetLightingSceneObject(newLightingSceneName, out lightingScene))
             {   // Make sure we don't try to load a non-existent scene
@@ -267,10 +277,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 }
 
                 // Load the new lighting scene immediately
-                await LoadContent(newLightingSceneName);
+                await LoadScenesInternal(new string[] { newLightingSceneName }, SceneType.Lighting, LoadSceneMode.Additive);
 
                 // Unload the other lighting scenes
-                await UnloadContent(lightingSceneNames);
+                await UnloadScenesInternal(lightingSceneNames, SceneType.Lighting);
             }
         }
 
@@ -542,8 +552,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     break;
 
                 case SceneType.Lighting:
-                    lightingSceneOpInProgress = inProgress;
-                    lightingSceneOpProgress = progress;
+                    LightingOperationInProgress = inProgress;
+                    LightingOperationProgress = progress;
                     break;
 
                 default:
@@ -562,7 +572,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     return !SceneOperationInProgress;
 
                 case SceneType.Lighting:
-                    return !lightingSceneOpInProgress;
+                    return !LightingOperationInProgress;
 
                 default:
                     throw new NotImplementedException();
@@ -586,7 +596,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 case SceneType.Lighting:
                     // We only handle lighting scenes one at a time
                     Debug.Assert(sceneNames.Count == 1);
-                    OnLightingLoaded(sceneNames[0]);
+                    OnLightingLoaded?.Invoke(sceneNames[0]);
                     break;
 
                 default:
@@ -612,7 +622,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 case SceneType.Lighting:
                     // We only handle lighting scenes one at a time
                     Debug.Assert(sceneNames.Count == 1);
-                    OnWillLoadLighting(sceneNames[0]);
+                    OnWillLoadLighting?.Invoke(sceneNames[0]);
                     break;
 
                 default:
@@ -638,7 +648,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 case SceneType.Lighting:
                     // We only handle lighting scenes one at a time
                     Debug.Assert(sceneNames.Count == 1);
-                    OnWillUnloadLighting(sceneNames[0]);
+                    OnWillUnloadLighting?.Invoke(sceneNames[0]);
                     break;
 
                 default:
@@ -664,7 +674,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 case SceneType.Lighting:
                     // We only handle lighting scenes one at a time
                     Debug.Assert(sceneNames.Count == 1);
-                    OnLightingUnloaded(sceneNames[0]);
+                    OnLightingUnloaded?.Invoke(sceneNames[0]);
                     break;
 
                 default:
