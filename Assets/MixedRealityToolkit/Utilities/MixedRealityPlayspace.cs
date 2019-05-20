@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit
                     {
                         // Since the scene is set up with a different camera parent, its likely
                         // that there's an expectation that that parent is going to be used for
-                        // something else. We print a warning to call out the fact that we're 
+                        // something else. We print a warning to call out the fact that we're
                         // co-opting this object for use with teleporting and such, since that
                         // might cause conflicts with the parent's intended purpose.
                         Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {Name}. The existing parent will be renamed and used instead.");
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit
                 // otherwise reality-locked things like playspace boundaries won't be aligned properly.
                 // For now, we'll just assume that when the playspace is first initialized, the
                 // tracked space origin overlaps with the world space origin. If a platform ever does
-                // something else (i.e, placing the lower left hand corner of the tracked space at world 
+                // something else (i.e, placing the lower left hand corner of the tracked space at world
                 // space 0,0,0), we should compensate for that here.
                 return mixedRealityPlayspace;
             }
@@ -155,18 +155,17 @@ namespace Microsoft.MixedReality.Toolkit
         {
             transformation?.Invoke(Transform);
         }
-        
+
         #region Multi-scene management
 
         private static bool subscribedToEvents = false;
-        
+
 #if UNITY_EDITOR
         private static bool subscribedToEditorEvents = false;
 
         [InitializeOnLoadMethod]
         public static void InitializeOnLoad()
         {
-            Debug.Log("InitializeOnLoad");
             if (!subscribedToEditorEvents)
             {
                 EditorSceneManager.sceneOpened += EditorSceneManagerSceneOpened;
@@ -184,8 +183,6 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            Debug.Log("EditorSceneManagerSceneClosed");
-
             if (mixedRealityPlayspace == null)
             {   // If we unloaded our playspace, see if another one exists
                 SearchForAndEnableExistingPlayspace(EditorSceneUtils.GetRootGameObjectsInLoadedScenes());
@@ -198,8 +195,6 @@ namespace Microsoft.MixedReality.Toolkit
             {   // Let the runtime scene management handle this
                 return;
             }
-
-            Debug.Log("EditorSceneManagerSceneOpened");
 
             if (mixedRealityPlayspace == null)
             {
@@ -215,7 +210,6 @@ namespace Microsoft.MixedReality.Toolkit
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void RuntimeInitializeOnLoadMethod()
         {
-            Debug.Log("RuntimeInitializeOnLoadMethod");
             if (!subscribedToEvents)
             {
                 SceneManager.sceneLoaded += SceneManagerSceneLoaded;
@@ -226,7 +220,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void SceneManagerSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
-            Debug.Log("SceneManager scene loaded");
             if (mixedRealityPlayspace == null)
             {
                 SearchForAndEnableExistingPlayspace(RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes());
@@ -269,7 +262,6 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     if (!enabledOne)
                     {
-                        Debug.Log("Found existing " + Name + " in newly loaded scene.");
                         mixedRealityPlayspace = rootGameObject.transform;
                         mixedRealityPlayspace.gameObject.SetActive(true);
                         enabledOne = true;
