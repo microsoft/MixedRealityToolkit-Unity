@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Gets the collection of registered data providers.
         /// </summary>
         /// <returns>
-        /// Read only copy of the list of registered observers.
+        /// Read only copy of the list of registered data providers.
         /// </returns>
         IReadOnlyList<IMixedRealityDataProvider> GetDataProviders();
 
