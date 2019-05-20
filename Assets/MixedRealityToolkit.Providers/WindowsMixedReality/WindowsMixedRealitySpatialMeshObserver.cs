@@ -77,9 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public override void Initialize()
         {
-            // Only initialize if the Spatial Awareness system has been enabled in the configuration profile.
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled) { return; }
-
             CreateObserver();
 
             // Apply the initial observer volume settings.
@@ -367,8 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private void UpdateObserver()
         {
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled ||
-                (SpatialAwarenessSystem == null))
+            if (SpatialAwarenessSystem == null)
             {
                 return;
             }

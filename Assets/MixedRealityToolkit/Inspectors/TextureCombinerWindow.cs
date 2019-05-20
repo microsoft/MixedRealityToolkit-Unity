@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using UnityEditor;
@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    public class ChannelPackerWindow : EditorWindow
+    public class TextureCombinerWindow : EditorWindow
     {
         private enum Channel
         {
@@ -18,6 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             RGBAverage = 4
         }
 
+        private enum TextureFormat
+        {
+            TGA = 0,
+            PNG = 1,
+            JPG = 2
+        }
+
+        private static readonly string[] textureExtensions = new string[] { "tga", "png", "jpg" };
         private const float defaultUniformValue = -0.01f;
 
         private Texture2D metallicMap;
@@ -33,17 +41,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private Channel smoothnessMapChannel = Channel.Alpha;
         private float smoothnessUniform = defaultUniformValue;
         private Material standardMaterial;
+        private TextureFormat textureFormat = TextureFormat.TGA;
 
         private const string StandardShaderName = "Standard";
         private const string StandardRoughnessShaderName = "Standard (Roughness setup)";
         private const string StandardSpecularShaderName = "Standard (Specular setup)";
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Channel Packer")]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Texture Combiner")]
         private static void ShowWindow()
         {
-            ChannelPackerWindow window = GetWindow<ChannelPackerWindow>();
-            window.titleContent = new GUIContent("Channel Packer");
-            window.minSize = new Vector2(380.0f, 680.0f);
+            TextureCombinerWindow window = GetWindow<TextureCombinerWindow>();
+            window.titleContent = new GUIContent("Texture Combiner");
+            window.minSize = new Vector2(380.0f, 700.0f);
             window.Show();
         }
 
@@ -93,6 +102,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.Separator();
 
             GUILayout.Label("Export", EditorStyles.boldLabel);
+
+            textureFormat = (TextureFormat)EditorGUILayout.EnumPopup("Texture Format", textureFormat);
 
             if (GUILayout.Button("Save Channel Map"))
             {
@@ -172,17 +183,31 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             RenderTexture.ReleaseTemporary(renderTexture);
 
             // Save the texture to disk.
-            string filename = string.Format("{0}{1}.png", GetChannelMapName(textures), "_Channel");
-            string path = EditorUtility.SaveFilePanel("Save Channel Map", "", filename, "png");
+            string filename = string.Format("{0}{1}.{2}", GetChannelMapName(textures), "_Channel", textureExtensions[(int)textureFormat]);
+            string path = EditorUtility.SaveFilePanel("Save Channel Map", "", filename, textureExtensions[(int)textureFormat]);
 
             if (path.Length != 0)
             {
-                byte[] pngData = channelMap.EncodeToPNG();
+                byte[] textureData = null;
 
-                if (pngData != null)
+                switch (textureFormat)
                 {
-                    File.WriteAllBytes(path, pngData);
+                    case TextureFormat.TGA:
+                        textureData = channelMap.EncodeToTGA();
+                        break;
+                    case TextureFormat.PNG:
+                        textureData = channelMap.EncodeToPNG();
+                        break;
+                    case TextureFormat.JPG:
+                        textureData = channelMap.EncodeToJPG();
+                        break;
+                }
+
+                if (textureData != null)
+                {
+                    File.WriteAllBytes(path, textureData);
                     Debug.LogFormat("Saved channel map to: {0}", path);
+                    AssetDatabase.Refresh();
                 }
             }
         }
@@ -224,8 +249,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static void CalculateChannelMapSize(Texture[] textures, out int width, out int height)
         {
-            width = 1;
-            height = 1;
+            width = 4;
+            height = 4;
 
             // Find the max extents of all texture maps.
             foreach (Texture texture in textures)

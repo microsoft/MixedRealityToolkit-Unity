@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e534d3d8fbada634785d567d8fe8562c, type: 3}
   m_Name: DefaultMixedRealityEyeTrackingProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   smoothEyeTracking: 1
   saccadeThreshInDegree: 2
   minDwellInMs: 600

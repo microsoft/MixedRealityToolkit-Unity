@@ -10,6 +10,11 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     public interface IMixedRealityDiagnosticsSystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {
         /// <summary>
+        /// Typed representation of the ConfigurationProfile property.
+        /// </summary>
+        MixedRealityDiagnosticsProfile DiagnosticsSystemProfile { get; }
+
+        /// <summary>
         /// Enable / disable diagnostic display.
         /// </summary>
         /// <remarks>

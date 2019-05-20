@@ -21,6 +21,14 @@ namespace Microsoft.MixedReality.Toolkit
         uint Priority { get; }
 
         /// <summary>
+        /// The configuration profile for the service.
+        /// </summary>
+        /// <remarks>
+        /// Many services may wish to provide a typed version (ex: MixedRealityInputSystemProfile) that casts this value for ease of use in calling code.
+        /// </remarks>
+        BaseMixedRealityProfile ConfigurationProfile { get; }
+
+        /// <summary>
         /// The initialize function is used to setup the service once created.
         /// This method is called once all services have been registered in the Mixed Reality Toolkit.
         /// </summary>
