@@ -93,14 +93,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     if (isTouching)
                     {
-                        TouchBegin.Invoke();
+                        TouchBegin?.Invoke();
                     }
                     else
                     {
                         // Abort press.
                         isPressing = false;
 
-                        TouchEnd.Invoke();
+                        TouchEnd?.Invoke();
                     }
                 }
             }
@@ -280,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (pushDistance >= pressDistance)
                 {
                     isPressing = true;
-                    ButtonPressed.Invoke();
+                    ButtonPressed?.Invoke();
                 }
             }
             // If we're in a press, check if the press is released now.
@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (pushDistance <= releaseDistance)
                 {
                     isPressing = false;
-                    ButtonReleased.Invoke();
+                    ButtonReleased?.Invoke();
                 }
             }
         }
