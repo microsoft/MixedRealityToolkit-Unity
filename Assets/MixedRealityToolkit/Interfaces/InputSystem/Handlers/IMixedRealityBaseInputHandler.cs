@@ -8,7 +8,8 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Interface to implement for simple generic input.
+    /// Base interface for all input handlers. This allows us to use ExecuteEvents.ExecuteHierarchy<IMixedRealityBaseInputHandler>
+    /// to send an event to all input handling interfaces.
     /// </summary>
     public interface IMixedRealityBaseInputHandler : IEventSystemHandler {}
 }
