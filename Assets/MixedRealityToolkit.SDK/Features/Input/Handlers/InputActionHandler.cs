@@ -6,6 +6,9 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Script used to handle input action events. Invokes Unity events when the configured input action starts or ends. 
+    /// </summary>
     public class InputActionHandler : BaseInputHandler, IMixedRealityInputActionHandler
     {
         [SerializeField]
@@ -13,22 +16,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private MixedRealityInputAction InputAction = MixedRealityInputAction.None;
 
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("Whether input events should be marked as used after handling so other handlers in the same game object ignore them")]
         private bool MarkEventsAsUsed = false;
 
         [System.Serializable]
         public class InputActionUnityEvent : UnityEvent<BaseInputEventData> { }
 
+        /// <summary>
+        /// Unity event raised on action start, e.g. button pressed or gesture started. 
+        /// Includes the input event that triggered the action.
+        /// </summary>
         public InputActionUnityEvent OnInputActionStarted;
+
+        /// <summary>
+        /// Unity event raised on action end, e.g. button released or gesture completed.
+        /// Includes the input event that triggered the action.
+        /// </summary>
         public InputActionUnityEvent OnInputActionEnded;
 
         void IMixedRealityInputActionHandler.OnActionStarted(BaseInputEventData eventData)
         {
-            if (eventData.MixedRealityInputAction == InputAction)
+            if (eventData.MixedRealityInputAction == InputAction && !eventData.used)
             {
-                // TODO Remove
-                Debug.Log("STARTED " + eventData);
-
                 OnInputActionStarted.Invoke(eventData);
                 if (MarkEventsAsUsed)
                 {
@@ -38,11 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
         void IMixedRealityInputActionHandler.OnActionEnded(BaseInputEventData eventData)
         {
-            if (eventData.MixedRealityInputAction == InputAction)
+            if (eventData.MixedRealityInputAction == InputAction && !eventData.used)
             {
-                // TODO Remove
-                Debug.Log("ENDED " + eventData);
-
                 OnInputActionEnded.Invoke(eventData);
                 if (MarkEventsAsUsed)
                 {
