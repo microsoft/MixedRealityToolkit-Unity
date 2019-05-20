@@ -15,9 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
     [RequireComponent(typeof(TCPConnectionManager))]
     public class HolographicCameraNetworkManager : MonoBehaviour
     {
+        public const float arUcoMarkerSizeInMeters = 0.1f;
         private TCPConnectionManager connectionManager;
         private const float trackingStalledReceiveDelay = 1.0f;
-        private const float arUcoMarkerSizeInMeters = 0.1f;
         private float lastReceivedPoseTime = -1;
 
         [SerializeField]

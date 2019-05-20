@@ -482,7 +482,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             compositionManager.EnableHolographicCamera(networkManager.transform, calibrationDataForPlayback);
 
             testCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            testCube.transform.localScale = Vector3.one * 0.1f;
+            testCube.transform.localScale = Vector3.one * HolographicCameraNetworkManager.arUcoMarkerSizeInMeters;
             testCube.transform.localPosition = new Vector3(0.0f, 0.0f, 0.05f);
         }
 
