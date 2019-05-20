@@ -683,11 +683,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         }
 #endif // UNITY_WSA
 
-                /// <summary>
-                /// Applies the mesh display option to existing meshes when modified at runtime.
-                /// </summary>
-                /// <param name="option">The <see cref="SpatialAwarenessMeshDisplayOptions"/> to apply to the meshes.</param>
-                private void ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions option)
+        /// <summary>
+        /// Applies the mesh display option to existing meshes when modified at runtime.
+        /// </summary>
+        /// <param name="option">The <see cref="SpatialAwarenessMeshDisplayOptions"/> to apply to the meshes.</param>
+        private void ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions option)
         {
             bool enable = (option != SpatialAwarenessMeshDisplayOptions.None);
 
