@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,25 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         public MixedRealityInputSystem(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealityInputSystemProfile profile,
-            Transform playspace) : base(registrar, profile)
+            MixedRealityInputSystemProfile profile) : base(registrar, profile)
         {
             if (registrar == null)
             {
                 Debug.LogError("The MixedRealityInputSystem object requires a valid IMixedRealityServiceRegistrar instance.");
             }
-
-            if (playspace == null)
-            {
-                Debug.LogError("The MixedRealityInputSystem object requires a valid playspace Transform.");
-            }
-            Playspace = playspace;
         }
-
-        /// <summary>
-        /// The transform of the playspace scene object.
-        /// </summary>
-        private Transform Playspace = null;
 
         /// <inheritdoc />
         public event Action InputEnabled;
@@ -49,6 +36,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public HashSet<IMixedRealityController> DetectedControllers { get; } = new HashSet<IMixedRealityController>();
+
+
+        private MixedRealityInputSystemProfile inputSystemProfile = null;
+
+        /// <inheritdoc/>
+        public MixedRealityInputSystemProfile InputSystemProfile
+        {
+            get
+            {
+                if (inputSystemProfile == null)
+                {
+                    inputSystemProfile = ConfigurationProfile as MixedRealityInputSystemProfile;
+                }
+                return inputSystemProfile;
+            }
+        }
 
         private IMixedRealityFocusProvider focusProvider = null;
 
@@ -136,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+            if (InputSystemProfile == null)
             {
                 Debug.LogError("The Input system is missing the required Input System Profile!");
                 return;
@@ -157,8 +160,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (profile.PointerProfile.GazeProviderType?.Type != null)
                 {
                     GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                    GazeProvider.InputSystem = this;
-                    GazeProvider.Playspace = Playspace;
                     GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
                     // Current implementation implements both provider types in one concrete class.
                     EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
@@ -215,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < profile.DataProviderConfigurations.Length; i++)
                 {
                     MixedRealityInputDataProviderConfiguration configuration = profile.DataProviderConfigurations[i];
-                    object[] args = { Registrar, this, profile, Playspace, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
+                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
 
                     if (Registrar.RegisterDataProvider<IMixedRealityInputDeviceManager>(
                         configuration.ComponentType.Type,
@@ -1307,6 +1308,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, command);
+
+            FocusProvider?.OnSpeechKeywordRecognized(speechEventData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);

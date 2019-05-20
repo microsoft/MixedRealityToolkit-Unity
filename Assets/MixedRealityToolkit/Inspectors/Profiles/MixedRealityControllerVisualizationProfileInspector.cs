@@ -22,11 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             new GUIContent("Right Hand"),
         };
 
-        private static bool showVisualizationProperties = true;
         private SerializedProperty renderMotionControllers;
         private SerializedProperty defaultControllerVisualizationType;
 
-        private static bool showModelProperties = true;
         private SerializedProperty useDefaultModels;
         private SerializedProperty globalLeftHandedControllerModel;
         private SerializedProperty globalRightHandedControllerModel;
@@ -41,17 +39,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private float defaultLabelWidth;
         private float defaultFieldWidth;
 
+        private const string ProfileTitle = "Controller Visualization Settings";
+        private const string ProfileDescription = "Define all the custom controller visualizations you'd like to use for each controller type when they're rendered in the scene.\n\n" +
+                                    "Global settings are the default fallback, and any specific controller definitions take precedence.";
+
         protected override void OnEnable()
         {
             base.OnEnable();
 
             defaultLabelWidth = EditorGUIUtility.labelWidth;
             defaultFieldWidth = EditorGUIUtility.fieldWidth;
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
 
             thisProfile = target as MixedRealityControllerVisualizationProfile;
 
@@ -67,8 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
                 return;
             }
@@ -76,42 +72,29 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-
-                DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
-
                 return;
             }
 
-            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
+                EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
                 return;
             }
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Controller Visualizations", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Define all the custom controller visualizations you'd like to use for each controller type when they're rendered in the scene.\n\n" +
-                                    "Global settings are the default fallback, and any specific controller definitions take precedence.", MessageType.Info);
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
-            CheckProfileLock(target);
-
-            EditorGUIUtility.labelWidth = 168f;
-
-            EditorGUILayout.Space();
-            showVisualizationProperties = EditorGUILayout.Foldout(showVisualizationProperties, "Visualization Settings", true);
-            if (showVisualizationProperties)
+            EditorGUILayout.LabelField("Visualization Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.PropertyField(renderMotionControllers);
+
+                EditorGUILayout.PropertyField(defaultControllerVisualizationType);
+
+                if (thisProfile.DefaultControllerVisualizationType == null ||
+                    thisProfile.DefaultControllerVisualizationType.Type == null)
                 {
-                    EditorGUILayout.PropertyField(renderMotionControllers);
-
-                    EditorGUILayout.PropertyField(defaultControllerVisualizationType);
-
-                    if (thisProfile.DefaultControllerVisualizationType == null ||
-                        thisProfile.DefaultControllerVisualizationType.Type == null)
-                    {
-                        EditorGUILayout.HelpBox("A default controller visualization type must be defined!", MessageType.Error);
-                    }
+                    EditorGUILayout.HelpBox("A default controller visualization type must be defined!", MessageType.Error);
                 }
             }
 
@@ -119,37 +102,33 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             var rightHandModelPrefab = globalRightHandedControllerModel.objectReferenceValue as GameObject;
 
             EditorGUILayout.Space();
-            showModelProperties = EditorGUILayout.Foldout(showModelProperties, "Controller Model Settings", true);
-            if (showModelProperties)
+            EditorGUILayout.LabelField("Controller Model Settings", EditorStyles.boldLabel);
             {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.PropertyField(useDefaultModels);
+
+                if (useDefaultModels.boolValue && (leftHandModelPrefab != null || rightHandModelPrefab != null))
                 {
-                    EditorGUILayout.PropertyField(useDefaultModels);
-
-                    if (useDefaultModels.boolValue && (leftHandModelPrefab != null || rightHandModelPrefab != null))
-                    {
-                        EditorGUILayout.HelpBox("When default models are used, an attempt is made to obtain controller models from the platform sdk. The global left and right models are only shown if no model can be obtained.", MessageType.Warning);
-                    }
-
-                    EditorGUI.BeginChangeCheck();
-                    leftHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalLeftHandedControllerModel.displayName, "Note: If the default model is not found, the fallback is the global left hand model."), leftHandModelPrefab, typeof(GameObject), false) as GameObject;
-
-                    if (EditorGUI.EndChangeCheck() && CheckVisualizer(leftHandModelPrefab))
-                    {
-                        globalLeftHandedControllerModel.objectReferenceValue = leftHandModelPrefab;
-                    }
-
-                    EditorGUI.BeginChangeCheck();
-                    rightHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalRightHandedControllerModel.displayName, "Note: If the default model is not found, the fallback is the global right hand model."), rightHandModelPrefab, typeof(GameObject), false) as GameObject;
-
-                    if (EditorGUI.EndChangeCheck() && CheckVisualizer(rightHandModelPrefab))
-                    {
-                        globalRightHandedControllerModel.objectReferenceValue = rightHandModelPrefab;
-                    }
-
-                    EditorGUILayout.PropertyField(globalLeftHandModel);
-                    EditorGUILayout.PropertyField(globalRightHandModel);
+                    EditorGUILayout.HelpBox("When default models are used, an attempt is made to obtain controller models from the platform sdk. The global left and right models are only shown if no model can be obtained.", MessageType.Warning);
                 }
+
+                EditorGUI.BeginChangeCheck();
+                leftHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalLeftHandedControllerModel.displayName, "Note: If the default model is not found, the fallback is the global left hand model."), leftHandModelPrefab, typeof(GameObject), false) as GameObject;
+
+                if (EditorGUI.EndChangeCheck() && CheckVisualizer(leftHandModelPrefab))
+                {
+                    globalLeftHandedControllerModel.objectReferenceValue = leftHandModelPrefab;
+                }
+
+                EditorGUI.BeginChangeCheck();
+                rightHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalRightHandedControllerModel.displayName, "Note: If the default model is not found, the fallback is the global right hand model."), rightHandModelPrefab, typeof(GameObject), false) as GameObject;
+
+                if (EditorGUI.EndChangeCheck() && CheckVisualizer(rightHandModelPrefab))
+                {
+                    globalRightHandedControllerModel.objectReferenceValue = rightHandModelPrefab;
+                }
+
+                EditorGUILayout.PropertyField(globalLeftHandModel);
+                EditorGUILayout.PropertyField(globalRightHandModel);
             }
 
             EditorGUIUtility.labelWidth = defaultLabelWidth;
@@ -165,6 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = wasGUIEnabled;
         }
 
         private void RenderControllerList(SerializedProperty controllerList)
@@ -173,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             EditorGUILayout.Space();
 
-            if (GUILayout.Button(ControllerAddButtonContent, EditorStyles.miniButton))
+            if (RenderIndentedButton(ControllerAddButtonContent, EditorStyles.miniButton))
             {
                 controllerList.InsertArrayElementAtIndex(controllerList.arraySize);
                 var index = controllerList.arraySize - 1;
@@ -192,8 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUILayout.Space();
                 EditorGUILayout.BeginHorizontal();
 
-                EditorGUIUtility.labelWidth = 64f;
-                EditorGUIUtility.fieldWidth = 64f;
                 var controllerSetting = controllerList.GetArrayElementAtIndex(i);
                 var mixedRealityControllerMappingDescription = controllerSetting.FindPropertyRelative("description");
                 bool hasValidType = thisProfile.ControllerVisualizationSettings[i].ControllerType != null &&
@@ -205,10 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 serializedObject.ApplyModifiedProperties();
                 var mixedRealityControllerHandedness = controllerSetting.FindPropertyRelative("handedness");
-                EditorGUILayout.LabelField($"{mixedRealityControllerMappingDescription.stringValue} {((Handedness)mixedRealityControllerHandedness.intValue).ToString().ToProperCase()} Hand");
-
-                EditorGUIUtility.fieldWidth = defaultFieldWidth;
-                EditorGUIUtility.labelWidth = defaultLabelWidth;
+                EditorGUILayout.LabelField($"{mixedRealityControllerMappingDescription.stringValue} {((Handedness)mixedRealityControllerHandedness.intValue).ToString().ToProperCase()} Hand", EditorStyles.boldLabel);
 
                 if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
@@ -219,8 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
 
                 EditorGUILayout.EndHorizontal();
-
-                EditorGUI.indentLevel++;
 
                 EditorGUILayout.PropertyField(controllerSetting.FindPropertyRelative("controllerType"));
                 EditorGUILayout.PropertyField(controllerSetting.FindPropertyRelative("controllerVisualizationType"));
@@ -261,8 +234,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 {
                     overrideModel.objectReferenceValue = overrideModelPrefab;
                 }
-
-                EditorGUI.indentLevel--;
             }
         }
 

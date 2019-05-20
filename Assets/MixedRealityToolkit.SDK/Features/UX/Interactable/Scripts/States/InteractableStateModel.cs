@@ -8,18 +8,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// State data model, state management and comparison instructions
     /// </summary>
-
-    /*
-     * Have an enum with all the button states -
-     * Create a list using the enums as the state type -
-     * Setup the bit and index automatically -
-     * Store the values for all the states -
-     * Have a sub state with only the states we care about - 
-     * On update, set those states and update the current state
-     * The other states can be checked anytime through the Interactive.
-     * 
-     */
-
     [System.Serializable]
     public class State
     {
@@ -118,6 +106,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return state;
             }
             return new State();
+        }
+
+        public InteractableStateModel()
+        {
         }
 
         public InteractableStateModel(State defaultState)

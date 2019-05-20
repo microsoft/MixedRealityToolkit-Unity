@@ -5,6 +5,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
@@ -41,24 +42,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 return;
             }
 #endif
+        }
 
-            if (testScene.IsValid() && testScene.isLoaded)
+        public static void InitializePlayspace()
+        {
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
             {
-                SceneManager.UnloadSceneAsync(testScene);
-            }
-
-            testScene = SceneManager.CreateScene("TestScene");
-            SceneManager.SetActiveScene(testScene);
-
-            var cameraObject = new GameObject("Camera");
-            var camera = cameraObject.AddComponent<Camera>();
-            cameraObject.tag = "MainCamera";
+                p.position = new Vector3(1.0f, 1.5f, -2.0f);
+                p.LookAt(Vector3.zero);
+            });
         }
 
         public static void InitializeMixedRealityToolkitScene(bool useDefaultProfile = false)
         {
             // Setup
             CleanupScene();
+
+            MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
 
             if (!MixedRealityToolkit.IsInitialized)
             {

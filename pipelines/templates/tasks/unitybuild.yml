@@ -1,0 +1,62 @@
+# [Template] Compile MRTK inside Unity.
+
+parameters: 
+  Arch: ''  # x86|arm
+  Platform: ''  # UWP|Standalone
+  UnityArgs: 'none' # [optional] additional args passed to Unity
+  ScriptingBackend: 'default'  # [optional] default|.NET
+  PublishArtifacts: false
+  PackagingDir: 'Win32'
+
+steps:
+- powershell: |
+   # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
+   $editor = Get-ChildItem ${Env:$(UnityVersion)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+   
+   $outDir = "$(Build.ArtifactStagingDirectory)\build"
+   $logFile = New-Item -Path "$outDir\build\build_${{ parameters.Platform }}_${{ parameters.Arch }}.log" -ItemType File -Force
+   
+   $sceneList = "Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity"
+   
+   $extraArgs = ''
+   If ("${{ parameters.Platform }}" -eq "UWP")
+   {
+       $extraArgs += '-buildTarget WSAPlayer -buildAppx'
+   }
+   ElseIf ("${{ parameters.Platform }}" -eq "Standalone")
+   {
+       $extraArgs += "-buildTarget StandaloneWindows"
+   }
+
+   If ("${{ parameters.UnityArgs }}" -ne "none")
+   {
+       $extraArgs += " ${{ parameters.UnityArgs }}"
+   }
+
+   If ("${{  parameters.ScriptingBackend }}" -eq ".NET")
+   {
+       $extraArgs += " -scriptingBackend 2"
+   }
+
+   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild -sceneList $sceneList -logFile $($logFile.FullName) -batchMode -${{ parameters.Arch }} -buildOutput $outDir $extraArgs" -PassThru
+   $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
+   
+   while (-not $proc.HasExited -and $ljob.HasMoreData)
+   {
+       Receive-Job $ljob
+       Start-Sleep -Milliseconds 200
+   }
+   Receive-Job $ljob
+   
+   Stop-Job $ljob
+   
+   Remove-Job $ljob
+   Stop-Process $proc
+  displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
+
+- ${{ if parameters.PublishArtifacts }}:
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }}'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\AppPackages\MixedRealityToolkit\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.PackagingDir }}_Master_Test'
+      ArtifactName: 'mrtk-build-${{ parameters.Arch }}'

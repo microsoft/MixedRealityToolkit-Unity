@@ -77,9 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public override void Initialize()
         {
-            // Only initialize if the Spatial Awareness system has been enabled in the configuration profile.
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled) { return; }
-
             CreateObserver();
 
             // Apply the initial observer volume settings.
@@ -129,13 +126,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which observed objects are parented.
         /// </summary>
         private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
-
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-
-        /// <summary>
-        /// The currently active instance of <see cref="Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.IMixedRealitySpatialAwarenessSystem"/>.
-        /// </summary>
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
 #if UNITY_WSA
         /// <inheritdoc />
@@ -374,8 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private void UpdateObserver()
         {
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled ||
-                (SpatialAwarenessSystem == null))
+            if (SpatialAwarenessSystem == null)
             {
                 return;
             }

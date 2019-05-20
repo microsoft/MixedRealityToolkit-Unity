@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
         /// <summary>
-        ///  The collection of registered spatial awareness observers.
+        /// The collection of registered spatial awareness observers.
         /// </summary>
         private List<IMixedRealitySpatialAwarenessObserver> observers = new List<IMixedRealitySpatialAwarenessObserver>();
 
@@ -173,6 +173,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public uint GenerateNewSourceId()
         {
             return nextSourceId++;
+        }
+
+        private MixedRealitySpatialAwarenessSystemProfile spatialAwarenessSystemProfile = null;
+
+        /// <inheritdoc/>
+        public MixedRealitySpatialAwarenessSystemProfile SpatialAwarenessSystemProfile
+        {
+            get
+            {
+                if (spatialAwarenessSystemProfile == null)
+                {
+                    spatialAwarenessSystemProfile = ConfigurationProfile as MixedRealitySpatialAwarenessSystemProfile;
+                }
+                return spatialAwarenessSystemProfile;
+            }
         }
 
         /// <inheritdoc />

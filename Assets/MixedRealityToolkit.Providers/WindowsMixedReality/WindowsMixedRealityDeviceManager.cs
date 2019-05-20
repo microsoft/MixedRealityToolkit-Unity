@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Windows.Input;
 using UnityEngine;
+using System;
 
 #if UNITY_WSA
 using System.Collections.Generic;
@@ -26,19 +27,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </summary>
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
         /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
-        /// <param name="inputSystemProfile">The input system configuration profile.</param>
-        /// <param name="playspace">The <see href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</see> of the playspace object.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsMixedRealityDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile inputSystemProfile,
-            Transform playspace,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
 #if UNITY_WSA
 
@@ -592,7 +589,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (args.state.source.kind == InteractionSourceKind.Voice)
             {
-                GetController(args.state.source)?.UpdateController(args.state);
+                var controller = GetController(args.state.source);
+                if (controller != null)
+                {
+                    controller.UpdateController(args.state);
+                    // On WMR, the voice recognizer does not actually register the phrase 'select'
+                    // when you add it to the speech commands profile. Therefore, simulate
+                    // the "select" voice command running to ensure that we get a select voice command
+                    // registered. This is used by FocusProvider to detect when the select pointer is active
+                    InputSystem?.RaiseSpeechCommandRecognized(controller.InputSource, RecognitionConfidenceLevel.High, TimeSpan.MinValue, DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
+                }
             }
         }
 

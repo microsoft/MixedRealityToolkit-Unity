@@ -19,11 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableHandMeshVisualization;
         private SerializedProperty enableHandJointVisualization;
 
+        private const string ProfileTitle = "Hand Tracking Settings";
+        private const string ProfileDescription = "Use this for platform-specific hand tracking settings.";
+
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false)) { return; }
 
             jointPrefab = serializedObject.FindProperty("jointPrefab");
             fingertipPrefab = serializedObject.FindProperty("fingertipPrefab");
@@ -35,23 +36,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-
-            if (GUILayout.Button("Back to Input Profile"))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                return;
             }
-            EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("Hand tracking settings", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Use this for platform-specific hand tracking settings.", MessageType.Info);
-            CheckProfileLock(target);
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
-
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
 
-            GUILayout.Space(12f);
             EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(jointPrefab);
             EditorGUILayout.PropertyField(palmPrefab);
@@ -61,6 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.PropertyField(enableHandJointVisualization);
 
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = wasGUIEnabled;
         }
     }
 }

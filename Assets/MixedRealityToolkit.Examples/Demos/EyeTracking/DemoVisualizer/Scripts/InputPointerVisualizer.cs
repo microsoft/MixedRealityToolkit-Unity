@@ -75,6 +75,23 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         private bool isPaused = false;
         private int numberOfTraceSamples;
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         void Start()
         {
             AmountOfSamples = (int)nhist;
@@ -327,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         void Update()
         {
-            if (MixedRealityToolkit.InputSystem?.EyeGazeProvider == null)
+            if (InputSystem?.EyeGazeProvider == null)
             {
                 return;
             }
@@ -339,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
             if ((!isPaused) && (useLiveInputStream))
             {
-                UpdateDataVis(new Ray(MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeOrigin, MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeDirection));
+                UpdateDataVis(new Ray(InputSystem.EyeGazeProvider.GazeOrigin, InputSystem.EyeGazeProvider.GazeDirection));
             }
         }
 

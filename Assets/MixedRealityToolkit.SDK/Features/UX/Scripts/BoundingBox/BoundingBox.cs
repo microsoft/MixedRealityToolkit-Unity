@@ -130,6 +130,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Minimum scaling allowed relative to the initial size")]
         private float scaleMinimum = 0.2f;
 
+        /// <summary>
+        /// Public property for the scale maximum, in the target's local scale.
+        /// Set this value with SetScaleLimits.
+        /// </summary>
+        public float ScaleMaximum
+        {
+            get
+            {
+                return maximumScale != null ? maximumScale.x : scaleMaximum;
+            }
+        }
+
+        /// <summary>
+        /// Public property for the scale minimum, in the target's local scale.
+        /// Set this value with SetScaleLimits.
+        /// </summary>
+        public float ScaleMinimum
+        {
+            get
+            {
+                return minimumScale != null ? minimumScale.x : scaleMinimum;
+            }
+        }
+
         [Header("Box Display")]
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
@@ -176,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Size of the cube collidable used in scale handles")]
         private float scaleHandleSize = 0.03f;
         [SerializeField]
-        [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. If not set, spheres will be displayed instead")]
+        [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead")]
         GameObject rotationHandlePrefab = null;
         [SerializeField]
         [FormerlySerializedAs("ballRadius")]
@@ -327,8 +351,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        // Initial origin of the current pointer
-        private Vector3 initialPointerPosition;
+        // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
+        private Vector3 grabPointInPointer;
 
         private CardinalAxisType[] edgeAxes;
         private int[] flattenedHandles;
@@ -400,6 +424,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void UnhighlightWires()
         {
             ResetHandleVisibility();
+        }
+
+        /// <summary>
+        /// Sets the minimum/maximum scale for the bounding box at runtime.
+        /// </summary>
+        /// <param name="min">Minimum scale</param>
+        /// <param name="max">Maximum scale</param>
+        /// <param name="relativeToInitialState">If true the values will be multiplied by the current target scale. If false they will be in absolute local scale.</param>
+        public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
+        {
+            scaleMaximum = max;
+            scaleMinimum = min;
+
+            // Update the absolute min/max
+            var target = Target;
+            if (target != null)
+            {
+                if (relativeToInitialState)
+                {
+                    maximumScale = target.transform.localScale * scaleMaximum;
+                    minimumScale = target.transform.localScale * scaleMinimum;
+                }
+                else
+                {
+                    maximumScale = new Vector3(scaleMaximum, scaleMaximum, scaleMaximum);
+                    minimumScale = new Vector3(scaleMinimum, scaleMinimum, scaleMinimum);
+                }
+            }
         }
 
         #endregion
@@ -515,7 +567,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (currentHandleType != HandleType.None)
             {
                 Vector3 prevGrabPoint = currentGrabPoint;
-                currentGrabPoint = initialGrabPoint + currentPointer.Position - initialPointerPosition;
+                currentGrabPoint = (currentPointer.Rotation * grabPointInPointer) + currentPointer.Position;
 
                 if (currentHandleType == HandleType.Rotation)
                 {
@@ -718,18 +770,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     ball.name = "midpoint_" + i.ToString();
                     ball.transform.localPosition = edgeCenters[i];
 
-                    // Align handle with its edge assuming that the prefab is initially aligned with the up direction
-                    if (edgeAxes[i] == CardinalAxisType.X)
-                    {
-                        Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.right);
-                        ball.transform.localRotation = realignment * ball.transform.localRotation;
-                    }
-                    else if (edgeAxes[i] == CardinalAxisType.Z)
-                    {
-                        Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
-                        ball.transform.localRotation = realignment * ball.transform.localRotation;
-                    }
-
                     SphereCollider collider = ball.AddComponent<SphereCollider>();
                     collider.radius = 0.5f * rotationHandleDiameter;
 
@@ -748,6 +788,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     balls.Add(ball.transform);
                 }
             }
+
+            // Aligns each rotation handle with the Y axis along the edge and the X and Z axis pointing
+            // out from the bounding box.
+            // Y axis of the prefab will point toward the positive direction of the pivot axis.
+            balls[0].localRotation = Quaternion.Euler(90, 90, 0) * balls[0].localRotation;
+            balls[1].localRotation = Quaternion.Euler(0, 180, 0) * balls[1].localRotation;
+            balls[2].localRotation = Quaternion.Euler(0, 180, 90) * balls[2].localRotation;
+            balls[3].localRotation = Quaternion.Euler(0, 90, 0) * balls[3].localRotation;
+            balls[4].localRotation = Quaternion.Euler(0, 0, -90) * balls[4].localRotation;
+            balls[5].localRotation = Quaternion.Euler(0, -90, 0) * balls[5].localRotation;
+            balls[6].localRotation = Quaternion.Euler(-90, 0, -90) * balls[6].localRotation;
+            balls[7].localRotation = Quaternion.Euler(0, 0, 0) * balls[7].localRotation;
+            balls[8].localRotation = Quaternion.Euler(180, 90, 90) * balls[8].localRotation;
+            balls[9].localRotation = Quaternion.Euler(90, 0, 0) * balls[9].localRotation;
+            balls[10].localRotation = Quaternion.Euler(-90, -90, -90) * balls[10].localRotation;
+            balls[11].localRotation = Quaternion.Euler(180, -90, -90) * balls[11].localRotation;
 
             if (links != null)
             {
@@ -1467,7 +1523,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            if (currentPointer != null && eventData.SourceId == currentPointer.InputSourceParent.SourceId)
+            if (currentPointer != null && eventData.Pointer == currentPointer)
             {
                 DropController();
 
@@ -1507,9 +1563,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     currentPointer = eventData.Pointer;
                     initialGrabPoint = currentPointer.Result.Details.Point;
                     currentGrabPoint = initialGrabPoint;
-                    initialPointerPosition = eventData.Pointer.Position;
                     initialScale = Target.transform.localScale;
                     initialPosition = Target.transform.position;
+                    grabPointInPointer = Quaternion.Inverse(eventData.Pointer.Rotation) * (initialGrabPoint - currentPointer.Position);
 
                     SetHighlighted(grabbedHandleTransform);
 

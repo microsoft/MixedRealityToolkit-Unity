@@ -20,6 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent GestureTypeContent = new GUIContent("Gesture Type", "The type of Gesture that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a Gesture is recognized.");
 
+        private const string ProfileTitle = "Gesture Settings";
+        private const string ProfileDescription = "This gesture map is any and all movements of part the user's body, especially a hand or the head, that raise actions through the input system.\n\n" +
+                "Note: Defined controllers can look up the list of gestures and raise the events based on specific criteria.";
+
         private SerializedProperty gestures;
         private SerializedProperty windowsManipulationGestureSettings;
         private SerializedProperty useRailsNavigation;
@@ -86,27 +90,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
+            {
+                return;
+            }
 
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-
-                DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
-
                 return;
             }
-
-            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
-            {
-                return;
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Gesture Input", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("This gesture map is any and all movements of part the user's body, especially a hand or the head, that raise actions through the input system.\n\nNote: Defined controllers can look up the list of gestures and raise the events based on specific criteria.", MessageType.Info);
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
@@ -114,9 +107,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-            CheckProfileLock(target);
-
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
             serializedObject.Update();
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Windows Gesture Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(windowsManipulationGestureSettings);
@@ -127,8 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Defined Recognizable Gestures", EditorStyles.boldLabel);
+
             RenderList(gestures);
+
             serializedObject.ApplyModifiedProperties();
+            GUI.enabled = wasGUIEnabled;
         }
 
         private void RenderList(SerializedProperty list)
@@ -136,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
 
-            if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton))
+            if (RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
             {
                 list.arraySize += 1;
                 var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);
@@ -152,8 +149,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 var actionConstraint = action.FindPropertyRelative("axisConstraint");
                 actionConstraint.intValue = 0;
             }
-
-            GUILayout.Space(12f);
 
             if (list == null || list.arraySize == 0)
             {

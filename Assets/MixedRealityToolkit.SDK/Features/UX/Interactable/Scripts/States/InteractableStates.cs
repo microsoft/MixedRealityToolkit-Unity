@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 
+using System.Collections.Generic;
+
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
@@ -96,6 +98,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             new State(){ Index = 13, Name = "Custom", ActiveIndex = -1, Bit = 0, Value = 0}
         };
 
+        public InteractableStates()
+        {
+            base.allStates = allStates;
+            currentState = allStates[0];
+        }
+
         public InteractableStates(State defaultState) : base(defaultState)
         {
             base.allStates = allStates;
@@ -143,6 +151,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public override State[] GetStates()
         {
             return stateList.ToArray();
+        }
+
+        /// <summary>
+        /// Returns the default states for InteractableStates.
+        /// Default states are set on an interactable when it is created and no other list of 
+        /// states is specified.
+        /// Default States should match "DefaultStates" scriptable object in Interactable
+        /// </summary>
+        /// <returns></returns>
+        public virtual List<State> GetDefaultStates()
+        {
+            List<State> result = new List<State>();
+            result.Add(GetState(InteractableStateEnum.Default));
+            result.Add(GetState(InteractableStateEnum.Focus));
+            result.Add(GetState(InteractableStateEnum.Pressed));
+            result.Add(GetState(InteractableStateEnum.Disabled));
+            return result;
         }
     }
 }
