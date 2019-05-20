@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             {
                 UnityEngine.Debug.LogWarning($"Exception thrown when trying to discover coordinate: {e.ToString()}");
                 isTracking = false;
-                return false;
+                throw e;
             }
         }
 
