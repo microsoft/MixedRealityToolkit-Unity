@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.SceneSystem;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -49,7 +50,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             else
             {
-                RenderContentScenes(sceneSystem, contentScenes); 
+                if (Application.isPlaying)
+                {
+                    EditorGUILayout.Toggle("Scene Operation In Progress", sceneSystem.SceneOperationInProgress);
+                    EditorGUILayout.Slider("Progress", sceneSystem.SceneOperationProgress, 0, 1);
+                }
+
+                EditorGUI.BeginDisabledGroup(sceneSystem.SceneOperationInProgress);
+                RenderContentScenes(sceneSystem, contentScenes);
+                EditorGUI.EndDisabledGroup();
             }
 
             EditorGUILayout.Space();
@@ -57,11 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void RenderLightingScenes(MixedRealitySceneSystem sceneSystem, List<SceneInfo> lightingScenes)
         {
-            if (!Application.isPlaying)
-            {
-                EditorGUILayout.HelpBox("Select the active lighting scene by clicking its name.", MessageType.Info);
-                EditorGUILayout.Space();
-            }
+            EditorGUILayout.HelpBox("Select the active lighting scene by clicking its name.", MessageType.Info);
+            EditorGUILayout.Space();
             EditorGUILayout.Space();
             EditorGUILayout.BeginVertical();
             foreach (SceneInfo lightingScene in lightingScenes)
@@ -76,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 bool selected = lightingScene.Name == sceneSystem.ActiveLightingScene;
 
                 GUI.color = selected ? enabledColor : disabledColor;
-                if (GUILayout.Button(lightingScene.Name, EditorStyles.toolbarButton) && !selected && !Application.isPlaying)
+                if (GUILayout.Button(lightingScene.Name, EditorStyles.toolbarButton) && !selected)
                 {
                     sceneSystem.SetLightingScene(lightingScene.Name);
                 }
@@ -86,13 +92,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void RenderContentScenes(MixedRealitySceneSystem sceneSystem, List<SceneInfo> contentScenes)
         {
-            if (!Application.isPlaying)
-            {
-                EditorGUILayout.HelpBox("You can load / unload scenes in the editor by clicking on their tags or names", MessageType.Info);
-                EditorGUILayout.Space();
-            }
-
-            EditorGUI.BeginDisabledGroup(Application.isPlaying);
+            EditorGUILayout.HelpBox("You can load / unload scenes in the editor by clicking on their tags or names", MessageType.Info);
+            EditorGUILayout.Space();
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Load / Unload by tag", EditorStyles.miniBoldLabel);
             List<string> contentTags = new List<string>(sceneSystem.ContentTags);
@@ -107,24 +108,40 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.BeginVertical(GUILayout.MaxWidth(tagLoadButtonSetWidth));
                     EditorGUILayout.LabelField(tag, EditorStyles.miniLabel);
                     EditorGUILayout.BeginHorizontal();
+
                     if (GUILayout.Button("Load", EditorStyles.toolbarButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
                     {
-                        foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
+
+                        if (Application.isPlaying)
                         {
-                            if (contentScene.Tag == tag)
+                            ServiceContentLoadByTag(sceneSystem, tag);
+                        }
+                        else
+                        {
+                            foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
                             {
-                                EditorSceneManager.OpenScene(contentScene.Path, OpenSceneMode.Additive);
+                                if (contentScene.Tag == tag)
+                                {
+                                    EditorSceneManager.OpenScene(contentScene.Path, OpenSceneMode.Additive);
+                                }
                             }
                         }
                     }
                     if (GUILayout.Button("Unload", EditorStyles.toolbarButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
                     {
-                        foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
+                        if (Application.isPlaying)
                         {
-                            if (contentScene.Tag == tag)
+                            ServiceContentUnloadByTag(sceneSystem, tag);
+                        }
+                        else
+                        {
+                            foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
                             {
-                                Scene scene = EditorSceneManager.GetSceneByName(contentScene.Name);
-                                EditorSceneManager.CloseScene(scene, false);
+                                if (contentScene.Tag == tag)
+                                {
+                                    Scene scene = EditorSceneManager.GetSceneByName(contentScene.Name);
+                                    EditorSceneManager.CloseScene(scene, false);
+                                }
                             }
                         }
                     }
@@ -148,19 +165,68 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 bool loaded = scene.isLoaded;
 
                 GUI.color = loaded ? enabledColor : disabledColor;
-                if (GUILayout.Button(contentScene.Name, EditorStyles.toolbarButton) && !Application.isPlaying)
+                if (GUILayout.Button(contentScene.Name, EditorStyles.toolbarButton))
                 {
-                    if (loaded)
+                    if (Application.isPlaying)
                     {
-                        EditorSceneManager.CloseScene(scene, false);
+                        if (loaded)
+                        {
+                            ServiceContentUnload(sceneSystem, contentScene.Name);
+                        }
+                        else
+                        {
+                            ServiceContentLoad(sceneSystem, contentScene.Name);
+                        }
                     }
                     else
                     {
-                        EditorSceneManager.OpenScene(contentScene.Path, OpenSceneMode.Additive);
+                        if (loaded)
+                        {
+                            EditorSceneManager.CloseScene(scene, false);
+                        }
+                        else
+                        {
+                            EditorSceneManager.OpenScene(contentScene.Path, OpenSceneMode.Additive);
+                        }
                     }
                 }
             }
-            EditorGUI.EndDisabledGroup();
+        }
+
+        private async void ServiceContentLoadByTag(MixedRealitySceneSystem sceneSystem, string tag)
+        {
+            await sceneSystem.LoadContentByTag(tag);
+        }
+
+        private async void ServiceContentUnloadByTag(MixedRealitySceneSystem sceneSystem, string tag)
+        {
+            await sceneSystem.UnloadContentByTag(tag);
+        }
+
+        private async void ServiceContentLoad(MixedRealitySceneSystem sceneSystem, string sceneName)
+        {
+            Debug.Log("ServiceContentLoad: " + sceneName);
+            try
+            {
+                await sceneSystem.LoadContent(sceneName);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
+        private async void ServiceContentUnload(MixedRealitySceneSystem sceneSystem, string sceneName)
+        {
+            try
+            {
+                Debug.Log("ServiceContentUnload: " + sceneName);
+                await sceneSystem.UnloadContent(sceneName);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
         }
     }
 }

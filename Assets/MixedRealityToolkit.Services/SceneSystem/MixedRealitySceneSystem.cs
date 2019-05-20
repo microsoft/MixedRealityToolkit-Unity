@@ -197,13 +197,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public async Task LoadContent(string sceneToLoad, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
         {
-            await LoadContent(new string[] { sceneToLoad });
+            await LoadScenesInternal(new string[] { sceneToLoad }, SceneType.Content, mode, activationToken);
         }
 
         /// <inheritdoc />
         public async Task UnloadContent(string sceneToUnload)
         {
-            await UnloadContent(new string[] { sceneToUnload });
+            await UnloadScenesInternal(new string[] { sceneToUnload }, SceneType.Content);
         }
 
         /// <inheritdoc />
@@ -221,13 +221,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public async Task LoadContentByTag(string tag, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
         {
-            await LoadContent(profile.GetContentSceneNamesByTag(tag));
+            await LoadScenesInternal(profile.GetContentSceneNamesByTag(tag), SceneType.Content, mode, activationToken);
         }
 
         /// <inheritdoc />
         public async Task UnloadContentByTag(string tag)
         {
-            await UnloadContent(profile.GetContentSceneNamesByTag(tag));
+            await UnloadScenesInternal(profile.GetContentSceneNamesByTag(tag), SceneType.Content);
         }
 
         /// <inheritdoc />
@@ -298,6 +298,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <returns></returns>
         private async Task LoadScenesInternal(IEnumerable<string> scenesToLoad, SceneType sceneType, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
         {
+            Debug.Log("Load scenes internal: " + sceneType.ToString());
+
             if (!CanSceneOpProceed(sceneType))
             {
                 Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");
@@ -431,6 +433,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <returns></returns>
         private async Task UnloadScenesInternal(IEnumerable<string> scenesToUnload, SceneType sceneType)
         {
+            Debug.Log("Unload scenes internal: " + sceneType.ToString());
+
             if (!CanSceneOpProceed(sceneType))
             {
                 Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");
