@@ -80,6 +80,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         {
             base.OnEnable();
 
+            IsRecording = false;
+            IsPlaying = false;
+
             holographicCameraIPAddress = PlayerPrefs.GetString(holographicCameraIPAddressKey, "localhost");
             indexFilePath = PlayerPrefs.GetString(calibrationPlaybackIndexFilePathPreferenceKey, string.Empty);
             calibrationFilePath = PlayerPrefs.GetString(calibrationPlaybackCalibrationFilePathPreferenceKey, string.Empty);
@@ -93,6 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
         private void OnDisable()
         {
+            IsRecording = false;
+            IsPlaying = false;
+
             PlayerPrefs.SetString(holographicCameraIPAddressKey, holographicCameraIPAddress);
             PlayerPrefs.SetString(calibrationPlaybackIndexFilePathPreferenceKey, indexFilePath);
             PlayerPrefs.SetString(calibrationPlaybackCalibrationFilePathPreferenceKey, calibrationFilePath);
@@ -104,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             base.Update();
 
             CompositionManager compositionManager = GetCompositionManager();
-            if (compositionManager == null && compositionManager.TextureManager == null)
+            if (compositionManager == null || compositionManager.TextureManager == null)
             {
                 IsPlaying = false;
             }
@@ -314,7 +320,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     }
                     else
                     {
-                        compositionManager.TextureManager.TextureRenderCompleted -= Instance_TextureRenderCompleted;
+                        if (compositionManager != null && compositionManager.TextureManager != null)
+                        {
+                            compositionManager.TextureManager.TextureRenderCompleted -= Instance_TextureRenderCompleted;
+                        }
 
                         if (recordingForRecording.Poses.Count > 0)
                         {
@@ -482,7 +491,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 compositionManager.TextureManager.SetOverrideColorTexture(null);
                 compositionManager.ClearOverridePose();
 
-                compositionManager.EnableHolographicCamera(networkManager.transform, previousCalibrationData);
+                if (previousCalibrationData != null)
+                {
+                    compositionManager.EnableHolographicCamera(networkManager.transform, previousCalibrationData);
+                }
                 Destroy(testCube);
             }
 
