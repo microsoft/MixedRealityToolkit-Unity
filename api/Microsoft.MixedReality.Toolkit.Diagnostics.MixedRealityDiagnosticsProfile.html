@@ -106,6 +106,33 @@ public class MixedRealityDiagnosticsProfile : BaseMixedRealityProfile</code></pr
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_DefaultInstancedMaterial_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.DefaultInstancedMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_DefaultInstancedMaterial" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.DefaultInstancedMaterial">DefaultInstancedMaterial</h4>
+  <div class="markdown level1 summary"><p>A material that the diagnostics system can use to render objects with instanced color support.
+A asset reference is required here to make sure the shader permutation is pulled into player builds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Material DefaultInstancedMaterial { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Material</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_FrameSampleRate_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.FrameSampleRate*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_FrameSampleRate" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.FrameSampleRate">FrameSampleRate</h4>
   <div class="markdown level1 summary"><p>The amount of time, in seconds, to collect frames for frame rate calculation.</p>
@@ -140,6 +167,58 @@ public class MixedRealityDiagnosticsProfile : BaseMixedRealityProfile</code></pr
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool ShowDiagnostics { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_ShowFrameInfo_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.ShowFrameInfo*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_ShowFrameInfo" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.ShowFrameInfo">ShowFrameInfo</h4>
+  <div class="markdown level1 summary"><p>Show or hide the frame info (per frame stats).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowFrameInfo { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_ShowMemoryStats_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.ShowMemoryStats*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_ShowMemoryStats" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.ShowMemoryStats">ShowMemoryStats</h4>
+  <div class="markdown level1 summary"><p>Show or hide the memory stats (used, peak, and limit).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowMemoryStats { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
