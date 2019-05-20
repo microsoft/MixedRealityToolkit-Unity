@@ -37,6 +37,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public HashSet<IMixedRealityController> DetectedControllers { get; } = new HashSet<IMixedRealityController>();
 
+
+        private MixedRealityInputSystemProfile inputSystemProfile = null;
+
+        /// <inheritdoc/>
+        public MixedRealityInputSystemProfile InputSystemProfile
+        {
+            get
+            {
+                if (inputSystemProfile == null)
+                {
+                    inputSystemProfile = ConfigurationProfile as MixedRealityInputSystemProfile;
+                }
+                return inputSystemProfile;
+            }
+        }
+
         private IMixedRealityFocusProvider focusProvider = null;
 
         /// <inheritdoc />
@@ -123,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+            if (InputSystemProfile == null)
             {
                 Debug.LogError("The Input system is missing the required Input System Profile!");
                 return;
@@ -200,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < profile.DataProviderConfigurations.Length; i++)
                 {
                     MixedRealityInputDataProviderConfiguration configuration = profile.DataProviderConfigurations[i];
-                    object[] args = { Registrar, this, profile, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
+                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
 
                     if (Registrar.RegisterDataProvider<IMixedRealityInputDeviceManager>(
                         configuration.ComponentType.Type,

@@ -34,6 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         uint GenerateNewSourceId();
 
         /// <summary>
+        /// Typed representation of the ConfigurationProfile property.
+        /// </summary>
+        MixedRealitySpatialAwarenessSystemProfile SpatialAwarenessSystemProfile { get; }
+
+        /// <summary>
         /// Gets the collection of registered <see cref="IMixedRealitySpatialAwarenessObserver"/> data providers.
         /// </summary>
         /// <returns>

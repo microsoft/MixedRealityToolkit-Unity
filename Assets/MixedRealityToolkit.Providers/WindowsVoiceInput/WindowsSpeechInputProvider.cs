@@ -25,17 +25,15 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// </summary>
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
-        /// <param name="inputSystemProfile">The input system configuration profile.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsSpeechInputProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile inputSystemProfile,
             string name = null, 
             uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
@@ -159,7 +157,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             {
                 StopRecognition();
                 keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
-                keywordRecognizer.Dispose();
             }
         }
 
@@ -173,6 +170,15 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
         }
 #endif // UNITY_EDITOR
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                keywordRecognizer?.Dispose();
+            }
+        }
 
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {

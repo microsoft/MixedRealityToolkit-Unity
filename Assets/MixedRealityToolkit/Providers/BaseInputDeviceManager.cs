@@ -17,14 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
         /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
-        /// <param name="inputSystemProfile">The input system configuration profile.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public BaseInputDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile inputSystemProfile,
             string name, 
             uint priority, 
             BaseMixedRealityProfile profile): base(registrar, inputSystem, name, priority, profile)
@@ -35,11 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             InputSystem = inputSystem;
 
-            if (inputSystemProfile == null)
-            {
-                Debug.LogError($"{name} requires a valid input system profile.");
-            }
-            InputSystemProfile = inputSystemProfile;
         }
 
         /// <summary>
@@ -50,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The input system configuration profile in use in the application.
         /// </summary>
-        protected MixedRealityInputSystemProfile InputSystemProfile = null;
+        protected MixedRealityInputSystemProfile InputSystemProfile => InputSystem?.InputSystemProfile;
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
