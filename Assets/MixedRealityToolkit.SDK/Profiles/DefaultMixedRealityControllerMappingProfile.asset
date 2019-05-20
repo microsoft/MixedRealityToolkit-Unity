@@ -2870,6 +2870,19 @@ MonoBehaviour:
       axisCodeY: AXIS_18
       invertXAxis: 0
       invertYAxis: 0
+    - id: 11
+      description: WMR Touchpad Position
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: AXIS_17
+      axisCodeY: AXIS_18
+      invertXAxis: 0
+      invertYAxis: 0
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
@@ -3026,6 +3039,19 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCodeX: AXIS_19
+      axisCodeY: AXIS_20
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 11
+      description: WMR Touchpad Position
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
       keyCode: 0
       axisCodeX: AXIS_19
       axisCodeY: AXIS_20
