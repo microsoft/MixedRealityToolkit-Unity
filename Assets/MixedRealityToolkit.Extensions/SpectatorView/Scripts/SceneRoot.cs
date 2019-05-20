@@ -21,7 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             Debug.Log("Setting scene root: " + gameObject.name);
-            spectatorView.SceneRoot = gameObject;
+            // TODO - this class may need to be deleted
+            //spectatorView.SceneRoot = gameObject;
         }
     }
 }

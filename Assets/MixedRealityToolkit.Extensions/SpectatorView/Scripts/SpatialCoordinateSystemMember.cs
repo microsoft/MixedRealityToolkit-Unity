@@ -13,40 +13,35 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     /// <summary>
-    /// The SpectatorView helper class for managing the connected observer.
+    /// The SpectatorView helper class for managing a participant in the spatial coordinate system
     /// </summary>
-    internal class ConnectedObserver : DisposableBase
+    internal class SpatialCoordinateSystemMember : DisposableBase
     {
-        /// <summary>
-        /// Const string to be used for sending networking messages.
-        /// </summary>
-        public const string SpatialLocalizationMessageHeader = "LOCALIZE";
-
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken cancellationToken;
 
         private readonly Role role;
         private readonly SocketEndpoint socketEndpoint;
-        private readonly Func<GameObject> createAnchor;
+        private readonly Func<GameObject> createSpatialCoordinateGO;
         private readonly bool debugLogging;
 
         private Action<BinaryReader> processIncomingMessages = null;
-        private GameObject observerGO = null;
+        private GameObject spatialCoordinateGO = null;
 
         /// <summary>
-        /// Instantiates a new <see cref="ConnectedObserver"/>.
+        /// Instantiates a new <see cref="SpatialCoordinateSystemMember"/>.
         /// </summary>
         /// <param name="role">The role of the current device (is it a Broadcaster adding a connected observer to it's list).</param>
         /// <param name="socketEndpoint">The endpoint of the other entity.</param>
-        /// <param name="createAnchor">The function to create the anchor <see cref="GameObject"/>.</param>
+        /// <param name="createSpatialCoordinateGO">The function that creates a spatial coordinate game object on detection<see cref="GameObject"/>.</param>
         /// <param name="debugLogging">Flag for enabling troubleshooting logging.</param>
-        public ConnectedObserver(Role role, SocketEndpoint socketEndpoint, Func<GameObject> createAnchor, bool debugLogging)
+        public SpatialCoordinateSystemMember(Role role, SocketEndpoint socketEndpoint, Func<GameObject> createSpatialCoordinateGO, bool debugLogging)
         {
             cancellationToken = cancellationTokenSource.Token;
 
             this.role = role;
             this.socketEndpoint = socketEndpoint;
-            this.createAnchor = createAnchor;
+            this.createSpatialCoordinateGO = createSpatialCoordinateGO;
             this.debugLogging = debugLogging;
         }
 
@@ -54,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (debugLogging)
             {
-                Debug.Log($"ConnectedObserver [{role} - Connection: {socketEndpoint.Address}]: {message}");
+                Debug.Log($"SpatialCoordinateSystemMember [{role} - Connection: {socketEndpoint.Address}]: {message}");
             }
         }
 
@@ -62,13 +57,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// Localizes this observer with the connected party using the given mechanism.
         /// </summary>
         /// <param name="localizationMechanism">The mechanism to use for localization.</param>
-        public async Task LocalizeAsync(SpatialLocalizationMechanismBase localizationMechanism)
+        public async Task LocalizeAsync(SpatialLocalizer spatialLocalizer)
         {
             DebugLog("Started LocalizeAsync");
 
             DebugLog("Initializing with LocalizationMechanism.");
             // Tell the localization mechanism to initialize, this could create anchor if need be
-            Guid token = await localizationMechanism.InitializeAsync(role, cancellationToken);
+            Guid token = await spatialLocalizer.InitializeAsync(role, cancellationToken);
             DebugLog("Initialized with LocalizationMechanism");
 
             try
@@ -78,18 +73,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     processIncomingMessages = r =>
                     {
                         DebugLog("Passing on incoming message");
-                        localizationMechanism.ProcessIncomingMessage(role, token, r);
+                        spatialLocalizer.ProcessIncomingMessage(role, token, r);
                     };
                 }
 
                 DebugLog("Telling LocalizationMechanims to begin localizng");
-                ISpatialCoordinate coordinate = await localizationMechanism.LocalizeAsync(role, token, (callback) => // Allows localization mechanism to tell spectator what to do
+                ISpatialCoordinate coordinate = await spatialLocalizer.LocalizeAsync(role, token, (callback) => // Allows localization mechanism to tell spectator what to do
                 {
                     DebugLog("Sending message to connected client");
                     using (MemoryStream memoryStream = new MemoryStream())
                     using (BinaryWriter writer = new BinaryWriter(memoryStream))
                     {
-                        writer.Write(SpatialLocalizationMessageHeader);
+                        writer.Write(SpatialCoordinateSystemManager.SpatialLocalizationMessageHeader);
 
                         callback(writer);
                         socketEndpoint.Send(memoryStream.ToArray());
@@ -108,9 +103,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     {
                         if (!cancellationToken.IsCancellationRequested)
                         {
-                            observerGO = createAnchor();
-                            observerGO.AddComponent<SpatialCoordinateLocalizer>().Coordinate = coordinate;
-                            DebugLog("Anchor created, coordinate set");
+                            spatialCoordinateGO = createSpatialCoordinateGO();
+                            spatialCoordinateGO.AddComponent<SpatialCoordinateLocalizer>().Coordinate = coordinate;
+                            DebugLog("Spatial coordinate created, coordinate set");
                         }
                     }
                 }
@@ -123,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
 
                 DebugLog("Uninitializing.");
-                localizationMechanism.Uninitialize(role, token);
+                spatialLocalizer.Uninitialize(role, token);
                 DebugLog("Uninitialized.");
             }
         }
@@ -149,10 +144,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             cancellationTokenSource.Cancel();
             cancellationTokenSource.Dispose();
 
-
             lock (cancellationTokenSource)
             {
-                UnityEngine.Object.Destroy(observerGO);
+                UnityEngine.Object.Destroy(spatialCoordinateGO);
             }
         }
     }

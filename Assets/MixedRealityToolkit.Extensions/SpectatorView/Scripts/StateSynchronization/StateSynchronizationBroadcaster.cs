@@ -16,11 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class StateSynchronizationBroadcaster : Singleton<StateSynchronizationBroadcaster>
     {
-        private readonly Dictionary<SocketEndpoint, ConnectedObserver> connectedObservers = new Dictionary<SocketEndpoint, ConnectedObserver>();
-
-        [Tooltip("Toggle to enable troubleshooting logging.")]
+        /// <summary>
+        /// Check to enable debug logging.
+        /// </summary>
+        [Tooltip("Check to enable debug logging.")]
         [SerializeField]
-        private bool debugLogging = false;
+        protected bool debugLogging;
 
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
@@ -28,10 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Network connection manager that facilitates sending data between devices.")]
         [SerializeField]
         protected TCPConnectionManager connectionManager;
-
-        [Tooltip("The prefab visual that will represent the coordinate used to synchronize.")]
-        [SerializeField]
-        private GameObject anchorPrefab = null;
 
         /// <summary>
         /// Port used for sending data.
@@ -52,10 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
 
-        /// <summary>
-        /// The spatial localization method to be used by the observer.
-        /// </summary>
-        internal SpatialLocalizationMechanismBase SpatialLocalizationMechanism { get; set; }
+        private Dictionary<string, List<ICommandHandler>> commandHandlers = new Dictionary<string, List<ICommandHandler>>();
+        private List<ICommandHandler> allHandlers = new List<ICommandHandler>();
 
         protected override void Awake()
         {
@@ -108,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (debugLogging)
             {
-                Debug.Log($"StateSynchronizationBroadcaster - {connectedObservers.Count} Connections : {message}");
+                Debug.Log($"StateSynchronizationBroadcaster: {message}");
             }
         }
 
@@ -116,30 +111,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             DebugLog($"Broadcaster received connection from {endpoint.Address}.");
 
-            ConnectedObserver connectedObserver = new ConnectedObserver(Role.Broadcaster, endpoint, () => Instantiate(anchorPrefab), debugLogging);
-            connectedObservers.Add(endpoint, connectedObserver);
             Connected?.Invoke(endpoint);
 
-            DebugLog($"Broadcaster kicking off spatial localization on observer from {endpoint.Address}.");
-
-            if (SpatialLocalizationMechanism != null)
+            foreach (var handler in allHandlers)
             {
-                connectedObserver.LocalizeAsync(SpatialLocalizationMechanism).FireAndForget();
+                handler.OnConnected(endpoint);
             }
         }
 
         protected void OnDisconnected(SocketEndpoint endpoint)
         {
-            if (!connectedObservers.TryGetValue(endpoint, out ConnectedObserver connectedObserver))
-            {
-                Debug.LogError("Got a disconnection event for an observer which we didn't register as connected.");
-            }
-            else
-            {
-                connectedObserver.Dispose();
-            }
-
             Disconnected?.Invoke(endpoint);
+
+            foreach (var handler in allHandlers)
+            {
+                handler.OnDisconnected(endpoint);
+            }
         }
 
         protected void OnReceive(IncomingMessage data)
@@ -156,17 +143,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             StateSynchronizationSceneManager.Instance.ReceiveMessage(data.Endpoint, reader);
                         }
                         break;
-                    case ConnectedObserver.SpatialLocalizationMessageHeader:
+                    default:
+                        if (commandHandlers.ContainsKey(command))
                         {
-                            DebugLog("Got spatial localization message");
-                            if (!connectedObservers.TryGetValue(data.Endpoint, out ConnectedObserver connectedObserver))
+                            foreach (var handler in commandHandlers[command])
                             {
-                                Debug.LogError("Received a message for an obserer not registered as a connectedObserver.");
-                            }
-                            else
-                            {
-                                DebugLog("Passing message to observer");
-                                connectedObserver.ReceiveMessage(reader);
+                                handler.HandleCommand(command, data.Endpoint, reader);
                             }
                         }
                         break;
@@ -260,6 +242,40 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     connectionManager.Broadcast(memoryStream.ToArray());
                 }
             }
+        }
+
+        public bool Register(string command, ICommandHandler handler)
+        {
+            if (!commandHandlers.ContainsKey(command))
+            {
+                commandHandlers[command] = new List<ICommandHandler>();
+            }
+
+            if (commandHandlers[command].Contains(handler) ||
+                allHandlers.Contains(handler))
+            {
+                return false;
+            }
+
+            commandHandlers[command].Add(handler);
+            allHandlers.Add(handler);
+
+            return true;
+        }
+
+        public bool Unregister(string command, ICommandHandler handler)
+        {
+            if (!commandHandlers.ContainsKey(command) ||
+                !commandHandlers[command].Contains(handler) ||
+                !allHandlers.Contains(handler))
+            {
+                return false;
+            }
+
+            commandHandlers[command].Remove(handler);
+            allHandlers.Remove(handler);
+
+            return true;
         }
     }
 }

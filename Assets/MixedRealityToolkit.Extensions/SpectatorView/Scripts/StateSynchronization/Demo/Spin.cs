@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     {
         void Update()
         {
-            if (StateSynchronizationDemo.Instance.Role == Role.Broadcaster)
+            if (StateSynchronizationDemo.Instance.StateSynchronizationRole == StateSynchronizationRole.Broadcaster)
             {
                 gameObject.transform.localRotation = Quaternion.Euler(0, 100 * Time.time, 0);
             }

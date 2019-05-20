@@ -19,6 +19,95 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     public class SpectatorView : MonoBehaviour
     {
         /// <summary>
+        /// Role of the device in the spectator view experience.
+        /// </summary>
+        [Tooltip("Role of the device in the spectator view experience.")]
+        [SerializeField]
+        public Role Role;
+
+        /// <summary>
+        /// User ip address
+        /// </summary>
+        [Tooltip("User ip address")]
+        [SerializeField]
+        private string userIpAddress = "127.0.0.1";
+
+        /// <summary>
+        /// StateSynchronizationSceneManager MonoBehaviour
+        /// </summary>
+        [Tooltip("StateSynchronizationSceneManager")]
+        [SerializeField]
+        private StateSynchronizationSceneManager stateSynchronizationSceneManager = null;
+
+        /// <summary>
+        /// StateSynchronizationBroadcaster MonoBehaviour
+        /// </summary>
+        [Tooltip("StateSynchronizationBroadcaster MonoBehaviour")]
+        [SerializeField]
+        private StateSynchronizationBroadcaster stateSynchronizationBroadcaster = null;
+
+        /// <summary>
+        /// StateSynchronizationObserver MonoBehaviour
+        /// </summary>
+        [Tooltip("StateSynchronizationObserver MonoBehaviour")]
+        [SerializeField]
+        private StateSynchronizationObserver stateSynchronizationObserver = null;
+
+        /// <summary>
+        /// Content to enable in the broadcaster application
+        /// </summary>
+        [Tooltip("Content to enable in the broadcaster application")]
+        [SerializeField]
+        private GameObject broadcastedContent = null;
+
+        private void Start()
+        {
+            if (stateSynchronizationSceneManager == null ||
+                stateSynchronizationBroadcaster == null ||
+                stateSynchronizationObserver == null)
+            {
+                Debug.LogError("StateSynchronization scene isn't configured correctly");
+                return;
+            }
+
+            switch (Role)
+            {
+                case Role.User:
+                    RunStateSynchronizationAsBroadcaster();
+                    break;
+                case Role.Spectator:
+                    RunStateSynchronizationAsObserver();
+                    break;
+            }
+        }
+
+        private void RunStateSynchronizationAsBroadcaster()
+        {
+            broadcastedContent.SetActive(true);
+            stateSynchronizationBroadcaster.gameObject.SetActive(true);
+            stateSynchronizationObserver.gameObject.SetActive(false);
+
+            // The StateSynchronizationSceneManager needs to be enabled after the broadcaster/observer
+            stateSynchronizationSceneManager.gameObject.SetActive(true);
+        }
+
+        private void RunStateSynchronizationAsObserver()
+        {
+            // All content in the observer scene should be dynamically setup/created, so we hide scene content here
+            broadcastedContent.SetActive(false);
+
+            stateSynchronizationBroadcaster.gameObject.SetActive(false);
+            stateSynchronizationObserver.gameObject.SetActive(true);
+
+            // The StateSynchronizationSceneManager needs to be enabled after the broadcaster/observer
+            stateSynchronizationSceneManager.gameObject.SetActive(true);
+
+            // Make sure the StateSynchronizationSceneManager is enabled prior to connecting the observer
+            stateSynchronizationObserver.ConnectTo(userIpAddress);
+        }
+
+        // TODO - remove this in the future, but keep the recording service setup logic
+        /*/// <summary>
         /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IMatchMakingService"/>
         /// </summary>
         [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IMatchMakingService. Note: errors will be generated if the provided MonoBehaviour does not implement IMatchMakingService")]
@@ -238,6 +327,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 _recordingServiceVisual.SetRecordingService(_recordingService);
             }
-        }
+        }*/
     }
 }

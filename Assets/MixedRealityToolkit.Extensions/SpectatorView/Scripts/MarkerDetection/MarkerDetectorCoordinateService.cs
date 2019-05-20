@@ -2,13 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     /// <summary>
     /// A marker detection based implementation of <see cref="ISpatialCoordinateService"/>.

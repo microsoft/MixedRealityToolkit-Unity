@@ -12,11 +12,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// This class observes changes and updates content on a spectator device.
     /// </summary>
-    public class StateSynchronizationObserver : Singleton<StateSynchronizationObserver>
+    public class StateSynchronizationObserver : Singleton<StateSynchronizationObserver>,
+        ICommandService
     {
-        [Tooltip("Toggle to enable troubleshooting logging.")]
+        /// <summary>
+        /// Check to enable debug logging.
+        /// </summary>
+        [Tooltip("Check to enable debug logging.")]
         [SerializeField]
-        private bool debugLogging = false;
+        protected bool debugLogging;
 
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
@@ -32,10 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected int port = 7410;
 
-        [Tooltip("The prefab visual that will represent the coordinate used to synchronize.")]
-        [SerializeField]
-        private GameObject anchorPrefab = null;
-
         private SocketEndpoint currentConnection = null;
         private double[] averageTimePerFeature;
         private const float heartbeatTimeInterval = 0.1f;
@@ -44,12 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
-        private ConnectedObserver connectedObserver = null;
-
-        /// <summary>
-        /// The spatial localization method to be used by the observer.
-        /// </summary>
-        internal SpatialLocalizationMechanismBase SpatialLocalizationMechanism { get; set; }
+        private Dictionary<string, List<ICommandHandler>> commandHandlers = new Dictionary<string, List<ICommandHandler>>();
+        private List<ICommandHandler> allHandlers = new List<ICommandHandler>();
 
         protected override void Awake()
         {
@@ -93,10 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             base.OnDestroy();
 
-            DebugLog("Disposing observer.");
-            connectedObserver?.Dispose();
-            connectedObserver = null;
-
             if (connectionManager != null)
             {
                 connectionManager.OnConnected -= OnConnected;
@@ -109,41 +101,34 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnConnected(SocketEndpoint endpoint)
         {
-            if (currentConnection != null || connectedObserver != null)
+            if (currentConnection != null)
             {
-                Debug.LogError("We just connected, yet the current observer or connection weren't null");
-
-                DebugLog("Disposing observer.");
-                connectedObserver?.Dispose();
-                connectedObserver = null;
-
+                Debug.LogError("We just connected, yet the current connection wasn't null");
                 currentConnection = null;
             }
 
             currentConnection = endpoint;
-            Debug.Log("Observer Connected!");
+            DebugLog("Observer Connected!");
 
-            connectedObserver = new ConnectedObserver(Role.Observer, endpoint, () => Instantiate(anchorPrefab), debugLogging);
-            DebugLog("Created ConnectedObserver.");
+            foreach (var handler in allHandlers)
+            {
+                handler.OnConnected(endpoint);
+            }
+
             if (StateSynchronizationSceneManager.IsInitialized)
             {
                 StateSynchronizationSceneManager.Instance.MarkSceneDirty();
             }
 
             hologramSynchronizer.Reset(currentConnection);
-
-            if (SpatialLocalizationMechanism != null)
-            {
-                DebugLog("Spatially localizing observer");
-                connectedObserver.LocalizeAsync(SpatialLocalizationMechanism).FireAndForget();
-            }
         }
 
         private void OnDisconnected(SocketEndpoint endpoint)
         {
-            DebugLog("Disconnected, disposing observer");
-            connectedObserver?.Dispose();
-            connectedObserver = null;
+            foreach (var handler in allHandlers)
+            {
+                handler.OnDisconnected(endpoint);
+            }
 
             currentConnection = null;
         }
@@ -209,10 +194,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             }
                         }
                         break;
-
-                    case ConnectedObserver.SpatialLocalizationMessageHeader:
-                        DebugLog("Passing message to observer");
-                        connectedObserver.ReceiveMessage(reader);
+                    default:
+                        if (commandHandlers.ContainsKey(command))
+                        {
+                            foreach (var handler in commandHandlers[command])
+                            {
+                                handler.HandleCommand(command, data.Endpoint, reader);
+                            }
+                        }
                         break;
                 }
             }
@@ -284,6 +273,40 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                 return stream.ToArray();
             }
+        }
+
+        public bool Register(string command, ICommandHandler handler)
+        {
+            if (!commandHandlers.ContainsKey(command))
+            {
+                commandHandlers[command] = new List<ICommandHandler>();
+            }
+
+            if (commandHandlers[command].Contains(handler) ||
+                allHandlers.Contains(handler))
+            {
+                return false;
+            }
+
+            commandHandlers[command].Add(handler);
+            allHandlers.Add(handler);
+
+            return true;
+        }
+
+        public bool Unregister(string command, ICommandHandler handler)
+        {
+            if (!commandHandlers.ContainsKey(command) ||
+                !commandHandlers[command].Contains(handler) ||
+                !allHandlers.Contains(handler))
+            {
+                return false;
+            }
+
+            commandHandlers[command].Remove(handler);
+            allHandlers.Remove(handler);
+
+            return true;
         }
     }
 }

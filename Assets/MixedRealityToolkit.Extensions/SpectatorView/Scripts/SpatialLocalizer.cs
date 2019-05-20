@@ -14,8 +14,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// Helper class to enable spatial localization between two entities on SpectatorView.
     /// </summary>
     /// <remarks>In the future this would move to SpatialLocalization in a better form, abstraction-wise.</remarks>
-    internal abstract class SpatialLocalizationMechanismBase : MonoBehaviour
+    internal abstract class SpatialLocalizer : MonoBehaviour
     {
+        /// <summary>
+        /// The spatial coordinate service for sub class to instantiate and this helper base to rely on.
+        /// </summary>
+        protected abstract ISpatialCoordinateService SpatialCoordinateService { get; }
+
+        protected readonly object lockObject = new object();
+
         private string typeName;
 
         [Tooltip("Toggle to enable troubleshooting logging.")]
@@ -25,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <summary>
         /// The type name of this object instance.
         /// </summary>
-        private string TypeName => typeName ?? (typeName = GetType().Name);
+        public string TypeName => typeName ?? (typeName = GetType().Name);
 
         /// <summary>
         /// Helper method for logging troubleshooting information.
