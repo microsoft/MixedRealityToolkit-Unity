@@ -416,20 +416,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             /// <summary>
             /// Compute concatenation of lhs * rhs such that lhs * (rhs * v) = Concat(lhs, rhs) * v
             /// </summary>
-            /// <remarks>
-            /// Start defining pose * vector = pose.p + pose.r * vector
-            /// lhs * (rhs * v)
-            /// = lhs * (rhs.p + rhs.r * v)
-            /// = lhs.p + lhs.r * (rhs.p + rhs.r * v) 
-            /// = lhs.p + lhs.r * rhs.p + lhs.r * rhs.r * v
-            /// = Pose(lhs.p + lhs.r * rhs.p, lhs.r * rhs.r) * v
-            /// </remarks>
             /// <param name="lhs">Second transform to apply</param>
             /// <param name="rhs">First transform to apply</param>
             /// <returns></returns>
             private static Pose Concatenate(Pose lhs, Pose rhs)
             {
-                return new Pose(lhs.position + lhs.rotation * rhs.position, lhs.rotation * rhs.rotation);
+                return rhs.GetTransformedBy(lhs);
             }
 
             /// <summary>
