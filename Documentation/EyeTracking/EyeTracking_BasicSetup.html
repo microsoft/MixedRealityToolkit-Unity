@@ -89,7 +89,8 @@ Alternatively, you can check out our already configured <a href="EyeTracking_Exa
 <p>For Eye Tracking to work correctly, the following requirements must be met:</p>
 <ol>
 <li>An <em>'Eye Gaze Data Provider'</em> must be added to the input system. This provides eye tracking data from the platform.</li>
-<li>Eye Tracking must be set as the preferred source in the <em>'Gaze Provider'</em>. This setting can be toggled at runtime.</li>
+<li>The GazeProvider must have its &quot;Use Eye Tracking&quot; property set to true. Note that true is the default value (so no special
+action is required unless you have actively unchecked this property.)</li>
 <li>The <em>'Gaze Input'</em> capability must be enabled in the application manifest. <strong>Currently this is only available in Visual Studio.</strong></li>
 <li>The HoloLens <strong>must</strong> be calibrated for the current user under system settings.</li>
 </ol>
@@ -122,7 +123,7 @@ You can simply select <em>DefaultMixedRealityToolkitConfigurationProfile</em> an
 <p><img src="../Images/EyeTracking/mrtk_setup_eyes_dataprovider.png" alt="MRTK"></p>
 <h3 id="enabling-eye-tracking-in-the-gazeprovider">Enabling Eye Tracking in the GazeProvider</h3>
 <p>In HoloLens v1, head gaze was used as primary pointing technique.
-While head gaze is still available via the <em>GazeProvider</em> in MRTK which is attached to your <a href="https://docs.unity3d.com/ScriptReference/Camera.html">Camera</a>, you can check to use eye gaze instead by ticking the <em>'Prefer Eye Tracking'</em> checkbox as shown in the screenshot below.</p>
+While head gaze is still available via the <em>GazeProvider</em> in MRTK which is attached to your <a href="https://docs.unity3d.com/ScriptReference/Camera.html">Camera</a>, you can check to use eye gaze instead by ticking the <em>'Use Eye Tracking'</em> checkbox as shown in the screenshot below.</p>
 <p><img src="../Images/EyeTracking/mrtk_setup_eyes_gazeprovider.png" alt="MRTK"></p>
 <p><strong>NOTE:</strong> Developers can toggle between eye tracking and head tracking in code by changing the <em>'UseEyeTracking'</em> property of <em>'GazeProvider'</em>.</p>
 <h3 id="simulating-eye-tracking-in-the-unity-editor">Simulating Eye Tracking in the Unity Editor</h3>
