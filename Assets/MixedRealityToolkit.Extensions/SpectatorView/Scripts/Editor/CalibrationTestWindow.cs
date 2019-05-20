@@ -380,11 +380,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
             try
             {
-                recordingForPlayback = JsonUtility.FromJson<CalibrationRecording>(File.ReadAllText(indexFilePath));
-                isIndexFileParsed = true;
+                if (File.Exists(indexFilePath))
+                {
+                    recordingForPlayback = JsonUtility.FromJson<CalibrationRecording>(File.ReadAllText(indexFilePath));
+                    isIndexFileParsed = true;
+                }
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.LogWarning($"Unexpected exception parsing file {indexFilePath}: {ex.ToString()}");
             }
         }
 
@@ -406,7 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             isCalibrationDataParsed = false;
             try
             {
-                if (!string.IsNullOrEmpty(calibrationFilePath))
+                if (File.Exists(calibrationFilePath))
                 {
                     byte[] calibrationDataPayload = File.ReadAllBytes(calibrationFilePath);
 
@@ -419,8 +423,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.LogWarning($"Unexpected exception parsing file {indexFilePath}: {ex.ToString()}");
             }
         }
 
