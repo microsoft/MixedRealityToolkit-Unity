@@ -308,18 +308,14 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <returns></returns>
         private async Task LoadScenesInternal(IEnumerable<string> scenesToLoad, SceneType sceneType, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
         {
-            Debug.Log("Load scenes internal: " + sceneType.ToString());
-
             if (!CanSceneOpProceed(sceneType))
             {
                 Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");
                 return;
             }
 
-            if (activationToken != null)
-            {   // If we're using an activation token let it know that we're NOT ready to proceed
-                activationToken.ReadyToProceed = false;
-            }
+            // If we're using an activation token let it know that we're NOT ready to proceed
+            activationToken?.SetReadyToProceed(false);
 
             SetSceneOpProgress(true, 0, sceneType);
 
@@ -365,8 +361,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         continue;
 
                     AsyncOperation sceneOp = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
-                    // Set this to false initially
-                    sceneOp.allowSceneActivation = false;
+                    // Set this to true unless we have an activation token
+                    sceneOp.allowSceneActivation = (activationToken != null) ? activationToken.AllowSceneActivation : true;
                     loadSceneOps.Add(sceneOp);
                 }
 
@@ -377,36 +373,32 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 {
                     completedAllSceneOps = true;
                     bool readyToProceed = false;
+                    bool allowSceneActivation = (activationToken != null) ? activationToken.AllowSceneActivation : true;
 
                     // Go through all the load scene ops and see if we're ready to be activated
                     float sceneOpProgress = 0;
                     for (int i = 0; i < loadSceneOps.Count; i++)
-                    {   // See if all the load ops are ready for activation
-                        if (activationToken != null)
-                        {
-                            activationToken.ReadyToProceed = true;
-                        }
+                    {
+                        // Set allow scene activation
+                        // (This can be set to true by user before ReadyToProceed is set)
+                        loadSceneOps[i].allowSceneActivation = allowSceneActivation;
 
-                        readyToProceed |= loadSceneOps[i].progress >= SceneActivationLoadProgress;
-                        sceneOpProgress += loadSceneOps[i].progress;
+                        if (loadSceneOps[i].isDone)
+                        {   // Sometimes if a scene is small enough, progress will get reset to 0 before you even have a chance to check it
+                            // This is true EVEN IF you've set allowSceneActivation to false
+                            // So use isDone as a failsafe
+                            sceneOpProgress += 1;
+                        }
+                        else
+                        {
+                            readyToProceed |= loadSceneOps[i].progress >= SceneActivationLoadProgress;
+                            sceneOpProgress += loadSceneOps[i].progress;
+                            completedAllSceneOps = false;
+                        }
                     }
 
-                    // If ALL the scenes are ready for activation, update scene activation
-                    if (readyToProceed)
-                    {   // Allow scene activation by default
-                        bool allowSceneActivation = true;
-                        if (activationToken != null)
-                        {
-                            activationToken.ReadyToProceed = true;
-                            allowSceneActivation = activationToken.AllowSceneActivation;
-                        }
-
-                        for (int i = 0; i < loadSceneOps.Count; i++)
-                        {   // Now that we're in scene activation stage, check whether the scene is actually done
-                            completedAllSceneOps &= loadSceneOps[i].isDone;
-                            loadSceneOps[i].allowSceneActivation = allowSceneActivation;
-                        }
-                    }
+                    // Let the activation know whether we're ready
+                    activationToken?.SetReadyToProceed(readyToProceed);
 
                     sceneOpProgress = Mathf.Clamp01(SceneOperationProgress / totalSceneOps);
 
@@ -443,8 +435,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <returns></returns>
         private async Task UnloadScenesInternal(IEnumerable<string> scenesToUnload, SceneType sceneType)
         {
-            Debug.Log("Unload scenes internal: " + sceneType.ToString());
-
             if (!CanSceneOpProceed(sceneType))
             {
                 Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");

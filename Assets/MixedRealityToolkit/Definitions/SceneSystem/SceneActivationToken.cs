@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+
 namespace Microsoft.MixedReality.Toolkit.SceneSystem
 {
     /// <summary>
@@ -11,11 +13,20 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// When true, the operation is waiting on AllowSceneActivation to be set to true before proceeding.
         /// </summary>
-        public bool ReadyToProceed { get; set; } = false;
+        public bool ReadyToProceed { get; private set; } = false;
 
         /// <summary>
         /// Setting this to true grants permission for scene operation to activate loaded scenes.
         /// </summary>
         public bool AllowSceneActivation { get; set; } = false;
+
+        /// <summary>
+        /// Sets ReadyToProceed value
+        /// </summary>
+        /// <param name="readyToProceed"></param>
+        public void SetReadyToProceed(bool readyToProceed)
+        {
+            ReadyToProceed = readyToProceed;
+        }
     }
 }

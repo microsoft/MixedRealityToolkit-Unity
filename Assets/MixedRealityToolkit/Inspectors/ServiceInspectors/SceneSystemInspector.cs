@@ -21,6 +21,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Color disabledColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
         private static readonly Color errorColor = Color.Lerp(GUI.backgroundColor, Color.red, 0.5f);
 
+        private SceneActivationToken activationToken = new SceneActivationToken();
+        private static bool requireActivationToken = false;
+
         public override bool DrawProfileField { get { return true; } }
 
         public override void DrawInspectorGUI(object target)
@@ -52,8 +55,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (Application.isPlaying)
                 {
+                    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                    EditorGUILayout.LabelField("Current Scene Operation", EditorStyles.boldLabel);
                     EditorGUILayout.Toggle("Scene Operation In Progress", sceneSystem.SceneOperationInProgress);
-                    EditorGUILayout.Slider("Progress", sceneSystem.SceneOperationProgress, 0, 1);
+                    EditorGUILayout.FloatField("Progress", sceneSystem.SceneOperationProgress);
+
+                    requireActivationToken = EditorGUILayout.Toggle("Require Manual Scene Activation", requireActivationToken);
+
+                    if (requireActivationToken && activationToken.ReadyToProceed)
+                    {
+                        if (GUILayout.Button("Allow Scene Activation"))
+                        {
+                            activationToken.AllowSceneActivation = true;
+                        }
+                    }
+                    else
+                    {
+                        activationToken.AllowSceneActivation = true;
+                    }
+
+                    EditorGUILayout.EndVertical();
                 }
 
                 EditorGUI.BeginDisabledGroup(sceneSystem.SceneOperationInProgress);
@@ -195,7 +216,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private async void ServiceContentLoadByTag(MixedRealitySceneSystem sceneSystem, string tag)
         {
-            await sceneSystem.LoadContentByTag(tag);
+            if (requireActivationToken)
+            {
+                activationToken.AllowSceneActivation = false;
+            }
+
+            await sceneSystem.LoadContentByTag(tag, LoadSceneMode.Additive, activationToken);
         }
 
         private async void ServiceContentUnloadByTag(MixedRealitySceneSystem sceneSystem, string tag)
@@ -205,28 +231,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private async void ServiceContentLoad(MixedRealitySceneSystem sceneSystem, string sceneName)
         {
-            Debug.Log("ServiceContentLoad: " + sceneName);
-            try
+            if (requireActivationToken)
             {
-                await sceneSystem.LoadContent(sceneName);
+                activationToken.AllowSceneActivation = false;
             }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
+
+            await sceneSystem.LoadContent(sceneName, LoadSceneMode.Additive, activationToken);
         }
 
         private async void ServiceContentUnload(MixedRealitySceneSystem sceneSystem, string sceneName)
         {
-            try
-            {
-                Debug.Log("ServiceContentUnload: " + sceneName);
-                await sceneSystem.UnloadContent(sceneName);
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
+            await sceneSystem.UnloadContent(sceneName);
         }
     }
 }
