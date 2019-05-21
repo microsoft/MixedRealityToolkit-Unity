@@ -17,6 +17,14 @@ steps:
     PublishArtifacts: true
     PackagingDir: 'ARM'
 
+# Build UWP x86 .NET backend
+- template: tasks/unitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PublishArtifacts: true
+    ScriptingBackend: '.NET'
+
 - powershell: |
    $AutoMrtkVersion = Get-Date -format "dd.MM.yyyy"
    .\build.ps1 -Version $AutoMrtkVersion -NoNuget
