@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System.Collections.Generic;
 using System.IO;
@@ -14,9 +13,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class StateSynchronizationObserver : Singleton<StateSynchronizationObserver>
     {
-        [Tooltip("Toggle to enable troubleshooting logging.")]
+        /// <summary>
+        /// Check to enable debug logging.
+        /// </summary>
+        [Tooltip("Check to enable debug logging.")]
         [SerializeField]
-        private bool debugLogging = false;
+        protected bool debugLogging;
 
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
@@ -32,10 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         protected int port = 7410;
 
-        [Tooltip("The prefab visual that will represent the coordinate used to synchronize.")]
-        [SerializeField]
-        private GameObject anchorPrefab = null;
-
         private SocketEndpoint currentConnection = null;
         private double[] averageTimePerFeature;
         private const float heartbeatTimeInterval = 0.1f;
@@ -44,15 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
-        private ConnectedObserver connectedObserver = null;
-
-        /// <summary>
-        /// The spatial localization method to be used by the observer.
-        /// </summary>
-        internal SpatialLocalizationMechanismBase SpatialLocalizationMechanism { get; set; }
-
         protected override void Awake()
         {
+            DebugLog($"Awoken!");
             base.Awake();
 
             // Ensure that runInBackground is set to true so that the app continues to send network
@@ -61,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             if (connectionManager != null)
             {
+                DebugLog("Setting up connection manager");
                 connectionManager.OnConnected += OnConnected;
                 connectionManager.OnReceive += OnReceive;
                 connectionManager.OnDisconnected += OnDisconnected;
@@ -93,10 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             base.OnDestroy();
 
-            DebugLog("Disposing observer.");
-            connectedObserver?.Dispose();
-            connectedObserver = null;
-
             if (connectionManager != null)
             {
                 connectionManager.OnConnected -= OnConnected;
@@ -109,41 +98,34 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnConnected(SocketEndpoint endpoint)
         {
-            if (currentConnection != null || connectedObserver != null)
+            if (currentConnection != null)
             {
-                Debug.LogError("We just connected, yet the current observer or connection weren't null");
-
-                DebugLog("Disposing observer.");
-                connectedObserver?.Dispose();
-                connectedObserver = null;
-
+                Debug.LogError("We just connected, yet the current connection wasn't null");
                 currentConnection = null;
             }
 
             currentConnection = endpoint;
-            Debug.Log("Observer Connected!");
+            DebugLog($"Observer Connected to endpoint: {endpoint.Address}");
 
-            connectedObserver = new ConnectedObserver(Role.Observer, endpoint, () => Instantiate(anchorPrefab), debugLogging);
-            DebugLog("Created ConnectedObserver.");
+            foreach (var handler in CommandService.Instance.CommandHandlers)
+            {
+                handler.OnConnected(endpoint);
+            }
+
             if (StateSynchronizationSceneManager.IsInitialized)
             {
                 StateSynchronizationSceneManager.Instance.MarkSceneDirty();
             }
 
             hologramSynchronizer.Reset(currentConnection);
-
-            if (SpatialLocalizationMechanism != null)
-            {
-                DebugLog("Spatially localizing observer");
-                connectedObserver.LocalizeAsync(SpatialLocalizationMechanism).FireAndForget();
-            }
         }
 
         private void OnDisconnected(SocketEndpoint endpoint)
         {
-            DebugLog("Disconnected, disposing observer");
-            connectedObserver?.Dispose();
-            connectedObserver = null;
+            foreach (var handler in CommandService.Instance.CommandHandlers)
+            {
+                handler.OnDisconnected(endpoint);
+            }
 
             currentConnection = null;
         }
@@ -156,6 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (connectionManager != null)
             {
+                DebugLog($"Connecting to broadcaster: {address}");
                 connectionManager.ConnectTo(address, port);
             }
         }
@@ -167,6 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (connectionManager != null)
             {
+                DebugLog($"Disconnecting");
                 connectionManager.DisconnectAll();
             }
         }
@@ -209,10 +193,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             }
                         }
                         break;
-
-                    case ConnectedObserver.SpatialLocalizationMessageHeader:
-                        DebugLog("Passing message to observer");
-                        connectedObserver.ReceiveMessage(reader);
+                    default:
+                        if (CommandService.Instance.CommandHandlerDictionary.TryGetValue(command, out var handlers))
+                        {
+                            foreach (var handler in handlers)
+                            {
+                                handler.HandleCommand(data.Endpoint, command, reader);
+                            }
+                        }
                         break;
                 }
             }

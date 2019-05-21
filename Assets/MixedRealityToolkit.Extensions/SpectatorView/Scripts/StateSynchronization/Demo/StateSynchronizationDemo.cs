@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal enum Role
+    internal enum StateSynchronizationRole
     {
         Broadcaster,
         Observer
@@ -21,11 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         [Tooltip("Current role of the application")]
         [SerializeField]
-        public Role Role = Role.Broadcaster;
-
-        [Tooltip("Localization mechanism to use for spatially localizing the SpectatorView participants.")]
-        [SerializeField]
-        private SpatialLocalizationMechanismBase spatialLocalizationMechanizm = null;
+        public StateSynchronizationRole StateSynchronizationRole = StateSynchronizationRole.Broadcaster;
 
         /// <summary>
         /// Broadcaster ip address
@@ -72,15 +68,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return;
             }
 
-            stateSynchronizationBroadcaster.SpatialLocalizationMechanism = spatialLocalizationMechanizm;
-            stateSynchronizationObserver.SpatialLocalizationMechanism = spatialLocalizationMechanizm;
-
-            switch (Role)
+            switch (StateSynchronizationRole)
             {
-                case Role.Broadcaster:
+                case StateSynchronizationRole.Broadcaster:
                     RunAsBroadcaster();
                     break;
-                case Role.Observer:
+                case StateSynchronizationRole.Observer:
                     RunAsObserver();
                     break;
             }
@@ -89,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 #if UNITY_EDITOR
         private void Update()
         {
-            if (Role == Role.Observer)
+            if (StateSynchronizationRole == StateSynchronizationRole.Observer)
             {
                 Camera.main.transform.localPosition = StateSynchronizationObserver.Instance.transform.position;
                 Camera.main.transform.localRotation = StateSynchronizationObserver.Instance.transform.rotation;

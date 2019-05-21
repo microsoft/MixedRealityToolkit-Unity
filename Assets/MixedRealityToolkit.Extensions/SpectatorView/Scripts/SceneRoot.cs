@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     {
         private void Start()
         {
-            var spectatorView = FindObjectOfType<SpectatorView>();
+            var spectatorView = FindObjectOfType<SpectatorViewOld>();
             if (spectatorView == null)
             {
                 Debug.Log("Failed to find spectator view");

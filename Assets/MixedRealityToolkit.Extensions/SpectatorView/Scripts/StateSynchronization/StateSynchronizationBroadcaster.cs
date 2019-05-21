@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,11 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class StateSynchronizationBroadcaster : Singleton<StateSynchronizationBroadcaster>
     {
-        private readonly Dictionary<SocketEndpoint, ConnectedObserver> connectedObservers = new Dictionary<SocketEndpoint, ConnectedObserver>();
-
-        [Tooltip("Toggle to enable troubleshooting logging.")]
+        /// <summary>
+        /// Check to enable debug logging.
+        /// </summary>
+        [Tooltip("Check to enable debug logging.")]
         [SerializeField]
-        private bool debugLogging = false;
+        protected bool debugLogging;
 
         /// <summary>
         /// Network connection manager that facilitates sending data between devices.
@@ -28,10 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Network connection manager that facilitates sending data between devices.")]
         [SerializeField]
         protected TCPConnectionManager connectionManager;
-
-        [Tooltip("The prefab visual that will represent the coordinate used to synchronize.")]
-        [SerializeField]
-        private GameObject anchorPrefab = null;
 
         /// <summary>
         /// Port used for sending data.
@@ -52,13 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
 
-        /// <summary>
-        /// The spatial localization method to be used by the observer.
-        /// </summary>
-        internal SpatialLocalizationMechanismBase SpatialLocalizationMechanism { get; set; }
-
         protected override void Awake()
         {
+            DebugLog($"Awoken!");
             base.Awake();
 
             // Ensure that runInBackground is set to true so that the app continues to send network
@@ -75,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (connectionManager != null)
             {
+                DebugLog("Setting up connection manager");
                 connectionManager.OnConnected += OnConnected;
                 connectionManager.OnDisconnected += OnDisconnected;
                 connectionManager.OnReceive += OnReceive;
@@ -108,38 +100,30 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (debugLogging)
             {
-                Debug.Log($"StateSynchronizationBroadcaster - {connectedObservers.Count} Connections : {message}");
+                Debug.Log($"StateSynchronizationBroadcaster: {message}");
             }
         }
 
         protected void OnConnected(SocketEndpoint endpoint)
         {
             DebugLog($"Broadcaster received connection from {endpoint.Address}.");
-
-            ConnectedObserver connectedObserver = new ConnectedObserver(Role.Broadcaster, endpoint, () => Instantiate(anchorPrefab), debugLogging);
-            connectedObservers.Add(endpoint, connectedObserver);
             Connected?.Invoke(endpoint);
 
-            DebugLog($"Broadcaster kicking off spatial localization on observer from {endpoint.Address}.");
-
-            if (SpatialLocalizationMechanism != null)
+            foreach (var handler in CommandService.Instance.CommandHandlers)
             {
-                connectedObserver.LocalizeAsync(SpatialLocalizationMechanism).FireAndForget();
+                handler.OnConnected(endpoint);
             }
         }
 
         protected void OnDisconnected(SocketEndpoint endpoint)
         {
-            if (!connectedObservers.TryGetValue(endpoint, out ConnectedObserver connectedObserver))
-            {
-                Debug.LogError("Got a disconnection event for an observer which we didn't register as connected.");
-            }
-            else
-            {
-                connectedObserver.Dispose();
-            }
-
+            DebugLog($"Broadcaster received disconnect from {endpoint.Address}"); ;
             Disconnected?.Invoke(endpoint);
+
+            foreach (var handler in CommandService.Instance.CommandHandlers)
+            {
+                handler.OnDisconnected(endpoint);
+            }
         }
 
         protected void OnReceive(IncomingMessage data)
@@ -156,17 +140,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             StateSynchronizationSceneManager.Instance.ReceiveMessage(data.Endpoint, reader);
                         }
                         break;
-                    case ConnectedObserver.SpatialLocalizationMessageHeader:
+                    default:
+                        if (CommandService.Instance.CommandHandlerDictionary.TryGetValue(command, out var handlers))
                         {
-                            DebugLog("Got spatial localization message");
-                            if (!connectedObservers.TryGetValue(data.Endpoint, out ConnectedObserver connectedObserver))
+                            foreach (var handler in handlers)
                             {
-                                Debug.LogError("Received a message for an obserer not registered as a connectedObserver.");
-                            }
-                            else
-                            {
-                                DebugLog("Passing message to observer");
-                                connectedObserver.ReceiveMessage(reader);
+                                handler.HandleCommand(data.Endpoint, command, reader);
                             }
                         }
                         break;
