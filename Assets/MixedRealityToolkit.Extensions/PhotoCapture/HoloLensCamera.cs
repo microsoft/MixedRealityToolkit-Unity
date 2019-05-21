@@ -371,9 +371,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
             private LinkedList<CameraFrameInternal> freeCameraFrames;
 
             /// <summary>
-            /// List
+            /// List of camera frames that are currently in use.
             /// </summary>
             private LinkedList<CameraFrameInternal> usedCameraFrames;
+
+            /// <summary>
+            /// Lock to synchronize access to the frame pool.
+            /// </summary>
+            private readonly object frameLock = new object();
 
             public CameraFramePool()
             {
@@ -388,68 +393,74 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
             /// <returns>The camera frame (with the pixel data copied already)</returns>
             public CameraFrameInternal AcquireFrame(SoftwareBitmap bmpFrame, PixelFormat desiredPixelFormat)
             {
-                CameraFrameInternal frame = null;
-
-                // convert the data format and get the data size - 
-                PixelFormat pixelFormat = PixelHelpers.ConvertFormat(bmpFrame.BitmapPixelFormat);
-                if (pixelFormat != desiredPixelFormat)
+                lock (frameLock)
                 {
-                    BitmapPixelFormat bitmapPixelFormat = PixelHelpers.ConvertFormat(desiredPixelFormat);
-                    bmpFrame = SoftwareBitmap.Convert(bmpFrame, PixelHelpers.ConvertFormat(desiredPixelFormat));
-                }
+                    CameraFrameInternal frame = null;
 
-                int dataSize = PixelHelpers.GetDataSize(bmpFrame.PixelWidth, bmpFrame.PixelHeight, desiredPixelFormat);
-
-                if (freeCameraFrames.Count > 0)
-                {
-                    // find a frame with the required size buffer
-                    for (LinkedListNode<CameraFrameInternal> node = freeCameraFrames.First; node != null; node = node.Next)
+                    // convert the data format and get the data size - 
+                    PixelFormat pixelFormat = PixelHelpers.ConvertFormat(bmpFrame.BitmapPixelFormat);
+                    if (pixelFormat != desiredPixelFormat)
                     {
-                        // check if the pixel data array is the correct length
-                        if (node.Value != null && node.Value?.PixelData?.Length == dataSize)
-                        {
-                            // remove the frame from the free list
-                            freeCameraFrames.Remove(node);
+                        BitmapPixelFormat bitmapPixelFormat = PixelHelpers.ConvertFormat(desiredPixelFormat);
+                        bmpFrame = SoftwareBitmap.Convert(bmpFrame, PixelHelpers.ConvertFormat(desiredPixelFormat));
+                    }
 
-                            // add the frame to the used list (need to create a new node)
-                            frame = node.Value;
-                            usedCameraFrames.AddFirst(frame);
+                    int dataSize = PixelHelpers.GetDataSize(bmpFrame.PixelWidth, bmpFrame.PixelHeight, desiredPixelFormat);
+
+                    if (freeCameraFrames.Count > 0)
+                    {
+                        // find a frame with the required size buffer
+                        for (LinkedListNode<CameraFrameInternal> node = freeCameraFrames.First; node != null; node = node.Next)
+                        {
+                            // check if the pixel data array is the correct length
+                            if (node.Value != null && node.Value?.PixelData?.Length == dataSize)
+                            {
+                                // remove the frame from the free list
+                                freeCameraFrames.Remove(node);
+
+                                // add the frame to the used list (need to create a new node)
+                                frame = node.Value;
+                                usedCameraFrames.AddFirst(frame);
+                            }
                         }
                     }
+
+                    // if there were no free frames, create a new one
+                    if (frame == null)
+                    {
+                        frame = new CameraFrameInternal(this);
+                        frame.PixelData = new byte[dataSize];
+                        frame.PixelDataBuffer = frame.PixelData.AsBuffer();
+
+                        // add the new frame to the used camera frames list
+                        usedCameraFrames.AddFirst(frame);
+                    }
+
+                    // copy the pixel data to the frame through the internal IBuffer
+                    bmpFrame.CopyToBuffer(frame.PixelDataBuffer);
+
+                    return frame;
                 }
-
-                // if there were no free frames, create a new one
-                if (frame == null)
-                {
-                    frame = new CameraFrameInternal(this);
-                    frame.PixelData = new byte[dataSize];
-                    frame.PixelDataBuffer = frame.PixelData.AsBuffer();
-
-                    // add the new frame to the used camera frames list
-                    usedCameraFrames.AddFirst(frame);
-                }
-
-                // copy the pixel data to the frame through the internal IBuffer
-                bmpFrame.CopyToBuffer(frame.PixelDataBuffer);
-
-                return frame;
             }
 
             public void ReleaseFrame(CameraFrameInternal frame)
             {
-                // remove the frame from the used list and add to the free list
-                if (frame != null)
+                lock (frameLock)
                 {
-                    LinkedListNode<CameraFrameInternal> frameNode = usedCameraFrames.Find(frame);
-
-                    // if the frame was found, add to the free pile and remove from the used list
-                    if (frameNode != null)
+                    // remove the frame from the used list and add to the free list
+                    if (frame != null)
                     {
-                        // need to create a new node as nodes don't swap between linked lists
-                        freeCameraFrames.AddFirst(frameNode.Value);
+                        LinkedListNode<CameraFrameInternal> frameNode = usedCameraFrames.Find(frame);
 
-                        // remove from the current list
-                        usedCameraFrames.Remove(frameNode);
+                        // if the frame was found, add to the free pile and remove from the used list
+                        if (frameNode != null)
+                        {
+                            // need to create a new node as nodes don't swap between linked lists
+                            freeCameraFrames.AddFirst(frameNode.Value);
+
+                            // remove from the current list
+                            usedCameraFrames.Remove(frameNode);
+                        }
                     }
                 }
             }
@@ -459,7 +470,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
             /// </summary>
             public void TrimFrames()
             {
-                freeCameraFrames.Clear();
+                lock (frameLock)
+                {
+                    freeCameraFrames.Clear();
+                }
             }
         }
 #endif
@@ -1364,7 +1378,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
         public void Dispose()
         {
 #if CAN_USE_UWP_TYPES
-            frameReader?.Dispose();
+            if (frameReader != null)
+            {
+                frameReader.FrameArrived -= OnMediaFrameArrived;
+                frameReader.Dispose();
+            }
             mediaCapture?.Dispose();
             mediaCapture = null;
             videoDeviceController = null;
