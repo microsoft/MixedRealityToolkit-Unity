@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// SpatialLocalizer that shows an ArUco marker
     /// </summary>
-    internal class ArUcoMarkerVisualizerSpatialLocalizer : SpatialLocalizer
+    internal class MarkerVisualizerSpatialLocalizer : SpatialLocalizer
     {
         private ISpatialCoordinateService spatialCoordinateService = null;
 

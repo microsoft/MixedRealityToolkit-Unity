@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection;
 using System;
 using System.IO;
 using System.Threading;
@@ -11,66 +10,21 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    /// <summary>
-    /// SpatialLocalizer that detects an ArUco marker
-    /// </summary>
-    internal class ArUcoMarkerDetectorSpatialLocalizer : SpatialLocalizer
+    internal abstract class SpatialLocalizerBase : SpatialLocalizer
     {
-        private ISpatialCoordinateService spatialCoordinateService = null;
+        protected ISpatialCoordinateService spatialCoordinateService = null;
         private Task<ISpatialCoordinate> initializeUserCoordinateTask = null;
         private TaskCompletionSource<string> observerCoordinateIdToLookFor = null;
 
-        [Tooltip("The reference to Aruco marker detector.")]
-        [SerializeField]
-        private SpectatorViewPluginArUcoMarkerDetector arucoMarkerDetector = null;
-
         /// <inheritdoc/>
         protected override ISpatialCoordinateService SpatialCoordinateService => spatialCoordinateService;
-
-        private void Awake()
-        {
-            DebugLog("Awake", Guid.Empty);
-            spatialCoordinateService = new MarkerDetectorCoordinateService(arucoMarkerDetector, debugLogging);
-        }
 
         /// <summary>
         /// The logic for the host to figure out which coordinate to use for localizing with observer.
         /// </summary>
         /// <param name="token">The token that first requested this host coordinate.</param>
         /// <returns>The spatial coordinate.</returns>
-        protected async Task<ISpatialCoordinate> GetHostCoordinateAsync(Guid token)
-        {
-            DebugLog("Getting host coordinate", token);
-
-            using (CancellationTokenSource cts = new CancellationTokenSource())
-            {
-                TaskCompletionSource<ISpatialCoordinate> coordinateTCS = new TaskCompletionSource<ISpatialCoordinate>();
-                void coordinateDiscovered(ISpatialCoordinate coord)
-                {
-                    DebugLog("Coordinate found", token);
-                    coordinateTCS.SetResult(coord);
-                    cts.Cancel();
-                }
-
-                SpatialCoordinateService.CoordinatedDiscovered += coordinateDiscovered;
-                try
-                {
-                    DebugLog("Starting to look for coordinates", token);
-                    await SpatialCoordinateService.TryDiscoverCoordinatesAsync(cts.Token);
-                    DebugLog("Stopped looking for coordinates", token);
-
-
-                    DebugLog("Awaiting found coordiante", token);
-                    // Don't necessarily need to await here
-                    return await coordinateTCS.Task;
-                }
-                finally
-                {
-                    DebugLog("Unsubscribing from coordinate discovered", token);
-                    SpatialCoordinateService.CoordinatedDiscovered -= coordinateDiscovered;
-                }
-            }
-        }
+        protected abstract Task<ISpatialCoordinate> GetHostCoordinateAsync(Guid token);
 
         /// <inheritdoc/>
         internal async override Task<Guid> InitializeAsync(Role role, CancellationToken cancellationToken)
