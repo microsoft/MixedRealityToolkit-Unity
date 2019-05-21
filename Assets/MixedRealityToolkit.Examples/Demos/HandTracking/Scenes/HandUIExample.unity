@@ -657,7 +657,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 363782802}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1669623512}
@@ -1833,7 +1833,7 @@ MonoBehaviour:
   handedness: 0
   trackedObjectToReference: 3
   trackedHandJoint: 2
-  additionalOffset: {x: -0.1, y: 0, z: 0}
+  additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
   updateSolvers: 1
@@ -1858,8 +1858,12 @@ MonoBehaviour:
   lifetime: 0
   SolverHandler: {fileID: 2133851834}
   transitionBetweenHands: 1
-  activateOnPalmUp: 1
-  palmFacingThreshold: 0.3
+  handVerticalOffset: -0.1
+  handHorizontalOffset: -0.22
+  negateOffsetsOnHandTransition: 1
+  activateOnJointUp: 1
+  jointFacingThreshold: 0.3
+  hideHandCursorsOnActivate: 1
   onHandActivate:
     m_PersistentCalls:
       m_Calls:

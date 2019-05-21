@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,36 +17,53 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     {
         [Header("Hand Constraint")]
         [SerializeField]
-        [Tooltip("TODO")]
+        [Tooltip("Should this solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.")]
         private bool transitionBetweenHands = true;
 
         [SerializeField]
-        [Tooltip("TODO")]
-        private bool activateOnPalmUp = true;
+        [Tooltip("How much to offset the hand along the view's right vector when the hand is completely vertical (interpolates to handHorizontalOffset)")]
+        private float handVerticalOffset = -0.1f;
+
+        [SerializeField]
+        [Tooltip("How much to offset the hand along the view's right vector when the hand is completely horizontal (interpolates to handVerticalOffset)")]
+        private float handHorizontalOffset = -0.2f;
+
+        [SerializeField]
+        [Tooltip("When true changes the sign of the vertical and horizontal offset when hands automatically transition.")]
+        private bool negateOffsetsOnHandTransition = true;
+
+        [SerializeField]
+        [Tooltip("When true calls onHandActivate/onHandDeactivate only when the hand satisfies the jointFacingThreshold.")]
+        private bool activateOnJointUp = true;
 
         [SerializeField]
         [Tooltip("TODO")]
-        private float palmFacingThreshold = 0.3f;
+        private float jointFacingThreshold = 0.3f;
 
         [SerializeField]
         [Tooltip("TODO")]
-        private UnityEvent onHandActivate;
+        private bool hideHandCursorsOnActivate = true;
 
         [SerializeField]
         [Tooltip("TODO")]
-        private UnityEvent onHandDeactivate;
+        private UnityEvent onHandActivate = null;
 
-        private bool handActive = false;
+        [SerializeField]
+        [Tooltip("TODO")]
+        private UnityEvent onHandDeactivate = null;
+
+        private IMixedRealityHand trackedHand = null;
         private List<IMixedRealityHand> handStack = new List<IMixedRealityHand>();
 
         public override void SolverUpdate()
         {
-            bool snap = HandActivationUpdate();
+            var previousTrackedHand = trackedHand;
+            HandActivationUpdate();
 
             GoalPosition = CalculateGoalPosition();
             GoalRotation = SolverHandler.TransformTarget.rotation;
 
-            if (snap)
+            if (previousTrackedHand == null && trackedHand != null)
             {
                 SnapTo(GoalPosition, GoalRotation);
             }
@@ -56,20 +74,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
-        private bool HandActivationUpdate()
+        private void HandActivationUpdate()
         {
-            IMixedRealityHand activeHand = null;
+            IMixedRealityHand activehand = null;
 
             foreach (var hand in handStack)
             {
                 if (IsHandActive(hand))
                 {
-                    activeHand = hand;
+                    activehand = hand;
                     break;
                 }
             }
 
-            return ChangeTrackedObjectType(activeHand);
+            ChangeTrackedObjectType(activehand);
         }
 
         private bool IsHandActive(IMixedRealityHand hand)
@@ -88,20 +106,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 }
             }
 
-            if (activateOnPalmUp)
+            if (activateOnJointUp)
             {
                 MixedRealityPose pose;
 
-                if (hand.TryGetJoint(TrackedHandJoint.Palm, out pose))
+                if (hand.TryGetJoint(SolverHandler.TrackedHandJoint, out pose))
                 {
-                    return Vector3.Dot(pose.Up, CameraCache.Main.transform.forward) > palmFacingThreshold;
+                    return Vector3.Dot(pose.Up, CameraCache.Main.transform.forward) > jointFacingThreshold;
                 }
             }
 
             return true;
         }
 
-        private bool ChangeTrackedObjectType(IMixedRealityHand hand)
+        private void ChangeTrackedObjectType(IMixedRealityHand hand)
         {
             if (hand != null)
             {
@@ -112,20 +130,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     if (SolverHandler.TrackedObjectToReference != trackedObjectType)
                     {
                         SolverHandler.TrackedObjectToReference = trackedObjectType;
-                        SolverHandler.AdditionalOffset = -SolverHandler.AdditionalOffset;
+
+                        if (negateOffsetsOnHandTransition)
+                        {
+                            handVerticalOffset = -handVerticalOffset;
+                            handHorizontalOffset = -handHorizontalOffset;
+                        }
 
                         // Move the currently tracked hand to the top of the stack.
                         handStack.Remove(hand);
                         handStack.Insert(0, hand);
                     }
 
-                    if (!handActive)
+                    if (trackedHand == null)
                     {
+                        trackedHand = hand;
                         onHandActivate.Invoke();
-                        handActive = true;
-
-                        return true;
                     }
+                    else
+                    {
+                        ToggleCursor(true);
+                        trackedHand = hand;
+                    }
+
+                    // Wait one frame to disable the cursor in case one hasn't been instantiated yet.
+                    StartCoroutine(ToggleCursor(false, true));
                 }
                 else
                 {
@@ -134,20 +163,43 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
             else
             {
-                if (handActive)
+                if (trackedHand != null)
                 {
+                    ToggleCursor(true);
+                    trackedHand = null;
                     onHandDeactivate.Invoke();
-                    handActive = false;
                 }
             }
-
-            return false;
         }
 
         private Vector3 CalculateGoalPosition()
         {
-            // TODO, maintain distance from hand.
-            return SolverHandler.TransformTarget.position;
+            var offsetWeight = 0.0f;
+            var pose = new MixedRealityPose();
+
+            if (trackedHand?.TryGetJoint(SolverHandler.TrackedHandJoint, out pose) != null)
+            {
+                offsetWeight = Mathf.Abs(Vector3.Dot(pose.Forward, CameraCache.Main.transform.up));
+            }
+
+            var viewRight = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+            return SolverHandler.TransformTarget.position + viewRight * Mathf.Lerp(handHorizontalOffset, handVerticalOffset, offsetWeight);
+        }
+
+        private IEnumerator ToggleCursor(bool visible, bool frameDelay = false)
+        {
+            if (hideHandCursorsOnActivate)
+            {
+                if (frameDelay)
+                {
+                    yield return null;
+                }
+
+                foreach (var pointer in trackedHand?.InputSource.Pointers)
+                {
+                    pointer?.BaseCursor?.SetVisibility(visible);
+                }
+            }
         }
 
         private static bool HandednessToTrackedObjectType(Handedness handedness, out TrackedObjectType trackedObjectType)
@@ -171,8 +223,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected void Start()
         {
             // Initially a hand is not active.
+            trackedHand = null;
             onHandDeactivate.Invoke();
-            handActive = false;
         }
 
         #endregion MonoBehaviour Implementation
