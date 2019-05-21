@@ -96,7 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var oldObject = property.objectReferenceValue;
 
             if (profileType != null && !profileType.IsSubclassOf(typeof(BaseMixedRealityProfile)) && profileType != typeof(BaseMixedRealityProfile))
-            {
+            {  
+                // If they've drag-and-dropped a non-profile scriptable object, set it to null.
                 profileType = null;
             }
 
