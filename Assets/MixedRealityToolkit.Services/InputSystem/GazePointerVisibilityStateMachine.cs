@@ -74,11 +74,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void UpdateStateHeadGaze(int numNearPointersActive, int numFarPointersActive)
         {
-            bool isMotionControllerOrHandUp = numFarPointersActive > 0 || numNearPointersActive > 0;
+            bool canGazeCursorShow = numFarPointersActive == 1 && numNearPointersActive == 0;
             switch (gazePointerState)
             {
                 case GazePointerState.Initial:
-                    if (isMotionControllerOrHandUp)
+                    if (!canGazeCursorShow)
                     {
                         // There is some pointer other than the gaze pointer in the scene, assume
                         // this is from a motion controller or articulated hand, and that we should
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     break;
                 case GazePointerState.GazePointerActive:
-                    if (isMotionControllerOrHandUp)
+                    if (!canGazeCursorShow)
                     {
                         activateGazeKeywordIsSet = false;
                         gazePointerState = GazePointerState.GazePointerInactive;
