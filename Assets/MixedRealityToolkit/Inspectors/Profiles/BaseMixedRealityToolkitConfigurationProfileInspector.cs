@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// If MRTK is in scene & input system is disabled, then show error message
+        /// If MRTK is in scene and input system is disabled, then show error message
         /// </summary>
         protected void RenderMixedRealityInputConfigured()
         {
