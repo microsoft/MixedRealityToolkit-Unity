@@ -504,7 +504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7773019770a8f094aa804356377fb9db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spectatorView: {fileID: 0}
+  spectatorView: {fileID: 1823455403}
 --- !u!65 &718474699
 BoxCollider:
   m_ObjectHideFlags: 0
