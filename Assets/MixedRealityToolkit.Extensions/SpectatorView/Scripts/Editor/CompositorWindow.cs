@@ -103,6 +103,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     string[] compositionOptions = new string[] { "Final composited texture", "All intermediate textures" };
                     GUIContent renderingModeLabel = new GUIContent("Display texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (top right: input video, bottom right: alpha mask, bottom left: opaque hologram, top left: final alpha-blended hologram)");
                     textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
+                    FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
+                    if (fullscreenWindow != null)
+                    {
+                        fullscreenWindow.TextureRenderMode = textureRenderMode;
+                    }
+
+                    if (GUILayout.Button("Fullscreen", GUILayout.Width(120)))
+                    {
+                        FullScreenCompositorWindow.ShowFullscreen();
+                    }
                 }
                 EditorGUILayout.EndHorizontal();
 
