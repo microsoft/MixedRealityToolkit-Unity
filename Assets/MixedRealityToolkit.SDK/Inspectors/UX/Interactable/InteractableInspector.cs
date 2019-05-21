@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             
             SerializedProperty isGlobal = serializedObject.FindProperty("IsGlobal");
             isGlobal.boolValue = EditorGUILayout.Toggle(new GUIContent("Is Global", "Like a modal, does not require focus"), isGlobal.boolValue);
-
+            
             SerializedProperty voiceCommands = serializedObject.FindProperty("VoiceCommand");
             voiceCommands.stringValue = EditorGUILayout.TextField(new GUIContent("Voice Command", "A voice command to trigger the click event"), voiceCommands.stringValue);
 

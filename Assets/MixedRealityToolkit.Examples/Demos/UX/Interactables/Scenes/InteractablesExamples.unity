@@ -1973,7 +1973,7 @@ PrefabInstance:
     - target: {fileID: 114141171559718660, guid: 50eb8d97f29f335409ec2df393ed6cc5,
         type: 3}
       propertyPath: InputActionId
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50eb8d97f29f335409ec2df393ed6cc5, type: 3}
@@ -2831,8 +2831,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
         type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
       propertyPath: InputActionId
-      value: 6
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
+      propertyPath: VoiceCommand
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
+      propertyPath: Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
+      propertyPath: IsGlobal
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceaaf28e492a284fbf57901d04075ad, type: 3}
