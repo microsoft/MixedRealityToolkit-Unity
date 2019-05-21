@@ -12,12 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
     public class MixedRealityDiagnosticsSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private SerializedProperty showDiagnostics;
+
+        private static bool showProfilerSettings = true;
         private SerializedProperty showProfiler;
+        private SerializedProperty showFrameInfo;
+        private SerializedProperty showMemoryStats;
         private SerializedProperty frameSampleRate;
         private SerializedProperty windowAnchor;
         private SerializedProperty windowOffset;
         private SerializedProperty windowScale;
         private SerializedProperty windowFollowSpeed;
+        private SerializedProperty defaultInstancedMaterial;
 
         private const string ProfileTitle = "Diagnostic Settings";
         private const string ProfileDescription = "Diagnostic visualizations can help monitor system resources and performance inside an application.";
@@ -32,11 +37,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
             showDiagnostics = serializedObject.FindProperty("showDiagnostics");
             showProfiler = serializedObject.FindProperty("showProfiler");
+            showFrameInfo = serializedObject.FindProperty("showFrameInfo");
+            showMemoryStats = serializedObject.FindProperty("showMemoryStats");
             frameSampleRate = serializedObject.FindProperty("frameSampleRate");
             windowAnchor = serializedObject.FindProperty("windowAnchor");
             windowOffset = serializedObject.FindProperty("windowOffset");
             windowScale = serializedObject.FindProperty("windowScale");
             windowFollowSpeed = serializedObject.FindProperty("windowFollowSpeed");
+            defaultInstancedMaterial = serializedObject.FindProperty("defaultInstancedMaterial");
         }
 
         public override void OnInspectorGUI()
@@ -63,14 +71,21 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Profiler Settings", EditorStyles.boldLabel);
+            showProfilerSettings = EditorGUILayout.Foldout(showProfilerSettings, "Profiler Settings", true);
+            if (showProfilerSettings)
             {
-                EditorGUILayout.PropertyField(showProfiler);
-                EditorGUILayout.PropertyField(frameSampleRate);
-                EditorGUILayout.PropertyField(windowAnchor);
-                EditorGUILayout.PropertyField(windowOffset);
-                EditorGUILayout.PropertyField(windowScale);
-                EditorGUILayout.PropertyField(windowFollowSpeed);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showProfiler);
+                    EditorGUILayout.PropertyField(showFrameInfo);
+                    EditorGUILayout.PropertyField(showMemoryStats);
+                    EditorGUILayout.PropertyField(frameSampleRate);
+                    EditorGUILayout.PropertyField(windowAnchor);
+                    EditorGUILayout.PropertyField(windowOffset);
+                    EditorGUILayout.PropertyField(windowScale);
+                    EditorGUILayout.PropertyField(windowFollowSpeed);
+                    EditorGUILayout.PropertyField(defaultInstancedMaterial);
+                }
             }
 
             serializedObject.ApplyModifiedProperties();
