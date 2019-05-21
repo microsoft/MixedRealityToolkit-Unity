@@ -131,6 +131,10 @@ appear, hide the gaze cursor. Whenever user says &quot;select&quot;, make the ga
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class GazePointerVisibilityStateMachine : IMixedRealitySpeechHandler, IEventSystemHandler</code></pre>
   </div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_GazePointerVisibilityStateMachine_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Has different behavior depending on whether or not eye gaze or head gaze in use - see comments on
+GazePointerState for more details.</p>
+</div>
   <h3 id="properties">Properties
   </h3>
   
@@ -190,12 +194,14 @@ appear, hide the gaze cursor. Whenever user says &quot;select&quot;, make the ga
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GazePointerVisibilityStateMachine_UpdateState_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazePointerVisibilityStateMachine.UpdateState*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GazePointerVisibilityStateMachine_UpdateState_System_Int32_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazePointerVisibilityStateMachine.UpdateState(System.Int32,System.Int32)">UpdateState(Int32, Int32)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GazePointerVisibilityStateMachine_UpdateState_System_Int32_System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazePointerVisibilityStateMachine.UpdateState(System.Int32,System.Int32,System.Boolean)">UpdateState(Int32, Int32, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Updates the state machine based on the number of near pointers, the number of far pointers,
+and whether or not eye gaze is valid.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UpdateState(int numNearPointersActive, int numFarPointersActive)</code></pre>
+    <pre><code class="lang-csharp hljs">public void UpdateState(int numNearPointersActive, int numFarPointersActive, bool isEyeGazeValid)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -215,6 +221,11 @@ appear, hide the gaze cursor. Whenever user says &quot;select&quot;, make the ga
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">numFarPointersActive</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isEyeGazeValid</span></td>
         <td></td>
       </tr>
     </tbody>
