@@ -138,9 +138,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!profile.IsCustomProfile)
                 {
-                    EditorGUILayout.HelpBox("Default Mixed Reality Toolkit profiles cannot be edited", MessageType.Warning);
-                    // TODO: Place clone button. MixedRealityProfileCloneWindow requires parent profile though which is not known here
-                    //EditorGUILayout.HelpBox("Default MRTK profiles cannot be edited. Create a clone of this profile to modify settings.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("Default MRTK profiles cannot be edited. Create a clone of this profile to modify settings.", MessageType.Warning);
+                    if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Clone"), EditorStyles.miniButton))
+                    {
+                        MixedRealityProfileCloneWindow.OpenWindow(null, (BaseMixedRealityProfile)target, null);
+                    }
                 }
 
                 if (!isProfileInitialized)
@@ -149,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     if (!MixedRealityToolkit.IsInitialized)
                     {
-                        if (MixedRealityEditorUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
+                        if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Add Mixed Reality Toolkit instance to scene"), EditorStyles.miniButton))
                         {
                             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(MixedRealityInspectorUtility.GetDefaultConfigProfile());
                             // After the toolkit has been created, set the selection back to this item so the user doesn't get lost
@@ -177,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                         if (!MixedRealityToolkit.IsInitialized)
                         {
-                            if (MixedRealityEditorUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
+                            if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Add Mixed Reality Toolkit instance to scene"), EditorStyles.miniButton))
                             {
                                 MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(MixedRealityInspectorUtility.GetDefaultConfigProfile());
                                 // After the toolkit has been created, set the selection back to this item so the user doesn't get lost
