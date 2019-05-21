@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// If MRTK is not initialized in scene, adds & initializes instance to current scene
+        /// If MRTK is not initialized in scene, adds and initializes instance to current scene
         /// </summary>
         public static void AddMixedRealityToolkitToScene(MixedRealityToolkitConfigurationProfile configProfile = null)
         {
