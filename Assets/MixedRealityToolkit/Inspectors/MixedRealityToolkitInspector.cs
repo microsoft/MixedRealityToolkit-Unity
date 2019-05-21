@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     currentPickerWindow = GUIUtility.GetControlID(FocusType.Passive);
                     // Shows the list of MixedRealityToolkitConfigurationProfiles in our project,
                     // selecting the default profile by default (if it exists).
-                    EditorGUIUtility.ShowObjectPicker<MixedRealityToolkitConfigurationProfile>(GetDefaultProfile(allConfigProfiles), false, string.Empty, currentPickerWindow);
+                    EditorGUIUtility.ShowObjectPicker<MixedRealityToolkitConfigurationProfile>(MixedRealityInspectorUtility.GetDefaultConfigProfile(allConfigProfiles), false, string.Empty, currentPickerWindow);
                 }
                 else if (allConfigProfiles.Length == 1)
                 {
@@ -123,22 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene();
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
-        }
-
-        /// <summary>
-        /// Given a list of MixedRealityToolkitConfigurationProfile objects, returns
-        /// the one that matches the default profile name.
-        /// </summary>
-        private MixedRealityToolkitConfigurationProfile GetDefaultProfile(MixedRealityToolkitConfigurationProfile[] allProfiles)
-        {
-            for (int i = 0; i < allProfiles.Length; i++)
-            {
-                if (allProfiles[i].name == "DefaultMixedRealityToolkitConfigurationProfile")
-                {
-                    return allProfiles[i];
-                }
-            }
-            return null;
         }
     }
 }

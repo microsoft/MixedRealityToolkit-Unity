@@ -17,7 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static GUIContent WarningIconContent = null;
 
         /// <summary>
-        /// Helper function to determine if the current profile is assigned to the active instance of MRTK
+        /// Helper function to determine if the current profile is assigned to the active instance of MRTK.
+        /// In some cases profile data refers to other profile data in the MRTK config profile.
+        /// In these cases, we don't want to render when the active instance isn't using this profile,
+        /// because it may produce an inaccurate combination of settings.
         /// </summary>
         /// <returns></returns>
         protected abstract bool IsProfileInActiveInstance();
@@ -122,19 +125,38 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         /// <param name="title">Title of profile</param>
         /// <param name="description">profile tooltip describing purpose</param>
+        /// <param name="selectionObject">The profile object. Used to re-select the object after MRTK instance is created.</param>
         /// <param name="isProfileInitialized">profile properties are full initialized for rendering</param>
         /// <param name="backText">Text for back button if not rendering as sub-profile</param>
         /// <param name="backProfile">Target profile to return to if not rendering as sub-profile</param>
-        protected void RenderProfileHeader(string title, string description, bool isProfileInitialized = true, BackProfileType returnProfileTarget = BackProfileType.Configuration)
+        protected void RenderProfileHeader(string title, string description, Object selectionObject, bool isProfileInitialized = true, BackProfileType returnProfileTarget = BackProfileType.Configuration)
         {
             RenderMRTKLogo();
 
             var profile = target as BaseMixedRealityProfile;
-            if (!RenderAsSubProfile && !profile.IsCustomProfile)
+            if (!RenderAsSubProfile)
             {
-                EditorGUILayout.HelpBox("Default Mixed Reality Toolkit profiles cannot be edited", MessageType.Warning);
-                // TODO: Place clone button. MixedRealityProfileCloneWindow requires parent profile though which is not known here
-                //EditorGUILayout.HelpBox("Default MRTK profiles cannot be edited. Create a clone of this profile to modify settings.", MessageType.Warning);
+                if (!profile.IsCustomProfile)
+                {
+                    EditorGUILayout.HelpBox("Default Mixed Reality Toolkit profiles cannot be edited", MessageType.Warning);
+                    // TODO: Place clone button. MixedRealityProfileCloneWindow requires parent profile though which is not known here
+                    //EditorGUILayout.HelpBox("Default MRTK profiles cannot be edited. Create a clone of this profile to modify settings.", MessageType.Warning);
+                }
+
+                if (!isProfileInitialized)
+                {
+                    EditorGUILayout.HelpBox("This profile is not assigned to an active MRTK instance in any of your scenes. Some properties may not be visible", MessageType.Error);
+
+                    if (!MixedRealityToolkit.IsInitialized)
+                    {
+                        if (MixedRealityEditorUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
+                        {
+                            MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(MixedRealityInspectorUtility.GetDefaultConfigProfile());
+                            // After the toolkit has been created, set the selection back to this item so the user doesn't get lost
+                            Selection.activeObject = selectionObject;
+                        }
+                    }
+                }
             }
             else
             {
@@ -142,8 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.HelpBox("Some properties may not be editable in this profile. Please refer to the error messages below to resolve editing.", MessageType.Warning);
                 }
-
-                MixedRealityInspectorUtility.CheckMixedRealityConfigured(false, false);
 
                 if (MixedRealityToolkit.IsInitialized)
                 {
@@ -153,7 +173,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                     else if (!isProfileInitialized)
                     {
-                        EditorGUILayout.HelpBox("This profile is not assigned to the active MRTK instance in this scene. Some properties may not be editable", MessageType.Error);
+                        EditorGUILayout.HelpBox("This profile is not assigned to an active MRTK instance in any of your scenes. Some properties may not be editable", MessageType.Error);
+
+                        if (!MixedRealityToolkit.IsInitialized)
+                        {
+                            if (MixedRealityEditorUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
+                            {
+                                MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(MixedRealityInspectorUtility.GetDefaultConfigProfile());
+                                // After the toolkit has been created, set the selection back to this item so the user doesn't get lost
+                                Selection.activeObject = selectionObject;
+                            }
+                        }
                     }
                 }
             }

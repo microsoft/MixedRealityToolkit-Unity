@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,27 +18,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     public static class MixedRealityInspectorUtility
     {
         public const float DottedLineScreenSpace = 4.65f;
+        public const string DefaultConfigProfileName = "DefaultMixedRealityToolkitConfigurationProfile";
 
         /// <summary>
         /// Check and make sure we have a Mixed Reality Toolkit and an active profile.
         /// </summary>
         /// <returns>True if the Mixed Reality Toolkit is properly initialized.</returns>
-        public static bool CheckMixedRealityConfigured(bool renderEditorElements = true, bool showCreateButton = false)
+        public static bool CheckMixedRealityConfigured(bool renderEditorElements = false)
         {
             if (!MixedRealityToolkit.IsInitialized)
-            {
-                if (renderEditorElements)
-                {
-                    EditorGUILayout.HelpBox("This content cannot be viewed without a Mixed Reality Toolkit instance in the scene.", MessageType.Error);
-
-                    if (showCreateButton && MixedRealityEditorUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
-                    {
-                        AddMixedRealityToolkitToScene();
-                    }
-                    EditorGUILayout.Space();
-                }
-
-                // Don't proceeed
+            {   // Don't proceeed
                 return false;
             }
 
@@ -47,7 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Toolkit.", MessageType.Error);
                 }
-
                 return false;
             }
 
@@ -195,6 +184,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return distance;
+        }
+
+        /// <summary>
+        /// Returns the default config profile, if it exists.
+        /// </summary>
+        /// <returns></returns>
+        public static MixedRealityToolkitConfigurationProfile GetDefaultConfigProfile()
+        {
+            var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>();
+            return GetDefaultConfigProfile(allConfigProfiles);
+        }
+
+        /// <summary>
+        /// Given a list of MixedRealityToolkitConfigurationProfile objects, returns
+        /// the one that matches the default profile name.
+        /// </summary>
+        public static MixedRealityToolkitConfigurationProfile GetDefaultConfigProfile(MixedRealityToolkitConfigurationProfile[] allProfiles)
+        {
+            for (int i = 0; i < allProfiles.Length; i++)
+            {
+                if (allProfiles[i].name == DefaultConfigProfileName)
+                {
+                    return allProfiles[i];
+                }
+            }
+            return null;
         }
 
         /// <summary>

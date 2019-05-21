@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, true, BackProfileType.SpatialAwareness);
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.SpatialAwareness);
 
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {

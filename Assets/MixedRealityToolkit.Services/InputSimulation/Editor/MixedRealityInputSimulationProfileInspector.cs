@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, true, BackProfileType.Input);
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
 
             serializedObject.Update();
 

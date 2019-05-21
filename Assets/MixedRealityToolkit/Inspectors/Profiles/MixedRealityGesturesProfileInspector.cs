@@ -99,11 +99,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, isInitialized, BackProfileType.Input);
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, isInitialized, BackProfileType.Input);
 
             RenderMixedRealityInputConfigured();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, true))
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 return;
             }

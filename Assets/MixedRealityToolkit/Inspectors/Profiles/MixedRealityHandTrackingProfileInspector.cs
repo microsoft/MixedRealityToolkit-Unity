@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, true, BackProfileType.Input);
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
 
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {

@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, isInitialized, BackProfileType.Input);
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, isInitialized, BackProfileType.Input);
 
             RenderMixedRealityInputConfigured();
 
