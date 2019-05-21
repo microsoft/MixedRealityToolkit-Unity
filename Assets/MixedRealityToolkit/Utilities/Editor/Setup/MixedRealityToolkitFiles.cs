@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// Base folder types for module searched by the MixedRealityToolkitFiles utilty.
+    /// Base folder types for modules searched by the MixedRealityToolkitFiles utilty.
     /// </summary>
     public enum MixedRealityToolkitModuleType
     {
@@ -72,6 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                                     // The contains check in the if statement is faster than Directory.Exists so that's why it's used
                                     // Otherwise, it isn't necessary, as the statement below doesn't throw if item wasn't found
                                     modFolders.Remove(folder);
+                                    if (modFolders.Count == 0)
+                                    {
+                                        mrtkFolders.Remove(module);
+                                    }
                                 }
                             }
                         }
