@@ -24,6 +24,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private GameObject movingButtonVisuals = null;
 
         [SerializeField]
+        [Tooltip("The icon and text content moving inside the button.")]
+        private GameObject movingButtonIconText = null;
+
+        [SerializeField]
         [Header("Press Settings")]
         [Tooltip("Maximum push distance")]
         private float maxPushDistance = 0.2f;
@@ -252,6 +256,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 Debug.Assert(initialTransform != null);
                 movingButtonVisuals.transform.position = initialTransform.position + WorldSpacePressDirection * currentPushDistance;
+            }
+            if (movingButtonIconText != null)
+            {
+                Debug.Assert(initialTransform != null);
+                movingButtonIconText.transform.position = initialTransform.position + WorldSpacePressDirection * currentPushDistance / 2;
             }
         }
 
