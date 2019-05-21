@@ -25,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
         private const string trackingLostStatusMessage = "Tracking lost";
         private const string trackingStalledStatusMessage = "No tracking update in over a second";
-        private const string locatingWorldAnchorStatusMessage = "Locating world anchor...";
-        private const string locatedWorldAnchorStatusMessage = "Located";
+        private const string locatingSharedSpatialCoordinate = "Locating shared spatial coordinate...";
+        private const string locatedSharedSpatialCoordinateMessage = "Located";
         private const string calibrationLoadedMessage = "Loaded";
         private const string calibrationNotLoadedMessage = "No camera calibration received";
         private const int horizontalFrameRectangleMargin = 50;
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 if (cameraNetworkManager != null &&
                     cameraNetworkManager.IsConnected &&
                     cameraNetworkManager.HasTracking &&
-                    cameraNetworkManager.IsAnchorLocated &&
+                    cameraNetworkManager.IsSharedSpatialCoordinateLocated &&
                     !cameraNetworkManager.IsTrackingStalled &&
                     compositionManager != null &&
                     compositionManager.IsCalibrationDataLoaded)
@@ -76,25 +76,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                         GUILayout.Label($"Connected to {cameraNetworkManager.HoloLensName} ({cameraNetworkManager.ConnectedIPAddress} -> {cameraNetworkManager.HoloLensIPAddress})");
                     }
 
-                    string anchorStatusMessage;
+                    string sharedSpatialCoordinateStatusMessage;
                     if (!cameraNetworkManager.HasTracking)
                     {
-                        anchorStatusMessage = trackingLostStatusMessage;
+                        sharedSpatialCoordinateStatusMessage = trackingLostStatusMessage;
                     }
                     else if (cameraNetworkManager.IsTrackingStalled)
                     {
-                        anchorStatusMessage = trackingStalledStatusMessage;
+                        sharedSpatialCoordinateStatusMessage = trackingStalledStatusMessage;
                     }
-                    else if (!cameraNetworkManager.IsAnchorLocated)
+                    else if (!cameraNetworkManager.IsSharedSpatialCoordinateLocated)
                     {
-                        anchorStatusMessage = locatingWorldAnchorStatusMessage;
+                        sharedSpatialCoordinateStatusMessage = locatingSharedSpatialCoordinate;
                     }
                     else
                     {
-                        anchorStatusMessage = locatedWorldAnchorStatusMessage;
+                        sharedSpatialCoordinateStatusMessage = locatedSharedSpatialCoordinateMessage;
                     }
 
-                    GUILayout.Label($"Anchor status: {anchorStatusMessage}");
+                    GUILayout.Label($"Shared spatial coordinate status: {sharedSpatialCoordinateStatusMessage}");
 
                     string calibrationStatusMessage;
                     if (compositionManager != null && compositionManager.IsCalibrationDataLoaded)
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
                     if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
                     {
-                        cameraNetworkManager.SendLocateSharedAnchorCommand();
+                        cameraNetworkManager.SendLocateSharedSpatialCoordinateCommand();
                     }
                 }
                 else

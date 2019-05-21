@@ -27,17 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         public TextureManager TextureManager => textureManager;
 
         /// <summary>
-        /// Gets whether or not a holographic camera rig has sent calibration data
-        /// that has been loaded to set up the virtual camera pose for rendering.
-        /// </summary>
-        public bool IsCalibrationDataLoaded { get; private set; }
-
-        /// <summary>
-        /// Gets the calibration data loaded by the camera.
-        /// </summary>
-        public ICalibrationData CalibrationData => calibrationData;
-
-        /// <summary>
         /// Gets or sets the texture depth used for the RenderTextures used during compositing.
         /// </summary>
         [Header("Hologram Settings")]
@@ -101,6 +90,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         public bool IsVideoFrameProviderInitialized => isVideoFrameProviderInitialized;
 
 #if UNITY_EDITOR
+        /// <summary>
+        /// Gets the calibration data loaded by the camera.
+        /// </summary>
+        public ICalibrationData CalibrationData => calibrationData;
+
+        /// <summary>
+        /// Gets whether or not a holographic camera rig has sent calibration data
+        /// that has been loaded to set up the virtual camera pose for rendering.
+        /// </summary>
+        public bool IsCalibrationDataLoaded { get; private set; }
+
         private bool overrideCameraPose;
         private Vector3 overrideCameraPosition;
         private Quaternion overrideCameraRotation;
@@ -202,10 +202,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
        
         private void Start()
         {
-            IsCalibrationDataLoaded = false;
             spectatorCamera = GetComponent<Camera>();
 
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
+            IsCalibrationDataLoaded = false;
+#else
             Camera[] cameras = gameObject.GetComponentsInChildren<Camera>();
             for (int i = 0; i < cameras.Length; i++)
             {
@@ -492,7 +493,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         /// </summary>
         public void ResetOnNewCameraConnection()
         {
+#if UNITY_EDITOR
             IsCalibrationDataLoaded = false;
+#endif
             timeSynchronizer.Reset();
             poseCache.Reset();
         }
