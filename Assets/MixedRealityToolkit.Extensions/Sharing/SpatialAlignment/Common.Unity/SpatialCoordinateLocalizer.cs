@@ -25,9 +25,92 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         public Quaternion CoordinateRelativeRotation = Quaternion.identity;
 
         /// <summary>
+        /// Check to enable debug logging.
+        /// </summary>
+        [Tooltip("Check to enable debug logging.")]
+        public bool debugLogging = false;
+
+        /// <summary>
+        /// Check to show debug visuals.
+        /// </summary>
+        [Tooltip("Check to show debug visuals.")]
+        public bool showDebugVisuals = false;
+
+        /// <summary>
+        /// Game Object to render at spatial coordinate location when showing debug visuals.
+        /// </summary>
+        [Tooltip("Game Object to render at spatial coordinate locations when showing debug visuals.")]
+        public GameObject debugVisual = null;
+
+        /// <summary>
+        /// Debug visual scale.
+        /// </summary>
+        [Tooltip("Debug visual scale.")]
+        public float debugVisualScale = 1.0f;
+
+        /// <summary>
         /// The coordinate to use for position the targetRoot.
         /// </summary>
-        public ISpatialCoordinate Coordinate { get; set; }
+        public ISpatialCoordinate Coordinate
+        {
+            get
+            {
+                return spatialCoordinate;
+            }
+
+            set
+            {
+                if (spatialCoordinate == null ||
+                    spatialCoordinate != value)
+                {
+                    spatialCoordinate = value;
+
+                    if (spatialCoordinate == null)
+                    {
+                        return;
+                    }
+
+                    if (targetRoot == null)
+                    {
+                        DebugLog("TargetRoot was null when setting the spatial coordinate, this is unexpected behavior.");
+                        return;
+                    }
+
+                    if (debugLogging)
+                    {
+                        var position = spatialCoordinate.WorldToCoordinateSpace(CoordinateRelativePosition);
+                        var rotation = spatialCoordinate.WorldToCoordinateSpace(CoordinateRelativeRotation);
+                        DebugLog($"SpatialCoordindate updated for SpatialCoordinateLocalizer {targetRoot.name}, Coordinate id: {spatialCoordinate.Id}, Coordinate state: {spatialCoordinate.State.ToString()}, Coordinate Space Position: {position.ToString("G4")}, Coordinate Space Rotation {rotation.ToString("G4")}");
+                    }
+
+                    if (showDebugVisuals)
+                    {
+                        if (debugVisual != null)
+                        {
+                            if (debugGameObject == null)
+                            {
+                                debugGameObject = Instantiate(debugVisual);
+                            }
+
+                            var position = spatialCoordinate.WorldToCoordinateSpace(CoordinateRelativePosition);
+                            var rotation = spatialCoordinate.WorldToCoordinateSpace(CoordinateRelativeRotation);
+                            debugGameObject.transform.parent = targetRoot.transform;
+                            debugGameObject.transform.position = position;
+                            debugGameObject.transform.rotation = rotation;
+                            debugGameObject.transform.localScale = debugVisualScale * Vector3.one;
+                            debugGameObject.name = $"{targetRoot.name} - SpatialCoordinateLocalizer DebugVisual";
+                            DebugLog($"Created {debugGameObject.name}, Coordinate Space Position: {position.ToString("G4")}, Coordinate Space Rotation {rotation.ToString("G4")}");
+                        }
+                        else
+                        {
+                            DebugLog($"SpatialCoordinateLocalizer for {targetRoot.name}, Coordinate id: {spatialCoordinate.Id} had showDebugVisuals enabled but no debugVisual specified.");
+                        }
+                    }
+                }
+            }
+        }
+        private ISpatialCoordinate spatialCoordinate = null;
+        private GameObject debugGameObject = null;
 
         private void Awake()
         {
@@ -43,13 +126,21 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 
             if (isEnabled)
             {
-                targetRoot.transform.position = Coordinate.CoordinateToWorldSpace(CoordinateRelativePosition);
-                targetRoot.transform.rotation = Coordinate.CoordinateToWorldSpace(CoordinateRelativeRotation);
+                targetRoot.transform.position = Coordinate?.CoordinateToWorldSpace(CoordinateRelativePosition) ?? targetRoot.transform.position;
+                targetRoot.transform.rotation = Coordinate?.CoordinateToWorldSpace(CoordinateRelativeRotation) ?? targetRoot.transform.rotation;
             }
 
             if (autoToggleActive)
             {
                 targetRoot.SetActive(isEnabled);
+            }
+        }
+
+        private void DebugLog(string message)
+        {
+            if (debugLogging)
+            {
+                Debug.Log($"SpatialCoordinateLocalizer: {message}");
             }
         }
     }
