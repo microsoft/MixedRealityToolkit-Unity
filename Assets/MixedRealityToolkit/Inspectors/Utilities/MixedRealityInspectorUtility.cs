@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                     if (showCreateButton && GUILayout.Button("Click here to add Mixed Reality Toolkit instance to scene"))
                     {
-                        new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                        AddMixedRealityToolkitToScene();
                     }
                     EditorGUILayout.Space();
                 }
@@ -52,6 +52,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// If MRTK is not initialized in scene, adds & initializes instance to current scene
+        /// </summary>
+        public static void AddMixedRealityToolkitToScene()
+        {
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                Selection.activeObject = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+            }
         }
 
         /// <summary>
