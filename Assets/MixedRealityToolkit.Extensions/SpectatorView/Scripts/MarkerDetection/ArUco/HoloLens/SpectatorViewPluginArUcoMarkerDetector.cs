@@ -360,8 +360,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             private const int _requiredObservations = 5;
             private const int _requiredInlierCount = 5;
             private const int _maximumMarkerSampleCount = 15;
-            private const float _maximumPositionDistanceStandardDeviation = 0.001f;
-            private const float _maximumRotationAngleStandardDeviation = 0.25f;
+            private const float _maximumPositionDistanceStandardDeviation = 0.01f;
+            private const float _maximumRotationAngleStandardDeviation = 0.75f;
             private const float _markerInlierStandardDeviationThreshold = 1.5f;
 
             public override int MaximumMarkerSampleCount => _maximumMarkerSampleCount;
