@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.WorldAnchors;
 using System.Collections;
 using System.Collections.Generic;
@@ -79,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 
                 switch (command)
                 {
-                    case "CreateSharedAnchor":
+                    case HolographicCameraNetworkManager.CreateSharedSpatialCoordinateCommand:
                         {
                             float markerDistance = reader.ReadSingle();
 
