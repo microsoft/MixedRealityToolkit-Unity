@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityPhysics = UnityEngine.Physics;
@@ -31,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
-
+        
         /// <summary>
         /// Number of IMixedRealityNearPointers that are active (IsInteractionEnabled == true).
         /// </summary>
@@ -116,6 +117,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public Camera UIRaycastCamera => uiRaycastCamera;
+
+        private IMixedRealityPointer mainPointer = null;
+        public IMixedRealityPointer MainPointer
+        {
+            get
+            {
+                return mainPointer;
+            }
+            private set
+            {
+                if (value != mainPointer)
+                {
+                    mainPointer = value;
+                    OnMainPointerChanged?.Invoke(mainPointer);
+                }
+            }
+        }
+
+        public event MainPointerChangedHandler OnMainPointerChanged;
 
         #endregion IFocusProvider Properties
 
@@ -267,6 +287,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <inheritdoc />
             public int RayStepIndex { get; private set; }
 
+            public bool IsInteractionEnabled;
+
+            public long InteractionEnabledTimestamp;
+
+            public bool IsLocked;
+
+            public long LastLockedTimestamp;
+
             /// <summary>
             /// The graphic input event data used for raycasting uGUI elements.
             /// </summary>
@@ -378,6 +406,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         break;
                     }
                 }
+
+                if (InteractionEnabledTimestamp == 0)
+                {
+                    InteractionEnabledTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                }
             }
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
@@ -394,6 +427,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 focusDetails.NormalLocalSpace = Details.NormalLocalSpace;
                 focusDetails.PointLocalSpace = Details.PointLocalSpace;
                 focusDetails.Object = null;
+
+                IsInteractionEnabled = false;
+                IsLocked = false;
             }
 
             /// <inheritdoc />
@@ -474,6 +510,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             UpdatePointers();
             UpdateFocusedObjects();
+
+            MainPointer = ChooseMainPointer(pointers.ToReadOnlyCollection());
         }
 
         #endregion IMixedRealityService Implementation
@@ -512,6 +550,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion Focus Details by IMixedRealityPointer
 
         #region Utilities
+
+        private static IMixedRealityPointer ChooseMainPointer(ReadOnlyCollection<PointerData> pointers)
+        {
+            PointerData mainPointer = null;
+
+            foreach (var p in pointers)
+            {
+                if (p.IsInteractionEnabled)
+                {
+                    if (mainPointer == null ||
+                        (p.IsLocked && (!mainPointer.IsLocked || p.LastLockedTimestamp < mainPointer.LastLockedTimestamp)) ||
+                        (!mainPointer.IsLocked && p.InteractionEnabledTimestamp > mainPointer.InteractionEnabledTimestamp))
+                    {
+                        mainPointer = p;
+                    }
+                }
+            }
+
+            return mainPointer?.Pointer;
+        }
 
         /// <inheritdoc />
         public uint GenerateNewPointerId()
@@ -677,6 +735,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             pointers.Remove(pointerData);
+
+            if (MainPointer == pointer)
+            {
+                MainPointer = ChooseMainPointer(pointers.ToReadOnlyCollection());
+            }
+
             return true;
         }
 
@@ -817,6 +881,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Set the pointer's result last
                     pointer.Pointer.Result = pointer;
                 }
+
+                if (!pointer.IsInteractionEnabled)
+                {
+                    pointer.IsInteractionEnabled = true;
+                    pointer.InteractionEnabledTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                }
+
+                if (pointer.Pointer.IsFocusLocked && !pointer.IsLocked)
+                {
+                    pointer.LastLockedTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                }
+
+                pointer.IsLocked = pointer.Pointer.IsFocusLocked;
             }
 
             // Call the pointer's OnPostSceneQuery function.

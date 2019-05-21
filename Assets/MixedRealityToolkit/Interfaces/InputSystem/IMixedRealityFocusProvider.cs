@@ -7,6 +7,8 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    public delegate void MainPointerChangedHandler(IMixedRealityPointer mainPointer);
+
     /// <summary>
     /// Implements the Focus Provider for handling focus of pointers.
     /// </summary>
@@ -27,6 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks>
         Camera UIRaycastCamera { get; }
+
+        IMixedRealityPointer MainPointer { get; }
+
+        event MainPointerChangedHandler OnMainPointerChanged;
 
         /// <summary>
         /// Gets the currently focused object for the pointing source.
