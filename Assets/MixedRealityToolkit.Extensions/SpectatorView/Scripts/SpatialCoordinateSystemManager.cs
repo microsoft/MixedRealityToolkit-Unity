@@ -24,11 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private SpatialLocalizer spatialLocalizer = null;
 
         /// <summary>
-        /// Scene root game object.
+        /// GameObject that is transformed to move content into the correct position within the spatial coordinate system.
         /// </summary>
-        [Tooltip("Scene root game object.")]
-        [SerializeField]
-        private GameObject sceneRoot = null;
+        public GameObject transformedGameObject { get; set; }
 
         /// <summary>
         /// Check for debug logging.
@@ -36,6 +34,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Check for debug logging.")]
         [SerializeField]
         private bool debugLogging = false;
+
+        /// <summary>
+        /// Check to show debug visuals.
+        /// </summary>
+        [Tooltip("Check to show debug visuals.")]
+        public bool showDebugVisuals = false;
+
+        /// <summary>
+        /// Game Object to render at spatial coordinate locations when showing debug visuals.
+        /// </summary>
+        [Tooltip("Game Object to render at spatial coordinate locations when showing debug visuals.")]
+        public GameObject debugVisual = null;
+
+        /// <summary>
+        /// Debug visual scale.
+        /// </summary>
+        [Tooltip("Debug visual scale.")]
+        public float debugVisualScale = 1.0f;
 
         public const string SpatialLocalizationMessageHeader = "LOCALIZE";
         readonly string[] supportedCommands = { SpatialLocalizationMessageHeader };
@@ -59,8 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
             }
 
-            DebugLog($"Creating new SpatialCoordinateSystemMember, Role: {spectatorView.Role}, IPAddress: {endpoint.Address}, SceneRoot: {sceneRoot}, DebugLogging: {debugLogging}");
-            var member = new SpatialCoordinateSystemMember(spectatorView.Role, endpoint, () => sceneRoot, debugLogging);
+            DebugLog($"Creating new SpatialCoordinateSystemMember, Role: {spectatorView.Role}, IPAddress: {endpoint.Address}, SceneRoot: {transformedGameObject}, DebugLogging: {debugLogging}");
+            var member = new SpatialCoordinateSystemMember(spectatorView.Role, endpoint, () => transformedGameObject, debugLogging, showDebugVisuals, debugVisual, debugVisualScale);
             members[endpoint] = member;
             if (spatialLocalizer != null)
             {

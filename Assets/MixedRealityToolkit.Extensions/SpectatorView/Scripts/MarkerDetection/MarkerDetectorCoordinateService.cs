@@ -132,6 +132,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, int[] idsToLocate = null)
         {
+#if UNITY_EDITOR
+            if (idsToLocate.Length != 1)
+            {
+                DebugLog("Running the MarkerDetectorCoordinateService in the editor only supports one coordinate id");
+                return;
+            }
+
+            var coordinate = new SpatialCoordinate(idsToLocate[0]);
+            coordinate.Marker = new Marker(coordinate.Id, UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity);
+            DebugLog("Created artificial coordinate at origin for debugging in the editor");
+            await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken).IgnoreCancellation();
+            OnNewCoordinate(coordinate.Id, coordinate);
+#else
             DebugLog("Starting detection");
             markerDetector.StartDetecting();
             try
@@ -178,6 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 markerDetector.StopDetecting();
                 DebugLog("Stopped detection");
             }
+#endif
         }
     }
 }

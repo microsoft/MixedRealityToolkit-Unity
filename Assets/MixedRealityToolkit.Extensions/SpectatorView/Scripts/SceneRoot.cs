@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     {
         private void Start()
         {
-            var spectatorView = FindObjectOfType<SpectatorView>();
+            var spectatorView = FindObjectOfType<SpectatorViewOld>();
             if (spectatorView == null)
             {
                 Debug.Log("Failed to find spectator view");
@@ -21,8 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             Debug.Log("Setting scene root: " + gameObject.name);
-            // TODO - this class may need to be deleted
-            //spectatorView.SceneRoot = gameObject;
+            spectatorView.SceneRoot = gameObject;
         }
     }
 }

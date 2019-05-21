@@ -24,6 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private readonly SocketEndpoint socketEndpoint;
         private readonly Func<GameObject> createSpatialCoordinateGO;
         private readonly bool debugLogging;
+        private bool showDebugVisuals = false;
+        private GameObject debugVisual = null;
+        private float debugVisualScale = 1.0f;
 
         private Action<BinaryReader> processIncomingMessages = null;
         private GameObject spatialCoordinateGO = null;
@@ -35,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <param name="socketEndpoint">The endpoint of the other entity.</param>
         /// <param name="createSpatialCoordinateGO">The function that creates a spatial coordinate game object on detection<see cref="GameObject"/>.</param>
         /// <param name="debugLogging">Flag for enabling troubleshooting logging.</param>
-        public SpatialCoordinateSystemMember(Role role, SocketEndpoint socketEndpoint, Func<GameObject> createSpatialCoordinateGO, bool debugLogging)
+        public SpatialCoordinateSystemMember(Role role, SocketEndpoint socketEndpoint, Func<GameObject> createSpatialCoordinateGO, bool debugLogging, bool showDebugVisuals = false, GameObject debugVisual = null, float debugVisualScale = 1.0f)
         {
             cancellationToken = cancellationTokenSource.Token;
 
@@ -43,6 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             this.socketEndpoint = socketEndpoint;
             this.createSpatialCoordinateGO = createSpatialCoordinateGO;
             this.debugLogging = debugLogging;
+            this.showDebugVisuals = showDebugVisuals;
+            this.debugVisual = debugVisual;
+            this.debugVisualScale = debugVisualScale;
         }
 
         private void DebugLog(string message)
@@ -107,7 +113,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         if (!cancellationToken.IsCancellationRequested)
                         {
                             spatialCoordinateGO = createSpatialCoordinateGO();
-                            spatialCoordinateGO.AddComponent<SpatialCoordinateLocalizer>().Coordinate = coordinate;
+                            var spatialCoordinateLocalizer = spatialCoordinateGO.AddComponent<SpatialCoordinateLocalizer>();
+                            spatialCoordinateLocalizer.debugLogging = debugLogging;
+                            spatialCoordinateLocalizer.showDebugVisuals = showDebugVisuals;
+                            spatialCoordinateLocalizer.debugVisual = debugVisual;
+                            spatialCoordinateLocalizer.debugVisualScale = debugVisualScale;
+                            spatialCoordinateLocalizer.Coordinate = coordinate;
                             DebugLog("Spatial coordinate created, coordinate set");
                         }
                     }
