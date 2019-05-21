@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         /// <inheritdoc/>
-        internal override async Task<ISpatialCoordinate> LocalizeAsync(Role role, Guid token, Action<Action<BinaryWriter>> sendMessage, CancellationToken cancellationToken)
+        internal override async Task<ISpatialCoordinate> LocalizeAsync(Role role, Guid token, Action<Action<BinaryWriter>> writeAndSendMessage, CancellationToken cancellationToken)
         {
             DebugLog("Beginning spatial localization", token);
             ISpatialCoordinate coordinateToReturn = null;
@@ -137,9 +137,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     DebugLog("User getting initialized coordinate", token);
                     coordinateToReturn = initializeUserCoordinateTask.Result;
                     DebugLog($"Sending coordinate id: {coordinateToReturn.Id}", token);
-                    sendMessage(writer => writer.Write(coordinateToReturn.Id));
+                    writeAndSendMessage(writer => writer.Write(coordinateToReturn.Id));
                     DebugLog("Message sent.", token);
                     break;
+
                 case Role.Spectator:
                     DebugLog("Spectator waiting for coord id to be sent over", token);
                     await Task.WhenAny(observerCoordinateIdToLookFor.Task, Task.Delay(-1, cancellationToken)); //If we get cancelled, or get a token

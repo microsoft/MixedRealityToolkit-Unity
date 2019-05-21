@@ -5,7 +5,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     public interface ICommandService
     {
-        bool Register(string command, ICommandHandler handler);
-        bool Unregister(string command, ICommandHandler handler);
+        bool RegisterCommandHandler(string command, ICommandHandler handler);
+        bool UnregisterCommandHandler(string command, ICommandHandler handler);
     }
 }

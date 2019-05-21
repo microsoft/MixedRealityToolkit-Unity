@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -49,11 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
 
-        private Dictionary<string, List<ICommandHandler>> commandHandlers = new Dictionary<string, List<ICommandHandler>>();
-        private List<ICommandHandler> allHandlers = new List<ICommandHandler>();
-
         protected override void Awake()
         {
+            DebugLog($"Awoken!");
             base.Awake();
 
             // Ensure that runInBackground is set to true so that the app continues to send network
@@ -70,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (connectionManager != null)
             {
+                DebugLog("Setting up connection manager");
                 connectionManager.OnConnected += OnConnected;
                 connectionManager.OnDisconnected += OnDisconnected;
                 connectionManager.OnReceive += OnReceive;
@@ -110,10 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         protected void OnConnected(SocketEndpoint endpoint)
         {
             DebugLog($"Broadcaster received connection from {endpoint.Address}.");
-
             Connected?.Invoke(endpoint);
 
-            foreach (var handler in allHandlers)
+            foreach (var handler in CommandService.Instance.CommandHandlers)
             {
                 handler.OnConnected(endpoint);
             }
@@ -121,9 +117,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         protected void OnDisconnected(SocketEndpoint endpoint)
         {
+            DebugLog($"Broadcaster received disconnect from {endpoint.Address}"); ;
             Disconnected?.Invoke(endpoint);
 
-            foreach (var handler in allHandlers)
+            foreach (var handler in CommandService.Instance.CommandHandlers)
             {
                 handler.OnDisconnected(endpoint);
             }
@@ -144,11 +141,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         }
                         break;
                     default:
-                        if (commandHandlers.ContainsKey(command))
+                        if (CommandService.Instance.CommandHandlerDictionary.TryGetValue(command, out var handlers))
                         {
-                            foreach (var handler in commandHandlers[command])
+                            foreach (var handler in handlers)
                             {
-                                handler.HandleCommand(command, data.Endpoint, reader);
+                                handler.HandleCommand(data.Endpoint, command, reader);
                             }
                         }
                         break;
@@ -242,40 +239,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     connectionManager.Broadcast(memoryStream.ToArray());
                 }
             }
-        }
-
-        public bool Register(string command, ICommandHandler handler)
-        {
-            if (!commandHandlers.ContainsKey(command))
-            {
-                commandHandlers[command] = new List<ICommandHandler>();
-            }
-
-            if (commandHandlers[command].Contains(handler) ||
-                allHandlers.Contains(handler))
-            {
-                return false;
-            }
-
-            commandHandlers[command].Add(handler);
-            allHandlers.Add(handler);
-
-            return true;
-        }
-
-        public bool Unregister(string command, ICommandHandler handler)
-        {
-            if (!commandHandlers.ContainsKey(command) ||
-                !commandHandlers[command].Contains(handler) ||
-                !allHandlers.Contains(handler))
-            {
-                return false;
-            }
-
-            commandHandlers[command].Remove(handler);
-            allHandlers.Remove(handler);
-
-            return true;
         }
     }
 }

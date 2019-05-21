@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System.Collections.Generic;
 using System.IO;
@@ -12,8 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// This class observes changes and updates content on a spectator device.
     /// </summary>
-    public class StateSynchronizationObserver : Singleton<StateSynchronizationObserver>,
-        ICommandService
+    public class StateSynchronizationObserver : Singleton<StateSynchronizationObserver>
     {
         /// <summary>
         /// Check to enable debug logging.
@@ -44,11 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
-        private Dictionary<string, List<ICommandHandler>> commandHandlers = new Dictionary<string, List<ICommandHandler>>();
-        private List<ICommandHandler> allHandlers = new List<ICommandHandler>();
-
         protected override void Awake()
         {
+            DebugLog($"Awoken!");
             base.Awake();
 
             // Ensure that runInBackground is set to true so that the app continues to send network
@@ -57,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             if (connectionManager != null)
             {
+                DebugLog("Setting up connection manager");
                 connectionManager.OnConnected += OnConnected;
                 connectionManager.OnReceive += OnReceive;
                 connectionManager.OnDisconnected += OnDisconnected;
@@ -108,9 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             currentConnection = endpoint;
-            DebugLog("Observer Connected!");
+            DebugLog($"Observer Connected to endpoint: {endpoint.Address}");
 
-            foreach (var handler in allHandlers)
+            foreach (var handler in CommandService.Instance.CommandHandlers)
             {
                 handler.OnConnected(endpoint);
             }
@@ -125,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnDisconnected(SocketEndpoint endpoint)
         {
-            foreach (var handler in allHandlers)
+            foreach (var handler in CommandService.Instance.CommandHandlers)
             {
                 handler.OnDisconnected(endpoint);
             }
@@ -141,6 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (connectionManager != null)
             {
+                DebugLog($"Connecting to broadcaster: {address}");
                 connectionManager.ConnectTo(address, port);
             }
         }
@@ -152,6 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (connectionManager != null)
             {
+                DebugLog($"Disconnecting");
                 connectionManager.DisconnectAll();
             }
         }
@@ -195,11 +194,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         }
                         break;
                     default:
-                        if (commandHandlers.ContainsKey(command))
+                        if (CommandService.Instance.CommandHandlerDictionary.TryGetValue(command, out var handlers))
                         {
-                            foreach (var handler in commandHandlers[command])
+                            foreach (var handler in handlers)
                             {
-                                handler.HandleCommand(command, data.Endpoint, reader);
+                                handler.HandleCommand(data.Endpoint, command, reader);
                             }
                         }
                         break;
@@ -273,40 +272,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                 return stream.ToArray();
             }
-        }
-
-        public bool Register(string command, ICommandHandler handler)
-        {
-            if (!commandHandlers.ContainsKey(command))
-            {
-                commandHandlers[command] = new List<ICommandHandler>();
-            }
-
-            if (commandHandlers[command].Contains(handler) ||
-                allHandlers.Contains(handler))
-            {
-                return false;
-            }
-
-            commandHandlers[command].Add(handler);
-            allHandlers.Add(handler);
-
-            return true;
-        }
-
-        public bool Unregister(string command, ICommandHandler handler)
-        {
-            if (!commandHandlers.ContainsKey(command) ||
-                !commandHandlers[command].Contains(handler) ||
-                !allHandlers.Contains(handler))
-            {
-                return false;
-            }
-
-            commandHandlers[command].Remove(handler);
-            allHandlers.Remove(handler);
-
-            return true;
         }
     }
 }

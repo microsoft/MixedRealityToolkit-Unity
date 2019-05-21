@@ -78,15 +78,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
 
                 DebugLog("Telling LocalizationMechanims to begin localizng");
-                ISpatialCoordinate coordinate = await spatialLocalizer.LocalizeAsync(role, token, (callback) => // Allows localization mechanism to tell spectator what to do
+                ISpatialCoordinate coordinate = await spatialLocalizer.LocalizeAsync(role, token, (writeSpatialLocalizerMessage) =>
                 {
                     DebugLog("Sending message to connected client");
                     using (MemoryStream memoryStream = new MemoryStream())
                     using (BinaryWriter writer = new BinaryWriter(memoryStream))
                     {
+                        // Prepare the writer for sending a message
                         writer.Write(SpatialCoordinateSystemManager.SpatialLocalizationMessageHeader);
 
-                        callback(writer);
+                        // Allow the spatialLocalizer to write its own content to the binary writer with this function
+                        writeSpatialLocalizerMessage(writer);
+
                         socketEndpoint.Send(memoryStream.ToArray());
                         DebugLog("Sent Message");
                     }
@@ -98,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
                 else
                 {
-                    DebugLog("Creating Visual Anchor");
+                    DebugLog("Creating Visual for spatial coordinate");
                     lock (cancellationTokenSource)
                     {
                         if (!cancellationToken.IsCancellationRequested)

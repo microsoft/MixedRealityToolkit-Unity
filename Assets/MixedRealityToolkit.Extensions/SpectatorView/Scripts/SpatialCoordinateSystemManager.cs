@@ -12,19 +12,34 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <summary>
         /// SpectatorView MonoBehaviour running on the device.
         /// </summary>
+        [Tooltip("SpectatorView MonoBehaviour running on the device.")]
         [SerializeField]
-        private SpectatorView spectatorView;
+        private SpectatorView spectatorView = null;
 
         /// <summary>
-        /// Prefab created and placed based at each spatial coordinate
+        /// SpatialLocalizer used for setting up the coordinate system.
         /// </summary>
+        [Tooltip("SpatialLocalizer used for setting up the coordinate system.")]
         [SerializeField]
-        private GameObject spatialCoordinatePrefab;
+        private SpatialLocalizer spatialLocalizer = null;
+
+        /// <summary>
+        /// Scene root game object.
+        /// </summary>
+        [Tooltip("Scene root game object.")]
+        [SerializeField]
+        private GameObject sceneRoot = null;
+
+        /// <summary>
+        /// Check for debug logging.
+        /// </summary>
+        [Tooltip("Check for debug logging.")]
+        [SerializeField]
+        private bool debugLogging = false;
 
         public const string SpatialLocalizationMessageHeader = "LOCALIZE";
         readonly string[] supportedCommands = { SpatialLocalizationMessageHeader };
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemMember> members = new Dictionary<SocketEndpoint, SpatialCoordinateSystemMember>();
-        internal SpatialLocalizer spatialLocalizer;
 
         public void OnConnected(SocketEndpoint endpoint)
         {
@@ -44,12 +59,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
             }
 
-            var roleOfConnection = (spectatorView.Role == Role.User) ? Role.Spectator : Role.User;
-            var member = new SpatialCoordinateSystemMember(Role.Spectator, endpoint, null, true);
+            DebugLog($"Creating new SpatialCoordinateSystemMember, Role: {spectatorView.Role}, IPAddress: {endpoint.Address}, SceneRoot: {sceneRoot}, DebugLogging: {debugLogging}");
+            var member = new SpatialCoordinateSystemMember(spectatorView.Role, endpoint, () => sceneRoot, debugLogging);
             members[endpoint] = member;
             if (spatialLocalizer != null)
             {
+                DebugLog($"Localizing SpatialCoordinateSystemMember: {endpoint.Address}");
                 member.LocalizeAsync(spatialLocalizer).FireAndForget();
+            }
+            else
+            {
+                Debug.LogWarning("Spatial localizer not specified for SpatialCoordinateSystemManager");
             }
         }
 
@@ -62,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public void HandleCommand(string command, SocketEndpoint endpoint, BinaryReader reader)
+        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader)
         {
             switch (command)
             {
@@ -94,19 +114,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void RegisterCommands()
         {
-            foreach(var command in supportedCommands)
+            DebugLog($"Registering for appropriate commands: CommandService.IsInitialized: {CommandService.IsInitialized}");
+            foreach (var command in supportedCommands)
             {
-                StateSynchronizationBroadcaster.Instance.Register(command, this);
-                StateSynchronizationObserver.Instance.Register(command, this);
+                CommandService.Instance.RegisterCommandHandler(command, this);
             }
         }
 
         private void UnregisterCommands()
         {
+            DebugLog($"Unregistering for appropriate commands: CommandService.IsInitialized: {CommandService.IsInitialized}");
             foreach (var command in supportedCommands)
             {
-                StateSynchronizationBroadcaster.Instance.Unregister(command, this);
-                StateSynchronizationObserver.Instance.Unregister(command, this);
+                CommandService.Instance.UnregisterCommandHandler(command, this);
             }
         }
 
@@ -118,6 +138,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             members.Clear();
+        }
+
+        private void DebugLog(string message)
+        {
+            if (debugLogging)
+            {
+                Debug.Log($"SpatialCoordinateSystemManager: {message}");
+            }
         }
     }
 }

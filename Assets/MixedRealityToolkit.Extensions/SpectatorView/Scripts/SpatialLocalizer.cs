@@ -75,9 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         /// <param name="role">The role of the requesting entity.</param>
         /// <param name="token">The token representing the session.</param>
-        /// <param name="sendMessage">The function to create a mesage for sending when provided a callback for writing the contents of the message.</param>
+        /// <param name="writeAndSendMessage">A function that allows the spatialLocalizer to write and send content to other devices.</param>
         /// <param name="cancellationToken">The cancellation token to cancel this async operation.</param>
         /// <returns>The spatial coordinate when this operation is complete.</returns>
-        internal abstract Task<ISpatialCoordinate> LocalizeAsync(Role role, Guid token, Action<Action<BinaryWriter>> sendMessage, CancellationToken cancellationToken);
+        internal abstract Task<ISpatialCoordinate> LocalizeAsync(Role role, Guid token, Action<Action<BinaryWriter>> writeAndSendMessage, CancellationToken cancellationToken);
     }
 }

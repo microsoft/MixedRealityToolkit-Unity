@@ -13,6 +13,12 @@ using System.Runtime.CompilerServices;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
+    public enum Role
+    {
+        User,
+        Spectator
+    }
+
     /// <summary>
     /// Class that facilitates the Spectator View experience
     /// </summary>
@@ -60,8 +66,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private GameObject broadcastedContent = null;
 
-        private void Start()
+        private void Awake()
         {
+            Debug.Log($"SpectatorView is running as: {Role.ToString()}. Expected User IPAddress: {userIpAddress}");
+
             if (stateSynchronizationSceneManager == null ||
                 stateSynchronizationBroadcaster == null ||
                 stateSynchronizationObserver == null)
