@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Linq;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
@@ -19,27 +19,28 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false)) { return; }
-
             smoothEyeTracking = serializedObject.FindProperty("smoothEyeTracking");
         }
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, string.Empty, BackProfileType.RegisteredServices))
+            RenderProfileHeader(ProfileTitle, string.Empty, true, BackProfileType.Input);
+
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                return;
+                serializedObject.Update();
+                EditorGUILayout.PropertyField(smoothEyeTracking);
+                serializedObject.ApplyModifiedProperties();
             }
+        }
 
-            serializedObject.Update();
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(smoothEyeTracking);
-
-            serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations.Any(s => profile == s.DeviceManagerProfile);
         }
     }
 }

@@ -28,9 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (renderEditorElements)
                 {
-                    EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Error);
+                    EditorGUILayout.HelpBox("This content cannot be viewed without a Mixed Reality Toolkit instance in the scene.", MessageType.Error);
 
-                    if (showCreateButton && GUILayout.Button("Click here to add Mixed Reality Toolkit instance to scene"))
+                    if (showCreateButton && MixedRealityEditorUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
                     {
                         AddMixedRealityToolkitToScene();
                     }
@@ -57,11 +57,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// If MRTK is not initialized in scene, adds & initializes instance to current scene
         /// </summary>
-        public static void AddMixedRealityToolkitToScene()
+        public static void AddMixedRealityToolkitToScene(MixedRealityToolkitConfigurationProfile configProfile = null)
         {
             if (!MixedRealityToolkit.IsInitialized)
             {
-                Selection.activeObject = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                MixedRealityToolkit.SetActiveInstance(newInstance);
+                Selection.activeObject = newInstance;
+
+                if (configProfile != null)
+                {
+                    newInstance.ActiveProfile = configProfile;
+                }
             }
         }
 
