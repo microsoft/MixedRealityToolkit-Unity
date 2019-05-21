@@ -84,8 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 PlayerSettings.colorSpace = buildInfo.ColorSpace.Value;
             }
 
-            buildInfo.ScriptingBackend = ScriptingImplementation.WinRTDotNET;
-
             if (buildInfo.ScriptingBackend.HasValue)
             {
                 PlayerSettings.SetScriptingBackend(buildTargetGroup, buildInfo.ScriptingBackend.Value);

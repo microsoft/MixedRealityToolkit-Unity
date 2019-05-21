@@ -643,21 +643,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
         private bool TryGetHandPositionFromController(IMixedRealityController controller, TrackedHandJoint joint, out Vector3 position)
         {
-            if (controller != null && controller.Visualizer is IMixedRealityHandVisualizer)
+            if (controller != null &&
+                HandJointUtils.TryGetJointPose(joint, controller.ControllerHandedness, out MixedRealityPose pose))
             {
-                if ((controller.Visualizer as IMixedRealityHandVisualizer).TryGetJointTransform(joint, out Transform palm) == true)
-                {
-                    position = palm.position;
-                    return true;
-                }
-            }
-            else if (controller != null)
-            {
-                if (true == HandJointUtils.TryGetJointPose(joint, controller.ControllerHandedness, out MixedRealityPose pose))
-                {
-                    position = pose.Position;
-                    return true;
-                }
+                position = pose.Position;
+                return true;
             }
 
             position = Vector3.zero;
