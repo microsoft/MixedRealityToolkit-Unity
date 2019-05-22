@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class MixedRealitySpatialAwarenessSystemProfileInspector
+    <title>Class GUIEnabledWrapper
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class MixedRealitySpatialAwarenessSystemProfileInspector
+    <meta name="title" content="Class GUIEnabledWrapper
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.42.3.0">
     
@@ -81,70 +81,135 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_Editor_MixedRealitySpatialAwarenessSystemProfileInspector" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector" class="text-break">Class MixedRealitySpatialAwarenessSystemProfileInspector
+  <h1 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper" class="text-break">Class GUIEnabledWrapper
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Similar to the scope classes in Unity (i.e VerticalScope),
+this class is a helper class designed to manage GUI.enabled over some lifetime
+Should be utilized with using{} code block</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">MixedRealitySpatialAwarenessSystemProfileInspector</span></div>
+    <div class="level1"><span class="xref">GUIEnabledWrapper</span></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.html">Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor</a></h6>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Editor.html">Microsoft.MixedReality.Toolkit.Utilities.Editor</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_Editor_MixedRealitySpatialAwarenessSystemProfileInspector_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MixedRealitySpatialAwarenessSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector</code></pre>
+    <pre><code class="lang-csharp hljs">public class GUIEnabledWrapper : IDisposable</code></pre>
   </div>
-  <h3 id="methods">Methods
+  <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_Editor_MixedRealitySpatialAwarenessSystemProfileInspector_IsProfileInActiveInstance_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector.IsProfileInActiveInstance*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_Editor_MixedRealitySpatialAwarenessSystemProfileInspector_IsProfileInActiveInstance" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector.IsProfileInActiveInstance">IsProfileInActiveInstance()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper__ctor_System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper.#ctor(System.Boolean,System.Boolean)">GUIEnabledWrapper(Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>If overwrite is true, then whatever enable value is provided will be set for lifetime of exec action
+If overwrite is false, then will only enable GUI if already was enabled</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override bool IsProfileInActiveInstance()</code></pre>
+    <pre><code class="lang-csharp hljs">public GUIEnabledWrapper(bool enable, bool overwrite = false)</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">enable</span></td>
+        <td><p>desired GUI.enabled value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">overwrite</span></td>
+        <td><p>control to disregard whether GUI.enabled was already set</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper_Dispose_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper.Dispose*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper_Dispose" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper_Dispose_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper.Dispose*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper_Dispose_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposing</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_Editor_MixedRealitySpatialAwarenessSystemProfileInspector_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector.OnEnable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_Editor_MixedRealitySpatialAwarenessSystemProfileInspector_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector.OnEnable">OnEnable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void OnEnable()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_Editor_MixedRealitySpatialAwarenessSystemProfileInspector_OnInspectorGUI_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector.OnInspectorGUI*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_Editor_MixedRealitySpatialAwarenessSystemProfileInspector_OnInspectorGUI" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector.OnInspectorGUI">OnInspectorGUI()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnInspectorGUI()</code></pre>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>
 </article>
           </div>

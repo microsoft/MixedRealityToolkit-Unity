@@ -152,6 +152,30 @@
   </table>
   
   
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_DefaultConfigProfileName" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.DefaultConfigProfileName">DefaultConfigProfileName</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const string DefaultConfigProfileName = &quot;DefaultMixedRealityToolkitConfigurationProfile&quot;</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_DisabledColor" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.DisabledColor">DisabledColor</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -466,6 +490,34 @@
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_AddMixedRealityToolkitToScene_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.AddMixedRealityToolkitToScene*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_AddMixedRealityToolkitToScene_Microsoft_MixedReality_Toolkit_MixedRealityToolkitConfigurationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile)">AddMixedRealityToolkitToScene(MixedRealityToolkitConfigurationProfile)</h4>
+  <div class="markdown level1 summary"><p>If MRTK is not initialized in scene, adds and initializes instance to current scene</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddMixedRealityToolkitToScene(MixedRealityToolkitConfigurationProfile configProfile = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile.html">MixedRealityToolkitConfigurationProfile</a></td>
+        <td><span class="parametername">configProfile</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_AxisMoveHandle_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.AxisMoveHandle*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_AxisMoveHandle_System_Object_Vector3_Vector3_System_Single_System_Single_System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.AxisMoveHandle(System.Object,Vector3,Vector3,System.Single,System.Single,System.Boolean,System.Boolean)">AxisMoveHandle(Object, Vector3, Vector3, Single, Single, Boolean, Boolean)</h4>
   <div class="markdown level1 summary"><p>Draw an axis move handle.</p>
@@ -576,13 +628,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_CheckMixedRealityConfigured_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.CheckMixedRealityConfigured*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_CheckMixedRealityConfigured_System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.CheckMixedRealityConfigured(System.Boolean,System.Boolean)">CheckMixedRealityConfigured(Boolean, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_CheckMixedRealityConfigured_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.CheckMixedRealityConfigured(System.Boolean)">CheckMixedRealityConfigured(Boolean)</h4>
   <div class="markdown level1 summary"><p>Check and make sure we have a Mixed Reality Toolkit and an active profile.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool CheckMixedRealityConfigured(bool renderEditorElements = true, bool showCreateButton = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool CheckMixedRealityConfigured(bool renderEditorElements = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -597,11 +649,6 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">renderEditorElements</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">showCreateButton</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -706,6 +753,76 @@
         <td><span class="xref">Vector3</span></td>
         <td><p>The new <a href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</a> value.</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_GetDefaultConfigProfile_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.GetDefaultConfigProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_GetDefaultConfigProfile" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.GetDefaultConfigProfile">GetDefaultConfigProfile()</h4>
+  <div class="markdown level1 summary"><p>Returns the default config profile, if it exists.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MixedRealityToolkitConfigurationProfile GetDefaultConfigProfile()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile.html">MixedRealityToolkitConfigurationProfile</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_GetDefaultConfigProfile_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.GetDefaultConfigProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityInspectorUtility_GetDefaultConfigProfile_Microsoft_MixedReality_Toolkit_MixedRealityToolkitConfigurationProfile___" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityInspectorUtility.GetDefaultConfigProfile(Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile[])">GetDefaultConfigProfile(MixedRealityToolkitConfigurationProfile[])</h4>
+  <div class="markdown level1 summary"><p>Given a list of MixedRealityToolkitConfigurationProfile objects, returns
+the one that matches the default profile name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MixedRealityToolkitConfigurationProfile GetDefaultConfigProfile(MixedRealityToolkitConfigurationProfile[] allProfiles)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile.html">MixedRealityToolkitConfigurationProfile</a>[]</td>
+        <td><span class="parametername">allProfiles</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile.html">MixedRealityToolkitConfigurationProfile</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
