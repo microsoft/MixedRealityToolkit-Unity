@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -81,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Each object listed must have a script that implements the IHandPanHandler interface or it will not receive events")]
         private GameObject[] panEventReceivers = null;
 
-        [Header("Geometry")]
+        [Header("Visual affordance")]
         [SerializeField]
         [Tooltip("If affordace geometry is desired to emphasize the touch points(leftPoint and rightPoint) and the center point between them (reticle), assign them here.")]
         private GameObject reticle = null;
@@ -97,6 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return currentScale; }
         }
+
+        [Header("Events")]
+        public UnityEvent PanStarted;
+        public UnityEvent PanStopped;
+
         #endregion Serialized Fields
 
 
@@ -431,11 +437,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             if (leftPoint != null)
             {
-                leftPoint.SetActive(affordancesVisible);
+                if(active && (GetContactForHand(Handedness.Left) != Vector3.zero))
+                {
+                    leftPoint.SetActive(affordancesVisible);
+                }
+                else
+                {
+                    leftPoint.SetActive(false);
+                }
             }
             if (rightPoint != null)
             {
-                rightPoint.SetActive(affordancesVisible);
+                if (active && (GetContactForHand(Handedness.Right) != Vector3.zero))
+                {
+                    rightPoint.SetActive(affordancesVisible);
+                }
+                else
+                {
+                    rightPoint.SetActive(false);
+                }
             }
 
         }
@@ -678,6 +698,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             UpdateTouchUVOffset(sourceId);
             FirePanStarted(sourceId);
+            PanStarted?.Invoke();
         }
         private void EndTouch(uint sourceId)
         {
@@ -685,6 +706,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 handDataMap.Remove(sourceId);
                 FirePanEnded(0);
+                PanStopped?.Invoke();
             }
         }
         private void EndAllTouches()
