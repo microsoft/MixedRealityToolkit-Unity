@@ -106,7 +106,7 @@ MonoBehaviour:
   pointerVisual: {fileID: 7376459786343609486}
   grabPointMesh: {fileID: 4300012, guid: fd9ad33176d03dd42885a4dce3cb38fb, type: 3}
   grabPointMaterial: {fileID: 2100000, guid: fc1d56dcfc4950949a5b56a1399a1822, type: 2}
-  scale: 1
+  scale: 1.2
 --- !u!1 &3601038615599929105
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,7 +408,7 @@ MonoBehaviour:
   roundedCaps: 0
   lineRenderer: {fileID: 4601683360483888622}
   tileMaterialByWorldLength: 1
-  tileMaterialScale: 24
+  tileMaterialScale: 48
 --- !u!1 &6853725420856786351
 GameObject:
   m_ObjectHideFlags: 0
