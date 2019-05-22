@@ -44,12 +44,5 @@ steps:
     Arch: 'x86'
     Platform: 'Standalone'
 
-# Build Standalone x86
-- template: tasks/unitybuild.yml
-  parameters:
-    Arch: 'x86'
-    Platform: 'UWP'
-    ScriptingBackend: '.NET'
-
 - template: assetretargeting.yml
 - template: tests.yml
