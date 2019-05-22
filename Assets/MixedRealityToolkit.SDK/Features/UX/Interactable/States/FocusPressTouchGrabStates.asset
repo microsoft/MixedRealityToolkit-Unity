@@ -28,18 +28,18 @@ MonoBehaviour:
     Bit: 4
     Value: 0
     ActiveIndex: 2
-  - Name: Gesture
-    Index: 10
+  - Name: PhysicalTouch
+    Index: 14
     Bit: 8
     Value: 0
     ActiveIndex: 3
-  - Name: PhysicalTouch
-    Index: 14
+  - Name: Grab
+    Index: 15
     Bit: 16
     Value: 0
     ActiveIndex: 4
-  - Name: Grab
-    Index: 15
+  - Name: Gesture
+    Index: 10
     Bit: 32
     Value: 0
     ActiveIndex: 5

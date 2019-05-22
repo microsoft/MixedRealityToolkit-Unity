@@ -47,7 +47,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.9103774, g: 0.98499876, b: 1, a: 1}
+        Color: {r: 0.8490566, g: 0.47005862, b: 0.18823424, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
@@ -62,7 +62,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.6226415, g: 0.5434191, b: 0.4258633, a: 1}
+        Color: {r: 0.47058824, g: 0.26334554, b: 0.08235294, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}

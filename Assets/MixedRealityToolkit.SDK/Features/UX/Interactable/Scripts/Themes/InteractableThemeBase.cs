@@ -87,6 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public virtual void OnUpdate(int state, Interactable source, bool force = false)
         {
+
             if (state != lastState || force)
             {
                 int themePropCount = ThemeProperties.Count;

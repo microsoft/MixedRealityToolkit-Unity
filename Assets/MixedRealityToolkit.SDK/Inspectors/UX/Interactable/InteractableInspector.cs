@@ -191,21 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
-
-            SerializedProperty touchTrigger = serializedObject.FindProperty("PhysicalPressOnClickTrigger");
-
-            Interactable.PhysicalPressClickBehavior trigger = (Interactable.PhysicalPressClickBehavior)touchTrigger.intValue;
-            trigger = (Interactable.PhysicalPressClickBehavior)EditorGUILayout.EnumPopup(new GUIContent("Physical Press OnClick Trigger", "How a PhyscialTouch should trigger an OnClick event"), trigger);
-            touchTrigger.intValue = (int)trigger;
-
-            if (trigger == Interactable.PhysicalPressClickBehavior.OnPress)
-            {
-                EditorGUI.indentLevel = indentOnSectionStart + 1;
-                SerializedProperty pressDistance = serializedObject.FindProperty("PhysicalPressDistance");
-                pressDistance.floatValue = EditorGUILayout.FloatField(new GUIContent("Physical Press Distance", "The distance a pointer should travel"), pressDistance.floatValue);
-                EditorGUI.indentLevel = indentOnSectionStart;
-            }
-
+            
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
             InspectorUIUtility.DrawDivider();

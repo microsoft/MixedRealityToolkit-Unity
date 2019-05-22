@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnGrabReceiver : ReceiverBase
     {
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "Grip was released")]
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "Grab was released")]
         public UnityEvent OnRelease = new UnityEvent();
 
         private bool hadGrab;
