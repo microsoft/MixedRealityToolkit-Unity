@@ -64,8 +64,8 @@ steps:
       # The final location of the generated package depends on the type of scripting backend it's built against.
       # For the default scripting backend (IL2CPP) the naming of the appx follows the form below:
       ${{ if eq(parameters.ScriptingBackend, 'default') }}:
-        PathtoPublish: '$(outDir)\AppPackages\MixedRealityToolkit\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.PackagingDir }}_Master_Test'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\AppPackages\MixedRealityToolkit\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.PackagingDir }}_Master_Test'
       # For .NET scripting backends, the naming is slightly different (mainly the AppPackages and MixedRealityToolkit folder
       # names are reversed, and the Architecture is part of the AppX name)
       ${{ if eq(parameters.ScriptingBackend, '.NET') }}:
-        PathtoPublish: '$(outDir)\MixedRealityToolkit\AppPackages\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.Arch }}_Master_Test'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\MixedRealityToolkit\AppPackages\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.Arch }}_Master_Test'
