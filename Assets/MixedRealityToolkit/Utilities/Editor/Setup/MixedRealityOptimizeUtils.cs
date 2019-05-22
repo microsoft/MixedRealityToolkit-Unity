@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
-    public class MixedRealityOptimizeUtils
+    public static class MixedRealityOptimizeUtils
     {
         public static void SetDepthBufferSharing(bool enableDepthBuffer)
         {

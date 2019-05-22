@@ -39,22 +39,26 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
+
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                return;
+                serializedObject.Update();
+
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    RenderList(observerConfigurations);
+                }
+
+                serializedObject.ApplyModifiedProperties();
             }
+        }
 
-            bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
-            serializedObject.Update();
-
-            using (new EditorGUI.IndentLevelScope())
-            {
-                RenderList(observerConfigurations);
-            }
-
-            serializedObject.ApplyModifiedProperties();
-            GUI.enabled = wasGUIEnabled;
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile;
         }
 
         private void RenderList(SerializedProperty list)
@@ -63,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
             using (new EditorGUILayout.VerticalScope())
             {
-                if (RenderIndentedButton(AddObserverContent, EditorStyles.miniButton))
+                if (MixedRealityEditorUtility.RenderIndentedButton(AddObserverContent, EditorStyles.miniButton))
                 {
                     list.InsertArrayElementAtIndex(list.arraySize);
                     SerializedProperty observer = list.GetArrayElementAtIndex(list.arraySize - 1);
@@ -137,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                                 serviceType = (target as MixedRealitySpatialAwarenessSystemProfile).ObserverConfigurations[i].ComponentType;
                             }
 
-                            changed |= RenderProfile(observerProfile, true, false, serviceType);
+                            changed |= RenderProfile(observerProfile, null, true, false, serviceType);
 
                             serializedObject.ApplyModifiedProperties();
                         }
