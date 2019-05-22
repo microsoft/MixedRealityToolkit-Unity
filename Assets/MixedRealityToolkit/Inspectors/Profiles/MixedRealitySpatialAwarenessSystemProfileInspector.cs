@@ -17,12 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
         private static readonly GUIContent ComponentTypeContent = new GUIContent("Type");
         private static readonly GUIContent RuntimePlatformContent = new GUIContent("Platform(s)");
-        private static readonly GUIContent ObserverProfileContent = new GUIContent("Profile");
 
-        private static bool showObservers = true;
         private SerializedProperty observerConfigurations;
 
-        private bool[] observerFoldouts;
+        private const string ProfileTitle = "Spatial Awareness System Settings";
+        private const string ProfileDescription = "The Spatial Awareness System profile allows developers to configure cross-platform environmental awareness.";
+
+        private static bool[] observerFoldouts;
 
         protected override void OnEnable()
         {
@@ -30,52 +31,43 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
             observerConfigurations = serializedObject.FindProperty("observerConfigurations");
 
-            observerFoldouts = new bool[observerConfigurations.arraySize];
+            if (observerFoldouts == null || observerFoldouts.Length != observerConfigurations.arraySize)
+            {
+                observerFoldouts = new bool[observerConfigurations.arraySize];
+            }
         }
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Spatial Awareness System Profile",
-                "The Spatial Awareness System profile allows developers to configure cross-platform environmental awareness.");
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
 
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-                {
-                    return;
-                }
-            }
+                serializedObject.Update();
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Spatial Awareness System Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("The Spatial Awareness System profile allows developers to configure cross-platform environmental awareness.", MessageType.Info);
-
-            CheckProfileLock(target);
-
-            serializedObject.Update();
-
-            EditorGUILayout.Space();
-            showObservers = EditorGUILayout.Foldout(showObservers, "Observers", true);
-            if (showObservers)
-            {
                 using (new EditorGUI.IndentLevelScope())
                 {
                     RenderList(observerConfigurations);
                 }
+
+                serializedObject.ApplyModifiedProperties();
             }
-            serializedObject.ApplyModifiedProperties();
+        }
+
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile;
         }
 
         private void RenderList(SerializedProperty list)
         {
-            EditorGUILayout.Space();
-
             bool changed = false;
 
             using (new EditorGUILayout.VerticalScope())
             {
-                if (GUILayout.Button(AddObserverContent, EditorStyles.miniButton))
+                if (MixedRealityEditorUtility.RenderIndentedButton(AddObserverContent, EditorStyles.miniButton))
                 {
                     list.InsertArrayElementAtIndex(list.arraySize);
                     SerializedProperty observer = list.GetArrayElementAtIndex(list.arraySize - 1);
@@ -98,8 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     return;
                 }
 
-                GUILayout.Space(12f);
-
                 if (list == null || list.arraySize == 0)
                 {
                     EditorGUILayout.HelpBox("The Mixed Reality Spatial Awareness System requires one or more observers.", MessageType.Warning);
@@ -114,12 +104,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     SerializedProperty observerProfile = observer.FindPropertyRelative("observerProfile");
                     SerializedProperty runtimePlatform = observer.FindPropertyRelative("runtimePlatform");
 
-                    using (new EditorGUILayout.VerticalScope())
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                     {
                         using (new EditorGUILayout.HorizontalScope())
                         {
                             observerFoldouts[i] = EditorGUILayout.Foldout(observerFoldouts[i], observerName.stringValue, true);
-
+ 
                             if (GUILayout.Button(RemoveObserverContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                             {
                                 list.DeleteArrayElementAtIndex(i);
@@ -127,47 +117,40 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                                 changed = true;
                                 break;
                             }
-
                         }
 
-                        if (observerFoldouts[i] || RenderAsSubProfile)
+                        if (observerFoldouts[i])
                         {
-                            using (new EditorGUI.IndentLevelScope())
+                            EditorGUI.BeginChangeCheck();
+                            EditorGUILayout.PropertyField(observerType, ComponentTypeContent);
+                            if (EditorGUI.EndChangeCheck())
                             {
-                                EditorGUI.BeginChangeCheck();
-                                EditorGUILayout.PropertyField(observerType, ComponentTypeContent);
-                                if (EditorGUI.EndChangeCheck())
-                                {
-                                    serializedObject.ApplyModifiedProperties();
-                                    System.Type type = ((MixedRealitySpatialAwarenessSystemProfile)serializedObject.targetObject).ObserverConfigurations[i].ComponentType.Type;
-                                    ApplyObserverConfiguration(type, observerName, observerProfile, runtimePlatform);
-                                    break;
-                                }
-
-                                EditorGUI.BeginChangeCheck();
-                                EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
-                                changed |= EditorGUI.EndChangeCheck();
-
-                                System.Type serviceType = null;
-                                if (observerProfile.objectReferenceValue != null)
-                                {
-                                    serviceType = (target as MixedRealitySpatialAwarenessSystemProfile).ObserverConfigurations[i].ComponentType;
-                                }
-
-                                changed |= RenderProfile(observerProfile, ObserverProfileContent, true, serviceType);
+                                serializedObject.ApplyModifiedProperties();
+                                System.Type type = ((MixedRealitySpatialAwarenessSystemProfile)serializedObject.targetObject).ObserverConfigurations[i].ComponentType.Type;
+                                ApplyObserverConfiguration(type, observerName, observerProfile, runtimePlatform);
+                                break;
                             }
+
+                            EditorGUI.BeginChangeCheck();
+                            EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
+                            changed |= EditorGUI.EndChangeCheck();
+
+                            System.Type serviceType = null;
+                            if (observerProfile.objectReferenceValue != null)
+                            {
+                                serviceType = (target as MixedRealitySpatialAwarenessSystemProfile).ObserverConfigurations[i].ComponentType;
+                            }
+
+                            changed |= RenderProfile(observerProfile, null, true, false, serviceType);
 
                             serializedObject.ApplyModifiedProperties();
                         }
                     }
                 }
 
-                if (MixedRealityToolkit.IsInitialized)
+                if (changed && MixedRealityToolkit.IsInitialized)
                 {
-                    if (changed)
-                    {
-                        EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
-                    }
+                    EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
                 }
             }
         }

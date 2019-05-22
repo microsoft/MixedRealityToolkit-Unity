@@ -9,11 +9,10 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: BoundingBox
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT_USES_HOVER_COLOR _DISABLE_ALBEDO_MAP
-    _HOVER_LIGHT _INNER_GLOW _NEAR_PLANE_FADE _NEAR_PLANE_FADE_REVERSE _NEAR_LIGHT_FADE
-    _PROXIMITY_LIGHT
+  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR _DISABLE_ALBEDO_MAP
+    _HOVER_LIGHT _NEAR_LIGHT_FADE _NEAR_PLANE_FADE _NEAR_PLANE_FADE_REVERSE _PROXIMITY_LIGHT
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
   stringTagMap:
@@ -42,13 +41,13 @@ Material:
     - _AlbedoAlphaMode: 0
     - _AlbedoAssignedAtRuntime: 0
     - _BlendOp: 0
-    - _BorderLight: 0
+    - _BorderLight: 1
     - _BorderLightOpaque: 0
     - _BorderLightOpaqueAlpha: 1
     - _BorderLightReplacesAlbedo: 0
     - _BorderLightUsesHoverColor: 1
-    - _BorderMinValue: 0.1
-    - _BorderWidth: 0.1
+    - _BorderMinValue: 1
+    - _BorderWidth: 0.016
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
     - _ClippingBox: 0
@@ -71,12 +70,13 @@ Material:
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
-    - _FadeBeginDistance: 0.1
-    - _FadeCompleteDistance: 0.25
+    - _FadeBeginDistance: 0.01
+    - _FadeCompleteDistance: 0.18
+    - _FadeMinValue: 0
     - _HoverLight: 1
     - _HoverLightOpaque: 0
-    - _InnerGlow: 1
-    - _InnerGlowPower: 18
+    - _InnerGlow: 0
+    - _InnerGlowPower: 14.8
     - _InstancedColor: 0
     - _Iridescence: 0
     - _IridescenceAngle: -0.78
@@ -109,6 +109,10 @@ Material:
     - _StencilReference: 0
     - _TriplanarMappingBlendSharpness: 4
     - _VertexColors: 0
+    - _VertexExtrusion: 0
+    - _VertexExtrusionValue: 0
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
     - _ZTest: 4
     - _ZWrite: 0
     m_Colors:

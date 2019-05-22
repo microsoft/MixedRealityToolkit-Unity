@@ -11,6 +11,11 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     public interface IMixedRealityCameraSystem : IMixedRealityEventSystem, IMixedRealityEventSource, IMixedRealityDataProvider
     {
         /// <summary>
+        /// Typed representation of the ConfigurationProfile property.
+        /// </summary>
+        MixedRealityCameraProfile CameraProfile { get; }
+
+        /// <summary>
         /// Is the current camera displaying on an Opaque (AR) device or a VR / immersive device
         /// </summary>
         bool IsOpaque { get; }

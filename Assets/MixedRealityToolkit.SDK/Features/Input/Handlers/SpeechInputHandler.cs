@@ -93,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (enabled && responses.TryGetValue(eventData.Command.Keyword.ToLower(), out keywordResponse))
             {
                 keywordResponse.Invoke();
+                eventData.Use();
             }
         }
 

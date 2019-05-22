@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return;
             }
-            
+
             OnSelection(index, true);
         }
 

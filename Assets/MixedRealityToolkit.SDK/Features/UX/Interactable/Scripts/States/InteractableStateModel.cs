@@ -109,6 +109,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return new State();
         }
 
+        public InteractableStateModel()
+        {
+        }
+
         public InteractableStateModel(State defaultState)
         {
             currentState = defaultState;

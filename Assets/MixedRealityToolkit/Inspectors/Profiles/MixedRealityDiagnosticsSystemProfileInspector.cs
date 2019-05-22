@@ -4,22 +4,23 @@
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 {
     [CustomEditor(typeof(MixedRealityDiagnosticsProfile))]
     public class MixedRealityDiagnosticsSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private static bool showGeneralSettings = true;
         private SerializedProperty showDiagnostics;
-
-        private static bool showProfilerSettings = true;
         private SerializedProperty showProfiler;
         private SerializedProperty frameSampleRate;
         private SerializedProperty windowAnchor;
         private SerializedProperty windowOffset;
         private SerializedProperty windowScale;
         private SerializedProperty windowFollowSpeed;
+
+        private const string ProfileTitle = "Diagnostic Settings";
+        private const string ProfileDescription = "Diagnostic visualizations can help monitor system resources and performance inside an application.";
 
         // todo: coming soon
         // private static bool showDebugPanelSettings = true;
@@ -40,43 +41,26 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Diagnostic Visualization Options",
-                "Diagnostic visualizations can help monitor system resources and performance inside an application.");
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
 
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-                {
-                    return;
-                }
-            }
+                serializedObject.Update();
 
-            CheckProfileLock(target);
-
-            serializedObject.Update();
-
-            EditorGUILayout.Space();
-            showGeneralSettings = EditorGUILayout.Foldout(showGeneralSettings, "General Settings", true);
-            if (showGeneralSettings)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(showDiagnostics);
-                    if(!showDiagnostics.boolValue)
+                    if (!showDiagnostics.boolValue)
                     {
                         EditorGUILayout.Space();
                         EditorGUILayout.HelpBox("Diagnostic visualizations have been globally disabled.", MessageType.Info);
                         EditorGUILayout.Space();
                     }
                 }
-            }
 
-            EditorGUILayout.Space();
-            showProfilerSettings = EditorGUILayout.Foldout(showProfilerSettings, "Profiler Settings", true);
-            if (showProfilerSettings)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Profiler Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(showProfiler);
                     EditorGUILayout.PropertyField(frameSampleRate);
@@ -85,9 +69,16 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
                     EditorGUILayout.PropertyField(windowScale);
                     EditorGUILayout.PropertyField(windowFollowSpeed);
                 }
-            }
 
-            serializedObject.ApplyModifiedProperties();
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
+
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile;
         }
     }
 }
