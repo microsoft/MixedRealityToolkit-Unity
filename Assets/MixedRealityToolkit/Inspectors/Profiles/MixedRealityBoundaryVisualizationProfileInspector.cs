@@ -72,68 +72,71 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
+
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                return;
+                serializedObject.Update();
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.PropertyField(boundaryHeight);
+                }
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Floor Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.PropertyField(showFloor, showContent);
+                    EditorGUILayout.PropertyField(floorMaterial, materialContent);
+                    var prevWideMode = EditorGUIUtility.wideMode;
+                    EditorGUIUtility.wideMode = true;
+                    EditorGUILayout.PropertyField(floorScale, scaleContent, GUILayout.ExpandWidth(true));
+                    EditorGUIUtility.wideMode = prevWideMode;
+                    EditorGUILayout.PropertyField(floorPhysicsLayer);
+                }
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Play Area Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.PropertyField(showPlayArea, showContent);
+                    EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
+                    EditorGUILayout.PropertyField(playAreaPhysicsLayer);
+                }
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Tracked Area Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.PropertyField(showTrackedArea, showContent);
+                    EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
+                    EditorGUILayout.PropertyField(trackedAreaPhysicsLayer);
+                }
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Boundary Wall Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
+                    EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
+                    EditorGUILayout.PropertyField(boundaryWallsPhysicsLayer);
+                }
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Boundary Ceiling Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
+                    EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
+                    EditorGUILayout.PropertyField(ceilingPhysicsLayer);
+                }
+
+                serializedObject.ApplyModifiedProperties();
             }
+        }
 
-            bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
-            serializedObject.Update();
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
-            {
-                EditorGUILayout.PropertyField(boundaryHeight);
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Floor Settings", EditorStyles.boldLabel);
-            {
-                EditorGUILayout.PropertyField(showFloor, showContent);
-                EditorGUILayout.PropertyField(floorMaterial, materialContent);
-                var prevWideMode = EditorGUIUtility.wideMode;
-                EditorGUIUtility.wideMode = true;
-                EditorGUILayout.PropertyField(floorScale, scaleContent, GUILayout.ExpandWidth(true));
-                EditorGUIUtility.wideMode = prevWideMode;
-                EditorGUILayout.PropertyField(floorPhysicsLayer);
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Play Area Settings", EditorStyles.boldLabel);
-            {
-                EditorGUILayout.PropertyField(showPlayArea, showContent);
-                EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
-                EditorGUILayout.PropertyField(playAreaPhysicsLayer);
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Tracked Area Settings", EditorStyles.boldLabel);
-            {
-                EditorGUILayout.PropertyField(showTrackedArea, showContent);
-                EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
-                EditorGUILayout.PropertyField(trackedAreaPhysicsLayer);
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Boundary Wall Settings", EditorStyles.boldLabel);
-            {
-                EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
-                EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
-                EditorGUILayout.PropertyField(boundaryWallsPhysicsLayer);
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Boundary Ceiling Settings", EditorStyles.boldLabel);
-            {
-                EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
-                EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
-                EditorGUILayout.PropertyField(ceilingPhysicsLayer);
-            }
-
-            serializedObject.ApplyModifiedProperties();
-
-            GUI.enabled = wasGUIEnabled;
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile;
         }
     }
 }

@@ -66,11 +66,11 @@ The [hand interaction examples scene](README_HandInteractionExamples.md) is a gr
 
 ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
 
-8. Select "Import TMP essentials" button. "TMP Essentials" refers to TextMeshPro plugin, which some of the MRTK examples use for improved text rendering.
+4. Select "Import TMP essentials" button. "TMP Essentials" refers to TextMeshPro plugin, which some of the MRTK examples use for improved text rendering.
 
-9. Close the TMPPro dialog. After this you need to reload the scene, so close and re-open your scene.
+5. Close the TMPPro dialog. After this you need to reload the scene, so close and re-open your scene.
 
-10. Press the play button.
+6. Press the play button.
 
 Have fun exploring the scene! You can use simulated hands to interact in editor. You can:
 - Press WASD keys to fly / move.

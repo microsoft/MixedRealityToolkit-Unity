@@ -87,6 +87,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (buildInfo.ScriptingBackend.HasValue)
             {
                 PlayerSettings.SetScriptingBackend(buildTargetGroup, buildInfo.ScriptingBackend.Value);
+
+                // When building the .NET backend, also build the C# projects, as the
+                // intent of this build process is to prove that it's possible build
+                // a solution where the local dev loop can be accomplished in the
+                // generated C# projects.
+                if (buildInfo.ScriptingBackend == ScriptingImplementation.WinRTDotNET)
+                {
+                    EditorUserBuildSettings.wsaGenerateReferenceProjects = true;
+                }
             }
 
             BuildTarget oldBuildTarget = EditorUserBuildSettings.activeBuildTarget;
