@@ -32,25 +32,24 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
+
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target), false))
             {
-                return;
+                serializedObject.Update();
+
+                RenderList(inputActionList);
+
+                serializedObject.ApplyModifiedProperties();
             }
+        }
 
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
-            {
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-                return;
-            }
-
-            bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
-            serializedObject.Update();
-
-            RenderList(inputActionList);
-
-            serializedObject.ApplyModifiedProperties();
-            GUI.enabled = wasGUIEnabled;
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile;
         }
 
         private static void RenderList(SerializedProperty list)
@@ -58,54 +57,54 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
 
-            if (RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
-            {
-                list.arraySize += 1;
-                var inputAction = list.GetArrayElementAtIndex(list.arraySize - 1);
-                var inputActionId = inputAction.FindPropertyRelative("id");
-                var inputActionDescription = inputAction.FindPropertyRelative("description");
-                var inputActionConstraint = inputAction.FindPropertyRelative("axisConstraint");
-                inputActionConstraint.intValue = 0;
-                inputActionDescription.stringValue = $"New Action {inputActionId.intValue = list.arraySize}";
-            }
-
-            GUILayout.Space(12f);
-
-            GUILayout.BeginVertical();
-
-            GUILayout.BeginHorizontal();
-            var labelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 36f;
-            EditorGUILayout.LabelField(ActionContent, GUILayout.ExpandWidth(true));
-            EditorGUILayout.LabelField(AxisConstraintContent, GUILayout.Width(96f));
-            EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
-            EditorGUIUtility.labelWidth = labelWidth;
-            GUILayout.EndHorizontal();
-
-            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-
-            for (int i = 0; i < list.arraySize; i++)
-            {
-                EditorGUILayout.BeginHorizontal();
-                var previousLabelWidth = EditorGUIUtility.labelWidth;
-                EditorGUIUtility.labelWidth = 64f;
-                SerializedProperty inputAction = list.GetArrayElementAtIndex(i);
-                SerializedProperty inputActionDescription = inputAction.FindPropertyRelative("description");
-                var inputActionConstraint = inputAction.FindPropertyRelative("axisConstraint");
-                EditorGUILayout.PropertyField(inputActionDescription, GUIContent.none);
-                EditorGUILayout.PropertyField(inputActionConstraint, GUIContent.none, GUILayout.Width(96f));
-                EditorGUIUtility.labelWidth = previousLabelWidth;
-
-                if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                if (MixedRealityEditorUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
                 {
-                    list.DeleteArrayElementAtIndex(i);
+                    list.arraySize += 1;
+                    var inputAction = list.GetArrayElementAtIndex(list.arraySize - 1);
+                    var inputActionId = inputAction.FindPropertyRelative("id");
+                    var inputActionDescription = inputAction.FindPropertyRelative("description");
+                    var inputActionConstraint = inputAction.FindPropertyRelative("axisConstraint");
+                    inputActionConstraint.intValue = 0;
+                    inputActionDescription.stringValue = $"New Action {inputActionId.intValue = list.arraySize}";
                 }
 
-                EditorGUILayout.EndHorizontal();
-            }
+                GUILayout.Space(12f);
 
-            EditorGUILayout.EndScrollView();
-            GUILayout.EndVertical();
+                GUILayout.BeginVertical();
+
+                GUILayout.BeginHorizontal();
+                var labelWidth = EditorGUIUtility.labelWidth;
+                EditorGUIUtility.labelWidth = 36f;
+                EditorGUILayout.LabelField(ActionContent, GUILayout.ExpandWidth(true));
+                EditorGUILayout.LabelField(AxisConstraintContent, GUILayout.Width(96f));
+                EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
+                EditorGUIUtility.labelWidth = labelWidth;
+                GUILayout.EndHorizontal();
+
+                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+                for (int i = 0; i < list.arraySize; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    var previousLabelWidth = EditorGUIUtility.labelWidth;
+                    EditorGUIUtility.labelWidth = 64f;
+                    SerializedProperty inputAction = list.GetArrayElementAtIndex(i);
+                    SerializedProperty inputActionDescription = inputAction.FindPropertyRelative("description");
+                    var inputActionConstraint = inputAction.FindPropertyRelative("axisConstraint");
+                    EditorGUILayout.PropertyField(inputActionDescription, GUIContent.none);
+                    EditorGUILayout.PropertyField(inputActionConstraint, GUIContent.none, GUILayout.Width(96f));
+                    EditorGUIUtility.labelWidth = previousLabelWidth;
+
+                    if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                    {
+                        list.DeleteArrayElementAtIndex(i);
+                    }
+
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                EditorGUILayout.EndScrollView();
+                GUILayout.EndVertical();
             GUILayout.EndVertical();
         }
     }

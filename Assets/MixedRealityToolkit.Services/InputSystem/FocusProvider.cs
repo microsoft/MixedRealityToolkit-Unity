@@ -878,7 +878,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             if (gazePointer != null)
             {
-                gazePointerStateMachine.UpdateState(NumNearPointersActive, NumFarPointersActive);
+                gazePointerStateMachine.UpdateState(
+                    NumNearPointersActive,
+                    NumFarPointersActive,
+                    InputSystem.EyeGazeProvider.IsEyeGazeValid);
 
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
                 gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;
