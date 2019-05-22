@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private CompositionManager compositionManager = null;
 
-        public RenderTexture GetDSLRFeed()
+        public RenderTexture GetVideoCameraFeed()
         {
             // Obtain DSLR Feed
             if (compositionManager == null)
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return compositionManager.TextureManager.compositeTexture; // Note: figure out what is the correct texture to use here in the new compositor wrapper
         }
 
-        public Texture2D GetDSLRTexture()
+        public Texture2D GetVideoCameraTexture()
         {
             if (compositionManager == null)
             {

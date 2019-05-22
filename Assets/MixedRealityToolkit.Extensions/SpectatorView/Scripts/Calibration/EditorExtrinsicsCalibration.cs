@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (feedImage != null &&
                 feedImage.texture == null)
             {
-                feedImage.texture = CompositorWrapper.Instance.GetDSLRFeed();
+                feedImage.texture = CompositorWrapper.Instance.GetVideoCameraFeed();
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
                 else
                 {
-                    var dslrTexture = CompositorWrapper.Instance.GetDSLRTexture();
+                    var dslrTexture = CompositorWrapper.Instance.GetVideoCameraTexture();
                     var fileName = CalibrationDataHelper.GetUniqueFileName();
                     CalibrationDataHelper.SaveDSLRArUcoImage(dslrTexture, fileName);
                     CalibrationDataHelper.SaveHeadsetData(headsetData, fileName);
