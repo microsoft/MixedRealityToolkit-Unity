@@ -11,9 +11,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
     ///   2. Pointer that was focus locked most recently
     ///   3. Pointer that became interaction enabled most recently
     /// </summary>
-    public class DefaultPrimaryPointerSelector : IMixedRealityPrimaryPointerSelector
+    public class DefaultPrimaryPointerSelector : IMixedRealityPrimaryPointerSelector, IMixedRealityPointerHandler
     {
         private readonly Dictionary<IMixedRealityPointer, PointerInfo> pointerInfos = new Dictionary<IMixedRealityPointer, PointerInfo>();
+
+        public DefaultPrimaryPointerSelector()
+        {
+            MixedRealityToolkit.InputSystem.RegisterPointerHandler(this);
+        }
+
+        ~DefaultPrimaryPointerSelector()
+        {
+            MixedRealityToolkit.InputSystem.UnregisterPointerHandler(this);
+        }
+
+        #region IMixedRealityPrimaryPointerSelector
 
         public void RegisterPointer(IMixedRealityPointer pointer)
         {
@@ -39,8 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (info.IsInteractionEnabled && 
                     (primaryInfo == null || 
-                    (info.IsFocusLocked && (!primaryInfo.IsFocusLocked || info.FocusLockedTimestamp < primaryInfo.FocusLockedTimestamp)) ||
-                    (!primaryInfo.IsFocusLocked && info.InteractionEnabledTimestamp > primaryInfo.InteractionEnabledTimestamp)))
+                    (info.IsDown && (!primaryInfo.IsDown || info.FocusLockedTimestamp < primaryInfo.FocusLockedTimestamp)) ||
+                    (!primaryInfo.IsDown && info.InteractionEnabledTimestamp > primaryInfo.InteractionEnabledTimestamp)))
                 {
                     primaryPointer = pointer;
                     primaryInfo = info;
@@ -49,6 +61,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return primaryPointer;
         }
+
+        #endregion IMixedRealityPrimaryPointerSelector
+
+        #region IMixedRealityPointerHandler
+
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+            PointerInfo info = null;
+            if (pointerInfos.TryGetValue(eventData.Pointer, out info))
+            {
+                info.IsDown = true;
+            }
+        }
+
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+            PointerInfo info = null;
+            if (pointerInfos.TryGetValue(eventData.Pointer, out info))
+            {
+                info.IsDown = false;
+            }
+        }
+
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
+        #endregion IMixedRealityPointerHandler
 
         private class PointerInfo
         {
@@ -70,24 +109,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // This doubles as interaction enabled and focus locked lost timestamp. See IsFocusLocked setter below.
             public long InteractionEnabledTimestamp { get; private set; }
 
-            private bool isFocusLocked;
+            private bool isDown;
 
-            public bool IsFocusLocked
+            public bool IsDown
             {
-                get { return isFocusLocked; }
-                private set
+                get { return isDown; }
+                set
                 {
-                    if (value && !isFocusLocked)
+                    if (value && !isDown)
                     {
                         FocusLockedTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
                     }
-                    else if (!value && isFocusLocked)
+                    else if (!value && isDown)
                     {
                         // We take shortcut here and refresh the interaction enabled timestamp instead of keeping a separate focus locked lost one
                         InteractionEnabledTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
                     }
 
-                    isFocusLocked = value;
+                    isDown = value;
                 }
             }
 
@@ -96,13 +135,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public PointerInfo(IMixedRealityPointer pointer)
             {
                 IsInteractionEnabled = pointer.IsInteractionEnabled;
-                IsFocusLocked = pointer.IsFocusLocked;
             }
 
             public void Update(IMixedRealityPointer pointer)
             {
                 IsInteractionEnabled = pointer.IsInteractionEnabled;
-                IsFocusLocked = pointer.IsFocusLocked;
             }
         }
     }
