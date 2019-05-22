@@ -729,7 +729,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        private static void SetInstanceInactive(MixedRealityToolkit toolkitInstance)
+        public static void SetInstanceInactive(MixedRealityToolkit toolkitInstance)
         {
             if (toolkitInstance == null)
             {   // Don't do anything.
@@ -928,6 +928,11 @@ namespace Microsoft.MixedReality.Toolkit
         private void DestroyAllServices()
         {
             if (!ExecuteOnAllServices(service => service.Destroy())) { return; }
+
+            foreach (var system in activeSystems)
+            {
+                MixedRealityServiceRegistry.RemoveService(system.Key, system.Value, this);
+            }
 
             activeSystems.Clear();
             registeredMixedRealityServices.Clear();

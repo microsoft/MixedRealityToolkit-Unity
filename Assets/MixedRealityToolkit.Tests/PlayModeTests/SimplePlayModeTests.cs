@@ -7,6 +7,7 @@
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
 using System.Collections;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -58,6 +59,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(testObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+        }
+
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
         }
     }
 }

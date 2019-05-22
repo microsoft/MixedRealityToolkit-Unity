@@ -157,19 +157,24 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             {
                 StopRecognition();
                 keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
+
+                keywordRecognizer.Dispose();
             }
+
+            keywordRecognizer = null;
         }
 
-#if UNITY_EDITOR
         /// <inheritdoc />
         public override void Destroy()
         {
+            Disable();
+#if UNITY_EDITOR
             if (UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
             {
                 UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, false);
             }
-        }
 #endif // UNITY_EDITOR
+        }
 
         /// <inheritdoc />
         protected override void Dispose(bool disposing)

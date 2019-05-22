@@ -36,6 +36,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(cube);
             yield return null;
         }
+
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
     }
 }
 #endif

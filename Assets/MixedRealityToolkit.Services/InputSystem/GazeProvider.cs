@@ -427,7 +427,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnDisable();
             GazePointer?.BaseCursor?.SetVisibility(false);
-            InputSystem?.RaiseSourceLost(GazeInputSource);
+
+            // if true, component has never started and never fired onSourceDetected event
+            if (!delayInitialization)
+            {
+                InputSystem?.RaiseSourceLost(GazeInputSource);
+            }
         }
 
         #endregion MonoBehaviour Implementation

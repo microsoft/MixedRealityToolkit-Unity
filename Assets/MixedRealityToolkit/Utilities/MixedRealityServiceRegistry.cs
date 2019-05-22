@@ -76,6 +76,20 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Removes an <see cref="IMixedRealityService"/> instance from the registry.
         /// </summary>
+        /// <param name="type">The interface type of the service being removed.</typeparam>
+        /// <param name="serviceInstance">Instance of the service to remove.</param>
+        /// <param name="registrar">Instance of the registrar manages the service.</param>
+        /// <returns>
+        /// True if the service was successfully removed, false otherwise.
+        /// </returns>
+        public static bool RemoveService(Type serviceType, IMixedRealityService serviceInstance, IMixedRealityServiceRegistrar registrar)
+        {
+            return RemoveServiceInternal(serviceType, serviceInstance, registrar);
+        }
+
+        /// <summary>
+        /// Removes an <see cref="IMixedRealityService"/> instance from the registry.
+        /// </summary>
         /// <typeparam name="T">The interface type of the service being removed.</typeparam>
         /// <param name="serviceInstance">Instance of the service to remove.</param>
         /// <param name="registrar">Instance of the registrar manages the service.</param>
@@ -152,7 +166,13 @@ namespace Microsoft.MixedReality.Toolkit
 
             List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
 
-            return services.Remove(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
+            bool result = services.Remove(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
+            if(services.Count == 0)
+            {
+                registry.Remove(interfaceType);
+            }
+
+            return result;
         }
 
         /// <summary>

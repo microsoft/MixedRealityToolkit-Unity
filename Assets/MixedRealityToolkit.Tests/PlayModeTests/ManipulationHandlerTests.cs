@@ -26,9 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator Test01_ManipulationHandlerInstantiate()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
-            TestUtilities.InitializePlayspace();
-
             RenderSettings.skybox = null;
 
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -44,6 +41,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        [SetUp]
+        public void SetupMrtk()
+        {
+            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializePlayspace();
+        }
+
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
         /// <summary>
         /// Test creating ManipulationHandler and receiving hover enter/exit events
         /// from gaze provider.
@@ -52,8 +62,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator Test02_ManipulationHandlerGazeHover()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
-            TestUtilities.InitializePlayspace();
 
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;

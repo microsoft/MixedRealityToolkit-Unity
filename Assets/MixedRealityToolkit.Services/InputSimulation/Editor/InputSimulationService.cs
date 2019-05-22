@@ -65,6 +65,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             ArticulatedHandPose.LoadGesturePoses();
         }
 
+        public override void Destroy()
+        {
+            ArticulatedHandPose.ResetGesturePoses();
+        }
+
         /// <inheritdoc />
         public override void Enable()
         {

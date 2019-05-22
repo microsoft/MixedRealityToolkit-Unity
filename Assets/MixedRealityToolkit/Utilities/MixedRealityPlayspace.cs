@@ -17,6 +17,13 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static Transform mixedRealityPlayspace;
 
+        public static void Destroy()
+        {
+            CameraCache.Main.transform.SetParent(null);
+            UnityEngine.Object.Destroy(mixedRealityPlayspace.gameObject);
+            mixedRealityPlayspace = null;
+        }
+
         /// <summary>
         /// The transform of the playspace.
         /// </summary>

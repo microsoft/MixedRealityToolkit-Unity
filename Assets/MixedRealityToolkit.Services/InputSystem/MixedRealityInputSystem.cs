@@ -242,6 +242,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Disable()
         {
+            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+            UnityEngine.Object.Destroy(CameraCache.Main.gameObject.GetComponent(profile.PointerProfile.GazeProviderType.Type));
+
             GazeProvider = null;
 
             if (!Application.isPlaying)
@@ -268,6 +271,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             deviceManagers.Clear();
 
             InputDisabled?.Invoke();
+        }
+        public override void Destroy()
+        {
+            Disable();
         }
 
         #endregion IMixedRealityService Implementation
