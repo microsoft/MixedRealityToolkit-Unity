@@ -12,34 +12,31 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private static bool showGeneralProperties = true;
         private SerializedProperty boundaryHeight;
 
-        private static bool showFloorProperties = true;
         private SerializedProperty showFloor;
         private SerializedProperty floorMaterial;
         private SerializedProperty floorScale;
         private SerializedProperty floorPhysicsLayer;
 
-        private static bool showPlayAreaProperties = true;
         private SerializedProperty showPlayArea;
         private SerializedProperty playAreaMaterial;
         private SerializedProperty playAreaPhysicsLayer;
 
-        private static bool showTrackedAreaProperties = true;
         private SerializedProperty showTrackedArea;
         private SerializedProperty trackedAreaMaterial;
         private SerializedProperty trackedAreaPhysicsLayer;
 
-        private static bool showWallProperties = true;
         private SerializedProperty showBoundaryWalls;
         private SerializedProperty boundaryWallMaterial;
         private SerializedProperty boundaryWallsPhysicsLayer;
 
-        private static bool showCeilingProperties = true;
         private SerializedProperty showBoundaryCeiling;
         private SerializedProperty boundaryCeilingMaterial;
         private SerializedProperty ceilingPhysicsLayer;
+
+        private const string ProfileTitle = "Boundary Visualization Settings";
+        private const string ProfileDescription = "Boundary visualizations can help users stay oriented and comfortable in the experience.";
 
         private readonly GUIContent showContent = new GUIContent("Show");
         private readonly GUIContent scaleContent = new GUIContent("Scale");
@@ -75,37 +72,20 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Boundary Visualization Options",
-                "Boundary visualizations can help users stay oriented and comfortable in the experience.");
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
 
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-                {
-                    return;
-                }
-            }
+                serializedObject.Update();
 
-            CheckProfileLock(target);
-
-            serializedObject.Update();
-
-            EditorGUILayout.Space();
-            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
-            if (showGeneralProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(boundaryHeight);
                 }
-            }
 
-            EditorGUILayout.Space();
-            showFloorProperties = EditorGUILayout.Foldout(showFloorProperties, "Floor Settings", true);
-            if (showFloorProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Floor Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(showFloor, showContent);
                     EditorGUILayout.PropertyField(floorMaterial, materialContent);
@@ -115,57 +95,48 @@ namespace Microsoft.MixedReality.Toolkit.Boundary.Editor
                     EditorGUIUtility.wideMode = prevWideMode;
                     EditorGUILayout.PropertyField(floorPhysicsLayer);
                 }
-            }
 
-            EditorGUILayout.Space();
-            showPlayAreaProperties = EditorGUILayout.Foldout(showPlayAreaProperties, "Play Area Settings", true);
-            if (showPlayAreaProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Play Area Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(showPlayArea, showContent);
                     EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
                     EditorGUILayout.PropertyField(playAreaPhysicsLayer);
                 }
-            }
 
-            EditorGUILayout.Space();
-            showTrackedAreaProperties = EditorGUILayout.Foldout(showTrackedAreaProperties, "Tracked Area Settings", true);
-            if (showTrackedAreaProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Tracked Area Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(showTrackedArea, showContent);
                     EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
                     EditorGUILayout.PropertyField(trackedAreaPhysicsLayer);
                 }
-            }
 
-            EditorGUILayout.Space();
-            showWallProperties = EditorGUILayout.Foldout(showWallProperties, "Boundary Wall Settings", true);
-            if (showWallProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Boundary Wall Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
                     EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
                     EditorGUILayout.PropertyField(boundaryWallsPhysicsLayer);
                 }
-            }
 
-            EditorGUILayout.Space();
-            showCeilingProperties = EditorGUILayout.Foldout(showCeilingProperties, "Boundary Ceiling Settings", true);
-            if (showCeilingProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Boundary Ceiling Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
                     EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
                     EditorGUILayout.PropertyField(ceilingPhysicsLayer);
                 }
-            }
 
-            serializedObject.ApplyModifiedProperties();
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
+
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile;
         }
     }
 }

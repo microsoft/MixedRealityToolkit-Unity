@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             base.OnInspectorGUI();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false)) { return; }
 
             serializedObject.Update();
             EditorGUILayout.PropertyField(pointerUpProperty, true);

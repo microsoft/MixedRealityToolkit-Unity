@@ -283,11 +283,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region MRTK instance helpers
         protected MixedRealityControllerVisualizationProfile GetControllerVisualizationProfile()
         {
-            if (MixedRealityToolkit.Instance != null &&
-                MixedRealityToolkit.Instance.ActiveProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null)
+            if (InputSystem?.InputSystemProfile != null)
             {
-                return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile;
+                return InputSystem.InputSystemProfile.ControllerVisualizationProfile;
             }
 
             return null;
@@ -295,11 +293,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected bool IsControllerMappingEnabled()
         {
-            if (MixedRealityToolkit.Instance != null &&
-                MixedRealityToolkit.Instance.ActiveProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null)
+            if (InputSystem?.InputSystemProfile != null)
             {
-                return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled;
+                return InputSystem.InputSystemProfile.IsControllerMappingEnabled;
             }
 
             return false;
@@ -307,12 +303,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected MixedRealityControllerMapping[] GetControllerMappings()
         {
-            if (MixedRealityToolkit.Instance != null &&
-                MixedRealityToolkit.Instance.ActiveProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile != null)
+            if (InputSystem?.InputSystemProfile?.ControllerMappingProfile != null)
             {
-                return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
+                return InputSystem.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
             }
 
             return null;
