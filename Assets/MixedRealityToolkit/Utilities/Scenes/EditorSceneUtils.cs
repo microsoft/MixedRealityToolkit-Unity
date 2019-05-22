@@ -361,6 +361,59 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
+        /// Goes through a scene's objects and checks for components that aren't found in permittedComponentTypes
+        /// If any are found, they're added to the violations list.
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="permittedComponentTypes"></param>
+        /// <param name="destroyIfFound"></param>
+        public static bool EnforceSceneComponents(Scene scene, Type[] permittedComponentTypes, List<Component> violations)
+        {
+            if (!scene.IsValid() || !scene.isLoaded)
+            {
+                return false;
+            }
+
+            if (permittedComponentTypes == null || permittedComponentTypes.Length == 0)
+            {
+                throw new Exception("Permitted component types must include at least one type.");
+            }
+
+            bool foundAtLeastOneViolation = false;
+
+            try
+            {
+                foreach (GameObject rootGameObject in scene.GetRootGameObjects())
+                {
+                    foreach (Component component in rootGameObject.GetComponentsInChildren<Component>())
+                    {
+                        bool componentIsPermitted = false;
+                        foreach (Type type in permittedComponentTypes)
+                        {
+                            if (type.IsAssignableFrom(component.GetType()))
+                            {
+                                componentIsPermitted = true;
+                                break;
+                            }
+                        }
+
+                        if (!componentIsPermitted)
+                        {
+                            foundAtLeastOneViolation = true;
+                            violations.Add(component);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // This can go wrong if GetRootSceneObjects fails.
+            }
+
+            return foundAtLeastOneViolation;
+        }
+
+        /// <summary>
         /// Gets serialized objects for lightmap and render settings from active scene.
         /// </summary>
         /// <param name="lightmapSettings"></param>

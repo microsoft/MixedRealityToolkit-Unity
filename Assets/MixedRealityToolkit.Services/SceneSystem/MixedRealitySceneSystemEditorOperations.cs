@@ -20,6 +20,17 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     public partial class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem
     {
 #if UNITY_EDITOR
+
+        // These are the types of components that are permitted to exist inside a lighting scene
+        private static Type[] permittedLightingSceneComponentTypes = new Type[] {
+            typeof(Transform),
+            typeof(GameObject),
+            typeof(Light),
+            typeof(ReflectionProbe),
+            typeof(LightProbeGroup),
+            typeof(LightProbeProxyVolume),
+        };
+
         private bool updatingSettingsOnEditorChanged = false;
         private const float lightingUpdateInterval = 5f;
         private const float managerSceneInstanceCheckInterval = 2f;
@@ -108,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             {
                 editorApplicationUpdateTicks = 0;
                 activeSceneDirty = true;
+                heirarchyDirty = true;
                 CheckForChanges();
             }
         }
@@ -180,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             if (activeSceneDirty || heirarchyDirty)
             {
                 UpdateManagerScene();
-                UpdateLightingScene(activeSceneDirty);
+                UpdateLightingScene(activeSceneDirty, heirarchyDirty);
             }
 
             updatingSettingsOnEditorChanged = false;
@@ -287,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
-        private void UpdateLightingScene(bool updateActiveScene)
+        private void UpdateLightingScene(bool updateActiveScene, bool heirarchyDirty)
         {
             if (!profile.UseLightingScene || !profile.EditorManageLoadedScenes)
             {
@@ -306,9 +318,27 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     if (lightingScene.Name == ActiveLightingScene)
                     {
                         Scene scene;
-                        if (EditorSceneUtils.LoadScene(lightingScene, false, out scene) && updateActiveScene)
+                        if (EditorSceneUtils.LoadScene(lightingScene, false, out scene))
                         {
-                            EditorSceneUtils.SetActiveScene(scene);
+                            if (updateActiveScene)
+                            {
+                                EditorSceneUtils.SetActiveScene(scene);
+                            }
+
+                            if (profile.EditorEnforceLightingSceneTypes && heirarchyDirty)
+                            {
+                                List<Component> violations = new List<Component>();
+                                if (EditorSceneUtils.EnforceSceneComponents(scene, permittedLightingSceneComponentTypes, violations))
+                                {
+                                    if (EditorUtility.DisplayDialog("Non-lighting components found", "We found non-lighting components in your lighting scene. To disable this check, un-check 'EditorEnforceLightingSceneTypes' in your SceneSystem profile.", "Destroy", "Cancel"))
+                                    {
+                                        foreach (Component component in violations)
+                                        {
+                                            GameObject.DestroyImmediate(component);
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         if (profile.EditorEnforceSceneOrder)

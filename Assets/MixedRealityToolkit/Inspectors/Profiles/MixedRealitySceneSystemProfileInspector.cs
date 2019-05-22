@@ -31,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool showEditorProperties = true;
         private SerializedProperty editorManagerLoadedScenes;
         private SerializedProperty editorEnforceSceneOrder;
+        private SerializedProperty editorEnforceLightingSceneTypes;
 
         private static bool showManagerProperties = true;
         private SerializedProperty useManagerScene;
@@ -55,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             editorManagerLoadedScenes = serializedObject.FindProperty("editorManagerLoadedScenes");
             editorEnforceSceneOrder = serializedObject.FindProperty("editorEnforceSceneOrder");
+            editorEnforceLightingSceneTypes = serializedObject.FindProperty("editorEnforceLightingSceneTypes");
 
             useManagerScene = serializedObject.FindProperty("useManagerScene");
             managerScene = serializedObject.FindProperty("managerScene");
@@ -101,6 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.PropertyField(editorManagerLoadedScenes);
                     EditorGUILayout.PropertyField(editorEnforceSceneOrder);
+                    EditorGUILayout.PropertyField(editorEnforceLightingSceneTypes);
                     EditorGUILayout.Space();
                 }
             }

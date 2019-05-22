@@ -41,15 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public bool EditorManageLoadedScenes => editorManagerLoadedScenes;
 
         public bool EditorEnforceSceneOrder => editorEnforceSceneOrder;
+
+        public bool EditorEnforceLightingSceneTypes => editorEnforceLightingSceneTypes;
 #endif
-
-        [SerializeField]
-        [Tooltip("If true, the service will ensure manager scene is displayed first in scene heirarchy, followed by lighting and then content.")]
-        private bool editorEnforceSceneOrder = true;
-
-        [SerializeField]
-        [Tooltip("If true, the service will ensure that manager scenes and lighting scenes are always loaded. Disable if you want to work in a scene in isolation.")]
-        private bool editorManagerLoadedScenes = true;
 
         [SerializeField]
         private bool useManagerScene = true;
@@ -74,10 +68,25 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         [SerializeField]
         [Tooltip("Cached content tags found in your content scenes")]
         private List<string> contentTags = new List<string>();
-        
-        public bool GetLightingSceneObject(string lightingSceneName, out SceneInfo lightingScene)
+
+        #region editor settings
+
+        [SerializeField]
+        [Tooltip("If true, the service will ensure manager scene is displayed first in scene heirarchy, followed by lighting and then content.")]
+        private bool editorEnforceSceneOrder = true;
+
+        [SerializeField]
+        [Tooltip("If true, service will ensure that manager scenes and lighting scenes are always loaded. Disable if you want to work in a scene in isolation.")]
+        private bool editorManagerLoadedScenes = true;
+
+        [SerializeField]
+        [Tooltip("If true, service will ensure that only lighting-related components are allowd in lighting scenes. Disable if you want complete control over lighting scenes.")]
+        private bool editorEnforceLightingSceneTypes;
+
+        #endregion
+
+        public bool GetLightingSceneInfo(string lightingSceneName, out SceneInfo lightingScene)
         {
-            // TODO generate a lookup
             lightingScene = SceneInfo.Empty;
             foreach (SceneInfo lso in lightingScenes)
             {
