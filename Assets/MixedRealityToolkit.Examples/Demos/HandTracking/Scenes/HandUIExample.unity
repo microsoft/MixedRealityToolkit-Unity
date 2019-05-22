@@ -1873,7 +1873,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  jointFacingThreshold: 0.3
+  facingThreshold: 75
 --- !u!4 &2133851833
 Transform:
   m_ObjectHideFlags: 0

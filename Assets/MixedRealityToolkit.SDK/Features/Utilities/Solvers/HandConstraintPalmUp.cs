@@ -13,16 +13,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     {
         [Header("Palm Up")]
         [SerializeField]
-        [Tooltip("TODO")]
-        private float jointFacingThreshold = 0.3f;
+        [Tooltip("The angle (in degrees) of the cone between the palm's up and camera's forward have to match.")]
+        [Range(0.0f, 90.0f)]
+        private float facingThreshold = 80.0f;
 
         /// <summary>
-        /// TODO
+        /// The angle (in degrees) of the cone between the palm's up and camera's forward have to match.
         /// </summary>
-        public float JointFacingThreshold
+        public float FacingThreshold
         {
-            get { return jointFacingThreshold; }
-            set { jointFacingThreshold = value; }
+            get { return facingThreshold; }
+            set { facingThreshold = value; }
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             if (hand.TryGetJoint(TrackedHandJoint.Palm, out pose))
             {
-                return Vector3.Dot(pose.Up, CameraCache.Main.transform.forward) > jointFacingThreshold;
+                return Vector3.Angle(pose.Up, CameraCache.Main.transform.forward) < facingThreshold;
             }
 
             return true;
