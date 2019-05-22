@@ -9,6 +9,9 @@ pool:
   demands:
   - Unity2018.3.7f1
 
-steps:
-- template: templates/common.yml
-- template: templates/end.yml
+jobs:
+- job: PR validation build
+  timeoutInMinutes: 90
+  steps:
+  - template: templates/common.yml
+  - template: templates/end.yml
