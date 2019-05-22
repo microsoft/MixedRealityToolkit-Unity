@@ -7,8 +7,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class DefaultPrimaryPointerSelector : IMixedRealityPrimaryPointerSelector
     {
-        public IMixedRealityPointer PrimaryPointer { get; private set; }
-
         private readonly Dictionary<IMixedRealityPointer, PointerInfo> pointerInfos = new Dictionary<IMixedRealityPointer, PointerInfo>();
 
         public void RegisterPointer(IMixedRealityPointer pointer)
@@ -22,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerInfos.Remove(pointer);
         }
 
-        public void Update()
+        public IMixedRealityPointer Update()
         {
             IMixedRealityPointer primaryPointer = null;
             PointerInfo primaryInfo = null;
@@ -43,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            PrimaryPointer = primaryPointer;
+            return primaryPointer;
         }
 
         private class PointerInfo

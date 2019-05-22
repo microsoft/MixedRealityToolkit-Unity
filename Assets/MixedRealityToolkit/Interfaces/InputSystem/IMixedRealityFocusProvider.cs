@@ -7,7 +7,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public delegate void MainPointerChangedHandler(IMixedRealityPointer mainPointer);
+    /// <summary>
+    /// Delegate type used to handle primary pointer changes
+    /// </summary>
+    public delegate void PrimaryPointerChangedHandler(IMixedRealityPointer oldPointer, IMixedRealityPointer newPointer);
 
     /// <summary>
     /// Implements the Focus Provider for handling focus of pointers.
@@ -30,6 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks>
         Camera UIRaycastCamera { get; }
 
+        /// <summary>
+        /// Current primary pointer. Determined by the primary pointer selector in use (see MixedRealityPointerProfile.PrimaryPointerSelector).
+        /// </summary>
         IMixedRealityPointer PrimaryPointer { get; }
 
         /// <summary>
@@ -80,5 +86,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <typeparam name="T">The type of pointers to request. Use IMixedRealityPointer to access all pointers.</typeparam>
         /// <returns></returns>
         IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer;
+
+        /// <summary>
+        /// Subscribes to primary pointer changes.
+        /// </summary>
+        /// <param name="handler">Handler to be called when the primary pointer changes</param>
+        /// <param name="invokeHandlerWithCurrentPointer">Whether to invoke the handler with the current primary pointer 
+        /// before subscribing. This is useful to avoid having to manually poll the current value.</param>
+        void SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler handler, bool invokeHandlerWithCurrentPointer);
+
+        /// <summary>
+        /// Unsubscribes from primary pointer changes.
+        /// </summary>
+        /// <param name="handler">Handler to unsubscribe</param>
+        void UnsubscribeFromPrimaryPointerChanged(PrimaryPointerChangedHandler handler);
     }
 }
