@@ -615,9 +615,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             IMixedRealityPointerMediator mediator = null;
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
+            if (InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
             {
-                mediator = Activator.CreateInstance(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
+                mediator = Activator.CreateInstance(InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
             }
 
             if (mediator != null)
@@ -878,7 +878,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             if (gazePointer != null)
             {
-                gazePointerStateMachine.UpdateState(NumNearPointersActive, NumFarPointersActive);
+                gazePointerStateMachine.UpdateState(
+                    NumNearPointersActive,
+                    NumFarPointersActive,
+                    InputSystem.EyeGazeProvider.IsEyeGazeValid);
 
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
                 gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;
