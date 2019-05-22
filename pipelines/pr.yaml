@@ -5,7 +5,7 @@ variables:
   MRTKVersion: 2.0.0
 
 jobs:
-- job: PR Validation
+- job: PRValidation
   timeoutInMinutes: 90
   pool:
     name: On-Prem Unity

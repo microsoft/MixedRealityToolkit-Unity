@@ -4,14 +4,15 @@ variables:
   UnityVersion: Unity2018.3.7f1
   MRTKVersion: 2.0.0
 
-pool:
-  name: On-Prem Unity
-  demands:
-  - Unity2018.3.7f1
-  - COG-UnityCache-WUS2-01
+jobs:
+- job: CIDeveloperValidation
   timeoutInMinutes: 90
-
-steps:
-- template: templates/common.yml
-- template: templates/package.yml
-- template: templates/end.yml
+  pool:
+    name: On-Prem Unity
+    demands:
+    - Unity2018.3.7f1
+    - COG-UnityCache-WUS2-01
+  steps:
+  - template: templates/common.yml
+  - template: templates/package.yml
+  - template: templates/end.yml
