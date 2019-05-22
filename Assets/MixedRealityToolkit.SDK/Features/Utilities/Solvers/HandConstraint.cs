@@ -93,6 +93,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
+        [Tooltip("Should the solver billboard to the camera or use the tracked object rotation?")]
+        private bool billboardToCamera = true;
+
+        /// <summary>
+        /// Should the solver billboard to the camera or use the tracked object rotation?
+        /// </summary>
+        public bool BillboardToCamera
+        {
+            get { return billboardToCamera; }
+            set { billboardToCamera = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Additional position offset to apply in billboard (camera) space.")]
+        private Vector3 billboardAdditionalOffset = Vector3.zero;
+
+        [SerializeField]
         [Tooltip("Event which is triggered when a hand begins being tracked.")]
         private UnityEvent onHandActivate = null;
 
@@ -118,6 +135,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set { onHandDeactivate = value; }
         }
 
+        [SerializeField]
+        [Tooltip("Event which is triggered when zero hands to one hand is tracked.")]
+        private UnityEvent onFirstHandDetected = null;
+
+        /// <summary>
+        /// Event which is triggered when zero hands to one hand is tracked.
+        /// </summary>
+        public UnityEvent OnFirstHandDetected
+        {
+            get { return onFirstHandDetected; }
+            set { onFirstHandDetected = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Event which is triggered when all hands are lost.")]
+        private UnityEvent onLastHandLost = null;
+
+        /// <summary>
+        /// Event which is triggered when all hands are lost.
+        /// </summary>
+        public UnityEvent OnLastHandLost
+        {
+            get { return onLastHandLost; }
+            set { onLastHandLost = value; }
+        }
+
         protected IMixedRealityHand trackedHand = null;
         protected List<IMixedRealityHand> handStack = new List<IMixedRealityHand>();
         protected HandBounds handBounds = null;
@@ -138,23 +181,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             // Track the new active hand.
-            var previousTrackedHand = trackedHand;
-
-            if (previousTrackedHand == null || 
-                previousTrackedHand != newActivehand)
+            if (trackedHand == null || trackedHand != newActivehand)
             {
                 ChangeTrackedObjectType(newActivehand);
             }
 
             // Update the goal position.
             GoalPosition = CalculateGoalPosition();
-            GoalRotation = SolverHandler.TransformTarget.rotation;
+            GoalRotation = billboardToCamera ? Quaternion.LookRotation(CameraCache.Main.transform.forward, CameraCache.Main.transform.up) : 
+                                               SolverHandler.TransformTarget.rotation;
 
-            if (previousTrackedHand == null && trackedHand != null)
-            {
-                SnapTo(GoalPosition, GoalRotation);
-            }
-            else
+            if (trackedHand != null)
             {
                 UpdateWorkingPositionToGoal();
                 UpdateWorkingRotationToGoal();
@@ -206,6 +243,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     goalPosition = ray.origin + ray.direction * distance;
                 }
             }
+
+            goalPosition += CameraCache.Main.transform.TransformDirection(billboardAdditionalOffset);
 
             return goalPosition;
         }
@@ -353,8 +392,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             handBounds = GetComponent<HandBounds>();
 
-            // Initially a hand is not active.
+            // Initially no hands are tacked or active.
             trackedHand = null;
+            onLastHandLost.Invoke();
             onHandDeactivate.Invoke();
         }
 
@@ -369,6 +409,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             if (hand != null && !handStack.Contains(hand))
             {
+                if (handStack.Count == 0)
+                {
+                    onFirstHandDetected.Invoke();
+                }
+
                 handStack.Add(hand);
             }
         }
@@ -381,6 +426,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (hand != null)
             {
                 handStack.Remove(hand);
+
+                if (handStack.Count == 0)
+                {
+                    onLastHandLost.Invoke();
+                }
             }
         }
 
