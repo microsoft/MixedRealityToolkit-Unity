@@ -92,5 +92,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return pointerMediator; }
         }
+
+        [SerializeField]
+        [Implements(typeof(IMixedRealityPrimaryPointerSelector), TypeGrouping.ByNamespaceFlat)]
+        [Tooltip("")]
+        private SystemType primaryPointerSelector = null;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public SystemType PrimaryPointerSelector
+        {
+            get { return primaryPointerSelector; }
+        }
+
     }
 }

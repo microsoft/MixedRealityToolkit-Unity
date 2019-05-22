@@ -30,9 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks>
         Camera UIRaycastCamera { get; }
 
-        IMixedRealityPointer MainPointer { get; }
-
-        event MainPointerChangedHandler OnMainPointerChanged;
+        IMixedRealityPointer PrimaryPointer { get; }
 
         /// <summary>
         /// Gets the currently focused object for the pointing source.

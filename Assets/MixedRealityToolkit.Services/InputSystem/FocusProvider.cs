@@ -61,6 +61,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        public IMixedRealityPointer PrimaryPointer
+        {
+            get { return primaryPointerSelector?.PrimaryPointer; }
+        }
+
+        private IMixedRealityPrimaryPointerSelector primaryPointerSelector;
+
         #region IFocusProvider Properties
 
         /// <inheritdoc />
@@ -117,25 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public Camera UIRaycastCamera => uiRaycastCamera;
-
-        private IMixedRealityPointer mainPointer = null;
-        public IMixedRealityPointer MainPointer
-        {
-            get
-            {
-                return mainPointer;
-            }
-            private set
-            {
-                if (value != mainPointer)
-                {
-                    mainPointer = value;
-                    OnMainPointerChanged?.Invoke(mainPointer);
-                }
-            }
-        }
-
-        public event MainPointerChangedHandler OnMainPointerChanged;
 
         #endregion IFocusProvider Properties
 
@@ -491,6 +479,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 FindOrCreateUiRaycastCamera();
             }
 
+            var primaryPointerSelectorType = InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
+            if (primaryPointerSelectorType != null)
+            {
+                primaryPointerSelector = Activator.CreateInstance(primaryPointerSelectorType) as IMixedRealityPrimaryPointerSelector;
+            }
+
             foreach (var inputSource in InputSystem.DetectedInputSources)
             {
                 RegisterPointers(inputSource);
@@ -511,7 +505,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdatePointers();
             UpdateFocusedObjects();
 
-            MainPointer = ChooseMainPointer(pointers.ToReadOnlyCollection());
+            primaryPointerSelector?.Update();
         }
 
         #endregion IMixedRealityService Implementation
@@ -663,6 +657,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (IsPointerRegistered(pointer)) { return false; }
 
             pointers.Add(new PointerData(pointer));
+
+            if (primaryPointerSelector != null)
+            {
+                primaryPointerSelector.RegisterPointer(pointer);
+            }
+
             return true;
         }
 
@@ -736,9 +736,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             pointers.Remove(pointerData);
 
-            if (MainPointer == pointer)
+            if (primaryPointerSelector != null)
             {
-                MainPointer = ChooseMainPointer(pointers.ToReadOnlyCollection());
+                primaryPointerSelector.UnregisterPointer(pointer);
             }
 
             return true;
