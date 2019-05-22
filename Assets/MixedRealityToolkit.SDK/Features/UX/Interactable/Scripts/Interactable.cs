@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 handlers.Add(handler);
             }
         }
-        
+
 
         public void RemoveHandler(IInteractableHandler handler)
         {
@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ResetBaseStates();
             }
         }
-        
+
         private void OnDisable()
         {
             if (IsGlobal)
@@ -394,7 +394,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 rollOffTimer = rollOffTime;
             }
-            
+
             SetState(InteractableStates.InteractableStateEnum.Focus, focus);
         }
 
@@ -525,7 +525,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetGesture(false);
             SetGestureMax(false);
             SetVoiceCommand(false);
-            
+
             if (globalTimer != null)
             {
                 StopCoroutine(globalTimer);
@@ -576,7 +576,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             pointers.Remove(pointer);
         }
-        
+
         #endregion PointerManagement
 
         #region MixedRealityFocusChangedHandlers
@@ -598,12 +598,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void OnFocusChanged(FocusEventData eventData) {}
+        public void OnFocusChanged(FocusEventData eventData) { }
 
         #endregion MixedRealityFocusChangedHandlers
 
         #region MixedRealityFocusHandlers
-        
+
         public void OnFocusEnter(FocusEventData eventData)
         {
             if (CanInteract())
@@ -632,7 +632,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="eventData"></param>
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            print("UP : " + eventData.MixedRealityInputAction.Description);
             pointerInputAction = eventData.MixedRealityInputAction;
             if ((!CanInteract() && !HasPress))
             {
@@ -648,14 +647,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     SetGrab(false);
                 }
-                
-                SetGesture(false);
-                print("UP COMPLETE: " + eventData.MixedRealityInputAction.Description + " / " + StateManager.CurrentState().Name + " / " + isGrab);
 
-                // if a global button is in the scene it will swallow all pointer down and ups, do we want this?
-                // This allows a global Interacable and normal interactable to exist in the same scene.
-                if (!IsGlobal)
-                    eventData.Use();
+                SetGesture(false);
+                eventData.Use();
             }
         }
 
@@ -665,7 +659,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="eventData"></param>
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            print("DOWN : " + eventData.MixedRealityInputAction.Description);
             pointerInputAction = eventData.MixedRealityInputAction;
             if (!CanInteract())
             {
@@ -680,18 +673,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SetGrab(isGrab);
 
                 dragStart = eventData.Pointer.Position;
-
-                print("DOWN COMPLETE : " + eventData.MixedRealityInputAction.Description);
-
-                // See above comment in OnPointerUp
-                if (!IsGlobal)
-                    eventData.Use();
+                eventData.Use();
             }
         }
-        
+
         public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
-            if(!HasGesture && CanInteract() && (ShouldListen(eventData.MixedRealityInputAction) || eventData.MixedRealityInputAction.Description == "None") && (dragStart - eventData.Pointer.Position).magnitude > 0.1f)
+            if (!HasGesture && CanInteract() && (ShouldListen(eventData.MixedRealityInputAction) || eventData.MixedRealityInputAction.Description == "None") && (dragStart - eventData.Pointer.Position).magnitude > 0.1f)
             {
                 SetGesture(true);
             }
@@ -719,7 +707,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     SendOnClick(eventData.Pointer);
                     SetVisited(true);
                     eventData.Use();
-                    print("CLICKED : " + eventData.MixedRealityInputAction.Description);
                 }
                 else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
                 {
@@ -727,7 +714,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     StartGlobalVisual(false);
                     SendOnClick(null);
                     SetVisited(true);
-                    
+
                 }
                 else if (eventData == null && HasPhysicalTouch) // handle touch interactions
                 {
@@ -735,11 +722,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     StartGlobalVisual(false);
                     SendOnClick(null);
                     SetVisited(true);
-                    
+
                 }
             }
         }
-        
+
         #endregion MixedRealityPointerHandlers
 
         #region MixedRealityInputHandlers
@@ -892,6 +879,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// A public way to trigger or route an onClick event from an external source, like PressableButton
+        /// </summary>
+        public void TriggerOnClick()
+        {
+            OnPointerClicked(null);
         }
 
         /// <summary>
@@ -1054,6 +1049,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             bool hasGrip = false;
 
+            // TODO : detect a controll grip press or grip pose action
+            /*
             if (pointer.Controller != null)
             {
                 MixedRealityInteractionMapping[] mappings = pointer.Controller.Interactions;
@@ -1066,6 +1063,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
             }
+            */
 
             return hasGrip;
         }

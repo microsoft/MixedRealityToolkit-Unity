@@ -3312,9 +3312,9 @@ MonoBehaviour:
     speech prompt\n\u2022Toggle Switch \u2013 a toggle switch UI control example\n\u2022Checkbox
     - an example of a checkbox toggle control\n\u2022Radial and Radial Set - an example
     of a button collection or tab system where only one button can be toggled at a
-    time\n\u2022 Near interaction examples for grab, physical press, physical press
-    ring and a sample of using near interaction state in a theme\n\u2022 Immersive
-    mesh based button samples coffee cup, push button, bucky, balloon."
+    time\n\u2022 Near interaction examples for grab and a sample of using near interaction
+    states (grab, PhysicalTouch) in a theme\n\u2022 Immersive mesh based button samples
+    coffee cup, push button, bucky, balloon."
 --- !u!222 &1736250035
 CanvasRenderer:
   m_ObjectHideFlags: 0
