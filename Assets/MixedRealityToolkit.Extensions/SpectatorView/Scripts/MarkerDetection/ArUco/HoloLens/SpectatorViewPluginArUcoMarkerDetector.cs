@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
-using System;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection
 {
@@ -38,6 +41,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         private Dictionary<int, List<Marker>> _markerObservations;
         private Dictionary<int, Marker> _nextMarkerUpdate;
         private MarkerDetectionCompletionStrategy _detectionCompletionStrategy;
+
+        [HideInInspector]
+        public int RequiredObservations = 5;
+
+        [HideInInspector]
+        public int RequiredInlierCount = 5;
+
+        [HideInInspector]
+        public int MaximumMarkerSampleCount = 15;
+
+        [HideInInspector]
+        public float MaximumPositionDistanceStandardDeviation = 0.01f;
+
+        [HideInInspector]
+        public float MaximumRotationAngleStandardDeviation = 0.75f;
+
+        [HideInInspector]
+        public float MarkerInlierStandardDeviationThreshold = 1.5f;
 
         /// <inheritdoc />
         public MarkerPositionBehavior MarkerPositionBehavior
@@ -233,11 +254,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         {
             if (MarkerPositionBehavior == MarkerPositionBehavior.Moving)
             {
-                _detectionCompletionStrategy = new MovingMarkerDetectionCompletionStrategy();
+                _detectionCompletionStrategy = new MovingMarkerDetectionCompletionStrategy(this);
             }
             else
             {
-                _detectionCompletionStrategy = new StationaryMarkerDetectionCompletionStrategy();
+                _detectionCompletionStrategy = new StationaryMarkerDetectionCompletionStrategy(this);
             }
         }
 
@@ -357,26 +378,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// </summary>
         private sealed class StationaryMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
         {
-            private const int _requiredObservations = 5;
-            private const int _requiredInlierCount = 5;
-            private const int _maximumMarkerSampleCount = 15;
-            private const float _maximumPositionDistanceStandardDeviation = 0.01f;
-            private const float _maximumRotationAngleStandardDeviation = 0.75f;
-            private const float _markerInlierStandardDeviationThreshold = 1.5f;
+            private readonly SpectatorViewPluginArUcoMarkerDetector detector;
 
-            public override int MaximumMarkerSampleCount => _maximumMarkerSampleCount;
+            public StationaryMarkerDetectionCompletionStrategy(SpectatorViewPluginArUcoMarkerDetector detector)
+            {
+                this.detector = detector;
+            }
+
+            public override int MaximumMarkerSampleCount => detector.MaximumMarkerSampleCount;
 
             public override bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker)
             {
-                if (markers.Count >= _requiredObservations)
+                if (markers.Count >= detector.RequiredObservations)
                 {
                     var averageMarker = CalculateAverageMarker(markers);
 
                     // Find a set of markers that are inliers (within a threshold of the average marker).
                     // This is used to reject spurious marker detections outside the norm to prevent them from polluting
                     // the final marker result.
-                    var inliers = CalculateInlierMarkerSet(markers, averageMarker, _markerInlierStandardDeviationThreshold);
-                    if (inliers.Count >= _requiredInlierCount)
+                    var inliers = CalculateInlierMarkerSet(markers, averageMarker, detector.MarkerInlierStandardDeviationThreshold);
+                    if (inliers.Count >= detector.RequiredInlierCount)
                     {
                         // Recompute the average marker using only the set of inliers.
                         var averageInlierMarker = CalculateAverageMarker(inliers);
@@ -387,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         // does fall within the threshold.
                         double positionStandardDeviation, rotationStandardDeviation;
                         CalculateStandardDeviations(inliers, averageInlierMarker, out positionStandardDeviation, out rotationStandardDeviation);
-                        if (positionStandardDeviation <= _maximumPositionDistanceStandardDeviation && rotationStandardDeviation <= _maximumRotationAngleStandardDeviation)
+                        if (positionStandardDeviation <= detector.MaximumPositionDistanceStandardDeviation && rotationStandardDeviation <= detector.MaximumRotationAngleStandardDeviation)
                         {
                             completedMarker = averageInlierMarker;
                             LogMessagesAboutMarker("final", markers, inliers, averageMarker, averageInlierMarker);
@@ -412,13 +433,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// </summary>
         private sealed class MovingMarkerDetectionCompletionStrategy : MarkerDetectionCompletionStrategy
         {
-            private int _requiredObservations = 5;
+            private readonly SpectatorViewPluginArUcoMarkerDetector detector;
 
-            public override int MaximumMarkerSampleCount => _requiredObservations;
+            public MovingMarkerDetectionCompletionStrategy(SpectatorViewPluginArUcoMarkerDetector detector)
+            {
+                this.detector = detector;
+            }
+
+            public override int MaximumMarkerSampleCount => detector.RequiredObservations;
 
             public override bool TryCompleteDetection(IReadOnlyList<Marker> markers, out Marker completedMarker)
             {
-                if (markers.Count >= _requiredObservations)
+                if (markers.Count >= detector.RequiredObservations)
                 {
                     completedMarker = CalculateAverageMarker(markers);
                     return true;
@@ -431,4 +457,38 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             }
         }
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(SpectatorViewPluginArUcoMarkerDetector))]
+    public class SpectatorViewPluginArUcoMarkerDetectorEditor : UnityEditor.Editor
+    {
+        private const string requiredObservationsTooltip = "The minimum number of individual marker detections required to compute an average marker pose";
+        private const string requiredInlierCountTooltip = "After outlier marker poses are removed, the required number of remaining inlier marker poses required to compute an average marker pose";
+        private const string maximumMarkerSampleCountTooltip = "The maximum number of marker poses to keep in a rolling buffer when computing the average marker pose";
+        private const string maximumPositionDistanceStandardDeviationTooltip = "The maximum standard deviation of distance between each detected marker and the average marker allowed to complete marker detection";
+        private const string maximumRotationAngleStandardDeviationTooltip = "The maximum standard deviation of angular offset between each detected marker and the average marker allowed to complete marker detection";
+        private const string markerInlierStandardDeviationThresholdTooltip = "The number of standard deviations away from the mean at which a marker pose will be rejected from the inlier marker set";
+
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            SpectatorViewPluginArUcoMarkerDetector detector = target as SpectatorViewPluginArUcoMarkerDetector;
+            if (detector.MarkerPositionBehavior == MarkerPositionBehavior.Moving)
+            {
+                detector.RequiredObservations = EditorGUILayout.IntField(new GUIContent("Required Observations", requiredObservationsTooltip), detector.RequiredObservations);
+            }
+            else
+            {
+                detector.RequiredObservations = EditorGUILayout.IntField(new GUIContent("Required Observations", requiredObservationsTooltip), detector.RequiredObservations);
+                detector.RequiredInlierCount = EditorGUILayout.IntField(new GUIContent("Required Inlier Count", requiredInlierCountTooltip), detector.RequiredInlierCount);
+                detector.MaximumMarkerSampleCount = EditorGUILayout.IntField(new GUIContent("Maximum Marker Sample Count", maximumMarkerSampleCountTooltip), detector.MaximumMarkerSampleCount);
+                detector.MarkerInlierStandardDeviationThreshold = EditorGUILayout.FloatField(new GUIContent("Marker Inlier Standard Deviation Threshold", markerInlierStandardDeviationThresholdTooltip), detector.MarkerInlierStandardDeviationThreshold);
+                detector.MaximumPositionDistanceStandardDeviation = EditorGUILayout.FloatField(new GUIContent("Maximum Position Distance Standard Deviation", maximumPositionDistanceStandardDeviationTooltip), detector.MaximumPositionDistanceStandardDeviation);
+                detector.MaximumRotationAngleStandardDeviation = EditorGUILayout.FloatField(new GUIContent("Maximum Rotation Angle Standard Deviation", maximumRotationAngleStandardDeviationTooltip), detector.MaximumRotationAngleStandardDeviation);
+
+            }
+        }
+    }
+#endif
 }
