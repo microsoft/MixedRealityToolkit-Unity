@@ -20,15 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken cancellationToken;
 
-        private readonly Role role;
-        private readonly SocketEndpoint socketEndpoint;
+        public readonly LocalizerRole Role;
+        public readonly SocketEndpoint SocketEndpoint;
         private readonly Func<GameObject> createSpatialCoordinateGO;
         private readonly bool debugLogging;
         private bool showDebugVisuals = false;
         private GameObject debugVisual = null;
         private float debugVisualScale = 1.0f;
 
-        private Action<BinaryReader> processIncomingMessages = null;
         private GameObject spatialCoordinateGO = null;
 
         /// <summary>
@@ -38,12 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <param name="socketEndpoint">The endpoint of the other entity.</param>
         /// <param name="createSpatialCoordinateGO">The function that creates a spatial coordinate game object on detection<see cref="GameObject"/>.</param>
         /// <param name="debugLogging">Flag for enabling troubleshooting logging.</param>
-        public SpatialCoordinateSystemMember(Role role, SocketEndpoint socketEndpoint, Func<GameObject> createSpatialCoordinateGO, bool debugLogging, bool showDebugVisuals = false, GameObject debugVisual = null, float debugVisualScale = 1.0f)
+        public SpatialCoordinateSystemMember(LocalizerRole role, SocketEndpoint socketEndpoint, Func<GameObject> createSpatialCoordinateGO, bool debugLogging, bool showDebugVisuals = false, GameObject debugVisual = null, float debugVisualScale = 1.0f)
         {
             cancellationToken = cancellationTokenSource.Token;
 
-            this.role = role;
-            this.socketEndpoint = socketEndpoint;
+            Role = role;
+            SocketEndpoint = socketEndpoint;
             this.createSpatialCoordinateGO = createSpatialCoordinateGO;
             this.debugLogging = debugLogging;
             this.showDebugVisuals = showDebugVisuals;
@@ -55,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (debugLogging)
             {
-                Debug.Log($"SpatialCoordinateSystemMember [{role} - Connection: {socketEndpoint.Address}]: {message}");
+                Debug.Log($"SpatialCoordinateSystemMember [{Role} - Connection: {SocketEndpoint.Address}]: {message}");
             }
         }
 
@@ -63,47 +62,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// Localizes this observer with the connected party using the given mechanism.
         /// </summary>
         /// <param name="localizationMechanism">The mechanism to use for localization.</param>
-        public async Task LocalizeAsync(SpatialLocalizer spatialLocalizer)
+        public async Task LocalizeAsync(SpatialLocalizer spatialLocalizer, Action<SpatialCoordinateSystemMember, ISpatialCoordinate> onCoordinateLocalized)
         {
             DebugLog("Started LocalizeAsync");
 
             DebugLog("Initializing with LocalizationMechanism.");
             // Tell the localization mechanism to initialize, this could create anchor if need be
-            Guid token = await spatialLocalizer.InitializeAsync(role, cancellationToken);
+            Guid token = await spatialLocalizer.InitializeAsync(Role, cancellationToken);
             DebugLog("Initialized with LocalizationMechanism");
 
             try
             {
-                lock (cancellationTokenSource)
-                {
-                    processIncomingMessages = r =>
-                    {
-                        DebugLog("Passing on incoming message");
-                        spatialLocalizer.ProcessIncomingMessage(role, token, r);
-                    };
-                }
-
                 DebugLog("Telling LocalizationMechanims to begin localizng");
-                ISpatialCoordinate coordinate = await spatialLocalizer.LocalizeAsync(role, token, (writeSpatialLocalizerMessage) =>
-                {
-                    DebugLog("Sending message to connected client");
-                    using (MemoryStream memoryStream = new MemoryStream())
-                    using (BinaryWriter writer = new BinaryWriter(memoryStream))
-                    {
-                        // Prepare the writer for sending a message
-                        writer.Write(SpatialCoordinateSystemManager.SpatialLocalizationMessageHeader);
-
-                        // Allow the spatialLocalizer to write its own content to the binary writer with this function
-                        writeSpatialLocalizerMessage(writer);
-
-                        socketEndpoint.Send(memoryStream.ToArray());
-                        DebugLog("Sent Message");
-                    }
-                }, cancellationToken);
+                ISpatialCoordinate coordinate = await spatialLocalizer.LocalizeAsync(Role, token, cancellationToken);
 
                 if (coordinate == null)
                 {
-                    Debug.LogError($"Failed to localize for spectator: {socketEndpoint.Address}");
+                    Debug.LogError($"Failed to localize for spectator: {SocketEndpoint.Address}");
                 }
                 else
                 {
@@ -112,27 +87,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     {
                         if (!cancellationToken.IsCancellationRequested)
                         {
+                            // Firing the coordinate localized callback if it exists
+                            onCoordinateLocalized?.Invoke(this, coordinate);
+
                             spatialCoordinateGO = createSpatialCoordinateGO();
-                            var spatialCoordinateLocalizer = spatialCoordinateGO.AddComponent<SpatialCoordinateLocalizer>();
-                            spatialCoordinateLocalizer.debugLogging = debugLogging;
-                            spatialCoordinateLocalizer.showDebugVisuals = showDebugVisuals;
-                            spatialCoordinateLocalizer.debugVisual = debugVisual;
-                            spatialCoordinateLocalizer.debugVisualScale = debugVisualScale;
-                            spatialCoordinateLocalizer.Coordinate = coordinate;
-                            DebugLog("Spatial coordinate created, coordinate set");
+                            if (spatialCoordinateGO != null)
+                            {
+                                var spatialCoordinateLocalizer = spatialCoordinateGO.AddComponent<SpatialCoordinateLocalizer>();
+                                spatialCoordinateLocalizer.debugLogging = debugLogging;
+                                spatialCoordinateLocalizer.showDebugVisuals = showDebugVisuals;
+                                spatialCoordinateLocalizer.debugVisual = debugVisual;
+                                spatialCoordinateLocalizer.debugVisualScale = debugVisualScale;
+                                spatialCoordinateLocalizer.Coordinate = coordinate;
+                                DebugLog("Spatial coordinate created, coordinate set");
+                            }
                         }
                     }
                 }
             }
             finally
             {
-                lock (cancellationTokenSource)
-                {
-                    processIncomingMessages = null;
-                }
-
                 DebugLog("Uninitializing.");
-                spatialLocalizer.Uninitialize(role, token);
+                spatialLocalizer.Uninitialize(Role, token);
                 DebugLog("Uninitialized.");
             }
         }
@@ -141,12 +117,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// Handles messages received from the network.
         /// </summary>
         /// <param name="reader">The reader to access the contents of the message.</param>
-        public void ReceiveMessage(BinaryReader reader)
+        public bool TrySetCoordinateIdForLocalizer(SpatialLocalizer spatialLocalizer, string coordinateId)
         {
-            lock (cancellationTokenSource)
-            {
-                processIncomingMessages?.Invoke(reader);
-            }
+            return spatialLocalizer.TrySetCoordinateId(Role, Guid.Empty, coordinateId);
         }
 
         protected override void OnManagedDispose()

@@ -19,22 +19,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <inheritdoc/>
         protected override ISpatialCoordinateService SpatialCoordinateService => spatialCoordinateService;
 
-        internal override Task<Guid> InitializeAsync(Role role, CancellationToken cancellationToken)
+        internal override Task<Guid> InitializeAsync(LocalizerRole role, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        internal override Task<ISpatialCoordinate> LocalizeAsync(Role role, Guid token, Action<Action<BinaryWriter>> writeAndSendMessage, CancellationToken cancellationToken)
+        internal override Task<ISpatialCoordinate> LocalizeAsync(LocalizerRole role, Guid token, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        internal override void ProcessIncomingMessage(Role role, Guid token, BinaryReader r)
+        internal override bool TrySetCoordinateId(LocalizerRole role, Guid token, string coordinateId)
         {
             throw new NotImplementedException();
         }
 
-        internal override void Uninitialize(Role role, Guid token)
+        internal override void Uninitialize(LocalizerRole role, Guid token)
         {
             throw new NotImplementedException();
         }

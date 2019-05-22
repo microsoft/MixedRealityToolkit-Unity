@@ -76,12 +76,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             DebugLog($"Creating new SpatialCoordinateSystemMember, Role: {spectatorView.Role}, IPAddress: {endpoint.Address}, SceneRoot: {transformedGameObject}, DebugLogging: {debugLogging}");
-            var member = new SpatialCoordinateSystemMember(spectatorView.Role, endpoint, () => transformedGameObject, debugLogging, showDebugVisuals, debugVisual, debugVisualScale);
+            var localizerRole = (spectatorView.Role == Role.User) ? LocalizerRole.Creator : LocalizerRole.Consumer;
+            var member = new SpatialCoordinateSystemMember(localizerRole, endpoint, () => transformedGameObject, debugLogging, showDebugVisuals, debugVisual, debugVisualScale);
             members[endpoint] = member;
             if (spatialLocalizer != null)
             {
                 DebugLog($"Localizing SpatialCoordinateSystemMember: {endpoint.Address}");
-                member.LocalizeAsync(spatialLocalizer).FireAndForget();
+                member.LocalizeAsync(spatialLocalizer, OnCoordinateLocalized).FireAndForget();
             }
             else
             {
@@ -110,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         }
                         else
                         {
-                            member.ReceiveMessage(reader);
+                            ProcessMessage(endpoint, reader, member);
                         }
                     }
                     break;
@@ -161,6 +162,50 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (debugLogging)
             {
                 Debug.Log($"SpatialCoordinateSystemManager: {message}");
+            }
+        }
+
+        private void OnCoordinateLocalized(SpatialCoordinateSystemMember member, ISpatialCoordinate coordinate)
+        {
+            switch (member.Role)
+            {
+                case LocalizerRole.Creator:
+                    OnCreatorCoordinateLocalized(member.SocketEndpoint, coordinate);
+                    break;
+                case LocalizerRole.Consumer:
+                    OnConsumerCoordinateLocalized(coordinate);
+                    break;
+            }
+        }
+
+        private void OnCreatorCoordinateLocalized(SocketEndpoint socketEndpoint, ISpatialCoordinate coordinate)
+        {
+            DebugLog("Sending message to connected client");
+            using (MemoryStream memoryStream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(memoryStream))
+            {
+                // Prepare the writer for sending a message
+                writer.Write(SpatialLocalizationMessageHeader);
+
+                // Tell the consumer device what anchor to look for
+                writer.Write($"{coordinate.Id}");
+
+                socketEndpoint.Send(memoryStream.ToArray());
+                DebugLog("Sent Message");
+            }
+        }
+
+        private void OnConsumerCoordinateLocalized(ISpatialCoordinate coordinate)
+        {
+            DebugLog($"Coordinate localized for consumer: {coordinate.Id}");
+        }
+
+        private void ProcessMessage(SocketEndpoint endpoint, BinaryReader reader, SpatialCoordinateSystemMember member)
+        {
+            string id = reader.ReadString();
+            if(!member.TrySetCoordinateIdForLocalizer(spatialLocalizer, id))
+            {
+                DebugLog($"Could not set obtained coordinate id: {id} for SpatialCoordinateSystemMember");
             }
         }
     }

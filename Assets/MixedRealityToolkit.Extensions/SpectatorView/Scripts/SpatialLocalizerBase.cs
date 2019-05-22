@@ -27,11 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         protected abstract Task<ISpatialCoordinate> GetHostCoordinateAsync(Guid token);
 
         /// <inheritdoc/>
-        internal async override Task<Guid> InitializeAsync(Role role, CancellationToken cancellationToken)
+        internal async override Task<Guid> InitializeAsync(LocalizerRole role, CancellationToken cancellationToken)
         {
             Guid token = Guid.NewGuid();
             DebugLog("Begining initialization", token);
-            if (role == Role.User)
+            if (role == LocalizerRole.Creator)
             {
                 DebugLog("User", token);
                 lock (lockObject)
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 DebugLog("Got Init task finished", token);
                 //We have the coordinate after this step has finished
             }
-            else if (role == Role.Spectator)
+            else if (role == LocalizerRole.Consumer)
             {
                 DebugLog("Spectator reset task completion source", token);
                 observerCoordinateIdToLookFor?.SetCanceled();
@@ -63,39 +63,36 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         /// <inheritdoc/>
-        internal override void ProcessIncomingMessage(Role role, Guid token, BinaryReader r)
+        internal override bool TrySetCoordinateId(LocalizerRole role, Guid token, string coordinateId)
         {
-            DebugLog("Processing incoming message", token);
+            DebugLog("TrySetCoordinateId", Guid.Empty);
             switch (role)
             {
-                case Role.User:
-                    break;
-                case Role.Spectator:
-                    string result = r.ReadString();
-                    DebugLog($"Incoming message string: {result}, setting as coordinate id.", token);
-                    observerCoordinateIdToLookFor.TrySetResult(result);
-                    DebugLog("Set coordinate id.", token);
-                    break;
+                case LocalizerRole.Consumer:
+                    DebugLog($"Incoming coordinate id: {coordinateId}", Guid.Empty);
+                    return observerCoordinateIdToLookFor.TrySetResult(coordinateId);
+                default:
+                    Debug.LogWarning($"LocalizerRole {role.ToString()} does not currently support forcing a coordinate id");
+                    return false;
             }
         }
 
         /// <inheritdoc/>
-        internal override async Task<ISpatialCoordinate> LocalizeAsync(Role role, Guid token, Action<Action<BinaryWriter>> writeAndSendMessage, CancellationToken cancellationToken)
+        internal override async Task<ISpatialCoordinate> LocalizeAsync(LocalizerRole role, Guid token, CancellationToken cancellationToken)
         {
             DebugLog("Beginning spatial localization", token);
             ISpatialCoordinate coordinateToReturn = null;
 
             switch (role)
             {
-                case Role.User:
+                case LocalizerRole.Creator:
                     DebugLog("User getting initialized coordinate", token);
                     coordinateToReturn = initializeUserCoordinateTask.Result;
                     DebugLog($"Sending coordinate id: {coordinateToReturn.Id}", token);
-                    writeAndSendMessage(writer => writer.Write(coordinateToReturn.Id));
                     DebugLog("Message sent.", token);
                     break;
 
-                case Role.Spectator:
+                case LocalizerRole.Consumer:
                     DebugLog("Spectator waiting for coord id to be sent over", token);
                     await Task.WhenAny(observerCoordinateIdToLookFor.Task, Task.Delay(-1, cancellationToken)); //If we get cancelled, or get a token
 
@@ -124,14 +121,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         /// <inheritdoc/>
-        internal override void Uninitialize(Role role, Guid token)
+        internal override void Uninitialize(LocalizerRole role, Guid token)
         {
             DebugLog($"Deinitializing: {role}", token);
             switch (role)
             {
-                case Role.User:
+                case LocalizerRole.Creator:
                     break;
-                case Role.Spectator:
+                case LocalizerRole.Consumer:
                     break;
             }
         }
