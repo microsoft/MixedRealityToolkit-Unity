@@ -60,9 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             testButton.transform.Translate(new Vector3(10.0f, 5.0f, 20.0f));
 
-            bool useLocalSpace = buttonComponent.UseLocalSpaceDistances;
-            // check default value -> default must be false (using world space) to not introduce a breaking change to the button
-            Assert.IsFalse(useLocalSpace, "Pressable button default value is using local space distances which introduces a breaking change for existing projects");
+            PressableButton.SpaceMode distanceMode = buttonComponent.DistanceSpaceMode;
+            // check default value -> default must be using world space to not introduce a breaking change to the button
+            Assert.IsTrue(distanceMode == PressableButton.SpaceMode.World, "Pressable button default value is using local space distances which introduces a breaking change for existing projects");
 
             // make sure there's no scale on our button
             testButton.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
@@ -110,9 +110,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
 
-            bool useLocalSpace = buttonComponent.UseLocalSpaceDistances;
-            // check default value -> default must be false (using world space) to not introduce a breaking change to the button
-            Assert.IsFalse(useLocalSpace, "Pressable button default value is using local space distances which introduces a breaking change for existing projects");
+            PressableButton.SpaceMode distanceMode = buttonComponent.DistanceSpaceMode;
+            // check default value -> default must be using world space to not introduce a breaking change to the button
+            Assert.IsTrue(distanceMode == PressableButton.SpaceMode.World, "Pressable button default value is using local space distances which introduces a breaking change for existing projects");
 
             // add scale to our button so we can compare world to local distances
             testButton.transform.localScale = new Vector3(1.0f, 1.0f, 2.0f);
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 releaseDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(releaseDistance);
 
             // switch to local space
-            buttonComponent.UseLocalSpaceDistances = true;
+            buttonComponent.DistanceSpaceMode = PressableButton.SpaceMode.Local;
 
             float startPushDistanceLocal = buttonComponent.StartPushDistance;
             float maxPushDistanceLocal = buttonComponent.MaxPushDistance;
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(releaseDistanceWorld == releaseDistanceWorldLocal, "World and Local World positions don't match after switching pressable button distance mode");
 
             // switch back to world space
-            buttonComponent.UseLocalSpaceDistances = false;
+            buttonComponent.DistanceSpaceMode = PressableButton.SpaceMode.World;
 
             // distances must match up with original values 
             Assert.IsTrue(startPushDistance == buttonComponent.StartPushDistance, "Conversion from local to world distances didn't return the correct world distances");
@@ -182,15 +182,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(buttonComponent);
 
             testButton.transform.Translate(new Vector3(10.0f, 5.0f, 20.0f));
-            bool useLocalSpace = buttonComponent.UseLocalSpaceDistances;
-            // check default value -> default must be false (using world space) to not introduce a breaking change to the button
-            Assert.IsFalse(useLocalSpace, "Pressable button default value is using local space distances which introduces a breaking change for existing projects");
+            PressableButton.SpaceMode distanceMode = buttonComponent.DistanceSpaceMode;
+            // check default value -> default must be using world space to not introduce a breaking change to the button
+            Assert.IsTrue(distanceMode == PressableButton.SpaceMode.World, "Pressable button default value is using local space distances which introduces a breaking change for existing projects");
 
             // make sure there's no scale on our button
             testButton.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
             // change into local space distances
-            buttonComponent.UseLocalSpaceDistances = true;
+            buttonComponent.DistanceSpaceMode = PressableButton.SpaceMode.Local;
 
             // set start distance -> default is zero
             buttonComponent.StartPushDistance = 0.00003f;

@@ -56,21 +56,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
         private bool enforceFrontPush = true;
 
+        public enum SpaceMode
+        {
+            World,
+            Local
+        }
+
         [SerializeField]
         [HideInInspector]
-        private bool useLocalSpaceDistances = false;
+        private SpaceMode distanceSpaceMode = SpaceMode.World;
 
-        public bool UseLocalSpaceDistances
+        public SpaceMode DistanceSpaceMode
         {
-            get => useLocalSpaceDistances;
+            get => distanceSpaceMode;
             set
             {
                 // Convert world to local distances and vice versa whenever we switch the mode
-                if (value != useLocalSpaceDistances)
+                if (value != distanceSpaceMode)
                 {
-                    useLocalSpaceDistances = value;
+                    distanceSpaceMode = value;
                     float scale;
-                    if (useLocalSpaceDistances)
+                    if (distanceSpaceMode == SpaceMode.Local)
                     {
                         scale = transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
                     }
@@ -330,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// 
         public Vector3 GetWorldPositionAlongPushDirection(float localDistance)
         {
-            float distance = useLocalSpaceDistances ? localDistance * LocalToWorldScale : localDistance;
+            float distance = (distanceSpaceMode == SpaceMode.Local) ? localDistance * LocalToWorldScale : localDistance;
             return InitialPosition + LocalForward * distance;
         }
 
@@ -344,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 localPosition = positionWorldSpace - InitialPosition;
             float distance = Vector3.Dot(localPosition, LocalForward);
-            return useLocalSpaceDistances ? distance / LocalToWorldScale : distance;
+            return (distanceSpaceMode == SpaceMode.Local) ? distance / LocalToWorldScale : distance;
         }
 
         #endregion

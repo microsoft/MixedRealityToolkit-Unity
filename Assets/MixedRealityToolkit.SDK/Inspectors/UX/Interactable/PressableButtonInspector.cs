@@ -274,7 +274,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public void onTriggerPlaneDistanceConversion()
         {
             Undo.RecordObject(target, "Modify PressableButton");
-            button.UseLocalSpaceDistances = !button.UseLocalSpaceDistances;
+            button.DistanceSpaceMode = (button.DistanceSpaceMode == PressableButton.SpaceMode.World) 
+                ? PressableButton.SpaceMode.Local : PressableButton.SpaceMode.World;
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -282,10 +283,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnInspectorGUI();
 
-            bool useLocalDistances = button.UseLocalSpaceDistances;
+            PressableButton.SpaceMode buttonSpaceMode = button.DistanceSpaceMode;
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField(useLocalDistances ? "Plane Distances are in local space" : "Plane Distances are in world space", EditorStyles.boldLabel);
-            if (GUILayout.Button(useLocalDistances ? "Convert Distances to World Space" : "Convert Distances to Local Space") && EditingEnabled)
+            EditorGUILayout.LabelField(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Plane Distances are in local space" : "Plane Distances are in world space", EditorStyles.boldLabel);
+            if (EditingEnabled && GUILayout.Button(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Convert Distances to World Space" : "Convert Distances to Local Space"))
             {
                 onTriggerPlaneDistanceConversion();
             }
