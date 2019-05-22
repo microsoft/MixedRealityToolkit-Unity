@@ -19,8 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Convenience fields for box collider info
             public Bounds TouchCageLocalBounds;
 
-            // The ray along which the button is pushed.
-            public Ray PushRayLocal;
             // The rotation of the push space.
             public Quaternion PushRotationLocal;
 
@@ -53,7 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty releaseDistanceDelta;
 
         private SerializedProperty movingButtonVisuals;
-        private SerializedProperty useLocalSpaceDistances;
 
         private static Vector3[] startPlaneVertices = new Vector3[4];
         private static Vector3[] endPlaneVertices = new Vector3[4];
@@ -79,7 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             pressDistance = serializedObject.FindProperty("pressDistance");
             releaseDistanceDelta = serializedObject.FindProperty("releaseDistanceDelta");
             movingButtonVisuals = serializedObject.FindProperty("movingButtonVisuals");
-            useLocalSpaceDistances = serializedObject.FindProperty("useLocalSpaceDistances");
 
             touchable = button.GetComponent<NearInteractionTouchable>();
         }
@@ -121,20 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Vector3 upDirLocal = (touchable != null) ? touchable.LocalUp : Vector3.up;
 
             info.PushRotationLocal = Quaternion.LookRotation(pressDirLocal, upDirLocal);
-
-            // All the planes should be drawn within the button cage. But the distance planes are relative to the 
-            // initial transform projected onto the box collider.
-            Vector3 initialPositionLocal = transform.InverseTransformPoint(button.InitialPosition) ;
             
-            // Project the initial position onto the ray that goes through the touch cage center.
-            Vector3 initialPosLocal = Vector3.Project(initialPositionLocal - info.TouchCageLocalBounds.center, pressDirLocal) + info.TouchCageLocalBounds.center;
-            info.PushRayLocal = new Ray(initialPosLocal, pressDirLocal);
-
-            bool useLocalSpace = useLocalSpaceDistances.boolValue;
-            info.StartPushDistance = useLocalSpace ? startPushDistance.floatValue : startPushDistance.floatValue / transform.lossyScale.z;
-            info.MaxPushDistance = useLocalSpace ? maxPushDistance.floatValue : maxPushDistance.floatValue / transform.lossyScale.z;
-            info.PressDistance = useLocalSpace ? pressDistance.floatValue : pressDistance.floatValue / transform.lossyScale.z;
-            info.ReleaseDistance = useLocalSpace ? pressDistance.floatValue - releaseDistanceDelta.floatValue : (pressDistance.floatValue - releaseDistanceDelta.floatValue) / transform.lossyScale.z;
+            info.StartPushDistance = startPushDistance.floatValue;
+            info.MaxPushDistance = maxPushDistance.floatValue;
+            info.PressDistance = pressDistance.floatValue;
+            info.ReleaseDistance = pressDistance.floatValue - releaseDistanceDelta.floatValue;
 
             return info;
         }
@@ -209,10 +196,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 Undo.RecordObject(target, "Modify PressableButton");
 
-                startPushDistance.floatValue = useLocalSpaceDistances.boolValue ? info.StartPushDistance : info.StartPushDistance * transform.lossyScale.z;
-                maxPushDistance.floatValue = useLocalSpaceDistances.boolValue ? info.MaxPushDistance : info.MaxPushDistance * transform.lossyScale.z; 
-                pressDistance.floatValue = useLocalSpaceDistances.boolValue ? info.PressDistance : info.PressDistance * transform.lossyScale.z;
-                releaseDistanceDelta.floatValue = useLocalSpaceDistances.boolValue ? info.PressDistance - info.ReleaseDistance : (info.PressDistance - info.ReleaseDistance) * transform.lossyScale.z;
+                startPushDistance.floatValue = info.StartPushDistance;
+                maxPushDistance.floatValue = info.MaxPushDistance; 
+                pressDistance.floatValue = info.PressDistance;
+                releaseDistanceDelta.floatValue = info.PressDistance - info.ReleaseDistance;
 
                 /*boxColliderSize.vector3Value = new Vector3(info.TouchCageLocalBounds.size.x, info.TouchCageLocalBounds.size.y, newInfo.TouchCageSize);
                 boxColliderCenter.vector3Value = new Vector3(info.TouchCageLocalBounds.center.x, info.TouchCageLocalBounds.center.y, newInfo.TouchCageCenter);
@@ -238,8 +225,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private float DrawPlaneAndHandle(Vector3[] vertices, Vector3 halfExtents, float distance, ButtonInfo info, string label, bool editingEnabled)
         {
-            Vector3 centerLocal = info.PushRayLocal.GetPoint(distance);
-            MakeQuadFromPoint(vertices, centerLocal, halfExtents, info);
+            Vector3 centerWorld = button.GetWorldPositionAlongPushDirection(distance);
+            MakeQuadFromPoint(vertices, centerWorld, halfExtents, info);
 
             if (VisiblePlanes)
             {
@@ -266,15 +253,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 float handleSize = HandleUtility.GetHandleSize(vertices[1]) * 0.15f;
 
-                Vector3 planeNormal = button.transform.TransformDirection(info.PushRayLocal.direction);
+                Vector3 dir = (touchable != null) ? -1.0f * touchable.LocalForward : Vector3.forward;
+                Vector3 planeNormal = button.transform.TransformDirection(dir);
                 Handles.ArrowHandleCap(0, vertices[1], Quaternion.LookRotation(planeNormal), handleSize * 2, EventType.Repaint);
                 Handles.ArrowHandleCap(0, vertices[1], Quaternion.LookRotation(-planeNormal), handleSize * 2, EventType.Repaint);
 
                 Vector3 newPosition = Handles.FreeMoveHandle(vertices[1], Quaternion.identity, handleSize, Vector3.zero, Handles.SphereHandleCap);
                 if (!newPosition.Equals(vertices[1]))
                 {
-                    Vector3 newCenterLocal = button.transform.InverseTransformPoint(newPosition);
-                    distance = Vector3.Dot(newCenterLocal - info.PushRayLocal.origin, info.PushRayLocal.direction);
+                    distance = button.GetDistanceAlongPushDirection(newPosition);
                 }
             }
 
@@ -286,26 +273,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         public void onTriggerPlaneDistanceConversion()
         {
-            useLocalSpaceDistances.boolValue = !useLocalSpaceDistances.boolValue;
-            Vector3 worldPressDir = touchable == null ? transform.forward : touchable.Forward * -1.0f;
-            float worldToLocalScale = transform.InverseTransformVector(worldPressDir).magnitude;
-
             Undo.RecordObject(target, "Modify PressableButton");
-
-            if (!useLocalSpaceDistances.boolValue)
-            {
-                startPushDistance.floatValue /= worldToLocalScale;
-                maxPushDistance.floatValue /= worldToLocalScale;
-                pressDistance.floatValue /= worldToLocalScale;
-                releaseDistanceDelta.floatValue /= worldToLocalScale;
-            }
-            else
-            {
-                startPushDistance.floatValue *= worldToLocalScale;
-                maxPushDistance.floatValue *= worldToLocalScale;
-                pressDistance.floatValue *= worldToLocalScale;
-                releaseDistanceDelta.floatValue *= worldToLocalScale;
-            }
+            button.UseLocalSpaceDistances = !button.UseLocalSpaceDistances;
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -313,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnInspectorGUI();
 
-            bool useLocalDistances = useLocalSpaceDistances.boolValue;
+            bool useLocalDistances = button.UseLocalSpaceDistances;
             EditorGUILayout.Space();
             EditorGUILayout.LabelField(useLocalDistances ? "Plane Distances are in local space" : "Plane Distances are in world space", EditorStyles.boldLabel);
             if (GUILayout.Button(useLocalDistances ? "Convert Distances to World Space" : "Convert Distances to Local Space") && EditingEnabled)
@@ -390,12 +359,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Handles.color = colorOnEnter;
         }
 
-        private void MakeQuadFromPoint(Vector3[] vertices, Vector3 centerLocal, Vector3 halfExtents, ButtonInfo info)
+        private void MakeQuadFromPoint(Vector3[] vertices, Vector3 centerWorld, Vector3 halfExtents, ButtonInfo info)
         {
-            vertices[0] = button.transform.TransformPoint((info.PushRotationLocal * new Vector3(-halfExtents.x, -halfExtents.y, 0.0f)) + centerLocal);
-            vertices[1] = button.transform.TransformPoint((info.PushRotationLocal * new Vector3(-halfExtents.x, +halfExtents.y, 0.0f)) + centerLocal);
-            vertices[2] = button.transform.TransformPoint((info.PushRotationLocal * new Vector3(+halfExtents.x, +halfExtents.y, 0.0f)) + centerLocal);
-            vertices[3] = button.transform.TransformPoint((info.PushRotationLocal * new Vector3(+halfExtents.x, -halfExtents.y, 0.0f)) + centerLocal);
+            vertices[0] = info.PushRotationLocal * new Vector3(-halfExtents.x, -halfExtents.y, 0.0f) + centerWorld;
+            vertices[1] = info.PushRotationLocal * new Vector3(-halfExtents.x, +halfExtents.y, 0.0f) + centerWorld;
+            vertices[2] = info.PushRotationLocal * new Vector3(+halfExtents.x, +halfExtents.y, 0.0f) + centerWorld;
+            vertices[3] = info.PushRotationLocal * new Vector3(+halfExtents.x, -halfExtents.y, 0.0f) + centerWorld;
         }
     }
 }
