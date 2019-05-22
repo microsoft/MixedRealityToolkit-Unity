@@ -19,8 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <returns></returns>
         public static bool CopySerializedObject(SerializedObject source, SerializedObject target, IEnumerable<string> propsToIgnore = null)
         {
-            Debug.Log("--------------------");
-
             bool madeChanges = false;
             SerializedProperty sourceProp = source.GetIterator();
             while (sourceProp.NextVisible(true))

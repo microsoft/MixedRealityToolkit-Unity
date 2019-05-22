@@ -145,6 +145,24 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         string ActiveLightingScene { get; }
 
+        /// <summary>
+        /// Returns true if a content scene appears in build settings PRIOR to the latest loaded build index.
+        /// Use to verify that LoadPrevContent can be performed without wrapping.
+        /// </summary>
+        bool PrevContentExists { get; }
+
+        /// <summary>
+        /// Returns true if a content scene appears in build settings AFTER the latest loaded build index.
+        /// Use to verify that LoadNextContent can be performed without wrapping.
+        /// </summary>
+        bool NextContentExists { get; }
+
+        /// <summary>
+        /// An array of content scenes available to load / unload. Order in array matches build order.
+        /// Useful if you want to present an ordered list of options, or if you want to track which scenes are loaded via IsContentLoaded.
+        /// </summary>
+        string[] ContentSceneNames { get; }
+
         #endregion
 
         #region Scene Operations
@@ -215,6 +233,36 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <param name="tag">Scene tag</param>
         /// <returns>Task</returns>
         Task UnloadContentByTag(string tag);
+
+        /// <summary>
+        /// Loads the next content scene according to build index.
+        /// Uses the last-loaded content scene as previous build index.
+        /// If no next content exists, and wrap is false, no action is taken.
+        /// Use NextContentExists to verify that this operation is possible (if not using wrap).
+        /// </summary>
+        /// <param name="wrap">If true, if the current scene is the LAST content scene, the FIRST content scene will be loaded.</param>
+        /// <param name="mode">Additive mode will load the content additively. Single mode will first unload all loaded content scenes first.</param>
+        /// <param name="activationToken">
+        /// Optional token for manual scene activation. Useful for loading screens and multiplayer.
+        /// If not null, operation will wait until activationToken's AllowSceneActivation value is true before activating scene objects.
+        /// </param>
+        /// <returns>Task</returns>
+        Task LoadNextContent(bool wrap = false, LoadSceneMode mode = LoadSceneMode.Single, SceneActivationToken activationToken = null);
+
+        /// <summary>
+        /// Loads the previous content scene according to build index.
+        /// Uses the loaded content scene with the smallest build index as previous build index.
+        /// If no previous content exists, and wrap is false, no action is taken.
+        /// Use PrevContentExists to verify that this operation is possible (if not using wrap).
+        /// </summary>
+        /// <param name="wrap">If true, if the current scene is the FIRST content scene, the LAST content scene will be loaded.</param>
+        /// <param name="mode">Additive mode will load the content additively. Single mode will first unload all loaded content scenes first.</param>
+        /// <param name="activationToken">
+        /// Optional token for manual scene activation. Useful for loading screens and multiplayer.
+        /// If not null, operation will wait until activationToken's AllowSceneActivation value is true before activating scene objects.
+        /// </param>
+        /// <returns>Task</returns>
+        Task LoadPrevContent(bool wrap = false, LoadSceneMode mode = LoadSceneMode.Single, SceneActivationToken activationToken = null);
 
         /// <summary>
         /// Returns true if a content scene is fully loaded.

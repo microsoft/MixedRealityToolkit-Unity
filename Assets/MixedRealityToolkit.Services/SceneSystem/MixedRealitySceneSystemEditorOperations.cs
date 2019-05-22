@@ -45,10 +45,59 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         // So only do it once in a while
         private float managerSceneInstanceCheckTime;
         private int editorApplicationUpdateTicks;
-
+        // Used to track which instance of the service we're using (for debugging purposes)
         private static int instanceIDCount;
-
         private int instanceID = -1;
+
+        /// <summary>
+        /// Singly loads next content scene (if available) and unloads all other content scenes.
+        /// </summary>
+        /// <param name="wrap"></param>
+        public void EditorLoadNextContent(bool wrap = false)
+        {
+            string contentSceneName;
+            if (contentTracker.GetNextContent(wrap, out contentSceneName))
+            {
+                foreach (SceneInfo contentScene in ContentScenes)
+                {
+                    if (contentScene.Name == contentSceneName)
+                    {
+                        EditorSceneUtils.LoadScene(contentScene, false, out Scene scene);
+                    }
+                    else
+                    {
+                        EditorSceneUtils.UnloadScene(contentScene, false);
+                    }
+                }
+            }
+
+            contentTracker.RefreshLoadedContent();
+        }
+
+        /// <summary>
+        /// Singly loads previous content scene (if available) and unloads all other content scenes.
+        /// </summary>
+        /// <param name="wrap"></param>
+        public void EditorLoadPrevContent(bool wrap = false)
+        {
+            string contentSceneName;
+            if (contentTracker.GetPrevContent(wrap, out contentSceneName))
+            {
+                foreach (SceneInfo contentScene in ContentScenes)
+                {
+                    if (contentScene.Name == contentSceneName)
+                    {
+                        EditorSceneUtils.LoadScene(contentScene, false, out Scene scene);
+                    }
+                    else
+                    {
+                        EditorSceneUtils.UnloadScene(contentScene, false);
+                    }
+                }
+            }
+
+            contentTracker.RefreshLoadedContent();
+        }
 
         private void OnEditorInitialize()
         {
@@ -201,6 +250,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             buildSettingsDirty = false;
             heirarchyDirty = false;
             activeSceneDirty = false;
+
+            contentTracker.RefreshLoadedContent();
         }
 
         private void UpdateContentScenes(bool activeSceneDirty)
@@ -400,6 +451,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         private void UpdateBuildSettings()
         {
+            if (!profile.EditorManageBuildSettings)
+            {   // Nothing to do here
+                return;
+            }
+
             bool changedScenes = false;
 
             if (profile.UseManagerScene)

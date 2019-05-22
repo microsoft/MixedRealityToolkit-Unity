@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             "Content scenes are everything else. You can load and unload any number of content scenes in any combination, and their content is unrestricted.";
 
         private static bool showEditorProperties = true;
+        private SerializedProperty editorManageBuildSettings;
         private SerializedProperty editorManagerLoadedScenes;
         private SerializedProperty editorEnforceSceneOrder;
         private SerializedProperty editorEnforceLightingSceneTypes;
@@ -54,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
+            editorManageBuildSettings = serializedObject.FindProperty("editorManageBuildSettings");
             editorManagerLoadedScenes = serializedObject.FindProperty("editorManagerLoadedScenes");
             editorEnforceSceneOrder = serializedObject.FindProperty("editorEnforceSceneOrder");
             editorEnforceLightingSceneTypes = serializedObject.FindProperty("editorEnforceLightingSceneTypes");
@@ -101,6 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    EditorGUILayout.PropertyField(editorManageBuildSettings);
                     EditorGUILayout.PropertyField(editorManagerLoadedScenes);
                     EditorGUILayout.PropertyField(editorEnforceSceneOrder);
                     EditorGUILayout.PropertyField(editorEnforceLightingSceneTypes);

@@ -8,6 +8,7 @@ using System;
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -46,10 +47,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         private MixedRealitySceneSystemProfile profile;
-       
+
         // Internal scene operation info
         private bool managerSceneOpInProgress;
         private float managerSceneOpProgress;
+
+        // Content tracker instance
+        private ContentTracker contentTracker;
 
         #region Actions
 
@@ -112,6 +116,15 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public bool WaitingToProceed { get; private set; } = false;
 
         /// <inheritdoc />
+        public bool PrevContentExists => contentTracker.PrevContentExists;
+
+        /// <inheritdoc />
+        public bool NextContentExists => contentTracker.NextContentExists;
+
+        /// <inheritdoc />
+        public string[] ContentSceneNames => contentTracker.ContentSceneNames;
+
+        /// <inheritdoc />
         public uint SourceId { get; } = 0;
 
         /// <inheritdoc />
@@ -120,22 +133,22 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// Returns the manager scene found in profile.
         /// </summary>
-        public SceneInfo ManagerScene { get { return profile.ManagerScene; } }
+        public SceneInfo ManagerScene => profile.ManagerScene;
 
         /// <summary>
         /// Returns all lighting scenes found in profile.
         /// </summary>
-        public IEnumerable<SceneInfo> LightingScenes { get { return profile.LightingScenes; } }
-        
+        public SceneInfo[] LightingScenes => contentTracker.SortedLightingScenes;
+
         /// <summary>
         /// Returns all content scenes found in profile.
         /// </summary>
-        public IEnumerable<SceneInfo> ContentScenes { get { return profile.ContentScenes; } }
+        public SceneInfo[] ContentScenes => contentTracker.SortedContentScenes;
 
         /// <summary>
         /// Returns all content tags found in profile scenes.
         /// </summary>
-        public IEnumerable<string> ContentTags { get { return profile.ContentTags; } }
+        public IEnumerable<string> ContentTags => profile.ContentTags;
 
         #endregion
 
@@ -144,6 +157,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public override void Initialize()
         {
+            // Create a new instance of our content tracker
+            contentTracker = new ContentTracker(profile);
+
 #if UNITY_EDITOR
             OnEditorInitialize();
 #endif
@@ -205,6 +221,30 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         #endregion
 
         #region Scene Operations
+
+        /// <inheritdoc />
+        public async Task LoadNextContent(bool wrap = false, LoadSceneMode mode = LoadSceneMode.Single, SceneActivationToken activationToken = null)
+        {
+            string nextContent;
+            if (contentTracker.GetNextContent(wrap, out nextContent))
+            {
+                await LoadScenesInternal(new string[] { nextContent }, SceneType.Content, mode, activationToken);
+            }
+
+            Debug.LogWarning("Attempted to load next content when no next content exists. Taking no action.");
+        }
+
+        /// <inheritdoc />
+        public async Task LoadPrevContent(bool wrap = false, LoadSceneMode mode = LoadSceneMode.Single, SceneActivationToken activationToken = null)
+        {
+            string prevContent;
+            if (contentTracker.GetNextContent(wrap, out prevContent))
+            {
+                await LoadScenesInternal(new string[] { prevContent }, SceneType.Content, mode, activationToken);
+            }
+
+            Debug.LogWarning("Attempted to load prev content when no next content exists. Taking no action.");
+        }
 
         /// <inheritdoc />
         public async Task LoadContent(string sceneToLoad, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
@@ -429,9 +469,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 await Task.Yield();
             }
 
+            // Make sure our content tracker is refreshed
+            contentTracker.RefreshLoadedContent();
+
             // We're done!
             SetSceneOpProgress(false, 1, sceneType);
-
+            
             InvokeLoadedActions(validNames, sceneType);
         }
 
@@ -527,6 +570,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 }
                 await Task.Yield();
             }
+
+            // Make sure our content tracker is refreshed
+            contentTracker.RefreshLoadedContent();
 
             // We're done!
             SetSceneOpProgress(false, 1, sceneType);
@@ -717,6 +763,117 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         int IEqualityComparer.GetHashCode(object obj)
         {
             return Mathf.Abs(SourceName.GetHashCode());
+        }
+
+        #endregion
+
+        #region Utility Classes
+        
+        /// <summary>
+        /// A utility class used to track which content scenes are loaded, and which should come next / before.
+        /// This logic could live in the service itself, but there may be cases where devs want to change how content is tracked without changing anything else.
+        /// Might be worth putting this into a SystemType field in the profile.
+        /// </summary>
+        private class ContentTracker
+        {
+            public ContentTracker (MixedRealitySceneSystemProfile profile)
+            {
+                this.profile = profile;
+
+                CacheSortedContent();               
+            }
+
+            private MixedRealitySceneSystemProfile profile;
+            public string[] ContentSceneNames => contentSceneNames;
+            public SceneInfo[] SortedContentScenes => sortedContentScenes;
+            public SceneInfo[] SortedLightingScenes => sortedLightingScenes;
+
+            public bool PrevContentExists { get { return (largestLoadedContentIndex - 1) >= 0; } }
+
+            public bool NextContentExists { get { return (largestLoadedContentIndex + 1) < contentSceneNames.Length; } }
+
+            private int largestLoadedContentIndex;
+            // Cached scene info and scene names
+            private string[] contentSceneNames;
+            private SceneInfo[] sortedContentScenes;
+            private SceneInfo[] sortedLightingScenes;
+
+            private void CacheSortedContent()
+            {
+                // Store a set of scenes ordered by build index
+                sortedContentScenes = profile.ContentScenes.OrderBy(s => s.BuildIndex).ToArray();
+                sortedLightingScenes = profile.LightingScenes.OrderBy(s => s.BuildIndex).ToArray();
+
+                // Cache an array of scene names in the same order
+                contentSceneNames = new string[sortedContentScenes.Length];
+                for (int i = 0; i < contentSceneNames.Length; i++)
+                {
+                    contentSceneNames[i] = sortedContentScenes[i].Name;
+                }
+            }
+
+            public bool GetNextContent(bool wrap, out string contentSceneName)
+            {
+                contentSceneName = string.Empty;
+                int nextIndex = largestLoadedContentIndex + 1;
+                if (nextIndex >= contentSceneNames.Length)
+                {
+                    if (wrap)
+                    {
+                        // If we're wrapping and we've reached the end,
+                        // just return the first index.
+                        contentSceneName = contentSceneNames[0];
+                        return true;
+                    }
+                    else
+                    {   // We're out of scenes!
+                        return false;
+                    }
+                }
+
+                contentSceneName = contentSceneNames[nextIndex];
+                return true;
+            }
+
+            public bool GetPrevContent(bool wrap, out string contentSceneName)
+            {
+                contentSceneName = string.Empty;
+                int prevIndex = largestLoadedContentIndex - 1;
+                if (prevIndex < 0)
+                {
+                    if (wrap)
+                    {
+                        // If we're wrapping and we've reached the start,
+                        // just return the last index
+                        contentSceneName = contentSceneNames[contentSceneNames.Length - 1];
+                        return true;
+                    }
+                    else
+                    {   // We're out of scenes!
+                        return false;
+                    }
+                }
+
+                contentSceneName = contentSceneNames[prevIndex];
+                return true;
+            }
+
+            public void RefreshLoadedContent()
+            {
+                largestLoadedContentIndex = 0;
+                for (int i = 0; i < contentSceneNames.Length; i++)
+                {
+                    Scene scene = SceneManager.GetSceneByName(contentSceneNames[i]);
+                    if (scene.isLoaded)
+                    {
+                        largestLoadedContentIndex = i;
+                    }
+                }
+
+#if UNITY_EDITOR
+                CacheSortedContent();
+#endif
+            }
         }
 
         #endregion

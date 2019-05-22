@@ -38,6 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public int NumContentScenes { get { return contentScenes.Count; } }
 
 #if UNITY_EDITOR
+        public bool EditorManageBuildSettings => editorManageBuildSettings;
+
         public bool EditorManageLoadedScenes => editorManagerLoadedScenes;
 
         public bool EditorEnforceSceneOrder => editorEnforceSceneOrder;
@@ -80,6 +82,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         #region editor settings
 
         [SerializeField]
+        [Tooltip("If true, the service will update your build settings automatically, ensuring that all manager, lighting and content scenes are added. Disable this if you want total control over build settings.")]
+        private bool editorManageBuildSettings = true;
+
+        [SerializeField]
         [Tooltip("If true, the service will ensure manager scene is displayed first in scene heirarchy, followed by lighting and then content.")]
         private bool editorEnforceSceneOrder = true;
 
@@ -89,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         [SerializeField]
         [Tooltip("If true, service will ensure that only lighting-related components are allowd in lighting scenes. Disable if you want complete control over lighting scenes.")]
-        private bool editorEnforceLightingSceneTypes;
+        private bool editorEnforceLightingSceneTypes = true;
 
         #endregion
 
