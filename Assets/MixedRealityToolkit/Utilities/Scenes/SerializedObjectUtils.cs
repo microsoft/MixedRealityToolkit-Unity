@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 #if UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -16,23 +17,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="source"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        public static bool CopySerializedObject(SerializedObject source, SerializedObject target)
+        public static bool CopySerializedObject(SerializedObject source, SerializedObject target, IEnumerable<string> propsToIgnore = null)
         {
+            Debug.Log("--------------------");
+
             bool madeChanges = false;
             SerializedProperty sourceProp = source.GetIterator();
             while (sourceProp.NextVisible(true))
             {
-                switch (sourceProp.name)
+                if (propsToIgnore != null)
                 {
-                    // This is an odd case where the value is constantly modified, resulting in constant changes.
-                    // It's not apparent how this affects rendering.
-                    case "m_IndirectSpecularColor":
-                        continue;
-
-                    default:
-                        break;
+                    foreach (string propToIgnore in propsToIgnore)
+                    {
+                        if (propToIgnore == sourceProp.name)
+                        {
+                            continue;
+                        }
+                    }
                 }
-
                 madeChanges |= target.CopyFromSerializedPropertyIfDifferent(sourceProp);
             }
 
@@ -43,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             return madeChanges;
         }
-
+        
         /// <summary>
         /// Uses reflection to set all public fields of a struct in an accompanying serialized property
         /// </summary>

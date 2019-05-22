@@ -69,6 +69,14 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         [Tooltip("Cached content tags found in your content scenes")]
         private List<string> contentTags = new List<string>();
 
+        [SerializeField]
+        [Tooltip("Cached lighting settings from you lighting scenes")]
+        private List<RuntimeLightingSettings> cachedLightingSettings = new List<RuntimeLightingSettings>();
+
+        [SerializeField]
+        [Tooltip("Cached lighting settings from you lighting scenes")]
+        private List<RuntimeRenderSettings> cachedRenderSettings = new List<RuntimeRenderSettings>();
+
         #region editor settings
 
         [SerializeField]

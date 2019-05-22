@@ -192,7 +192,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             if (activeSceneDirty || heirarchyDirty)
             {
                 UpdateManagerScene();
-                UpdateLightingScene(activeSceneDirty, heirarchyDirty);
+                UpdateLightingScene(heirarchyDirty);
+                UpdateContentScenes(activeSceneDirty);
             }
 
             updatingSettingsOnEditorChanged = false;
@@ -200,6 +201,51 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             buildSettingsDirty = false;
             heirarchyDirty = false;
             activeSceneDirty = false;
+        }
+
+        private void UpdateContentScenes(bool activeSceneDirty)
+        {
+            if (!profile.UseLightingScene || !profile.EditorManageLoadedScenes)
+            {   // Nothing to do here
+                return;
+            }
+
+            if (!activeSceneDirty)
+            {   // Nothing to do here either
+                return;
+            }
+
+            bool contentSceneIsActive = false;
+            SceneInfo firstLoadedContentScene = SceneInfo.Empty;
+
+            foreach (SceneInfo contentScene in profile.ContentScenes)
+            {
+                Scene scene;
+                if (EditorSceneUtils.GetSceneIfLoaded(contentScene, out scene))
+                {
+                    if (firstLoadedContentScene.IsEmpty)
+                    {   // If this is the first loaded content scene we've found, store it for later
+                        firstLoadedContentScene = contentScene;
+                    }
+
+                    Scene activeScene = EditorSceneManager.GetActiveScene();
+                    if (activeScene.name == contentScene.Name)
+                    {
+                        contentSceneIsActive = true;
+                    }
+                }
+            }
+
+            if (!firstLoadedContentScene.IsEmpty)
+            {   // If at least one content scene is loaded
+                if (!contentSceneIsActive)
+                {   // And that content scene is NOT the active scene
+                    // Set that content to be the active scene
+                    Scene activeScene;
+                    EditorSceneUtils.GetSceneIfLoaded(firstLoadedContentScene, out activeScene);
+                    EditorSceneUtils.SetActiveScene(activeScene);
+                }
+            }
         }
 
         /// <summary>
@@ -299,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
-        private void UpdateLightingScene(bool updateActiveScene, bool heirarchyDirty)
+        private void UpdateLightingScene(bool heirarchyDirty)
         {
             if (!profile.UseLightingScene || !profile.EditorManageLoadedScenes)
             {
@@ -320,10 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         Scene scene;
                         if (EditorSceneUtils.LoadScene(lightingScene, false, out scene))
                         {
-                            if (updateActiveScene)
-                            {
-                                EditorSceneUtils.SetActiveScene(scene);
-                            }
+                            EditorSceneUtils.CopyLightingSettingsToActiveScene(scene);
 
                             if (profile.EditorEnforceLightingSceneTypes && heirarchyDirty)
                             {

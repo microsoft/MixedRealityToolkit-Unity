@@ -218,6 +218,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
+        /// Finds the scene if loaded.
+        /// </summary>
+        /// <param name="sceneInfo"></param>
+        /// <param name="editorScene"></param>
+        /// <returns>True if scene is loaded</returns>
+        public static bool GetSceneIfLoaded(SceneInfo sceneInfo, out Scene editorScene)
+        {
+            editorScene = default(Scene);
+            editorScene = EditorSceneManager.GetSceneByName(sceneInfo.Name);
+            return editorScene.IsValid() && editorScene.isLoaded;
+        }
+
+        /// <summary>
         /// Returns all root GameObjects in all open scenes.
         /// </summary>
         /// <returns></returns>
@@ -348,8 +361,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 if (GetLightmapAndRenderSettings(out targetLightmapSettings, out targetRenderSettings))
                 {
-                    madeChanges |= SerializedObjectUtils.CopySerializedObject(sourceLightmapSettings, targetLightmapSettings);
-                    madeChanges |= SerializedObjectUtils.CopySerializedObject(sourceRenderSettings, targetRenderSettings);
+                    string[] propsToIgnore = new string[] { "m_IndirectSpecularColor" };
+
+                    madeChanges |= SerializedObjectUtils.CopySerializedObject(sourceLightmapSettings, targetLightmapSettings, propsToIgnore);
+                    madeChanges |= SerializedObjectUtils.CopySerializedObject(sourceRenderSettings, targetRenderSettings, propsToIgnore);
                 }
             }
 
