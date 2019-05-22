@@ -1950,7 +1950,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7276281633882285425}
   - component: {fileID: 7276281633882285427}
-  - component: {fileID: 7276281633882285424}
+  - component: {fileID: 4521116965983758579}
   m_Layer: 0
   m_Name: Spectator View - HoloLens
   m_TagString: Untagged
@@ -1990,7 +1990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c94c7f77f1a6c0d42b6ea52aa37fae9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7276281633882285424
+--- !u!114 &4521116965983758579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1999,7 +1999,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7276281633882285422}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5abc500b6b39d464880ebe2221b093f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 25b080c0fe9f22449a6923148a1afef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MatchMakingService: {fileID: 7276281635009735070}
@@ -4979,6 +4979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _markerSize: 0.04
+  _markerPositionBehavior: 1
 --- !u!114 &7276281634926089532
 MonoBehaviour:
   m_ObjectHideFlags: 0

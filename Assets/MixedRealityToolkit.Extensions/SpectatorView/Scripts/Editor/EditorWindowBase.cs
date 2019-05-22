@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
     {
         private static Dictionary<Type, EditorWindow> windows = new Dictionary<Type, EditorWindow>();
 
-        private static TWindow GetWindow()
+        public static TWindow TryGetWindow()
         {
             EditorWindow window;
             if (windows.TryGetValue(typeof(TWindow), out window))
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         /// </summary>
         private void CheckEditorWindowStatus()
         {
-            TWindow window = GetWindow();
+            TWindow window = TryGetWindow();
             if (window != null)
             {
                 window.Repaint();

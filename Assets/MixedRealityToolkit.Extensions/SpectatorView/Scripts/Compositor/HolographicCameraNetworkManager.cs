@@ -15,9 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
     [RequireComponent(typeof(TCPConnectionManager))]
     public class HolographicCameraNetworkManager : MonoBehaviour
     {
+        public const float arUcoMarkerSizeInMeters = 0.1f;
+        public const string CreateSharedSpatialCoordinateCommand = "CreateSharedSpatialCoordinate";
         private TCPConnectionManager connectionManager;
         private const float trackingStalledReceiveDelay = 1.0f;
-        private const float arUcoMarkerSizeInMeters = 0.1f;
         private float lastReceivedPoseTime = -1;
 
         [SerializeField]
@@ -31,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private string holoLensName;
         private string holoLensIPAddress;
         private bool hasTracking;
-        private bool isAnchorLocated;
+        private bool isSharedSpatialCoordinateLocated;
 
         /// <summary>
         /// Gets the name of the HoloLens running on the holographic camera rig.
@@ -57,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         /// Gets the last-reported status of whether or not the WorldAnchor used for spatial position sharing is located
         /// on the holographic camera rig.
         /// </summary>
-        public bool IsAnchorLocated => isAnchorLocated;
+        public bool IsSharedSpatialCoordinateLocated => isSharedSpatialCoordinateLocated;
 
         private void Awake()
         {
@@ -167,25 +168,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                     case "Status":
                         {
                             hasTracking = reader.ReadBoolean();
-                            isAnchorLocated = reader.ReadBoolean();
+                            isSharedSpatialCoordinateLocated = reader.ReadBoolean();
                         }
                         break;
                 }
             }
         }
 
-        public void SendLocateSharedAnchorCommand()
+        public void SendLocateSharedSpatialCoordinateCommand()
         {
             if (currentConnection == null)
             {
-                Debug.LogError("Can't locate shared anchor while disconnected");
+                Debug.LogError("Can't locate shared spatial coordinate while disconnected");
                 return;
             }
 
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
-                message.Write("CreateSharedAnchor");
+                message.Write(CreateSharedSpatialCoordinateCommand);
                 message.Write(arUcoMarkerSizeInMeters);
 
                 currentConnection.Send(memoryStream.ToArray());
