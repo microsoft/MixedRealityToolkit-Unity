@@ -1,4 +1,7 @@
-﻿namespace Assets.MRTK.MixedRealityToolkit.Extensions.Sharing.SpatialAlignment.AzureSpatialAnchors
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+namespace Assets.MRTK.MixedRealityToolkit.Extensions.Sharing.SpatialAlignment.AzureSpatialAnchors
 {
     public class SpatialAnchorsConfiguration
     {

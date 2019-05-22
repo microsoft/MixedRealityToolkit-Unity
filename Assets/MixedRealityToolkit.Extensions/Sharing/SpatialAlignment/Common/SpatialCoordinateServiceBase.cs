@@ -21,6 +21,9 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         /// <inheritdoc />
         public event Action<ISpatialCoordinate> CoordinatedDiscovered;
 
+        /// <inheritdoc />
+        public event Action<ISpatialCoordinate> CoordinateRemoved;
+
         private readonly object discoveryLockObject = new object();
         private readonly CancellationTokenSource disposedCTS = new CancellationTokenSource();
 
@@ -95,6 +98,20 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             else
             {
                 throw new InvalidOperationException($"Coordinate with id '{id}' already discovered.");
+            }
+        }
+
+        protected void OnRemoveCoordinate(TKey id)
+        {
+            ThrowIfDisposed();
+
+            if (knownCoordinates.TryRemove(id, out ISpatialCoordinate coordinate))
+            {
+                CoordinateRemoved?.Invoke(coordinate);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Coordinate with id '{id}' was not previously registered.");
             }
         }
 

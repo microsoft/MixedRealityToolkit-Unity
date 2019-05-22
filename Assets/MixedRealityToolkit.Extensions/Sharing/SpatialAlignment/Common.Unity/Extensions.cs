@@ -136,5 +136,22 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
                 return t.IsCanceled ? defaultCancellationReturn : t.Result;
             }, TaskContinuationOptions.ExecuteSynchronously);
         }
+
+        /// <summary>
+        /// A simple helper to enable "awaiting" a <see cref="CancellationToken"/> by creating a task wrapping it.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to await.</param>
+        /// <returns>The task that can be awaited.</returns>
+        public static Task AsTask(this CancellationToken cancellationToken) => Task.Delay(-1, cancellationToken);
+
+        /// <summary>
+        /// The task will be awaited until the cancellation token is triggered. (await task unless cancelled).
+        /// </summary>
+        /// <remarks>This is different from cancelling the task. The use case is to enable a calling method 
+        /// bow out of the await that it can't cancel, but doesn't require completion/cancellation in order to cancel it's own execution.</remarks>
+        /// <param name="task">The task to await.</param>
+        /// <param name="cancellationToken">The cancellation token to stop awaiting.</param>
+        /// <returns>The task that can be awaited unless the cancellation token is triggered.</returns>
+        public static Task Unless(this Task task, CancellationToken cancellationToken) => Task.WhenAny(task, cancellationToken.AsTask());
     }
 }

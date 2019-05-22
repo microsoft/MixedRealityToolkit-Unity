@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Numerics;
 
@@ -10,7 +11,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
     /// Helper base class for implementations of <see cref="ISpatialCoordinate"/>.
     /// </summary>
     /// <typeparam name="TKey">The type of Id for this coordinate.</typeparam>
-    public abstract class SpatialCoordinateBase<TKey> : ISpatialCoordinate
+    public abstract class SpatialCoordinateBase<TKey> : DisposableBase, ISpatialCoordinate
     {
         public event Action StateChanged;
 
