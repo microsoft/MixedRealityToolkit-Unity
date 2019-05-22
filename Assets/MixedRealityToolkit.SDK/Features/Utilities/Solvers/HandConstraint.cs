@@ -10,35 +10,35 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
-    /// Provides a solver that constrains to hands with behaviors common to hand constrained UI.
+    /// Provides a solver that constrains the target to a region safe for hand interactions.
     /// </summary>
     [RequireComponent(typeof(InputSystemGlobalListener))]
+    [RequireComponent(typeof(HandBounds))]
     public class HandConstraint : Solver, IMixedRealitySourceStateHandler
     {
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public enum HandSafeZone
+        {
+            Hypothenar = 0,
+            Thumb = 1,
+            FingerTips = 2,
+            Wrist = 3
+        }
+
         [Header("Hand Constraint")]
         [SerializeField]
-        [Tooltip("Should this solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.")]
-        private bool transitionBetweenHands = true;
-
-        [SerializeField]
-        [Tooltip("How much to offset the hand along the view's right vector when the hand is completely vertical (interpolates to handHorizontalOffset)")]
-        private float handVerticalOffset = -0.1f;
-
-        [SerializeField]
-        [Tooltip("How much to offset the hand along the view's right vector when the hand is completely horizontal (interpolates to handVerticalOffset)")]
-        private float handHorizontalOffset = -0.2f;
-
-        [SerializeField]
-        [Tooltip("When true changes the sign of the vertical and horizontal offset when hands automatically transition.")]
-        private bool negateOffsetsOnHandTransition = true;
-
-        [SerializeField]
-        [Tooltip("When true calls onHandActivate/onHandDeactivate only when the hand satisfies the jointFacingThreshold.")]
-        private bool activateOnJointUp = true;
+        [Tooltip("TODO")]
+        private HandSafeZone handSafeZone = HandSafeZone.Hypothenar;
 
         [SerializeField]
         [Tooltip("TODO")]
-        private float jointFacingThreshold = 0.3f;
+        private float handSafeZoneExpansion = 0.1f;
+
+        [SerializeField]
+        [Tooltip("Should this solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.")]
+        private bool transitionBetweenHands = true;
 
         [SerializeField]
         [Tooltip("TODO")]
@@ -54,11 +54,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private IMixedRealityHand trackedHand = null;
         private List<IMixedRealityHand> handStack = new List<IMixedRealityHand>();
+        private HandBounds handBounds = null;
 
         public override void SolverUpdate()
         {
             var previousTrackedHand = trackedHand;
-            HandActivationUpdate();
+            IMixedRealityHand activehand = null;
+
+            foreach (var hand in handStack)
+            {
+                if (IsHandActive(hand))
+                {
+                    activehand = hand;
+                    break;
+                }
+            }
+
+            ChangeTrackedObjectType(activehand);
 
             GoalPosition = CalculateGoalPosition();
             GoalRotation = SolverHandler.TransformTarget.rotation;
@@ -74,23 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
-        private void HandActivationUpdate()
-        {
-            IMixedRealityHand activehand = null;
-
-            foreach (var hand in handStack)
-            {
-                if (IsHandActive(hand))
-                {
-                    activehand = hand;
-                    break;
-                }
-            }
-
-            ChangeTrackedObjectType(activehand);
-        }
-
-        private bool IsHandActive(IMixedRealityHand hand)
+        protected virtual bool IsHandActive(IMixedRealityHand hand)
         {
             // If transitioning between hands is not allowed, make sure the TrackedObjectType matches the hand.
             if (!transitionBetweenHands)
@@ -106,17 +102,44 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 }
             }
 
-            if (activateOnJointUp)
-            {
-                MixedRealityPose pose;
+            return true;
+        }
 
-                if (hand.TryGetJoint(SolverHandler.TrackedHandJoint, out pose))
+        protected virtual Vector3 CalculateGoalPosition()
+        {
+            var goalPosition = SolverHandler.TransformTarget.position;
+            Bounds trackedHandBounds;
+
+            if (trackedHand != null &&
+                handBounds.Bounds.TryGetValue(trackedHand.ControllerHandedness, out trackedHandBounds))
+            {
+                float distance;
+                Ray ray = CalculateSafeZoneRay(goalPosition, trackedHand.ControllerHandedness, handSafeZone);
+                trackedHandBounds.Expand(handSafeZoneExpansion);
+
+                if (trackedHandBounds.IntersectRay(ray, out distance))
                 {
-                    return Vector3.Dot(pose.Up, CameraCache.Main.transform.forward) > jointFacingThreshold;
+                    goalPosition = ray.origin + ray.direction * distance;
                 }
             }
 
-            return true;
+            return goalPosition;
+        }
+
+        protected virtual IEnumerator ToggleCursor(bool visible, bool frameDelay = false)
+        {
+            if (hideHandCursorsOnActivate)
+            {
+                if (frameDelay)
+                {
+                    yield return null;
+                }
+
+                foreach (var pointer in trackedHand?.InputSource.Pointers)
+                {
+                    pointer?.BaseCursor?.SetVisibility(visible);
+                }
+            }
         }
 
         private void ChangeTrackedObjectType(IMixedRealityHand hand)
@@ -130,12 +153,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     if (SolverHandler.TrackedObjectToReference != trackedObjectType)
                     {
                         SolverHandler.TrackedObjectToReference = trackedObjectType;
-
-                        if (negateOffsetsOnHandTransition)
-                        {
-                            handVerticalOffset = -handVerticalOffset;
-                            handHorizontalOffset = -handHorizontalOffset;
-                        }
 
                         // Move the currently tracked hand to the top of the stack.
                         handStack.Remove(hand);
@@ -172,36 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
-        private Vector3 CalculateGoalPosition()
-        {
-            var offsetWeight = 0.0f;
-            var pose = new MixedRealityPose();
-
-            if (trackedHand?.TryGetJoint(SolverHandler.TrackedHandJoint, out pose) != null)
-            {
-                offsetWeight = Mathf.Abs(Vector3.Dot(pose.Forward, CameraCache.Main.transform.up));
-            }
-
-            var viewRight = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
-            return SolverHandler.TransformTarget.position + viewRight * Mathf.Lerp(handHorizontalOffset, handVerticalOffset, offsetWeight);
-        }
-
-        private IEnumerator ToggleCursor(bool visible, bool frameDelay = false)
-        {
-            if (hideHandCursorsOnActivate)
-            {
-                if (frameDelay)
-                {
-                    yield return null;
-                }
-
-                foreach (var pointer in trackedHand?.InputSource.Pointers)
-                {
-                    pointer?.BaseCursor?.SetVisibility(visible);
-                }
-            }
-        }
-
         private static bool HandednessToTrackedObjectType(Handedness handedness, out TrackedObjectType trackedObjectType)
         {
             switch (handedness)
@@ -218,10 +205,57 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return false;
         }
 
+        private static Ray CalculateSafeZoneRay(Vector3 origin, Handedness handedness, HandSafeZone handSafeZone)
+        {
+            Vector3 direction;
+
+            switch (handSafeZone)
+            {
+                default:
+                case HandSafeZone.Hypothenar:
+                    {
+                        direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+
+                        if (handedness == Handedness.Left)
+                        {
+                            direction = -direction;
+                        }
+                    }
+                    break;
+
+                case HandSafeZone.Thumb:
+                    {
+                        direction = -Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+
+                        if (handedness == Handedness.Left)
+                        {
+                            direction = -direction;
+                        }
+                    }
+                    break;
+
+                case HandSafeZone.FingerTips:
+                    {
+                        direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.right);
+                    }
+                    break;
+
+                case HandSafeZone.Wrist:
+                    {
+                        direction = -Vector3.Cross(CameraCache.Main.transform.forward, Vector3.right);
+                    }
+                    break;
+            }
+
+            return new Ray(origin + direction, -direction);
+        }
+
         #region MonoBehaviour Implementation
 
         protected void Start()
         {
+            handBounds = GetComponent<HandBounds>();
+
             // Initially a hand is not active.
             trackedHand = null;
             onHandDeactivate.Invoke();
