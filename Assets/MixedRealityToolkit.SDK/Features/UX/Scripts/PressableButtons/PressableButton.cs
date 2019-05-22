@@ -28,24 +28,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Header("Press Settings")]
         [Tooltip("The offset at which pushing starts.")]
         private float startPushDistance = 0.0f;
-        public float StartPushDistance => startPushDistance;
+        public float StartPushDistance { get => startPushDistance; set => startPushDistance = value; }
 
         [SerializeField]
         [Tooltip("Maximum push distance")]
         private float maxPushDistance = 0.2f;
-        public float MaxPushDistance => maxPushDistance;
+        public float MaxPushDistance { get => maxPushDistance; set => maxPushDistance = value; }
 
         [SerializeField]
         [FormerlySerializedAs("minPressDepth")]
         [Tooltip("Distance the button must be pushed until it is considered pressed.")]
         private float pressDistance = 0.02f;
-        public float PressDistance => pressDistance;
+        public float PressDistance { get => pressDistance; set => pressDistance = value; }
 
         [SerializeField]
         [FormerlySerializedAs("withdrawActivationAmount")]
         [Tooltip("Withdraw amount needed to transition from Pressed to Released.")]
         private float releaseDistanceDelta = 0.01f;
-        public float ReleaseDistanceDelta => releaseDistanceDelta;
+        public float ReleaseDistanceDelta { get => releaseDistanceDelta; set => releaseDistanceDelta = value; }
 
         [SerializeField]
         [Tooltip("Speed for retracting the moving button visuals on release.")]
