@@ -143,8 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // cache a drag value
         protected Vector3 dragStart = Vector3.zero;
 
-        protected List<MixedRealityInputAction> grabActions;
-
         /// <summary>
         /// how many times this interactable was clicked
         /// good for checking when a click event occurs.
