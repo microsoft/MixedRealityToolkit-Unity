@@ -125,20 +125,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <inheritdoc />
         public override void SolverUpdate()
         {
-            var previousTrackedHand = trackedHand;
-            IMixedRealityHand activehand = null;
+            // Determine the new active hand.
+            IMixedRealityHand newActivehand = null;
 
             foreach (var hand in handStack)
             {
                 if (IsHandActive(hand))
                 {
-                    activehand = hand;
+                    newActivehand = hand;
                     break;
                 }
             }
 
-            ChangeTrackedObjectType(activehand);
+            // Track the new active hand.
+            var previousTrackedHand = trackedHand;
 
+            if (previousTrackedHand == null || 
+                previousTrackedHand != newActivehand)
+            {
+                ChangeTrackedObjectType(newActivehand);
+            }
+
+            // Update the goal position.
             GoalPosition = CalculateGoalPosition();
             GoalRotation = SolverHandler.TransformTarget.rotation;
 
@@ -210,14 +218,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <returns></returns>
         protected virtual IEnumerator ToggleCursor(bool visible, bool frameDelay = false)
         {
-            if (hideHandCursorsOnActivate && trackedHand != null)
+            if (hideHandCursorsOnActivate)
             {
+                var cachedTrackedHand = trackedHand;
+
                 if (frameDelay)
                 {
                     yield return null;
                 }
 
-                foreach (var pointer in trackedHand.InputSource.Pointers)
+                foreach (var pointer in cachedTrackedHand?.InputSource.Pointers)
                 {
                     pointer?.BaseCursor?.SetVisibility(visible);
                 }
@@ -252,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     }
                     else
                     {
-                        ToggleCursor(true);
+                        StartCoroutine(ToggleCursor(true));
                         trackedHand = hand;
                     }
 
@@ -268,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 if (trackedHand != null)
                 {
-                    ToggleCursor(true);
+                    StartCoroutine(ToggleCursor(true));
                     trackedHand = null;
                     onHandDeactivate.Invoke();
                 }
