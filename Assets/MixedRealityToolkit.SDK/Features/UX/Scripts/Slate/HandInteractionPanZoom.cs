@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Visual affordance")]
         [SerializeField]
         [Tooltip("If affordace geometry is desired to emphasize the touch points(leftPoint and rightPoint) and the center point between them (reticle), assign them here.")]
-        private GameObject reticle = null;
+        private GameObject centerPoint = null;
         [SerializeField]
         private GameObject leftPoint = null;
         [SerializeField]
@@ -187,9 +187,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (affordancesVisible)
                 {
-                    if (reticle != null)
+                    if (centerPoint != null)
                     {
-                        reticle.transform.position = GetContactCenter();
+                        centerPoint.transform.position = GetContactCenter();
                     }
                     if (leftPoint != null)
                     {
@@ -431,9 +431,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void SetAffordancesActive(bool active)
         {
             affordancesVisible = active;
-            if (reticle != null)
+            if (centerPoint != null)
             {
-                reticle.SetActive(affordancesVisible);
+                centerPoint.SetActive(affordancesVisible);
             }
             if (leftPoint != null)
             {
