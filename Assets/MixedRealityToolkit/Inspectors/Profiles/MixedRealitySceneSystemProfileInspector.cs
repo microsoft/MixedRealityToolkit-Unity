@@ -67,17 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            RenderMixedRealityToolkitLogo();
-            /*    "Scene System",
-                "The Scene System Profile helps configure your scene settings.");*/
+            RenderMRTKLogo();
 
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, true))
-            {
-                if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-                {
-                    return;
-                }
-            }
+            MixedRealityInspectorUtility.CheckMixedRealityConfigured(true);
 
             serializedObject.Update();
 
@@ -242,6 +234,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         break;
                 }
             }
+        }
+
+        protected override bool IsProfileInActiveInstance()
+        {
+            return MixedRealityToolkit.IsInitialized
+                && MixedRealityToolkit.Instance.HasActiveProfile
+                && MixedRealityToolkit.Instance.ActiveProfile.CameraProfile == this;
         }
     }
 }

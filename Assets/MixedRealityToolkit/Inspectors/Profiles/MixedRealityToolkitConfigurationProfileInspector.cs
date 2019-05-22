@@ -45,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty diagnosticsSystemType;
         private SerializedProperty diagnosticsSystemProfile;
         // Scene system properties
-        private static bool showSceneSystemProperties = true;
         private SerializedProperty enableSceneSystem;
         private SerializedProperty sceneSystemType;
         private SerializedProperty sceneSystemProfile;
@@ -151,6 +150,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         EditorGUILayout.PropertyField(enableDiagnosticsSystem);
                         EditorGUILayout.PropertyField(diagnosticsSystemType);
                         return RenderProfile(diagnosticsSystemProfile, typeof(MixedRealityDiagnosticsProfile));
+                    },
+                    () => {
+                        EditorGUILayout.PropertyField(enableSceneSystem);
+                        EditorGUILayout.PropertyField(sceneSystemType);
+                        return RenderProfile(sceneSystemProfile, typeof(MixedRealitySceneSystemProfile), true, true, typeof(IMixedRealitySceneSystem));
                     },
                     () => {
                         return RenderProfile(registeredServiceProvidersProfile, typeof(MixedRealityRegisteredServiceProvidersProfile), true, false);
