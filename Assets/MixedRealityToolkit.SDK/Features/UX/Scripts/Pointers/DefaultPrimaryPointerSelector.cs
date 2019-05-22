@@ -11,18 +11,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
     ///   2. Pointer that was focus locked most recently
     ///   3. Pointer that became interaction enabled most recently
     /// </summary>
-    public class DefaultPrimaryPointerSelector : IMixedRealityPrimaryPointerSelector, IMixedRealityPointerHandler
+    public class DefaultPrimaryPointerSelector : IMixedRealityPrimaryPointerSelector
     {
         private readonly Dictionary<IMixedRealityPointer, PointerInfo> pointerInfos = new Dictionary<IMixedRealityPointer, PointerInfo>();
 
         public DefaultPrimaryPointerSelector()
         {
-            MixedRealityToolkit.InputSystem.RegisterPointerHandler(this);
+            MixedRealityToolkit.InputSystem.PointerEvent += OnPointerEvent;
         }
 
         ~DefaultPrimaryPointerSelector()
         {
-            MixedRealityToolkit.InputSystem.UnregisterPointerHandler(this);
+            MixedRealityToolkit.InputSystem.PointerEvent -= OnPointerEvent;
         }
 
         #region IMixedRealityPrimaryPointerSelector
@@ -64,30 +64,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion IMixedRealityPrimaryPointerSelector
 
-        #region IMixedRealityPointerHandler
-
-        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        public void OnPointerEvent(MixedRealityPointerEventData eventData, PointerEventType eventType)
         {
-            PointerInfo info = null;
-            if (pointerInfos.TryGetValue(eventData.Pointer, out info))
+            if (eventType == PointerEventType.Down || eventType == PointerEventType.Up)
             {
-                info.IsDown = true;
+                PointerInfo info = null;
+                if (pointerInfos.TryGetValue(eventData.Pointer, out info))
+                {
+                    info.IsDown = eventType == PointerEventType.Down;
+                }
             }
         }
-
-        public void OnPointerUp(MixedRealityPointerEventData eventData)
-        {
-            PointerInfo info = null;
-            if (pointerInfos.TryGetValue(eventData.Pointer, out info))
-            {
-                info.IsDown = false;
-            }
-        }
-
-        public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
-        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
-
-        #endregion IMixedRealityPointerHandler
 
         private class PointerInfo
         {
