@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Header("Press Settings")]
         [Tooltip("The offset at which pushing starts.")]
         private float startPushDistance = 0.0f;
-        public float StartPushDistance { get => startPushDistance; set => startPushDistance = value; }
+        public float StartPushDistance => startPushDistance;
 
         [SerializeField]
         [Tooltip("Maximum push distance")]
