@@ -57,7 +57,7 @@ steps:
   displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
 
 - task: PublishBuildArtifacts@1
-  enabled: $(parameters.PublishArtifacts)
+  enabled: ${{ parameters.PublishArtifacts }}
   displayName: 'Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }}'
   inputs:
     ArtifactName: 'mrtk-build-${{ parameters.Arch }}'
