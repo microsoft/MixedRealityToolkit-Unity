@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public RenderTexture GetVideoCameraFeed()
         {
+#if UNITY_EDITOR
             // Obtain DSLR Feed
             if (compositionManager == null)
             {
@@ -31,10 +32,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             return compositionManager.TextureManager.compositeTexture; // Note: figure out what is the correct texture to use here in the new compositor wrapper
+#else
+            Debug.LogWarning("CompositorWrapper not supported on current platform, returning null texture");
+            return null;
+#endif
         }
 
         public Texture2D GetVideoCameraTexture()
         {
+#if UNITY_EDITOR
             if (compositionManager == null)
             {
                 Debug.LogWarning("CompositionManager not assigned for CompositorWrapper");
@@ -61,6 +67,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             RenderTexture.active = previousActive;
 
             return dslrTexture;
+#else
+            Debug.LogWarning("CompositorWrapper not supported on current platform, returning null texture");
+            return null;
+#endif
         }
     }
 }
