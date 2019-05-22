@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -18,26 +18,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false)) { return; }
-
             mouseSpeed = serializedObject.FindProperty("mouseSpeed");
         }
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
+
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target), false))
             {
-                return;
+                serializedObject.Update();
+                EditorGUILayout.PropertyField(mouseSpeed);
+                serializedObject.ApplyModifiedProperties();
             }
+        }
 
-            serializedObject.Update();
-
-            EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(mouseSpeed);
-
-            serializedObject.ApplyModifiedProperties();
-            GUI.enabled = true;
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            var mouseManager = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>();
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                mouseManager != null && profile == mouseManager.MouseInputProfile;
         }
     }
 }
