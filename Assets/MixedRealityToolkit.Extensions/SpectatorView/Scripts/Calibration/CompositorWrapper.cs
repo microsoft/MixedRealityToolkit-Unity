@@ -1,47 +1,66 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-// Enable this preprocessor directive in your player settings as needed.
-#if COMPOSITOR_PLUGIN_AVAILABLE
-using SpectatorView;
-#endif
-
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class CompositorWrapper
+    internal class CompositorWrapper : Singleton<CompositorWrapper>
     {
-        public static RenderTexture GetDSLRFeed()
+        /// <summary>
+        /// CompositionManager used to obtain a DSLR stream
+        /// </summary>
+        [Tooltip("CompositionManager used to obtain the DSLR stream")]
+        [SerializeField]
+        private CompositionManager compositionManager = null;
+
+        public RenderTexture GetVideoCameraFeed()
         {
-#if COMPOSITOR_PLUGIN_AVAILABLE
             // Obtain DSLR Feed
-            return ShaderManager.Instance.compositeTexture; // Note: figure out what is the correct texture to use here in the new compositor wrapper
-#else
-            return null;
-#endif
+            if (compositionManager == null)
+            {
+                Debug.LogWarning("CompositionManager not assigned for CompositorWrapper");
+                return null;
+            }
+
+            if (compositionManager.TextureManager == null)
+            {
+                // TextureManager hasn't been created yet
+                return null;
+            }
+
+            return compositionManager.TextureManager.compositeTexture; // Note: figure out what is the correct texture to use here in the new compositor wrapper
         }
 
-        public static Texture2D GetDSLRTexture()
+        public Texture2D GetVideoCameraTexture()
         {
-#if COMPOSITOR_PLUGIN_AVAILABLE
+            if (compositionManager == null)
+            {
+                Debug.LogWarning("CompositionManager not assigned for CompositorWrapper");
+                return null;
+            }
+
+            if (compositionManager.TextureManager == null)
+            {
+                // TextureManager hasn't been created yet
+                return null;
+            }
+
             // Obtain DSLR Image
             Texture2D dslrTexture = new Texture2D(
-                ShaderManager.Instance.colorRGBTexture.width,
-                ShaderManager.Instance.colorRGBTexture.height,
+                compositionManager.TextureManager.colorRGBTexture.width,
+                compositionManager.TextureManager.colorRGBTexture.height,
                 TextureFormat.RGB24,
                 false);
 
             var previousActive = RenderTexture.active;
-            RenderTexture.active = ShaderManager.Instance.colorRGBTexture;
+            RenderTexture.active = compositionManager.TextureManager.colorRGBTexture;
             dslrTexture.ReadPixels(new Rect(0, 0, dslrTexture.width, dslrTexture.height), 0, 0);
             dslrTexture.Apply();
             RenderTexture.active = previousActive;
 
             return dslrTexture;
-#else
-            return null;
-#endif
         }
     }
 }

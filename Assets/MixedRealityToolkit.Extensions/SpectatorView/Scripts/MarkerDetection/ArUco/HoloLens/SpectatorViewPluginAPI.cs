@@ -15,14 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
     /// </summary>
     public class SpectatorViewPluginAPI
     {
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "Initialize")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "Initialize")]
 #endif
         internal static extern bool InitializeNative();
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "DetectMarkers")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "DetectMarkers")]
@@ -38,21 +38,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             float markerSize,
             int arUcoMarkerDictionaryId);
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "GetDetectedMarkersCount")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "GetDetectedMarkersCount")]
 #endif
         internal static extern int GetDetectedMarkersCountNative();
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "GetDetectedMarkerIds")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "GetDetectedMarkerIds")]
 #endif
         internal static extern bool GetDetectedMarkerIdsNative(int[] detectedIds, int size);
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "GetDetectedMarkerPose")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "GetDetectedMarkerPose")]
