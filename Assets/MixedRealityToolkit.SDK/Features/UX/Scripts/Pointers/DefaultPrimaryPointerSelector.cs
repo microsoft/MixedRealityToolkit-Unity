@@ -5,6 +5,12 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Default primary pointer selector. The primary pointer is chosen among all interaction enabled ones using the following rules in order:
+    ///   1. Focus locked pointer that has been locked for the longest
+    ///   2. Pointer that was focus locked most recently
+    ///   3. Pointer that became interaction enabled most recently
+    /// </summary>
     public class DefaultPrimaryPointerSelector : IMixedRealityPrimaryPointerSelector
     {
         private readonly Dictionary<IMixedRealityPointer, PointerInfo> pointerInfos = new Dictionary<IMixedRealityPointer, PointerInfo>();
@@ -61,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            // This doubles as interaction enabled and focus locked lost timestamp. See IsFocusLocked setter below.
             public long InteractionEnabledTimestamp { get; private set; }
 
             private bool isFocusLocked;
@@ -76,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else if (!value && isFocusLocked)
                     {
+                        // We take shortcut here and refresh the interaction enabled timestamp instead of keeping a separate focus locked lost one
                         InteractionEnabledTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
                     }
 
