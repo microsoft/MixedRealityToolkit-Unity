@@ -85,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     releaseDistanceDelta *= scale;
                 }
             }
-
         }
 
         [Header("Events")]
