@@ -471,7 +471,7 @@ MonoBehaviour:
   momentumVertical: 0.9
   panZoomSmoothing: 80
   panEventReceivers: []
-  reticle: {fileID: 0}
+  centerPoint: {fileID: 0}
   leftPoint: {fileID: 4531382727374914902}
   rightPoint: {fileID: 5073403802680592322}
   currentScale: 0
@@ -973,8 +973,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.8799465, y: 0.5952387, z: 0.047590006}
-  m_Center: {x: -0.06922668, y: -0.1266855, z: 0.059046976}
+  m_Size: {x: 0.9249632, y: 0.63449967, z: 0.047590002}
+  m_Center: {x: -0.06922671, y: -0.13063765, z: 0.059046976}
 --- !u!114 &7779420039263858275
 MonoBehaviour:
   m_ObjectHideFlags: 0
