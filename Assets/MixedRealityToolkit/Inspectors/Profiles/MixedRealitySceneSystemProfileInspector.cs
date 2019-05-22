@@ -4,6 +4,8 @@
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -17,6 +19,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         const float DragAreaHeight = 30f;
         const float DragAreaOffset = 10;
 
+        private static string managerSceneContent = 
+            "The Manager scene is loaded first and remains loaded for the duration of the app. Only one Manager scene is ever loaded, and no scene operation will ever unload it.";
+
+        private static string lightingSceneContent =
+            "The Lighting scene controls lighting settings such as ambient light, skybox and sun direction. A Lighting scene's content is restricted to lights, light probes and reflection probes. A default lighting scene is loaded on initialization. Only one lighting scene will ever be loaded at a time.";
+
+        private static string contentSceneContent =
+            "Content scenes are everything else. You can load and unload any number of content scenes in any combination, and their content is unrestricted.";
+
+        private static bool showEditorProperties = true;
+        private SerializedProperty editorManagerLoadedScenes;
+        private SerializedProperty editorEnforceSceneOrder;
+
         private static bool showManagerProperties = true;
         private SerializedProperty useManagerScene;
         private SerializedProperty managerScene;
@@ -29,8 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty defaultLightingSceneIndex;
         private SerializedProperty lightingScenes;
 
-        private static bool showEditorProperties = true;
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -39,7 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 return;
             }
-                        
+
+            editorManagerLoadedScenes = serializedObject.FindProperty("editorManagerLoadedScenes");
+            editorEnforceSceneOrder = serializedObject.FindProperty("editorEnforceSceneOrder");
+
             useManagerScene = serializedObject.FindProperty("useManagerScene");
             managerScene = serializedObject.FindProperty("managerScene");
 
@@ -83,15 +99,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    // TBD
+                    EditorGUILayout.PropertyField(editorManagerLoadedScenes);
+                    EditorGUILayout.PropertyField(editorEnforceSceneOrder);
+                    EditorGUILayout.Space();
                 }
             }
 
             showManagerProperties = EditorGUILayout.Foldout(showManagerProperties, "Manager Scene Settings", true);
+
             if (showManagerProperties)
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    EditorGUILayout.HelpBox(managerSceneContent, MessageType.Info);
+
                     // Disable the tag field since we're drawing manager scenes
                     SceneInfoDrawer.DrawTagProperty = false;
                     EditorGUILayout.PropertyField(useManagerScene);
@@ -110,7 +131,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         EditorGUILayout.Space();
                     }
 
-                    EditorGUILayout.PropertyField(managerScene, includeChildren: true);
+                    if (useManagerScene.boolValue)
+                    {
+                        EditorGUILayout.PropertyField(managerScene, includeChildren: true);
+                    }
                 }
             }
 
@@ -120,6 +144,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    EditorGUILayout.HelpBox(lightingSceneContent, MessageType.Info);
+
                     EditorGUILayout.PropertyField(useLightingScene);
 
                     if (useLightingScene.boolValue && profile.NumLightingScenes < 1 && !Application.isPlaying)
@@ -143,7 +169,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         // Disable the tag field since we're drawing lighting scenes
                         SceneInfoDrawer.DrawTagProperty = false;
-                        defaultLightingSceneIndex.intValue = EditorGUILayout.IntSlider(defaultLightingSceneIndex.displayName, defaultLightingSceneIndex.intValue, 0, lightingScenes.arraySize - 1);
+
+                        if (profile.NumLightingScenes > 0)
+                        {
+                            string[] lightingSceneNames = profile.LightingScenes.Select(l => l.Name).ToArray<string>();
+                            defaultLightingSceneIndex.intValue = EditorGUILayout.Popup("Default Lighting Scene", defaultLightingSceneIndex.intValue, lightingSceneNames);
+
+                        }
+
                         EditorGUILayout.PropertyField(lightingScenes, includeChildren: true);
                         //DrawSceneInfoDragAndDrop(lightingScenes);
                     }
@@ -156,6 +189,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    EditorGUILayout.HelpBox(contentSceneContent, MessageType.Info);
+
                     // Enable the tag field since we're drawing content scenes
                     SceneInfoDrawer.DrawTagProperty = true;
                     EditorGUILayout.PropertyField(contentScenes, includeChildren: true);

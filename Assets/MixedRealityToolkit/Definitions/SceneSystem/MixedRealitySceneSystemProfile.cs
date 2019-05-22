@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.SceneManagement;
 #endif
 using UnityEngine;
 
@@ -38,8 +37,21 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         public int NumContentScenes { get { return contentScenes.Count; } }
 
+#if UNITY_EDITOR
+        public bool EditorManageLoadedScenes => editorManagerLoadedScenes;
+
+        public bool EditorEnforceSceneOrder => editorEnforceSceneOrder;
+#endif
+
         [SerializeField]
-        [Tooltip("Using a manager scene ensures a MixedRealityToolkit instance will always be loaded first in your application. It also ensures that this scene and instance will never be unloaded.")]
+        [Tooltip("If true, the service will ensure manager scene is displayed first in scene heirarchy, followed by lighting and then content.")]
+        private bool editorEnforceSceneOrder = true;
+
+        [SerializeField]
+        [Tooltip("If true, the service will ensure that manager scenes and lighting scenes are always loaded. Disable if you want to work in a scene in isolation.")]
+        private bool editorManagerLoadedScenes = true;
+
+        [SerializeField]
         private bool useManagerScene = true;
 
         [SerializeField]
@@ -53,11 +65,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private int defaultLightingSceneIndex = 0;
 
         [SerializeField]
-        [Tooltip("Scenes used to control lighting settings. Only one lighting scene can be loaded at any given time.")]
+        [Tooltip("Scenes used to control lighting settings.")]
         private List<SceneInfo> lightingScenes = new List<SceneInfo>();
 
         [SerializeField]
-        [Tooltip("Scenes in your build settings which aren't a lighting or manager scene. These can be loaded and unloaded in any combination.")]
         private List<SceneInfo> contentScenes = new List<SceneInfo>();
 
         [SerializeField]

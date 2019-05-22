@@ -14,6 +14,8 @@ MonoBehaviour:
   m_Name: DefaultMixedRealitySceneSystemProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
+  editorEnforceSceneOrder: 1
+  editorManagerLoadedScenes: 1
   useManagerScene: 1
   managerScene:
     Name: ManagerScene
@@ -22,8 +24,8 @@ MonoBehaviour:
     BuildIndex: 0
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: ae7bb08d297fb69408695d8de0962524, type: 3}
-  useLightingScene: 1
-  defaultLightingSceneIndex: 0
+  useLightingScene: 0
+  defaultLightingSceneIndex: 1
   lightingScenes:
   - Name: LightingScene1
     Path: Assets/TemporaryTests/LightingScene1.unity

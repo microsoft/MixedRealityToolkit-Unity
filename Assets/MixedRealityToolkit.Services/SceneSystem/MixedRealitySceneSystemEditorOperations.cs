@@ -45,14 +45,24 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             SubscribeToEditorEvents();
             cachedBuildScenes = EditorBuildSettings.scenes;
-            UpdateBuildSettings();
+
+            activeSceneDirty = true;
+            buildSettingsDirty = true;
+            heirarchyDirty = true;
+
+            CheckForChanges();
         }
 
         private void OnEditorEnable()
         {
             SubscribeToEditorEvents();
             cachedBuildScenes = EditorBuildSettings.scenes;
-            UpdateBuildSettings();
+
+            activeSceneDirty = true;
+            buildSettingsDirty = true;
+            heirarchyDirty = true;
+
+            CheckForChanges();
         }
 
         private void OnEditorDisable()
@@ -66,9 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         private void SubscribeToEditorEvents()
-        {
-            Debug.Log("Subscribing in " + instanceID);
-            
+        {            
             EditorApplication.playModeStateChanged += EditorApplicationPlayModeStateChanged;
             EditorApplication.projectChanged += EditorApplicationProjectChanged;
             EditorApplication.hierarchyChanged += EditorApplicationHeirarcyChanged;
@@ -81,8 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         private void UnsubscribeToEditorEvents()
         {
-            Debug.Log("Unsubscribing in " + instanceID);
-
             EditorApplication.playModeStateChanged -= EditorApplicationPlayModeStateChanged;
             EditorApplication.projectChanged -= EditorApplicationProjectChanged;
             EditorApplication.hierarchyChanged -= EditorApplicationHeirarcyChanged;
@@ -101,6 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             if (editorApplicationUpdateTicks > editorApplicationUpdateTickInterval)
             {
                 editorApplicationUpdateTicks = 0;
+                activeSceneDirty = true;
                 CheckForChanges();
             }
         }
@@ -161,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             {   // Make sure we don't double up on our updates via events we trigger during updates
                 return;
             }
-                        
+
             updatingSettingsOnEditorChanged = true;
 
             // Update editor settings
@@ -188,13 +195,23 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         private void UpdateManagerScene()
         {
-            if (!profile.UseManagerScene)
+            if (!profile.UseManagerScene || !profile.EditorManageLoadedScenes)
             {   // Nothing to do here.
                 return;
             }
 
             if (EditorSceneUtils.LoadScene(profile.ManagerScene, true, out Scene scene))
             {
+                // If we're managing scene heirarchy, move this to the front
+                if (profile.EditorEnforceSceneOrder)
+                {
+                    Scene currentFirstScene = EditorSceneManager.GetSceneAt(0);
+                    if (currentFirstScene.name != scene.name)
+                    {
+                        EditorSceneManager.MoveSceneBefore(scene, currentFirstScene);
+                    }
+                }
+
                 if (Time.realtimeSinceStartup > managerSceneInstanceCheckTime)
                 {
                     managerSceneInstanceCheckTime = Time.realtimeSinceStartup + managerSceneInstanceCheckInterval;
@@ -272,23 +289,37 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         private void UpdateLightingScene(bool updateActiveScene)
         {
-            if (profile.UseLightingScene && updateActiveScene)
+            if (!profile.UseLightingScene || !profile.EditorManageLoadedScenes)
             {
-                bool loaded = false;
-                // Only update this once in a while to avoid being obnoxious
+                return;
+            }
+
+            if (string.IsNullOrEmpty(ActiveLightingScene))
+            {
+                Debug.LogWarning("Active lighting scene was empty - setting to default.");
+                ActiveLightingScene = profile.DefaultLightingScene.Name;
+            }
+            else
+            {
                 foreach (SceneInfo lightingScene in profile.LightingScenes)
-                {   // Make sure ALL lighting scenes are added to build settings
-                    if (!loaded && lightingScene.Name == ActiveLightingScene)
+                {
+                    if (lightingScene.Name == ActiveLightingScene)
                     {
-                        if (EditorSceneUtils.LoadScene(lightingScene, false, out Scene editorScene) && updateActiveScene)
+                        Scene scene;
+                        if (EditorSceneUtils.LoadScene(lightingScene, false, out scene) && updateActiveScene)
                         {
-                            EditorSceneUtils.SetActiveScene(editorScene);
+                            EditorSceneUtils.SetActiveScene(scene);
                         }
-                        loaded = true;
+
+                        if (profile.EditorEnforceSceneOrder)
+                        {   // If we're enforcing scene order, make sure this scene comes after the current scene
+                            Scene currentFirstScene = EditorSceneManager.GetSceneAt(0);
+                            EditorSceneManager.MoveSceneAfter(scene, currentFirstScene);
+                        }
                     }
                     else
                     {
-                        EditorSceneUtils.UnloadScene(lightingScene);
+                        EditorSceneUtils.UnloadScene(lightingScene, true);
                     }
                 }
             }

@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         /// <param name="sceneInfo"></param>
         /// <returns></returns>
-        public static bool UnloadScene(SceneInfo sceneInfo)
+        public static bool UnloadScene(SceneInfo sceneInfo, bool removeFromHeirarchy)
         {
             Scene editorScene = default(Scene);
 
@@ -251,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 editorScene = EditorSceneManager.GetSceneByName(sceneInfo.Name);
                 if (editorScene.isLoaded)
                 {
-                    EditorSceneManager.CloseScene(editorScene, false);
+                    EditorSceneManager.CloseScene(editorScene, removeFromHeirarchy);
                 }
             }
             catch (InvalidOperationException)

@@ -32,19 +32,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             GUI.color = enabledColor;
 
-            EditorGUILayout.LabelField("Lighting Scene", EditorStyles.boldLabel);
-            List<SceneInfo> lightingScenes = new List<SceneInfo>(sceneSystem.LightingScenes);
-            if (lightingScenes.Count == 0)
+            MixedRealitySceneSystemProfile profile = sceneSystem.ConfigurationProfile as MixedRealitySceneSystemProfile;
+
+            if (profile.UseLightingScene)
             {
-                EditorGUILayout.LabelField("(No lighting scenes found)", EditorStyles.miniLabel);
+                EditorGUILayout.LabelField("Lighting Scene", EditorStyles.boldLabel);
+                List<SceneInfo> lightingScenes = new List<SceneInfo>(sceneSystem.LightingScenes);
+                if (lightingScenes.Count == 0)
+                {
+                    EditorGUILayout.LabelField("(No lighting scenes found)", EditorStyles.miniLabel);
+                }
+                else
+                {
+                    RenderLightingScenes(sceneSystem, lightingScenes);
+                }
+                EditorGUILayout.Space();
             }
-            else
-            {
-                RenderLightingScenes(sceneSystem, lightingScenes);
-            }
-            EditorGUILayout.Space();
 
             GUI.color = enabledColor;
+
             EditorGUILayout.LabelField("Content Scenes", EditorStyles.boldLabel);
             List<SceneInfo> contentScenes = new List<SceneInfo>(sceneSystem.ContentScenes);
             if (contentScenes.Count == 0)
