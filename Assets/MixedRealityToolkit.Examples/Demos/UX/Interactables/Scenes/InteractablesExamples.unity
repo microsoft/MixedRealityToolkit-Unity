@@ -1978,6 +1978,12 @@ MonoBehaviour:
   touchableSurface: 100
   bounds: {x: 1.31, y: 1.26}
   touchableCollider: {fileID: 1193043584}
+--- !u!1 &1287734562 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1018326128813824, guid: 0ceaaf28e492a284fbf57901d04075ad,
+    type: 3}
+  m_PrefabInstance: {fileID: 1663320975}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1324622404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3088,6 +3094,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
         type: 3}
+      propertyPath: Profiles.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
+      propertyPath: Profiles.Array.data[1].Themes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
       propertyPath: InputActionId
       value: 0
       objectReference: {fileID: 0}
@@ -3116,6 +3132,22 @@ PrefabInstance:
       propertyPath: IsGlobal
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
+      propertyPath: Profiles.Array.data[1].HadDefaultTheme
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
+      propertyPath: Profiles.Array.data[1].Themes.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: ce58007a668e3214abb10622861eb3aa,
+        type: 2}
+    - target: {fileID: 114664674115198144, guid: 0ceaaf28e492a284fbf57901d04075ad,
+        type: 3}
+      propertyPath: Profiles.Array.data[1].Target
+      value: 
+      objectReference: {fileID: 1287734562}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceaaf28e492a284fbf57901d04075ad, type: 3}
 --- !u!1001 &1672550135
