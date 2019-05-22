@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // From this point on, we're simulating what happens when eye gaze degrades into head gaze.
             // Note that gaze pointer should still be hidden at this point despite no hands being visible
-            // because "select" wasn't spoken after the degredation happened.
+            // because "select" wasn't spoken after the degradation happened.
             // A user saying "select" 10 minutes before shouldn't have that "select" invocation carry over
             // 10 minutes later.
             gsm.UpdateState(0 /*numNearPointersActive*/, 0 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, false);

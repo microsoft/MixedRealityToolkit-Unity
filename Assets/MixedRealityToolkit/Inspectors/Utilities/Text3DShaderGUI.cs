@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnGUI(MaterialEditor matEditor, MaterialProperty[] props)
         {
-            // Make sure that needed setup (ie keywords/renderqueue) are set up if we're switching from an existing material.
+            // Make sure that needed setup (i.e. keywords/renderqueue) are set up if we're switching from an existing material.
             // Do this before any GUI code has been issued to prevent layout issues in subsequent GUILayout statements (case 780071)
             if (firstTimeApply)
             {
