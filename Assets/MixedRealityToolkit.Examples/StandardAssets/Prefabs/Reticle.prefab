@@ -11,14 +11,13 @@ GameObject:
   - component: {fileID: 4514388706903638}
   - component: {fileID: 33541345758471858}
   - component: {fileID: 23134458986606660}
-  - component: {fileID: 135038165389992894}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4514388706903638
 Transform:
   m_ObjectHideFlags: 0
@@ -28,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1719147374072144}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.9204999, y: -0.06755407, z: 0.2716937}
-  m_LocalScale: {x: 0.016276632, y: 0.016276628, z: 0.016276628}
+  m_LocalScale: {x: 0.02448168, y: 0.024481675, z: 0.024481675}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -78,16 +77,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &135038165389992894
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1719147374072144}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}

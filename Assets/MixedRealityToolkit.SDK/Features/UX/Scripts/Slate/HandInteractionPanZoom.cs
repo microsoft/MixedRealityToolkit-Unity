@@ -437,25 +437,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             if (leftPoint != null)
             {
-                if(active && (GetContactForHand(Handedness.Left) != Vector3.zero))
-                {
-                    leftPoint.SetActive(affordancesVisible);
-                }
-                else
-                {
-                    leftPoint.SetActive(false);
-                }
+                leftPoint.SetActive(affordancesVisible);
             }
             if (rightPoint != null)
             {
-                if (active && (GetContactForHand(Handedness.Right) != Vector3.zero))
-                {
-                    rightPoint.SetActive(affordancesVisible);
-                }
-                else
-                {
-                    rightPoint.SetActive(false);
-                }
+                rightPoint.SetActive(affordancesVisible);
             }
 
         }
