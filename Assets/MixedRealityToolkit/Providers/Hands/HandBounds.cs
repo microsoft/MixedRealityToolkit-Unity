@@ -21,6 +21,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Should a gizmo be drawn to represent the hand bounds.")]
         private bool drawBoundsGizmo = false;
 
+        /// <summary>
+        /// Should a gizmo be drawn to represent the hand bounds.
+        /// </summary>
+        public bool DrawBoundsGizmo
+        {
+            get { return drawBoundsGizmo; }
+            set { drawBoundsGizmo = value; }
+        }
+
         private IMixedRealityInputSystem inputSystem = null;
         
         /// <summary>
@@ -34,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
                 }
+
                 return inputSystem;
             }
         }
@@ -65,10 +75,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IMixedRealitySourceStateHandler Implementation
 
+        /// <inheritdoc />
         public void OnSourceDetected(SourceStateEventData eventData)
         {
         }
 
+        /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
             var hand = eventData.Controller as IMixedRealityHand;
@@ -83,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IMixedRealityHandJointHandler Implementation
 
+        /// <inheritdoc />
         public void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
         {
             MixedRealityPose palmPose;

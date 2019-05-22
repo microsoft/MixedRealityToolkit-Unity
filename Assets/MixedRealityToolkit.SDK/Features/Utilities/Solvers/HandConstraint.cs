@@ -10,52 +10,119 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
-    /// Provides a solver that constrains the target to a region safe for hand interactions.
+    /// Provides a solver that constrains the target to a region safe for hand constrained content.
     /// </summary>
     [RequireComponent(typeof(InputSystemGlobalListener))]
     [RequireComponent(typeof(HandBounds))]
     public class HandConstraint : Solver, IMixedRealitySourceStateHandler
     {
         /// <summary>
-        /// TODO
+        /// Specifies a zone that is safe for the constraint to solve to without intersecting the hand.
         /// </summary>
         public enum HandSafeZone
         {
-            Hypothenar = 0,
-            Thumb = 1,
-            FingerTips = 2,
-            Wrist = 3
+            /// <summary>
+            /// On the left hand with palm up, the area right of the palm.
+            /// </summary>
+            UlnarSide = 0,
+            /// <summary>
+            /// On the left hand with palm up, the area left of the palm.
+            /// </summary>
+            RadialSide = 1,
+            /// <summary>
+            /// Above the longest finger tips.
+            /// </summary>
+            AboveFingerTips = 2,
+            /// <summary>
+            /// Below where the hand meets the arm.
+            /// </summary>
+            BelowWrist = 3
         }
 
         [Header("Hand Constraint")]
         [SerializeField]
-        [Tooltip("TODO")]
-        private HandSafeZone handSafeZone = HandSafeZone.Hypothenar;
+        [Tooltip("Which part of the hand to move the tracked object towards.")]
+        private HandSafeZone safeZone = HandSafeZone.UlnarSide;
+
+        /// <summary>
+        /// Which part of the hand to move the tracked object towards.
+        /// </summary>
+        public HandSafeZone SafeZone
+        {
+            get { return safeZone; }
+            set { safeZone = value; }
+        }
 
         [SerializeField]
-        [Tooltip("TODO")]
-        private float handSafeZoneExpansion = 0.1f;
+        [Tooltip("Additional offset to apply to the intersection point with the hand bounds.")]
+        private float safeZoneBuffer = 0.1f;
+
+        /// <summary>
+        /// Additional offset to apply to the intersection point with the hand bounds.
+        /// </summary>
+        public float SafeZoneBuffer
+        {
+            get { return safeZoneBuffer; }
+            set { safeZoneBuffer = value; }
+        }
 
         [SerializeField]
-        [Tooltip("Should this solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.")]
+        [Tooltip("Should the solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.")]
         private bool transitionBetweenHands = true;
 
+        /// <summary>
+        /// Should the solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.
+        /// </summary>
+        public bool TransitionBetweenHands
+        {
+            get { return transitionBetweenHands; }
+            set { transitionBetweenHands = value; }
+        }
+
         [SerializeField]
-        [Tooltip("TODO")]
+        [Tooltip("When a hand is activated for tracking, should the cursor(s) be disabled on that hand?")]
         private bool hideHandCursorsOnActivate = true;
 
+        /// <summary>
+        /// When a hand is activated for tracking, should the cursor(s) be disabled on that hand?
+        /// </summary>
+        public bool HideHandCursorsOnActivate
+        {
+            get { return hideHandCursorsOnActivate; }
+            set { hideHandCursorsOnActivate = value; }
+        }
+
         [SerializeField]
-        [Tooltip("TODO")]
+        [Tooltip("Event which is triggered when a hand begins being tracked.")]
         private UnityEvent onHandActivate = null;
 
+        /// <summary>
+        /// Event which is triggered when a hand begins being tracked.
+        /// </summary>
+        public UnityEvent OnHandActivate
+        {
+            get { return onHandActivate; }
+            set { onHandActivate = value; }
+        }
+
         [SerializeField]
-        [Tooltip("TODO")]
+        [Tooltip("Event which is triggered when a hand stops being tracked.")]
         private UnityEvent onHandDeactivate = null;
 
-        private IMixedRealityHand trackedHand = null;
-        private List<IMixedRealityHand> handStack = new List<IMixedRealityHand>();
-        private HandBounds handBounds = null;
+        /// <summary>
+        /// Event which is triggered when a hand stops being tracked.
+        /// </summary>
+        public UnityEvent OnHandDeactivate
+        {
+            get { return onHandDeactivate; }
+            set { onHandDeactivate = value; }
+        }
 
+        protected IMixedRealityHand trackedHand = null;
+        protected List<IMixedRealityHand> handStack = new List<IMixedRealityHand>();
+        protected HandBounds handBounds = null;
+
+        /// <inheritdoc />
         public override void SolverUpdate()
         {
             var previousTrackedHand = trackedHand;
@@ -86,6 +153,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
+        /// <summary>
+        /// Determines if a hand meets the requirements for use with constraining the tracked object.
+        /// </summary>
+        /// <param name="hand">The hand to check against.</param>
+        /// <returns>True if this hand should be used from tracking.</returns>
         protected virtual bool IsHandActive(IMixedRealityHand hand)
         {
             // If transitioning between hands is not allowed, make sure the TrackedObjectType matches the hand.
@@ -105,6 +177,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return true;
         }
 
+        /// <summary>
+        /// Performs a ray vs AABB test to determine where the solver can constrain the tracked object without intersection.
+        /// </summary>
+        /// <returns>The new goal position.</returns>
         protected virtual Vector3 CalculateGoalPosition()
         {
             var goalPosition = SolverHandler.TransformTarget.position;
@@ -114,8 +190,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 handBounds.Bounds.TryGetValue(trackedHand.ControllerHandedness, out trackedHandBounds))
             {
                 float distance;
-                Ray ray = CalculateSafeZoneRay(goalPosition, trackedHand.ControllerHandedness, handSafeZone);
-                trackedHandBounds.Expand(handSafeZoneExpansion);
+                Ray ray = CalculateSafeZoneRay(goalPosition, trackedHand.ControllerHandedness, safeZone);
+                trackedHandBounds.Expand(safeZoneBuffer);
 
                 if (trackedHandBounds.IntersectRay(ray, out distance))
                 {
@@ -126,22 +202,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return goalPosition;
         }
 
+        /// <summary>
+        /// Enables/disables all cursors on the currently tracked hand.
+        /// </summary>
+        /// <param name="visible">Is the cursor visable?</param>
+        /// <param name="frameDelay">Delay one frame before performing the toggle to allow the pointers to instantiate their cursors.</param>
+        /// <returns></returns>
         protected virtual IEnumerator ToggleCursor(bool visible, bool frameDelay = false)
         {
-            if (hideHandCursorsOnActivate)
+            if (hideHandCursorsOnActivate && trackedHand != null)
             {
                 if (frameDelay)
                 {
                     yield return null;
                 }
 
-                foreach (var pointer in trackedHand?.InputSource.Pointers)
+                foreach (var pointer in trackedHand.InputSource.Pointers)
                 {
                     pointer?.BaseCursor?.SetVisibility(visible);
                 }
             }
         }
 
+        /// <summary>
+        /// Swaps out the currently tracked hand while triggered appropriate events.
+        /// </summary>
+        /// <param name="hand">Which hand to track now.</param>
         private void ChangeTrackedObjectType(IMixedRealityHand hand)
         {
             if (hand != null)
@@ -196,6 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 case Handedness.Left:
                     trackedObjectType = TrackedObjectType.HandJointLeft;
                     return true;
+
                 case Handedness.Right:
                     trackedObjectType = TrackedObjectType.HandJointRight;
                     return true;
@@ -212,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             switch (handSafeZone)
             {
                 default:
-                case HandSafeZone.Hypothenar:
+                case HandSafeZone.UlnarSide:
                     {
                         direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
 
@@ -223,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     }
                     break;
 
-                case HandSafeZone.Thumb:
+                case HandSafeZone.RadialSide:
                     {
                         direction = -Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
 
@@ -234,13 +321,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     }
                     break;
 
-                case HandSafeZone.FingerTips:
+                case HandSafeZone.AboveFingerTips:
                     {
                         direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.right);
                     }
                     break;
 
-                case HandSafeZone.Wrist:
+                case HandSafeZone.BelowWrist:
                     {
                         direction = -Vector3.Cross(CameraCache.Main.transform.forward, Vector3.right);
                     }
@@ -265,6 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         #region IMixedRealitySourceStateHandler Implementation
 
+        /// <inheritdoc />
         public void OnSourceDetected(SourceStateEventData eventData)
         {
             var hand = eventData.Controller as IMixedRealityHand;
@@ -275,6 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
+        /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
             var hand = eventData.Controller as IMixedRealityHand;

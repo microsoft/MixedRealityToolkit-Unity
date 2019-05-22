@@ -1837,8 +1837,8 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 2133851834}
-  handSafeZone: 0
-  handSafeZoneExpansion: 0.1
+  safeZone: 0
+  safeZoneBuffer: 0.15
   transitionBetweenHands: 1
   hideHandCursorsOnActivate: 1
   onHandActivate:

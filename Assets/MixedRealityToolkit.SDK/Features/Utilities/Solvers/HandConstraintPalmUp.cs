@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
-    /// TODO
+    /// Augments the HandConstraint to also check if the palm is facing the user before activation.
     /// </summary>
     public class HandConstraintPalmUp : HandConstraint
     {
@@ -16,6 +16,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [Tooltip("TODO")]
         private float jointFacingThreshold = 0.3f;
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public float JointFacingThreshold
+        {
+            get { return jointFacingThreshold; }
+            set { jointFacingThreshold = value; }
+        }
+
+        /// <summary>
+        /// Determines if a hand meets the requirements for use with constraining the tracked object and determines if the 
+        /// palm is currently facing the user.
+        /// </summary>
+        /// <param name="hand">The hand to check against.</param>
+        /// <returns>True if this hand should be used from tracking.</returns>
         protected override bool IsHandActive(IMixedRealityHand hand)
         {
             if (!base.IsHandActive(hand))
