@@ -24,29 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private GameObject movingButtonVisuals = null;
 
         [SerializeField]
-        [Tooltip("The icon and text content moving inside the button.")]
-        private GameObject movingButtonIconText = null;
-
-        /// <summary>
-        /// Public property to set the moving content part(icon and text) of the button. 
-        /// This content part moves 1/2 distance of the front cage 
-        /// </summary>
-        public GameObject MovingButtonIconText
-        {
-            get
-            {
-                return MovingButtonIconText;
-            }
-            set
-            {
-                if (movingButtonIconText != value)
-                {
-                    movingButtonIconText = value;
-                }
-            }
-        }
-
-        [SerializeField]
         [Header("Press Settings")]
         [Tooltip("Maximum push distance")]
         private float maxPushDistance = 0.2f;
@@ -83,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // The maximum distance before the button is reset to its initial position when retracting.
         private const float MaxRetractDistanceBeforeReset = 0.0001f;
 
-        private float currentPushDistance = 0.0f;
+        protected float currentPushDistance = 0.0f;
 
         private Dictionary<IMixedRealityController, Vector3> touchPoints = new Dictionary<IMixedRealityController, Vector3>();
 
@@ -96,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private bool isPressing = false;
 
-        private Transform initialTransform;
+        protected Transform initialTransform;
 
         ///<summary>
         /// Represents the state of whether or not a finger is currently touching this button.
@@ -129,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private Vector3 WorldSpacePressDirection
+        protected Vector3 WorldSpacePressDirection
         {
             get
             {
@@ -269,17 +246,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private void UpdateMovingVisualsPosition()
+        protected virtual void UpdateMovingVisualsPosition()
         {
             if (movingButtonVisuals != null)
             {
                 Debug.Assert(initialTransform != null);
                 movingButtonVisuals.transform.position = initialTransform.position + WorldSpacePressDirection * currentPushDistance;
-            }
-            if (movingButtonIconText != null)
-            {
-                Debug.Assert(initialTransform != null);
-                movingButtonIconText.transform.position = initialTransform.position + WorldSpacePressDirection * currentPushDistance / 2;
             }
         }
 
