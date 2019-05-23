@@ -13,8 +13,10 @@ steps:
    # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
    $editor = Get-ChildItem ${Env:$(UnityVersion)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
    
-   $outDir = "$(Build.ArtifactStagingDirectory)\build"
-   $logFile = New-Item -Path "$outDir\build\build_${{ parameters.Platform }}_${{ parameters.Arch }}.log" -ItemType File -Force
+   # The build output goes to a unique combination of Platform + Arch + ScriptingBackend to ensure that
+   # each build will have a fresh destination folder.
+   $outDir = "$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}"
+   $logFile = New-Item -Path "$outDir\build\build.log" -ItemType File -Force
    
    $sceneList = "Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity"
    
@@ -54,9 +56,16 @@ steps:
    Stop-Process $proc
   displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
 
-- ${{ if parameters.PublishArtifacts }}:
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }}'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\AppPackages\MixedRealityToolkit\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.PackagingDir }}_Master_Test'
-      ArtifactName: 'mrtk-build-${{ parameters.Arch }}'
+- task: PublishBuildArtifacts@1
+  enabled: ${{ parameters.PublishArtifacts }}
+  displayName: 'Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }}'
+  inputs:
+    ArtifactName: 'mrtk-build-${{ parameters.Arch }}'
+    # The final location of the generated package depends on the type of scripting backend it's built against.
+    # For the default scripting backend (IL2CPP) the naming of the appx follows the form below:
+    ${{ if eq(parameters.ScriptingBackend, 'default') }}:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\AppPackages\MixedRealityToolkit\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.PackagingDir }}_Master_Test'
+    # For .NET scripting backends, the naming is slightly different (mainly the AppPackages and MixedRealityToolkit folder
+    # names are reversed, and the Architecture is part of the AppX name)
+    ${{ if eq(parameters.ScriptingBackend, '.NET') }}:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\MixedRealityToolkit\AppPackages\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.Arch }}_Master_Test'
