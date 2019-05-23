@@ -508,9 +508,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void UpdateRigVisibilityInInspector()
         {
             HideFlags desiredFlags = hideElementsInInspector ? HideFlags.HideInHierarchy | HideFlags.HideInInspector : HideFlags.None;
-            foreach (var cube in corners)
+            if (corners != null)
             {
-                cube.hideFlags = desiredFlags;
+                foreach (var cube in corners)
+                {
+                    cube.hideFlags = desiredFlags;
+                } 
             }
 
             if (boxDisplay != null)
@@ -523,9 +526,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 rigRoot.hideFlags = desiredFlags;
             }
 
-            foreach (var link in links)
+            if (links != null)
             {
-                link.hideFlags = desiredFlags;
+                foreach (var link in links)
+                {
+                    link.hideFlags = desiredFlags;
+                } 
             }
         }
 
