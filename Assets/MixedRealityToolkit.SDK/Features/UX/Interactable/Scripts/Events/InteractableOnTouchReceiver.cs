@@ -12,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnTouchReceiver : ReceiverBase
     {
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Touch Off", Tooltip = "Touch has left the object")]
-        public UnityEvent OnTouchOff = new UnityEvent();
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Touch End", Tooltip = "Touch has left the object")]
+        public UnityEvent OnTouchEnd = new UnityEvent();
 
         private bool hadTouch;
         private State lastState;
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 else
                 {
-                    OnTouchOff.Invoke();
+                    OnTouchEnd.Invoke();
                 }
             }
 
