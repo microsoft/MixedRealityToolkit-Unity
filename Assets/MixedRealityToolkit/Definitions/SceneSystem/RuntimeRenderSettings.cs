@@ -33,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public int ReflectionBounces;
         public float ReflectionIntensity;
         public Cubemap CustomReflection;
-        public Light Sun;
         public bool UseRadianceAmbientProbe;
     }
 }

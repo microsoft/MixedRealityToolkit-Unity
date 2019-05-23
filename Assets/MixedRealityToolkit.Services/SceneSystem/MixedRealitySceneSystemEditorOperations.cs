@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -33,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         };
 
         private bool updatingSettingsOnEditorChanged = false;
+        private bool updatingCachedLightingSettings = false;
         private const float lightingUpdateInterval = 5f;
         private const float managerSceneInstanceCheckInterval = 2f;
         private const int editorApplicationUpdateTickInterval = 5;
@@ -200,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         #endregion
 
-        private void CheckForChanges()
+        private async void CheckForChanges()
         {
             if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile)
             {
@@ -217,16 +219,28 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return;
             }
 
-            updatingSettingsOnEditorChanged = true;
-
-            // Update cached lighting settings, if the profile has requested it
-            if (profile.EditorCachedLightingOutOfDate && profile.EditorCachedLightingRequested)
-            {
-                UpdateCachedLighting();
-                updatingSettingsOnEditorChanged = false;
-                heirarchyDirty = true;
+            if (updatingCachedLightingSettings)
+            {   // This is a long operation, don't interrupt it
                 return;
             }
+
+            // Update cached lighting settings, if the profile has requested it
+            if (profile.EditorCachedLightingRequested)
+            {
+                updatingCachedLightingSettings = true;
+                updatingSettingsOnEditorChanged = true;
+
+                await UpdateCachedLighting();
+
+                updatingSettingsOnEditorChanged = false;
+                updatingCachedLightingSettings = false;
+                // This is an async operation which may take a while to execute
+                // So exit when we're done - we'll pick up where we left off next time
+                heirarchyDirty = true;                
+                return;
+            }
+
+            updatingSettingsOnEditorChanged = true;
 
             // Update editor settings
             if (buildSettingsDirty)
@@ -250,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             contentTracker.RefreshLoadedContent();
         }
 
-        private void UpdateCachedLighting()
+        private async Task UpdateCachedLighting()
         {
             List<RuntimeLightingSettings> cachedLightingSettings = new List<RuntimeLightingSettings>();
             List<RuntimeRenderSettings> cachedRenderSettings = new List<RuntimeRenderSettings>();
@@ -259,36 +273,34 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             foreach (SceneInfo lightingScene in profile.LightingScenes)
             {
                 Scene scene;
-                if (!EditorSceneUtils.LoadScene(lightingScene, false, out scene))
-                {
-                    Debug.LogError("Couldn't load scene " + lightingScene.Name);
-                    return;
-                }
+                EditorSceneUtils.LoadScene(lightingScene, false, out scene);
 
-                if (!EditorSceneUtils.SetActiveScene(scene))
-                {
-                    Debug.LogError("Couldn't set active scene for " + scene.path);
-                    return;
-                }
+            }
+
+            // Wait for a moment so all loaded scenes have time to get set up
+            await Task.Delay(100);
+
+            foreach (SceneInfo lightingScene in profile.LightingScenes)
+            {
+                Scene scene;
+                EditorSceneUtils.GetSceneIfLoaded(lightingScene, out scene);
+                EditorSceneUtils.SetActiveScene(scene);
 
                 SerializedObject lightingSettingsObject;
                 SerializedObject renderSettingsObject;
-                if (!EditorSceneUtils.GetLightingAndRenderSettings(out lightingSettingsObject, out renderSettingsObject))
-                {
-                    return;
-                }
+                EditorSceneUtils.GetLightingAndRenderSettings(out lightingSettingsObject, out renderSettingsObject);
 
                 // Copy the serialized objects into new structs
                 RuntimeLightingSettings lightingSettings = default(RuntimeLightingSettings);
                 RuntimeRenderSettings renderSettings = default(RuntimeRenderSettings);
 
-                SerializedObjectUtils.CopySerializedObjectToStruct(lightingSettingsObject, lightingSettings, "m_");
-                SerializedObjectUtils.CopySerializedObjectToStruct(renderSettingsObject, renderSettings, "m_");
+                lightingSettings = SerializedObjectUtils.CopySerializedObjectToStruct<RuntimeLightingSettings>(lightingSettingsObject, lightingSettings, "m_");
+                renderSettings = SerializedObjectUtils.CopySerializedObjectToStruct<RuntimeRenderSettings>(renderSettingsObject, renderSettings, "m_");
 
                 cachedLightingSettings.Add(lightingSettings);
                 cachedRenderSettings.Add(renderSettings);
             }
-
+        
             profile.SetCachedLightmapAndRenderSettings(cachedLightingSettings, cachedRenderSettings);
         }
 

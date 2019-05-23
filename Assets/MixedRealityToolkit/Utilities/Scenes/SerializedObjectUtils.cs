@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.MixedReality.Toolkit.SceneSystem;
 using UnityEditor;
 using UnityEngine;
 
@@ -44,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             return madeChanges;
         }
-
+        
         /// <summary>
         /// Iterates through a serialized object's fields and sets any accompanying fields in the supplied struct.
         /// </summary>
@@ -52,9 +51,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="source"></param>
         /// <param name="target"></param>
         /// <param name="propNamePrefixFilter">Prefix to remove from serialized object field name before searching for match in struct</param>
-        public static void CopySerializedObjectToStruct<T>(SerializedObject source, T target, string propNamePrefixFilter = null) where T : struct
+        /// <param name="errorOnFieldNotFound"></param>
+        /// <returns></returns>
+        public static T CopySerializedObjectToStruct<T>(SerializedObject source, T target, string propNamePrefixFilter = null, bool errorOnFieldNotFound = false) where T : struct
         {
             Type targetType = typeof(T);
+            object targetObject = (object)target;
 
             SerializedProperty sourceProp = source.GetIterator();
             while (sourceProp.NextVisible(true))
@@ -68,19 +70,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 FieldInfo field = targetType.GetField(propName, BindingFlags.Public | BindingFlags.Instance);
                 if (field != null)
                 {
-                    SetTargetFieldToSerializedPropertyValue(field, target, sourceProp);
+                    SetTargetFieldToSerializedPropertyValue(field, ref targetObject, sourceProp);
+                }
+                if (errorOnFieldNotFound)
+                {
+                    Debug.LogError("Field " + propName + " not found in struct type " + targetType.Name);
                 }
             }
-        }
 
+            return (T)targetObject;
+        }
+        
         /// <summary>
         /// Sets the target field to the value from property based on property type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="field"></param>
         /// <param name="target"></param>
         /// <param name="property"></param>
-        public static void SetTargetFieldToSerializedPropertyValue(FieldInfo field, object target, SerializedProperty property)
+        public static void SetTargetFieldToSerializedPropertyValue(FieldInfo field, ref object target, SerializedProperty property)
         {
             switch (property.propertyType)
             {
@@ -117,6 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 default:
                     throw new NotImplementedException("Type " + property.propertyType + " is not implemented.");
             }
+
+            Debug.Log("Set field to " + field.GetValue(target)?.ToString());
         }
 
         /// <summary>
@@ -149,6 +158,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        /// <summary>
+        /// Sets a serialized property value based on type of value object.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="property"></param>
         public static void SetSerializedPropertyByType(object value, SerializedProperty property)
         {
             switch (property.propertyType)

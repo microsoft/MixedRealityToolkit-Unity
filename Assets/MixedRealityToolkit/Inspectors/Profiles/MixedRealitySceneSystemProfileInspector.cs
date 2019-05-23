@@ -187,10 +187,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                         EditorGUILayout.Space();
 
-                        if (profile.NumLightingScenes > 0 && profile.EditorCachedLightingOutOfDate)
+                        if (profile.NumLightingScenes > 0)
                         {
-                            EditorGUILayout.HelpBox("Your cached lighting settings may be out of date. This could result in unexpected appearances at runtime.", MessageType.Warning);
-                            if (MixedRealityEditorUtility.RenderIndentedButton("Update Cached Lighting Settings"))
+                            if (profile.EditorCachedLightingOutOfDate)
+                            {
+                                EditorGUILayout.HelpBox("Your cached lighting settings may be out of date. This could result in unexpected appearances at runtime.", MessageType.Warning);
+                            }
+                            if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Update Cached Lighting Settings"), EditorStyles.miniButton))
                             {
                                 profile.EditorCachedLightingRequested = true;
                             }
