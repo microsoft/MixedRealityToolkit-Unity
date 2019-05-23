@@ -615,9 +615,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             IMixedRealityPointerMediator mediator = null;
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
+            if (InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
             {
-                mediator = Activator.CreateInstance(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
+                mediator = Activator.CreateInstance(InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
             }
 
             if (mediator != null)
@@ -857,6 +857,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
             NumFarPointersActive = 0;
             NumNearPointersActive = 0;
+            int numFarPointersWithoutCursorActive = 0;
 
             foreach (var pointerData in pointers)
             {
@@ -867,7 +868,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         NumNearPointersActive++;
                     }
                 }
-                else if (pointerData.Pointer.BaseCursor != null
+                else if (
+                    // pointerData.Pointer.BaseCursor == null means this is a GGV Pointer
+                    pointerData.Pointer.BaseCursor != null
                     && !(pointerData.Pointer == gazePointer)
                     && pointerData.Pointer.IsInteractionEnabled)
                 {
@@ -875,10 +878,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // hand input or the gamepad, we want to show the cursor still.
                     NumFarPointersActive++;
                 }
+                else if (pointerData.Pointer.BaseCursor == null
+                    && pointerData.Pointer.IsInteractionEnabled)
+                {
+                    numFarPointersWithoutCursorActive++;
+                }
             }
             if (gazePointer != null)
             {
-                gazePointerStateMachine.UpdateState(NumNearPointersActive, NumFarPointersActive);
+                gazePointerStateMachine.UpdateState(
+                    NumNearPointersActive,
+                    NumFarPointersActive,
+                    numFarPointersWithoutCursorActive,
+                    InputSystem.EyeGazeProvider.IsEyeGazeValid);
 
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
                 gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;

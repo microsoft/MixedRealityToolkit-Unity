@@ -34,7 +34,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Setup the input system
         /// </summary>
         private static IMixedRealityInputSystem inputSystem = null;
-        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>());
+        protected static IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
 
         // list of pointers
         protected List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
@@ -73,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // list of profiles can match themes with gameObjects
         public List<InteractableProfileItem> Profiles = new List<InteractableProfileItem>();
         // Base onclick event
-        public UnityEvent OnClick;
+        public UnityEvent OnClick = new UnityEvent();
         // list of events added to this interactable
         public List<InteractableEvent> Events = new List<InteractableEvent>();
         // the list of running theme instances to receive state changes
@@ -154,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            MixedRealityInputAction[] actions = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+            MixedRealityInputAction[] actions = InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
 
             descriptionsArray = new string[actions.Length];
             for (int i = 0; i < actions.Length; i++)
@@ -180,11 +190,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         #endregion InspectorHelpers
 
-        #region MonoBehaviorImplimentation
+        #region MonoBehaviorImplementation
 
         protected virtual void Awake()
         {
-            //State = new InteractableStates(InteractableStates.Default);
+
+            if (States == null)
+            {
+                States = States.GetDefaultInteractableStates();
+            }
             InputAction = ResolveInputAction(InputActionId);
             SetupEvents();
             SetupThemes();
@@ -776,7 +790,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <returns></returns>
         public static MixedRealityInputAction ResolveInputAction(int index)
         {
-            MixedRealityInputAction[] actions = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+            MixedRealityInputAction[] actions = InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
             index = Mathf.Clamp(index, 0, actions.Length - 1);
             return actions[index];
         }
@@ -989,6 +1003,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion VoiceCommands
 
+        #region IMixedRealityTouchHandler
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
             SetPress(true);
@@ -1002,5 +1017,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData) { }
+        #endregion
     }
 }

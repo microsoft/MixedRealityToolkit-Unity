@@ -3,8 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Linq;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -58,6 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private SerializedProperty holdStartDuration;
         private SerializedProperty manipulationStartThreshold;
+
+        private const string ProfileTitle = "Input Simulation Settings";
+        private const string ProfileDescription = "Settings for simulating input devices in the editor.";
 
         protected override void OnEnable()
         {
@@ -114,96 +117,93 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Input Simulation settings",
-                "Settings for simulating input devices in the editor.");
-
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
-            {
-                if (GUILayout.Button("Back to Input Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
-                }
-            }
-
-            CheckProfileLock(target);
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
 
             serializedObject.Update();
 
-            bool isGUIEnabled = GUI.enabled;
-
-            GUILayout.Space(12f);
-            EditorGUILayout.PropertyField(isCameraControlEnabled);
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                EditorGUILayout.BeginVertical("Label");
-                GUI.enabled = isGUIEnabled && isCameraControlEnabled.boolValue;
+                EditorGUILayout.PropertyField(isCameraControlEnabled);
+                {
+                    EditorGUILayout.BeginVertical("Label");
+                    using (new GUIEnabledWrapper(isCameraControlEnabled.boolValue))
+                    {
+                        EditorGUILayout.PropertyField(extraMouseSensitivityScale);
+                        EditorGUILayout.PropertyField(defaultMouseSensitivity);
+                        EditorGUILayout.PropertyField(mouseLookButton);
+                        EditorGUILayout.PropertyField(isControllerLookInverted);
+                        EditorGUILayout.PropertyField(currentControlMode);
+                        EditorGUILayout.PropertyField(fastControlKey);
+                        EditorGUILayout.PropertyField(controlSlowSpeed);
+                        EditorGUILayout.PropertyField(controlFastSpeed);
+                        EditorGUILayout.PropertyField(moveHorizontal);
+                        EditorGUILayout.PropertyField(moveVertical);
+                        EditorGUILayout.PropertyField(mouseX);
+                        EditorGUILayout.PropertyField(mouseY);
+                        EditorGUILayout.PropertyField(lookHorizontal);
+                        EditorGUILayout.PropertyField(lookVertical);
 
-                EditorGUILayout.PropertyField(extraMouseSensitivityScale);
-                EditorGUILayout.PropertyField(defaultMouseSensitivity);
-                EditorGUILayout.PropertyField(mouseLookButton);
-                EditorGUILayout.PropertyField(isControllerLookInverted);
-                EditorGUILayout.PropertyField(currentControlMode);
-                EditorGUILayout.PropertyField(fastControlKey);
-                EditorGUILayout.PropertyField(controlSlowSpeed);
-                EditorGUILayout.PropertyField(controlFastSpeed);
-                EditorGUILayout.PropertyField(moveHorizontal);
-                EditorGUILayout.PropertyField(moveVertical);
-                EditorGUILayout.PropertyField(mouseX);
-                EditorGUILayout.PropertyField(mouseY);
-                EditorGUILayout.PropertyField(lookHorizontal);
-                EditorGUILayout.PropertyField(lookVertical);
+                        EditorGUILayout.EndVertical();
+                    }
+                }
 
-                EditorGUILayout.EndVertical();
-                GUI.enabled = isGUIEnabled;
+                EditorGUILayout.Space();
+                EditorGUILayout.PropertyField(simulateEyePosition);
+
+                EditorGUILayout.Space();
+                EditorGUILayout.PropertyField(handSimulationMode);
+                {
+                    EditorGUILayout.BeginVertical("Label");
+                    bool isHandSimEnabled = (handSimulationMode.enumValueIndex != (int)HandSimulationMode.Disabled);
+                    using (new GUIEnabledWrapper(isHandSimEnabled))
+                    {
+                        EditorGUILayout.PropertyField(toggleLeftHandKey);
+                        EditorGUILayout.PropertyField(toggleRightHandKey);
+                        EditorGUILayout.PropertyField(handHideTimeout);
+                        EditorGUILayout.PropertyField(leftHandManipulationKey);
+                        EditorGUILayout.PropertyField(rightHandManipulationKey);
+                        EditorGUILayout.Space();
+
+                        EditorGUILayout.PropertyField(defaultHandGesture);
+                        EditorGUILayout.PropertyField(leftMouseHandGesture);
+                        EditorGUILayout.PropertyField(middleMouseHandGesture);
+                        EditorGUILayout.PropertyField(rightMouseHandGesture);
+                        EditorGUILayout.PropertyField(handGestureAnimationSpeed);
+                        EditorGUILayout.Space();
+
+                        EditorGUILayout.PropertyField(holdStartDuration);
+                        EditorGUILayout.PropertyField(manipulationStartThreshold);
+                        EditorGUILayout.Space();
+
+                        EditorGUILayout.PropertyField(defaultHandDistance);
+                        EditorGUILayout.PropertyField(handDepthMultiplier);
+                        EditorGUILayout.PropertyField(handJitterAmount);
+                        EditorGUILayout.Space();
+
+                        EditorGUILayout.PropertyField(yawHandCWKey);
+                        EditorGUILayout.PropertyField(yawHandCCWKey);
+                        EditorGUILayout.PropertyField(pitchHandCWKey);
+                        EditorGUILayout.PropertyField(pitchHandCCWKey);
+                        EditorGUILayout.PropertyField(rollHandCWKey);
+                        EditorGUILayout.PropertyField(rollHandCCWKey);
+                        EditorGUILayout.PropertyField(handRotationSpeed);
+                        EditorGUILayout.Space();
+
+                        EditorGUILayout.EndVertical();
+                    }
+                }
+
+                serializedObject.ApplyModifiedProperties();
             }
+        }
 
-            GUILayout.Space(12f);
-            EditorGUILayout.PropertyField(simulateEyePosition);
-
-            GUILayout.Space(12f);
-            EditorGUILayout.PropertyField(handSimulationMode);
-            {
-                EditorGUILayout.BeginVertical("Label");
-                bool isHandSimEnabled = (handSimulationMode.enumValueIndex != (int)HandSimulationMode.Disabled);
-                GUI.enabled = isGUIEnabled && isHandSimEnabled;
-
-                EditorGUILayout.PropertyField(toggleLeftHandKey);
-                EditorGUILayout.PropertyField(toggleRightHandKey);
-                EditorGUILayout.PropertyField(handHideTimeout);
-                EditorGUILayout.PropertyField(leftHandManipulationKey);
-                EditorGUILayout.PropertyField(rightHandManipulationKey);
-                EditorGUILayout.Space();
-
-                EditorGUILayout.PropertyField(defaultHandGesture);
-                EditorGUILayout.PropertyField(leftMouseHandGesture);
-                EditorGUILayout.PropertyField(middleMouseHandGesture);
-                EditorGUILayout.PropertyField(rightMouseHandGesture);
-                EditorGUILayout.PropertyField(handGestureAnimationSpeed);
-                EditorGUILayout.Space();
-
-                EditorGUILayout.PropertyField(holdStartDuration);
-                EditorGUILayout.PropertyField(manipulationStartThreshold);
-                EditorGUILayout.Space();
-
-                EditorGUILayout.PropertyField(defaultHandDistance);
-                EditorGUILayout.PropertyField(handDepthMultiplier);
-                EditorGUILayout.PropertyField(handJitterAmount);
-                EditorGUILayout.Space();
-
-                EditorGUILayout.PropertyField(yawHandCWKey);
-                EditorGUILayout.PropertyField(yawHandCCWKey);
-                EditorGUILayout.PropertyField(pitchHandCWKey);
-                EditorGUILayout.PropertyField(pitchHandCCWKey);
-                EditorGUILayout.PropertyField(rollHandCWKey);
-                EditorGUILayout.PropertyField(rollHandCCWKey);
-                EditorGUILayout.PropertyField(handRotationSpeed);
-                EditorGUILayout.Space();
-
-                EditorGUILayout.EndVertical();
-                GUI.enabled = isGUIEnabled;
-            }
-
-            serializedObject.ApplyModifiedProperties();
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations.Any(s => profile == s.DeviceManagerProfile);
         }
     }
 }
