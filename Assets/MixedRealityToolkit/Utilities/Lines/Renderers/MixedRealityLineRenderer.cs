@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [Tooltip("Tiles the material on the line renderer by world length. Use if you want the texture size to remain constant regardless of a line's length.")]
         private bool tileMaterialByWorldLength = false;
         private MaterialPropertyBlock tilingPropertyBlock;
-        private Vector4 tilingPropertVector = Vector4.one;
+        private Vector4 tilingPropertyVector = Vector4.one;
 
         [SerializeField]
         private float tileMaterialScale = 1f;
