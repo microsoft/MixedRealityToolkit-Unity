@@ -15,12 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private readonly Dictionary<IMixedRealityPointer, PointerInfo> pointerInfos = new Dictionary<IMixedRealityPointer, PointerInfo>();
 
-        public DefaultPrimaryPointerSelector()
+        public void Initialize()
         {
             MixedRealityToolkit.InputSystem.PointerEvent += OnPointerEvent;
         }
 
-        ~DefaultPrimaryPointerSelector()
+        public void Destroy()
         {
             MixedRealityToolkit.InputSystem.PointerEvent -= OnPointerEvent;
         }

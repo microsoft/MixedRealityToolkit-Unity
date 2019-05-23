@@ -485,6 +485,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (primaryPointerSelectorType != null)
             {
                 primaryPointerSelector = Activator.CreateInstance(primaryPointerSelectorType) as IMixedRealityPrimaryPointerSelector;
+                primaryPointerSelector.Initialize();
             }
 
             foreach (var inputSource in InputSystem.DetectedInputSources)
@@ -495,6 +496,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void Destroy()
         {
+            if (primaryPointerSelector != null)
+            {
+                primaryPointerSelector.Destroy();
+            }
+
             CleanUpUiRaycastCamera();
             base.Destroy();
         }

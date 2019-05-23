@@ -9,6 +9,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public interface IMixedRealityPrimaryPointerSelector
     {
         /// <summary>
+        /// Called after construction to initialize the selector.
+        /// </summary>
+        void Initialize();
+
+        /// <summary>
+        /// Called on destruction of the selector.
+        /// </summary>
+        void Destroy();
+
+        /// <summary>
         /// Registers a pointer with the selector.
         /// </summary>
         void RegisterPointer(IMixedRealityPointer pointer);
