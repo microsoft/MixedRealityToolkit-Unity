@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             bool success = false;
             if (GetColorValue != null)
             {
-                color.Color = GetTextColor(out success);
+                color.Color = GetColorValue(out success);
                 return color;
             }
             else
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // if not then fall back to renderer based color setting.
             if (SetColorValue != null)
             {
-                SetTextColor(color);
+                SetColorValue(color);
             }
             else
             {
