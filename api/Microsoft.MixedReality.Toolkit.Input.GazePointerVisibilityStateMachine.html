@@ -194,14 +194,14 @@ GazePointerState for more details.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GazePointerVisibilityStateMachine_UpdateState_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazePointerVisibilityStateMachine.UpdateState*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GazePointerVisibilityStateMachine_UpdateState_System_Int32_System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazePointerVisibilityStateMachine.UpdateState(System.Int32,System.Int32,System.Boolean)">UpdateState(Int32, Int32, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GazePointerVisibilityStateMachine_UpdateState_System_Int32_System_Int32_System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazePointerVisibilityStateMachine.UpdateState(System.Int32,System.Int32,System.Int32,System.Boolean)">UpdateState(Int32, Int32, Int32, Boolean)</h4>
   <div class="markdown level1 summary"><p>Updates the state machine based on the number of near pointers, the number of far pointers,
 and whether or not eye gaze is valid.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UpdateState(int numNearPointersActive, int numFarPointersActive, bool isEyeGazeValid)</code></pre>
+    <pre><code class="lang-csharp hljs">public void UpdateState(int numNearPointersActive, int numFarPointersActive, int numFarPointersWithoutCursorActive, bool isEyeGazeValid)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -221,6 +221,11 @@ and whether or not eye gaze is valid.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">numFarPointersActive</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numFarPointersWithoutCursorActive</span></td>
         <td></td>
       </tr>
       <tr>
