@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// Allows systems to provide access to their managed data providers.
+    /// </summary>
     public interface IMixedRealityDataProviderAccess
     {
         /// <summary>
@@ -20,12 +23,12 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <typeparam name="T">The desired data provider type</typeparam>
         /// <returns>
-        /// Readonly copy of the list of registered data providers that implement the specified type.
+        /// Read-only copy of the list of registered data providers that implement the specified type.
         /// </returns>
         IReadOnlyList<T> GetDataProviders<T>() where T : IMixedRealityDataProvider;
 
         /// <summary>
-        /// Get the data provder that is registered under the specified name.
+        /// Get the data provider that is registered under the specified name.
         /// </summary>
         /// <param name="name">The friendly name of the data provider.</param>
         /// <returns>
@@ -37,10 +40,10 @@ namespace Microsoft.MixedReality.Toolkit
         IMixedRealityDataProvider GetDataProvider(string name);
 
         /// <summary>
-        /// Get the data provider that is registered under the specified name matching the specified atch type.
+        /// Get the data provider that is registered under the specified name (optional) and matching the specified type.
         /// </summary>
         /// <typeparam name="T">The desired data provider type.</typeparam>
-        /// <param name="name">The friendly name of the data provider.</param>w
+        /// <param name="name">The friendly name of the data provider.</param>
         /// <returns>
         /// The requested data provider, or null if one cannot be found.
         /// </returns>
