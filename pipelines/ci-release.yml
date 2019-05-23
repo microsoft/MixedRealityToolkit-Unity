@@ -31,15 +31,9 @@ jobs:
       downloadType: 'single'
       artifactName: 'NuGet'
       downloadPath: '$(Build.SourcesDirectory)'
-  - task: DownloadSecureFile@1
-    inputs:
-      secureFile: "MRTKSignConfig.xml"
-  - task: PkgESCodeSign@10
-    inputs:
-      signConfigXml: $(Agent.TempDirectory)\MRTKSignConfig.xml
-      inPathRoot: $(Build.SourcesDirectory)
-      outPathRoot: $(Build.SourcesDirectory)  
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  - template: templates/tasks/signing.yml
+    parameters:
+      ConfigName: "MRTKSignConfig.xml"
   - template: templates/package.yml
-  
+    parameters:
+      Sign: true
