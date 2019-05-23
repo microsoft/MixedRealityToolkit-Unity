@@ -7,8 +7,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Default primary pointer selector. The primary pointer is chosen among all interaction enabled ones using the following rules in order:
-    ///   1. Focus locked pointer that has been locked for the longest
-    ///   2. Pointer that was focus locked most recently
+    ///   1. Currently pressed pointer that has been pressed for the longest
+    ///   2. Pointer that was released most recently
     ///   3. Pointer that became interaction enabled most recently
     /// </summary>
     public class DefaultPrimaryPointerSelector : IMixedRealityPrimaryPointerSelector
@@ -17,12 +17,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void Initialize()
         {
-            MixedRealityToolkit.InputSystem.PointerEvent += OnPointerEvent;
+            if (MixedRealityToolkit.InputSystem != null)
+            {
+                MixedRealityToolkit.InputSystem.PointerEvent += OnPointerEvent;
+            }
         }
 
         public void Destroy()
         {
-            MixedRealityToolkit.InputSystem.PointerEvent -= OnPointerEvent;
+            if (MixedRealityToolkit.InputSystem != null)
+            {
+                MixedRealityToolkit.InputSystem.PointerEvent -= OnPointerEvent;
+            }
         }
 
         #region IMixedRealityPrimaryPointerSelector
@@ -51,8 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (info.IsInteractionEnabled && 
                     (primaryInfo == null || 
-                    (info.IsDown && (!primaryInfo.IsDown || info.FocusLockedTimestamp < primaryInfo.FocusLockedTimestamp)) ||
-                    (!primaryInfo.IsDown && info.InteractionEnabledTimestamp > primaryInfo.InteractionEnabledTimestamp)))
+                    (info.IsPressed && (!primaryInfo.IsPressed || info.PressedTimestamp < primaryInfo.PressedTimestamp)) ||
+                    (!primaryInfo.IsPressed && info.ReleasedTimestamp > primaryInfo.ReleasedTimestamp)))
                 {
                     primaryPointer = pointer;
                     primaryInfo = info;
@@ -71,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 PointerInfo info = null;
                 if (pointerInfos.TryGetValue(eventData.Pointer, out info))
                 {
-                    info.IsDown = eventType == PointerEventType.Down;
+                    info.IsPressed = eventType == PointerEventType.Down;
                 }
             }
         }
@@ -87,37 +93,38 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (value && !isInteractionEnabled)
                     {
-                        InteractionEnabledTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                        // We count becoming interaction enabled as a pointer released event
+                        ReleasedTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
                     }
                     isInteractionEnabled = value;
                 }
             }
 
-            // This doubles as interaction enabled and focus locked lost timestamp. See IsFocusLocked setter below.
-            public long InteractionEnabledTimestamp { get; private set; }
+            // Last time the pointer was released
+            public long ReleasedTimestamp { get; private set; }
 
-            private bool isDown;
+            private bool isPressed;
 
-            public bool IsDown
+            public bool IsPressed
             {
-                get { return isDown; }
+                get { return isPressed; }
                 set
                 {
-                    if (value && !isDown)
+                    if (value && !isPressed)
                     {
-                        FocusLockedTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                        PressedTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
                     }
-                    else if (!value && isDown)
+                    else if (!value && isPressed)
                     {
-                        // We take shortcut here and refresh the interaction enabled timestamp instead of keeping a separate focus locked lost one
-                        InteractionEnabledTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                        ReleasedTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
                     }
 
-                    isDown = value;
+                    isPressed = value;
                 }
             }
 
-            public long FocusLockedTimestamp { get; private set; }
+            // Last time the pointer was pressed
+            public long PressedTimestamp { get; private set; }
 
             public PointerInfo(IMixedRealityPointer pointer)
             {
