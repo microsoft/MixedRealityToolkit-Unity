@@ -220,8 +220,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Pointers
 
-        void RegisterPointerHandler(IMixedRealityPointerHandler handler);
-        void UnregisterPointerHandler(IMixedRealityPointerHandler handler);
+        /// <summary>
+        /// Event raised to notify of pointer activity. This can be used as an alternative to implementing 
+        /// <see cref="IMixedRealityPointerHandler"/> and registering as a event system listener.
+        /// </summary>
+        event PointerHandler PointerEvent;
 
         #region Pointer Down
 

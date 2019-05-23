@@ -23,8 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.LogError("The MixedRealityInputSystem object requires a valid IMixedRealityServiceRegistrar instance.");
             }
-
-            doneExecutingPointerEvents = new WaitUntil(() => pointerEventExecutionDepth == 0);
         }
 
         /// <inheritdoc />
@@ -318,7 +316,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Assumption: We only send pointer events to the objects that pointers are focusing, except for global event listeners (which listen to everything)
         /// In contract, all other events get sent to all other pointers attached to a given input source
         /// </summary>
-        private void HandlePointerEvent(BaseEventData eventData, ExecuteEvents.EventFunction<IMixedRealityPointerHandler> eventHandler)
+        private void HandlePointerEvent(
+            MixedRealityPointerEventData eventData, ExecuteEvents.EventFunction<IMixedRealityPointerHandler> eventHandler, PointerEventType pointerEventType)
         {
             if (disabledRefCount > 0)
             {
@@ -326,17 +325,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             Debug.Assert(eventData != null);
-            var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
-            DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
+            DispatchEventToGlobalListeners(eventData, eventHandler);
+            PointerEvent?.Invoke(eventData, pointerEventType);
 
-            pointerEventExecutionDepth++;
-            foreach (var handler in pointerHandlers)
-            {
-                eventHandler.Invoke(handler, eventData);
-            }
-            pointerEventExecutionDepth--;
-
-            if (baseInputEventData.used)
+            if (eventData.used)
             {
                 // All global listeners get a chance to see the event,
                 // but if any of them marked it used,
@@ -346,11 +338,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Debug.Assert(pointerEventData.Pointer != null, "Trying to dispatch event on pointer but pointerEventData is null");
 
-            DispatchEventToObjectFocusedByPointer(pointerEventData.Pointer, baseInputEventData, false, eventHandler);
+            DispatchEventToObjectFocusedByPointer(pointerEventData.Pointer, eventData, false, eventHandler);
 
-            if (!baseInputEventData.used)
+            if (!eventData.used)
             {
-                DispatchEventToFallbackHandlers(baseInputEventData, eventHandler);
+                DispatchEventToFallbackHandlers(eventData, eventHandler);
             }
         }
 
@@ -867,36 +859,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Pointers
 
-        private readonly List<IMixedRealityPointerHandler> pointerHandlers = new List<IMixedRealityPointerHandler>();
-
-        private int pointerEventExecutionDepth = 0;
-        private readonly WaitUntil doneExecutingPointerEvents;
-
-        public async void RegisterPointerHandler(IMixedRealityPointerHandler handler)
-        {
-            if (pointerEventExecutionDepth > 0)
-            {
-                await doneExecutingPointerEvents;
-            }
-
-            if (handler != null)
-            {
-                pointerHandlers.Add(handler);
-            }
-        }
-
-        public async void UnregisterPointerHandler(IMixedRealityPointerHandler handler)
-        {
-            if (pointerEventExecutionDepth > 0)
-            {
-                await doneExecutingPointerEvents;
-            }
-
-            if (handler != null)
-            {
-                pointerHandlers.Remove(handler);
-            }
-        }
+        /// <inheritdoc />
+        public event PointerHandler PointerEvent;
 
         #region Pointer Down
 
@@ -914,7 +878,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
-            HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
+            HandlePointerEvent(pointerEventData, OnPointerDownEventHandler, PointerEventType.Down);
         }
 
         #endregion Pointer Down
@@ -933,7 +897,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
-            HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler);
+            HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler, PointerEventType.Dragged);
         }
 
         #endregion Pointer Dragged
@@ -959,7 +923,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void HandleClick()
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandlePointerEvent(pointerEventData, OnInputClickedEventHandler);
+            HandlePointerEvent(pointerEventData, OnInputClickedEventHandler, PointerEventType.Clicked);
 
             // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
         }
@@ -980,7 +944,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
-            HandlePointerEvent(pointerEventData, OnPointerUpEventHandler);
+            HandlePointerEvent(pointerEventData, OnPointerUpEventHandler, PointerEventType.Up);
 
             pointer.IsFocusLocked = false;
         }
