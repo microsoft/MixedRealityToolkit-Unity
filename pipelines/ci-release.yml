@@ -13,6 +13,33 @@ jobs:
     - COG-UnityCache-WUS2-01
   steps:
   - template: templates/common.yml
-  - template: templates/package.yml
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)\NuGet'
+      ArtifactName: 'NuGet'
   - template: templates/releasesigning.yml
   - template: templates/end.yml
+
+- job: ReleaseSigning
+  dependsOn: CIReleaseValidation
+  pool:
+    name: Package ES Lab E
+  steps:
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'NuGet'
+      downloadPath: '$(Build.SourcesDirectory)'
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: "MRTKSignConfig.xml"
+  - task: PkgESCodeSign@10
+    inputs:
+      signConfigXml: $(Agent.TempDirectory)\MRTKSignConfig.xml
+      inPathRoot: $(Build.SourcesDirectory)
+      outPathRoot: $(Build.SourcesDirectory)  
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  - template: templates/package.yml
+  
