@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -499,8 +500,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (hideElementsInInspector != value)
                 {
                     hideElementsInInspector = value;
-                    CreateRig();
+                    UpdateRigVisibilityInInspector();
                 }
+            }
+        }
+
+        private void UpdateRigVisibilityInInspector()
+        {
+            HideFlags desiredFlags = hideElementsInInspector ? HideFlags.HideInHierarchy | HideFlags.HideInInspector : HideFlags.None;
+            foreach (var cube in corners)
+            {
+                cube.hideFlags = desiredFlags;
+            }
+
+            if (boxDisplay != null)
+            {
+                boxDisplay.hideFlags = desiredFlags;
+            }
+
+            if (rigRoot != null)
+            {
+                rigRoot.hideFlags = desiredFlags;
+            }
+
+            foreach (var link in links)
+            {
+                link.hideFlags = desiredFlags;
             }
         }
 
@@ -718,6 +743,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Flatten();
             ResetHandleVisibility();
             rigRoot.gameObject.SetActive(active);
+            UpdateRigVisibilityInInspector();
         }
 
         private void DestroyRig()
@@ -848,10 +874,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cube.name = "corner_" + i.ToString();
-                    if (hideElementsInInspector == true)
-                    {
-                        cube.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-                    }
+
                     cube.transform.localScale = new Vector3(scaleHandleSize, scaleHandleSize, scaleHandleSize);
                     cube.transform.position = boundsCorners[i];
 
@@ -915,10 +938,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     ApplyMaterialToAllRenderers(cornerVisuals, handleMaterial);
 
-                    if (hideElementsInInspector == true)
-                    {
-                        corner.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-                    }
 
                     corners.Add(corner.transform);
                 }
@@ -951,10 +970,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     GameObject ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     ball.name = "midpoint_" + i.ToString();
-                    if (hideElementsInInspector == true)
-                    {
-                        ball.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-                    }
 
                     ball.transform.localScale = new Vector3(rotationHandleDiameter, rotationHandleDiameter, rotationHandleDiameter);
                     ball.transform.position = edgeCenters[i];
@@ -994,11 +1009,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     ApplyMaterialToAllRenderers(ball, handleMaterial);
 
-                    if (hideElementsInInspector == true)
-                    {
-                        ball.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-                    }
-
                     balls.Add(ball.transform);
                 }
             }
@@ -1035,10 +1045,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Destroy(link.GetComponent<CapsuleCollider>());
                     }
                     link.name = "link_" + i.ToString();
-                    if (hideElementsInInspector == true)
-                    {
-                        link.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-                    }
+
 
                     Vector3 linkDimensions = GetLinkDimensions();
                     if (edgeAxes[i] == CardinalAxisType.Y)
@@ -1085,10 +1092,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 boxDisplay.transform.localScale = 2.0f * currentBoundsExtents;
                 boxDisplay.transform.parent = rigRoot.transform;
 
-                if (hideElementsInInspector == true)
-                {
-                    boxDisplay.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-                }
+
             }
         }
 
@@ -1300,10 +1304,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             rigRoot = new GameObject(rigRootName).transform;
             rigRoot.parent = transform;
-            if (hideElementsInInspector == true)
-            {
-                rigRoot.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-            }
+
 
             boundsCorners = new Vector3[8];
 
