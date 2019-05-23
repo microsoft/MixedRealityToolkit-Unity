@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public Color AmbientSkyColor;
         public Color AmbientEquatorColor;
         public Color AmbientGroundColor;
+        public Color AmbientLight;
         public float AmbientIntensity;
         public int AmbientMode;
         public Color SubtractiveShadowColor;
@@ -34,5 +35,33 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public float ReflectionIntensity;
         public Cubemap CustomReflection;
         public bool UseRadianceAmbientProbe;
+
+        public static RuntimeRenderSettings Lerp(RuntimeRenderSettings from, RuntimeRenderSettings to, float t)
+        {
+            bool halfway = t > 0.5f;
+
+            to.AmbientEquatorColor          = Color.Lerp(from.AmbientEquatorColor, to.AmbientEquatorColor, t);
+            to.AmbientGroundColor           = Color.Lerp(from.AmbientGroundColor, to.AmbientGroundColor, t);
+            to.AmbientIntensity             = Mathf.Lerp(from.AmbientIntensity, to.AmbientIntensity, t);
+            to.AmbientLight                 = Color.Lerp(from.AmbientLight, to.AmbientLight, t);
+            to.AmbientMode                  = halfway ? from.AmbientMode : to.AmbientMode;
+            to.AmbientSkyColor              = Color.Lerp(from.AmbientSkyColor, to.AmbientSkyColor, t);
+            to.CustomReflection             = halfway ? from.CustomReflection : to.CustomReflection;
+            to.DefaultReflectionMode        = halfway ? from.DefaultReflectionMode : to.DefaultReflectionMode;
+            to.DefaultReflectionResolution  = halfway ? from.DefaultReflectionResolution : to.DefaultReflectionResolution;
+            to.Fog                          = halfway ? from.Fog : to.Fog;
+            to.FogColor                     = Color.Lerp(from.FogColor, to.FogColor, t);
+            to.FogDensity                   = Mathf.Lerp(from.FogDensity, to.FogDensity, t);
+            to.FogMode                      = halfway ? from.FogMode : to.FogMode;
+            to.LinearFogEnd                 = Mathf.Lerp(from.LinearFogEnd, to.LinearFogEnd, t);
+            to.LinearFogStart               = Mathf.Lerp(from.LinearFogStart, to.LinearFogStart, t);
+            to.ReflectionBounces            = halfway ? from.ReflectionBounces : to.ReflectionBounces;
+            to.ReflectionIntensity          = Mathf.Lerp(from.ReflectionIntensity, to.ReflectionIntensity, t);
+            to.SkyboxMaterial               = halfway ? from.SkyboxMaterial : to.SkyboxMaterial;
+            to.SubtractiveShadowColor       = Color.Lerp(from.SubtractiveShadowColor, to.SubtractiveShadowColor, t);
+            to.UseRadianceAmbientProbe      = halfway ? from.UseRadianceAmbientProbe : to.UseRadianceAmbientProbe;
+
+            return to;
+        }
     }
 }

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.SceneSystem
@@ -54,6 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         // Content tracker instance
         private ContentTracker contentTracker;
+        // Lighting executor instance
+        private LightingExecutor lightingExecutor;
 
         #region Actions
 
@@ -159,6 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         {
             // Create a new instance of our content tracker
             contentTracker = new ContentTracker(profile);
+            lightingExecutor = new LightingExecutor();
 
 #if UNITY_EDITOR
             OnEditorInitialize();
@@ -175,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             if (profile.UseLightingScene)
-            {
+            {   // Set our lighting scene immediately, with no transition
                 SetLightingScene(profile.DefaultLightingScene.Name, LightingSceneTransitionType.None);
             }
         }
@@ -210,11 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             // Ensure the lighting scene is active, if we're using one.
             if (profile.UseLightingScene)
             {
-                Scene scene;
-                if (RuntimeSceneUtils.FindScene(ActiveLightingScene, out scene, out int sceneIndex))
-                {
-                    RuntimeSceneUtils.SetActiveScene(scene);
-                }
+                lightingExecutor.UpdateTransition(Time.unscaledDeltaTime);
             }
         }
 
@@ -304,8 +304,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             SceneInfo lightingScene;
-            RuntimeLightingSettings lightingSettings;
-            RuntimeRenderSettings renderSettings;
+            RuntimeLightingSettings lightingSettings = default(RuntimeLightingSettings);
+            RuntimeRenderSettings renderSettings = default(RuntimeRenderSettings);
             if (!string.IsNullOrEmpty(newLightingSceneName) && !profile.GetLightingSceneSettings(newLightingSceneName, out lightingScene, out lightingSettings, out renderSettings))
             {   // Make sure we don't try to load a non-existent scene
                 Debug.LogWarning("Couldn't find lighting scene " + newLightingSceneName + " in profile - taking no action.");
@@ -313,25 +313,30 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             ActiveLightingScene = newLightingSceneName;
-             
-            if (Application.isPlaying)
-            {
-                List<string> lightingSceneNames = new List<string>();
-                // Create a list of lighting scenes to unload
-                foreach (SceneInfo lso in LightingScenes)
-                {
-                    if (lso.Name != newLightingSceneName)
-                    {
-                        lightingSceneNames.Add(lso.Name);
-                    }
-                }
 
-                // Load the new lighting scene immediately
-                await LoadScenesInternal(new string[] { newLightingSceneName }, SceneType.Lighting, LoadSceneMode.Additive);
-
-                // Unload the other lighting scenes
-                await UnloadScenesInternal(lightingSceneNames, SceneType.Lighting);
+            if (!Application.isPlaying)
+            {   // Everything else is runtime-only
+                return;
             }
+
+            // Start the lighting executor transition - don't bother waiting for load / unload, it can start right away
+            lightingExecutor.StartTransition(lightingSettings, renderSettings, transitionType);
+
+            List<string> lightingSceneNames = new List<string>();
+            // Create a list of lighting scenes to unload
+            foreach (SceneInfo lso in LightingScenes)
+            {
+                if (lso.Name != newLightingSceneName)
+                {
+                    lightingSceneNames.Add(lso.Name);
+                }
+            }
+
+            // Load the new lighting scene immediately
+            await LoadScenesInternal(new string[] { newLightingSceneName }, SceneType.Lighting, LoadSceneMode.Additive);
+
+            // Unload the other lighting scenes
+            await UnloadScenesInternal(lightingSceneNames, SceneType.Lighting);
         }
 
         /// <summary>
@@ -876,6 +881,98 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 CacheSortedContent();
 #endif
             }
+        }
+
+        /// <summary>
+        /// A utility class used to lerp between and apply lighting settings to the active scene.
+        /// </summary>
+        private class LightingExecutor
+        {
+            public void StartTransition(
+                RuntimeLightingSettings targetLightingSettings, 
+                RuntimeRenderSettings targetRenderSettings,
+                LightingSceneTransitionType transitionType = LightingSceneTransitionType.None,
+                float transitionDuration = 1)
+            {
+                // Copy our old settings
+                prevLightingSettings = currentLightingSettings;
+                prevRenderSettings = currentRenderSettings;
+
+                // Update our target settings
+                this.transitionElapsed = 0;
+                this.transitionTime = transitionDuration;
+                this.targetLightingSettings = targetLightingSettings;
+                this.targetRenderSettings = targetRenderSettings;
+
+                switch (transitionType)
+                {
+                    case LightingSceneTransitionType.None:
+                        // Just zap immediately to the new values
+                        currentLightingSettings = targetLightingSettings;
+                        currentRenderSettings = targetRenderSettings;
+                        transitionElapsed = transitionDuration;
+                        break;
+
+                    case LightingSceneTransitionType.CrossFade:
+                        throw new NotImplementedException();
+
+                    case LightingSceneTransitionType.FadeToBlack:
+                        throw new NotImplementedException();
+                }
+            }
+
+            public void UpdateTransition(float deltaTime)
+            {
+                transitionElapsed += deltaTime;
+                if (transitionElapsed >= transitionTime)
+                {
+                    currentLightingSettings = targetLightingSettings;
+                    currentRenderSettings = targetRenderSettings;
+                }
+                else
+                {
+                    float transitionProgress = Mathf.Clamp01(transitionElapsed / transitionTime);
+                    currentLightingSettings = RuntimeLightingSettings.Lerp(prevLightingSettings, targetLightingSettings, transitionProgress);
+                    currentRenderSettings = RuntimeRenderSettings.Lerp(prevRenderSettings, targetRenderSettings, transitionProgress);
+                }
+
+                ApplySettings();
+            }
+
+            public void ApplySettings()
+            {
+                RenderSettings.ambientEquatorColor                  = currentRenderSettings.AmbientEquatorColor;
+                RenderSettings.ambientGroundColor                   = currentRenderSettings.AmbientGroundColor;
+                RenderSettings.ambientIntensity                     = currentRenderSettings.AmbientIntensity;
+                RenderSettings.ambientLight                         = currentRenderSettings.AmbientLight;
+                RenderSettings.ambientMode                          = (AmbientMode)currentRenderSettings.AmbientMode;
+                RenderSettings.ambientSkyColor                      = currentRenderSettings.AmbientSkyColor;
+                RenderSettings.customReflection                     = currentRenderSettings.CustomReflection;
+                RenderSettings.defaultReflectionMode                = (DefaultReflectionMode)currentRenderSettings.DefaultReflectionMode;
+                RenderSettings.defaultReflectionResolution          = currentRenderSettings.DefaultReflectionResolution;
+                RenderSettings.fog                                  = currentRenderSettings.Fog;
+                RenderSettings.fogColor                             = currentRenderSettings.FogColor;
+                RenderSettings.fogDensity                           = currentRenderSettings.FogDensity;
+                RenderSettings.fogEndDistance                       = currentRenderSettings.LinearFogEnd;
+                RenderSettings.fogMode                              = currentRenderSettings.FogMode;
+                RenderSettings.fogStartDistance                     = currentRenderSettings.LinearFogStart;
+                RenderSettings.reflectionBounces                    = currentRenderSettings.ReflectionBounces;
+                RenderSettings.reflectionIntensity                  = currentRenderSettings.ReflectionIntensity;
+                RenderSettings.skybox                               = currentRenderSettings.SkyboxMaterial;
+                RenderSettings.subtractiveShadowColor               = currentRenderSettings.SubtractiveShadowColor;
+            }
+
+            private RuntimeLightingSettings targetLightingSettings;
+            private RuntimeRenderSettings targetRenderSettings;
+
+            private RuntimeLightingSettings currentLightingSettings;
+            private RuntimeRenderSettings currentRenderSettings;
+
+            private RuntimeLightingSettings prevLightingSettings;
+            private RuntimeRenderSettings prevRenderSettings;
+
+            private float transitionTime;
+            private float transitionElapsed;
         }
 
         #endregion

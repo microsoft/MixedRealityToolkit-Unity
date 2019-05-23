@@ -41,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         Action<IEnumerable<string>> OnContentLoaded { get; set; }
 
-
         /// <summary>
         /// Called just before a set of content scenes will be unloaded.
         /// Includes names of all scenes about to be unloaded.
