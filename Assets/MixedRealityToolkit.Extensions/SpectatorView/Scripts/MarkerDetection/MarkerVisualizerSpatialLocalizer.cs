@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             throw new NotImplementedException();
         }
 
-        internal override void ProcessIncomingMessage(Role role, Guid token, BinaryReader r)
+        internal override void ProcessIncomingMessage(Role role, Guid token, string command, BinaryReader r)
         {
             throw new NotImplementedException();
         }

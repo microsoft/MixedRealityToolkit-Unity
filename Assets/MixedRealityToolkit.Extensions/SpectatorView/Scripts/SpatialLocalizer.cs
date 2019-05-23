@@ -16,6 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <remarks>In the future this would move to SpatialLocalization in a better form, abstraction-wise.</remarks>
     internal abstract class SpatialLocalizer : MonoBehaviour
     {
+        public const string SpatialLocalizationMessageHeader = "LOCALIZE";
+
         /// <summary>
         /// The spatial coordinate service for sub class to instantiate and this helper base to rely on.
         /// </summary>
@@ -67,8 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         /// <param name="role">The role of the requesting entity.</param>
         /// <param name="token">The token representing the session.</param>
+        /// <param name="command">The command associated with the binary reader.</param>
         /// <param name="r">The binary reader for the message.</param>
-        internal abstract void ProcessIncomingMessage(Role role, Guid token, BinaryReader r);
+        internal abstract void ProcessIncomingMessage(Role role, Guid token, string command, BinaryReader r);
 
         /// <summary>
         /// Attempts to localize the given session.
