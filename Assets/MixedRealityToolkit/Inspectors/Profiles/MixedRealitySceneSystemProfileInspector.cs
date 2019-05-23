@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static bool showEditorProperties = true;
         private SerializedProperty editorManageBuildSettings;
-        private SerializedProperty editorManagerLoadedScenes;
+        private SerializedProperty editorManageLoadedScenes;
         private SerializedProperty editorEnforceSceneOrder;
         private SerializedProperty editorEnforceLightingSceneTypes;
 
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             editorManageBuildSettings = serializedObject.FindProperty("editorManageBuildSettings");
-            editorManagerLoadedScenes = serializedObject.FindProperty("editorManagerLoadedScenes");
+            editorManageLoadedScenes = serializedObject.FindProperty("editorManageLoadedScenes");
             editorEnforceSceneOrder = serializedObject.FindProperty("editorEnforceSceneOrder");
             editorEnforceLightingSceneTypes = serializedObject.FindProperty("editorEnforceLightingSceneTypes");
 
@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.PropertyField(editorManageBuildSettings);
-                    EditorGUILayout.PropertyField(editorManagerLoadedScenes);
+                    EditorGUILayout.PropertyField(editorManageLoadedScenes);
                     EditorGUILayout.PropertyField(editorEnforceSceneOrder);
                     EditorGUILayout.PropertyField(editorEnforceLightingSceneTypes);
                     EditorGUILayout.Space();

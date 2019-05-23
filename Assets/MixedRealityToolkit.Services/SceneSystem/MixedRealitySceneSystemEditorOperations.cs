@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -421,17 +422,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                             if (profile.EditorEnforceLightingSceneTypes && heirarchyDirty)
                             {
-                                List<Component> violations = new List<Component>();
-                                if (EditorSceneUtils.EnforceSceneComponents(scene, permittedLightingSceneComponentTypes, violations))
-                                {
-                                    if (EditorUtility.DisplayDialog("Non-lighting components found", "We found non-lighting components in your lighting scene. To disable this check, un-check 'EditorEnforceLightingSceneTypes' in your SceneSystem profile.", "Destroy", "Cancel"))
-                                    {
-                                        foreach (Component component in violations)
-                                        {
-                                            GameObject.DestroyImmediate(component);
-                                        }
-                                    }
-                                }
+                                EnforceLightingSceneTypes(scene);
                             }
                         }
 
@@ -445,6 +436,67 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     {
                         EditorSceneUtils.UnloadScene(lightingScene, true);
                     }
+                }
+            }
+        }
+
+        private void EnforceLightingSceneTypes(Scene scene)
+        {
+            if (EditorSceneManager.sceneCount == 1)
+            {   // There's nowhere to move invalid objects to.
+                return;
+            }
+
+            List<Component> violations = new List<Component>();
+            if (EditorSceneUtils.EnforceSceneComponents(scene, permittedLightingSceneComponentTypes, violations))
+            {
+                Scene targetScene = default(Scene);
+                for (int i = 0; i < EditorSceneManager.sceneCount; i++)
+                {
+                    targetScene = EditorSceneManager.GetSceneAt(i);
+                    if (targetScene.path != scene.path)
+                    {   // We'll move invalid items to this scene
+                        break;
+                    }
+                }
+
+                if (!targetScene.IsValid() || !targetScene.isLoaded)
+                {   // Something's gone wrong - don't proceed
+                    return;
+                }
+
+                HashSet<Transform> rootObjectsToMove = new HashSet<Transform>();
+                foreach (Component component in violations)
+                {
+                    rootObjectsToMove.Add(component.transform.root);
+                }
+
+                List<string> rootObjectNames = new List<string>();
+                // Build a list of root objects so they know what's being moved
+                foreach (Transform rootObject in rootObjectsToMove)
+                {
+                    rootObjectNames.Add(rootObject.name);
+                }
+
+                EditorUtility.DisplayDialog(
+                    "Invalid components found in " + scene.name,
+                    "Only lighting-related componets are permitted. The following gameobjects will be moved to another scene:\n\n"
+                    + String.Join("\n", rootObjectNames)
+                    + "\n\nTo disable this warning, un-check 'EditorEnforceLightingSceneTypes' in your SceneSystem profile.", "OK");
+
+                try
+                {
+                    foreach (Transform rootObject in rootObjectsToMove)
+                    {
+                        EditorSceneManager.MoveGameObjectToScene(rootObject.gameObject, targetScene);
+                    }
+
+                    EditorGUIUtility.PingObject(rootObjectsToMove.FirstOrDefault());
+                } 
+                catch (Exception)
+                {
+                    // This can happen if the move object operation fails. No big deal, we'll try again next time.
+                    return;
                 }
             }
         }

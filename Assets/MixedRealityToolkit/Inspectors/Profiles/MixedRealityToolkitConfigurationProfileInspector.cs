@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private MixedRealityToolkitConfigurationProfile configurationProfile;
         private Func<bool>[] RenderProfileFuncs;
 
-        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "SceneSystem", "Extensions", "Editor" };
+        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "Scene System", "Extensions", "Editor" };
         private static int SelectedProfileTab = 0;
 
         protected override void OnEnable()
@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         return RenderProfile(cameraProfile, typeof(MixedRealityCameraProfile), true, false);
                     },
                     () => {
-                         EditorGUILayout.PropertyField(enableInputSystem);
+                        EditorGUILayout.PropertyField(enableInputSystem);
                         EditorGUILayout.PropertyField(inputSystemType);
                         return RenderProfile(inputSystemProfile, null, true, false, typeof(IMixedRealityInputSystem));
                     },

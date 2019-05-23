@@ -119,7 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void RenderContentScenes(MixedRealitySceneSystem sceneSystem, List<SceneInfo> contentScenes)
         {
-            EditorGUILayout.HelpBox("You can load / unload scenes in the editor by clicking on their tags or names", MessageType.Info);
             EditorGUILayout.Space();
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Load / Unload by tag", EditorStyles.miniBoldLabel);
@@ -137,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.LabelField(tag, EditorStyles.miniLabel);
                 EditorGUILayout.BeginHorizontal();
 
-                if (GUILayout.Button("Load", EditorStyles.toolbarButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
+                if (GUILayout.Button("Load", EditorStyles.miniButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
                 {
 
                     if (Application.isPlaying)
@@ -155,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
                     }
                 }
-                if (GUILayout.Button("Unload", EditorStyles.toolbarButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
+                if (GUILayout.Button("Unload", EditorStyles.miniButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
                 {
                     if (Application.isPlaying)
                     {

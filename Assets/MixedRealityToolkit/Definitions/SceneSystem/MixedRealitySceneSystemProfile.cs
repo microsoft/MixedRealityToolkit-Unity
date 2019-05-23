@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 #if UNITY_EDITOR
         public bool EditorManageBuildSettings => editorManageBuildSettings;
 
-        public bool EditorManageLoadedScenes => editorManagerLoadedScenes;
+        public bool EditorManageLoadedScenes => editorManageLoadedScenes;
 
         public bool EditorEnforceSceneOrder => editorEnforceSceneOrder;
 
@@ -86,12 +86,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private bool editorManageBuildSettings = true;
 
         [SerializeField]
-        [Tooltip("If true, the service will ensure manager scene is displayed first in scene heirarchy, followed by lighting and then content.")]
+        [Tooltip("If true, the service will ensure manager scene is displayed first in scene heirarchy, followed by lighting and then content. Disable this if you want total control over scene heirarchy.")]
         private bool editorEnforceSceneOrder = true;
 
         [SerializeField]
         [Tooltip("If true, service will ensure that manager scenes and lighting scenes are always loaded. Disable if you want to work in a scene in isolation.")]
-        private bool editorManagerLoadedScenes = true;
+        private bool editorManageLoadedScenes = true;
 
         [SerializeField]
         [Tooltip("If true, service will ensure that only lighting-related components are allowd in lighting scenes. Disable if you want complete control over lighting scenes.")]
