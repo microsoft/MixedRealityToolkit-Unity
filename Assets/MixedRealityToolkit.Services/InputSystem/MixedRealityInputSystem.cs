@@ -316,7 +316,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Assumption: We only send pointer events to the objects that pointers are focusing, except for global event listeners (which listen to everything)
         /// In contract, all other events get sent to all other pointers attached to a given input source
         /// </summary>
-        private void HandlePointerEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IMixedRealityPointerHandler
+        private void HandlePointerEvent(
+            MixedRealityPointerEventData eventData, ExecuteEvents.EventFunction<IMixedRealityPointerHandler> eventHandler, PointerEventType pointerEventType)
         {
             if (disabledRefCount > 0)
             {
@@ -324,10 +325,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             Debug.Assert(eventData != null);
-            var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
-            DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
+            DispatchEventToGlobalListeners(eventData, eventHandler);
+            PointerEvent?.Invoke(eventData, pointerEventType);
 
-            if (baseInputEventData.used)
+            if (eventData.used)
             {
                 // All global listeners get a chance to see the event,
                 // but if any of them marked it used,
@@ -337,11 +338,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Debug.Assert(pointerEventData.Pointer != null, "Trying to dispatch event on pointer but pointerEventData is null");
 
-            DispatchEventToObjectFocusedByPointer(pointerEventData.Pointer, baseInputEventData, false, eventHandler);
+            DispatchEventToObjectFocusedByPointer(pointerEventData.Pointer, eventData, false, eventHandler);
 
-            if (!baseInputEventData.used)
+            if (!eventData.used)
             {
-                DispatchEventToFallbackHandlers(baseInputEventData, eventHandler);
+                DispatchEventToFallbackHandlers(eventData, eventHandler);
             }
         }
 
@@ -858,6 +859,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Pointers
 
+        /// <inheritdoc />
+        public event PointerHandler PointerEvent;
+
         #region Pointer Down
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerDownEventHandler =
@@ -873,8 +877,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
 
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
-            
-            HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
+
+            HandlePointerEvent(pointerEventData, OnPointerDownEventHandler, PointerEventType.Down);
         }
 
         #endregion Pointer Down
@@ -893,7 +897,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
-            HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler);
+            HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler, PointerEventType.Dragged);
         }
 
         #endregion Pointer Dragged
@@ -919,7 +923,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void HandleClick()
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandlePointerEvent(pointerEventData, OnInputClickedEventHandler);
+            HandlePointerEvent(pointerEventData, OnInputClickedEventHandler, PointerEventType.Clicked);
 
             // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
         }
@@ -940,7 +944,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
-            HandlePointerEvent(pointerEventData, OnPointerUpEventHandler);
+            HandlePointerEvent(pointerEventData, OnPointerUpEventHandler, PointerEventType.Up);
 
             pointer.IsFocusLocked = false;
         }
