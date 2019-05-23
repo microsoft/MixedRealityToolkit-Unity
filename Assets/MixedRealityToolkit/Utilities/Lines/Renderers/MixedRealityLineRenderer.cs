@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 tilingPropertVector.x = lineDataSource.UnClampedWorldLength * tileMaterialScale;
-                tilingPropertyBlock.SetVector("_MainTex_ST", tilingPropertVector);
+                tilingPropertyBlock.SetVector("_MainTex_ST", tilingPropertyVector);
                 lineRenderer.SetPropertyBlock(tilingPropertyBlock);
             }
             else
