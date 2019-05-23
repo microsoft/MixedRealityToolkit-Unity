@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -40,6 +41,7 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
 
     private IEnumerator Sequence()
     {
+
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.GetComponent<MeshRenderer>().material = LoadAsset<Material>("MRTK_Standard_DarkGray");
@@ -123,7 +125,6 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
         }
 
         {
-
             SetStatus("Many children");
 
             GameObject multiRoot = new GameObject();
@@ -132,20 +133,24 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             int numCubes = 10;
             for (int i = 0; i < numCubes; i++)
             {
-                var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.localScale = Vector3.one * 0.1f;
-                cube.transform.parent = multiRoot.transform;
-                cube.transform.localPosition = Random.insideUnitSphere;
-                cube.transform.rotation = Quaternion.Euler(Random.insideUnitSphere * 360f);
+                var cubechild = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cubechild.transform.localScale = Vector3.one * 0.1f;
+                cubechild.transform.parent = multiRoot.transform;
+                cubechild.transform.localPosition = Random.insideUnitSphere;
+                cubechild.transform.rotation = Quaternion.Euler(Random.insideUnitSphere * 360f);
             }
-            var bbox = multiRoot.AddComponent<BoundingBox>();
+            bbox = multiRoot.AddComponent<BoundingBox>();
             bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
             bbox.HideElementsInInspector = false;
             multiRoot.AddComponent<ManipulationHandler>();
             yield return WaitForSpeechCommand();
         }
     }
-
+    private void DebugDrawObjectBounds(Bounds bounds)
+    {
+        DebugUtilities.DrawPoint(bounds.min, Color.magenta);
+        DebugUtilities.DrawPoint(bounds.max, Color.yellow);
+    }
     private T LoadAsset<T>(string s) where T : UnityEngine.Object
     {
         string[] paths = AssetDatabase.FindAssets(s);
