@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (prox.ColliderEnabled)
                     {
                         Vector3 normal;
-                        float dist = prox.DistanceToSurface(Position, out normal);
+                        float dist = prox.DistanceToTouchable(Position, out normal);
                         if (dist < closestDistance)
                         {   
                             closestDistance = dist;

@@ -177,7 +177,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Debug.Assert(localForward.magnitude > 0);
             Debug.Assert(localUp.magnitude > 0);
             string hierarchy = gameObject.transform.EnumerateAncestors(true).Aggregate("", (result, next) => next.gameObject.name + "=>" + result);
-            Debug.Assert(Vector3.Dot(localForward, localUp) == 0, $"localForward and localUp not perpendicular for object {hierarchy}. Did you set Local Forward correctly?");
+            if (localUp.sqrMagnitude == 1 && localForward.sqrMagnitude == 1)
+            {
+                Debug.Assert(Vector3.Dot(localForward, localUp) == 0, $"localForward and localUp not perpendicular for object {hierarchy}. Did you set Local Forward correctly?");
+            }
 
             // Check initial setup
             if (bounds == Vector2.zero)
@@ -201,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bounds.y = Mathf.Max(bounds.y, 0);
         }
 
-        public override float DistanceToSurface(Vector3 samplePoint, out Vector3 normal)
+        public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {
             normal = Forward;
 

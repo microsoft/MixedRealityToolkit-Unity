@@ -79,6 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             usesCollider = touchableCollider != null;
         }
 
-        public abstract float DistanceToSurface(Vector3 samplePoint, out Vector3 normal);
+        public abstract float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal);
     }
 }

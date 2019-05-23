@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             localNormal = localNormal.normalized;
         }
 
-        public override float DistanceToSurface(Vector3 samplePoint, out Vector3 normal)
+        public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {
             normal = transform.TransformDirection(localNormal);
 

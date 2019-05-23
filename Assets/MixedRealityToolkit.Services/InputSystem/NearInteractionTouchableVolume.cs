@@ -15,7 +15,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class NearInteractionTouchableVolume : BaseNearInteractionTouchable
     {
-        public override float DistanceToSurface(Vector3 samplePoint, out Vector3 normal)
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(NearInteractionTouchableVolume))]
+        public class Editor : UnityEditor.Editor
+        {
+            public override void OnInspectorGUI()
+            {
+                base.OnInspectorGUI();
+
+                NearInteractionTouchableVolume t = (NearInteractionTouchableVolume)target;
+                Collider c = t.GetComponent<BoxCollider>();
+                if (c == null)
+                {
+                    UnityEditor.EditorGUILayout.HelpBox("A collider is required in order to compute the touchable volume.", UnityEditor.MessageType.Warning);
+                }
+            }
+        }
+#endif
+
+        public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {
             if (usesCollider)
             {
