@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     }
 
     /// <summary>
-    /// Type of pointer event. Matches the methods defined in <see cref="IMixedRealityPointerHandler"/>
+    /// Type of pointer event. Matches the methods defined in <see cref="IMixedRealityPointerHandler"/>.
     /// </summary>
     public enum PointerEventType
     {
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     }
 
     /// <summary>
-    /// Delegate type for handling pointer events. Subscribe via <see cref="IMixedRealityInputSystem.PointerEvent"/>
+    /// Delegate type for handling pointer events. Subscribe via <see cref="IMixedRealityInputSystem.PointerEvent"/>.
     /// </summary>
     public delegate void PointerHandler(MixedRealityPointerEventData eventData, PointerEventType eventType);
 }
