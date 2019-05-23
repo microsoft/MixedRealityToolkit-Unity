@@ -173,6 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return 1.0f / WorldToLocalScale;
             }
         }
+
         private Vector3 LocalForward
         {
             get
@@ -204,8 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion
 
-
-        private void Awake()
+        private void OnEnable()
         {
             currentPushDistance = startPushDistance;
             initialPosition = PushSpaceSourceTransform.position;
