@@ -1094,7 +1094,7 @@ PrefabInstance:
     - target: {fileID: 37140855218128509, guid: f6511fe07b2d805478799a9830eb472b,
         type: 3}
       propertyPath: m_Name
-      value: 10x32mm_Square
+      value: LabelPlate
       objectReference: {fileID: 0}
     - target: {fileID: 1141850491143745692, guid: f6511fe07b2d805478799a9830eb472b,
         type: 3}
