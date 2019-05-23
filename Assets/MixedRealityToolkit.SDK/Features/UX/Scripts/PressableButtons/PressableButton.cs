@@ -27,6 +27,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("The icon and text content moving inside the button.")]
         private GameObject movingButtonIconText = null;
 
+        /// <summary>
+        /// Public property to set the moving content part(icon and text) of the button. 
+        /// This content part moves 1/2 distance of the front cage 
+        /// </summary>
+        public GameObject MovingButtonIconText
+        {
+            get
+            {
+                return MovingButtonIconText;
+            }
+            set
+            {
+                if (movingButtonIconText != value)
+                {
+                    movingButtonIconText = value;
+                }
+            }
+        }
+
         [SerializeField]
         [Header("Press Settings")]
         [Tooltip("Maximum push distance")]
