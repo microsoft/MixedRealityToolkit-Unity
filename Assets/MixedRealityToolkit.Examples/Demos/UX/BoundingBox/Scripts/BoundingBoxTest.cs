@@ -52,6 +52,14 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             var mh = cube.AddComponent<ManipulationHandler>();
             yield return WaitForSpeechCommand();
 
+            SetStatus("HideElementsInInspector true");
+            bbox.HideElementsInInspector = true;
+            yield return WaitForSpeechCommand();
+            
+            SetStatus("HideElementsInInspector false");
+            bbox.HideElementsInInspector = false;
+            yield return WaitForSpeechCommand();
+
             SetStatus("FlattenX");
             bbox.FlattenAxis = BoundingBox.FlattenModeType.FlattenX;
             yield return WaitForSpeechCommand();
