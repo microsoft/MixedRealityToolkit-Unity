@@ -756,7 +756,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
                 }
 
                 Debug.Log("Started observing point cloud changes");
-                _aRPointCloudManager.pointCloudUpdated += OnPointCloudUpdated;
+                //_aRPointCloudManager.pointCloudUpdated += OnPointCloudUpdated;
                 _listeningToPointCloudChanges = true;
             }
 #endif
@@ -765,34 +765,35 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
 #if UNITY_ANDROID || UNITY_IOS
         private void OnPointCloudUpdated(ARPointCloudUpdatedEventArgs args)
         {
-            if (args != null &&
-                args.pointCloud != null)
-            {
-                List<Vector3> points = new List<Vector3>();
-                args.pointCloud.GetPoints(points);
-                if (points.Count > _pointsRequiredForValidLocalOrigin)
-                {
-                    _localOriginEstablished = true;
+            throw new NotImplementedException();
+            //if (args != null &&
+            //    args.pointCloud != null)
+            //{
+            //    List<Vector3> points = new List<Vector3>();
+            //    args.pointCloud.GetPoints(points);
+            //    if (points.Count > _pointsRequiredForValidLocalOrigin)
+            //    {
+            //        _localOriginEstablished = true;
 
-                    // TODO - there may be a follow up task to shift inbetween showing the marker/hiding the marker based on whether or not these points are found
-                    if (_aRPointCloudManager == null)
-                    {
-                        Debug.LogError("Point cloud manager not defined for ar foundation device");
-                        return;
-                    }
+            //        // TODO - there may be a follow up task to shift inbetween showing the marker/hiding the marker based on whether or not these points are found
+            //        if (_aRPointCloudManager == null)
+            //        {
+            //            Debug.LogError("Point cloud manager not defined for ar foundation device");
+            //            return;
+            //        }
 
-                    if (_listeningToPointCloudChanges)
-                    {
-                        Debug.Log("Stopped observing point cloud changes");
-                        _aRPointCloudManager.pointCloudUpdated -= OnPointCloudUpdated;
-                        _listeningToPointCloudChanges = false;
-                    }
-                }
-                else
-                {
-                    Debug.Log("Point cloud did not contain enough points to establish a local origin, current size: " + points.Count);
-                }
-            }
+            //        if (_listeningToPointCloudChanges)
+            //        {
+            //            Debug.Log("Stopped observing point cloud changes");
+            //            _aRPointCloudManager.pointCloudUpdated -= OnPointCloudUpdated;
+            //            _listeningToPointCloudChanges = false;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Debug.Log("Point cloud did not contain enough points to establish a local origin, current size: " + points.Count);
+            //    }
+            //}
         }
 #endif
 
