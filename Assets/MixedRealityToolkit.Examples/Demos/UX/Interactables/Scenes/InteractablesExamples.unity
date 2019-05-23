@@ -836,6 +836,144 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Name
+      value: OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].ClassName
+      value: InteractableOnClickEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].AssemblyQualifiedName
+      value: Microsoft.MixedReality.Toolkit.UI.InteractableOnClickEffect, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].Type
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].Label
+      value: Effect Prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].Name
+      value: EffectPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].Tooltip
+      value: The effect prefab, should destroy itself
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].GameObjectValue
+      value: 
+      objectReference: {fileID: 7275193594166404570, guid: 2d4fa118014b9b1428c0ca3dda4d01b3,
+        type: 3}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].AudioClipValue
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[1].Vector3Value.z
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Type
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Label
+      value: Rotation Options
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Name
+      value: RotationOptions
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Tooltip
+      value: How this prefab will rotate when initiated
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].EventValue.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.data[0]
+      value: None
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.data[1]
+      value: Parent Forward
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.data[2]
+      value: Camera Facing
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].IntValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Type
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Label
+      value: Rotation Offset
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Name
+      value: RotationOffset
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Tooltip
+      value: Based on the rotation option, added rotation
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809329666163580, guid: 80cec532ae7b6c1429d0f5494e7dbd8c,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].EventValue.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80cec532ae7b6c1429d0f5494e7dbd8c, type: 3}
 --- !u!1 &561651892
@@ -940,7 +1078,7 @@ PrefabInstance:
     - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
         type: 3}
       propertyPath: Events.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
         type: 3}
@@ -950,7 +1088,12 @@ PrefabInstance:
     - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
         type: 3}
       propertyPath: Events.Array.data[1].Settings.Array.size
-      value: 2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
         type: 3}
@@ -1107,6 +1250,83 @@ PrefabInstance:
         type: 3}
       propertyPath: Events.Array.data[1].Settings.Array.data[1].Vector3Value.z
       value: -0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Type
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Label
+      value: Rotation Options
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Name
+      value: RotationOptions
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Tooltip
+      value: How this prefab will rotate when initiated
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].EventValue.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.data[0]
+      value: None
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.data[1]
+      value: Parent Forward
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.data[2]
+      value: Camera Facing
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].IntValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Type
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Label
+      value: Rotation Offset
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Name
+      value: RotationOffset
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Tooltip
+      value: Based on the rotation option, added rotation
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].EventValue.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658294074506726, guid: 29a6f5316e0868e47adff5eee8945193,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Vector3Value.x
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29a6f5316e0868e47adff5eee8945193, type: 3}
@@ -2957,9 +3177,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localForward: {x: 0, y: 0, z: 1}
+  localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: 0, y: 0, z: 0.06}
+  localCenter: {x: 0, y: 0, z: -0.06}
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 0.12, y: 0.12}
@@ -3385,6 +3605,139 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Name
+      value: OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].ClassName
+      value: InteractableOnClickEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].AssemblyQualifiedName
+      value: Microsoft.MixedReality.Toolkit.UI.InteractableOnClickEffect, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].Type
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].Label
+      value: Effect Prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].Name
+      value: EffectPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].Tooltip
+      value: The effect prefab, should destroy itself
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[0].GameObjectValue
+      value: 
+      objectReference: {fileID: 7275193594166404570, guid: 2d4fa118014b9b1428c0ca3dda4d01b3,
+        type: 3}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[1].Vector3Value.z
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Type
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Label
+      value: Rotation Options
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Name
+      value: RotationOptions
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Tooltip
+      value: How this prefab will rotate when initiated
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].EventValue.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.data[0]
+      value: None
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.data[1]
+      value: Parent Forward
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].Options.Array.data[2]
+      value: Camera Facing
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[2].IntValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Type
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Label
+      value: Rotation Offset
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Name
+      value: RotationOffset
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].Tooltip
+      value: Based on the rotation option, added rotation
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: Events.Array.data[1].Settings.Array.data[3].EventValue.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b1ffbebacd36694ebea9fb6d437c68f, type: 3}

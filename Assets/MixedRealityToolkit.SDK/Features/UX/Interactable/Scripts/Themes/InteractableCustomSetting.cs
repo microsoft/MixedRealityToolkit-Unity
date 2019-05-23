@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A simple property with name value and type, used for serialization
+    /// The custom settings are used in themes to expose properties needed to enhance theme functionality
     /// </summary>
     
     [System.Serializable]

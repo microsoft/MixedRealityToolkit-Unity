@@ -146,6 +146,18 @@ The DefaultInteractableStates list contains 4 states:
 
 A bit value (#) is assigned to the state depending on the order in the list.
 
+There are currently 17 states total that you can used to drive themes, though some are meant to be driven by other components. Here's a list of those with built-in functionality.
+- Default, Focus, Pressed and Disabled are mentioned above
+- Visited: the Interactable has been clicked.
+- Toggled: The button is in a toggled state or Dimension idex is an odd number.
+- Gesture: The hand or controller was pressed and has moved from the original position.
+- VoiceCommand: The internal voice command was used, or if using global voice commands, set this manually.
+- PhyscialTouch: A touch input is currently detected, use NearInteractionTouchable to enable.
+- Grab: A hand is currently grabbing in the bounds of the object, use NearInteractionGrabbable to enable
+
+States have corresponding properties and Methods in the Interactable, like SetFocus(bool focus) or HasFocus.
+
+
 ## Extending themes ##
 Extend `InteractableThemeBase` to create a new theme that will show up in the theme property drop-down list. Themes can be created to control anything based on state changes. We could have a custom component on a GameObject that is driven by a custom theme with the values for each state being set in the inspector.
 

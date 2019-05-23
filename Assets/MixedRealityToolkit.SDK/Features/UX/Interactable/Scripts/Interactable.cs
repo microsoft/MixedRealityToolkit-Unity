@@ -46,10 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
         public List<IMixedRealityPointer> Focusers => pointers;
 
-        // list of sources
-        protected HashSet<SourceStateEventData> sources = new HashSet<SourceStateEventData>();
-        public HashSet<SourceStateEventData> Sources => sources;
-
         // is the interactable enabled?
         public bool Enabled = true;
         // a collection of states and basic state logic
@@ -550,7 +546,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void ResetAllStates()
         {
             pointers = new List<IMixedRealityPointer>();
-            sources = new HashSet<SourceStateEventData>();
             ResetBaseStates();
             SetCollision(false);
             SetCustom(false);
@@ -1096,43 +1091,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData){}
 
         #endregion NearInteractionHandlers
-
-        #region SourceHandlers
-        /// <summary>
-        /// Handle states related to vaailable sources and focus
-        /// </summary>
-        protected void SetSourceStates()
-        {
-            bool hasSource = sources.Count > 0;
-            bool targeted = HasFocus && hasSource;
-            bool interactive = !HasFocus && hasSource;
-            bool observationTargeted = HasFocus && !hasSource;
-            bool observation = !HasFocus && !hasSource;
-
-            SetTargeted(targeted);
-            SetInteractive(interactive);
-            SetObservationTargeted(observationTargeted);
-            SetObservation(observation);
-
-        }
-
-        /// <summary>
-        /// Capture information about sources, pointers.
-        /// Source Detected only works when global
-        /// Source Lost works when a hand is gestureing a leaves the sensor's view
-        /// </summary>
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-            sources.Add(eventData);
-            SetSourceStates();
-        }
-
-        public void OnSourceLost(SourceStateEventData eventData)
-        {
-            sources.Remove(eventData);
-            SetSourceStates();
-
-        }
-        #endregion SourceHandlers
     }
 }
