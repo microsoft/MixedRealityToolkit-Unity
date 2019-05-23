@@ -34,6 +34,24 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         public bool ShowProfiler => showProfiler;
 
         [SerializeField]
+        [Tooltip("Display the frame info (per frame stats).")]
+        private bool showFrameInfo = true;
+
+        /// <summary>
+        /// Show or hide the frame info (per frame stats).
+        /// </summary>
+        public bool ShowFrameInfo => showFrameInfo;
+
+        [SerializeField]
+        [Tooltip("Display the memory stats (used, peak, and limit).")]
+        private bool showMemoryStats = true;
+
+        /// <summary>
+        /// Show or hide the memory stats (used, peak, and limit).
+        /// </summary>
+        public bool ShowMemoryStats => showMemoryStats;
+
+        [SerializeField]
         [FormerlySerializedAs("frameRateDuration")]
         [Tooltip("The amount of time, in seconds, to collect frames for frame rate calculation.")]
         [Range(0, 5)]
@@ -79,5 +97,17 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// How quickly to interpolate the window towards its target position and rotation.
         /// </summary>
         public float WindowFollowSpeed => windowFollowSpeed;
+
+        [SerializeField]
+        [Tooltip("A material that the diagnostics system can use to render objects with instanced color support.")]
+        private Material defaultInstancedMaterial = null;
+
+        /// <summary>
+        /// A material that the diagnostics system can use to render objects with instanced color support.
+        /// A asset reference is required here to make sure the shader permutation is pulled into player builds.
+        /// </summary>
+        public Material DefaultInstancedMaterial => defaultInstancedMaterial;
+
+        
     }
 }

@@ -35,10 +35,5 @@ namespace Microsoft.MixedReality.Toolkit
         /// The service registrar instance that registered this service.
         /// </summary>
         protected IMixedRealityServiceRegistrar Registrar { get; set; } = null;
-
-        /// <summary>
-        /// Configuration Profile
-        /// </summary>
-        protected BaseMixedRealityProfile ConfigurationProfile { get; set; } = null;
     }
 }
