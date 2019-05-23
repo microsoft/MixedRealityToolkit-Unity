@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             // Update the goal position.
             GoalPosition = CalculateGoalPosition();
-            GoalRotation = billboardToCamera ? Quaternion.LookRotation(CameraCache.Main.transform.forward, CameraCache.Main.transform.up) : 
+            GoalRotation = billboardToCamera ? Quaternion.LookRotation(CameraCache.Main.transform.forward) : 
                                                SolverHandler.TransformTarget.rotation;
 
             if (trackedHand != null)
