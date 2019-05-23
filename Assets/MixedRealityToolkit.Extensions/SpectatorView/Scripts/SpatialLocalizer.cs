@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// Helper class to enable spatial localization between two entities on SpectatorView.
     /// </summary>
     /// <remarks>In the future this would move to SpatialLocalization in a better form, abstraction-wise.</remarks>
-    internal abstract class SpatialLocalizer : MonoBehaviour
+    public abstract class SpatialLocalizer : MonoBehaviour
     {
         /// <summary>
         /// The spatial coordinate service for sub class to instantiate and this helper base to rely on.

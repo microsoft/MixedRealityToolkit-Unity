@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
-using Assets.MRTK.MixedRealityToolkit.Extensions.Sharing.SpatialAlignment.AzureSpatialAnchors;
 using Microsoft.Azure.SpatialAnchors;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
 {
@@ -18,6 +18,23 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         protected override Task OnInitializeAsync()
         {
             return Task.CompletedTask;
+        }
+
+        protected override GameObject CreateGameObjectFrom(AnchorLocatedEventArgs args)
+        {
+            GameObject gameObject = SpawnGameObject(Vector3.zero, Quaternion.identity);
+
+            // On HoloLens, if we do not have a cloudAnchor already, we will have already positioned the
+            // object based on the passed in worldPos/worldRot and attached a new world anchor,
+            // so we are ready to commit the anchor to the cloud if requested.
+            // If we do have a cloudAnchor, we will use it's pointer to setup the world anchor,
+            // which will position the object automatically.
+            if (args.Anchor != null)
+            {
+                gameObject.GetComponent<UnityEngine.XR.WSA.WorldAnchor>().SetNativeSpatialAnchorPtr(args.Anchor.LocalAnchor);
+            }
+
+            return gameObject;
         }
 
         protected override void OnConfigureSession(CloudSpatialAnchorSession session)

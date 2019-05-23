@@ -17,6 +17,9 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         private readonly object lockObj = new object();
         private readonly SpatialAnchorsConfiguration spatialAnchorsConfiguration;
 
+        private readonly TaskCompletionSource<bool> readyForCreate = new TaskCompletionSource<bool>();
+        private readonly TaskCompletionSource<bool> recommendedForCreate = new TaskCompletionSource<bool>();
+
         private Task initializationTask = null;
         protected CloudSpatialAnchorSession session;
 
@@ -57,9 +60,13 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             }
         }
 
-        protected virtual void CreateCoordinateFrom(AnchorLocatedEventArgs args)
+        protected virtual GameObject CreateGameObjectFrom(AnchorLocatedEventArgs args)
         {
+            Pose pose = args.Anchor.GetAnchorPose();
 
+            GameObject gameObject = SpawnGameObject(pose.position, pose.rotation);
+            gameObject.AddARAnchor();
+            return gameObject;
         }
 
         protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate = null)
@@ -94,7 +101,10 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
                 {
                     if (args.Status == LocateAnchorStatus.Located)
                     {
-                        //TODO Create Anchor
+                        GameObject gameObject = CreateGameObjectFrom(args);
+
+                        SpatialAnchorsCoordinate coordinate = new SpatialAnchorsCoordinate(args.Anchor, gameObject);
+                        OnNewCoordinate(coordinate.Id, coordinate);
 
                         // If we succefully removed one and we are at 0, then stop. 
                         // If we never had to locate any, we would always be at 0 but never remove any.
@@ -133,6 +143,8 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         protected override async Task<ISpatialCoordinate> TryCreateCoordinateAsync(Vector3 worldPosition, Quaternion worldRotation, CancellationToken cancellationToken)
         {
             await EnsureInitializedAsync().Unless(cancellationToken);
+
+            await recommendedForCreate.Task.Unless(cancellationToken);
 
             GameObject spawnedAnchorObject = SpawnGameObject(worldPosition, worldRotation);
             try
@@ -220,17 +232,25 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
 
         private void OnSessionUpdated(object sender, SessionUpdatedEventArgs args)
         {
-            throw new NotImplementedException();
+            if (args.Status.ReadyForCreateProgress >= 1)
+            {
+                readyForCreate.TrySetResult(true);
+            }
+
+            if (args.Status.RecommendedForCreateProgress >= 1)
+            {
+                recommendedForCreate.TrySetResult(true);
+            }
         }
 
         private void OnSessionLogDebug(object sender, OnLogDebugEventArgs args)
         {
-            throw new NotImplementedException();
+            Debug.Log(args.Message);
         }
 
         private void OnSessionError(object sender, SessionErrorEventArgs args)
         {
-            throw new NotImplementedException();
+            Debug.LogError(args.ErrorMessage);
         }
     }
 }

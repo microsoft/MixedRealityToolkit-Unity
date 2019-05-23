@@ -1,19 +1,22 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+
 namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
 {
+    [Serializable]
     public class SpatialAnchorsConfiguration
     {
-        public string AccessToken { get; set; }
+        public string AccessToken;
 
-        public string AccountDomain { get; set; }
+        public string AccountDomain;
 
-        public string AccountId { get; set; }
+        public string AccountId;
 
-        public string AccountKey { get; set; }
+        public string AccountKey;
 
-        public string AuthenticationToken { get; set; }
+        public string AuthenticationToken;
 
         public SpatialAnchorsConfiguration() { }
     }
