@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             else
             {
                 position = EditorGUILayout.GetControlRect();
-                DrawDrownDownProperty(position, actionId, actionOptions, new GUIContent("Input Actions", "The input action filter"));
+                DrawDropDownProperty(position, actionId, actionOptions, new GUIContent("Input Actions", "The input action filter"));
                 //actionId.intValue = EditorGUILayout.Popup("Input Actions", actionId.intValue, actionOptions);
             }
             
@@ -667,7 +667,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        protected void DrawDrownDownProperty(Rect position, SerializedProperty prop, string[] options, GUIContent label)
+        /// <summary>
+        /// Draws a popup UI with PropertyField type features.
+        /// Displays prefab pending updates
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="prop"></param>
+        /// <param name="options"></param>
+        /// <param name="label"></param>
+        protected void DrawDropDownProperty(Rect position, SerializedProperty prop, string[] options, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, prop);
             {
