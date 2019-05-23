@@ -101,12 +101,14 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             bbox.BoxMaterial = LoadAsset<Material>("MRTK_Standard_Cyan");
             yield return WaitForSpeechCommand();
 
-            SetStatus("BBox material none");
-            bbox.BoxMaterial = null;
+            SetStatus("BBox grabbed material red");
+            bbox.BoxGrabbedMaterial = LoadAsset<Material>("MRTK_Standard_Red");
+            mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires());
+            mh.OnManipulationEnded.AddListener((med) => bbox.UnhighlightWires());
             yield return WaitForSpeechCommand();
 
-            SetStatus("BBox grabbed material green");
-            bbox.BoxGrabbedMaterial = LoadAsset<Material>("MRTK_Standard_Emerald");
+            SetStatus("BBox material none");
+            bbox.BoxMaterial = null;
             yield return WaitForSpeechCommand();
 
             SetStatus("Wireframe radius 0.1");

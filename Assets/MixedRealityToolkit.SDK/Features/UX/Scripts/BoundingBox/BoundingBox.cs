@@ -209,7 +209,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public Material BoxGrabbedMaterial
         {
             get { return boxGrabbedMaterial; }
-            set { boxGrabbedMaterial = value; }
+            set
+            {
+                if (boxGrabbedMaterial != value)
+                {
+                    boxGrabbedMaterial = value;
+                    CreateRig();
+                }
+            }
         }
 
         [SerializeField]
@@ -513,7 +520,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 foreach (var cube in corners)
                 {
                     cube.hideFlags = desiredFlags;
-                } 
+                }
             }
 
             if (boxDisplay != null)
@@ -531,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 foreach (var link in links)
                 {
                     link.hideFlags = desiredFlags;
-                } 
+                }
             }
         }
 
@@ -585,7 +592,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        
+
         // Scale of the target at startup (in Start())
         private Vector3 initialScaleAtStart;
         private Vector3 maximumScale;
@@ -1143,7 +1150,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             int targetChildCount = 0;
             for (int i = 0; i < Target.transform.childCount; i++)
             {
-                if(!Target.transform.GetChild(i).name.Equals(rigRootName))
+                if (!Target.transform.GetChild(i).name.Equals(rigRootName))
                 {
                     targetChildCount++;
                 }
