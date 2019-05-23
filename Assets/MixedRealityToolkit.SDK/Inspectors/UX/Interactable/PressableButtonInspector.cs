@@ -335,10 +335,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void MakeQuadFromPoint(Vector3[] vertices, Vector3 centerWorld, Vector3 halfExtents, ButtonInfo info)
         {
-            vertices[0] = info.PushRotationLocal * new Vector3(-halfExtents.x, -halfExtents.y, 0.0f).Mul(button.transform.lossyScale) + centerWorld;
-            vertices[1] = info.PushRotationLocal * new Vector3(-halfExtents.x, +halfExtents.y, 0.0f).Mul(button.transform.lossyScale) + centerWorld;
-            vertices[2] = info.PushRotationLocal * new Vector3(+halfExtents.x, +halfExtents.y, 0.0f).Mul(button.transform.lossyScale) + centerWorld;
-            vertices[3] = info.PushRotationLocal * new Vector3(+halfExtents.x, -halfExtents.y, 0.0f).Mul(button.transform.lossyScale) + centerWorld;
+            Vector3 touchCageOrigin = touchCage.center;
+            touchCageOrigin.z = 0.0f;
+            vertices[0] = transform.TransformVector(info.PushRotationLocal * (new Vector3(-halfExtents.x, -halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
+            vertices[1] = transform.TransformVector(info.PushRotationLocal * (new Vector3(-halfExtents.x, +halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
+            vertices[2] = transform.TransformVector(info.PushRotationLocal * (new Vector3(+halfExtents.x, +halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
+            vertices[3] = transform.TransformVector(info.PushRotationLocal * (new Vector3(+halfExtents.x, -halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
         }
     }
 }

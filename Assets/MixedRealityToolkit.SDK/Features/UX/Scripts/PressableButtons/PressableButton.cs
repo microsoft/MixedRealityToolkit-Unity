@@ -74,16 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (value != distanceSpaceMode)
                 {
                     distanceSpaceMode = value;
-                    float scale;
-                    if (distanceSpaceMode == SpaceMode.Local)
-                    {
-                        scale = transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
-                    }
-                    else
-                    {
-                        scale = 1.0f / transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
-                    }
-
+                    float scale = (distanceSpaceMode == SpaceMode.Local) ? WorldToLocalScale : LocalToWorldScale;
                     startPushDistance *= scale;
                     maxPushDistance *= scale;
                     pressDistance *= scale;
@@ -161,16 +152,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return transform.forward;
             }
         }
+
         private Transform PushSpaceSourceTransform
         {
             get { return movingButtonVisuals != null ? movingButtonVisuals.transform : transform; }
+        }
+
+        private float WorldToLocalScale
+        {
+            get
+            {
+                return transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
+            }
         }
 
         private float LocalToWorldScale
         {
             get
             {
-                return transform.TransformVector(WorldSpacePressDirection).magnitude;
+                return 1.0f / WorldToLocalScale;
             }
         }
         private Vector3 LocalForward
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // Apply inverse scale of local z-axis. This constant should always have the same value in world units.
                 float localMaxRetractDistanceBeforeReset =
-                    MaxRetractDistanceBeforeReset * LocalForward.magnitude;
+                    MaxRetractDistanceBeforeReset * WorldSpacePressDirection.magnitude;
                 if (retractDistance < localMaxRetractDistanceBeforeReset)
                 {
                     currentPushDistance = startPushDistance;
@@ -336,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public Vector3 GetWorldPositionAlongPushDirection(float localDistance)
         {
             float distance = (distanceSpaceMode == SpaceMode.Local) ? localDistance * LocalToWorldScale : localDistance;
-            return InitialPosition + LocalForward * distance;
+            return InitialPosition + WorldSpacePressDirection.normalized * distance;
         }
 
 
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public float GetDistanceAlongPushDirection(Vector3 positionWorldSpace)
         {
             Vector3 localPosition = positionWorldSpace - InitialPosition;
-            float distance = Vector3.Dot(localPosition, LocalForward);
+            float distance = Vector3.Dot(localPosition, WorldSpacePressDirection.normalized);
             return (distanceSpaceMode == SpaceMode.Local) ? distance / LocalToWorldScale : distance;
         }
 
