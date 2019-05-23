@@ -304,7 +304,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             SceneInfo lightingScene;
-            if (!string.IsNullOrEmpty(newLightingSceneName) && !profile.GetLightingSceneInfo(newLightingSceneName, out lightingScene))
+            RuntimeLightingSettings lightingSettings;
+            RuntimeRenderSettings renderSettings;
+            if (!string.IsNullOrEmpty(newLightingSceneName) && !profile.GetLightingSceneSettings(newLightingSceneName, out lightingScene, out lightingSettings, out renderSettings))
             {   // Make sure we don't try to load a non-existent scene
                 Debug.LogWarning("Couldn't find lighting scene " + newLightingSceneName + " in profile - taking no action.");
                 return;

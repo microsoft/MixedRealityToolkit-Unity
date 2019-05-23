@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using UnityEditor;
 using UnityEngine;
 
@@ -43,7 +44,81 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             return madeChanges;
         }
-        
+
+        /// <summary>
+        /// Iterates through a serialized object's fields and sets any accompanying fields in the supplied struct.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <param name="propNamePrefixFilter">Prefix to remove from serialized object field name before searching for match in struct</param>
+        public static void CopySerializedObjectToStruct<T>(SerializedObject source, T target, string propNamePrefixFilter = null) where T : struct
+        {
+            Type targetType = typeof(T);
+
+            SerializedProperty sourceProp = source.GetIterator();
+            while (sourceProp.NextVisible(true))
+            {
+                string propName = sourceProp.name;
+                if (!string.IsNullOrEmpty(propNamePrefixFilter) && propName.StartsWith(propNamePrefixFilter))
+                {
+                    propName = propName.Replace(propNamePrefixFilter, "");
+                }
+
+                FieldInfo field = targetType.GetField(propName, BindingFlags.Public | BindingFlags.Instance);
+                if (field != null)
+                {
+                    SetTargetFieldToSerializedPropertyValue(field, target, sourceProp);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the target field to the value from property based on property type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="field"></param>
+        /// <param name="target"></param>
+        /// <param name="property"></param>
+        public static void SetTargetFieldToSerializedPropertyValue(FieldInfo field, object target, SerializedProperty property)
+        {
+            switch (property.propertyType)
+            {
+                case SerializedPropertyType.Boolean:
+                    field.SetValue(target, property.boolValue);
+                    break;
+                case SerializedPropertyType.Integer:
+                    field.SetValue(target, property.intValue);
+                    break;
+                case SerializedPropertyType.String:
+                    field.SetValue(target, property.stringValue);
+                    break;
+                case SerializedPropertyType.Enum:
+                    field.SetValue(target, property.enumValueIndex);
+                    break;
+                case SerializedPropertyType.Float:
+                    field.SetValue(target, property.floatValue);
+                    break;
+                case SerializedPropertyType.Color:
+                    field.SetValue(target, property.colorValue);
+                    break;
+                case SerializedPropertyType.Vector2:
+                    field.SetValue(target, property.vector2Value);
+                    break;
+                case SerializedPropertyType.Vector3:
+                    field.SetValue(target, property.vector3Value);
+                    break;
+                case SerializedPropertyType.Vector4:
+                    field.SetValue(target, property.vector4Value);
+                    break;
+                case SerializedPropertyType.ObjectReference:
+                    field.SetValue(target, property.objectReferenceValue);
+                    break;
+                default:
+                    throw new NotImplementedException("Type " + property.propertyType + " is not implemented.");
+            }
+        }
+
         /// <summary>
         /// Uses reflection to set all public fields of a struct in an accompanying serialized property
         /// </summary>
@@ -54,27 +129,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             foreach (FieldInfo field in typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance))
             {
-                SerializedProperty fieldProperty = serializedProperty.FindPropertyRelative(field.Name);
-                if (fieldProperty == null)
+                SerializedProperty sourceProp = serializedProperty.FindPropertyRelative(field.Name);
+                if (sourceProp == null)
                 {
                     Debug.LogError("Couldn't find field " + field.Name + " in serialized property.");
                 }
                 else
                 {
-                    Type fieldPropertyType = Type.GetType(fieldProperty.type);
-                    if (field.FieldType.IsAssignableFrom(fieldPropertyType))
+                    Type sourcePropType = Type.GetType(sourceProp.type);
+                    if (!sourcePropType.IsAssignableFrom(field.FieldType))
                     {
                         Debug.LogError("Couldn't assign field " + field.Name + " in serialized property - types do not match.");
                     }
                     else
                     {
-                        SetSerializedPropertyByType(field.GetValue(value), field.FieldType, fieldProperty);
+                        SetSerializedPropertyByType(field.GetValue(value), sourceProp);
                     }
                 }
             }
         }
 
-        public static void SetSerializedPropertyByType(object value, Type type, SerializedProperty property)
+        public static void SetSerializedPropertyByType(object value, SerializedProperty property)
         {
             switch (property.propertyType)
             {

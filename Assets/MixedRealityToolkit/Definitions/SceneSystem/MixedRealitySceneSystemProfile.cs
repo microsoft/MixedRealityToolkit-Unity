@@ -45,6 +45,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public bool EditorEnforceSceneOrder => editorEnforceSceneOrder;
 
         public bool EditorEnforceLightingSceneTypes => editorEnforceLightingSceneTypes;
+
+        public bool EditorCachedLightingOutOfDate => editorCachedLightingOutOfDate;
+
+        public bool EditorCachedLightingRequested { get; set; }
 #endif
 
         [SerializeField]
@@ -72,11 +76,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private List<string> contentTags = new List<string>();
 
         [SerializeField]
-        [Tooltip("Cached lighting settings from you lighting scenes")]
+        [Tooltip("Cached lighting settings from your lighting scenes")]
         private List<RuntimeLightingSettings> cachedLightingSettings = new List<RuntimeLightingSettings>();
 
         [SerializeField]
-        [Tooltip("Cached lighting settings from you lighting scenes")]
+        [Tooltip("Cached lighting settings from your lighting scenes")]
         private List<RuntimeRenderSettings> cachedRenderSettings = new List<RuntimeRenderSettings>();
 
         #region editor settings
@@ -90,26 +94,34 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private bool editorEnforceSceneOrder = true;
 
         [SerializeField]
-        [Tooltip("If true, service will ensure that manager scenes and lighting scenes are always loaded. Disable if you want to work in a scene in isolation.")]
+        [Tooltip("If true, service will ensure that manager scenes and lighting scenes are always loaded. Disable if you want total control over which scenes are loaded in editor.")]
         private bool editorManageLoadedScenes = true;
 
         [SerializeField]
-        [Tooltip("If true, service will ensure that only lighting-related components are allowd in lighting scenes. Disable if you want complete control over lighting scenes.")]
+        [Tooltip("If true, service will ensure that only lighting-related components are allowd in lighting scenes. Disable if you want total control over the content of lighting scenes.")]
         private bool editorEnforceLightingSceneTypes = true;
+
+        [SerializeField]
+        private bool editorCachedLightingOutOfDate = false;
 
         #endregion
 
-        public bool GetLightingSceneInfo(string lightingSceneName, out SceneInfo lightingScene)
+        public bool GetLightingSceneSettings(string lightingSceneName, out SceneInfo lightingScene, out RuntimeLightingSettings lightingSettings, out RuntimeRenderSettings renderSettings)
         {
+            lightingSettings = default(RuntimeLightingSettings);
+            renderSettings = default(RuntimeRenderSettings);
             lightingScene = SceneInfo.Empty;
-            foreach (SceneInfo lso in lightingScenes)
+
+            for (int i = 0; i < lightingScenes.Count; i++)
             {
-                if (lso.Name == lightingSceneName)
+                if (lightingScenes[i].Name == lightingSceneName)
                 {
-                    lightingScene = lso;
-                    break;
+                    lightingScene = lightingScenes[i]; 
+                    lightingSettings = cachedLightingSettings[i];
+                    renderSettings = cachedRenderSettings[i];
                 }
             }
+
             return !lightingScene.IsEmpty;
         }
 
@@ -161,6 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     newContentTags.Add(contentScene.Tag);
                 }
             }
+            
             // See if our content tags have changed
             if (!contentTags.SequenceEqual(newContentTags))
             {
@@ -171,11 +184,31 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             defaultLightingSceneIndex = Mathf.Clamp(defaultLightingSceneIndex, 0, lightingScenes.Count - 1);
 
             if (saveChanges)
-            {   // Make sure our changes are saved to disk!
+            {   // We need to tie this directly to lighting scenes somehow
+                editorCachedLightingOutOfDate = true;
+                // Make sure our changes are saved to disk!
                 AssetDatabase.Refresh();
                 EditorUtility.SetDirty(this);
                 AssetDatabase.SaveAssets();
             }
+        }
+
+        /// <summary>
+        /// Used to update the cached lighting / render settings.
+        /// Since extracting them is complex and requires scene loading, I thought it best to avoid having the profile do it.
+        /// </summary>
+        /// <param name="cachedLightingSettings"></param>
+        /// <param name="cahcedRenderSettings"></param>
+        public void SetCachedLightmapAndRenderSettings(List<RuntimeLightingSettings> cachedLightingSettings, List<RuntimeRenderSettings> cachedRenderSettings)
+        {
+            this.cachedLightingSettings = cachedLightingSettings;
+            this.cachedRenderSettings = cachedRenderSettings;
+            editorCachedLightingOutOfDate = false;
+            EditorCachedLightingRequested = false;
+            // Make sure our changes are saved to disk!
+            AssetDatabase.Refresh();
+            EditorUtility.SetDirty(this);
+            AssetDatabase.SaveAssets();
         }
 
         private static bool RemoveScenes(List<SceneInfo> sceneList, List<SceneInfo> scenesToRemove)

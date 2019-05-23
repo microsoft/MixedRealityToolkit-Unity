@@ -180,11 +180,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         {
                             string[] lightingSceneNames = profile.LightingScenes.Select(l => l.Name).ToArray<string>();
                             defaultLightingSceneIndex.intValue = EditorGUILayout.Popup("Default Lighting Scene", defaultLightingSceneIndex.intValue, lightingSceneNames);
-
                         }
 
                         EditorGUILayout.PropertyField(lightingScenes, includeChildren: true);
                         //DrawSceneInfoDragAndDrop(lightingScenes);
+
+                        EditorGUILayout.Space();
+
+                        if (profile.NumLightingScenes > 0 && profile.EditorCachedLightingOutOfDate)
+                        {
+                            EditorGUILayout.HelpBox("Your cached lighting settings may be out of date. This could result in unexpected appearances at runtime.", MessageType.Warning);
+                            if (MixedRealityEditorUtility.RenderIndentedButton("Update Cached Lighting Settings"))
+                            {
+                                profile.EditorCachedLightingRequested = true;
+                            }
+                        }
                     }
                 }
             }
@@ -232,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             SerializedProperty assetProperty = null;
 
                             DragAndDrop.AcceptDrag();
-                            foreach (Object draggedObject in DragAndDrop.objectReferences)
+                            foreach (UnityEngine.Object draggedObject in DragAndDrop.objectReferences)
                             {
                                 if (draggedObject.GetType() != typeof(SceneAsset))
                                 {   // Skip anything that isn't a scene asset

@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.Reflection;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
+using System.Threading.Tasks;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
@@ -346,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             // Set the active scene to the lighting scene
             SetActiveScene(lightingScene);
             // If we can't get the source settings for some reason, abort
-            if (!GetLightmapAndRenderSettings(out sourceLightmapSettings, out sourceRenderSettings))
+            if (!GetLightingAndRenderSettings(out sourceLightmapSettings, out sourceRenderSettings))
             {
                 return;
             }
@@ -359,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 SerializedObject targetLightmapSettings;
                 SerializedObject targetRenderSettings;
 
-                if (GetLightmapAndRenderSettings(out targetLightmapSettings, out targetRenderSettings))
+                if (GetLightingAndRenderSettings(out targetLightmapSettings, out targetRenderSettings))
                 {
                     string[] propsToIgnore = new string[] { "m_IndirectSpecularColor" };
 
@@ -434,7 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="lightmapSettings"></param>
         /// <param name="renderSettings"></param>
         /// <returns></returns>
-        public static bool GetLightmapAndRenderSettings(out SerializedObject lightmapSettings, out SerializedObject renderSettings)
+        public static bool GetLightingAndRenderSettings(out SerializedObject lightmapSettings, out SerializedObject renderSettings)
         {
             lightmapSettings = null;
             renderSettings = null;

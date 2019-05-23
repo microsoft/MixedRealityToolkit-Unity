@@ -137,8 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         private void SubscribeToEditorEvents()
-        {            
-            EditorApplication.playModeStateChanged += EditorApplicationPlayModeStateChanged;
+        {
             EditorApplication.projectChanged += EditorApplicationProjectChanged;
             EditorApplication.hierarchyChanged += EditorApplicationHeirarcyChanged;
             EditorApplication.update += EditorApplicationUpdate;
@@ -150,7 +149,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         private void UnsubscribeToEditorEvents()
         {
-            EditorApplication.playModeStateChanged -= EditorApplicationPlayModeStateChanged;
             EditorApplication.projectChanged -= EditorApplicationProjectChanged;
             EditorApplication.hierarchyChanged -= EditorApplicationHeirarcyChanged;
             EditorApplication.update -= EditorApplicationUpdate;
@@ -171,18 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 activeSceneDirty = true;
                 heirarchyDirty = true;
                 CheckForChanges();
-            }
-        }
-
-        private void EditorApplicationPlayModeStateChanged(PlayModeStateChange change)
-        {
-            switch (change)
-            {
-                case PlayModeStateChange.EnteredEditMode:
-                case PlayModeStateChange.ExitingPlayMode:
-                    heirarchyDirty = true;
-                    buildSettingsDirty = true;
-                    break;
             }
         }
 
@@ -233,6 +219,15 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             updatingSettingsOnEditorChanged = true;
 
+            // Update cached lighting settings, if the profile has requested it
+            if (profile.EditorCachedLightingOutOfDate && profile.EditorCachedLightingRequested)
+            {
+                UpdateCachedLighting();
+                updatingSettingsOnEditorChanged = false;
+                heirarchyDirty = true;
+                return;
+            }
+
             // Update editor settings
             if (buildSettingsDirty)
             {
@@ -253,6 +248,48 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             activeSceneDirty = false;
 
             contentTracker.RefreshLoadedContent();
+        }
+
+        private void UpdateCachedLighting()
+        {
+            List<RuntimeLightingSettings> cachedLightingSettings = new List<RuntimeLightingSettings>();
+            List<RuntimeRenderSettings> cachedRenderSettings = new List<RuntimeRenderSettings>();
+            SceneInfo defaultLightingScene = profile.DefaultLightingScene;
+
+            foreach (SceneInfo lightingScene in profile.LightingScenes)
+            {
+                Scene scene;
+                if (!EditorSceneUtils.LoadScene(lightingScene, false, out scene))
+                {
+                    Debug.LogError("Couldn't load scene " + lightingScene.Name);
+                    return;
+                }
+
+                if (!EditorSceneUtils.SetActiveScene(scene))
+                {
+                    Debug.LogError("Couldn't set active scene for " + scene.path);
+                    return;
+                }
+
+                SerializedObject lightingSettingsObject;
+                SerializedObject renderSettingsObject;
+                if (!EditorSceneUtils.GetLightingAndRenderSettings(out lightingSettingsObject, out renderSettingsObject))
+                {
+                    return;
+                }
+
+                // Copy the serialized objects into new structs
+                RuntimeLightingSettings lightingSettings = default(RuntimeLightingSettings);
+                RuntimeRenderSettings renderSettings = default(RuntimeRenderSettings);
+
+                SerializedObjectUtils.CopySerializedObjectToStruct(lightingSettingsObject, lightingSettings, "m_");
+                SerializedObjectUtils.CopySerializedObjectToStruct(renderSettingsObject, renderSettings, "m_");
+
+                cachedLightingSettings.Add(lightingSettings);
+                cachedRenderSettings.Add(renderSettings);
+            }
+
+            profile.SetCachedLightmapAndRenderSettings(cachedLightingSettings, cachedRenderSettings);
         }
 
         private void UpdateContentScenes(bool activeSceneDirty)
@@ -406,7 +443,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             if (string.IsNullOrEmpty(ActiveLightingScene))
             {
-                Debug.LogWarning("Active lighting scene was empty - setting to default.");
                 ActiveLightingScene = profile.DefaultLightingScene.Name;
             }
             else
