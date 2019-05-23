@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void Disable()
         {
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-            UnityEngine.Object.Destroy(CameraCache.Main.gameObject.GetComponent(profile.PointerProfile.GazeProviderType.Type));
+            UnityEngine.Object.DestroyImmediate(CameraCache.Main.gameObject.GetComponent(profile.PointerProfile.GazeProviderType.Type));
 
             GazeProvider = null;
 

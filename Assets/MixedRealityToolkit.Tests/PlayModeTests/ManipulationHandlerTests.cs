@@ -26,8 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator Test01_ManipulationHandlerInstantiate()
         {
-            RenderSettings.skybox = null;
-
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
 
