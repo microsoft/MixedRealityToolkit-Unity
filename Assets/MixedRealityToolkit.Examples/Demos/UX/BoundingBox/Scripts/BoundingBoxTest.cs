@@ -55,7 +55,7 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             SetStatus("HideElementsInInspector true");
             bbox.HideElementsInInspector = true;
             yield return WaitForSpeechCommand();
-            
+
             SetStatus("HideElementsInInspector false");
             bbox.HideElementsInInspector = false;
             yield return WaitForSpeechCommand();
@@ -142,6 +142,7 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
             bbox.HideElementsInInspector = false;
             multiRoot.AddComponent<ManipulationHandler>();
+            yield return WaitForSpeechCommand();
         }
     }
 

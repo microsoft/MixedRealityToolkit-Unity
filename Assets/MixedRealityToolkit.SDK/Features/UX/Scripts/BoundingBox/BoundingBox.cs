@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -1131,8 +1132,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 else if (boundsMethod == BoundsCalculationMethod.Colliders)
                 {
-                    cachedTargetCollider.center = bounds.center;
-                    cachedTargetCollider.size = bounds.size;
+                    // bounds.center is in world space, but cachedTargetCollider.center is in local space
+                    cachedTargetCollider.center = Target.transform.InverseTransformPoint(bounds.center);
+                    cachedTargetCollider.size = Target.transform.InverseTransformSize(bounds.size);
+                    DebugUtilities.DrawPoint(bounds.center, Color.cyan);
+
+                    DebugUtilities.DrawPoint(bounds.min, Color.red);
+                    DebugUtilities.DrawPoint(bounds.max, Color.green);
+                    Debug.LogError("Error pause");
                 }
             }
 
@@ -1147,15 +1154,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Bounds bounds = new Bounds();
 
-            int targetChildCount = 0;
+            List<Transform> toExplore = new List<Transform>();
             for (int i = 0; i < Target.transform.childCount; i++)
             {
-                if (!Target.transform.GetChild(i).name.Equals(rigRootName))
+                Transform child = Target.transform.GetChild(i);
+                if (!child.name.Equals(rigRootName))
                 {
-                    targetChildCount++;
+                    toExplore.Add(child);
                 }
             }
-            if (targetChildCount == 0)
+            if (toExplore.Count == 0)
             {
                 bounds = GetSingleObjectBounds(Target);
                 boundsMethod = BoundsCalculationMethod.Collider;
@@ -1163,15 +1171,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                for (int i = 0; i < Target.transform.childCount; ++i)
+                for (int i = 0; i < toExplore.Count; i++)
                 {
+                    var current = toExplore[i];
+
                     if (bounds.size == Vector3.zero)
                     {
-                        bounds = GetSingleObjectBounds(Target.transform.GetChild(i).gameObject);
+                        bounds = GetSingleObjectBounds(current.gameObject);
+                        DebugDrawObjectBounds(bounds);
                     }
                     else
                     {
-                        Bounds childBounds = GetSingleObjectBounds(Target.transform.GetChild(i).gameObject);
+                        Bounds childBounds = GetSingleObjectBounds(current.gameObject);
+                        DebugDrawObjectBounds(childBounds);
                         if (childBounds.size != Vector3.zero)
                         {
                             bounds.Encapsulate(childBounds);
@@ -1255,6 +1267,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             boundsMethod = BoundsCalculationMethod.Collider;
             return bounds;
         }
+
+        private void DebugDrawObjectBounds(Bounds bounds)
+        {
+            DebugUtilities.DrawPoint(bounds.min, Color.magenta);
+            DebugUtilities.DrawPoint(bounds.max, Color.yellow);
+
+        }
+
         private Bounds GetSingleObjectBounds(GameObject gameObject)
         {
             Bounds bounds = new Bounds(Vector3.zero, Vector3.zero);
