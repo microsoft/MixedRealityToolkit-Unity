@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -26,18 +25,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Header("Press Settings")]
-        [Tooltip("The offset at which pushing starts.")]
+        [Tooltip("The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.")]
         private float startPushDistance = 0.0f;
         public float StartPushDistance { get => startPushDistance; set => startPushDistance = value; }
 
         [SerializeField]
-        [Tooltip("Maximum push distance")]
+        [Tooltip("Maximum push distance. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.")]
         private float maxPushDistance = 0.2f;
         public float MaxPushDistance { get => maxPushDistance; set => maxPushDistance = value; }
 
         [SerializeField]
         [FormerlySerializedAs("minPressDepth")]
-        [Tooltip("Distance the button must be pushed until it is considered pressed.")]
+        [Tooltip("Distance the button must be pushed until it is considered pressed. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.")]
         private float pressDistance = 0.02f;
         public float PressDistance { get => pressDistance; set => pressDistance = value; }
 
@@ -82,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        scale = transform.TransformVector(WorldSpacePressDirection).magnitude;
+                        scale = 1.0f / transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
                     }
 
                     startPushDistance *= scale;

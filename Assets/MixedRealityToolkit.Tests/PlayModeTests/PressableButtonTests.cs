@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Tests
 
         [UnityTest]
-        public IEnumerator Test01_PressableButtonInstantiate()
+        public IEnumerator ButtonInstantiate()
         {
             GameObject testButton = InstantiateSceneAndDefaultPressableButton();
             yield return null;
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 
         [UnityTest]
-        public IEnumerator Test02_PressableButtonScaleWorldDistances()
+        public IEnumerator ScaleWorldDistances()
         {
             // instantiate scene and button
             GameObject testButton = InstantiateSceneAndDefaultPressableButton();
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
-        public IEnumerator Test03_PressableButtonSwitchWorldToLocal()
+        public IEnumerator SwitchWorldToLocalDistanceMode()
         {
             // instantiate scene and button
             GameObject testButton = InstantiateSceneAndDefaultPressableButton();
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
-        public IEnumerator Test04_PressableButtonScaleLocalDistances()
+        public IEnumerator ScaleLocalDistances()
         {
             // instantiate scene and button
             GameObject testButton = InstantiateSceneAndDefaultPressableButton();

@@ -169,29 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 info.MaxPushDistance = Mathf.Max(newMaxPushDistance, info.PressDistance);
             }
 
-            /// {dahof} NOTE: collider box editing is disabled as we would need to find the min / max point of it along the press direction, which is arbitrary.
-            /// I think for simplicity reasons, we should make editing the collider independent from editing the PressableButton distances.
-
-            // BUTTON CONTENT ORIGIN
-            // Don't allow editing of button position
-            /*Handles.color = Color.green;
-            DrawPlaneAndHandle(pressStartPlaneVertices, info.TouchCageLocalBounds.size * 0.4f, newInfo.StartPos, info.TouchStartOrigin, "Moving button visuals", false);
-            // START POINT
-            // Start point doesn't need a display offset because it's based on the touch cage center
-            Handles.color = Color.cyan;
-            newInfo.TouchStartPos = DrawPlaneAndHandle(startPlaneVertices, info.TouchCageLocalBounds.size * 0.5f, newInfo.TouchStartPos, info.TouchStartOrigin, "Touch event", editingEnabled);
-            if (editingEnabled)
-            {
-                // The touch event is defined by the collider bounds
-                // If we've moved the start pos, we've moved the bounds
-                float difference = (info.TouchStartPos - newInfo.TouchStartPos);
-                if (Mathf.Abs(difference) > 0)
-                {
-                    newInfo.TouchCageCenter -= difference / 2;
-                    newInfo.TouchCageSize += difference;
-                }
-            }*/
-
             if (editingEnabled && EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(target, "Modify PressableButton");
@@ -200,10 +177,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 maxPushDistance.floatValue = info.MaxPushDistance; 
                 pressDistance.floatValue = info.PressDistance;
                 releaseDistanceDelta.floatValue = info.PressDistance - info.ReleaseDistance;
-
-                /*boxColliderSize.vector3Value = new Vector3(info.TouchCageLocalBounds.size.x, info.TouchCageLocalBounds.size.y, newInfo.TouchCageSize);
-                boxColliderCenter.vector3Value = new Vector3(info.TouchCageLocalBounds.center.x, info.TouchCageLocalBounds.center.y, newInfo.TouchCageCenter);
-                boxColliderObject.ApplyModifiedProperties();*/
 
                 serializedObject.ApplyModifiedProperties();
             }
@@ -362,10 +335,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void MakeQuadFromPoint(Vector3[] vertices, Vector3 centerWorld, Vector3 halfExtents, ButtonInfo info)
         {
-            vertices[0] = info.PushRotationLocal * new Vector3(-halfExtents.x, -halfExtents.y, 0.0f) + centerWorld;
-            vertices[1] = info.PushRotationLocal * new Vector3(-halfExtents.x, +halfExtents.y, 0.0f) + centerWorld;
-            vertices[2] = info.PushRotationLocal * new Vector3(+halfExtents.x, +halfExtents.y, 0.0f) + centerWorld;
-            vertices[3] = info.PushRotationLocal * new Vector3(+halfExtents.x, -halfExtents.y, 0.0f) + centerWorld;
+            vertices[0] = info.PushRotationLocal * new Vector3(-halfExtents.x, -halfExtents.y, 0.0f).Mul(button.transform.lossyScale) + centerWorld;
+            vertices[1] = info.PushRotationLocal * new Vector3(-halfExtents.x, +halfExtents.y, 0.0f).Mul(button.transform.lossyScale) + centerWorld;
+            vertices[2] = info.PushRotationLocal * new Vector3(+halfExtents.x, +halfExtents.y, 0.0f).Mul(button.transform.lossyScale) + centerWorld;
+            vertices[3] = info.PushRotationLocal * new Vector3(+halfExtents.x, -halfExtents.y, 0.0f).Mul(button.transform.lossyScale) + centerWorld;
         }
     }
 }
