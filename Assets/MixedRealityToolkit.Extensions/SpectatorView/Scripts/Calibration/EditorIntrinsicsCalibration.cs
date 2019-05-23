@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (feedImage != null &&
                 feedImage.texture == null)
-                feedImage.texture = CompositorWrapper.GetDSLRFeed();
+                feedImage.texture = CompositorWrapper.Instance.GetVideoCameraFeed();
 
             if (cornersImage)
                 cornersImage.texture = chessboardCorners;
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                var dslrTexture = CompositorWrapper.GetDSLRTexture();
+                var dslrTexture = CompositorWrapper.Instance.GetVideoCameraTexture();
                 var fileName = CalibrationDataHelper.GetUniqueFileName();
                 CalibrationDataHelper.SaveChessboardImage(dslrTexture, fileName);
 

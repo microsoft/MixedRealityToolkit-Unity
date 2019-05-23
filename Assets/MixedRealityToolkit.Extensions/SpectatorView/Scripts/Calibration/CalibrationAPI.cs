@@ -11,21 +11,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     internal class CalibrationAPI
     {
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "InitializeCalibration")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "InitializeCalibration")]
 #endif
         internal static extern bool InitializeCalibrationNative();
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "ResetCalibration")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ResetCalibration")]
 #endif
         internal static extern bool ResetCalibrationNative();
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessChessboardImage")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessChessboardImage")]
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             int cornerImageRadias,
             int heatmapWidth);
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessChessboardIntrinsics")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessChessboardIntrinsics")]
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             float[] intrinsics,
             int sizeIntrinsics);
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessArUcoData")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessArUcoData")]
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             float[] markerCornersRelativeToCamera,
             int numMarkerCornerValues);
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessIndividualArUcoExtrinsics")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessIndividualArUcoExtrinsics")]
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             int sizeExtrinsics,
             int numExtrinsics);
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessGlobalArUcoExtrinsics")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessGlobalArUcoExtrinsics")]
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             float[] extrinsics,
             int sizeExtrinsics);
 
-#if UNITY_WSA
+#if WINDOWS_UWP
         [DllImport("SpectatorViewPlugin", EntryPoint = "GetLastErrorMessage")]
 #else
         [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "GetLastErrorMessage")]
