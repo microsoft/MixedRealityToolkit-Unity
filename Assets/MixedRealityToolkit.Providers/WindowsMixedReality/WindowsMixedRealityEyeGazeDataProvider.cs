@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         public bool SmoothEyeTracking { get; set; } = false;
 
-        public IMixedRealityEyeSaccadeProvider SaccadeProvider => this as IMixedRealityEyeSaccadeProvider;
+        public IMixedRealityEyeSaccadeProvider SaccadeProvider => this;
 
         private readonly float smoothFactorNormalized = 0.96f;
         private readonly float saccadeThreshInDegree = 2.5f; // In degrees (not radians)
