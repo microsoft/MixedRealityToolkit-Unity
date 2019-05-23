@@ -77,6 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             serializedObject.Update();
 
+            Rect position;
+
             EditorGUILayout.Space();
             InspectorUIUtility.DrawTitle("Interactable");
 
@@ -140,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             //standard Interactable Object UI
             SerializedProperty enabled = serializedObject.FindProperty("Enabled");
-            enabled.boolValue = EditorGUILayout.Toggle(new GUIContent("Enabled", "Is this Interactable Enabled?"), enabled.boolValue);
+            EditorGUILayout.PropertyField(enabled, new GUIContent("Enabled", "Is this Interactable Enabled?"));
 
             SerializedProperty actionId = serializedObject.FindProperty("InputActionId");
 
@@ -152,18 +154,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                int newActionId = EditorGUILayout.Popup("Input Actions", actionId.intValue, actionOptions);
-                if (newActionId != actionId.intValue)
-                {
-                    actionId.intValue = newActionId;
-                }
+                position = EditorGUILayout.GetControlRect();
+                DrawDrownDownProperty(position, actionId, actionOptions, new GUIContent("Input Actions", "The input action filter"));
+                //actionId.intValue = EditorGUILayout.Popup("Input Actions", actionId.intValue, actionOptions);
             }
             
             SerializedProperty isGlobal = serializedObject.FindProperty("IsGlobal");
-            isGlobal.boolValue = EditorGUILayout.Toggle(new GUIContent("Is Global", "Like a modal, does not require focus"), isGlobal.boolValue);
+            EditorGUILayout.PropertyField(isGlobal, new GUIContent("Is Global", "Like a modal, does not require focus"));
 
             SerializedProperty voiceCommands = serializedObject.FindProperty("VoiceCommand");
-            voiceCommands.stringValue = EditorGUILayout.TextField(new GUIContent("Voice Command", "A voice command to trigger the click event"), voiceCommands.stringValue);
+            EditorGUILayout.PropertyField(voiceCommands, new GUIContent("Voice Command", "A voice command to trigger the click event"));
 
             // show requires gaze because voice command has a value
             if (!string.IsNullOrEmpty(voiceCommands.stringValue))
@@ -171,13 +171,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
 
                 SerializedProperty requireGaze = serializedObject.FindProperty("RequiresFocus");
-                requireGaze.boolValue = EditorGUILayout.Toggle(new GUIContent("Requires Focus", "Does the voice command require gazing at this interactable?"), requireGaze.boolValue);
+                EditorGUILayout.PropertyField(requireGaze, new GUIContent("Requires Focus", "Does the voice command require gazing at this interactable?"));
 
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
 
             SerializedProperty dimensions = serializedObject.FindProperty("Dimensions");
-            dimensions.intValue = EditorGUILayout.IntField(new GUIContent("Dimensions", "Toggle or sequence button levels"), dimensions.intValue);
+            EditorGUILayout.PropertyField(dimensions, new GUIContent("Dimensions", "Toggle or sequence button levels"));
 
             if (dimensions.intValue > 1)
             {
@@ -186,8 +186,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SerializedProperty canSelect = serializedObject.FindProperty("CanSelect");
                 SerializedProperty canDeselect = serializedObject.FindProperty("CanDeselect");
 
-                canSelect.boolValue = EditorGUILayout.Toggle(new GUIContent("Can Select", "The user can toggle this button"), canSelect.boolValue);
-                canDeselect.boolValue = EditorGUILayout.Toggle(new GUIContent("Can Deselect", "The user can untoggle this button, set false for a radial interaction."), canDeselect.boolValue);
+                EditorGUILayout.PropertyField(canSelect, new GUIContent("Can Select", "The user can toggle this button"));
+                EditorGUILayout.PropertyField(canDeselect, new GUIContent("Can Deselect", "The user can untoggle this button, set false for a radial interaction."));
 
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
@@ -462,7 +462,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // Events section
             InspectorUIUtility.DrawTitle("Events");
-            //EditorGUILayout.LabelField(new GUIContent("Events"));
 
             SerializedProperty onClick = serializedObject.FindProperty("OnClick");
             EditorGUILayout.PropertyField(onClick, new GUIContent("OnClick"));
@@ -666,6 +665,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 InspectorFieldsUtility.PropertySettingsList(settings, data.Fields);
             }
+        }
+
+        protected void DrawDrownDownProperty(Rect position, SerializedProperty prop, string[] options, GUIContent label)
+        {
+            EditorGUI.BeginProperty(position, label, prop);
+            {
+                prop.intValue = EditorGUI.Popup(position, label.text, prop.intValue, options);
+            }
+            EditorGUI.EndProperty();
         }
 
         protected void SetupEventOptions()
