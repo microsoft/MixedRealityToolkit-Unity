@@ -62,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             while (sourceProp.NextVisible(true))
             {
                 string propName = sourceProp.name;
+
                 if (!string.IsNullOrEmpty(propNamePrefixFilter) && propName.StartsWith(propNamePrefixFilter))
                 {
                     propName = propName.Replace(propNamePrefixFilter, "");
@@ -124,8 +125,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 default:
                     throw new NotImplementedException("Type " + property.propertyType + " is not implemented.");
             }
-
-            Debug.Log("Set field to " + field.GetValue(target)?.ToString());
         }
 
         /// <summary>

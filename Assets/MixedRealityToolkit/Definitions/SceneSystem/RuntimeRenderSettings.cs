@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.SceneSystem
 {
+
     /// <summary>
     /// A struct that mimics the render settings stored in a scene.
     /// Used to store, retrieve and interpolate render settings.
@@ -38,28 +39,28 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         public static RuntimeRenderSettings Lerp(RuntimeRenderSettings from, RuntimeRenderSettings to, float t)
         {
-            bool halfway = t > 0.5f;
+            bool firstHalf = t < 0.5f;
 
             to.AmbientEquatorColor          = Color.Lerp(from.AmbientEquatorColor, to.AmbientEquatorColor, t);
             to.AmbientGroundColor           = Color.Lerp(from.AmbientGroundColor, to.AmbientGroundColor, t);
             to.AmbientIntensity             = Mathf.Lerp(from.AmbientIntensity, to.AmbientIntensity, t);
             to.AmbientLight                 = Color.Lerp(from.AmbientLight, to.AmbientLight, t);
-            to.AmbientMode                  = halfway ? from.AmbientMode : to.AmbientMode;
+            to.AmbientMode                  = firstHalf ? from.AmbientMode : to.AmbientMode;
             to.AmbientSkyColor              = Color.Lerp(from.AmbientSkyColor, to.AmbientSkyColor, t);
-            to.CustomReflection             = halfway ? from.CustomReflection : to.CustomReflection;
-            to.DefaultReflectionMode        = halfway ? from.DefaultReflectionMode : to.DefaultReflectionMode;
-            to.DefaultReflectionResolution  = halfway ? from.DefaultReflectionResolution : to.DefaultReflectionResolution;
-            to.Fog                          = halfway ? from.Fog : to.Fog;
+            to.CustomReflection             = firstHalf ? from.CustomReflection : to.CustomReflection;
+            to.DefaultReflectionMode        = firstHalf ? from.DefaultReflectionMode : to.DefaultReflectionMode;
+            to.DefaultReflectionResolution  = firstHalf ? from.DefaultReflectionResolution : to.DefaultReflectionResolution;
+            to.Fog                          = firstHalf ? from.Fog : to.Fog;
             to.FogColor                     = Color.Lerp(from.FogColor, to.FogColor, t);
             to.FogDensity                   = Mathf.Lerp(from.FogDensity, to.FogDensity, t);
-            to.FogMode                      = halfway ? from.FogMode : to.FogMode;
+            to.FogMode                      = firstHalf ? from.FogMode : to.FogMode;
             to.LinearFogEnd                 = Mathf.Lerp(from.LinearFogEnd, to.LinearFogEnd, t);
             to.LinearFogStart               = Mathf.Lerp(from.LinearFogStart, to.LinearFogStart, t);
-            to.ReflectionBounces            = halfway ? from.ReflectionBounces : to.ReflectionBounces;
+            to.ReflectionBounces            = firstHalf ? from.ReflectionBounces : to.ReflectionBounces;
             to.ReflectionIntensity          = Mathf.Lerp(from.ReflectionIntensity, to.ReflectionIntensity, t);
-            to.SkyboxMaterial               = halfway ? from.SkyboxMaterial : to.SkyboxMaterial;
+            to.SkyboxMaterial               = firstHalf ? from.SkyboxMaterial : to.SkyboxMaterial;
             to.SubtractiveShadowColor       = Color.Lerp(from.SubtractiveShadowColor, to.SubtractiveShadowColor, t);
-            to.UseRadianceAmbientProbe      = halfway ? from.UseRadianceAmbientProbe : to.UseRadianceAmbientProbe;
+            to.UseRadianceAmbientProbe      = firstHalf ? from.UseRadianceAmbientProbe : to.UseRadianceAmbientProbe;
 
             return to;
         }

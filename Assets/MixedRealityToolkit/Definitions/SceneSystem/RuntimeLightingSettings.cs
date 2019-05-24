@@ -23,13 +23,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         public static RuntimeLightingSettings Lerp(RuntimeLightingSettings from, RuntimeLightingSettings to, float t)
         {
-            bool halfway = t > 0.5f;
+            bool firstHalf = t < 0.5f;
 
             to.AlbedoBoost = Mathf.Lerp(from.AlbedoBoost, to.AlbedoBoost, t);
             to.BounceScale = Mathf.Lerp(from.BounceScale, to.BounceScale, t);
-            to.EnableBakedLightmaps = halfway ? from.EnableBakedLightmaps : to.EnableBakedLightmaps;
-            to.EnabledRealtimeLightmaps = halfway ? from.EnabledRealtimeLightmaps : to.EnabledRealtimeLightmaps;
-            to.EnvironmentLightingMode = halfway ? from.EnvironmentLightingMode : to.EnvironmentLightingMode;
+            to.EnableBakedLightmaps = firstHalf ? from.EnableBakedLightmaps : to.EnableBakedLightmaps;
+            to.EnabledRealtimeLightmaps = firstHalf ? from.EnabledRealtimeLightmaps : to.EnabledRealtimeLightmaps;
+            to.EnvironmentLightingMode = firstHalf ? from.EnvironmentLightingMode : to.EnvironmentLightingMode;
             to.IndirectOutputScale = Mathf.Lerp(from.IndirectOutputScale, to.IndirectOutputScale, t);
 
             return to;

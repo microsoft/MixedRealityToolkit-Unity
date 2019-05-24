@@ -268,6 +268,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         {
             List<RuntimeLightingSettings> cachedLightingSettings = new List<RuntimeLightingSettings>();
             List<RuntimeRenderSettings> cachedRenderSettings = new List<RuntimeRenderSettings>();
+            List<RuntimeSunlightSettings> cachedSunlightSettings = new List<RuntimeSunlightSettings>();
+
             SceneInfo defaultLightingScene = profile.DefaultLightingScene;
 
             foreach (SceneInfo lightingScene in profile.LightingScenes)
@@ -293,15 +295,40 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 // Copy the serialized objects into new structs
                 RuntimeLightingSettings lightingSettings = default(RuntimeLightingSettings);
                 RuntimeRenderSettings renderSettings = default(RuntimeRenderSettings);
+                RuntimeSunlightSettings sunlightSettings = default(RuntimeSunlightSettings);
 
                 lightingSettings = SerializedObjectUtils.CopySerializedObjectToStruct<RuntimeLightingSettings>(lightingSettingsObject, lightingSettings, "m_");
                 renderSettings = SerializedObjectUtils.CopySerializedObjectToStruct<RuntimeRenderSettings>(renderSettingsObject, renderSettings, "m_");
 
+                // Extract sunlight settings based on sunlight object
+                SerializedProperty sunProperty = renderSettingsObject.FindProperty("m_Sun");
+                if (sunProperty == null)
+                {
+                    Debug.LogError("Sun settings may not be available in this version of Unity.");
+                }
+                else
+                {
+                    Light sunLight = (Light)sunProperty.objectReferenceValue;
+
+                    if (sunLight != null)
+                    {
+                        sunlightSettings.UseSunlight = true;
+                        sunlightSettings.Color = sunLight.color;
+                        sunlightSettings.Intensity = sunLight.intensity;
+
+                        Vector3 eulerAngles = sunLight.transform.eulerAngles;
+                        sunlightSettings.XRotation = eulerAngles.x;
+                        sunlightSettings.YRotation = eulerAngles.y;
+                        sunlightSettings.ZRotation = eulerAngles.z;
+                    }
+                }
+
                 cachedLightingSettings.Add(lightingSettings);
                 cachedRenderSettings.Add(renderSettings);
+                cachedSunlightSettings.Add(sunlightSettings);
             }
         
-            profile.SetCachedLightmapAndRenderSettings(cachedLightingSettings, cachedRenderSettings);
+            profile.SetCachedLightmapAndRenderSettings(cachedLightingSettings, cachedRenderSettings, cachedSunlightSettings);
         }
 
         private void UpdateContentScenes(bool activeSceneDirty)

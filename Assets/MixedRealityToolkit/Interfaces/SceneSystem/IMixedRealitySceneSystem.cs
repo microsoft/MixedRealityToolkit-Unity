@@ -276,7 +276,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         /// <param name="lightingSceneName">The name of the lighting scene.</param>
         /// <param name="transitionType">The transition type to use. See LightingSceneTransitionType for information about each transition type.</param>
-        void SetLightingScene(string lightingSceneName, LightingSceneTransitionType transitionType = LightingSceneTransitionType.None);
+        /// <param name="transitionDuration">The duration of the transition (if not None).</param>
+        void SetLightingScene(string newLightingSceneName, LightingSceneTransitionType transitionType = LightingSceneTransitionType.None, float transitionDuration = 1f);
 
         #endregion
 

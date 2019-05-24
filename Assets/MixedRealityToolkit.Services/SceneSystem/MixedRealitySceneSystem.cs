@@ -290,8 +290,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         /// <inheritdoc />
-        public async void SetLightingScene(string newLightingSceneName, LightingSceneTransitionType transitionType = LightingSceneTransitionType.None)
+        public async void SetLightingScene(string newLightingSceneName, LightingSceneTransitionType transitionType = LightingSceneTransitionType.None, float transitionDuration = 1f)
         {
+            Debug.Log("Set lighting scene: " + newLightingSceneName);
+
             if (ActiveLightingScene == newLightingSceneName)
             {   // Nothing to do here
                 return;
@@ -306,7 +308,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             SceneInfo lightingScene;
             RuntimeLightingSettings lightingSettings = default(RuntimeLightingSettings);
             RuntimeRenderSettings renderSettings = default(RuntimeRenderSettings);
-            if (!string.IsNullOrEmpty(newLightingSceneName) && !profile.GetLightingSceneSettings(newLightingSceneName, out lightingScene, out lightingSettings, out renderSettings))
+            RuntimeSunlightSettings sunSettings = default(RuntimeSunlightSettings);
+            if (!string.IsNullOrEmpty(newLightingSceneName) && !profile.GetLightingSceneSettings(
+                newLightingSceneName,
+                out lightingScene, 
+                out lightingSettings, 
+                out renderSettings,
+                out sunSettings))
             {   // Make sure we don't try to load a non-existent scene
                 Debug.LogWarning("Couldn't find lighting scene " + newLightingSceneName + " in profile - taking no action.");
                 return;
@@ -320,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             // Start the lighting executor transition - don't bother waiting for load / unload, it can start right away
-            lightingExecutor.StartTransition(lightingSettings, renderSettings, transitionType);
+            lightingExecutor.StartTransition(lightingSettings, renderSettings, sunSettings, transitionType, transitionDuration);
 
             List<string> lightingSceneNames = new List<string>();
             // Create a list of lighting scenes to unload
@@ -363,6 +371,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <returns></returns>
         private async Task LoadScenesInternal(IEnumerable<string> scenesToLoad, SceneType sceneType, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
         {
+            Debug.Log("LoadScenesInternal " + sceneType + String.Join(",", scenesToLoad.ToArray<string>()));
+
             if (!CanSceneOpProceed(sceneType))
             {
                 Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");
@@ -493,6 +503,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <returns></returns>
         private async Task UnloadScenesInternal(IEnumerable<string> scenesToUnload, SceneType sceneType)
         {
+            Debug.Log("UnloadScenesInternal " + sceneType + String.Join(",", scenesToUnload.ToArray<string>()));
+
             if (!CanSceneOpProceed(sceneType))
             {
                 Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");
@@ -590,6 +602,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         
         private void SetSceneOpProgress(bool inProgress, float progress, SceneType sceneType)
         {
+            Debug.Log("Set scene op progress: " + inProgress + " " + progress + " " + sceneType);
+
             switch (sceneType)
             {
                 case SceneType.Manager:
@@ -891,6 +905,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             public void StartTransition(
                 RuntimeLightingSettings targetLightingSettings, 
                 RuntimeRenderSettings targetRenderSettings,
+                RuntimeSunlightSettings targetSunlightSettings,
                 LightingSceneTransitionType transitionType = LightingSceneTransitionType.None,
                 float transitionDuration = 1)
             {
@@ -900,10 +915,14 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                 // Update our target settings
                 this.transitionElapsed = 0;
-                this.transitionTime = transitionDuration;
+                this.transitionType = transitionType;
+                this.transitionDuration = transitionDuration;
                 this.targetLightingSettings = targetLightingSettings;
                 this.targetRenderSettings = targetRenderSettings;
+            }
 
+            public void UpdateTransition(float deltaTime)
+            {
                 switch (transitionType)
                 {
                     case LightingSceneTransitionType.None:
@@ -911,29 +930,25 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         currentLightingSettings = targetLightingSettings;
                         currentRenderSettings = targetRenderSettings;
                         transitionElapsed = transitionDuration;
-                        break;
+                        return;
 
                     case LightingSceneTransitionType.CrossFade:
-                        throw new NotImplementedException();
-
                     case LightingSceneTransitionType.FadeToBlack:
-                        throw new NotImplementedException();
+                        break;
                 }
-            }
 
-            public void UpdateTransition(float deltaTime)
-            {
                 transitionElapsed += deltaTime;
-                if (transitionElapsed >= transitionTime)
+                if (transitionElapsed >= transitionDuration)
                 {
                     currentLightingSettings = targetLightingSettings;
                     currentRenderSettings = targetRenderSettings;
                 }
                 else
                 {
-                    float transitionProgress = Mathf.Clamp01(transitionElapsed / transitionTime);
+                    float transitionProgress = Mathf.Clamp01(transitionElapsed / transitionDuration);
                     currentLightingSettings = RuntimeLightingSettings.Lerp(prevLightingSettings, targetLightingSettings, transitionProgress);
                     currentRenderSettings = RuntimeRenderSettings.Lerp(prevRenderSettings, targetRenderSettings, transitionProgress);
+                    currentSunlightSettings = RuntimeSunlightSettings.Lerp(prevSunlightSettings, targetSunlightSettings, transitionProgress);
                 }
 
                 ApplySettings();
@@ -960,19 +975,67 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 RenderSettings.reflectionIntensity                  = currentRenderSettings.ReflectionIntensity;
                 RenderSettings.skybox                               = currentRenderSettings.SkyboxMaterial;
                 RenderSettings.subtractiveShadowColor               = currentRenderSettings.SubtractiveShadowColor;
+
+                if (currentSunlightSettings.UseSunlight)
+                {
+                    FindOrCreateSunlight();
+
+                    Light sunLight = RenderSettings.sun;
+                    sunLight.color = currentSunlightSettings.Color;
+                    sunLight.intensity = currentSunlightSettings.Intensity;
+                    sunLight.transform.rotation = Quaternion.Euler(currentSunlightSettings.XRotation, currentSunlightSettings.YRotation, currentSunlightSettings.ZRotation);
+                }
+                else
+                {
+                    DisableSunlight();
+                }
+            }
+
+            private void FindOrCreateSunlight()
+            {
+                if (RenderSettings.sun == null)
+                {
+                    if (sharedSunLight == null)
+                    {   
+                        // Create a 
+                        sharedSunLight = new GameObject("Shared Sunlight").AddComponent<Light>();
+                        sharedSunLight.type = LightType.Directional;
+                        sharedSunLight.intensity = 0;
+                    }
+
+                    RenderSettings.sun = sharedSunLight;
+                }
+            }
+
+            private void DisableSunlight()
+            {
+                if (RenderSettings.sun != null)
+                {
+                    RenderSettings.sun.enabled = false;
+                }
+
+                if (sharedSunLight != null)
+                {
+                    sharedSunLight.enabled = false;
+                }
             }
 
             private RuntimeLightingSettings targetLightingSettings;
-            private RuntimeRenderSettings targetRenderSettings;
-
             private RuntimeLightingSettings currentLightingSettings;
-            private RuntimeRenderSettings currentRenderSettings;
-
             private RuntimeLightingSettings prevLightingSettings;
+
+            private RuntimeSunlightSettings targetSunlightSettings;
+            private RuntimeSunlightSettings currentSunlightSettings;
+            private RuntimeSunlightSettings prevSunlightSettings;
+
+            private RuntimeRenderSettings targetRenderSettings;
+            private RuntimeRenderSettings currentRenderSettings;
             private RuntimeRenderSettings prevRenderSettings;
 
-            private float transitionTime;
+            private LightingSceneTransitionType transitionType;
+            private float transitionDuration;
             private float transitionElapsed;
+            private Light sharedSunLight;
         }
 
         #endregion

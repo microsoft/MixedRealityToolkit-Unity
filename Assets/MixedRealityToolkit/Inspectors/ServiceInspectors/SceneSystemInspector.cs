@@ -23,6 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private SceneActivationToken activationToken = new SceneActivationToken();
         private static bool requireActivationToken = false;
+        private LightingSceneTransitionType transitionType = LightingSceneTransitionType.None;
+        private float transitionSpeed = 1f;
 
         public override bool DrawProfileField { get { return true; } }
 
@@ -94,6 +96,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void RenderLightingScenes(MixedRealitySceneSystem sceneSystem, List<SceneInfo> lightingScenes)
         {
             EditorGUILayout.HelpBox("Select the active lighting scene by clicking its name.", MessageType.Info);
+
+            if (Application.isPlaying)
+            {
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                EditorGUILayout.LabelField("Current Scene Operation", EditorStyles.boldLabel);
+                EditorGUILayout.Toggle("Scene Operation In Progress", sceneSystem.LightingOperationInProgress);
+                EditorGUILayout.FloatField("Progress", sceneSystem.LightingOperationProgress);
+                transitionType = (LightingSceneTransitionType)EditorGUILayout.EnumPopup("Lighting transition type", transitionType);
+                if (transitionType != LightingSceneTransitionType.None)
+                {
+                    transitionSpeed = EditorGUILayout.Slider("Lighting transition speed", transitionSpeed, 0f, 10f);
+                }
+                EditorGUILayout.EndVertical();
+            }
+
             EditorGUILayout.Space();
             EditorGUILayout.Space();
             EditorGUILayout.BeginVertical();
@@ -111,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 GUI.color = selected ? enabledColor : disabledColor;
                 if (GUILayout.Button(lightingScene.Name, EditorStyles.toolbarButton) && !selected)
                 {
-                    sceneSystem.SetLightingScene(lightingScene.Name);
+                    sceneSystem.SetLightingScene(lightingScene.Name, transitionType, transitionSpeed);
                 }
             }
             EditorGUILayout.EndVertical();

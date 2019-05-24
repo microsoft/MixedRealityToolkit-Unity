@@ -47,23 +47,124 @@ MonoBehaviour:
   - Name: ContentScene1
     Path: Assets/TemporaryTests/ContentScene1.unity
     Included: 1
-    BuildIndex: 3
+    BuildIndex: 6
     Tag: Respawn
     Asset: {fileID: 3671201678493226958, guid: 2844642a986b5dd449f363846d781df0, type: 3}
   - Name: ContentScene2
     Path: Assets/TemporaryTests/ContentScene2.unity
     Included: 1
-    BuildIndex: 4
+    BuildIndex: 3
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 8d232b45a4965814e88d9b4eccc34ba9, type: 3}
   - Name: ContentScene3
     Path: Assets/TemporaryTests/ContentScene3.unity
     Included: 1
-    BuildIndex: 6
+    BuildIndex: 4
     Tag: Respawn
     Asset: {fileID: 3671201678493226958, guid: d40dbc118249f324eb97fbbc3cbbc5c8, type: 3}
   contentTags:
   - Respawn
+  cachedLightingSettings:
+  - BounceScale: 1
+    IndirectOutputScale: 1
+    AlbedoBoost: 1
+    EnvironmentLightingMode: 0
+    EnableBakedLightmaps: 1
+    EnabledRealtimeLightmaps: 0
+  - BounceScale: 1
+    IndirectOutputScale: 1
+    AlbedoBoost: 1
+    EnvironmentLightingMode: 0
+    EnableBakedLightmaps: 1
+    EnabledRealtimeLightmaps: 0
+  - BounceScale: 1
+    IndirectOutputScale: 1
+    AlbedoBoost: 1
+    EnvironmentLightingMode: 0
+    EnableBakedLightmaps: 1
+    EnabledRealtimeLightmaps: 0
+  cachedRenderSettings:
+  - Fog: 0
+    FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    FogMode: 2
+    FogDensity: 0.01
+    LinearFogStart: 0
+    LinearFogEnd: 300
+    AmbientSkyColor: {r: 0.08962262, g: 0.3930819, b: 1, a: 1}
+    AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+    AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+    AmbientLight: {r: 0, g: 0, b: 0, a: 0}
+    AmbientIntensity: 1
+    AmbientMode: 1
+    SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+    SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+    DefaultReflectionMode: 0
+    DefaultReflectionResolution: 128
+    ReflectionBounces: 1
+    ReflectionIntensity: 1
+    CustomReflection: {fileID: 0}
+    UseRadianceAmbientProbe: 0
+  - Fog: 0
+    FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    FogMode: 2
+    FogDensity: 0.01
+    LinearFogStart: 0
+    LinearFogEnd: 300
+    AmbientSkyColor: {r: 0.9479145, g: 1, b: 0.09019607, a: 1}
+    AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+    AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+    AmbientLight: {r: 0, g: 0, b: 0, a: 0}
+    AmbientIntensity: 1
+    AmbientMode: 1
+    SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+    SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+    DefaultReflectionMode: 0
+    DefaultReflectionResolution: 128
+    ReflectionBounces: 1
+    ReflectionIntensity: 1
+    CustomReflection: {fileID: 0}
+    UseRadianceAmbientProbe: 0
+  - Fog: 0
+    FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    FogMode: 2
+    FogDensity: 0.01
+    LinearFogStart: 0
+    LinearFogEnd: 300
+    AmbientSkyColor: {r: 0.9479145, g: 1, b: 0.09019607, a: 1}
+    AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+    AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+    AmbientLight: {r: 0, g: 0, b: 0, a: 0}
+    AmbientIntensity: 1
+    AmbientMode: 1
+    SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+    SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+    DefaultReflectionMode: 0
+    DefaultReflectionResolution: 128
+    ReflectionBounces: 1
+    ReflectionIntensity: 1
+    CustomReflection: {fileID: 0}
+    UseRadianceAmbientProbe: 0
+  cachedSunlightSettings:
+  - UseSunlight: 1
+    Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+    Intensity: 1
+    XRotation: 50
+    YRotation: 330
+    ZRotation: 0
+  - UseSunlight: 1
+    Color: {r: 1, g: 0.0812667, b: 0, a: 1}
+    Intensity: 1
+    XRotation: 359.32422
+    YRotation: 282.02856
+    ZRotation: 316.86832
+  - UseSunlight: 1
+    Color: {r: 0.11748052, g: 1, b: 0, a: 1}
+    Intensity: 1
+    XRotation: 18.160952
+    YRotation: 216.94548
+    ZRotation: 23.656736
+  editorManageBuildSettings: 1
   editorEnforceSceneOrder: 1
-  editorManagerLoadedScenes: 1
+  editorManageLoadedScenes: 0
   editorEnforceLightingSceneTypes: 1
+  editorCachedLightingOutOfDate: 0

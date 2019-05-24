@@ -83,6 +83,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         [Tooltip("Cached lighting settings from your lighting scenes")]
         private List<RuntimeRenderSettings> cachedRenderSettings = new List<RuntimeRenderSettings>();
 
+        [SerializeField]
+        [Tooltip("Cached sunlight settings from your lighting scenes")]
+        private List<RuntimeSunlightSettings> cachedSunlightSettings = new List<RuntimeSunlightSettings>();
+
         #region editor settings
 
         [SerializeField]
@@ -106,10 +110,16 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         #endregion
 
-        public bool GetLightingSceneSettings(string lightingSceneName, out SceneInfo lightingScene, out RuntimeLightingSettings lightingSettings, out RuntimeRenderSettings renderSettings)
+        public bool GetLightingSceneSettings(
+            string lightingSceneName,
+            out SceneInfo lightingScene, 
+            out RuntimeLightingSettings lightingSettings,
+            out RuntimeRenderSettings renderSettings,
+            out RuntimeSunlightSettings sunlightSettings)
         {
             lightingSettings = default(RuntimeLightingSettings);
             renderSettings = default(RuntimeRenderSettings);
+            sunlightSettings = default(RuntimeSunlightSettings);
             lightingScene = SceneInfo.Empty;
 
             for (int i = 0; i < lightingScenes.Count; i++)
@@ -119,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     lightingScene = lightingScenes[i]; 
                     lightingSettings = cachedLightingSettings[i];
                     renderSettings = cachedRenderSettings[i];
+                    sunlightSettings = cachedSunlightSettings[i];
                 }
             }
 
@@ -182,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             defaultLightingSceneIndex = Mathf.Clamp(defaultLightingSceneIndex, 0, lightingScenes.Count - 1);
-
+            
             if (saveChanges)
             {   // We need to tie this directly to lighting scenes somehow
                 editorCachedLightingOutOfDate = true;
@@ -199,10 +210,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         /// <param name="cachedLightingSettings"></param>
         /// <param name="cahcedRenderSettings"></param>
-        public void SetCachedLightmapAndRenderSettings(List<RuntimeLightingSettings> cachedLightingSettings, List<RuntimeRenderSettings> cachedRenderSettings)
+        public void SetCachedLightmapAndRenderSettings(List<RuntimeLightingSettings> cachedLightingSettings, List<RuntimeRenderSettings> cachedRenderSettings, List<RuntimeSunlightSettings> sunlightSettings)
         {
             this.cachedLightingSettings = cachedLightingSettings;
             this.cachedRenderSettings = cachedRenderSettings;
+            this.cachedSunlightSettings = sunlightSettings;
+
             editorCachedLightingOutOfDate = false;
             EditorCachedLightingRequested = false;
             // Make sure our changes are saved to disk!
