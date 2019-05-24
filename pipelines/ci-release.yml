@@ -6,6 +6,7 @@ variables:
 
 jobs:
 - job: CIReleaseValidation
+  timeoutInMinutes: 90
   pool:
     name: Analog On-Prem
     demands:
