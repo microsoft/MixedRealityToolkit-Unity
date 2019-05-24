@@ -855,9 +855,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             if (renderHost != null)
                             {
                                 Renderer renderer = renderHost.GetComponent<Renderer>();
-                                TextMesh mesh = renderHost.GetComponent<TextMesh>();
-                                Text text = renderHost.GetComponent<Text>();
-                                hasTextComp = text != null || mesh != null;
+                                hasTextComp = InteractableColorTheme.HasTextComponentOnObject(renderHost);
                                 if (renderer != null && !hasTextComp)
                                 {
                                     ShaderPropertyType[] filter = new ShaderPropertyType[0];

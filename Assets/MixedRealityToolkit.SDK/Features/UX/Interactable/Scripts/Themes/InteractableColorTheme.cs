@@ -264,6 +264,35 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return false;
         }
+
+        public static bool HasTextComponentOnObject(GameObject host)
+        {
+            TextMeshPro tmp = host.GetComponent<TextMeshPro>();
+            if(tmp != null)
+            {
+                return true;
+            }
+
+            TextMeshProUGUI tmpUGUI = host.GetComponent<TextMeshProUGUI>();
+            if (tmpUGUI != null)
+            {
+                return true;
+            }
+
+            TextMesh mesh = host.GetComponent<TextMesh>();
+            if (mesh != null)
+            {
+                return true;
+            }
+
+            Text text = host.GetComponent<Text>();
+            if (text != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
         
     }
 }
