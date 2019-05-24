@@ -909,7 +909,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         }
                         else
                         {
-                            EditorGUILayout.LabelField(new GUIContent("Text Property: " + (InteractableThemePropertyValueTypes)propId.intValue));
+                            EditorGUILayout.LabelField(new GUIContent("Text Property: Color"));
                         }
 
                         // Handle issue where the material color id renders on objects it shouldn't!!!!!!!!!!!!!!
