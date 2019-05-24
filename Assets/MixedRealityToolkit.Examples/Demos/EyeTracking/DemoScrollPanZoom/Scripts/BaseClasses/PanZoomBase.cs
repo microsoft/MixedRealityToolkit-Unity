@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 if (eyeSaccadeProvider == null)
                 {
                     IMixedRealityEyeGazeDataProvider eyeGazeProvider = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityEyeGazeDataProvider>();
-                    eyeSaccadeProvider = eyeGazeProvider.SaccadeProvider;
+                    eyeSaccadeProvider = eyeGazeProvider?.SaccadeProvider;
                 }
                 return eyeSaccadeProvider;
             }
