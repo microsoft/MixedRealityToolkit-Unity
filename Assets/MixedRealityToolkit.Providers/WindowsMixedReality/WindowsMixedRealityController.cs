@@ -418,14 +418,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     break;
                 case DeviceInputType.Select:
                     {
-                        // Update the interaction data source
-                        interactionMapping.BoolData = interactionSourceState.selectPressed;
+                        // Get the select pressed state, factoring in a workaround for Unity issue #1033526.
+                        // When that issue is fixed, it should be possible change the line below to:
+                        // interactionMapping.BoolData = interactionSourceState.selectPressed;
+                        interactionMapping.BoolData = GetSelectPressedWorkaround(interactionSourceState);
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
                             // Raise input system Event if it enabled
-                            if (interactionSourceState.selectPressed)
+                            if (interactionMapping.BoolData)
                             {
                                 InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                             }
@@ -513,6 +515,34 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             controllerModelInitialized = true;
             CreateControllerModelFromPlatformSDK(interactionSourceState.source.id);
+        }
+
+        /// <summary>
+        /// Gets the whether or not 'select' has been pressed.
+        /// </summary>
+        /// <remarks>
+        /// This includes a workaround to fix air-tap gestures in HoloLens 1 remoting, to work around the following Unity issue:
+        /// https://issuetracker.unity3d.com/issues/hololens-interactionsourcestate-dot-selectpressed-is-false-when-air-tap-and-hold
+        /// Bug was discovered May 2018 and still exists as of May 2019 in version 2018.3.11f1. This workaround is scoped to only
+        /// cases where remoting is active.
+        /// </remarks>
+        private bool GetSelectPressedWorkaround(InteractionSourceState interactionSourceState)
+        {
+            bool selectPressed = interactionSourceState.selectPressed;
+            if (interactionSourceState.source.kind == InteractionSourceKind.Hand && 
+                UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected)
+            {
+                // This workaround is safe as long as all these assumptions hold:
+                Debug.Assert(!interactionSourceState.selectPressed, "Unity issue #1033526 seems to have been resolved. Please remove this workaround!");
+                Debug.Assert(!interactionSourceState.source.supportsGrasp);
+                Debug.Assert(!interactionSourceState.source.supportsMenu);
+                Debug.Assert(!interactionSourceState.source.supportsPointing);
+                Debug.Assert(!interactionSourceState.source.supportsThumbstick);
+                Debug.Assert(!interactionSourceState.source.supportsTouchpad);
+
+                selectPressed = interactionSourceState.anyPressed;
+            }
+            return selectPressed;
         }
 
         #endregion Update data functions

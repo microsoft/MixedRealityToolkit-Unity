@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 Shader "Mixed Reality Toolkit/Standard"
@@ -35,6 +35,8 @@ Shader "Mixed Reality Toolkit/Standard"
         _RimColor("Rim Color", Color) = (0.5, 0.5, 0.5, 1.0)
         _RimPower("Rim Power", Range(0.0, 8.0)) = 0.25
         [Toggle(_VERTEX_COLORS)] _VertexColors("Vertex Colors", Float) = 0.0
+        [Toggle(_VERTEX_EXTRUSION)] _VertexExtrusion("Vertex Extrusion", Float) = 0.0
+        _VertexExtrusionValue("Vertex Extrusion Value", Float) = 0.0
         [Toggle(_CLIPPING_PLANE)] _ClippingPlane("Clipping Plane", Float) = 0.0
         [Toggle(_CLIPPING_SPHERE)] _ClippingSphere("Clipping Sphere", Float) = 0.0
         [Toggle(_CLIPPING_BOX)] _ClippingBox("Clipping Box", Float) = 0.0
@@ -45,6 +47,7 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_NEAR_LIGHT_FADE)] _NearLightFade("Near Light Fade", Float) = 0.0
         _FadeBeginDistance("Fade Begin Distance", Range(0.01, 10.0)) = 0.85
         _FadeCompleteDistance("Fade Complete Distance", Range(0.01, 10.0)) = 0.5
+        _FadeMinValue("Fade Min Value", Range(0.0, 1.0)) = 0.0
 
         // Fluent options.
         [Toggle(_HOVER_LIGHT)] _HoverLight("Hover Light", Float) = 1.0
@@ -86,6 +89,8 @@ Shader "Mixed Reality Toolkit/Standard"
         [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("Blend Operation", Float) = 0                 // "Add"
         [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("Depth Test", Float) = 4                // "LessEqual"
         [Enum(DepthWrite)] _ZWrite("Depth Write", Float) = 1                                         // "On"
+        _ZOffsetFactor("Depth Offset Factor", Float) = 0                                             // "Zero"
+        _ZOffsetUnits("Depth Offset Units", Float) = 0                                               // "Zero"
         [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("Color Write Mask", Float) = 15 // "All"
         [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Float) = 2                     // "Back"
         _RenderQueueOverride("Render Queue Override", Range(-1.0, 5000)) = -1
@@ -116,6 +121,9 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "UnityCG.cginc"
             #include "UnityMetaPass.cginc"
 
+            // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
+            //#define _LIGHTWEIGHT_RENDER_PIPELINE
+
             struct v2f
             {
                 float4 vertex : SV_POSITION;
@@ -138,7 +146,15 @@ Shader "Mixed Reality Toolkit/Standard"
 
             fixed4 _Color;
             fixed4 _EmissiveColor;
+
+#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+            CBUFFER_START(_LightBuffer)
+            float4 _MainLightPosition;
+            half4 _MainLightColor;
+            CBUFFER_END
+#else
             fixed4 _LightColor0;
+#endif
 
             half4 frag(v2f i) : SV_Target
             {
@@ -153,7 +169,11 @@ Shader "Mixed Reality Toolkit/Standard"
                 output.Emission += _EmissiveColor;
 #endif
 #endif
+#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+                output.SpecularColor = _MainLightColor.rgb;
+#else
                 output.SpecularColor = _LightColor0.rgb;
+#endif
 
                 return UnityMetaFragment(output);
             }
@@ -163,13 +183,14 @@ Shader "Mixed Reality Toolkit/Standard"
         Pass
         {
             Name "Main"
-            Tags{ "RenderType" = "Opaque" "LightMode" = "ForwardBase" "PerformanceChecks" = "False" }
+            Tags{ "RenderType" = "Opaque" "LightMode" = "ForwardBase" }
             LOD 100
             Blend[_SrcBlend][_DstBlend]
             BlendOp[_BlendOp]
             ZTest[_ZTest]
             ZWrite[_ZWrite]
             Cull[_CullMode]
+            Offset[_ZOffsetFactor],[_ZOffsetUnits]
             ColorMask[_ColorWriteMask]
 
             Stencil
@@ -207,6 +228,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _REFRACTION
             #pragma shader_feature _RIM_LIGHT
             #pragma shader_feature _VERTEX_COLORS
+            #pragma shader_feature _VERTEX_EXTRUSION
             #pragma shader_feature _CLIPPING_PLANE
             #pragma shader_feature _CLIPPING_SPHERE
             #pragma shader_feature _CLIPPING_BOX
@@ -232,6 +254,9 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "UnityCG.cginc"
             #include "UnityStandardConfig.cginc"
             #include "UnityStandardUtils.cginc"
+
+            // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
+            //#define _LIGHTWEIGHT_RENDER_PIPELINE
 
 #if defined(_TRIPLANAR_MAPPING) || defined(_DIRECTIONAL_LIGHT) || defined(_SPHERICAL_HARMONICS) || defined(_REFLECTIONS) || defined(_RIM_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_ENVIRONMENT_COLORING)
             #define _NORMAL
@@ -319,8 +344,11 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_VERTEX_COLORS)
                 fixed4 color : COLOR0;
 #endif
+#if defined(_SPHERICAL_HARMONICS)
+                fixed3 ambient : COLOR1;
+#endif
 #if defined(_IRIDESCENCE)
-                fixed3 iridescentColor : COLOR1;
+                fixed3 iridescentColor : COLOR2;
 #endif
 #if defined(_WORLD_POSITION)
 #if defined(_NEAR_PLANE_FADE)
@@ -334,15 +362,15 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 #if defined(_NORMAL)
 #if defined(_TRIPLANAR_MAPPING)
-                fixed3 worldNormal : COLOR2;
-                fixed3 triplanarNormal : COLOR3;
+                fixed3 worldNormal : COLOR3;
+                fixed3 triplanarNormal : COLOR4;
                 float3 triplanarPosition : TEXCOORD6;
 #elif defined(_NORMAL_MAP)
-                fixed3 tangentX : COLOR2;
-                fixed3 tangentY : COLOR3;
-                fixed3 tangentZ : COLOR4;
+                fixed3 tangentX : COLOR3;
+                fixed3 tangentY : COLOR4;
+                fixed3 tangentZ : COLOR5;
 #else
-                fixed3 worldNormal : COLOR2;
+                fixed3 worldNormal : COLOR3;
 #endif
 #endif
                 UNITY_VERTEX_OUTPUT_STEREO
@@ -386,7 +414,14 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_DIRECTIONAL_LIGHT)
+#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+            CBUFFER_START(_LightBuffer)
+            float4 _MainLightPosition;
+            half4 _MainLightColor;
+            CBUFFER_END
+#else
             fixed4 _LightColor0;
+#endif
 #endif
 
 #if defined(_REFRACTION)
@@ -396,6 +431,10 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_RIM_LIGHT)
             fixed3 _RimColor;
             fixed _RimPower;
+#endif
+
+#if defined(_VERTEX_EXTRUSION)
+            float _VertexExtrusionValue;
 #endif
 
 #if defined(_CLIPPING_PLANE)
@@ -422,6 +461,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_NEAR_PLANE_FADE)
             float _FadeBeginDistance;
             float _FadeCompleteDistance;
+            fixed _FadeMinValue;
 #endif
 
 #if defined(_HOVER_LIGHT) || defined(_NEAR_LIGHT_FADE)
@@ -600,10 +640,25 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_INSTANCED_COLOR)
                 UNITY_TRANSFER_INSTANCE_ID(v, o);
 #endif
-                o.position = UnityObjectToClipPos(v.vertex);
+                float4 vertexPosition = v.vertex;
+
+#if defined(_WORLD_POSITION) || defined(_VERTEX_EXTRUSION)
+                float3 worldVertexPosition = mul(unity_ObjectToWorld, vertexPosition).xyz;
+#endif
+
+#if defined(_NORMAL) || defined(_VERTEX_EXTRUSION)
+                fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
+#endif
+
+#if defined(_VERTEX_EXTRUSION)
+                worldVertexPosition += worldNormal * _VertexExtrusionValue;
+                vertexPosition = mul(unity_WorldToObject, float4(worldVertexPosition, 1.0));
+#endif
+
+                o.position = UnityObjectToClipPos(vertexPosition);
 
 #if defined(_WORLD_POSITION)
-                o.worldPosition.xyz = mul(unity_ObjectToWorld, v.vertex).xyz;
+                o.worldPosition.xyz = worldVertexPosition;
 #endif
 
 #if defined(_NEAR_PLANE_FADE)
@@ -625,9 +680,9 @@ Shader "Mixed Reality Toolkit/Standard"
                     fadeDistance = min(fadeDistance, NearLightDistance(_ProximityLightData[dataIndex], o.worldPosition));
                 }
 #else
-                float fadeDistance = -UnityObjectToViewPos(v.vertex.xyz).z;
+                float fadeDistance = -UnityObjectToViewPos(vertexPosition).z;
 #endif
-                o.worldPosition.w = saturate(mad(fadeDistance, rangeInverse, -_FadeCompleteDistance * rangeInverse));
+                o.worldPosition.w = max(saturate(mad(fadeDistance, rangeInverse, -_FadeCompleteDistance * rangeInverse)), _FadeMinValue);
 #endif
 
 #if defined(_SCALE)
@@ -708,6 +763,10 @@ Shader "Mixed Reality Toolkit/Standard"
                 o.color = v.color;
 #endif
 
+#if defined(_SPHERICAL_HARMONICS)
+                o.ambient = ShadeSH9(float4(worldNormal, 1.0));
+#endif
+
 #if defined(_IRIDESCENCE)
                 float3 rightTangent = normalize(mul((float3x3)unity_ObjectToWorld, float3(1.0, 0.0, 0.0)));
                 float3 incidentWithCenter = normalize(mul(unity_ObjectToWorld, float4(0.0, 0.0, 0.0, 1.0)) - _WorldSpaceCameraPos);
@@ -716,13 +775,11 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_NORMAL)
-                fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
-
 #if defined(_TRIPLANAR_MAPPING)
                 o.worldNormal = worldNormal;
 #if defined(_LOCAL_SPACE_TRIPLANAR_MAPPING)
                 o.triplanarNormal = v.normal;
-                o.triplanarPosition = v.vertex;
+                o.triplanarPosition = vertexPosition;
 #else
                 o.triplanarNormal = worldNormal;
                 o.triplanarPosition = o.worldPosition;
@@ -975,10 +1032,14 @@ Shader "Mixed Reality Toolkit/Standard"
 
                 // Blinn phong lighting.
 #if defined(_DIRECTIONAL_LIGHT)
-                fixed diffuse = max(0.0, dot(worldNormal, _WorldSpaceLightPos0));
-
+#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+                float4 directionalLightDirection = _MainLightPosition;
+#else
+                float4 directionalLightDirection = _WorldSpaceLightPos0;
+#endif
+                fixed diffuse = max(0.0, dot(worldNormal, directionalLightDirection));
 #if defined(_SPECULAR_HIGHLIGHTS)
-                fixed halfVector = max(0.0, dot(worldNormal, normalize(_WorldSpaceLightPos0 + worldViewDir)));
+                fixed halfVector = max(0.0, dot(worldNormal, normalize(directionalLightDirection + worldViewDir)));
                 fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4.0)) * _Smoothness * 0.5);
 #else
                 fixed specular = 0.0;
@@ -1010,7 +1071,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 // Final lighting mix.
                 fixed4 output = albedo;
 #if defined(_SPHERICAL_HARMONICS)
-                fixed3 ambient = ShadeSH9(float4(worldNormal, 1.0));
+                fixed3 ambient = i.ambient;
 #else
                 fixed3 ambient = glstate_lightmodel_ambient + fixed3(0.25, 0.25, 0.25);
 #endif
@@ -1018,8 +1079,13 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_DIRECTIONAL_LIGHT)
                 fixed oneMinusMetallic = (1.0 - _Metallic);
                 output.rgb = lerp(output.rgb, ibl, minProperty);
-                output.rgb *= lerp((ambient + _LightColor0.rgb * diffuse + _LightColor0.rgb * specular) * max(oneMinusMetallic, _MinMetallicLightContribution), albedo, minProperty);
-                output.rgb += (_LightColor0.rgb * albedo * specular) + (_LightColor0.rgb * specular * _Smoothness);
+#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+                fixed3 directionalLightColor = _MainLightColor.rgb;
+#else
+                fixed3 directionalLightColor = _LightColor0.rgb;
+#endif
+                output.rgb *= lerp((ambient + directionalLightColor * diffuse + directionalLightColor * specular) * max(oneMinusMetallic, _MinMetallicLightContribution), albedo, minProperty);
+                output.rgb += (directionalLightColor * albedo * specular) + (directionalLightColor * specular * _Smoothness);
                 output.rgb += ibl * oneMinusMetallic * _IblContribution;
 #elif defined(_REFLECTIONS)
                 output.rgb = lerp(output.rgb, ibl, minProperty);
@@ -1074,6 +1140,6 @@ Shader "Mixed Reality Toolkit/Standard"
         }
     }
     
-    FallBack "VertexLit"
+    Fallback "Hidden/InternalErrorShader"
     CustomEditor "Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI"
 }

@@ -5,6 +5,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 { 
     public interface IInputSimulationService : IMixedRealityInputDeviceManager
     {
+        /// <summary>
+        /// Typed representation of the ConfigurationProfile property.
+        /// </summary>
         MixedRealityInputSimulationProfile InputSimulationProfile { get; }
     }
 }
