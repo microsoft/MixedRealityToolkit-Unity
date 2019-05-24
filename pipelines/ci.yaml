@@ -11,7 +11,6 @@ jobs:
     name: On-Prem Unity
     demands:
     - Unity2018.3.7f1
-    - COG-UnityCache-WUS2-01
   steps:
   - template: templates/common.yml
   - template: templates/package.yml
