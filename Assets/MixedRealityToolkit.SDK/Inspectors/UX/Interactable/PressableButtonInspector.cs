@@ -256,20 +256,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnInspectorGUI();
 
-            PressableButton.SpaceMode buttonSpaceMode = button.DistanceSpaceMode;
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Plane Distances are in local space" : "Plane Distances are in world space", EditorStyles.boldLabel);
-            if (EditingEnabled && GUILayout.Button(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Convert Distances to World Space" : "Convert Distances to Local Space"))
-            {
-                onTriggerPlaneDistanceConversion();
-            }
 
-            if (Application.isPlaying)
+            // show button state in play mode
             {
+                EditorGUI.BeginDisabledGroup(Application.isPlaying == false);
+
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Button State", EditorStyles.boldLabel);
                 EditorGUILayout.Toggle("Touching", button.IsTouching);
                 EditorGUILayout.Toggle("Pressing", button.IsPressing);
+                EditorGUI.EndDisabledGroup();
             }
 
             EditorGUILayout.Space();
@@ -281,8 +277,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 SessionState.SetBool(VisiblePlanesKey, newValue);
             }
 
-            if (VisiblePlanes)
+            // enable plane editing
             {
+                EditorGUI.BeginDisabledGroup(VisiblePlanes == false);
                 EditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
                 newValue = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
                 if (newValue != EditingEnabled)
@@ -290,6 +287,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     SessionState.SetBool(EditingEnabledKey, newValue);
                     EditorUtility.SetDirty(target);
                 }
+                EditorGUI.EndDisabledGroup();
+            }
+
+            // plane distance conversion
+            {
+                EditorGUI.BeginDisabledGroup(EditingEnabled == false);
+                PressableButton.SpaceMode buttonSpaceMode = button.DistanceSpaceMode;
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Plane Distances are in local space" : "Plane Distances are in world space", EditorStyles.boldLabel);
+                if (GUILayout.Button(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Convert Distances to World Space" : "Convert Distances to Local Space"))
+                {
+                    onTriggerPlaneDistanceConversion();
+                }
+                EditorGUI.EndDisabledGroup();
             }
         }
 
