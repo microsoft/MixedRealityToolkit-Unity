@@ -10274,7 +10274,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Core.TestFixture_01_MixedRealityToolkitTests.html",
-          "hash": "fvR4jQ5wOvC/ZcpmC9ntsQ=="
+          "hash": "KluCprzW9OsT9HdCnXwRug=="
         }
       },
       "is_incremental": false,
@@ -10394,7 +10394,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html",
-          "hash": "7PE8YL89A28gmajsrybAKw=="
+          "hash": "Gtho6KLi2NrdVfJIMfiHDw=="
         }
       },
       "is_incremental": false,

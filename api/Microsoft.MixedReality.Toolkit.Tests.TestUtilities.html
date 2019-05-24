@@ -127,12 +127,36 @@
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_testScene" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.testScene">testScene</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_additiveTestScenes" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.additiveTestScenes">additiveTestScenes</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Scene testScene</code></pre>
+    <pre><code class="lang-csharp hljs">public static Scene[] additiveTestScenes</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Scene</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_primaryTestScene" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.primaryTestScene">primaryTestScene</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Scene primaryTestScene</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -153,14 +177,32 @@
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_CleanupScene_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.CleanupScene*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_CleanupScene" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.CleanupScene">CleanupScene()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_CreateScenes_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.CreateScenes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_CreateScenes_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.CreateScenes(System.Int32)">CreateScenes(Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a number of scenes and loads them additively for testing. Must create a minimum of 1.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void CleanupScene()</code></pre>
+    <pre><code class="lang-csharp hljs">public static void CreateScenes(int numScenesToCreate = 1)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numScenesToCreate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_InitializeMixedRealityToolkit_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.InitializeMixedRealityToolkit*"></a>
@@ -173,13 +215,13 @@
   </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_InitializeMixedRealityToolkitScene_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.InitializeMixedRealityToolkitScene*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_InitializeMixedRealityToolkitScene_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.InitializeMixedRealityToolkitScene(System.Boolean)">InitializeMixedRealityToolkitScene(Boolean)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_InitializeMixedRealityToolkit_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.InitializeMixedRealityToolkit*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_InitializeMixedRealityToolkit_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.InitializeMixedRealityToolkit(System.Boolean)">InitializeMixedRealityToolkit(Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void InitializeMixedRealityToolkitScene(bool useDefaultProfile = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -200,6 +242,39 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_InitializeMixedRealityToolkitAndCreateScenes_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.InitializeMixedRealityToolkitAndCreateScenes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_InitializeMixedRealityToolkitAndCreateScenes_System_Boolean_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(System.Boolean,System.Int32)">InitializeMixedRealityToolkitAndCreateScenes(Boolean, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates the requested number of scenes, then creates one instance of the MixedRealityToolkit in the active scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void InitializeMixedRealityToolkitAndCreateScenes(bool useDefaultProfile = false, int numScenesToCreate = 1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useDefaultProfile</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numScenesToCreate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_InitializePlayspace_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.InitializePlayspace*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_InitializePlayspace" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.InitializePlayspace">InitializePlayspace()</h4>
   <div class="markdown level1 summary"></div>
@@ -207,6 +282,17 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static void InitializePlayspace()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_TearDownScenes_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.TearDownScenes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_TearDownScenes" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.TearDownScenes">TearDownScenes()</h4>
+  <div class="markdown level1 summary"><p>Destroys all scene assets that were created over the course of testing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void TearDownScenes()</code></pre>
   </div>
 </article>
           </div>
