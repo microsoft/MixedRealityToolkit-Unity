@@ -54,9 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private float managerSceneOpProgress;
 
         // Content tracker instance
-        private ContentTracker contentTracker;
+        private SceneContentTracker contentTracker;
         // Lighting executor instance
-        private LightingExecutor lightingExecutor;
+        private SceneLightingExecutor lightingExecutor;
 
         #region Actions
 
@@ -161,8 +161,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public override void Initialize()
         {
             // Create a new instance of our content tracker
-            contentTracker = new ContentTracker(profile);
-            lightingExecutor = new LightingExecutor();
+            contentTracker = new SceneContentTracker(profile);
+            lightingExecutor = new SceneLightingExecutor();
 
 #if UNITY_EDITOR
             OnEditorInitialize();
@@ -436,6 +436,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                 while (!completedAllSceneOps)
                 {
+                    if (!Application.isPlaying)
+                    {   // Break out of this loop if we've stopped playmode
+                        return;
+                    }
+
                     completedAllSceneOps = true;
                     bool readyToProceed = false;
                     bool allowSceneActivation = (activationToken != null) ? activationToken.AllowSceneActivation : true;
@@ -477,6 +482,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             bool scenesLoadedAndActivated = false;
             while (!scenesLoadedAndActivated)
             {
+                if (!Application.isPlaying)
+                {   // Break out of this loop if we've stopped playmode
+                    return;
+                }
+
                 scenesLoadedAndActivated = true;
                 foreach (int sceneIndex in validIndexes)
                 {
@@ -562,6 +572,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 float sceneOpProgress = 0;
                 while (!completedAllSceneOps)
                 {
+                    if (!Application.isPlaying)
+                    {   // Break out of this loop if we've stopped playmode
+                        return;
+                    }
+
                     completedAllSceneOps = true;
                     sceneOpProgress = 0;
                     for (int i = 0; i < unloadSceneOps.Count; i++)
@@ -581,11 +596,21 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             bool scenesUnloaded = false;
             while (!scenesUnloaded)
             {
+                if (!Application.isPlaying)
+                {   // Break out of this loop if we've stopped playmode
+                    return;
+                }
+
                 scenesUnloaded = true;
                 foreach (int sceneIndex in validIndexes)
                 {
                     Scene scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
                     scenesUnloaded &= !scene.isLoaded;
+
+                    if (scene.isLoaded)
+                    {
+                        Debug.Log("Waiting for " + scene.name + " to unload...");
+                    }
                 }
                 await Task.Yield();
             }
@@ -795,9 +820,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// This logic could live in the service itself, but there may be cases where devs want to change how content is tracked without changing anything else.
         /// Might be worth putting this into a SystemType field in the profile.
         /// </summary>
-        private class ContentTracker
+        private class SceneContentTracker
         {
-            public ContentTracker (MixedRealitySceneSystemProfile profile)
+            public SceneContentTracker (MixedRealitySceneSystemProfile profile)
             {
                 this.profile = profile;
 
@@ -900,7 +925,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// A utility class used to lerp between and apply lighting settings to the active scene.
         /// </summary>
-        private class LightingExecutor
+        private class SceneLightingExecutor
         {
             public void StartTransition(
                 RuntimeLightingSettings targetLightingSettings, 
@@ -909,46 +934,102 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 LightingSceneTransitionType transitionType = LightingSceneTransitionType.None,
                 float transitionDuration = 1)
             {
-                // Copy our old settings
-                prevLightingSettings = currentLightingSettings;
-                prevRenderSettings = currentRenderSettings;
-
                 // Update our target settings
                 this.transitionElapsed = 0;
                 this.transitionType = transitionType;
                 this.transitionDuration = transitionDuration;
                 this.targetLightingSettings = targetLightingSettings;
                 this.targetRenderSettings = targetRenderSettings;
+                this.targetSunlightSettings = targetSunlightSettings;
+
+                switch (transitionType)
+                {
+                    case LightingSceneTransitionType.None:
+                        // Just execute the transition right now
+                        // Zap immediately to the new values
+                        currentLightingSettings = targetLightingSettings;
+                        currentRenderSettings = targetRenderSettings;
+                        currentSunlightSettings = targetSunlightSettings;
+                        transitionElapsed = transitionDuration;
+                        ApplySettings();
+                        return;
+                }
+
+                // Otherwise, copy our old settings so we have something to lerp from
+                prevLightingSettings = currentLightingSettings;
+                prevRenderSettings = currentRenderSettings;
+                prevSunlightSettings = currentSunlightSettings;
             }
 
             public void UpdateTransition(float deltaTime)
             {
+                if (transitionElapsed < transitionDuration)
+                {
+                    transitionElapsed += deltaTime;
+                    if (transitionElapsed >= transitionDuration)
+                    {
+                        currentLightingSettings = targetLightingSettings;
+                        currentRenderSettings = targetRenderSettings;
+                        currentSunlightSettings = targetSunlightSettings;
+                        ApplySettings();
+                        return;
+                    }
+                }
+
+                float transitionProgress = Mathf.Clamp01(transitionElapsed / transitionDuration);
+
                 switch (transitionType)
                 {
                     case LightingSceneTransitionType.None:
-                        // Just zap immediately to the new values
-                        currentLightingSettings = targetLightingSettings;
-                        currentRenderSettings = targetRenderSettings;
-                        transitionElapsed = transitionDuration;
-                        return;
+                        break;
 
                     case LightingSceneTransitionType.CrossFade:
-                    case LightingSceneTransitionType.FadeToBlack:
+                        // Just do a straightforward lerp from one setting to the other
+                        currentLightingSettings = RuntimeLightingSettings.Lerp(prevLightingSettings, targetLightingSettings, transitionProgress);
+                        currentRenderSettings = RuntimeRenderSettings.Lerp(prevRenderSettings, targetRenderSettings, transitionProgress);
+                        currentSunlightSettings = RuntimeSunlightSettings.Lerp(prevSunlightSettings, targetSunlightSettings, transitionProgress);
                         break;
-                }
 
-                transitionElapsed += deltaTime;
-                if (transitionElapsed >= transitionDuration)
-                {
-                    currentLightingSettings = targetLightingSettings;
-                    currentRenderSettings = targetRenderSettings;
-                }
-                else
-                {
-                    float transitionProgress = Mathf.Clamp01(transitionElapsed / transitionDuration);
-                    currentLightingSettings = RuntimeLightingSettings.Lerp(prevLightingSettings, targetLightingSettings, transitionProgress);
-                    currentRenderSettings = RuntimeRenderSettings.Lerp(prevRenderSettings, targetRenderSettings, transitionProgress);
-                    currentSunlightSettings = RuntimeSunlightSettings.Lerp(prevSunlightSettings, targetSunlightSettings, transitionProgress);
+                    case LightingSceneTransitionType.FadeToBlack: 
+                        // If we're in the first half of our transition, fade out to black
+                        if (transitionProgress < 0.5f)
+                        {
+                            float fadeOutProgress = transitionProgress / 0.5f;
+                            currentLightingSettings = RuntimeLightingSettings.Lerp(
+                                prevLightingSettings,
+                                RuntimeLightingSettings.Black(prevLightingSettings),
+                                fadeOutProgress);
+
+                            currentRenderSettings = RuntimeRenderSettings.Lerp(
+                                prevRenderSettings,
+                                RuntimeRenderSettings.Black(prevRenderSettings),
+                                fadeOutProgress);
+
+                            currentSunlightSettings = RuntimeSunlightSettings.Lerp(
+                                prevSunlightSettings,
+                                RuntimeSunlightSettings.Black(prevSunlightSettings),
+                                fadeOutProgress);
+                        }
+                        else
+                        {
+                            // If we're in the second half, fade in from black
+                            float fadeInProgress = (transitionProgress - 0.5f) / 0.5f;
+                            currentLightingSettings = RuntimeLightingSettings.Lerp(
+                                RuntimeLightingSettings.Black(targetLightingSettings),
+                                targetLightingSettings,
+                                fadeInProgress);
+
+                            currentRenderSettings = RuntimeRenderSettings.Lerp(
+                                RuntimeRenderSettings.Black(targetRenderSettings),
+                                targetRenderSettings,
+                                fadeInProgress);
+
+                            currentSunlightSettings = RuntimeSunlightSettings.Lerp(
+                                RuntimeSunlightSettings.Black(targetSunlightSettings),
+                                targetSunlightSettings,
+                                fadeInProgress);
+                        }
+                        break;
                 }
 
                 ApplySettings();
@@ -996,8 +1077,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 if (RenderSettings.sun == null)
                 {
                     if (sharedSunLight == null)
-                    {   
-                        // Create a 
+                    {
+                        Debug.Log("Shared sunlight is null, creating a shared sunlight");
+                        // Create a shared sunlight
                         sharedSunLight = new GameObject("Shared Sunlight").AddComponent<Light>();
                         sharedSunLight.type = LightType.Directional;
                         sharedSunLight.intensity = 0;
@@ -1005,6 +1087,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                     RenderSettings.sun = sharedSunLight;
                 }
+
+                RenderSettings.sun.enabled = true;
             }
 
             private void DisableSunlight()

@@ -153,18 +153,18 @@ MonoBehaviour:
     ZRotation: 0
   - UseSunlight: 1
     Color: {r: 1, g: 0.0812667, b: 0, a: 1}
-    Intensity: 1
+    Intensity: 0.5
     XRotation: 359.32422
     YRotation: 282.02856
     ZRotation: 316.86832
   - UseSunlight: 1
     Color: {r: 0.11748052, g: 1, b: 0, a: 1}
-    Intensity: 1
-    XRotation: 18.160952
-    YRotation: 216.94548
-    ZRotation: 23.656736
+    Intensity: 2
+    XRotation: 75.4436
+    YRotation: 151.80708
+    ZRotation: 3.1183996
   editorManageBuildSettings: 1
   editorEnforceSceneOrder: 1
-  editorManageLoadedScenes: 0
+  editorManageLoadedScenes: 1
   editorEnforceLightingSceneTypes: 1
   editorCachedLightingOutOfDate: 0

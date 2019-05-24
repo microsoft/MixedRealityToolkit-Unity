@@ -21,18 +21,36 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public bool EnableBakedLightmaps;
         public bool EnabledRealtimeLightmaps;
 
+        /// <summary>
+        /// Lerps between two settings
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="t">Value from 0 to 1</param>
+        /// <returns></returns>
         public static RuntimeLightingSettings Lerp(RuntimeLightingSettings from, RuntimeLightingSettings to, float t)
         {
-            bool firstHalf = t < 0.5f;
-
-            to.AlbedoBoost = Mathf.Lerp(from.AlbedoBoost, to.AlbedoBoost, t);
-            to.BounceScale = Mathf.Lerp(from.BounceScale, to.BounceScale, t);
-            to.EnableBakedLightmaps = firstHalf ? from.EnableBakedLightmaps : to.EnableBakedLightmaps;
-            to.EnabledRealtimeLightmaps = firstHalf ? from.EnabledRealtimeLightmaps : to.EnabledRealtimeLightmaps;
-            to.EnvironmentLightingMode = firstHalf ? from.EnvironmentLightingMode : to.EnvironmentLightingMode;
-            to.IndirectOutputScale = Mathf.Lerp(from.IndirectOutputScale, to.IndirectOutputScale, t);
-
+            bool notStarted             = t <= 0;
+            to.AlbedoBoost              = Mathf.Lerp(from.AlbedoBoost, to.AlbedoBoost, t);
+            to.BounceScale              = Mathf.Lerp(from.BounceScale, to.BounceScale, t);
+            to.EnableBakedLightmaps     = notStarted ? from.EnableBakedLightmaps : to.EnableBakedLightmaps;
+            to.EnabledRealtimeLightmaps = notStarted ? from.EnabledRealtimeLightmaps : to.EnabledRealtimeLightmaps;
+            to.EnvironmentLightingMode  = notStarted ? from.EnvironmentLightingMode : to.EnvironmentLightingMode;
+            to.IndirectOutputScale      = Mathf.Lerp(from.IndirectOutputScale, to.IndirectOutputScale, t);
             return to;
+        }
+
+        /// <summary>
+        /// Sets continuous settings to 'black' without changing any discrete features.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static RuntimeLightingSettings Black(RuntimeLightingSettings source)
+        {
+            source.AlbedoBoost          = 0;
+            source.BounceScale          = 0;
+            source.IndirectOutputScale  = 0;
+            return source;
         }
     }
 }

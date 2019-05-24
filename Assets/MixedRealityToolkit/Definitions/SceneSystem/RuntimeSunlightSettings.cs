@@ -19,18 +19,36 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public float YRotation;
         public float ZRotation;
 
+        /// <summary>
+        /// Lerps between two settings
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="t">Value from 0 to 1</param>
+        /// <returns></returns>
         public static RuntimeSunlightSettings Lerp(RuntimeSunlightSettings from, RuntimeSunlightSettings to, float t)
         {
-            bool firstHalf = t < 0.5f;
-
-            to.Color = Color.Lerp(from.Color, to.Color, t);
-            to.Intensity = Mathf.Lerp(from.Intensity, to.Intensity, t);
-            to.XRotation = Mathf.Lerp(from.XRotation, to.XRotation, t);
-            to.YRotation = Mathf.Lerp(from.YRotation, to.YRotation, t);
-            to.ZRotation = Mathf.Lerp(from.ZRotation, to.ZRotation, t);
-            to.UseSunlight = firstHalf ? from.UseSunlight : to.UseSunlight;
-
+            bool notStarted     = t <= 0;
+            to.Color            = Color.Lerp(from.Color, to.Color, t);
+            to.Intensity        = Mathf.Lerp(from.Intensity, to.Intensity, t);
+            to.XRotation        = Mathf.Lerp(from.XRotation, to.XRotation, t);
+            to.YRotation        = Mathf.Lerp(from.YRotation, to.YRotation, t);
+            to.ZRotation        = Mathf.Lerp(from.ZRotation, to.ZRotation, t);
+            to.UseSunlight      = notStarted ? from.UseSunlight : to.UseSunlight;
             return to;
+        }
+
+        /// <summary>
+        /// Sets continuous settings to 'black' without changing any discrete features.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static RuntimeSunlightSettings Black(RuntimeSunlightSettings source)
+        {
+            source.Color        = Color.clear;
+            source.Intensity    = 0;
+
+            return source;
         }
     }
 }

@@ -37,32 +37,59 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public Cubemap CustomReflection;
         public bool UseRadianceAmbientProbe;
 
+        /// <summary>
+        /// Lerps between two settings
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="t">Value from 0 to 1</param>
+        /// <returns></returns>
         public static RuntimeRenderSettings Lerp(RuntimeRenderSettings from, RuntimeRenderSettings to, float t)
         {
-            bool firstHalf = t < 0.5f;
-
+            bool notStarted                 = t <= 0;
             to.AmbientEquatorColor          = Color.Lerp(from.AmbientEquatorColor, to.AmbientEquatorColor, t);
             to.AmbientGroundColor           = Color.Lerp(from.AmbientGroundColor, to.AmbientGroundColor, t);
             to.AmbientIntensity             = Mathf.Lerp(from.AmbientIntensity, to.AmbientIntensity, t);
             to.AmbientLight                 = Color.Lerp(from.AmbientLight, to.AmbientLight, t);
-            to.AmbientMode                  = firstHalf ? from.AmbientMode : to.AmbientMode;
+            to.AmbientMode                  = notStarted ? from.AmbientMode : to.AmbientMode;
             to.AmbientSkyColor              = Color.Lerp(from.AmbientSkyColor, to.AmbientSkyColor, t);
-            to.CustomReflection             = firstHalf ? from.CustomReflection : to.CustomReflection;
-            to.DefaultReflectionMode        = firstHalf ? from.DefaultReflectionMode : to.DefaultReflectionMode;
-            to.DefaultReflectionResolution  = firstHalf ? from.DefaultReflectionResolution : to.DefaultReflectionResolution;
-            to.Fog                          = firstHalf ? from.Fog : to.Fog;
+            to.CustomReflection             = notStarted ? from.CustomReflection : to.CustomReflection;
+            to.DefaultReflectionMode        = notStarted ? from.DefaultReflectionMode : to.DefaultReflectionMode;
+            to.DefaultReflectionResolution  = notStarted ? from.DefaultReflectionResolution : to.DefaultReflectionResolution;
+            to.Fog                          = notStarted ? from.Fog : to.Fog;
             to.FogColor                     = Color.Lerp(from.FogColor, to.FogColor, t);
             to.FogDensity                   = Mathf.Lerp(from.FogDensity, to.FogDensity, t);
-            to.FogMode                      = firstHalf ? from.FogMode : to.FogMode;
+            to.FogMode                      = notStarted ? from.FogMode : to.FogMode;
             to.LinearFogEnd                 = Mathf.Lerp(from.LinearFogEnd, to.LinearFogEnd, t);
             to.LinearFogStart               = Mathf.Lerp(from.LinearFogStart, to.LinearFogStart, t);
-            to.ReflectionBounces            = firstHalf ? from.ReflectionBounces : to.ReflectionBounces;
+            to.ReflectionBounces            = notStarted ? from.ReflectionBounces : to.ReflectionBounces;
             to.ReflectionIntensity          = Mathf.Lerp(from.ReflectionIntensity, to.ReflectionIntensity, t);
-            to.SkyboxMaterial               = firstHalf ? from.SkyboxMaterial : to.SkyboxMaterial;
+            to.SkyboxMaterial               = notStarted ? from.SkyboxMaterial : to.SkyboxMaterial;
             to.SubtractiveShadowColor       = Color.Lerp(from.SubtractiveShadowColor, to.SubtractiveShadowColor, t);
-            to.UseRadianceAmbientProbe      = firstHalf ? from.UseRadianceAmbientProbe : to.UseRadianceAmbientProbe;
-
+            to.UseRadianceAmbientProbe      = notStarted ? from.UseRadianceAmbientProbe : to.UseRadianceAmbientProbe;
             return to;
+        }
+
+
+        /// <summary>
+        /// Sets continuous settings to 'black' without changing any discrete features.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static RuntimeRenderSettings Black(RuntimeRenderSettings source)
+        {
+            source.AmbientEquatorColor      = Color.clear;
+            source.AmbientGroundColor       = Color.clear;
+            source.AmbientIntensity         = 0;
+            source.AmbientLight             = Color.clear;
+            source.AmbientSkyColor          = Color.clear;
+            source.FogColor                 = Color.clear;
+            source.FogDensity               = 0;
+            source.LinearFogEnd             = 0;
+            source.LinearFogStart           = 0;
+            source.ReflectionIntensity      = 0;
+            source.SubtractiveShadowColor   = Color.clear;
+            return source;
         }
     }
 }
