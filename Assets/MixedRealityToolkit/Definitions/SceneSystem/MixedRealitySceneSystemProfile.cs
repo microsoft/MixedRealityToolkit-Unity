@@ -19,6 +19,19 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     [MixedRealityServiceProfile(typeof(IMixedRealitySceneSystem))]
     public class MixedRealitySceneSystemProfile : BaseMixedRealityProfile
     {
+        /// <summary>
+        /// Internal class used to cache lighting settings associated with a scene.
+        /// </summary>
+        [Serializable]
+        internal sealed class CachedLightingSettings
+        {
+            public string SceneName;
+            public RuntimeRenderSettings RenderSettings;
+            public RuntimeLightingSettings LightingSettings;
+            public RuntimeSunlightSettings SunlightSettings;
+            public DateTime TimeStamp;
+        }
+
         public bool UseManagerScene { get { return useManagerScene && !managerScene.IsEmpty; } }
 
         public bool UseLightingScene { get { return useLightingScene && lightingScenes.Count > 0; } }
@@ -46,9 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         public bool EditorEnforceLightingSceneTypes => editorEnforceLightingSceneTypes;
 
-        public bool EditorCachedLightingOutOfDate => editorCachedLightingOutOfDate;
+        public bool EditorLightingCacheOutOfDate => editorLightingCacheOutOfDate;
 
-        public bool EditorCachedLightingRequested { get; set; }
+        public bool EditorLightingCacheUpdateRequested { get; set; }
 #endif
 
         [SerializeField]
@@ -77,15 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         [SerializeField]
         [Tooltip("Cached lighting settings from your lighting scenes")]
-        private List<RuntimeLightingSettings> cachedLightingSettings = new List<RuntimeLightingSettings>();
-
-        [SerializeField]
-        [Tooltip("Cached lighting settings from your lighting scenes")]
-        private List<RuntimeRenderSettings> cachedRenderSettings = new List<RuntimeRenderSettings>();
-
-        [SerializeField]
-        [Tooltip("Cached sunlight settings from your lighting scenes")]
-        private List<RuntimeSunlightSettings> cachedSunlightSettings = new List<RuntimeSunlightSettings>();
+        private List<CachedLightingSettings> cachedLightingSettings = new List<CachedLightingSettings>();
 
         #region editor settings
 
@@ -106,13 +111,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private bool editorEnforceLightingSceneTypes = true;
 
         [SerializeField]
-        private bool editorCachedLightingOutOfDate = false;
+        private bool editorLightingCacheOutOfDate = false;
 
         #endregion
 
         public bool GetLightingSceneSettings(
             string lightingSceneName,
-            out SceneInfo lightingScene, 
+            out SceneInfo lightingScene,
             out RuntimeLightingSettings lightingSettings,
             out RuntimeRenderSettings renderSettings,
             out RuntimeSunlightSettings sunlightSettings)
@@ -126,14 +131,31 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             {
                 if (lightingScenes[i].Name == lightingSceneName)
                 {
-                    lightingScene = lightingScenes[i]; 
-                    lightingSettings = cachedLightingSettings[i];
-                    renderSettings = cachedRenderSettings[i];
-                    sunlightSettings = cachedSunlightSettings[i];
+                    lightingScene = lightingScenes[i];
+                    break;
                 }
             }
 
-            return !lightingScene.IsEmpty;
+            if (lightingScene.IsEmpty)
+            {   // If we didn't find a lighting scene, don't bother looking for a cache
+                return false;
+            }
+
+            bool foundCache = false;
+            for (int i = 0; i < cachedLightingSettings.Count; i++)
+            {
+                CachedLightingSettings cache = cachedLightingSettings[i];
+                if (cache.SceneName == lightingSceneName)
+                {
+                    lightingSettings = cache.LightingSettings;
+                    renderSettings = cache.RenderSettings;
+                    sunlightSettings = cache.SunlightSettings;
+                    foundCache = true;
+                    break;
+                }
+            }
+
+            return foundCache;
         }
 
         public IEnumerable<string> GetContentSceneNamesByTag(string tag)
@@ -196,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             
             if (saveChanges)
             {   // We need to tie this directly to lighting scenes somehow
-                editorCachedLightingOutOfDate = true;
+                editorLightingCacheOutOfDate = true;
                 // Make sure our changes are saved to disk!
                 AssetDatabase.Refresh();
                 EditorUtility.SetDirty(this);
@@ -205,23 +227,65 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
         /// <summary>
+        /// Clears cached lighting settings. 
+        /// Used to ensure we don't end up with 'dead' cached data.
+        /// </summary>
+        public void ClearLightingCache()
+        {
+            cachedLightingSettings.Clear();
+        }
+
+        /// <summary>
         /// Used to update the cached lighting / render settings.
         /// Since extracting them is complex and requires scene loading, I thought it best to avoid having the profile do it.
         /// </summary>
-        /// <param name="cachedLightingSettings"></param>
-        /// <param name="cahcedRenderSettings"></param>
-        public void SetCachedLightmapAndRenderSettings(List<RuntimeLightingSettings> cachedLightingSettings, List<RuntimeRenderSettings> cachedRenderSettings, List<RuntimeSunlightSettings> sunlightSettings)
+        /// <param name="sceneInfo">The scene these settings belong to.</param>
+        /// <param name="lightingSettings"></param>
+        /// <param name="renderSettings"></param>
+        /// <param name="sunlightSettings"></param>
+        public void SetLightingCache(SceneInfo sceneInfo, RuntimeLightingSettings lightingSettings, RuntimeRenderSettings renderSettings, RuntimeSunlightSettings sunlightSettings)
         {
-            this.cachedLightingSettings = cachedLightingSettings;
-            this.cachedRenderSettings = cachedRenderSettings;
-            this.cachedSunlightSettings = sunlightSettings;
+            CachedLightingSettings settings = new CachedLightingSettings();
+            settings.SceneName = sceneInfo.Name;
+            settings.LightingSettings = lightingSettings;
+            settings.RenderSettings = renderSettings;
+            settings.SunlightSettings = sunlightSettings;
+            settings.TimeStamp = DateTime.Now;
 
-            editorCachedLightingOutOfDate = false;
-            EditorCachedLightingRequested = false;
-            // Make sure our changes are saved to disk!
+            cachedLightingSettings.Add(settings);
+
+            editorLightingCacheOutOfDate = false;
+        }
+
+        /// <summary>
+        /// Sets editorLightingCacheOutOfDate to true and saves the profile. 
+        /// </summary>
+        public void SetLightingCacheDirty()
+        {
+            editorLightingCacheOutOfDate = true;
+
             AssetDatabase.Refresh();
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
+        }
+
+        public DateTime GetEarliestLightingCacheTimestamp()
+        {
+            if (cachedLightingSettings.Count <= 0)
+            {
+                return DateTime.MinValue;
+            }
+
+            DateTime earliestTimeStamp = DateTime.MaxValue;
+            foreach (CachedLightingSettings settings in cachedLightingSettings)
+            {
+                if (settings.TimeStamp < earliestTimeStamp)
+                {
+                    earliestTimeStamp = settings.TimeStamp;
+                }
+            }
+
+            return earliestTimeStamp;
         }
 
         private static bool RemoveScenes(List<SceneInfo> sceneList, List<SceneInfo> scenesToRemove)

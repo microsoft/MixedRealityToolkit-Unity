@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             lightingExecutor = new SceneLightingExecutor();
 
 #if UNITY_EDITOR
-            OnEditorInitialize();
+            EditorOnInitialize();
 #endif
 
             if (!Application.isPlaying)
@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public override void Enable()
         {
 #if UNITY_EDITOR
-            OnEditorDisable();
+            EditorOnDisable();
 #endif
         }
 
@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public override void Disable()
         {
 #if UNITY_EDITOR
-            OnEditorDisable();
+            EditorOnDisable();
 #endif
         }
 
@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public override void Destroy()
         {
 #if UNITY_EDITOR
-            OnEditorDestroy();
+            EditorOnDestroy();
 #endif
         }
 

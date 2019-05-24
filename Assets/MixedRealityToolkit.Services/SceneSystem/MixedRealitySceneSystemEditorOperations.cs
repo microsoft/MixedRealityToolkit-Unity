@@ -23,6 +23,21 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     {
 #if UNITY_EDITOR
 
+        /// <summary>
+        /// Detects asset modifications.
+        /// Used to detect when lighting cache may be out of date.
+        /// </summary>
+        internal sealed class FileModificationWarning : UnityEditor.AssetModificationProcessor
+        {
+            public static HashSet<string> ModifiedAssetPaths = new HashSet<string>();
+
+            public static string[] OnWillSaveAssets(string[] paths)
+            {
+                foreach (string path in paths) { ModifiedAssetPaths.Add(path); }
+                return paths;
+            }
+        }
+
         // These are the types of components that are permitted to exist inside a lighting scene
         private static Type[] permittedLightingSceneComponentTypes = new Type[] {
             typeof(Transform),
@@ -33,27 +48,34 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             typeof(LightProbeProxyVolume),
         };
 
-        private bool updatingSettingsOnEditorChanged = false;
-        private bool updatingCachedLightingSettings = false;
         private const float lightingUpdateInterval = 5f;
         private const float managerSceneInstanceCheckInterval = 2f;
         private const int editorApplicationUpdateTickInterval = 5;
-        // These get set to dirty based on what we're doing in editor
+
+        // Cache these so we're not looking them up constantly
+        private EditorBuildSettingsScene[] cachedBuildScenes = new EditorBuildSettingsScene[0];
+
+        // These get set to dirty based on what events have been recieved from the editor
         private bool activeSceneDirty = false;
         private bool buildSettingsDirty = false;
         private bool heirarchyDirty = false;
-        // Cache these so we're not looking them up constantly
-        private EditorBuildSettingsScene[] cachedBuildScenes = new EditorBuildSettingsScene[0];
+        // These get set based on what our update methods are doing in response to events
+        private bool updatingSettingsOnEditorChanged = false;
+        private bool updatingCachedLightingSettings = false;
         // Checking for the manager scene via root game objects is very expensive
         // So only do it once in a while
         private float managerSceneInstanceCheckTime;
         private int editorApplicationUpdateTicks;
+
         // Used to track which instance of the service we're using (for debugging purposes)
         private static int instanceIDCount;
         private int instanceID = -1;
 
+        #region public editor methods
+
         /// <summary>
         /// Singly loads next content scene (if available) and unloads all other content scenes.
+        /// Useful for inspectors.
         /// </summary>
         /// <param name="wrap"></param>
         public void EditorLoadNextContent(bool wrap = false)
@@ -79,6 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         /// <summary>
         /// Singly loads previous content scene (if available) and unloads all other content scenes.
+        /// Useful for inspectors.
         /// </summary>
         /// <param name="wrap"></param>
         public void EditorLoadPrevContent(bool wrap = false)
@@ -102,43 +125,47 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             contentTracker.RefreshLoadedContent();
         }
 
-        private void OnEditorInitialize()
+        #endregion
+
+        #region Initialization / Teardown
+
+        private void EditorOnInitialize()
         {
             instanceID = instanceIDCount++;
 
-            SubscribeToEditorEvents();
+            EditorSubscribeToEvents();
             cachedBuildScenes = EditorBuildSettings.scenes;
 
             activeSceneDirty = true;
             buildSettingsDirty = true;
             heirarchyDirty = true;
 
-            CheckForChanges();
+            EditorCheckForChanges();
         }
 
-        private void OnEditorEnable()
+        private void EditorOnEnable()
         {
-            SubscribeToEditorEvents();
+            EditorSubscribeToEvents();
             cachedBuildScenes = EditorBuildSettings.scenes;
 
             activeSceneDirty = true;
             buildSettingsDirty = true;
             heirarchyDirty = true;
 
-            CheckForChanges();
+            EditorCheckForChanges();
         }
 
-        private void OnEditorDisable()
+        private void EditorOnDisable()
         {
-            UnsubscribeToEditorEvents();
+            EditorUnsubscribeFromEvents();
         }
 
-        private void OnEditorDestroy()
+        private void EditorOnDestroy()
         {
-            UnsubscribeToEditorEvents();
+            EditorUnsubscribeFromEvents();
         }
 
-        private void SubscribeToEditorEvents()
+        private void EditorSubscribeToEvents()
         {
             EditorApplication.projectChanged += EditorApplicationProjectChanged;
             EditorApplication.hierarchyChanged += EditorApplicationHeirarcyChanged;
@@ -149,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             EditorSceneManager.sceneClosed += EditorSceneManagerSceneClosed;
         }
 
-        private void UnsubscribeToEditorEvents()
+        private void EditorUnsubscribeFromEvents()
         {
             EditorApplication.projectChanged -= EditorApplicationProjectChanged;
             EditorApplication.hierarchyChanged -= EditorApplicationHeirarcyChanged;
@@ -159,6 +186,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             EditorSceneManager.sceneOpened -= EditorSceneManagerSceneOpened;
             EditorSceneManager.sceneClosed -= EditorSceneManagerSceneClosed;
         }
+
+        #endregion
 
         #region update triggers from editor events
 
@@ -170,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 editorApplicationUpdateTicks = 0;
                 activeSceneDirty = true;
                 heirarchyDirty = true;
-                CheckForChanges();
+                EditorCheckForChanges();
             }
         }
 
@@ -182,34 +211,23 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         private void EditorApplicationProjectChanged()
         {
-            //buildSettingsDirty = true;
+            buildSettingsDirty = true;
         }
 
-        private void EditorSceneManagerSceneClosed(Scene scene)
-        {
-            activeSceneDirty = true;
-        }
+        private void EditorSceneManagerSceneClosed(Scene scene) { activeSceneDirty = true; }
 
-        private void EditorSceneManagerSceneOpened(Scene scene, OpenSceneMode mode)
-        {
-            activeSceneDirty = true;
-        }
+        private void EditorSceneManagerSceneOpened(Scene scene, OpenSceneMode mode) { activeSceneDirty = true; }
 
-        private void EditorSceneManagerNewSceneCreated(Scene scene, NewSceneSetup setup, NewSceneMode mode)
-        {
-            activeSceneDirty = true;
-        }
+        private void EditorSceneManagerNewSceneCreated(Scene scene, NewSceneSetup setup, NewSceneMode mode) { activeSceneDirty = true; }
 
         #endregion
 
-        private async void CheckForChanges()
+        /// <summary>
+        /// Checks the state of service and profile based on changes made in editor and reacts accordingly.
+        /// </summary>
+        private async void EditorCheckForChanges()
         {
-            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile)
-            {
-                return;
-            }
-
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSceneSystemEnabled)
+            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile || !MixedRealityToolkit.Instance.ActiveProfile.IsSceneSystemEnabled)
             {
                 return;
             }
@@ -225,34 +243,42 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             // Update cached lighting settings, if the profile has requested it
-            if (profile.EditorCachedLightingRequested)
+            if (profile.EditorLightingCacheUpdateRequested)
             {
                 updatingCachedLightingSettings = true;
                 updatingSettingsOnEditorChanged = true;
 
-                await UpdateCachedLighting();
+                await EditorUpdateCachedLighting();
 
                 updatingSettingsOnEditorChanged = false;
                 updatingCachedLightingSettings = false;
                 // This is an async operation which may take a while to execute
                 // So exit when we're done - we'll pick up where we left off next time
-                heirarchyDirty = true;                
+                heirarchyDirty = true;
                 return;
             }
 
             updatingSettingsOnEditorChanged = true;
 
             // Update editor settings
+
+            if (FileModificationWarning.ModifiedAssetPaths.Count > 0)
+            {
+                Debug.Log("Found modified paths");
+                EditorCheckIfCachedLightingOutOfDate();
+                FileModificationWarning.ModifiedAssetPaths.Clear();
+            }
+
             if (buildSettingsDirty)
             {
-                UpdateBuildSettings();
+                EditorUpdateBuildSettings();
             }
 
             if (activeSceneDirty || heirarchyDirty)
             {
-                UpdateManagerScene();
-                UpdateLightingScene(heirarchyDirty);
-                UpdateContentScenes(activeSceneDirty);
+                EditorUpdateManagerScene();
+                EditorUpdateLightingScene(heirarchyDirty);
+                EditorUpdateContentScenes(activeSceneDirty);
             }
 
             updatingSettingsOnEditorChanged = false;
@@ -263,20 +289,57 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             contentTracker.RefreshLoadedContent();
         }
-
-        private async Task UpdateCachedLighting()
+        
+        /// <summary>
+        /// Checks whether any of the save dates on our lighting scenes are later than the save date of our cached lighting data.
+        /// </summary>
+        private void EditorCheckIfCachedLightingOutOfDate()
         {
-            List<RuntimeLightingSettings> cachedLightingSettings = new List<RuntimeLightingSettings>();
-            List<RuntimeRenderSettings> cachedRenderSettings = new List<RuntimeRenderSettings>();
-            List<RuntimeSunlightSettings> cachedSunlightSettings = new List<RuntimeSunlightSettings>();
+            Debug.Log("EditorCheckIfCachedLightingOutOfDate");
+            
+            DateTime cachedLightingTimestamp = profile.GetEarliestLightingCacheTimestamp();
+            bool outOfDate = false;
+
+            foreach (SceneInfo lightingScene in profile.LightingScenes)
+            {
+                if (FileModificationWarning.ModifiedAssetPaths.Contains(lightingScene.Path))
+                {
+                    string lightingScenePath = System.IO.Path.Combine(Application.dataPath.Replace("/Assets", ""), lightingScene.Path);
+                    Debug.Log("Checking " + lightingScenePath + " to see its modification date!");
+                    DateTime lightingSceneTimestamp = System.IO.File.GetLastWriteTime(lightingScenePath);
+                    Debug.Log(lightingSceneTimestamp);
+                    if (lightingSceneTimestamp > cachedLightingTimestamp)
+                    {
+                        Debug.Log("Greater than " + cachedLightingTimestamp);
+                        outOfDate = true;
+                        break;
+                    }
+                }
+            }
+
+            if (outOfDate)
+            {
+                profile.SetLightingCacheDirty();
+            }
+        }
+
+        /// <summary>
+        /// Loads all lighting scenes, extracts their lighting data, then caches that data in the profile.
+        /// </summary>
+        /// <returns></returns>
+        private async Task EditorUpdateCachedLighting()
+        {
+            // Clear out our lighting cache
+            profile.ClearLightingCache();
+            profile.EditorLightingCacheUpdateRequested = false;
 
             SceneInfo defaultLightingScene = profile.DefaultLightingScene;
 
             foreach (SceneInfo lightingScene in profile.LightingScenes)
             {
+                // Load all our lighting scenes
                 Scene scene;
                 EditorSceneUtils.LoadScene(lightingScene, false, out scene);
-
             }
 
             // Wait for a moment so all loaded scenes have time to get set up
@@ -323,15 +386,15 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     }
                 }
 
-                cachedLightingSettings.Add(lightingSettings);
-                cachedRenderSettings.Add(renderSettings);
-                cachedSunlightSettings.Add(sunlightSettings);
+                profile.SetLightingCache(lightingScene, lightingSettings, renderSettings, sunlightSettings);
             }
-        
-            profile.SetCachedLightmapAndRenderSettings(cachedLightingSettings, cachedRenderSettings, cachedSunlightSettings);
         }
 
-        private void UpdateContentScenes(bool activeSceneDirty)
+        /// <summary>
+        /// Ensures that if a content scene is loaded, that scene is set active, rather than a lighting or manager scene.
+        /// </summary>
+        /// <param name="activeSceneDirty"></param>
+        private void EditorUpdateContentScenes(bool activeSceneDirty)
         {
             if (!profile.UseLightingScene || !profile.EditorManageLoadedScenes)
             {   // Nothing to do here
@@ -379,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// If a manager scene is being used, this loads the scene in editor and ensures that an instance of the MRTK has been added to it.
         /// </summary>
-        private void UpdateManagerScene()
+        private void EditorUpdateManagerScene()
         {
             if (!profile.UseManagerScene || !profile.EditorManageLoadedScenes)
             {   // Nothing to do here.
@@ -473,7 +536,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
-        private void UpdateLightingScene(bool heirarchyDirty)
+        /// <summary>
+        /// If a lighting scene is being used, this ensures that at least one lighting scene is loaded in editor.
+        /// </summary>
+        /// <param name="heirarchyDirty"></param>
+        private void EditorUpdateLightingScene(bool heirarchyDirty)
         {
             if (!profile.UseLightingScene || !profile.EditorManageLoadedScenes)
             {
@@ -497,7 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                             if (profile.EditorEnforceLightingSceneTypes && heirarchyDirty)
                             {
-                                EnforceLightingSceneTypes(scene);
+                                EditorEnforceLightingSceneTypes(scene);
                             }
                         }
 
@@ -515,7 +582,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
-        private void EnforceLightingSceneTypes(Scene scene)
+        /// <summary>
+        /// Ensures that only approved component types are present in lighting scenes.
+        /// </summary>
+        /// <param name="scene"></param>
+        private void EditorEnforceLightingSceneTypes(Scene scene)
         {
             if (EditorSceneManager.sceneCount == 1)
             {   // There's nowhere to move invalid objects to.
@@ -576,7 +647,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
-        private void UpdateBuildSettings()
+        /// <summary>
+        /// Adds all scenes from profile into build settings.
+        /// </summary>
+        private void EditorUpdateBuildSettings()
         {
             if (!profile.EditorManageBuildSettings)
             {   // Nothing to do here
@@ -617,10 +691,14 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 cachedBuildScenes = EditorBuildSettings.scenes;
             }
 
-            CheckProfileForDuplicates();
+            EditorCheckForSceneNameDuplicates();
         }
 
-        private void CheckProfileForDuplicates()
+        /// <summary>
+        /// Ensures that there are no scenes in build settings with duplicate names.
+        /// If any are found, a resolve duplicates window is launched.
+        /// </summary>
+        private void EditorCheckForSceneNameDuplicates()
         {
             List<SceneInfo> allScenes = new List<SceneInfo>();
             Dictionary<string, List<int>> duplicates = new Dictionary<string, List<int>>();
