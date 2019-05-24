@@ -967,10 +967,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Bounds GetMaxBounds(GameObject g)
         {
-            var b = new Bounds(g.transform.position, Vector3.zero);
+            var b = new Bounds();
             foreach (Renderer r in g.GetComponentsInChildren<Renderer>())
             {
-                b.Encapsulate(r.bounds);
+                if (b.size == Vector3.zero)
+                {
+                    b = r.bounds;
+                }
+                else
+                {
+                    b.Encapsulate(r.bounds);
+                }
             }
             return b;
         }
