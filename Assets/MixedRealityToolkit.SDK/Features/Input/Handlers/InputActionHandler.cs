@@ -19,9 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Whether input events should be marked as used after handling so other handlers in the same game object ignore them")]
         private bool MarkEventsAsUsed = false;
 
-        [System.Serializable]
-        public class InputActionUnityEvent : UnityEvent<BaseInputEventData> { }
-
         /// <summary>
         /// Unity event raised on action start, e.g. button pressed or gesture started. 
         /// Includes the input event that triggered the action.
