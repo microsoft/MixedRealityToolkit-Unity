@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// </summary>
         public void TestHeadGazeHoloLens1GGV()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// </summary>
         public void TestHeadGazeGGVArticulatedHands()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();
