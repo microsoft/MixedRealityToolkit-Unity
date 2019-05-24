@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void TestEyeGazeHandAndSpeechBehaviour()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();
@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void TestEyeGazeToHeadGazeTransition()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();
@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void TestHeadGazeToEyeGazeTransition()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();
