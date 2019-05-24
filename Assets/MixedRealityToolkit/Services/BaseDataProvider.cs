@@ -43,10 +43,5 @@ namespace Microsoft.MixedReality.Toolkit
         /// The service instance to which this provider is providing data.
         /// </summary>
         protected IMixedRealityService Service { get; set; } = null;
-
-        /// <summary>
-        /// Configuration Profile
-        /// </summary>
-        protected BaseMixedRealityProfile ConfigurationProfile { get; set; } = null;
     }
 }

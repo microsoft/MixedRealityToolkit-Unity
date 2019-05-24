@@ -15,4 +15,12 @@ MonoBehaviour:
   isCustomProfile: 0
   showDiagnostics: 1
   showProfiler: 1
-  frameRateDuration: 0.1
+  showFrameInfo: 1
+  showMemoryStats: 1
+  frameSampleRate: 0.1
+  windowAnchor: 7
+  windowOffset: {x: 0.1, y: 0.1}
+  windowScale: 1
+  windowFollowSpeed: 5
+  defaultInstancedMaterial: {fileID: 2100000, guid: 5b6fc83077d74fd4ca4c675623942a3e,
+    type: 2}

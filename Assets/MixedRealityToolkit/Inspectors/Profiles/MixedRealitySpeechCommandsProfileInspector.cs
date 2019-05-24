@@ -27,149 +27,164 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static bool showSpeechCommands = true;
         private SerializedProperty speechCommands;
-        private static GUIContent[] actionLabels;
-        private static int[] actionIds;
+        private static GUIContent[] actionLabels = new GUIContent[0];
+        private static int[] actionIds = new int[0];
+        private bool isInitialized = false;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
+            isInitialized = false;
+
+            recognizerStartBehaviour = serializedObject.FindProperty("startBehavior");
+            recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
+            speechCommands = serializedObject.FindProperty("speechCommands");
+
+            var thisProfile = target as BaseMixedRealityProfile;
+
+            if (!MixedRealityToolkit.IsInitialized ||
+                !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null ||
+                thisProfile != MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile)
             {
                 return;
             }
 
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null) { return; }
+            var inputActions = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+            actionLabels = inputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
+            actionIds = inputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
 
-            recognizerStartBehaviour = serializedObject.FindProperty("startBehavior");
-            recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
-
-            speechCommands = serializedObject.FindProperty("speechCommands");
-            actionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
-            actionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
+            isInitialized = true;
         }
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
-            {
-                return;
-            }
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, isInitialized, BackProfileType.Input);
 
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
-            {
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-                return;
-            }
+            RenderMixedRealityInputConfigured();
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
+            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
-                return;
             }
 
-            bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
-            serializedObject.Update();
-
-            EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                EditorGUILayout.PropertyField(recognizerStartBehaviour);
-                EditorGUILayout.PropertyField(recognitionConfidenceLevel);
-            }
+                serializedObject.Update();
 
-            EditorGUILayout.Space();
-            showSpeechCommands = EditorGUILayout.Foldout(showSpeechCommands, "Speech Commands", true, MixedRealityStylesUtility.BoldFoldoutStyle);
-            if (showSpeechCommands)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
                 {
-                    RenderList(speechCommands);
+                    EditorGUILayout.PropertyField(recognizerStartBehaviour);
+                    EditorGUILayout.PropertyField(recognitionConfidenceLevel);
                 }
-            }
 
-            serializedObject.ApplyModifiedProperties();
-            GUI.enabled = wasGUIEnabled;
+                EditorGUILayout.Space();
+                showSpeechCommands = EditorGUILayout.Foldout(showSpeechCommands, "Speech Commands", true, MixedRealityStylesUtility.BoldFoldoutStyle);
+                if (showSpeechCommands)
+                {
+                    using (new EditorGUI.IndentLevelScope())
+                    {
+                        RenderList(speechCommands);
+                    }
+                }
+
+                serializedObject.ApplyModifiedProperties();
+            }
         }
 
-        private static void RenderList(SerializedProperty list)
+        protected override bool IsProfileInActiveInstance()
         {
-            EditorGUILayout.Space();
-            GUILayout.BeginVertical();
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile;
+        }
 
-            if (RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
+        private void RenderList(SerializedProperty list)
+        {
+            // Disable speech commands if we could not initialize successfully
+            using (new GUIEnabledWrapper(isInitialized, false))
             {
-                list.arraySize += 1;
-                var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);
-                var localizationKey = speechCommand.FindPropertyRelative("localizationKey");
-                localizationKey.stringValue = string.Empty;
-                var keyword = speechCommand.FindPropertyRelative("keyword");
-                keyword.stringValue = string.Empty;
-                var keyCode = speechCommand.FindPropertyRelative("keyCode");
-                keyCode.intValue = (int)KeyCode.None;
-                var action = speechCommand.FindPropertyRelative("action");
-                var actionId = action.FindPropertyRelative("id");
-                actionId.intValue = 0;
-            }
+                EditorGUILayout.Space();
+                GUILayout.BeginVertical();
 
-            GUILayout.Space(12f);
+                    if (MixedRealityEditorUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
+                    {
+                        list.arraySize += 1;
+                        var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);
+                        var localizationKey = speechCommand.FindPropertyRelative("localizationKey");
+                        localizationKey.stringValue = string.Empty;
+                        var keyword = speechCommand.FindPropertyRelative("keyword");
+                        keyword.stringValue = string.Empty;
+                        var keyCode = speechCommand.FindPropertyRelative("keyCode");
+                        keyCode.intValue = (int)KeyCode.None;
+                        var action = speechCommand.FindPropertyRelative("action");
+                        var actionId = action.FindPropertyRelative("id");
+                        actionId.intValue = 0;
+                    }
 
-            if (list == null || list.arraySize == 0)
-            {
-                EditorGUILayout.HelpBox("Create a new Speech Command.", MessageType.Warning);
+                    GUILayout.Space(12f);
+
+                if (list == null || list.arraySize == 0)
+                {
+                    EditorGUILayout.HelpBox("Create a new Speech Command.", MessageType.Warning);
+                    GUILayout.EndVertical();
+                    return;
+                }
+
+                    GUILayout.BeginVertical();
+
+                        GUILayout.BeginHorizontal();
+                            var labelWidth = EditorGUIUtility.labelWidth;
+                            EditorGUIUtility.labelWidth = 36f;
+                            EditorGUILayout.LabelField(LocalizationContent, GUILayout.ExpandWidth(true));
+                            EditorGUILayout.LabelField(KeywordContent, GUILayout.ExpandWidth(true));
+                            EditorGUILayout.LabelField(KeyCodeContent, GUILayout.Width(64f));
+                            EditorGUILayout.LabelField(ActionContent, GUILayout.Width(64f));
+                            EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
+                            EditorGUIUtility.labelWidth = labelWidth;
+                        GUILayout.EndHorizontal();
+
+                        for (int i = 0; i < list.arraySize; i++)
+                        {
+                            EditorGUILayout.BeginHorizontal();
+                                SerializedProperty speechCommand = list.GetArrayElementAtIndex(i);
+                                var localizationKey = speechCommand.FindPropertyRelative("localizationKey");
+                                EditorGUILayout.PropertyField(localizationKey, GUIContent.none, GUILayout.ExpandWidth(true));
+
+                                var keyword = speechCommand.FindPropertyRelative("keyword");
+                                EditorGUILayout.PropertyField(keyword, GUIContent.none, GUILayout.ExpandWidth(true));
+
+                                var keyCode = speechCommand.FindPropertyRelative("keyCode");
+                                EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.Width(64f));
+
+                                var action = speechCommand.FindPropertyRelative("action");
+                                var actionId = action.FindPropertyRelative("id");
+                                var actionDescription = action.FindPropertyRelative("description");
+                                var actionConstraint = action.FindPropertyRelative("axisConstraint");
+
+                                EditorGUI.BeginChangeCheck();
+                                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, actionLabels, actionIds, GUILayout.Width(64f));
+
+                                if (EditorGUI.EndChangeCheck())
+                                {
+                                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
+                                    actionDescription.stringValue = inputAction.Description;
+                                    actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                                }
+
+                                if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                                {
+                                    list.DeleteArrayElementAtIndex(i);
+                                }
+
+                            EditorGUILayout.EndHorizontal();
+                        }
+
+                    GUILayout.EndVertical();
                 GUILayout.EndVertical();
-                return;
             }
-
-            GUILayout.BeginVertical();
-
-            GUILayout.BeginHorizontal();
-            var labelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 36f;
-            EditorGUILayout.LabelField(LocalizationContent, GUILayout.ExpandWidth(true));
-            EditorGUILayout.LabelField(KeywordContent, GUILayout.ExpandWidth(true));
-            EditorGUILayout.LabelField(KeyCodeContent, GUILayout.Width(64f));
-            EditorGUILayout.LabelField(ActionContent, GUILayout.Width(64f));
-            EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
-            EditorGUIUtility.labelWidth = labelWidth;
-            GUILayout.EndHorizontal();
-
-            for (int i = 0; i < list.arraySize; i++)
-            {
-                EditorGUILayout.BeginHorizontal();
-                SerializedProperty speechCommand = list.GetArrayElementAtIndex(i);
-                var localizationKey = speechCommand.FindPropertyRelative("localizationKey");
-                EditorGUILayout.PropertyField(localizationKey, GUIContent.none, GUILayout.ExpandWidth(true));
-                var keyword = speechCommand.FindPropertyRelative("keyword");
-                EditorGUILayout.PropertyField(keyword, GUIContent.none, GUILayout.ExpandWidth(true));
-                var keyCode = speechCommand.FindPropertyRelative("keyCode");
-                EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.Width(64f));
-                var action = speechCommand.FindPropertyRelative("action");
-                var actionId = action.FindPropertyRelative("id");
-                var actionDescription = action.FindPropertyRelative("description");
-                var actionConstraint = action.FindPropertyRelative("axisConstraint");
-
-                EditorGUI.BeginChangeCheck();
-                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, actionLabels, actionIds, GUILayout.Width(64f));
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
-                    actionDescription.stringValue = inputAction.Description;
-                    actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
-                }
-
-                if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
-                {
-                    list.DeleteArrayElementAtIndex(i);
-                }
-
-                EditorGUILayout.EndHorizontal();
-            }
-
-            GUILayout.EndVertical();
-            GUILayout.EndVertical();
         }
     }
 }
