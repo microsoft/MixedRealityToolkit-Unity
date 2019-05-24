@@ -242,6 +242,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Disable()
         {
+            // Input System adds a gaze provider component on the main camera, which needs to be removed when the input system is disabled/removed.
+            // Otherwise the component would keep references to dead objects.
+            // Unity's way to remove component is to destroy it. Immediate is important, otherwise order of deinitialization will be arbitrary.
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
             UnityEngine.Object.DestroyImmediate(CameraCache.Main.gameObject.GetComponent(profile.PointerProfile.GazeProviderType.Type));
 
