@@ -10534,11 +10534,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.FlattenModeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.FlattenModeType.html",
+          "hash": "TPEs1WJBRh1oDzrUT+GW8g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeType.html",
+          "hash": "OtGlmlKAYXLDLBY5kcN98A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.html",
-          "hash": "uWvLsTBwo5uXpNtaXrP0Gg=="
+          "hash": "2FXo5PhqDWDgwjQjAmlHqA=="
         }
       },
       "is_incremental": false,
@@ -11822,7 +11846,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "njVh6ofoKwMVOibsN6X1rw=="
+          "hash": "C6wOro071FYBHccNMxrnuA=="
         }
       },
       "is_incremental": false,
@@ -12110,7 +12134,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.html",
-          "hash": "DiQWTDPy1h0kj/xcnx8kNQ=="
+          "hash": "oGwzjbqXUDjx+6hMIwDrOQ=="
         }
       },
       "is_incremental": false,
@@ -14786,7 +14810,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "GSwSHnlUH29JfGHiXiAqaw=="
+          "hash": "fSsj/Mms8/Xgb3lvQj9I1A=="
         }
       },
       "is_incremental": false,
@@ -14851,17 +14875,17 @@
           "total_file_count": 92,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 891,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 893,
           "skipped_file_count": 0
         }
       }

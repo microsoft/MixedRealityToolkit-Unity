@@ -104,7 +104,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BoundingBox : BaseFocusHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class BoundingBox : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -282,6 +282,331 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxGrabbedMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxGrabbedMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxGrabbedMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxGrabbedMaterial">BoxGrabbedMaterial</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Material BoxGrabbedMaterial { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Material</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxMaterial">BoxMaterial</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Material BoxMaterial { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Material</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxPadding_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxPadding*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxPadding" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxPadding">BoxPadding</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 BoxPadding { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_DrawTetherWhenManipulating_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.DrawTetherWhenManipulating*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_DrawTetherWhenManipulating" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.DrawTetherWhenManipulating">DrawTetherWhenManipulating</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool DrawTetherWhenManipulating { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_FlattenAxis_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FlattenAxis*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_FlattenAxis" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FlattenAxis">FlattenAxis</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoundingBox.FlattenModeType FlattenAxis { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FlattenModeType.html">BoundingBox.FlattenModeType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleGrabbedMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleGrabbedMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleGrabbedMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleGrabbedMaterial">HandleGrabbedMaterial</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Material HandleGrabbedMaterial { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Material</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleMaterial">HandleMaterial</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Material HandleMaterial { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Material</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HideElementsInInspector_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HideElementsInInspector*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HideElementsInInspector" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HideElementsInInspector">HideElementsInInspector</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HideElementsInInspector { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandleDiameter_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandleDiameter*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandleDiameter" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandleDiameter">RotationHandleDiameter</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float RotationHandleDiameter { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandleSlatePrefab_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandleSlatePrefab*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandleSlatePrefab" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandleSlatePrefab">RotationHandleSlatePrefab</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject RotationHandleSlatePrefab { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandlePrefab_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandlePrefab*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandlePrefab" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandlePrefab">ScaleHandlePrefab</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject ScaleHandlePrefab { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandleSize_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandleSize*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandleSize" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandleSize">ScaleHandleSize</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ScaleHandleSize { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandleSlatePrefab_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandleSlatePrefab*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandleSlatePrefab" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandleSlatePrefab">ScaleHandleSlatePrefab</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject ScaleHandleSlatePrefab { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleMaximum_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleMaximum*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleMaximum" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleMaximum">ScaleMaximum</h4>
   <div class="markdown level1 summary"><p>Public property for the scale maximum, in the target's local scale.
@@ -438,6 +763,31 @@ This property can be set independent of the Rotate handles.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ShowWireFrame_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ShowWireFrame*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ShowWireFrame" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ShowWireFrame">ShowWireFrame</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowWireFrame { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_Target_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.Target*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_Target" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.Target">Target</h4>
   <div class="markdown level1 summary"></div>
@@ -482,6 +832,81 @@ This property can be set independent of the Rotate handles.</p>
     <tbody>
       <tr>
         <td><span class="xref">BoxCollider</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeEdgeRadius_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeEdgeRadius*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeEdgeRadius" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeEdgeRadius">WireframeEdgeRadius</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float WireframeEdgeRadius { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeMaterial">WireframeMaterial</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Material WireframeMaterial { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Material</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeShape_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeShape*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeShape" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeShape">WireframeShape</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoundingBox.WireframeType WireframeShape { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeType.html">BoundingBox.WireframeType</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -592,7 +1017,7 @@ when used in conjunction with this MonoBehavior.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">relativeToInitialState</span></td>
-        <td><p>If true the values will be multiplied by the current target scale. If false they will be in absolute local scale.</p>
+        <td><p>If true the values will be multiplied by scale of target at startup. If false they will be in absolute local scale.</p>
 </td>
       </tr>
     </tbody>
