@@ -5,11 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
-using System.Collections.Generic;
 using System.Text;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using UnityEngine;
 
 public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHandler
