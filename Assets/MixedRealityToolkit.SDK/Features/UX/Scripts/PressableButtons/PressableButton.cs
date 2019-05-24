@@ -173,16 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return 1.0f / WorldToLocalScale;
             }
         }
-
-        private Vector3 LocalForward
-        {
-            get
-            {
-                var nearInteractionTouchable = GetComponent<NearInteractionTouchable>();
-                return (nearInteractionTouchable != null) ? -1.0f * nearInteractionTouchable.LocalForward : Vector3.forward;
-            }
-        }
-
+        
         private Vector3 initialPosition;
         /// <summary>
         /// The position from where the button starts to move. 
