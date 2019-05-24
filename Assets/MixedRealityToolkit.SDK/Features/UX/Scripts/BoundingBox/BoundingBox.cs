@@ -945,6 +945,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     GameObject cornerVisuals = Instantiate(isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab, visualsScale.transform);
                     cornerVisuals.name = "visuals";
 
+                    // this is the size of the corner visuals
+                    var cornerbounds = GetMaxBounds(cornerVisuals);
+                    // we need to multiply by this amount to get to desired scale handle size
+                    var invScale = scaleHandleSize / cornerbounds.size.x;
+                    cornerVisuals.transform.localScale = new Vector3(invScale, invScale, invScale);
+
                     if (isFlattened)
                     {
                         // Rotate 2D slate handle asset for proper orientation
@@ -957,6 +963,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     corners.Add(corner.transform);
                 }
             }
+        }
+
+        private Bounds GetMaxBounds(GameObject g)
+        {
+            var b = new Bounds(g.transform.position, Vector3.zero);
+            foreach (Renderer r in g.GetComponentsInChildren<Renderer>())
+            {
+                b.Encapsulate(r.bounds);
+            }
+            return b;
         }
 
         private void AddLinks()
