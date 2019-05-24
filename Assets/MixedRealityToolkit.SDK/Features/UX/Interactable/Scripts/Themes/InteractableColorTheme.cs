@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public InteractableColorTheme()
         {
-            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text) };
+            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI) };
             Name = "Color Theme";
             ThemeProperties = new List<InteractableThemeProperty>();
             ThemeProperties.Add(
