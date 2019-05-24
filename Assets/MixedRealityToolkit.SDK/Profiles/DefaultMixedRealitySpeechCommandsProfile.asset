@@ -18,7 +18,7 @@ MonoBehaviour:
   speechCommands:
   - localizationKey: 
     keyword: Menu
-    keyCode: 51
+    keyCode: 96
     action:
       id: 2
       description: Menu
