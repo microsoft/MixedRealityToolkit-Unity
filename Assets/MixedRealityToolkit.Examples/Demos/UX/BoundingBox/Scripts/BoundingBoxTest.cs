@@ -34,11 +34,7 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
     {
         Debug.Assert(statusText != null, "statusText on BoundingBoxTest should not be null");
         StringBuilder b = new StringBuilder();
-        b.AppendLine($"Test {status}");
-        if (bbox != null)
-        {
-            b.AppendLine($"minscale: {bbox.ScaleMinimum} maxscale: {bbox.ScaleMaximum}");
-        }
+        b.AppendLine($"{status}");
         b.AppendLine($"Press '1' or say 'select' to continue");
         statusText.text = b.ToString();
     }
@@ -128,7 +124,7 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             bbox.WireframeShape = BoundingBox.WireframeType.Cylindrical;
             yield return WaitForSpeechCommand();
 
-            GameObject.Destroy(cube);
+            Destroy(cube);
         }
 
         {
@@ -151,7 +147,11 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             bbox.HideElementsInInspector = false;
             multiRoot.AddComponent<ManipulationHandler>();
             yield return WaitForSpeechCommand();
+
+            Destroy(multiRoot);
         }
+
+        SetStatus("Done!");
     }
     private void DebugDrawObjectBounds(Bounds bounds)
     {
