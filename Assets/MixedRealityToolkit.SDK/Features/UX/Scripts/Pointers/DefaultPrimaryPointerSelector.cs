@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerInfos.Remove(pointer);
         }
 
-        public IMixedRealityPointer Update()
+        virtual public IMixedRealityPointer Update()
         {
             IMixedRealityPointer primaryPointer = null;
             PointerInfo primaryInfo = null;

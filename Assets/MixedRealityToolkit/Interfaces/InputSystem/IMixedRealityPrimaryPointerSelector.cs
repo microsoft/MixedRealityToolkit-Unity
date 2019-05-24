@@ -4,7 +4,9 @@
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Interface used by focus providers to select the primary pointer.
+    /// Interface used by the focus provider to select the pointer that will be considered as primary.
+    /// The current primary pointer can we obtained via <see cref="IMixedRealityFocusProvider.PrimaryPointer"/> or 
+    /// subscribing to the primary pointer changed event via <see cref="IMixedRealityFocusProvider.SubscribeToPrimaryPointerChanged"/>.
     /// </summary>
     public interface IMixedRealityPrimaryPointerSelector
     {

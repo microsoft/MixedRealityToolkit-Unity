@@ -95,16 +95,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Implements(typeof(IMixedRealityPrimaryPointerSelector), TypeGrouping.ByNamespaceFlat)]
-        [Tooltip("")]
+        [Tooltip("Primary pointer selector implementation to use. This is used by the focus provider to choose the primary pointer.")]
         private SystemType primaryPointerSelector = null;
 
         /// <summary>
-        /// 
+        /// Primary pointer selector implementation to use. This is used by the focus provider to choose the primary pointer.
         /// </summary>
         public SystemType PrimaryPointerSelector
         {
             get { return primaryPointerSelector; }
         }
-
     }
 }
