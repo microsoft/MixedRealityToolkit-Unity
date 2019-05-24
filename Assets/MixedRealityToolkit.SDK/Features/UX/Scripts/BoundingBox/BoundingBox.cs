@@ -655,7 +655,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
-        private readonly string rigRootName = "rigRoot";
+        private static readonly string rigRootName = "rigRoot";
 
         #endregion Private Properties
 
