@@ -282,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IReadOnlyList<T> GetDataProviders<T>() where T : IMixedRealityDataProvider
         {
-            if (!(typeof(T) is IMixedRealityInputDeviceManager)) { return null; }
+            if (!typeof(IMixedRealityInputDeviceManager).IsAssignableFrom(typeof(T))) { return null; }
 
             List<T> selected = new List<T>();
 
@@ -314,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
         {
-            if (!(typeof(IMixedRealityInputDeviceManager).IsAssignableFrom(typeof(T)))) { return default(T); }
+            if (!typeof(IMixedRealityInputDeviceManager).IsAssignableFrom(typeof(T))) { return default(T); }
 
             for (int i = 0; i < deviceManagers.Count; i++)
             {
