@@ -78,8 +78,8 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 
                     if (debugLogging)
                     {
-                        var position = spatialCoordinate.WorldToCoordinateSpace(CoordinateRelativePosition);
-                        var rotation = spatialCoordinate.WorldToCoordinateSpace(CoordinateRelativeRotation);
+                        var position = spatialCoordinate.CoordinateToWorldSpace(CoordinateRelativePosition);
+                        var rotation = spatialCoordinate.CoordinateToWorldSpace(CoordinateRelativeRotation);
                         DebugLog($"SpatialCoordindate updated for SpatialCoordinateLocalizer {targetRoot.name}, Coordinate id: {spatialCoordinate.Id}, Coordinate state: {spatialCoordinate.State.ToString()}, Coordinate Space Position: {position.ToString("G4")}, Coordinate Space Rotation {rotation.ToString("G4")}");
                     }
 
@@ -92,14 +92,14 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
                                 debugGameObject = Instantiate(debugVisual);
                             }
 
-                            var position = spatialCoordinate.WorldToCoordinateSpace(CoordinateRelativePosition);
-                            var rotation = spatialCoordinate.WorldToCoordinateSpace(CoordinateRelativeRotation);
+                            var position = spatialCoordinate.CoordinateToWorldSpace(CoordinateRelativePosition);
+                            var rotation = spatialCoordinate.CoordinateToWorldSpace(CoordinateRelativeRotation);
                             debugGameObject.transform.parent = targetRoot.transform;
                             debugGameObject.transform.position = position;
                             debugGameObject.transform.rotation = rotation;
                             debugGameObject.transform.localScale = debugVisualScale * Vector3.one;
                             debugGameObject.name = $"{targetRoot.name} - SpatialCoordinateLocalizer DebugVisual";
-                            DebugLog($"Created {debugGameObject.name}, Coordinate Space Position: {position.ToString("G4")}, Coordinate Space Rotation {rotation.ToString("G4")}");
+                            DebugLog($"Created {debugGameObject.name}, World Space Position: {position.ToString("G4")}, World Space Rotation {rotation.ToString("G4")}");
                         }
                         else
                         {

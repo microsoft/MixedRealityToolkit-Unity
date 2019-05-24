@@ -18,9 +18,9 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 
         public sealed override Quaternion CoordinateToWorldSpace(Quaternion quaternion) => CoordinateToWorldSpace(quaternion.AsUnityQuaternion()).AsNumericsQuaternion();
 
-        public sealed override Vector3 WorldToCoordinateSpace(Vector3 vector) => CoordinateToWorldSpace(vector.AsUnityVector()).AsNumericsVector();
+        public sealed override Vector3 WorldToCoordinateSpace(Vector3 vector) => WorldToCoordinateSpace(vector.AsUnityVector()).AsNumericsVector();
 
-        public sealed override Quaternion WorldToCoordinateSpace(Quaternion quaternion) => CoordinateToWorldSpace(quaternion.AsUnityQuaternion()).AsNumericsQuaternion();
+        public sealed override Quaternion WorldToCoordinateSpace(Quaternion quaternion) => WorldToCoordinateSpace(quaternion.AsUnityQuaternion()).AsNumericsQuaternion();
 
         /// <inheritdoc />
         protected abstract UnityEngine.Vector3 CoordinateToWorldSpace(UnityEngine.Vector3 vector);

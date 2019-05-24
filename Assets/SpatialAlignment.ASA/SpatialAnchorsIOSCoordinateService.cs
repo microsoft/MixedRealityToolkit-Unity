@@ -20,18 +20,14 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             return Task.CompletedTask;
         }
 
+        protected override void OnFrameUpdate()
+        {
+            base.OnFrameUpdate();
+        }
+
         protected override void OnConfigureSession(CloudSpatialAnchorSession session)
         {
-            // TODO anborod: This is a copy from DemoWrapper (it was commented), figure out what should be done here
-
-            // AAD user token scenario to get an authentication token
-            //cloudSpatialAnchorSession.TokenRequired += async (object sender, SpatialServices.TokenRequiredEventArgs args) =>
-            //{
-            //    CloudSpatialAnchorSessionDeferral deferral = args.GetDeferral();
-            //    // AAD user token scenario to get an authentication token
-            //    args.AuthenticationToken = await AuthenticationHelper.GetAuthenticationTokenAsync();
-            //    deferral.Complete();
-            //};
+           
         }
     }
 }

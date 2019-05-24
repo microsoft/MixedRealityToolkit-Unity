@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using UnityEngine;
@@ -11,20 +12,21 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
     {
         private readonly GameObject anchorGO;
 
-        private readonly Quaternion anchorRotation;
-        private readonly Quaternion invertedAnchorRotation;
+        private readonly Quaternion worldToCoordinateRotation;
+        private readonly Quaternion coordinateToWorldRotation;
 
         public CloudSpatialAnchor CloudSpatialAnchor { get; }
 
-        public override LocatedState State => base.State;
+        // TODO anborod this should be updated from the cloud session, but in our case while it's created it's technically located
+        public override LocatedState State => LocatedState.Tracking;
 
         public SpatialAnchorsCoordinate(CloudSpatialAnchor cloudSpatialAnchor, GameObject anchorGO)
             : base(cloudSpatialAnchor.Identifier)
         {
             this.CloudSpatialAnchor = cloudSpatialAnchor;
             this.anchorGO = anchorGO;
-            anchorRotation = anchorGO.transform.rotation;
-            invertedAnchorRotation = Quaternion.Inverse(anchorRotation);
+            coordinateToWorldRotation = anchorGO.transform.rotation;
+            worldToCoordinateRotation = Quaternion.Inverse(worldToCoordinateRotation);
         }
 
         protected override Vector3 CoordinateToWorldSpace(Vector3 vector)
@@ -34,7 +36,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
 
         protected override Quaternion CoordinateToWorldSpace(Quaternion quaternion)
         {
-            return quaternion * invertedAnchorRotation;
+            return coordinateToWorldRotation * quaternion;
         }
 
         protected override Vector3 WorldToCoordinateSpace(Vector3 vector)
@@ -44,7 +46,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
 
         protected override Quaternion WorldToCoordinateSpace(Quaternion quaternion)
         {
-            return quaternion * anchorRotation;
+            return worldToCoordinateRotation * quaternion;
         }
 
         protected override void OnManagedDispose()

@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         public event Action<ISpatialCoordinate> CoordinateRemoved;
 
         private readonly object discoveryLockObject = new object();
-        private readonly CancellationTokenSource disposedCTS = new CancellationTokenSource();
+        protected readonly CancellationTokenSource disposedCTS = new CancellationTokenSource();
 
         private bool isTracking;
 

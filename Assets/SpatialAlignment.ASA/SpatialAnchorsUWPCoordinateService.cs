@@ -5,6 +5,7 @@
 using Microsoft.Azure.SpatialAnchors;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.XR.WSA;
 
 namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
 {
@@ -23,6 +24,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         protected override GameObject CreateGameObjectFrom(AnchorLocatedEventArgs args)
         {
             GameObject gameObject = SpawnGameObject(Vector3.zero, Quaternion.identity);
+            gameObject.AddComponent<WorldAnchor>();
 
             // On HoloLens, if we do not have a cloudAnchor already, we will have already positioned the
             // object based on the passed in worldPos/worldRot and attached a new world anchor,
@@ -31,7 +33,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             // which will position the object automatically.
             if (args.Anchor != null)
             {
-                gameObject.GetComponent<UnityEngine.XR.WSA.WorldAnchor>().SetNativeSpatialAnchorPtr(args.Anchor.LocalAnchor);
+                gameObject.GetComponent<WorldAnchor>().SetNativeSpatialAnchorPtr(args.Anchor.LocalAnchor);
             }
 
             return gameObject;

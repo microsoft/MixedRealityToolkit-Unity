@@ -48,17 +48,11 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             session.Session = GoogleARCoreInternal.ARCoreAndroidLifecycleManager.Instance.NativeSession.SessionHandle;
         }
 
-        //TODO this needs pumping
-        private void ProcessLatestFrame()
+        protected override void OnFrameUpdate()
         {
-            if (!IsTracking)
+            if (!IsTracking || session == null)
             {
                 return;
-            }
-
-            if (session == null)
-            {
-                throw new InvalidOperationException("Cloud spatial anchor session is not available.");
             }
 
             GoogleARCoreInternal.NativeSession nativeSession = GoogleARCoreInternal.ARCoreAndroidLifecycleManager.Instance.NativeSession;
