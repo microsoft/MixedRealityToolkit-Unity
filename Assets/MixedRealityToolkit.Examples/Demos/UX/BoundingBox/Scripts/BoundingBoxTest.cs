@@ -7,13 +7,21 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHandler
 {
-    [SerializeField]
-    private TextMesh statusText;
+
+    public TextMesh statusText;
+
+    public Material darkGrayMaterial;
+    public Material redMaterial;
+    public Material cyanMaterial;
+
+    public GameObject scaleWidget;
 
     private bool speechTriggeredFalg;
     private Vector3 cubePosition = new Vector3(0, 0, 2);
@@ -44,7 +52,8 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
 
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.GetComponent<MeshRenderer>().material = LoadAsset<Material>("MRTK_Standard_DarkGray");
+            Debug.Assert(darkGrayMaterial != null);
+            cube.GetComponent<MeshRenderer>().material = darkGrayMaterial;
             cube.transform.position = cubePosition;
 
             SetStatus("Instantiate BoundingBox");
@@ -91,20 +100,22 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             yield return WaitForSpeechCommand();
 
             SetStatus("Set scale handle widget prefab");
-            bbox.ScaleHandleSize = 0.03f;
-            bbox.ScaleHandlePrefab = LoadAsset<GameObject>("MRTK_BoundingBox_ScaleWidget");
+            bbox.ScaleHandleSize = 0.3f;
+            Debug.Assert(scaleWidget != null);
+            bbox.ScaleHandlePrefab = scaleWidget;
             yield return WaitForSpeechCommand();
 
             SetStatus("Handles red");
-            bbox.HandleMaterial = LoadAsset<Material>("MRTK_Standard_Red");
+            bbox.HandleMaterial = redMaterial;
             yield return WaitForSpeechCommand();
 
             SetStatus("BBox material cyan");
-            bbox.BoxMaterial = LoadAsset<Material>("MRTK_Standard_Cyan");
+            Debug.Assert(cyanMaterial != null);
+            bbox.BoxMaterial = cyanMaterial;
             yield return WaitForSpeechCommand();
 
             SetStatus("BBox grabbed material red");
-            bbox.BoxGrabbedMaterial = LoadAsset<Material>("MRTK_Standard_Red");
+            bbox.BoxGrabbedMaterial = redMaterial;
             mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires());
             mh.OnManipulationEnded.AddListener((med) => bbox.UnhighlightWires());
             yield return WaitForSpeechCommand();
@@ -150,12 +161,6 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
     {
         DebugUtilities.DrawPoint(bounds.min, Color.magenta);
         DebugUtilities.DrawPoint(bounds.max, Color.yellow);
-    }
-    private T LoadAsset<T>(string s) where T : UnityEngine.Object
-    {
-        string[] paths = AssetDatabase.FindAssets(s);
-        var result = (T)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(paths[0]), typeof(T));
-        return result;
     }
 
     private IEnumerator WaitForSpeechCommand()
