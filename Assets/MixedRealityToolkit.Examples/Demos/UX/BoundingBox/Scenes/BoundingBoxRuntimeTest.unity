@@ -1078,7 +1078,6 @@ Transform:
   m_Children:
   - {fileID: 1801423600}
   - {fileID: 442498766}
-  - {fileID: 1993683264}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1349,12 +1348,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1993683263}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1787100464}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1993683265
 MonoBehaviour:
@@ -1369,6 +1368,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusText: {fileID: 442498767}
+  darkGrayMaterial: {fileID: 2100000, guid: f40914b49f8741e39df5b08d3db15497, type: 2}
+  redMaterial: {fileID: 2100000, guid: c4a1b7475a654dd0acaa0cfdfba2e20c, type: 2}
+  cyanMaterial: {fileID: 2100000, guid: 53ea63593b32415faf734536616f5fb3, type: 2}
+  scaleWidget: {fileID: 100002, guid: 40bb9772594a93140a43a9a4f5cf9356, type: 3}
 --- !u!1 &2051637124
 GameObject:
   m_ObjectHideFlags: 0
