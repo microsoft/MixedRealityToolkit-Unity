@@ -256,7 +256,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnInspectorGUI();
 
-
             // show button state in play mode
             {
                 EditorGUI.BeginDisabledGroup(Application.isPlaying == false);
@@ -268,37 +267,42 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUI.EndDisabledGroup();
             }
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Editor Settings", EditorStyles.boldLabel);
-            VisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
-            bool newValue = EditorGUILayout.Toggle("Show Button Event Planes", VisiblePlanes);
-            if (newValue != VisiblePlanes)
+            // editor settings
             {
-                SessionState.SetBool(VisiblePlanesKey, newValue);
-            }
-
-            // enable plane editing
-            {
-                EditorGUI.BeginDisabledGroup(VisiblePlanes == false);
-                EditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
-                newValue = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
-                if (newValue != EditingEnabled)
-                {
-                    SessionState.SetBool(EditingEnabledKey, newValue);
-                    EditorUtility.SetDirty(target);
-                }
-                EditorGUI.EndDisabledGroup();
-            }
-
-            // plane distance conversion
-            {
-                EditorGUI.BeginDisabledGroup(EditingEnabled == false);
-                PressableButton.SpaceMode buttonSpaceMode = button.DistanceSpaceMode;
+                EditorGUI.BeginDisabledGroup(Application.isPlaying == true);
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Plane Distances are in local space" : "Plane Distances are in world space", EditorStyles.boldLabel);
-                if (GUILayout.Button(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Convert Distances to World Space" : "Convert Distances to Local Space"))
+                EditorGUILayout.LabelField("Editor Settings", EditorStyles.boldLabel);
+                VisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
+                bool newValue = EditorGUILayout.Toggle("Show Button Event Planes", VisiblePlanes);
+                if (newValue != VisiblePlanes)
                 {
-                    onTriggerPlaneDistanceConversion();
+                    SessionState.SetBool(VisiblePlanesKey, newValue);
+                }
+
+                // enable plane editing
+                {
+                    EditorGUI.BeginDisabledGroup(VisiblePlanes == false);
+                    EditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
+                    newValue = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
+                    if (newValue != EditingEnabled)
+                    {
+                        SessionState.SetBool(EditingEnabledKey, newValue);
+                        EditorUtility.SetDirty(target);
+                    }
+                    EditorGUI.EndDisabledGroup();
+                }
+
+                // plane distance conversion
+                {
+                    EditorGUI.BeginDisabledGroup(EditingEnabled == false);
+                    PressableButton.SpaceMode buttonSpaceMode = button.DistanceSpaceMode;
+                    EditorGUILayout.Space();
+                    EditorGUILayout.LabelField(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Plane Distances are in local space" : "Plane Distances are in world space", EditorStyles.boldLabel);
+                    if (GUILayout.Button(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Convert Distances to World Space" : "Convert Distances to Local Space"))
+                    {
+                        onTriggerPlaneDistanceConversion();
+                    }
+                    EditorGUI.EndDisabledGroup();
                 }
                 EditorGUI.EndDisabledGroup();
             }
