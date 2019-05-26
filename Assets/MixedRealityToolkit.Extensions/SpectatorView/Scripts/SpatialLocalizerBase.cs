@@ -63,19 +63,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         /// <inheritdoc/>
-        internal override void ProcessIncomingMessage(Role role, Guid token, BinaryReader r)
+        internal override void ProcessIncomingMessage(Role role, Guid token, string command, BinaryReader r)
         {
             DebugLog("Processing incoming message", token);
-            switch (role)
+            if (command == SpatialLocalizationMessageHeader)
             {
-                case Role.User:
-                    break;
-                case Role.Spectator:
-                    string result = r.ReadString();
-                    DebugLog($"Incoming message string: {result}, setting as coordinate id.", token);
-                    observerCoordinateIdToLookFor.TrySetResult(result);
-                    DebugLog("Set coordinate id.", token);
-                    break;
+                switch (role)
+                {
+                    case Role.User:
+                        break;
+                    case Role.Spectator:
+                        string result = r.ReadString();
+                        DebugLog($"Incoming message string: {result}, setting as coordinate id.", token);
+                        observerCoordinateIdToLookFor.TrySetResult(result);
+                        DebugLog("Set coordinate id.", token);
+                        break;
+                }
             }
         }
 
@@ -91,7 +94,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     DebugLog("User getting initialized coordinate", token);
                     coordinateToReturn = initializeUserCoordinateTask.Result;
                     DebugLog($"Sending coordinate id: {coordinateToReturn.Id}", token);
-                    writeAndSendMessage(writer => writer.Write(coordinateToReturn.Id));
+                    writeAndSendMessage(writer =>
+                    {
+                        writer.Write(SpatialLocalizationMessageHeader);
+                        writer.Write(coordinateToReturn.Id);
+                    });
+
                     DebugLog("Message sent.", token);
                     break;
 

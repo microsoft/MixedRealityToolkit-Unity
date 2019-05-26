@@ -62,22 +62,26 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         LocatedState State { get; }
 
         /// <summary>
-        /// Converst world space position to coordinate space position.
+        /// Converts world space position to coordinate space position.
+        /// For example, applying this transform to Vector3.zero would return the position of the local application's world space origin in the coordinate space.
         /// </summary>
         Vector3 WorldToCoordinateSpace(Vector3 vector);
 
         /// <summary>
-        /// Converst world space rotation to coordinate space rotation.
+        /// Converts world space rotation to coordinate space rotation.
+        /// For example, applying this transform to Quaternion.identity would return the quaternion of the local application's world space origin in the coordinate space.
         /// </summary>
         Quaternion WorldToCoordinateSpace(Quaternion quaternion);
 
         /// <summary>
-        /// Converst coordinate space position to world space position.
+        /// Converts coordinate space position to world space position.
+        /// For example, applying this transform to Vector3.zero would return the position of the coordinate in the local application's world space.
         /// </summary>
         Vector3 CoordinateToWorldSpace(Vector3 vector);
 
         /// <summary>
-        /// Converst coordinate space position to world space position.
+        /// Converts coordinate space position to world space position.
+        /// For example, applying this transform to Quaternion.identity would return the quaternion of the coordinate in the local application's world space.
         /// </summary>
         Quaternion CoordinateToWorldSpace(Quaternion quaternion);
     }

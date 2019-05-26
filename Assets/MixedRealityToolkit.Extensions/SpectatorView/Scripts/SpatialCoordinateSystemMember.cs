@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private GameObject debugVisual = null;
         private float debugVisualScale = 1.0f;
 
-        private Action<BinaryReader> processIncomingMessages = null;
+        private Action<string, BinaryReader> processIncomingMessages = null;
         private GameObject spatialCoordinateGO = null;
 
         /// <summary>
@@ -76,30 +76,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 lock (cancellationTokenSource)
                 {
-                    processIncomingMessages = r =>
+                    processIncomingMessages = (command, reader) =>
                     {
                         DebugLog("Passing on incoming message");
-                        spatialLocalizer.ProcessIncomingMessage(role, token, r);
+                        if(!TryProcessIncomingMessage(command, reader))
+                        {
+                            spatialLocalizer.ProcessIncomingMessage(role, token, command, reader);
+                        }
                     };
                 }
 
                 DebugLog("Telling LocalizationMechanims to begin localizng");
-                ISpatialCoordinate coordinate = await spatialLocalizer.LocalizeAsync(role, token, (writeSpatialLocalizerMessage) =>
-                {
-                    DebugLog("Sending message to connected client");
-                    using (MemoryStream memoryStream = new MemoryStream())
-                    using (BinaryWriter writer = new BinaryWriter(memoryStream))
-                    {
-                        // Prepare the writer for sending a message
-                        writer.Write(SpatialCoordinateSystemManager.SpatialLocalizationMessageHeader);
-
-                        // Allow the spatialLocalizer to write its own content to the binary writer with this function
-                        writeSpatialLocalizerMessage(writer);
-
-                        socketEndpoint.Send(memoryStream.ToArray());
-                        DebugLog("Sent Message");
-                    }
-                }, cancellationToken);
+                ISpatialCoordinate coordinate = await spatialLocalizer.LocalizeAsync(role, token, WriteAndSendMessage, cancellationToken);
 
                 if (coordinate == null)
                 {
@@ -141,11 +129,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// Handles messages received from the network.
         /// </summary>
         /// <param name="reader">The reader to access the contents of the message.</param>
-        public void ReceiveMessage(BinaryReader reader)
+        public void ReceiveMessage(string command, BinaryReader reader)
         {
             lock (cancellationTokenSource)
             {
-                processIncomingMessages?.Invoke(reader);
+                processIncomingMessages?.Invoke(command, reader);
             }
         }
 
@@ -161,6 +149,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             lock (cancellationTokenSource)
             {
                 UnityEngine.Object.Destroy(spatialCoordinateGO);
+            }
+        }
+
+        private bool TryProcessIncomingMessage(string command, BinaryReader reader)
+        {
+            return false;
+        }
+
+        private void WriteAndSendMessage(Action<BinaryWriter> callToWrite)
+        {
+            DebugLog("Sending message to connected client");
+            using (MemoryStream memoryStream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(memoryStream))
+            {
+                // Allow the spatialLocalizer to write its own content to the binary writer with this function
+                callToWrite(writer);
+
+                socketEndpoint.Send(memoryStream.ToArray());
+                DebugLog("Sent Message");
             }
         }
     }

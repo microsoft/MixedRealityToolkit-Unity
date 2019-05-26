@@ -53,8 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Debug visual scale.")]
         public float debugVisualScale = 1.0f;
 
-        public const string SpatialLocalizationMessageHeader = "LOCALIZE";
-        readonly string[] supportedCommands = { SpatialLocalizationMessageHeader };
+        readonly string[] supportedCommands = { SpatialLocalizer.SpatialLocalizationMessageHeader };
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemMember> members = new Dictionary<SocketEndpoint, SpatialCoordinateSystemMember>();
 
         public void OnConnected(SocketEndpoint endpoint)
@@ -100,20 +99,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader)
         {
-            switch (command)
+            if (!members.TryGetValue(endpoint, out var member))
             {
-                case SpatialLocalizationMessageHeader:
-                    {
-                        if (!members.TryGetValue(endpoint, out var member))
-                        {
-                            Debug.LogError("Received a message for an endpoint that had no associated spatial coordinate system member");
-                        }
-                        else
-                        {
-                            member.ReceiveMessage(reader);
-                        }
-                    }
-                    break;
+                Debug.LogError("Received a message for an endpoint that had no associated spatial coordinate system member");
+            }
+            else
+            {
+                member.ReceiveMessage(command, reader);
             }
         }
 
