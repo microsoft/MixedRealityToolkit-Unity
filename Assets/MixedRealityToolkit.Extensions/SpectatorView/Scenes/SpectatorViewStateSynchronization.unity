@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -764,8 +764,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abc500b6b39d464880ebe2221b093f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Role: 1
-  userIpAddress: 10.93.48.8
+  Role: 0
+  userIpAddress: 10.89.160.74
   stateSynchronizationSceneManager: {fileID: 685059976}
   stateSynchronizationBroadcaster: {fileID: 2075391329}
   stateSynchronizationObserver: {fileID: 2043021341}

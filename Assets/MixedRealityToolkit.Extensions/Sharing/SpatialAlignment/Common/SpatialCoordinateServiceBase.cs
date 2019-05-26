@@ -102,6 +102,11 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             }
         }
 
+        /// <summary>
+        /// Removes a tracked coordinate from this service.
+        /// </summary>
+        /// <param name="id">The ide of the coordinate to remove.</param>
+        /// <remarks>Will throw if coordinate was not tracked by this service, checking is possible throuhg <see cref="knownCoordinates"/> field.</remarks>
         protected void OnRemoveCoordinate(TKey id)
         {
             ThrowIfDisposed();

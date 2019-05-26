@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID && ASA_LOCALIZATION
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity.Android;
 using System;
@@ -10,15 +10,23 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
 {
+    /// <summary>
+    /// Android implementation of the Azure Spatial Anchors coordinate service.
+    /// </summary>
     internal class SpatialAnchorsAndroidCoordinateService : SpatialAnchorsCoordinateService
     {
         private long lastFrameProcessedTimeStamp;
 
+        /// <summary>
+        /// Instantiates a new <see cref="SpatialAnchorsAndroidCoordinateService"/>.
+        /// </summary>
+        /// <param name="spatialAnchorsConfiguration">Azure Spatial Anchors configuration.</param>
         public SpatialAnchorsAndroidCoordinateService(SpatialAnchorsConfiguration spatialAnchorsConfiguration)
             : base(spatialAnchorsConfiguration)
         {
         }
 
+        /// <inheritdoc/>
         protected override Task OnInitializeAsync()
         {
             TaskCompletionSource<object> taskCompletionSource = new TaskCompletionSource<object>();
@@ -43,11 +51,13 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             return taskCompletionSource.Task;
         }
 
+        /// <inheritdoc/>
         protected override void OnConfigureSession(CloudSpatialAnchorSession session)
         {
             session.Session = GoogleARCoreInternal.ARCoreAndroidLifecycleManager.Instance.NativeSession.SessionHandle;
         }
 
+        /// <inheritdoc/>
         protected override void OnFrameUpdate()
         {
             if (!IsTracking || session == null)

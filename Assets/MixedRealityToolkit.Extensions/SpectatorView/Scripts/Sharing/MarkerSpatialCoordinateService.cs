@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-#if !UNITY_WSA
-//using UnityEngine.XR.ARFoundation;
+#if !UNITY_WSA && AR_FOUNDATION
+using UnityEngine.XR.ARFoundation;
 #endif
 
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
@@ -304,13 +304,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
         [SerializeField]
         protected Camera _aRFoundationCamera;
 
-#if !UNITY_WSA
+#if !UNITY_WSA && AR_FOUNDATION
         /// <summary>
         /// AR Point Cloud Manager defined for mobile device's AR Foundation experience. Said manager will be used to determine whether or not the mobile device has found its local application origin.
         /// </summary>
-        //[Tooltip("AR Point Cloud Manager defined for mobile device's AR Foundation experience. Said manager will be used to determine whether or not the mobile device has found its local application origin.")]
-        //[SerializeField]
-        //protected ARPointCloudManager _aRPointCloudManager;
+        [Tooltip("AR Point Cloud Manager defined for mobile device's AR Foundation experience. Said manager will be used to determine whether or not the mobile device has found its local application origin.")]
+        [SerializeField]
+        protected ARPointCloudManager _aRPointCloudManager;
 #endif
 
         /// <summary>
@@ -762,39 +762,38 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
 #endif
         }
 
-#if UNITY_ANDROID || UNITY_IOS
-        //private void OnPointCloudUpdated(ARPointCloudUpdatedEventArgs args)
-        //{
-        //    throw new NotImplementedException();
-        //    //if (args != null &&
-        //    //    args.pointCloud != null)
-        //    //{
-        //    //    List<Vector3> points = new List<Vector3>();
-        //    //    args.pointCloud.GetPoints(points);
-        //    //    if (points.Count > _pointsRequiredForValidLocalOrigin)
-        //    //    {
-        //    //        _localOriginEstablished = true;
+#if (UNITY_ANDROID || UNITY_IOS) && AR_FOUNDATION
+        private void OnPointCloudUpdated(ARPointCloudUpdatedEventArgs args)
+        {
+            if (args != null &&
+                args.pointCloud != null)
+            {
+                List<Vector3> points = new List<Vector3>();
+                args.pointCloud.GetPoints(points);
+                if (points.Count > _pointsRequiredForValidLocalOrigin)
+                {
+                    _localOriginEstablished = true;
 
-        //    //        // TODO - there may be a follow up task to shift inbetween showing the marker/hiding the marker based on whether or not these points are found
-        //    //        if (_aRPointCloudManager == null)
-        //    //        {
-        //    //            Debug.LogError("Point cloud manager not defined for ar foundation device");
-        //    //            return;
-        //    //        }
+                    // TODO - there may be a follow up task to shift inbetween showing the marker/hiding the marker based on whether or not these points are found
+                    if (_aRPointCloudManager == null)
+                    {
+                        Debug.LogError("Point cloud manager not defined for ar foundation device");
+                        return;
+                    }
 
-        //    //        if (_listeningToPointCloudChanges)
-        //    //        {
-        //    //            Debug.Log("Stopped observing point cloud changes");
-        //    //            _aRPointCloudManager.pointCloudUpdated -= OnPointCloudUpdated;
-        //    //            _listeningToPointCloudChanges = false;
-        //    //        }
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        Debug.Log("Point cloud did not contain enough points to establish a local origin, current size: " + points.Count);
-        //    //    }
-        //    //}
-        //}
+                    if (_listeningToPointCloudChanges)
+                    {
+                        Debug.Log("Stopped observing point cloud changes");
+                        _aRPointCloudManager.pointCloudUpdated -= OnPointCloudUpdated;
+                        _listeningToPointCloudChanges = false;
+                    }
+                }
+                else
+                {
+                    Debug.Log("Point cloud did not contain enough points to establish a local origin, current size: " + points.Count);
+                }
+            }
+        }
 #endif
 
         protected byte[] GenerateStatePayload()

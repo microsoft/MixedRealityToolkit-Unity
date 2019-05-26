@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_WSA
+#if UNITY_WSA && ASA_LOCALIZATION
 using Microsoft.Azure.SpatialAnchors;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -9,6 +9,9 @@ using UnityEngine.XR.WSA;
 
 namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
 {
+    /// <summary>
+    /// UWP implementation of the Azure Spatial Anchors coordinate service.
+    /// </summary>
     internal class SpatialAnchorsUWPCoordinateService : SpatialAnchorsCoordinateService
     {
         public SpatialAnchorsUWPCoordinateService(SpatialAnchorsConfiguration spatialAnchorsConfiguration)
@@ -16,11 +19,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         {
         }
 
-        protected override Task OnInitializeAsync()
-        {
-            return Task.CompletedTask;
-        }
-
+        /// <inheritdoc/>
         protected override GameObject CreateGameObjectFrom(AnchorLocatedEventArgs args)
         {
             GameObject gameObject = SpawnGameObject(Vector3.zero, Quaternion.identity);
@@ -39,6 +38,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             return gameObject;
         }
 
+        /// <inheritdoc/>
         protected override void OnConfigureSession(CloudSpatialAnchorSession session)
         {
             // TODO anborod: This is a copy from DemoWrapper (it was commented), figure out what should be done here

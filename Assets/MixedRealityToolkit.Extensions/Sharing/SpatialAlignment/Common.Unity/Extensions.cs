@@ -187,6 +187,10 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             return Task.WhenAny(task, cancellationToken.AsTask());
         }
 
+        /// <summary>
+        /// Helper class to enable await on <see cref="SynchronizationContext"/>. 
+        /// This is useful if you want to switch execution flow of an async function to a different thread, like Unity game thread for example.
+        /// </summary>
         public struct SynchronizationContextAwaiter : INotifyCompletion
         {
             private static readonly SendOrPostCallback _postCallback = state => ((Action)state)();
@@ -207,6 +211,11 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             public void GetResult() { }
         }
 
+        /// <summary>
+        /// Required extension method to enable awaiting on <see cref="SynchronizationContext"/>.
+        /// </summary>
+        /// <param name="context">Context to await (switch execution flow to).</param>
+        /// <returns>Awaiter for the "await" keyword to work.</returns>
         public static SynchronizationContextAwaiter GetAwaiter(this SynchronizationContext context)
         {
             return new SynchronizationContextAwaiter(context);

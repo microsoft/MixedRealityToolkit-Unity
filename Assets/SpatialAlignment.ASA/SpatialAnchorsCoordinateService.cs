@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if ASA_LOCALIZATION
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity;
 using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
@@ -12,6 +13,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
 {
+    /// <summary>
+    /// Base class for the various platform implementation sof Azure Spatial Anchors.
+    /// </summary>
     public abstract class SpatialAnchorsCoordinateService : SpatialCoordinateServiceUnityBase<string>
     {
         private readonly object lockObj = new object();
@@ -31,6 +35,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             gameThreadSynchronizationContext = SynchronizationContext.Current;
         }
 
+        /// <inheritdoc/>
         protected override void OnManagedDispose()
         {
             base.OnManagedDispose();
@@ -42,6 +47,9 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
 
         }
 
+        /// <summary>
+        /// This method must be pumped each frame from the Untiy Game loop.
+        /// </summary>
         public void FrameUpdate()
         {
             ThrowIfDisposed();
@@ -49,6 +57,9 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             OnFrameUpdate();
         }
 
+        /// <summary>
+        /// Overridable function providing frame update pump.
+        /// </summary>
         protected virtual void OnFrameUpdate() { }
 
         private void RequestSessionStart()
@@ -77,6 +88,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             }
         }
 
+        /// <inheritdoc/>
         public override async Task<bool> TryDeleteCoordinateAsync(string id, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
@@ -110,6 +122,11 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             }
         }
 
+        /// <summary>
+        /// Creates a <see cref="GameObject"/> representing the anchor based on provided <see cref="AnchorLocatedEventArgs"/>.
+        /// </summary>
+        /// <param name="args">Args passed from AnchorLocated event.</param>
+        /// <returns>The newly created <see cref="GameObject"/>.</returns>
         protected virtual GameObject CreateGameObjectFrom(AnchorLocatedEventArgs args)
         {
             Pose pose = args.Anchor.GetAnchorPose();
@@ -119,6 +136,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             return gameObject;
         }
 
+        /// <inheritdoc/>
         protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate = null)
         {
             await EnsureInitializedAsync().Unless(cancellationToken);
@@ -194,6 +212,12 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             }
         }
 
+        /// <summary>
+        /// Simple helper method to spawn anchor <see cref="GameObject"/> provided position and rotation.
+        /// </summary>
+        /// <param name="worldPosition">Position of the anchor.</param>
+        /// <param name="worldRotation">Rotation of the anchor.</param>
+        /// <returns>The newly spawned <see cref="GameObject"/>.</returns>
         protected GameObject SpawnGameObject(Vector3 worldPosition, Quaternion worldRotation)
         {
             GameObject spawnedAnchorObject = new GameObject("Azure Spatial Anchor");
@@ -204,6 +228,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             return spawnedAnchorObject;
         }
 
+        /// <inheritdoc/>
         protected override async Task<ISpatialCoordinate> TryCreateCoordinateAsync(Vector3 worldPosition, Quaternion worldRotation, CancellationToken cancellationToken)
         {
             await EnsureInitializedAsync().Unless(cancellationToken);
@@ -249,17 +274,25 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             }
         }
 
+        /// <inheritdoc/>
         protected override bool TryParse(string id, out string result)
         {
             result = id;
             return true;
         }
 
+        /// <summary>
+        /// Override this method in the implementation class to add additional initialization logic.
+        /// </summary>
         protected virtual Task OnInitializeAsync()
         {
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Abstract method to be implemented by specific platform implentation that adds additional session configuration.
+        /// </summary>
+        /// <param name="session">The session that was just constructed and is being configured.</param>
         protected abstract void OnConfigureSession(CloudSpatialAnchorSession session);
 
         private Task EnsureInitializedAsync()
@@ -343,3 +376,4 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         }
     }
 }
+#endif

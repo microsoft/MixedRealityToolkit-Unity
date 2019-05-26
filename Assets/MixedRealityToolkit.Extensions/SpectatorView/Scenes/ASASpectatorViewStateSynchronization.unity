@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -655,8 +655,8 @@ MonoBehaviour:
   configuration:
     AccessToken: 
     AccountDomain: 
-    AccountId: f7987ce2-7a81-4232-a665-ac247df35468
-    AccountKey: pQ/Sf/JTnx+ur5iuKU8Xr80IlbVggViAs/DZ3tylJhc=
+    AccountId: 
+    AccountKey: 
     AuthenticationToken: 
 --- !u!114 &1782757362
 MonoBehaviour:
