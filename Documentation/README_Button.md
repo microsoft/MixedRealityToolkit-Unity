@@ -50,7 +50,7 @@ Unity audio source for the audio feedback clips.
 *NearInteractionTouchable.cs*
 Required to make any object touchable with articulated hand input.
 
-**Prefab Layout**
+## Prefab Layout
 The *ButtonContent* object contains front plate, text label and icon. The *FrontPlate* responds to the proximity of the index fingertip using the *Button_Box* shader. It shows glowing borders, proximity light, and a pulse effect on touch. The text label is made with TextMesh Pro. *SeeItSayItLabel*'s visibility is controlled by [Interactable](README_Interactable.md)'s theme.
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Layout.png)
