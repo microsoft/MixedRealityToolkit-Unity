@@ -158,6 +158,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// Victory sign
             /// </summary>
             Victory,
+            /// <summary>
+            /// Open Sky
+            /// </summary>
+            OpenSky,
         }
 
         static public SimulatedHandPose GetGesturePose(GestureId gesture)
@@ -167,6 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 case GestureId.None: return null;
                 case GestureId.Flat: return HandFlat;
                 case GestureId.Open: return HandOpened;
+                case GestureId.OpenSky: return HandOpenedSky;
                 case GestureId.Pinch: return HandPinch;
                 case GestureId.PinchSteadyWrist: return HandPinchSteadyWrist;
                 case GestureId.Poke: return HandPoke;
@@ -204,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new Vector3(0.044f,0.107f,0.041f),
             new Vector3(0.063f,0.097f,0.040f), // ThumbTip
             new Vector3(-0.027f,0.159f,0.061f), // IndexMetacarpal
-            new Vector3(-0.009f,0.075f,0.033f), 
+            new Vector3(-0.009f,0.075f,0.033f),
             new Vector3(-0.005f,0.036f,0.017f),
             new Vector3(-0.002f,0.015f,0.007f),
             new Vector3(0.000f,0.000f,0.000f), // IndexTip
@@ -442,6 +447,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new Vector3(-0.06393f, 0.08967f, -0.03293f), // PinkyDistalJoint
             new Vector3(-0.06748f, 0.09752f, -0.02542f), // PinkyTip
         });
-    }
 
+        static private SimulatedHandPose HandOpenedSky = new SimulatedHandPose(new Vector3[]
+        {
+           new Vector3(-0.02416f,  0.02000f, -0.15396f), // None
+           new Vector3( 0.00470f,  0.00019f,  0.01118f), // Wrist
+           new Vector3(-0.00017f,  0.00433f, -0.04913f), // Palm
+           new Vector3(-0.00694f,  0.00010f,  0.00055f), // ThumbMetacarpalJoint
+           new Vector3(-0.04814f, -0.00338f, -0.04655f), // ThumbProximalJoint
+           new Vector3(-0.06456f, -0.00148f, -0.07234f), // ThumbDistalJoint
+           new Vector3(-0.07241f, -0.00114f, -0.08688f), // ThumbTip
+           new Vector3( 0.00052f, -0.00039f, -0.00165f), // IndexMetacarpal
+           new Vector3(-0.01895f,  0.01058f, -0.08271f), // IndexKnuckle
+           new Vector3(-0.02162f,  0.01743f, -0.12042f), // IndexMiddleJoint
+           new Vector3(-0.02329f,  0.01957f, -0.14183f), // IndexDistalJoint
+           new Vector3(-0.02416f,  0.02000f, -0.15396f), // IndexTip
+           new Vector3( 0.00658f,  0.00048f, -0.00207f), // MiddleMetacarpal
+           new Vector3( 0.00173f,  0.01131f, -0.08152f), // MiddleKnuckle
+           new Vector3( 0.00387f,  0.01529f, -0.11965f), // MiddleMiddleJoint
+           new Vector3( 0.00371f,  0.01772f, -0.13489f), // MiddleDistalJoint
+           new Vector3( 0.00507f,  0.01884f, -0.14882f), // MiddleTip
+           new Vector3( 0.01442f,  0.00022f,  0.00119f), // RingMetacarpal
+           new Vector3( 0.02121f,  0.00826f, -0.07446f), // RingKnuckle
+           new Vector3( 0.02987f,  0.01204f, -0.10880f), // RingMiddleJoint
+           new Vector3( 0.03385f,  0.01358f, -0.12441f), // RingDistalJoint
+           new Vector3( 0.03662f,  0.01625f, -0.13652f), // RingTip
+           new Vector3( 0.02021f, -0.00008f,  0.00396f), // PinkyMetacarpal
+           new Vector3( 0.03784f,  0.00216f, -0.06588f), // PinkyKnuckle
+           new Vector3( 0.05120f,  0.00533f, -0.09075f), // PinkyMiddleJoint
+           new Vector3( 0.05725f,  0.00608f, -0.10293f), // PinkyDistalJoint
+           new Vector3( 0.06151f,  0.00738f, -0.11059f)  // PinkyTip
+        });
+    }
 }
