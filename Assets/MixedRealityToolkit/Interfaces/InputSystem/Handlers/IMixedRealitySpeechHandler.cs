@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Interface to implement to react to speech recognition.
     /// </summary>
-    public interface IMixedRealitySpeechHandler : IEventSystemHandler
+    public interface IMixedRealitySpeechHandler : IMixedRealityBaseInputHandler
     {
         void OnSpeechKeywordRecognized(SpeechEventData eventData);
     }

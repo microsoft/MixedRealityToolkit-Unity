@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [SetUp]
         public void SetupMrtk()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
         }
 

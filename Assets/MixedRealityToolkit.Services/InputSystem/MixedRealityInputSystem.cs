@@ -966,6 +966,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnInputDown(casted);
             };
 
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityBaseInputHandler> OnInputDownWithActionEventHandler =
+            delegate (IMixedRealityBaseInputHandler handler, BaseEventData eventData)
+            {
+                var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
+                Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
+
+                var inputHandler = handler as IMixedRealityInputHandler;
+                if (inputHandler != null)
+                {
+                    inputHandler.OnInputDown(inputData);
+                }
+
+                var actionHandler = handler as IMixedRealityInputActionHandler;
+                if (actionHandler != null)
+                {
+                    actionHandler.OnActionStarted(inputData);
+                }
+            };
+
         /// <inheritdoc />
         public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
@@ -975,7 +994,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             inputEventData.Initialize(source, handedness, inputAction);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEventData, OnInputDownEventHandler);
+            if (inputEventData.MixedRealityInputAction == MixedRealityInputAction.None)
+            {
+                HandleEvent(inputEventData, OnInputDownEventHandler);
+            }
+            else
+            {
+                HandleEvent(inputEventData, OnInputDownWithActionEventHandler);
+            }
         }
 
         #endregion Input Down
@@ -989,6 +1015,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnInputUp(casted);
             };
 
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityBaseInputHandler> OnInputUpWithActionEventHandler =
+            delegate (IMixedRealityBaseInputHandler handler, BaseEventData eventData)
+            {
+                var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
+                Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
+
+                var inputHandler = handler as IMixedRealityInputHandler;
+                if (inputHandler != null)
+                {
+                    inputHandler.OnInputUp(inputData);
+                }
+
+                var actionHandler = handler as IMixedRealityInputActionHandler;
+                if (actionHandler != null)
+                {
+                    actionHandler.OnActionEnded(inputData);
+                }
+            };
+
         /// <inheritdoc />
         public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
@@ -998,7 +1043,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             inputEventData.Initialize(source, handedness, inputAction);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEventData, OnInputUpEventHandler);
+            if (inputEventData.MixedRealityInputAction == MixedRealityInputAction.None)
+            {
+                HandleEvent(inputEventData, OnInputUpEventHandler);
+            }
+            else
+            {
+                HandleEvent(inputEventData, OnInputUpWithActionEventHandler);
+            }
         }
 
         #endregion Input Up
@@ -1125,12 +1177,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnGestureStarted(casted);
             };
 
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityBaseInputHandler> OnGestureStartedWithAction =
+            delegate (IMixedRealityBaseInputHandler handler, BaseEventData eventData)
+            {
+                var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
+                Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
+
+                var gestureHandler = handler as IMixedRealityGestureHandler;
+                if (gestureHandler != null)
+                {
+                    gestureHandler.OnGestureStarted(inputData);
+                }
+
+                var actionHandler = handler as IMixedRealityInputActionHandler;
+                if (actionHandler != null)
+                {
+                    actionHandler.OnActionStarted(inputData);
+                }
+            };
+
         /// <inheritdoc />
         public void RaiseGestureStarted(IMixedRealityController controller, MixedRealityInputAction action)
         {
             action = ProcessRules(action, true);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
-            HandleEvent(inputEventData, OnGestureStarted);
+
+            if (action == MixedRealityInputAction.None)
+            {
+                HandleEvent(inputEventData, OnGestureStarted);
+            }
+            else
+            {
+                HandleEvent(inputEventData, OnGestureStartedWithAction);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityGestureHandler> OnGestureUpdated =
@@ -1215,12 +1294,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnGestureCompleted(casted);
             };
 
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityBaseInputHandler> OnGestureCompletedWithAction =
+            delegate (IMixedRealityBaseInputHandler handler, BaseEventData eventData)
+            {
+                var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
+                Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
+
+                var gestureHandler = handler as IMixedRealityGestureHandler;
+                if (gestureHandler != null)
+                {
+                    gestureHandler.OnGestureCompleted(inputData);
+                }
+
+                var actionHandler = handler as IMixedRealityInputActionHandler;
+                if (actionHandler != null)
+                {
+                    actionHandler.OnActionEnded(inputData);
+                }
+            };
+
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action)
         {
             action = ProcessRules(action, false);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
-            HandleEvent(inputEventData, OnGestureCompleted);
+
+            if (action == MixedRealityInputAction.None)
+            {
+                HandleEvent(inputEventData, OnGestureCompleted);
+            }
+            else
+            {
+                HandleEvent(inputEventData, OnGestureCompletedWithAction);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityGestureHandler<Vector2>> OnGestureVector2PositionCompleted =
@@ -1309,6 +1415,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnSpeechKeywordRecognized(casted);
             };
 
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityBaseInputHandler> OnSpeechKeywordRecognizedWithActionEventHandler =
+            delegate (IMixedRealityBaseInputHandler handler, BaseEventData eventData)
+            {
+                var speechData = ExecuteEvents.ValidateEventData<SpeechEventData>(eventData);
+                Debug.Assert(speechData.MixedRealityInputAction != MixedRealityInputAction.None);
+
+                var speechHandler = handler as IMixedRealitySpeechHandler;
+                if (speechHandler != null)
+                {
+                    speechHandler.OnSpeechKeywordRecognized(speechData);
+                }
+
+                var actionHandler = handler as IMixedRealityInputActionHandler;
+                if (actionHandler != null)
+                {
+                    actionHandler.OnActionStarted(speechData);
+                    actionHandler.OnActionEnded(speechData);
+                }
+            };
+
         /// <inheritdoc />
         public void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SpeechCommands command)
         {
@@ -1318,7 +1444,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             FocusProvider?.OnSpeechKeywordRecognized(speechEventData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
+            if (command.Action == MixedRealityInputAction.None)
+            {
+                HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
+            }
+            else
+            {
+                HandleEvent(speechEventData, OnSpeechKeywordRecognizedWithActionEventHandler);
+            }
         }
 
         #endregion Speech Keyword Events
