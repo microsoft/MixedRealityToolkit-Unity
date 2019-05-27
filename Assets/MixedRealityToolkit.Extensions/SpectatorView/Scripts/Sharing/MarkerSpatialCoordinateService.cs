@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-#if !UNITY_WSA && AR_FOUNDATION
+#if !UNITY_WSA && SPATIALALIGNMENT_LEGACY
 using UnityEngine.XR.ARFoundation;
 #endif
 
@@ -304,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
         [SerializeField]
         protected Camera _aRFoundationCamera;
 
-#if !UNITY_WSA && AR_FOUNDATION
+#if !UNITY_WSA && SPATIALALIGNMENT_LEGACY
         /// <summary>
         /// AR Point Cloud Manager defined for mobile device's AR Foundation experience. Said manager will be used to determine whether or not the mobile device has found its local application origin.
         /// </summary>
@@ -745,7 +745,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
         {
 #if UNITY_WSA
             _localOriginEstablished = true;
-#elif UNITY_ANDROID || UNITY_IOS
+#elif (UNITY_ANDROID || UNITY_IOS) && SPATIALALIGNMENT_LEGACY
             if (!_localOriginEstablished &&
                 !_listeningToPointCloudChanges)
             {
@@ -762,7 +762,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
 #endif
         }
 
-#if (UNITY_ANDROID || UNITY_IOS) && AR_FOUNDATION
+#if (UNITY_ANDROID || UNITY_IOS) && SPATIALALIGNMENT_LEGACY
         private void OnPointCloudUpdated(ARPointCloudUpdatedEventArgs args)
         {
             if (args != null &&
