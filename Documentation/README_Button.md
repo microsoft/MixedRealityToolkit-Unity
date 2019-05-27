@@ -20,9 +20,63 @@ To leverage specific articulated hand input state information, you can use press
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowTo_PressableButton.png" width="450">
 
-## Using PressableButton on other types of objects ##
+## How to make a pressable button from scratch ##
+You can find the examples of these buttons in the **PressableButtonExample** scene.
 
-You can use the `PressableButton`s script to configure an object to react to finger pushes.
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCube0.png">
+
+### 1. Creating a Pressable Button with Cube (Near interaction only)
+1. Create a Unity Cube (GameObject > 3D Object > Cube)
+2. Add `PressableButton.cs` script
+3. Add `NearInteractionTouchable.cs` script
+
+In the `PressableButton`'s Inspector panel, assign the cube object to the **Moving Button Visuals**. 
+
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCube3.png" width="450">
+
+When you select the cube, you will see multiple colored layers on the object. This visualizes the distance values under **Press Settings**. Using the handles, you can configure when to start press (move the object) and when to trigger event.
+
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCube1.jpg" width="450">
+
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCube2.png" width="450">
+
+When you press the button, it will move and generate proper events exposed in the `PressableButton.cs` script such as TouchBegin(), TouchEnd(), ButtonPressed(), ButtonReleased().
+
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun1.jpg">
+
+### 2. Adding visual feedback to the basic cube button
+MRTK Standard Shader provides various features that makes it easy to add visual feedback. Create an material and select shader `Mixed Reality Toolkit/Standard`. Or you can use or duplicate one of the existing materials under `/SDK/StandardAssets/Materials/` that uses MRTK Standard Shader.
+
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCube4.png" width="450">
+
+Check `Hover Light` and `Proximity Light` under **Fluent Options**. This enables visual feedback for both near hand(Proximity Light) and far pointer(Hover Light) interactions.
+
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCube5.png" width="450">
+
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun2.jpg">
+
+### 3. Adding audio feedback to the basic cube button
+Since `PressableButton.cs` script exposes events such as TouchBegin(), TouchEnd(), ButtonPressed(), ButtonReleased(), we can easily assign audio feedback. Simply add Unity's `Audio Source` to the cube object then assign audio clips by selecting AudioSource.PlayOneShot(). You can use MRTK_Select_Main and MRTK_Select_Secondary audio clips under `/SDK/StandardAssets/Audio/` folder.
+
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCube7.png" width="450">
+
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCube6.png" width="450">
+
+### 4. Adding visual states and handle far interaction events
+[Interactable](README_Interactable.md) is a script that makes it easy to create a visual states for the various types of input interactions. Add `Interactable.cs` and drag and drop the cube object onto the **Target** field under **Profiles**. Then, create a new Theme with a type **ScaleOffsetColorTheme**. Under this theme, you can specify the color of the object for the specific interaction states such as **Focus** and **Pressed**. You can also control Scale and Offset as well. Check **Easing** and set duration to make the visual transition smooth.
+
+ <img src="../Documentation/Images/Button/MRTK_PressableButtonCube8.png" width="450">
+  <img src="../Documentation/Images/Button/MRTK_PressableButtonCube9.png" width="450">
+
+You will see the object responds to both far(hand ray or gaze cursor) and near(hand) interactions.
+
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun3.jpg">
+<img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg">
+
+
+
+
+## Custom Button Examples ##
 
 In the [HandInteractionExample scene](README_HandInteractionExamples.md), you can take a look at the piano and round button examples which are both using `PressableButton`. 
 
