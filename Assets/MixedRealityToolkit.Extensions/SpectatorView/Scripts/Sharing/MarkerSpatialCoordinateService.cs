@@ -749,14 +749,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
             if (!_localOriginEstablished &&
                 !_listeningToPointCloudChanges)
             {
-                //if (_aRPointCloudManager == null)
-                //{
-                //    Debug.LogError("Point cloud manager not defined for ar foundation device");
-                //    return;
-                //}
+                if (_aRPointCloudManager == null)
+                {
+                    Debug.LogError("Point cloud manager not defined for ar foundation device");
+                    return;
+                }
 
                 Debug.Log("Started observing point cloud changes");
-                //_aRPointCloudManager.pointCloudUpdated += OnPointCloudUpdated;
+                _aRPointCloudManager.pointCloudUpdated += OnPointCloudUpdated;
                 _listeningToPointCloudChanges = true;
             }
 #endif
