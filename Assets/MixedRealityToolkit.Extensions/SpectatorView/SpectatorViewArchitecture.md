@@ -1,3 +1,5 @@
+NOTE: This documentation is in the process of being deprecated. The first release of spectator view is not yet been published and will be based on a different architecture/code organization.
+
 # Spectator View Architecture
 While refactoring, Spectator View logic will live in the MixedRealityToolkit.Extensions directory. Extensions are components that may be maintained by Microsoft or non-Microsoft MRTK community members. As an extension, usage of Spectator View should not require dependencies on the rest of the MRTK code base, but it should continue to remain compatible with MRTK projects. Long term, Spectator View may end up in its own repository. But for now, documentation and feature work can be found in both the [Microsoft/MixedRealityToolkit-Unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/spectatorView/Assets/MixedRealityToolkit.Extensions/SpectatorView) and [Microsoft/MixedRealityToolkit](https://github.com/Microsoft/MixedRealityToolkit/tree/feature/spectatorView/SpectatorViewPlugin) repositories in the feature/spectatorView branches.
 

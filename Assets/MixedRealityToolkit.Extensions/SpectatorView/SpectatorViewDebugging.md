@@ -1,3 +1,5 @@
+NOTE: This documentation is in the process of being deprecated. The first release of spectator view is not yet been published and will be based on a different architecture/code organization.
+
 # Spectator View Debugging
 
 ## Troubleshooting the [MarkerSpatialCoordinateService](xref:Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing.MarkerSpatialCoordinateService)
