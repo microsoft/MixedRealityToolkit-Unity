@@ -99,6 +99,7 @@ appear, hide the gaze cursor. Whenever user says &quot;select&quot;, make the ga
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html">IMixedRealitySpeechHandler</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityBaseInputHandler.html">IMixedRealityBaseInputHandler</a></div>
     <div><span class="xref">IEventSystemHandler</span></div>
   </div>
   <div class="inheritedMembers">
@@ -129,7 +130,7 @@ appear, hide the gaze cursor. Whenever user says &quot;select&quot;, make the ga
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_GazePointerVisibilityStateMachine_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GazePointerVisibilityStateMachine : IMixedRealitySpeechHandler, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class GazePointerVisibilityStateMachine : IMixedRealitySpeechHandler, IMixedRealityBaseInputHandler, IEventSystemHandler</code></pre>
   </div>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_GazePointerVisibilityStateMachine_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Has different behavior depending on whether or not eye gaze or head gaze in use - see comments on
@@ -238,6 +239,9 @@ and whether or not eye gaze is valid.</p>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html">IMixedRealitySpeechHandler</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityBaseInputHandler.html">IMixedRealityBaseInputHandler</a>
   </div>
   <div>
       <span class="xref">IEventSystemHandler</span>

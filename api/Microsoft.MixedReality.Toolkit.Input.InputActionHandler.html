@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class SpeechInputHandler
+    <title>Class InputActionHandler
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class SpeechInputHandler
+    <meta name="title" content="Class InputActionHandler
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.42.4.0">
     
@@ -81,12 +81,12 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Input.InputActionHandler">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler" class="text-break">Class SpeechInputHandler
+  <h1 id="Microsoft_MixedReality_Toolkit_Input_InputActionHandler" data-uid="Microsoft.MixedReality.Toolkit.Input.InputActionHandler" class="text-break">Class InputActionHandler
   </h1>
-  <div class="markdown level0 summary"><p>This component handles the speech input events raised form the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.html">IMixedRealityInputSystem</a>.</p>
+  <div class="markdown level0 summary"><p>Script used to handle input action events. Invokes Unity events when the configured input action starts or ends.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -94,11 +94,11 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html">InputSystemGlobalListener</a></div>
     <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html">BaseInputHandler</a></div>
-    <div class="level3"><span class="xref">SpeechInputHandler</span></div>
+    <div class="level3"><span class="xref">InputActionHandler</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html">IMixedRealitySpeechHandler</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputActionHandler.html">IMixedRealityInputActionHandler</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityBaseInputHandler.html">IMixedRealityBaseInputHandler</a></div>
     <div><span class="xref">IEventSystemHandler</span></div>
   </div>
@@ -109,6 +109,9 @@
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html#Microsoft_MixedReality_Toolkit_Input_BaseInputHandler_OnEnable">BaseInputHandler.OnEnable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html#Microsoft_MixedReality_Toolkit_Input_BaseInputHandler_Start">BaseInputHandler.Start()</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html#Microsoft_MixedReality_Toolkit_Input_BaseInputHandler_OnDisable">BaseInputHandler.OnDisable()</a>
@@ -122,24 +125,24 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_InputActionHandler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SpeechInputHandler : BaseInputHandler, IMixedRealitySpeechHandler, IMixedRealityBaseInputHandler, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class InputActionHandler : BaseInputHandler, IMixedRealityInputActionHandler, IMixedRealityBaseInputHandler, IEventSystemHandler</code></pre>
   </div>
-  <h3 id="properties">Properties
+  <h3 id="fields">Fields
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_Keywords_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.Keywords*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_Keywords" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.Keywords">Keywords</h4>
-  <div class="markdown level1 summary"><p>The keywords to be recognized and optional keyboard shortcuts.</p>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputActionHandler_OnInputActionEnded" data-uid="Microsoft.MixedReality.Toolkit.Input.InputActionHandler.OnInputActionEnded">OnInputActionEnded</h4>
+  <div class="markdown level1 summary"><p>Unity event raised on action end, e.g. button released or gesture completed.
+Includes the input event that triggered the action.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public KeywordAndResponse[] Keywords { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public InputActionUnityEvent OnInputActionEnded</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -149,100 +152,48 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeywordAndResponse.html">KeywordAndResponse</a>[]</td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputActionUnityEvent.html">InputActionUnityEvent</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_AddResponse_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.AddResponse*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_AddResponse_System_String_UnityAction_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.AddResponse(System.String,UnityAction)">AddResponse(String, UnityAction)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputActionHandler_OnInputActionStarted" data-uid="Microsoft.MixedReality.Toolkit.Input.InputActionHandler.OnInputActionStarted">OnInputActionStarted</h4>
+  <div class="markdown level1 summary"><p>Unity event raised on action start, e.g. button pressed or gesture started.
+Includes the input event that triggered the action.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddResponse(string keyword, UnityAction action)</code></pre>
+    <pre><code class="lang-csharp hljs">public InputActionUnityEvent OnInputActionStarted</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">keyword</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityAction</span></td>
-        <td><span class="parametername">action</span></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputActionUnityEvent.html">InputActionUnityEvent</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_RemoveResponse_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.RemoveResponse*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_RemoveResponse_System_String_UnityAction_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.RemoveResponse(System.String,UnityAction)">RemoveResponse(String, UnityAction)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RemoveResponse(string keyword, UnityAction action)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">keyword</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityAction</span></td>
-        <td><span class="parametername">action</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_Start_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.Start*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_Start" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.Start">Start()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void Start()</code></pre>
-  </div>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html#Microsoft_MixedReality_Toolkit_Input_BaseInputHandler_Start">BaseInputHandler.Start()</a></div>
   <h3 id="eii">Explicit Interface Implementations
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_Microsoft_MixedReality_Toolkit_Input_IMixedRealitySpeechHandler_OnSpeechKeywordRecognized_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.Microsoft#MixedReality#Toolkit#Input#IMixedRealitySpeechHandler#OnSpeechKeywordRecognized*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpeechInputHandler_Microsoft_MixedReality_Toolkit_Input_IMixedRealitySpeechHandler_OnSpeechKeywordRecognized_Microsoft_MixedReality_Toolkit_Input_SpeechEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.Microsoft#MixedReality#Toolkit#Input#IMixedRealitySpeechHandler#OnSpeechKeywordRecognized(Microsoft.MixedReality.Toolkit.Input.SpeechEventData)">IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputActionHandler_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputActionHandler_OnActionEnded_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputActionHandler.Microsoft#MixedReality#Toolkit#Input#IMixedRealityInputActionHandler#OnActionEnded*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputActionHandler_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputActionHandler_OnActionEnded_Microsoft_MixedReality_Toolkit_Input_BaseInputEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputActionHandler.Microsoft#MixedReality#Toolkit#Input#IMixedRealityInputActionHandler#OnActionEnded(Microsoft.MixedReality.Toolkit.Input.BaseInputEventData)">IMixedRealityInputActionHandler.OnActionEnded(BaseInputEventData)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)</code></pre>
+    <pre><code class="lang-csharp hljs">void IMixedRealityInputActionHandler.OnActionEnded(BaseInputEventData eventData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -255,7 +206,34 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.html">SpeechEventData</a></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputEventData.html">BaseInputEventData</a></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputActionHandler_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputActionHandler_OnActionStarted_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputActionHandler.Microsoft#MixedReality#Toolkit#Input#IMixedRealityInputActionHandler#OnActionStarted*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputActionHandler_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputActionHandler_OnActionStarted_Microsoft_MixedReality_Toolkit_Input_BaseInputEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputActionHandler.Microsoft#MixedReality#Toolkit#Input#IMixedRealityInputActionHandler#OnActionStarted(Microsoft.MixedReality.Toolkit.Input.BaseInputEventData)">IMixedRealityInputActionHandler.OnActionStarted(BaseInputEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void IMixedRealityInputActionHandler.OnActionStarted(BaseInputEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputEventData.html">BaseInputEventData</a></td>
         <td><span class="parametername">eventData</span></td>
         <td></td>
       </tr>
@@ -263,7 +241,7 @@
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html">IMixedRealitySpeechHandler</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputActionHandler.html">IMixedRealityInputActionHandler</a>
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityBaseInputHandler.html">IMixedRealityBaseInputHandler</a>

@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface IMixedRealityInputHandler
+    <title>Interface IMixedRealityBaseInputHandler
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface IMixedRealityInputHandler
+    <meta name="title" content="Interface IMixedRealityBaseInputHandler
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.42.4.0">
     
@@ -81,78 +81,21 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityBaseInputHandler">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputHandler" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler" class="text-break">Interface IMixedRealityInputHandler
+  <h1 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityBaseInputHandler" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityBaseInputHandler" class="text-break">Interface IMixedRealityBaseInputHandler
   </h1>
-  <div class="markdown level0 summary"><p>Interface to implement for simple generic input.</p>
+  <div class="markdown level0 summary"><p>Base interface for all input handlers. This allows us to use ExecuteEvents.ExecuteHierarchy&lt;IMixedRealityBaseInputHandler&gt;
+to send an event to all input handling interfaces.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputHandler_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityBaseInputHandler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IMixedRealityInputHandler : IMixedRealityBaseInputHandler, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IMixedRealityBaseInputHandler : IEventSystemHandler</code></pre>
   </div>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputHandler_OnInputDown_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.OnInputDown*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputHandler_OnInputDown_Microsoft_MixedReality_Toolkit_Input_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.OnInputDown(Microsoft.MixedReality.Toolkit.Input.InputEventData)">OnInputDown(InputEventData)</h4>
-  <div class="markdown level1 summary"><p>Input Down updates from Interactions, Keys, or any other simple input.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void OnInputDown(InputEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputEventData.html">InputEventData</a></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputHandler_OnInputUp_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.OnInputUp*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputHandler_OnInputUp_Microsoft_MixedReality_Toolkit_Input_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.OnInputUp(Microsoft.MixedReality.Toolkit.Input.InputEventData)">OnInputUp(InputEventData)</h4>
-  <div class="markdown level1 summary"><p>Input Up updates from Interactions, Keys, or any other simple input.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void OnInputUp(InputEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputEventData.html">InputEventData</a></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
 </article>
           </div>
           
