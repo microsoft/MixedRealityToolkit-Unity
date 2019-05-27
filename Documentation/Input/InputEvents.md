@@ -1,5 +1,6 @@
 # Input Events
 
+## Input event handlers need to be registered to receive events.
 At the script level you consume input events by implementing one of the event handler interfaces:
 
 Handler | Events | Description
