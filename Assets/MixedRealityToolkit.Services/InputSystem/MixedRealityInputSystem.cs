@@ -244,21 +244,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Input System adds a gaze provider component on the main camera, which needs to be removed when the input system is disabled/removed.
             // Otherwise the component would keep references to dead objects.
-            // Unity's way to remove component is to destroy it. Immediate is important, otherwise order of deinitialization will be arbitrary.
-            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-            UnityEngine.Object.DestroyImmediate(CameraCache.Main.gameObject.GetComponent(profile.PointerProfile.GazeProviderType.Type));
-
-            GazeProvider = null;
-
-            if (!Application.isPlaying)
+            // Unity's way to remove component is to destroy it.
+            if (GazeProvider != null)
             {
-                var component = CameraCache.Main.GetComponent<IMixedRealityGazeProvider>() as Component;
-
-                if (component != null)
+                if (Application.isPlaying)
                 {
-                    UnityEngine.Object.DestroyImmediate(component);
+                    UnityEngine.Object.Destroy(GazeProvider as Component);
                 }
+                else
+                {
+                    UnityEngine.Object.DestroyImmediate(GazeProvider as Component);
+                }
+
+                GazeProvider = null;
             }
+
 
             if (deviceManagers.Count > 0)
             {
@@ -274,10 +274,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             deviceManagers.Clear();
 
             InputDisabled?.Invoke();
-        }
-        public override void Destroy()
-        {
-            Disable();
         }
 
         #endregion IMixedRealityService Implementation

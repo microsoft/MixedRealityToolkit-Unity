@@ -738,6 +738,11 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (toolkitInstance == activeInstance)
             {   // If this is the active instance, we need to break it down
+                if (Application.isPlaying)
+                {
+                    toolkitInstance.DisableAllServices();
+                }
+
                 toolkitInstance.DestroyAllServices();
                 toolkitInstance.ClearCoreSystemCache();
                 // If this was the active instance, un-register the active instance
