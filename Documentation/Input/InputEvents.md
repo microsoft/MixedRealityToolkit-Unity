@@ -1,11 +1,11 @@
 # Input Events
 
-**Input event handlers need to be registered to receive events.**
-By default a script will receive events only while in focus by a pointer. To receive events while out of focus, in addition to implementing the desired handler interfaces, you have to do one of the following:
-- Register the script's game object as a global listener via [`MixedRealityToolkit.InputSystem.Register`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem).
-- Derive the script from [`InputSystemGlobalListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener).
+At the script level you consume input events by implementing one of the event handler interfaces shown in the table below.
 
-At the script level you consume input events by implementing one of the event handler interfaces:
+> [!IMPORTANT]
+> By default a script will receive events only while in focus by a pointer. To receive events while out of focus, in addition to implementing the desired handler interfaces, you have to do one of the following:
+> - Register the script's game object as a global listener via [`MixedRealityToolkit.InputSystem.Register`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem).
+> - Derive the script from [`InputSystemGlobalListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener).
 
 Handler | Events | Description
 --- | --- | ---
