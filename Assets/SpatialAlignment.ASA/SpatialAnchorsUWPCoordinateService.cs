@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_WSA && ASA_LOCALIZATION
+#if UNITY_WSA && SPATIALALIGNMENT_ASA
 using Microsoft.Azure.SpatialAnchors;
 using System.Threading.Tasks;
 using UnityEngine;

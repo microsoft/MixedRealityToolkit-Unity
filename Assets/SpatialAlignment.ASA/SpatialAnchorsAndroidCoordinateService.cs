@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_ANDROID && ASA_LOCALIZATION
+#if UNITY_ANDROID && SPATIALALIGNMENT_ASA
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity.Android;
 using System;

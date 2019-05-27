@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
     /// </summary>
     public class SpatialAnchorsLocalizer : SpatialLocalizerBase
     {
-#if ASA_LOCALIZATION
+#if SPATIALALIGNMENT_ASA
         private SpatialAnchorsCoordinateService coordinateService;
 #endif
 
@@ -27,11 +27,11 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
 
         private void Awake()
         {
-#if UNITY_WSA && ASA_LOCALIZATION
+#if UNITY_WSA && SPATIALALIGNMENT_ASA
             spatialCoordinateService = coordinateService = new SpatialAnchorsUWPCoordinateService(configuration);
-#elif UNITY_ANDROID && ASA_LOCALIZATION
+#elif UNITY_ANDROID && SPATIALALIGNMENT_ASA
             spatialCoordinateService = coordinateService = new SpatialAnchorsAndroidCoordinateService(configuration);
-#elif UNITY_IOS && ASA_LOCALIZATION
+#elif UNITY_IOS && SPATIALALIGNMENT_ASA
 #endif
 
             if ((string.IsNullOrWhiteSpace(configuration.AccountId) || string.IsNullOrWhiteSpace(configuration.AccountKey)) && string.IsNullOrWhiteSpace(configuration.AuthenticationToken) && string.IsNullOrWhiteSpace(configuration.AccessToken))
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             }
         }
 
-#if ASA_LOCALIZATION
+#if SPATIALALIGNMENT_ASA
         private void Update()
         {
             coordinateService.FrameUpdate();
