@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
