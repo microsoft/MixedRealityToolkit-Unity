@@ -383,18 +383,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="scene"></param>
         /// <param name="permittedComponentTypes"></param>
         /// <param name="destroyIfFound"></param>
-        public static bool EnforceSceneComponents(Scene scene, Type[] permittedComponentTypes, List<Component> violations)
+        public static bool EnforceSceneComponents(Scene scene, IEnumerable<Type> permittedComponentTypes, List<Component> violations)
         {
             if (!scene.IsValid() || !scene.isLoaded)
             {
                 return false;
             }
 
-            if (permittedComponentTypes == null || permittedComponentTypes.Length == 0)
-            {
-                throw new Exception("Permitted component types must include at least one type.");
-            }
-
+            int typesEvaluated = 0;
             bool foundAtLeastOneViolation = false;
 
             try
@@ -411,6 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                 componentIsPermitted = true;
                                 break;
                             }
+                            typesEvaluated++;
                         }
 
                         if (!componentIsPermitted)
@@ -424,6 +421,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             catch (Exception)
             {
                 // This can go wrong if GetRootSceneObjects fails.
+            }
+
+            if (typesEvaluated == 0)
+            {
+                Debug.LogError("Permitted component types must include at least one type.");
             }
 
             return foundAtLeastOneViolation;

@@ -38,16 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
-        // These are the types of components that are permitted to exist inside a lighting scene
-        private static Type[] permittedLightingSceneComponentTypes = new Type[] {
-            typeof(Transform),
-            typeof(GameObject),
-            typeof(Light),
-            typeof(ReflectionProbe),
-            typeof(LightProbeGroup),
-            typeof(LightProbeProxyVolume),
-        };
-
         private const float lightingUpdateInterval = 5f;
         private const float managerSceneInstanceCheckInterval = 2f;
         private const int editorApplicationUpdateTickInterval = 5;
@@ -594,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             List<Component> violations = new List<Component>();
-            if (EditorSceneUtils.EnforceSceneComponents(scene, permittedLightingSceneComponentTypes, violations))
+            if (EditorSceneUtils.EnforceSceneComponents(scene, profile.PermittedLightingSceneComponentTypes, violations))
             {
                 Scene targetScene = default(Scene);
                 for (int i = 0; i < EditorSceneManager.sceneCount; i++)

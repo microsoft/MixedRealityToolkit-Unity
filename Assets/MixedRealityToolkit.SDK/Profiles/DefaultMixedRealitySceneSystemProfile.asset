@@ -47,21 +47,28 @@ MonoBehaviour:
   - Name: ContentScene1
     Path: Assets/TemporaryTests/ContentScene1.unity
     Included: 1
-    BuildIndex: 6
+    BuildIndex: 3
     Tag: Respawn
     Asset: {fileID: 3671201678493226958, guid: 2844642a986b5dd449f363846d781df0, type: 3}
   - Name: ContentScene2
     Path: Assets/TemporaryTests/ContentScene2.unity
     Included: 1
-    BuildIndex: 3
+    BuildIndex: 4
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 8d232b45a4965814e88d9b4eccc34ba9, type: 3}
   - Name: ContentScene3
     Path: Assets/TemporaryTests/ContentScene3.unity
     Included: 1
-    BuildIndex: 4
+    BuildIndex: 6
     Tag: Respawn
     Asset: {fileID: 3671201678493226958, guid: d40dbc118249f324eb97fbbc3cbbc5c8, type: 3}
+  permittedLightingSceneComponentTypes:
+  - reference: UnityEngine.Transform, UnityEngine.CoreModule
+  - reference: UnityEngine.GameObject, UnityEngine.CoreModule
+  - reference: UnityEngine.Light, UnityEngine.CoreModule
+  - reference: UnityEngine.ReflectionProbe, UnityEngine.CoreModule
+  - reference: UnityEngine.LightProbeGroup, UnityEngine.CoreModule
+  - reference: UnityEngine.LightProbeProxyVolume, UnityEngine.CoreModule
   contentTags:
   - Respawn
   cachedLightingSettings:

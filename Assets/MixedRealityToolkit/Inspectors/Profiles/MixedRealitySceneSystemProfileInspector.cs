@@ -15,9 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomEditor(typeof(MixedRealitySceneSystemProfile))]
     public class MixedRealitySceneSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        const float DragAreaWidth = 0f;
-        const float DragAreaHeight = 30f;
+        const float DragAreaWidth = 0;
+        const float DragAreaHeight = 30;
         const float DragAreaOffset = 10;
+        const float LightingSceneTypesLabelWidth = 45;
 
         private static string managerSceneContent = 
             "The Manager scene is loaded first and remains loaded for the duration of the app. Only one Manager scene is ever loaded, and no scene operation will ever unload it.";
@@ -33,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty editorManageLoadedScenes;
         private SerializedProperty editorEnforceSceneOrder;
         private SerializedProperty editorEnforceLightingSceneTypes;
+        private SerializedProperty permittedLightingSceneComponentTypes;
 
         private static bool showManagerProperties = true;
         private SerializedProperty useManagerScene;
@@ -59,6 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             editorManageLoadedScenes = serializedObject.FindProperty("editorManageLoadedScenes");
             editorEnforceSceneOrder = serializedObject.FindProperty("editorEnforceSceneOrder");
             editorEnforceLightingSceneTypes = serializedObject.FindProperty("editorEnforceLightingSceneTypes");
+            permittedLightingSceneComponentTypes = serializedObject.FindProperty("permittedLightingSceneComponentTypes");
 
             useManagerScene = serializedObject.FindProperty("useManagerScene");
             managerScene = serializedObject.FindProperty("managerScene");
@@ -107,6 +110,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.PropertyField(editorManageLoadedScenes);
                     EditorGUILayout.PropertyField(editorEnforceSceneOrder);
                     EditorGUILayout.PropertyField(editorEnforceLightingSceneTypes);
+
+                    if (editorEnforceLightingSceneTypes.boolValue)
+                    {
+                        EditorGUILayout.HelpBox("Below are the component types that will be allowed in lighting scenes. Types not found in this list will be moved to another scene.", MessageType.Info);
+                        EditorGUIUtility.labelWidth = LightingSceneTypesLabelWidth;
+                        EditorGUILayout.PropertyField(permittedLightingSceneComponentTypes, true);
+                        EditorGUIUtility.labelWidth = 0;
+                    }
+
                     EditorGUILayout.Space();
                 }
             }

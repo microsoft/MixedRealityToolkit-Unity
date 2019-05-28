@@ -50,6 +50,14 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         public int NumContentScenes { get { return contentScenes.Count; } }
 
+        public IEnumerable<Type> PermittedLightingSceneComponentTypes
+        {
+            get
+            {
+                foreach (SystemType systemType in permittedLightingSceneComponentTypes) { yield return systemType.Type; }
+            }
+        }
+
 #if UNITY_EDITOR
         public bool EditorManageBuildSettings => editorManageBuildSettings;
 
@@ -71,23 +79,33 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private SceneInfo managerScene = default(SceneInfo);
 
         [SerializeField]
-        [Tooltip("Using a lighting scene ensures that the same lighting settings will be enforced across all loaded scenes.")]
         private bool useLightingScene = true;
 
         [SerializeField]
         private int defaultLightingSceneIndex = 0;
 
         [SerializeField]
-        [Tooltip("Scenes used to control lighting settings.")]
         private List<SceneInfo> lightingScenes = new List<SceneInfo>();
 
         [SerializeField]
         private List<SceneInfo> contentScenes = new List<SceneInfo>();
 
         [SerializeField]
+        private SystemType[] permittedLightingSceneComponentTypes = new SystemType[] {
+            new SystemType(typeof(Transform)),
+            new SystemType(typeof(GameObject)),
+            new SystemType(typeof(Light)),
+            new SystemType(typeof(ReflectionProbe)),
+            new SystemType(typeof(LightProbeGroup)),
+            new SystemType(typeof(LightProbeProxyVolume)),
+        };
+
+        // These will be hidden by the default inspector.
+        [SerializeField]
         [Tooltip("Cached content tags found in your content scenes")]
         private List<string> contentTags = new List<string>();
 
+        // These will be hidden by the default inspector.
         [SerializeField]
         [Tooltip("Cached lighting settings from your lighting scenes")]
         private List<CachedLightingSettings> cachedLightingSettings = new List<CachedLightingSettings>();
