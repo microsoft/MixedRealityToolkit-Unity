@@ -54,11 +54,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public float debugVisualScale = 1.0f;
 
         readonly string[] supportedCommands = { SpatialLocalizer.SpatialLocalizationMessageHeader };
-        private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> members = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
+        private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
 
         public void OnConnected(SocketEndpoint endpoint)
         {
-            if (members.ContainsKey(endpoint))
+            if (participants.ContainsKey(endpoint))
             {
                 Debug.LogWarning("SpatialCoordinateSystemParticipant connected that already existed");
                 return;
@@ -66,8 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             if (spectatorView.Role == Role.Spectator)
             {
-                if (members.Count > 0 &&
-                    !members.ContainsKey(endpoint))
+                if (participants.Count > 0 &&
+                    !participants.ContainsKey(endpoint))
                 {
                     Debug.LogWarning("A second SpatialCoordinateSystemParticipant connected while the device was running as a spectator. This is an unexpected scenario.");
                     return;
@@ -75,8 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             DebugLog($"Creating new SpatialCoordinateSystemParticipant, Role: {spectatorView.Role}, IPAddress: {endpoint.Address}, SceneRoot: {transformedGameObject}, DebugLogging: {debugLogging}");
-            var member = new SpatialCoordinateSystemParticipant(spectatorView.Role, endpoint, () => transformedGameObject, debugLogging, showDebugVisuals, debugVisual, debugVisualScale);
-            members[endpoint] = member;
+            var actAsHost = spectatorView.Role == Role.User;
+            var member = new SpatialCoordinateSystemParticipant(actAsHost, endpoint, () => transformedGameObject, debugLogging, showDebugVisuals, debugVisual, debugVisualScale);
+            participants[endpoint] = member;
             if (spatialLocalizer != null)
             {
                 DebugLog($"Localizing SpatialCoordinateSystemParticipant: {endpoint.Address}");
@@ -90,16 +91,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public void OnDisconnected(SocketEndpoint endpoint)
         {
-            if (members.TryGetValue(endpoint, out var member))
+            if (participants.TryGetValue(endpoint, out var member))
             {
                 member.Dispose();
-                members.Remove(endpoint);
+                participants.Remove(endpoint);
             }
         }
 
         public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader)
         {
-            if (!members.TryGetValue(endpoint, out var member))
+            if (!participants.TryGetValue(endpoint, out var member))
             {
                 Debug.LogError("Received a message for an endpoint that had no associated spatial coordinate system member");
             }
@@ -117,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         protected override void OnDestroy()
         {
             UnregisterCommands();
-            CleanUpMembers();
+            CleanUpParticipants();
         }
 
         private void RegisterCommands()
@@ -138,14 +139,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        private void CleanUpMembers()
+        private void CleanUpParticipants()
         {
-            foreach (var member in members)
+            foreach(var member in participants)
             {
                 member.Value.Dispose();
             }
 
-            members.Clear();
+            participants.Clear();
         }
 
         private void DebugLog(string message)
