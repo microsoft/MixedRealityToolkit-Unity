@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit
     [DisallowMultipleComponent]
     public class MixedRealityToolkit : MonoBehaviour, IMixedRealityServiceRegistrar
     {
-#region Mixed Reality Toolkit Profile configuration
+        #region Mixed Reality Toolkit Profile configuration
 
         private const string ActiveInstanceGameObjectName = "MixedRealityToolkit";
 
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit
 
 #endregion Mixed Reality runtime service registry
 
-#region IMixedRealityServiceRegistrar implementation
+        #region IMixedRealityServiceRegistrar implementation
 
         /// <inheritdoc />
         public bool RegisterService<T>(T serviceInstance) where T : IMixedRealityService
@@ -328,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit
             throw new NotImplementedException();
         }
 
-#endregion IMixedRealityServiceRegistrar implementation
+        #endregion IMixedRealityServiceRegistrar implementation
 
         /// <summary>
         /// Once all services are registered and properties updated, the Mixed Reality Toolkit will initialize all active services.
@@ -927,9 +927,54 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void DestroyAllServices()
         {
+            // todo: needed?
             if (!ExecuteOnAllServices(service => service.Destroy())) { return; }
 
+            List<Type> activeSystemTypes = activeSystems.Keys.ToList<Type>();
+            foreach (Type type in activeSystemTypes)
+            {
+                if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityBoundarySystem>();
+                    boundarySystem = null;
+                }
+                else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityCameraSystem>();
+                    cameraSystem = null;
+                }
+                else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityDiagnosticsSystem>();
+                    diagnosticsSystem = null;
+                }
+                else if (typeof(IMixedRealityFocusProvider).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityFocusProvider>();
+                    // Focus provider reference is not managed by the MixedRealityToolkit class.
+                }
+                else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityInputSystem>();
+                    inputSystem = null;
+                }
+                else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealitySpatialAwarenessSystem>();
+                    spatialAwarenessSystem = null;
+                }
+                else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityTeleportSystem>();
+                    teleportSystem = null;
+                }
+            }
             activeSystems.Clear();
+
+            for (int i = 0; i < registeredMixedRealityServices.Count; i++)
+            {
+                // todo
+            }
             registeredMixedRealityServices.Clear();
         }
 
@@ -1108,11 +1153,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns></returns>
         private static bool CanGetService(Type interfaceType)
         {
-            if (isApplicationQuitting)
-            {
-                return false;
-            }
-
             if (!IsInitialized)
             {
                 Debug.LogError("The Mixed Reality Toolkit has not been initialized!");
