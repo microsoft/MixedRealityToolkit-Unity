@@ -6,24 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/TemporaryTests/ManagerScene.unity
+    path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultManagerScene.unity
     guid: ae7bb08d297fb69408695d8de0962524
   - enabled: 1
-    path: Assets/TemporaryTests/LightingScene1.unity
+    path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultLightingScene.unity
     guid: 7e54e36c44f826c438c95da79f8de638
-  - enabled: 1
-    path: Assets/TemporaryTests/LightingScene2.unity
-    guid: e658a4e789b58a845ad62b898384adc0
-  - enabled: 1
-    path: Assets/TemporaryTests/LightingScene3.unity
-    guid: 11c051cc2550b6a44aa7852f3b7bda53
-  - enabled: 1
-    path: Assets/TemporaryTests/ContentScene1.unity
-    guid: 2844642a986b5dd449f363846d781df0
-  - enabled: 1
-    path: Assets/TemporaryTests/ContentScene2.unity
-    guid: 8d232b45a4965814e88d9b4eccc34ba9
-  - enabled: 1
-    path: Assets/ContentScene3.unity
-    guid: d40dbc118249f324eb97fbbc3cbbc5c8
   m_configObjects: {}

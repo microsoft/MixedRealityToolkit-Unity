@@ -28,7 +28,7 @@ MonoBehaviour:
   - Name: DefaultLightingScene
     Path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultLightingScene.unity
     Included: 1
-    BuildIndex: 2
+    BuildIndex: 1
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 7e54e36c44f826c438c95da79f8de638, type: 3}
   contentScenes: []
