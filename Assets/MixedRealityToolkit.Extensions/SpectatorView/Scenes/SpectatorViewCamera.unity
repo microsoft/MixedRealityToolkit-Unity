@@ -718,6 +718,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _markerSize: 0.03
   _markerPositionBehavior: 0
+  RequiredObservations: 5
+  RequiredInlierCount: 5
+  MaximumMarkerSampleCount: 15
+  MaximumPositionDistanceStandardDeviation: 0.01
+  MaximumRotationAngleStandardDeviation: 0.75
+  MarkerInlierStandardDeviationThreshold: 1.5
 --- !u!1 &1940026536
 GameObject:
   m_ObjectHideFlags: 0
