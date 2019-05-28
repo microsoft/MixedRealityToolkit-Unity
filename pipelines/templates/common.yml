@@ -17,10 +17,18 @@ steps:
     PublishArtifacts: true
     PackagingDir: 'ARM'
 
+# Build UWP x86 .NET backend
+- template: tasks/unitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PublishArtifacts: true
+    ScriptingBackend: '.NET'
+
 - powershell: |
    $AutoMrtkVersion = Get-Date -format "dd.MM.yyyy"
    .\build.ps1 -Version $AutoMrtkVersion -NoNuget
-  displayName: 'Build Unity and NuGet packages'
+  displayName: 'Build Unity packages'
 
 - powershell: |
    Get-ChildItem "." -Filter Build-UnityPackage*.log | 
@@ -35,13 +43,6 @@ steps:
   parameters:
     Arch: 'x86'
     Platform: 'Standalone'
-
-# Build Standalone x86
-- template: tasks/unitybuild.yml
-  parameters:
-    Arch: 'x86'
-    Platform: 'UWP'
-    ScriptingBackend: '.NET'
 
 - template: assetretargeting.yml
 - template: tests.yml
