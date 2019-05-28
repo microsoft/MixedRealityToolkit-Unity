@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEditor;
 using UnityEngine;
@@ -10,28 +11,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomEditor(typeof(PressableButton))]
     public class PressableButtonInspector : UnityEditor.Editor
     {
-        // Struct used to store state of preview
-        // This lets us display accurate info while button is being pressed
+        // Struct used to store state of preview.
+        // This lets us display accurate info while button is being pressed.
+        // All vectors / distances are in local space.
         private struct ButtonInfo
         {
             // Convenience fields for box collider info
             public Bounds TouchCageLocalBounds;
-            // Start pos for touch, also the origin of our cage
-            public Vector3 TouchStartOrigin;
-            // Start and end pos for moving content
-            public float StartPos;
-            public float EndPos;
-            // Press, touch and release positions in z axis
-            public float PressDistPos;
-            public float TouchStartPos;
-            public float ReleaseDistPos;
-            // Cage values
-            public float TouchCageCenter;
-            public float TouchCageSize;
+
+            // The rotation of the push space.
+            public Quaternion PushRotationLocal;
+
             // The actual values that the button uses
+            public float StartPushDistance;
             public float MaxPushDistance;
             public float PressDistance;
-            public float ReleaseDistanceDelta;
+            public float ReleaseDistance;
         }
 
         const string EditingEnabledKey = "MRTK_PressableButtonInspector_EditingEnabledKey";
@@ -45,24 +40,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private PressableButton button;
         private Transform transform;
-        private Transform buttonContentTransform;
         private BoxCollider touchCage;
+        private NearInteractionTouchable touchable;
 
         private ButtonInfo currentInfo;
 
+        private SerializedProperty startPushDistance;
         private SerializedProperty maxPushDistance;
         private SerializedProperty pressDistance;
         private SerializedProperty releaseDistanceDelta;
-        private SerializedProperty movingButtonVisuals;
-        private SerializedObject boxColliderObject;
-        private SerializedProperty boxColliderSize;
-        private SerializedProperty boxColliderCenter;
 
-        private static Vector3[] targetStartPlane = new Vector3[4];
-        private static Vector3[] targetEndPlane = new Vector3[4];
-        private static Vector3[] pressDistancePlane = new Vector3[4];
-        private static Vector3[] pressStartPlane = new Vector3[4];
-        private static Vector3[] releasePlane = new Vector3[4];
+        private SerializedProperty movingButtonVisuals;
+
+        private static Vector3[] startPlaneVertices = new Vector3[4];
+        private static Vector3[] endPlaneVertices = new Vector3[4];
+        private static Vector3[] pressPlaneVertices = new Vector3[4];
+        private static Vector3[] pressStartPlaneVertices = new Vector3[4];
+        private static Vector3[] releasePlaneVertices = new Vector3[4];
 
         private void OnEnable()
         {
@@ -77,26 +71,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 labelStyle.normal.textColor = Color.white;
             }
 
+            startPushDistance = serializedObject.FindProperty("startPushDistance");
             maxPushDistance = serializedObject.FindProperty("maxPushDistance");
             pressDistance = serializedObject.FindProperty("pressDistance");
             releaseDistanceDelta = serializedObject.FindProperty("releaseDistanceDelta");
             movingButtonVisuals = serializedObject.FindProperty("movingButtonVisuals");
 
-            boxColliderObject = new SerializedObject(touchCage);
-            boxColliderSize = boxColliderObject.FindProperty("m_Size");
-            boxColliderCenter = boxColliderObject.FindProperty("m_Center");
-
-            buttonContentTransform = transform;
-            if (movingButtonVisuals.objectReferenceValue != null)
-            {
-                buttonContentTransform = (movingButtonVisuals.objectReferenceValue as GameObject).transform;
-            }
+            touchable = button.GetComponent<NearInteractionTouchable>();
         }
 
+        [DrawGizmo(GizmoType.Selected)]
         private void OnSceneGUI()
         {
-            // Only display on selection
-            if (Selection.activeObject != button.gameObject)
+            if (touchCage == null)
             {
                 return;
             }
@@ -125,178 +112,227 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             ButtonInfo info = new ButtonInfo();
 
             info.TouchCageLocalBounds = new Bounds(touchCage.center, touchCage.size);
-            // Get the start pos for touch
-            Vector3 touchStartOrigin = info.TouchCageLocalBounds.center;
-            touchStartOrigin.z -= info.TouchCageLocalBounds.extents.z;
-            info.TouchStartOrigin = touchStartOrigin;
-            info.TouchCageCenter = info.TouchCageLocalBounds.center.z;
-            info.TouchCageSize = info.TouchCageLocalBounds.size.z;
 
-            // Get the start and end pos for moving content
-            info.StartPos = buttonContentTransform.localPosition.z;
-            info.EndPos = buttonContentTransform.localPosition.z;
-            info.EndPos += maxPushDistance.floatValue / transform.lossyScale.z;
+            Vector3 pressDirLocal = (touchable != null) ? -1.0f * touchable.LocalForward : Vector3.forward;
+            Vector3 upDirLocal = (touchable != null) ? touchable.LocalUp : Vector3.up;
 
+            info.PushRotationLocal = Quaternion.LookRotation(pressDirLocal, upDirLocal);
+            
+            info.StartPushDistance = startPushDistance.floatValue;
             info.MaxPushDistance = maxPushDistance.floatValue;
             info.PressDistance = pressDistance.floatValue;
-            info.ReleaseDistanceDelta = releaseDistanceDelta.floatValue;
-
-            info.PressDistPos = info.StartPos + (info.PressDistance / transform.lossyScale.z);
-            info.TouchStartPos = info.TouchStartOrigin.z;
-            info.ReleaseDistPos = info.PressDistPos - (info.ReleaseDistanceDelta / transform.lossyScale.z);
+            info.ReleaseDistance = pressDistance.floatValue - releaseDistanceDelta.floatValue;
 
             return info;
         }
 
         private void DrawButtonInfo(ButtonInfo info, bool editingEnabled)
         {
-            // This is where we'll store our new values to compare against
-            ButtonInfo newInfo = info;
-
             if (editingEnabled)
             {
                 EditorGUI.BeginChangeCheck();
             }
 
-            // PRESS END
+            // START PUSH
             Handles.color = Color.cyan;
-            newInfo.EndPos = DrawPlaneAndHandle(targetEndPlane, info.TouchCageLocalBounds.size * 0.5f, newInfo.EndPos, info.TouchStartOrigin, "Max move distance", editingEnabled);
-
-            if (editingEnabled)
+            float newStartPushDistance = DrawPlaneAndHandle(startPlaneVertices, info.TouchCageLocalBounds.size * 0.5f, info.StartPushDistance, info, "Start Push Distance", editingEnabled);
+            if (editingEnabled && newStartPushDistance != info.StartPushDistance)
             {
-                // Clamp the z value to start position
-                newInfo.EndPos = Mathf.Max(newInfo.StartPos, newInfo.EndPos);
-                newInfo.MaxPushDistance = (newInfo.EndPos - newInfo.StartPos) * transform.lossyScale.z;
+                EnforceDistanceOrdering(ref info);
+                info.StartPushDistance = Mathf.Min(newStartPushDistance, info.ReleaseDistance);
+            }
+
+            // RELEASE DISTANCE
+            Handles.color = Color.red;
+            float newReleaseDistance = DrawPlaneAndHandle(releasePlaneVertices, info.TouchCageLocalBounds.size * 0.3f, info.ReleaseDistance, info, "Release Distance", editingEnabled);
+            if (editingEnabled && newReleaseDistance != info.ReleaseDistance)
+            {
+                EnforceDistanceOrdering(ref info);
+                info.ReleaseDistance = Mathf.Clamp(newReleaseDistance, info.StartPushDistance, info.PressDistance);
             }
 
             // PRESS DISTANCE
             Handles.color = Color.yellow;
-            newInfo.PressDistPos = DrawPlaneAndHandle(pressDistancePlane, info.TouchCageLocalBounds.size * 0.35f, newInfo.PressDistPos, info.TouchStartOrigin, "Press event", editingEnabled);
-
-            if (editingEnabled)
+            float newPressDistance = DrawPlaneAndHandle(pressPlaneVertices, info.TouchCageLocalBounds.size * 0.35f, info.PressDistance, info, "Press Distance", editingEnabled);
+            if (editingEnabled && newPressDistance != info.PressDistance)
             {
-                // Clamp the z values to target start / end
-                newInfo.PressDistPos = Mathf.Max(newInfo.StartPos, newInfo.PressDistPos);
-                newInfo.PressDistPos = Mathf.Min(newInfo.EndPos, newInfo.PressDistPos);
-                // Set based on distance from start
-                // Adjust for scaled objects
-                newInfo.PressDistance = Mathf.Abs(newInfo.PressDistPos - newInfo.StartPos) * transform.lossyScale.z;
+                EnforceDistanceOrdering(ref info);
+                info.PressDistance = Mathf.Clamp(newPressDistance, info.ReleaseDistance, info.MaxPushDistance);
             }
 
-            // RELEASE DISTANCE DELTA
-            Handles.color = Color.red;
-            newInfo.ReleaseDistPos = DrawPlaneAndHandle(releasePlane, info.TouchCageLocalBounds.size * 0.3f, newInfo.ReleaseDistPos, info.TouchStartOrigin, "Release event", editingEnabled);
-
-            if (editingEnabled)
-            {
-                // Clamp the z values to press distance
-                newInfo.ReleaseDistPos = Mathf.Min(newInfo.PressDistPos, newInfo.ReleaseDistPos);
-                // Set based on distance from press distance
-                // Adjust for scaled objects
-                newInfo.ReleaseDistanceDelta = (newInfo.PressDistPos - newInfo.ReleaseDistPos) * transform.lossyScale.z;
-            }
-
-            // BUTTON CONTENT ORIGIN
-            // Don't allow editing of button position
-            Handles.color = Color.green;
-            DrawPlaneAndHandle(pressStartPlane, info.TouchCageLocalBounds.size * 0.4f, newInfo.StartPos, info.TouchStartOrigin, "Moving button visuals", false);
-
-            // START POINT
-            // Start point doesn't need a display offset because it's based on the touch cage center
+            // MAX PUSH
             Handles.color = Color.cyan;
-            newInfo.TouchStartPos = DrawPlaneAndHandle(targetStartPlane, info.TouchCageLocalBounds.size * 0.5f, newInfo.TouchStartPos, info.TouchStartOrigin, "Touch event", editingEnabled);
-
-            if (editingEnabled)
+            float newMaxPushDistance = DrawPlaneAndHandle(endPlaneVertices, info.TouchCageLocalBounds.size * 0.5f, info.MaxPushDistance, info, "Max Push Distance", editingEnabled);
+            if (editingEnabled && newMaxPushDistance != info.MaxPushDistance)
             {
-                // The touch event is defined by the collider bounds
-                // If we've moved the start pos, we've moved the bounds
-                float difference = (info.TouchStartPos - newInfo.TouchStartPos);
-                if (Mathf.Abs(difference) > 0)
-                {
-                    newInfo.TouchCageCenter -= difference / 2;
-                    newInfo.TouchCageSize += difference;
-                }
+                EnforceDistanceOrdering(ref info);
+                info.MaxPushDistance = Mathf.Max(newMaxPushDistance, info.PressDistance);
             }
 
             if (editingEnabled && EditorGUI.EndChangeCheck())
             {
-                Undo.RecordObject(target, "Changing push button properties");
+                Undo.RecordObject(target, "Modify PressableButton");
 
-                maxPushDistance.floatValue = newInfo.MaxPushDistance;
-                pressDistance.floatValue = newInfo.PressDistance;
-                releaseDistanceDelta.floatValue = newInfo.ReleaseDistanceDelta;
-
-                boxColliderSize.vector3Value = new Vector3(info.TouchCageLocalBounds.size.x, info.TouchCageLocalBounds.size.y, newInfo.TouchCageSize);
-                boxColliderCenter.vector3Value = new Vector3(info.TouchCageLocalBounds.center.x, info.TouchCageLocalBounds.center.y, newInfo.TouchCageCenter);
-                boxColliderObject.ApplyModifiedProperties();
+                startPushDistance.floatValue = info.StartPushDistance;
+                maxPushDistance.floatValue = info.MaxPushDistance; 
+                pressDistance.floatValue = info.PressDistance;
+                releaseDistanceDelta.floatValue = info.PressDistance - info.ReleaseDistance;
 
                 serializedObject.ApplyModifiedProperties();
             }
 
             // Draw dotted lines showing path from beginning to end of button path
             Handles.color = Color.Lerp(Color.cyan, Color.clear, 0.25f);
-            Handles.DrawDottedLine(targetStartPlane[0], targetEndPlane[0], 2.5f);
-            Handles.DrawDottedLine(targetStartPlane[1], targetEndPlane[1], 2.5f);
-            Handles.DrawDottedLine(targetStartPlane[2], targetEndPlane[2], 2.5f);
-            Handles.DrawDottedLine(targetStartPlane[3], targetEndPlane[3], 2.5f);
+            Handles.DrawDottedLine(startPlaneVertices[0], endPlaneVertices[0], 2.5f);
+            Handles.DrawDottedLine(startPlaneVertices[1], endPlaneVertices[1], 2.5f);
+            Handles.DrawDottedLine(startPlaneVertices[2], endPlaneVertices[2], 2.5f);
+            Handles.DrawDottedLine(startPlaneVertices[3], endPlaneVertices[3], 2.5f);
         }
 
-        private float DrawPlaneAndHandle(Vector3[] plane, Vector3 planeSize, float zPosition, Vector3 cagePosition, string label, bool editingEnabled)
+        private void EnforceDistanceOrdering(ref ButtonInfo info)
         {
-            cagePosition.z = zPosition;
-            MakePlaneFromPoint(plane, cagePosition, planeSize, transform);
+            info.StartPushDistance = Mathf.Min(new[] { info.StartPushDistance, info.ReleaseDistance, info.PressDistance, info.MaxPushDistance });
+            info.ReleaseDistance = Mathf.Min(new[] { info.ReleaseDistance, info.PressDistance, info.MaxPushDistance });
+            info.PressDistance = Mathf.Min(info.PressDistance, info.MaxPushDistance);
+        }
+
+        private float DrawPlaneAndHandle(Vector3[] vertices, Vector3 halfExtents, float distance, ButtonInfo info, string label, bool editingEnabled)
+        {
+            Vector3 centerWorld = button.GetWorldPositionAlongPushDirection(distance);
+            MakeQuadFromPoint(vertices, centerWorld, halfExtents, info);
 
             if (VisiblePlanes)
             {
-                Handles.DrawSolidRectangleWithOutline(plane, Color.Lerp(Handles.color, Color.clear, 0.65f), Handles.color);
+                Handles.DrawSolidRectangleWithOutline(vertices, Color.Lerp(Handles.color, Color.clear, 0.65f), Handles.color);
             }
 
-            Vector3 mousePosition = SceneView.currentDrawingSceneView.camera.ScreenToViewportPoint(Event.current.mousePosition);
-            mousePosition.y = 1f - mousePosition.y;
-            mousePosition.z = 0;
-            Vector3 handleVisiblePos = SceneView.currentDrawingSceneView.camera.WorldToViewportPoint(plane[1]);
-            handleVisiblePos.z = 0;
-
-            if (Vector3.Distance(mousePosition, handleVisiblePos) < labelMouseOverDistance)
+            // Label
             {
-                DrawLabel(plane[1], transform.up - transform.right, label, labelStyle);
-                SceneView.RepaintAll();
+                Vector3 mousePosition = SceneView.currentDrawingSceneView.camera.ScreenToViewportPoint(Event.current.mousePosition);
+                mousePosition.y = 1f - mousePosition.y;
+                mousePosition.z = 0;
+                Vector3 handleVisiblePos = SceneView.currentDrawingSceneView.camera.WorldToViewportPoint(vertices[1]);
+                handleVisiblePos.z = 0;
+
+                if (Vector3.Distance(mousePosition, handleVisiblePos) < labelMouseOverDistance)
+                {
+                    DrawLabel(vertices[1], transform.up - transform.right, label, labelStyle);
+                    HandleUtility.Repaint();
+                }
             }
-
-            float handleSize = HandleUtility.GetHandleSize(plane[1]) * 0.15f;
-
-            Handles.ArrowHandleCap(0, plane[1], Quaternion.LookRotation(transform.forward, Vector3.up), handleSize * 2, EventType.Repaint);
-            Handles.ArrowHandleCap(0, plane[1], Quaternion.LookRotation(-transform.forward, Vector3.up), handleSize * 2, EventType.Repaint);
 
             // Draw forward / backward arrows so people know they can drag
             if (editingEnabled)
             {
-                Vector3 handlePosition = Handles.FreeMoveHandle(plane[1], Quaternion.identity, handleSize, Vector3.zero, Handles.SphereHandleCap);
-                handlePosition = transform.InverseTransformPoint(handlePosition);
-                zPosition = handlePosition.z;
+                float handleSize = HandleUtility.GetHandleSize(vertices[1]) * 0.15f;
+
+                Vector3 dir = (touchable != null) ? -1.0f * touchable.LocalForward : Vector3.forward;
+                Vector3 planeNormal = button.transform.TransformDirection(dir);
+                Handles.ArrowHandleCap(0, vertices[1], Quaternion.LookRotation(planeNormal), handleSize * 2, EventType.Repaint);
+                Handles.ArrowHandleCap(0, vertices[1], Quaternion.LookRotation(-planeNormal), handleSize * 2, EventType.Repaint);
+
+                Vector3 newPosition = Handles.FreeMoveHandle(vertices[1], Quaternion.identity, handleSize, Vector3.zero, Handles.SphereHandleCap);
+                if (!newPosition.Equals(vertices[1]))
+                {
+                    distance = button.GetDistanceAlongPushDirection(newPosition);
+                }
             }
 
-            return zPosition;
+            return distance;
+        }
+
+        /// <summary>
+        /// Trigger function for plane distance world to/from local space conversion
+        /// </summary>
+        private void OnTriggerPlaneDistanceConversion()
+        {
+            Undo.RecordObject(target, "Modify PressableButton");
+            button.DistanceSpaceMode = (button.DistanceSpaceMode == PressableButton.SpaceMode.World) 
+                ? PressableButton.SpaceMode.Local : PressableButton.SpaceMode.World;
+            serializedObject.ApplyModifiedProperties();
         }
 
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Editor Settings", EditorStyles.boldLabel);
-            VisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
-            VisiblePlanes = EditorGUILayout.Toggle("Show Button Event Planes", VisiblePlanes);
-            SessionState.SetBool(VisiblePlanesKey, VisiblePlanes);
-
-            if (VisiblePlanes)
+            // show button state in play mode
             {
-                EditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
-                EditingEnabled = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
-                SessionState.SetBool(EditingEnabledKey, EditingEnabled);
+                EditorGUI.BeginDisabledGroup(Application.isPlaying == false);
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Button State", EditorStyles.boldLabel);
+                EditorGUILayout.Toggle("Touching", button.IsTouching);
+                EditorGUILayout.Toggle("Pressing", button.IsPressing);
+                EditorGUI.EndDisabledGroup();
             }
 
-            EditorUtility.SetDirty(target);
+            // editor settings
+            {
+                EditorGUI.BeginDisabledGroup(Application.isPlaying == true);
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Editor Settings", EditorStyles.boldLabel);
+                VisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
+                bool newValue = EditorGUILayout.Toggle("Show Button Event Planes", VisiblePlanes);
+                if (newValue != VisiblePlanes)
+                {
+                    SessionState.SetBool(VisiblePlanesKey, newValue);
+                }
+
+                // enable plane editing
+                {
+                    EditorGUI.BeginDisabledGroup(VisiblePlanes == false);
+                    EditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
+                    newValue = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
+                    if (newValue != EditingEnabled)
+                    {
+                        SessionState.SetBool(EditingEnabledKey, newValue);
+                        EditorUtility.SetDirty(target);
+                    }
+                    EditorGUI.EndDisabledGroup();
+                }
+
+                // plane distance conversion
+                {
+                    EditorGUI.BeginDisabledGroup(EditingEnabled == false);
+                    PressableButton.SpaceMode buttonSpaceMode = button.DistanceSpaceMode;
+                    EditorGUILayout.Space();
+                    EditorGUILayout.LabelField(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Plane Distances are in local space" : "Plane Distances are in world space", EditorStyles.boldLabel);
+                    if (GUILayout.Button(buttonSpaceMode == PressableButton.SpaceMode.Local ? "Convert Distances to World Space" : "Convert Distances to Local Space"))
+                    {
+                        OnTriggerPlaneDistanceConversion();
+                    }
+                    EditorGUI.EndDisabledGroup();
+                }
+                EditorGUI.EndDisabledGroup();
+            }
+        }
+
+        private bool IsMouseOverQuad(ButtonInfo info, Vector3 halfExtents, Vector3 centerLocal)
+        {
+            Vector3 mousePosition = Event.current.mousePosition;
+            mousePosition.y = SceneView.currentDrawingSceneView.camera.pixelHeight - mousePosition.y;
+            Ray mouseRay = SceneView.currentDrawingSceneView.camera.ScreenPointToRay(mousePosition);
+
+            // Transform to local object space.
+            mouseRay.direction = button.transform.InverseTransformDirection(mouseRay.direction);
+            mouseRay.origin = button.transform.InverseTransformPoint(mouseRay.origin);
+
+            // Transform to plane space, which transform the plane into the XY plane.
+            Quaternion quadRotationInverse = Quaternion.Inverse(info.PushRotationLocal);
+            mouseRay.direction = quadRotationInverse * mouseRay.direction;
+            mouseRay.origin = quadRotationInverse * (mouseRay.origin - centerLocal);
+
+            // Intersect ray with XY plane.
+            Plane xyPlane = new Plane(Vector3.forward, 0.0f);
+            float intersectionDistance = 0.0f;
+            if (xyPlane.Raycast(mouseRay, out intersectionDistance))
+            {
+                Vector3 intersection = mouseRay.GetPoint(intersectionDistance);
+                return (Mathf.Abs(intersection.x) <= halfExtents.x && Mathf.Abs(intersection.y) <= halfExtents.y);
+            }
+
+            return false;
         }
 
         private void DrawLabel(Vector3 origin, Vector3 direction, string content, GUIStyle labelStyle)
@@ -312,12 +348,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Handles.color = colorOnEnter;
         }
 
-        private void MakePlaneFromPoint(Vector3[] plane, Vector3 pos, Vector3 size, Transform targetTransform)
+        private void MakeQuadFromPoint(Vector3[] vertices, Vector3 centerWorld, Vector3 halfExtents, ButtonInfo info)
         {
-            plane[0] = targetTransform.TransformPoint(new Vector3(pos.x - size.x, pos.y - size.y, pos.z));
-            plane[1] = targetTransform.TransformPoint(new Vector3(pos.x - size.x, pos.y + size.y, pos.z));
-            plane[2] = targetTransform.TransformPoint(new Vector3(pos.x + size.x, pos.y + size.y, pos.z));
-            plane[3] = targetTransform.TransformPoint(new Vector3(pos.x + size.x, pos.y - size.y, pos.z));
+            Vector3 touchCageOrigin = touchCage.center;
+            touchCageOrigin.z = 0.0f;
+            vertices[0] = transform.TransformVector(info.PushRotationLocal * (new Vector3(-halfExtents.x, -halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
+            vertices[1] = transform.TransformVector(info.PushRotationLocal * (new Vector3(-halfExtents.x, +halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
+            vertices[2] = transform.TransformVector(info.PushRotationLocal * (new Vector3(+halfExtents.x, +halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
+            vertices[3] = transform.TransformVector(info.PushRotationLocal * (new Vector3(+halfExtents.x, -halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
         }
     }
 }
