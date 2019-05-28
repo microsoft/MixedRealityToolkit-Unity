@@ -3,6 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 
+/// <summary>
+/// Interface defining a mouse input device manager.
+/// </summary>
 public interface IMixedRealityMouseDeviceManager : IMixedRealityInputDeviceManager
 {
     /// <summary>
