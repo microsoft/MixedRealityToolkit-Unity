@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestGazeCursorArticulated()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
             RenderSettings.skybox = null;
