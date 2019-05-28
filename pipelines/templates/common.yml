@@ -27,7 +27,7 @@ steps:
 
 - powershell: |
    $AutoMrtkVersion = Get-Date -format "dd.MM.yyyy"
-   .\build.ps1 -Version $AutoMrtkVersion -NoNuget
+   .\build.ps1 -Version $AutoMrtkVersion -NoNuget -Verbose
   displayName: 'Build Unity packages'
 
 - powershell: |
