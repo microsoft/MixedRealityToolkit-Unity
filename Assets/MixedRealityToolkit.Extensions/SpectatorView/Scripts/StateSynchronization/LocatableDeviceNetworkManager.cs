@@ -26,52 +26,36 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private bool isSharedSpatialCoordinateLocated;
         private bool isLocatingSharedSpatialCoordinate;
 
-        /// <summary>
-        /// Gets the name of the HoloLens running on the holographic camera rig.
-        /// </summary>
+        /// <inheritdoc />
         public string DeviceName => deviceName;
 
-        /// <summary>
-        /// Gets the IP address reported by the HoloLens running on the holographic camera rig.
-        /// </summary>
+        /// <inheritdoc />
         public string DeviceIPAddress => deviceIPAddress;
 
-        /// <summary>
-        /// Gets the local IP address reported by the socket used to connect to the holographic camera rig.
-        /// </summary>
+        /// <inheritdoc />
         public string ConnectedIPAddress => currentConnection?.Address;
 
-        /// <summary>
-        /// Gets the last-reported tracking status of the HoloLens running on the holographic camera rig.
-        /// </summary>
+        /// <inheritdoc />
         public bool HasTracking => hasTracking;
 
-        /// <summary>
-        /// Gets the last-reported status of whether or not the WorldAnchor used for spatial position sharing is located
-        /// on the holographic camera rig.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsSharedSpatialCoordinateLocated => isSharedSpatialCoordinateLocated;
 
-        /// <summary>
-        /// Gets whether or not the HMD is actively attempting to locate the shared spatial coordinate.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsLocatingSharedSpatialCoordinate => isLocatingSharedSpatialCoordinate;
 
-        /// <summary>
-        /// Gets whether or not a network connection to the holographic camera is established.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsConnected => connectionManager != null && connectionManager.HasConnections;
 
-        /// <summary>
-        /// Gets whether or not a network connection to the holographic camera is pending.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsConnecting => connectionManager != null && connectionManager.IsConnecting && !connectionManager.HasConnections;
 
-        /// <summary>
-        /// Gets whether or not the receipt of new poses from the camera has stalled for an unexpectedly-large time.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsTrackingStalled => IsConnected && (Time.time - lastReceivedPoseTime) > trackingStalledReceiveDelay;
 
+        /// <summary>
+        /// Gets the port used to connect to the remote device.
+        /// </summary>
         protected abstract int RemotePort { get; }
 
         /// <summary>
