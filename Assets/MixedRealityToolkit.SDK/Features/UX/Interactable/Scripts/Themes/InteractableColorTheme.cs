@@ -13,8 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         // caching methods to set and get colors from text object
         // this will avoid 4 if statements for every set or get
-        private delegate bool SetColorOnText(Color colour);
-        private delegate Color GetColorFromText(out bool success);
+        private delegate bool SetColorOnText(Color color);
+        private delegate bool GetColorFromText(out Color color);
         private SetColorOnText SetColorValue = null;
         private GetColorFromText GetColorValue = null;
 
@@ -44,37 +44,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // check if a text object exists and get the color,
             // if not then fall back to renderer based color getting.
-            bool success = false;
             if (GetColorValue != null)
             {
-                color.Color = GetColorValue(out success);
+                GetColorValue(out color.Color);
                 return color;
             }
             else
             {
-                color.Color = GetTextMeshProColor(out success);
-                if (success)
+                if (GetTextMeshProColor(out color.Color))
                 {
                     GetColorValue = GetTextMeshProColor;
                     return color;
                 }
 
-                color.Color = GetTextMeshProUGUIColor(out success);
-                if (success)
+                if (GetTextMeshProUGUIColor(out color.Color))
                 {
                     GetColorValue = GetTextMeshProUGUIColor;
                     return color;
                 }
 
-                color.Color = GetTextMeshColor(out success);
-                if (success)
+                if (GetTextMeshColor(out color.Color))
                 {
                     GetColorValue = GetTextMeshColor;
                     return color;
                 }
 
-                color.Color = GetTextColor(out success);
-                if (success)
+                if (GetTextColor(out color.Color))
                 {
                     GetColorValue = GetTextColor;
                     return color;
@@ -130,17 +125,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="success"></param>
         /// <returns></returns>
-        protected Color GetTextColor(out bool success)
+        protected bool GetTextColor(out Color color)
         {
             Color colour = Color.white;
             Text text = Host.GetComponent<Text>();
             if (text != null)
             {
-                success = true;
-                return text.color;
+                color = text.color;
+                return true;
             }
-            success = false;
-            return colour;
+            color = colour;
+            return false;
         }
 
         /// <summary>
@@ -148,17 +143,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="success"></param>
         /// <returns></returns>
-        protected Color GetTextMeshColor(out bool success)
+        protected bool GetTextMeshColor(out Color color)
         {
             Color colour = Color.white;
             TextMesh mesh = Host.GetComponent<TextMesh>();
             if (mesh != null)
             {
-                success = true;
-                return mesh.color;
+                color = mesh.color;
+                return true;
             }
-            success = false;
-            return colour;
+            color = colour;
+            return false;
         }
 
         /// <summary>
@@ -166,17 +161,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="success"></param>
         /// <returns></returns>
-        protected Color GetTextMeshProColor(out bool success)
+        protected bool GetTextMeshProColor(out Color color)
         {
             Color colour = Color.white;
             TextMeshPro tmp = Host.GetComponent<TextMeshPro>();
             if (tmp)
             {
-                success = true;
-                return tmp.color;
+                color = tmp.color;
+                return true;
             }
-            success = false;
-            return colour;
+            color = colour;
+            return false;
         }
 
         /// <summary>
@@ -184,17 +179,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="success"></param>
         /// <returns></returns>
-        protected Color GetTextMeshProUGUIColor(out bool success)
+        protected bool GetTextMeshProUGUIColor(out Color color)
         {
             Color colour = Color.white;
             TextMeshProUGUI tmp = Host.GetComponent<TextMeshProUGUI>();
             if (tmp)
             {
-                success = true;
-                return tmp.color;
+                
+                color = tmp.color;
+                return true;
             }
-            success = false;
-            return colour;
+            
+            color = colour;
+            return false;
         }
 
         /// <summary>
