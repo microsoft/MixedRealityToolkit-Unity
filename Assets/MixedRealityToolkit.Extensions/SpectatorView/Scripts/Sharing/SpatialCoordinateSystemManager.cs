@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             DebugLog($"Creating new SpatialCoordinateSystemParticipant, Role: {spectatorView.Role}, IPAddress: {endpoint.Address}, SceneRoot: {transformedGameObject}, DebugLogging: {debugLogging}");
             var actAsHost = spectatorView.Role == Role.User;
-            var participant = new SpatialCoordinateSystemParticipant(actAsHost, endpoint, WriteAndSendMessage, () => transformedGameObject, debugLogging, showDebugVisuals, debugVisual, debugVisualScale);
+            var participant = new SpatialCoordinateSystemParticipant(actAsHost, endpoint, WriteAndSendMessage, CreateDebugVisualParent, debugLogging, showDebugVisuals, debugVisual, debugVisualScale);
             participants[endpoint] = participant;
             if (spatialLocalizer != null)
             {
@@ -145,8 +145,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             participant.Value.TryTransformToHostWorldSpace(Quaternion.identity, out var rotation))
                         {
                             DebugLog($"Parent of main camera transform set: Position: {position.ToString("G4")}, Rotation: {rotation.ToString("G4")}");
-                            spectatorView.parentOfMainCamera.transform.position = position;
-                            spectatorView.parentOfMainCamera.transform.rotation = rotation;
+                            spectatorView.parentOfMainCamera.transform.position = Vector3.zero; //position;
+                            spectatorView.parentOfMainCamera.transform.rotation = Quaternion.identity; //rotation;
                             break;
                         }
                     }
@@ -200,6 +200,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 callToWrite(writer);
                 endpoint.Send(memoryStream.ToArray());
             }
+        }
+
+        private GameObject CreateDebugVisualParent()
+        {
+            var go = new GameObject();
+            go.transform.parent = null;
+            go.transform.position = Vector3.zero;
+            go.transform.rotation = Quaternion.identity;
+            return go;
         }
     }
 }

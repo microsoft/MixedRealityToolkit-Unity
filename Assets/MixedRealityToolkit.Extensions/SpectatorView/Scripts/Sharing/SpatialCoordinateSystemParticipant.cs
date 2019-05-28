@@ -116,6 +116,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             localOriginPositionInCoordinateSystem = coordinate.WorldToCoordinateSpace(Vector3.zero);
                             localOriginRotationInCoordinateSystem = coordinate.WorldToCoordinateSpace(Quaternion.identity);
 
+                            SendCoordinateState();
+
                             spatialCoordinateGO = createSpatialCoordinateGO();
                             var spatialCoordinateLocalizer = spatialCoordinateGO.AddComponent<SpatialCoordinateLocalizer>();
                             spatialCoordinateLocalizer.debugLogging = debugLogging;
@@ -167,6 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
             else
             {
+                DebugLog($"Local Origin Position: {localOriginPositionInCoordinateSystem.ToString("G4")}, Remote Origin Position: {remoteOriginPositionInCoordinateSystem.ToString("G4")}");
                 hostWorldPosition = localWorldPosition + localOriginPositionInCoordinateSystem - remoteOriginPositionInCoordinateSystem;
             }
 
@@ -187,7 +190,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
             else
             {
-                hostWorldRotation = localWorldRotation * localOriginRotationInCoordinateSystem * Quaternion.Inverse(remoteOriginRotationInCoordinateSystem);
+                DebugLog($"Local Origin Rotation: {localOriginRotationInCoordinateSystem.ToString("G4")}, Remote Origin Rotation: {remoteOriginRotationInCoordinateSystem.ToString("G4")}");
+                hostWorldRotation = Quaternion.Inverse(remoteOriginRotationInCoordinateSystem) * localOriginRotationInCoordinateSystem * localWorldRotation;
             }
 
             return true;
@@ -242,6 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             writeAndSend(socketEndpoint, writer =>
             {
+                DebugLog($"Sending coordinate state: isHost: {isHost}, validLocalOrigin: {validLocalOrigin}, Position: {localOriginPositionInCoordinateSystem.ToString("G4")}, Rotation: {localOriginRotationInCoordinateSystem.ToString("G4")}");
                 writer.Write(CoordinateStateMessageHeader);
                 writer.Write(isHost);
                 writer.Write(validLocalOrigin);
