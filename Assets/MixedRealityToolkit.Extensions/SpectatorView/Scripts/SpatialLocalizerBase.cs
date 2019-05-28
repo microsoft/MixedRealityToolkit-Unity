@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal abstract class SpatialLocalizerBase : SpatialLocalizer
+    public abstract class SpatialLocalizerBase : SpatialLocalizer
     {
         protected ISpatialCoordinateService spatialCoordinateService = null;
         private Task<ISpatialCoordinate> initializeUserCoordinateTask = null;

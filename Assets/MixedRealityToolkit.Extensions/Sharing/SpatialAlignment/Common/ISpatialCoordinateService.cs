@@ -21,6 +21,11 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         event Action<ISpatialCoordinate> CoordinatedDiscovered;
 
         /// <summary>
+        /// Triggered when a new coordinate is removed from this service.
+        /// </summary>
+        event Action<ISpatialCoordinate> CoordinateRemoved;
+
+        /// <summary>
         /// Gets or sets whether this coordinate service should be discovering/tracking coordinates.
         /// </summary>
         bool IsTracking { get; }

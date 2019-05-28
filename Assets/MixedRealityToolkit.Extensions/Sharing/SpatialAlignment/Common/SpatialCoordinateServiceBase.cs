@@ -21,8 +21,11 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         /// <inheritdoc />
         public event Action<ISpatialCoordinate> CoordinatedDiscovered;
 
+        /// <inheritdoc />
+        public event Action<ISpatialCoordinate> CoordinateRemoved;
+
         private readonly object discoveryLockObject = new object();
-        private readonly CancellationTokenSource disposedCTS = new CancellationTokenSource();
+        protected readonly CancellationTokenSource disposedCTS = new CancellationTokenSource();
 
         private bool isTracking;
 
@@ -96,6 +99,25 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             else
             {
                 UnityEngine.Debug.LogWarning($"Unexpected behavior, coordinate {id} was rediscovered.");
+            }
+        }
+
+        /// <summary>
+        /// Removes a tracked coordinate from this service.
+        /// </summary>
+        /// <param name="id">The ide of the coordinate to remove.</param>
+        /// <remarks>Will throw if coordinate was not tracked by this service, checking is possible throuhg <see cref="knownCoordinates"/> field.</remarks>
+        protected void OnRemoveCoordinate(TKey id)
+        {
+            ThrowIfDisposed();
+
+            if (knownCoordinates.TryRemove(id, out ISpatialCoordinate coordinate))
+            {
+                CoordinateRemoved?.Invoke(coordinate);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Coordinate with id '{id}' was not previously registered.");
             }
         }
 
