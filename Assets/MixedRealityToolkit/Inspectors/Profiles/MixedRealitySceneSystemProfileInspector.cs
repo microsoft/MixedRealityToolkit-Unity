@@ -76,16 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             contentScenes = serializedObject.FindProperty("contentScenes");
         }
 
-        private void OnSelecteContentScene(ReorderableList list)
-        {
-            Debug.Log("Selecting");
-        }
-
-        private void DrawContentSceneElement(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            SceneInfoDrawer.DrawProperty(rect, contentScenes.GetArrayElementAtIndex(index), GUIContent.none, isActive, isFocused);
-        }
-
         public override void OnInspectorGUI()
         {
             if (!MixedRealityToolkit.IsInitialized)
@@ -93,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
             
-            RenderProfileHeader(ProfileTitle, string.Empty, target);
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
 
             MixedRealityInspectorUtility.CheckMixedRealityConfigured(true);
 
@@ -225,6 +215,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        protected override bool IsProfileInActiveInstance()
+        {
+            return MixedRealityToolkit.IsInitialized
+                && MixedRealityToolkit.Instance.HasActiveProfile
+                && MixedRealityToolkit.Instance.ActiveProfile.CameraProfile == this;
+        }
+
+        /// <summary>
+        /// Used to drag-drop scene objects into scene lists. (Currently unused.)
+        /// </summary>
+        /// <param name="arrayProperty"></param>
         private void DrawSceneInfoDragAndDrop(SerializedProperty arrayProperty)
         {
             if (!Application.isPlaying)
@@ -295,11 +296,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        protected override bool IsProfileInActiveInstance()
+        private void OnSelecteContentScene(ReorderableList list)
         {
-            return MixedRealityToolkit.IsInitialized
-                && MixedRealityToolkit.Instance.HasActiveProfile
-                && MixedRealityToolkit.Instance.ActiveProfile.CameraProfile == this;
+            // Do nothing.
+        }
+
+        private void DrawContentSceneElement(Rect rect, int index, bool isActive, bool isFocused)
+        {
+            SceneInfoDrawer.DrawProperty(rect, contentScenes.GetArrayElementAtIndex(index), GUIContent.none, isActive, isFocused);
         }
     }
 }
