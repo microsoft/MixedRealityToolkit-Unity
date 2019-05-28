@@ -16,8 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <remarks>In the future this would move to SpatialLocalization in a better form, abstraction-wise.</remarks>
     public abstract class SpatialLocalizer : MonoBehaviour
     {
-        public const string SpatialLocalizationMessageHeader = "LOCALIZE";
-
         /// <summary>
         /// The spatial coordinate service for sub class to instantiate and this helper base to rely on.
         /// </summary>

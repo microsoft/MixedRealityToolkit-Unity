@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         [Tooltip("Parent of the main camera, spatial coordinate system transforms will be applied to this game object.")]
         [SerializeField]
-        private GameObject parentOfMainCamera = null;
+        public GameObject parentOfMainCamera = null;
 
         private void Awake()
         {
