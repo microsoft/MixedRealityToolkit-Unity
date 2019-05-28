@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -84,12 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [SerializeField]
         private PerformanceTarget PerfTarget = PerformanceTarget.AR_Headsets;
 
-        [SerializeField]
-        private Texture2D logoLightTheme = null;
-
-        [SerializeField]
-        private Texture2D logoDarkTheme = null;
-
         protected static GUIStyle HelpIconStyle;
         protected static GUIStyle BoldLargeTitle;
 
@@ -105,18 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public void StartUp()
         {
             FindShaders();
-
-            string assetPath = "StandardAssets/Textures";
-
-            if (logoLightTheme == null)
-            {
-                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_Black.png"), typeof(Texture2D));
-            }
-
-            if (logoDarkTheme == null)
-            {
-                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_White.png"), typeof(Texture2D));
-            }
         }
 
         private void OnEnable()
@@ -131,15 +112,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             windowScrollPosition = EditorGUILayout.BeginScrollView(windowScrollPosition);
 
-                // Render MRTK Logo
-                GUILayout.BeginHorizontal();
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Label(EditorGUIUtility.isProSkin ? logoDarkTheme : logoLightTheme, GUILayout.MaxHeight(128f));
-                    GUILayout.FlexibleSpace();
-                GUILayout.EndHorizontal();
+            MixedRealityEditorUtility.RenderMixedRealityToolkitLogo();
 
-                // Render Title
-                EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", BoldLargeTitle);
+            // Render Title
+            EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", BoldLargeTitle);
                 EditorGUILayout.LabelField("This tool automates the process of updating your project, currently open scene, and material assets to recommended settings for Mixed Reality", EditorStyles.wordWrappedLabel);
                 EditorGUILayout.Space();
 
@@ -184,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (replacementShader == null)
                 {
                     EditorGUILayout.HelpBox("Please set a replacement shader to utilize this tool", MessageType.Error);
-                    if (GUILayout.Button(new GUIContent("Use MRTK Standard Shader", "Set Replacement Shader to MRKT Standard Shader"), EditorStyles.miniButton, GUILayout.Width(200f)))
+                    if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Use MRTK Standard Shader", "Set Replacement Shader to MRKT Standard Shader"), EditorStyles.miniButton, GUILayout.Width(200f)))
                     {
                         FindShaders();
                     }
@@ -276,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         disableBakedGlobalIllumination = EditorGUILayout.ToggleLeft("Disable Baked Global Illumination", disableBakedGlobalIllumination);
                     }
 
-                    if (GUILayout.Button("Optimize Lighting"))
+                    if (MixedRealityEditorUtility.RenderIndentedButton("Optimize Lighting"))
                     {
                         OptimizeScene();
                     }
@@ -398,7 +374,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     */
                 });
 
-                if (GUILayout.Button("Optimize Project"))
+                if (MixedRealityEditorUtility.RenderIndentedButton("Optimize Project"))
                 {
                     OptimizeProject();
                 }

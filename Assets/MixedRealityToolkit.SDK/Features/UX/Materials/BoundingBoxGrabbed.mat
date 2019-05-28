@@ -43,10 +43,11 @@ Material:
     - _BlendOp: 0
     - _BorderLight: 1
     - _BorderLightOpaque: 0
+    - _BorderLightOpaqueAlpha: 1
     - _BorderLightReplacesAlbedo: 0
     - _BorderLightUsesHoverColor: 1
     - _BorderMinValue: 1
-    - _BorderWidth: 0.025
+    - _BorderWidth: 0.015
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
     - _ClippingBox: 0
@@ -58,7 +59,7 @@ Material:
     - _Cutoff: 0.5
     - _DirectionalLight: 0
     - _DstBlend: 1
-    - _EdgeSmoothingValue: 0.0001
+    - _EdgeSmoothingValue: 0.002
     - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOpaqueOverride: 0
@@ -71,10 +72,11 @@ Material:
     - _EnvironmentColoring: 0
     - _FadeBeginDistance: 0.5
     - _FadeCompleteDistance: 2
+    - _FadeMinValue: 0
     - _HoverLight: 1
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
-    - _InnerGlowPower: 23.1
+    - _InnerGlowPower: 9.4
     - _InstancedColor: 0
     - _Iridescence: 0
     - _IridescenceAngle: -0.78
@@ -82,10 +84,12 @@ Material:
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
     - _Mode: 4
+    - _NearLightFade: 0
     - _NearPlaneFade: 0
     - _NearPlaneFadeReverse: 1
     - _NormalMapScale: 1
     - _ProximityLight: 0
+    - _ProximityLightTwoSided: 0
     - _Reflections: 0
     - _Refraction: 0
     - _RefractiveIndex: 0
@@ -105,6 +109,10 @@ Material:
     - _StencilReference: 0
     - _TriplanarMappingBlendSharpness: 4
     - _VertexColors: 0
+    - _VertexExtrusion: 0
+    - _VertexExtrusionValue: 0
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
     - _ZTest: 4
     - _ZWrite: 0
     m_Colors:
@@ -115,6 +123,6 @@ Material:
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
-    - _HoverColorOverride: {r: 0, g: 0.4082811, b: 1, a: 1}
+    - _HoverColorOverride: {r: 0, g: 0.5595665, b: 1, a: 1}
     - _InnerGlowColor: {r: 0, g: 0.45917034, b: 1, a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
