@@ -1,6 +1,7 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
+// Example script that spawns a prefab at the pointer hit location.
 public class SpawnOnPointerEvent : MonoBehaviour
 {
     public GameObject PrefabToSpawn;
