@@ -293,7 +293,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 {
                     string lightingScenePath = System.IO.Path.Combine(Application.dataPath.Replace("/Assets", ""), lightingScene.Path);
                     DateTime lightingSceneTimestamp = System.IO.File.GetLastWriteTime(lightingScenePath);
-                    Debug.Log(lightingSceneTimestamp);
                     if (lightingSceneTimestamp > cachedLightingTimestamp)
                     {
                         outOfDate = true;
