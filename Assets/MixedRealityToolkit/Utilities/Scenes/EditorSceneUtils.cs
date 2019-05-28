@@ -9,7 +9,6 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.Reflection;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
-using System.Threading.Tasks;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
@@ -29,6 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Last,
         }
 
+        /// <summary>
+        /// Creates a new scene with sceneName and saves to path.
+        /// </summary>
+        /// <param name="sceneName"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static SceneInfo CreateAndSaveScene(string sceneName, string path = null)
         {
             SceneInfo sceneInfo = default(SceneInfo);

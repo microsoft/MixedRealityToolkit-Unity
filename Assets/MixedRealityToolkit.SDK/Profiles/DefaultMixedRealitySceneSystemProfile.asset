@@ -60,7 +60,7 @@ MonoBehaviour:
     Path: Assets/TemporaryTests/ContentScene3.unity
     Included: 1
     BuildIndex: 6
-    Tag: Respawn
+    Tag: Player
     Asset: {fileID: 3671201678493226958, guid: d40dbc118249f324eb97fbbc3cbbc5c8, type: 3}
   permittedLightingSceneComponentTypes:
   - reference: UnityEngine.Transform, UnityEngine.CoreModule
@@ -71,6 +71,7 @@ MonoBehaviour:
   - reference: UnityEngine.LightProbeProxyVolume, UnityEngine.CoreModule
   contentTags:
   - Respawn
+  - Player
   cachedLightingSettings:
   - SceneName: LightingScene1
     RenderSettings:
@@ -116,7 +117,7 @@ MonoBehaviour:
       FogDensity: 0.01
       LinearFogStart: 0
       LinearFogEnd: 300
-      AmbientSkyColor: {r: 0.08962262, g: 0.3930819, b: 1, a: 1}
+      AmbientSkyColor: {r: 0.9479145, g: 1, b: 0.09019607, a: 1}
       AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
       AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
       AmbientLight: {r: 0, g: 0, b: 0, a: 0}
@@ -139,11 +140,11 @@ MonoBehaviour:
       EnabledRealtimeLightmaps: 0
     SunlightSettings:
       UseSunlight: 1
-      Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-      Intensity: 1
-      XRotation: 50
-      YRotation: 330
-      ZRotation: 0
+      Color: {r: 1, g: 0.0812667, b: 0, a: 1}
+      Intensity: 0.5
+      XRotation: 359.32422
+      YRotation: 282.02856
+      ZRotation: 316.86832
   - SceneName: LightingScene3
     RenderSettings:
       Fog: 0
@@ -152,7 +153,7 @@ MonoBehaviour:
       FogDensity: 0.01
       LinearFogStart: 0
       LinearFogEnd: 300
-      AmbientSkyColor: {r: 0.08962262, g: 0.3930819, b: 1, a: 1}
+      AmbientSkyColor: {r: 0.9479145, g: 1, b: 0.09019607, a: 1}
       AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
       AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
       AmbientLight: {r: 0, g: 0, b: 0, a: 0}
@@ -175,13 +176,13 @@ MonoBehaviour:
       EnabledRealtimeLightmaps: 0
     SunlightSettings:
       UseSunlight: 1
-      Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-      Intensity: 1
-      XRotation: 50
-      YRotation: 330
-      ZRotation: 0
+      Color: {r: 0.11748052, g: 1, b: 0, a: 1}
+      Intensity: 2
+      XRotation: 75.4436
+      YRotation: 151.80708
+      ZRotation: 3.1183996
   editorManageBuildSettings: 1
   editorEnforceSceneOrder: 1
   editorManageLoadedScenes: 1
   editorEnforceLightingSceneTypes: 1
-  editorLightingCacheOutOfDate: 1
+  editorLightingCacheOutOfDate: 0

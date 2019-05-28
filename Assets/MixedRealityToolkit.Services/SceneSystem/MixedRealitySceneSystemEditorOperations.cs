@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// </summary>
     public partial class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem
     {
+
 #if UNITY_EDITOR
 
         /// <summary>
@@ -38,10 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
-        private const float lightingUpdateInterval = 5f;
-        private const float managerSceneInstanceCheckInterval = 2f;
-        private const int editorApplicationUpdateTickInterval = 5;
-
         // Cache these so we're not looking them up constantly
         private EditorBuildSettingsScene[] cachedBuildScenes = new EditorBuildSettingsScene[0];
 
@@ -54,6 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private bool updatingCachedLightingSettings = false;
         // Checking for the manager scene via root game objects is very expensive
         // So only do it once in a while
+        private const float lightingUpdateInterval = 5f;
+        private const float managerSceneInstanceCheckInterval = 2f;
+        private const int editorApplicationUpdateTickInterval = 5;
         private float managerSceneInstanceCheckTime;
         private int editorApplicationUpdateTicks;
 
@@ -254,7 +254,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             if (FileModificationWarning.ModifiedAssetPaths.Count > 0)
             {
-                Debug.Log("Found modified paths");
                 EditorCheckIfCachedLightingOutOfDate();
                 FileModificationWarning.ModifiedAssetPaths.Clear();
             }
@@ -284,9 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// Checks whether any of the save dates on our lighting scenes are later than the save date of our cached lighting data.
         /// </summary>
         private void EditorCheckIfCachedLightingOutOfDate()
-        {
-            Debug.Log("EditorCheckIfCachedLightingOutOfDate");
-            
+        {            
             DateTime cachedLightingTimestamp = profile.GetEarliestLightingCacheTimestamp();
             bool outOfDate = false;
 
@@ -295,12 +292,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 if (FileModificationWarning.ModifiedAssetPaths.Contains(lightingScene.Path))
                 {
                     string lightingScenePath = System.IO.Path.Combine(Application.dataPath.Replace("/Assets", ""), lightingScene.Path);
-                    Debug.Log("Checking " + lightingScenePath + " to see its modification date!");
                     DateTime lightingSceneTimestamp = System.IO.File.GetLastWriteTime(lightingScenePath);
                     Debug.Log(lightingSceneTimestamp);
                     if (lightingSceneTimestamp > cachedLightingTimestamp)
                     {
-                        Debug.Log("Greater than " + cachedLightingTimestamp);
                         outOfDate = true;
                         break;
                     }
@@ -731,5 +726,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         }
 
 #endif
+
     }
 }
