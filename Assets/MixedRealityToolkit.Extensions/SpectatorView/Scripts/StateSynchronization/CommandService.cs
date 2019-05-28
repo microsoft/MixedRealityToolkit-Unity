@@ -17,7 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             get
             {
-                return commandHandlersCache;
+                lock (lockObject)
+                {
+                    return new Dictionary<string, IReadOnlyList<ICommandHandler>>(commandHandlersCache);
+                }
             }
         }
 
