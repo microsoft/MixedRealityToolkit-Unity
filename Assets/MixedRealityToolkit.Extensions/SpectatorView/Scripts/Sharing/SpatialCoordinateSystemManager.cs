@@ -145,8 +145,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             participant.Value.TryTransformToHostWorldSpace(Quaternion.identity, out var rotation))
                         {
                             DebugLog($"Parent of main camera transform set: Position: {position.ToString("G4")}, Rotation: {rotation.ToString("G4")}");
-                            spectatorView.parentOfMainCamera.transform.position = Vector3.zero; //position;
-                            spectatorView.parentOfMainCamera.transform.rotation = Quaternion.identity; //rotation;
+                            spectatorView.parentOfMainCamera.transform.position = position;
+                            spectatorView.parentOfMainCamera.transform.rotation = rotation;
                             break;
                         }
                     }
