@@ -32,8 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         private float hologramAlpha;
 
         private float statisticsUpdateTimeSeconds = 0.0f;
+        private string appIPAddress;
 
         private static string holographicCameraIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(holographicCameraIPAddress)}";
+        private static string appIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(appIPAddress)}";
 
         [MenuItem("Spectator View/Compositor", false, 0)]
         public static void ShowCompositorWindow()
@@ -52,11 +54,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             }
 
             holographicCameraIPAddress = PlayerPrefs.GetString(holographicCameraIPAddressKey, "localhost");
+            appIPAddress = PlayerPrefs.GetString(appIPAddressKey, "localhost");
         }
 
         private void OnDisable()
         {
             PlayerPrefs.SetString(holographicCameraIPAddressKey, holographicCameraIPAddress);
+            PlayerPrefs.SetString(appIPAddressKey, appIPAddress);
             PlayerPrefs.Save();
         }
 
@@ -77,8 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         {
             EditorGUILayout.BeginHorizontal();
             {
-                HolographicCameraNetworkConnectionGUI(AppDeviceTypeLabel, StateSynchronizationObserver.Instance, showCalibrationStatus: false);
-                HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, GetHolographicCameraNetworkManager(), showCalibrationStatus: true);
+                HolographicCameraNetworkConnectionGUI(AppDeviceTypeLabel, StateSynchronizationObserver.Instance, showCalibrationStatus: false, ref appIPAddress);
+                HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, GetHolographicCameraNetworkManager(), showCalibrationStatus: true, ref holographicCameraIPAddress);
             }
             EditorGUILayout.EndHorizontal();
         }

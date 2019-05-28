@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             aspect = ((float)renderFrameWidth) / renderFrameHeight;
         }
 
-        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, ILocatableDeviceNetworkManager cameraNetworkManager, bool showCalibrationStatus)
+        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, ILocatableDeviceNetworkManager cameraNetworkManager, bool showCalibrationStatus, ref string ipAddressField)
         {
             CompositionManager compositionManager = GetCompositionManager();
             
@@ -93,8 +93,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 {
                     GUILayout.BeginHorizontal();
                     {
-                        holographicCameraIPAddress = EditorGUILayout.TextField(holographicCameraIPAddress);
-                        ConnectButtonGUI(holographicCameraIPAddress, cameraNetworkManager);
+                        ipAddressField = EditorGUILayout.TextField(ipAddressField);
+                        ConnectButtonGUI(ipAddressField, cameraNetworkManager);
                     }
                     GUILayout.EndHorizontal();
                 }

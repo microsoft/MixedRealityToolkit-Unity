@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
                         EditorGUILayout.BeginVertical("Box", GUILayout.MinHeight(250.0f));
                         {
-                            HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, GetHolographicCameraNetworkManager(), showCalibrationStatus: true);
+                            HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, GetHolographicCameraNetworkManager(), showCalibrationStatus: true, ref holographicCameraIPAddress);
 
                             GUILayout.FlexibleSpace();
 
