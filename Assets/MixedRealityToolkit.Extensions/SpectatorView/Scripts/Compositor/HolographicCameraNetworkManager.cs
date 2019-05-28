@@ -12,14 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
     /// <summary>
     /// Component that connects to the HoloLens application on the holographic camera rig for synchronizing camera poses and receiving calibration data.
     /// </summary>
-    [RequireComponent(typeof(TCPConnectionManager))]
-    public class HolographicCameraNetworkManager : MonoBehaviour
+    public class HolographicCameraNetworkManager : LocatableDeviceNetworkManager<HolographicCameraNetworkManager>
     {
-        public const float arUcoMarkerSizeInMeters = 0.1f;
-        public const string CreateSharedSpatialCoordinateCommand = "CreateSharedSpatialCoordinate";
-        private TCPConnectionManager connectionManager;
-        private const float trackingStalledReceiveDelay = 1.0f;
-        private float lastReceivedPoseTime = -1;
+        public const string CameraCommand = "Camera";
+        public const string CalibrationDataCommand = "CalibrationData";
 
         [SerializeField]
         private CompositionManager compositionManager = null;
@@ -28,168 +24,56 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         [Tooltip("The port that the " + nameof(HolographicCamera.TCPNetworkListener) + " listens for connections on.")]
         private int remotePort = 7502;
 
-        private SocketEndpoint currentConnection;
-        private string holoLensName;
-        private string holoLensIPAddress;
-        private bool hasTracking;
-        private bool isSharedSpatialCoordinateLocated;
+        protected override int RemotePort => remotePort;
 
-        /// <summary>
-        /// Gets the name of the HoloLens running on the holographic camera rig.
-        /// </summary>
-        public string HoloLensName => holoLensName;
-
-        /// <summary>
-        /// Gets the IP address reported by the HoloLens running on the holographic camera rig.
-        /// </summary>
-        public string HoloLensIPAddress => holoLensIPAddress;
-
-        /// <summary>
-        /// Gets the local IP address reported by the socket used to connect to the holographic camera rig.
-        /// </summary>
-        public string ConnectedIPAddress => currentConnection?.Address;
-
-        /// <summary>
-        /// Gets the last-reported tracking status of the HoloLens running on the holographic camera rig.
-        /// </summary>
-        public bool HasTracking => hasTracking;
-
-        /// <summary>
-        /// Gets the last-reported status of whether or not the WorldAnchor used for spatial position sharing is located
-        /// on the holographic camera rig.
-        /// </summary>
-        public bool IsSharedSpatialCoordinateLocated => isSharedSpatialCoordinateLocated;
-
-        private void Awake()
+        protected override void Awake()
         {
-            connectionManager = GetComponent<TCPConnectionManager>();
-            connectionManager.OnConnected += ConnectionManager_OnConnected;
-            connectionManager.OnDisconnected += ConnectionManager_OnDisconnected;
-            connectionManager.OnReceive += ConnectionManager_OnReceive;
+            base.Awake();
+
+            RegisterCommandHandler(CameraCommand, this);
+            RegisterCommandHandler(CalibrationDataCommand, this);
         }
 
-        private void OnDestroy()
+        protected override void OnConnected(SocketEndpoint endpoint)
         {
-            connectionManager.DisconnectAll();
+            base.OnConnected(endpoint);
 
-            connectionManager.OnConnected -= ConnectionManager_OnConnected;
-            connectionManager.OnDisconnected -= ConnectionManager_OnDisconnected;
-            connectionManager.OnReceive -= ConnectionManager_OnReceive;
-        }
-
-        private void ConnectionManager_OnConnected(SocketEndpoint endpoint)
-        {
-            currentConnection = endpoint;
-            lastReceivedPoseTime = Time.time;
             compositionManager.ResetOnNewCameraConnection();
         }
 
-        private void ConnectionManager_OnDisconnected(SocketEndpoint endpoint)
+        public override void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            if (currentConnection == endpoint)
+            base.HandleCommand(endpoint, command, reader, remainingDataSize);
+
+            switch (command)
             {
-                currentConnection = null;
-            }
-        }
+                case CameraCommand:
+                    {
+                        UpdateTrackingStatus();
 
-        /// <summary>
-        /// Gets whether or not a network connection to the holographic camera is established.
-        /// </summary>
-        public bool IsConnected => connectionManager != null && connectionManager.HasConnections;
+                        float timestamp = reader.ReadSingle();
+                        Vector3 cameraPosition = reader.ReadVector3();
+                        Quaternion cameraRotation = reader.ReadQuaternion();
 
-        /// <summary>
-        /// Gets whether or not a network connection to the holographic camera is pending.
-        /// </summary>
-        public bool IsConnecting => connectionManager != null && connectionManager.IsConnecting && !connectionManager.HasConnections;
+                        compositionManager.AddCameraPose(cameraPosition, cameraRotation, timestamp);
+                    }
+                    break;
+                case CalibrationDataCommand:
+                    {
+                        int calibrationDataPayloadLength = reader.ReadInt32();
+                        byte[] calibrationDataPayload = reader.ReadBytes(calibrationDataPayloadLength);
 
-        /// <summary>
-        /// Gets whether or not the receipt of new poses from the camera has stalled for an unexpectedly-large time.
-        /// </summary>
-        public bool IsTrackingStalled => IsConnected && (Time.time - lastReceivedPoseTime) > trackingStalledReceiveDelay;
-
-        /// <summary>
-        /// Connects to the holographic camera rig with the provided remote IP address.
-        /// </summary>
-        /// <param name="remoteAddress">The IP address of the holographic camera rig's HoloLens.</param>
-        public void ConnectTo(string remoteAddress)
-        {
-            connectionManager.ConnectTo(remoteAddress, remotePort);
-        }
-
-        /// <summary>
-        /// Disconnects the network connection to the holographic camera rig.
-        /// </summary>
-        public void Disconnect()
-        {
-            connectionManager.DisconnectAll();
-        }
-
-        private void ConnectionManager_OnReceive(IncomingMessage data)
-        {
-            using (MemoryStream stream = new MemoryStream(data.Data))
-            using (BinaryReader reader = new BinaryReader(stream))
-            {
-                string command = reader.ReadString();
-
-                switch (command)
-                {
-                    case "Camera":
+                        CalculatedCameraCalibration calibration;
+                        if (CalculatedCameraCalibration.TryDeserialize(calibrationDataPayload, out calibration))
                         {
-                            lastReceivedPoseTime = Time.time;
-                            float timestamp = reader.ReadSingle();
-                            Vector3 cameraPosition = reader.ReadVector3();
-                            Quaternion cameraRotation = reader.ReadQuaternion();
-
-                            compositionManager.AddCameraPose(cameraPosition, cameraRotation, timestamp);
+                            compositionManager.EnableHolographicCamera(transform, new CalibrationData(calibration.Intrinsics, calibration.Extrinsics));
                         }
-                        break;
-                    case "CalibrationData":
+                        else
                         {
-                            int calibrationDataPayloadLength = reader.ReadInt32();
-                            byte[] calibrationDataPayload = reader.ReadBytes(calibrationDataPayloadLength);
-
-                            CalculatedCameraCalibration calibration;
-                            if (CalculatedCameraCalibration.TryDeserialize(calibrationDataPayload, out calibration))
-                            {
-                                compositionManager.EnableHolographicCamera(transform, new CalibrationData(calibration.Intrinsics, calibration.Extrinsics));
-                            }
-                            else
-                            {
-                                Debug.LogError("Received a CalibrationData packet from the HoloLens that could not be understood.");
-                            }
+                            Debug.LogError("Received a CalibrationData packet from the HoloLens that could not be understood.");
                         }
-                        break;
-                    case "DeviceInfo":
-                        {
-                            holoLensName = reader.ReadString();
-                            holoLensIPAddress = reader.ReadString();
-                        }
-                        break;
-                    case "Status":
-                        {
-                            hasTracking = reader.ReadBoolean();
-                            isSharedSpatialCoordinateLocated = reader.ReadBoolean();
-                        }
-                        break;
-                }
-            }
-        }
-
-        public void SendLocateSharedSpatialCoordinateCommand()
-        {
-            if (currentConnection == null)
-            {
-                Debug.LogError("Can't locate shared spatial coordinate while disconnected");
-                return;
-            }
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            using (BinaryWriter message = new BinaryWriter(memoryStream))
-            {
-                message.Write(CreateSharedSpatialCoordinateCommand);
-                message.Write(arUcoMarkerSizeInMeters);
-
-                currentConnection.Send(memoryStream.ToArray());
+                    }
+                    break;
             }
         }
     }

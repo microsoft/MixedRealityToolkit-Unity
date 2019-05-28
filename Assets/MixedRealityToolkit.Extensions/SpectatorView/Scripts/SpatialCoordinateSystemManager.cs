@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader)
+        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int dataSizeRemaining)
         {
             if (!members.TryGetValue(endpoint, out var member))
             {
@@ -122,19 +122,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void RegisterCommands()
         {
-            DebugLog($"Registering for appropriate commands: CommandService.IsInitialized: {CommandService.IsInitialized}");
+            DebugLog($"Registering for appropriate commands");
             foreach (var command in supportedCommands)
             {
-                CommandService.Instance.RegisterCommandHandler(command, this);
+                StateSynchronizationBroadcaster.Instance?.RegisterCommandHandler(command, this);
+                StateSynchronizationObserver.Instance?.RegisterCommandHandler(command, this);
             }
         }
 
         private void UnregisterCommands()
         {
-            DebugLog($"Unregistering for appropriate commands: CommandService.IsInitialized: {CommandService.IsInitialized}");
+            DebugLog($"Unregistering for appropriate commands");
             foreach (var command in supportedCommands)
             {
-                CommandService.Instance.UnregisterCommandHandler(command, this);
+                StateSynchronizationBroadcaster.Instance?.UnregisterCommandHandler(command, this);
+                StateSynchronizationObserver.Instance?.UnregisterCommandHandler(command, this);
             }
         }
 

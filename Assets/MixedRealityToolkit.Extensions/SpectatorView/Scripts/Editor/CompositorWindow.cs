@@ -75,7 +75,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
         private void NetworkConnectionGUI()
         {
-            HolographicCameraNetworkConnectionGUI();
+            EditorGUILayout.BeginHorizontal();
+            {
+                HolographicCameraNetworkConnectionGUI(AppDeviceTypeLabel, StateSynchronizationObserver.Instance, showCalibrationStatus: false);
+                HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, GetHolographicCameraNetworkManager(), showCalibrationStatus: true);
+            }
+            EditorGUILayout.EndHorizontal();
         }
 
         private void CompositeGUI()

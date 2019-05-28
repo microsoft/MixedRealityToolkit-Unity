@@ -12,6 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 {
     public class CompositorWindowBase<TWindow> : EditorWindowBase<TWindow> where TWindow : EditorWindowBase<TWindow>
     {
+        protected const string HolographicCameraDeviceTypeLabel = "Holographic Camera";
+        protected const string AppDeviceTypeLabel = "App";
         protected string holographicCameraIPAddress;
 
         private CompositionManager cachedCompositionManager;
@@ -23,9 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         private float uiFrameWidth = 100;
         private float uiFrameHeight = 100;
 
+        private const string notConnectedMessage = "Not connected";
         private const string trackingLostStatusMessage = "Tracking lost";
         private const string trackingStalledStatusMessage = "No tracking update in over a second";
         private const string locatingSharedSpatialCoordinate = "Locating shared spatial coordinate...";
+        private const string notLocatedSharedSpatialCoordinate = "Not located";
         private const string locatedSharedSpatialCoordinateMessage = "Located";
         private const string calibrationLoadedMessage = "Loaded";
         private const string calibrationNotLoadedMessage = "No camera calibration received";
@@ -33,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         protected const int textureRenderModeComposite = 0;
         protected const int textureRenderModeSplit = 1;
         private const float quadPadding = 4;
+        private const int connectAndDisconnectButtonWidth = 90;
 
         protected virtual void OnEnable()
         {
@@ -41,11 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             aspect = ((float)renderFrameWidth) / renderFrameHeight;
         }
 
-        protected void HolographicCameraNetworkConnectionGUI()
+        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, ILocatableDeviceNetworkManager cameraNetworkManager, bool showCalibrationStatus)
         {
             CompositionManager compositionManager = GetCompositionManager();
-            HolographicCameraNetworkManager cameraNetworkManager = GetHolographicCameraNetworkManager();
-
+            
             EditorGUILayout.BeginVertical("Box");
             {
                 Color titleColor;
@@ -54,8 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     cameraNetworkManager.HasTracking &&
                     cameraNetworkManager.IsSharedSpatialCoordinateLocated &&
                     !cameraNetworkManager.IsTrackingStalled &&
-                    compositionManager != null &&
-                    compositionManager.IsCalibrationDataLoaded)
+                    (!showCalibrationStatus || (compositionManager != null &&
+                    compositionManager.IsCalibrationDataLoaded)))
                 {
                     titleColor = Color.green;
                 }
@@ -63,65 +67,30 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 {
                     titleColor = Color.yellow;
                 }
-                RenderTitle("Holographic Camera", titleColor);
+                RenderTitle(deviceTypeLabel, titleColor);
 
                 if (cameraNetworkManager != null && cameraNetworkManager.IsConnected)
                 {
-                    if (cameraNetworkManager.ConnectedIPAddress == cameraNetworkManager.HoloLensIPAddress)
+                    GUILayout.BeginHorizontal();
                     {
-                        GUILayout.Label($"Connected to {cameraNetworkManager.HoloLensName} ({cameraNetworkManager.HoloLensIPAddress})");
-                    }
-                    else
-                    {
-                        GUILayout.Label($"Connected to {cameraNetworkManager.HoloLensName} ({cameraNetworkManager.ConnectedIPAddress} -> {cameraNetworkManager.HoloLensIPAddress})");
-                    }
+                        if (cameraNetworkManager.ConnectedIPAddress == cameraNetworkManager.DeviceIPAddress)
+                        {
+                            GUILayout.Label($"Connected to {cameraNetworkManager.DeviceName} ({cameraNetworkManager.DeviceIPAddress})");
+                        }
+                        else
+                        {
+                            GUILayout.Label($"Connected to {cameraNetworkManager.DeviceName} ({cameraNetworkManager.ConnectedIPAddress} -> {cameraNetworkManager.DeviceIPAddress})");
+                        }
 
-                    string sharedSpatialCoordinateStatusMessage;
-                    if (!cameraNetworkManager.HasTracking)
-                    {
-                        sharedSpatialCoordinateStatusMessage = trackingLostStatusMessage;
+                        if (GUILayout.Button(new GUIContent("Disconnect", "Disconnects the network connection to the holographic camera."), GUILayout.Width(connectAndDisconnectButtonWidth)))
+                        {
+                            cameraNetworkManager.Disconnect();
+                        }
                     }
-                    else if (cameraNetworkManager.IsTrackingStalled)
-                    {
-                        sharedSpatialCoordinateStatusMessage = trackingStalledStatusMessage;
-                    }
-                    else if (!cameraNetworkManager.IsSharedSpatialCoordinateLocated)
-                    {
-                        sharedSpatialCoordinateStatusMessage = locatingSharedSpatialCoordinate;
-                    }
-                    else
-                    {
-                        sharedSpatialCoordinateStatusMessage = locatedSharedSpatialCoordinateMessage;
-                    }
-
-                    GUILayout.Label($"Shared spatial coordinate status: {sharedSpatialCoordinateStatusMessage}");
-
-                    string calibrationStatusMessage;
-                    if (compositionManager != null && compositionManager.IsCalibrationDataLoaded)
-                    {
-                        calibrationStatusMessage = calibrationLoadedMessage;
-                    }
-                    else
-                    {
-                        calibrationStatusMessage = calibrationNotLoadedMessage;
-                    }
-
-                    GUILayout.Label($"Calibration status: {calibrationStatusMessage}");
-
-                    if (GUILayout.Button(new GUIContent("Disconnect", "Disconnects the network connection to the holographic camera.")))
-                    {
-                        cameraNetworkManager.Disconnect();
-                    }
-
-                    if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
-                    {
-                        cameraNetworkManager.SendLocateSharedSpatialCoordinateCommand();
-                    }
+                    GUILayout.EndHorizontal();
                 }
                 else
                 {
-                    GUILayout.Label("Not connected.");
-
                     GUILayout.BeginHorizontal();
                     {
                         holographicCameraIPAddress = EditorGUILayout.TextField(holographicCameraIPAddress);
@@ -129,6 +98,70 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     }
                     GUILayout.EndHorizontal();
                 }
+
+                GUI.enabled = cameraNetworkManager != null && cameraNetworkManager.IsConnected;
+                string sharedSpatialCoordinateStatusMessage;
+                if (cameraNetworkManager == null || !cameraNetworkManager.IsConnected)
+                {
+                    sharedSpatialCoordinateStatusMessage = notConnectedMessage;
+                }
+                else if (!cameraNetworkManager.HasTracking)
+                {
+                    sharedSpatialCoordinateStatusMessage = trackingLostStatusMessage;
+                }
+                else if (cameraNetworkManager.IsTrackingStalled)
+                {
+                    sharedSpatialCoordinateStatusMessage = trackingStalledStatusMessage;
+                }
+                else if (cameraNetworkManager.IsLocatingSharedSpatialCoordinate)
+                {
+                    sharedSpatialCoordinateStatusMessage = locatingSharedSpatialCoordinate;
+                }
+                else if (!cameraNetworkManager.IsSharedSpatialCoordinateLocated)
+                {
+                    sharedSpatialCoordinateStatusMessage = notLocatedSharedSpatialCoordinate;
+                }
+                else
+                {
+                    sharedSpatialCoordinateStatusMessage = locatedSharedSpatialCoordinateMessage;
+                }
+
+                GUIStyle boldLabelStyle = new GUIStyle(GUI.skin.label);
+                boldLabelStyle.fontStyle = FontStyle.Bold;
+
+                GUILayout.Label("Shared spatial coordinate status", boldLabelStyle);
+                GUILayout.Label(sharedSpatialCoordinateStatusMessage);
+
+                string calibrationStatusMessage;
+                if (compositionManager != null && compositionManager.IsCalibrationDataLoaded)
+                {
+                    calibrationStatusMessage = calibrationLoadedMessage;
+                }
+                else
+                {
+                    calibrationStatusMessage = calibrationNotLoadedMessage;
+                }
+
+                EditorGUILayout.Space();
+                if (showCalibrationStatus)
+                {
+                    GUILayout.Label("Calibration status", boldLabelStyle);
+                    GUILayout.Label(calibrationStatusMessage);
+                }
+                else
+                {
+                    GUILayout.Label(string.Empty, boldLabelStyle);
+                    GUILayout.Label(string.Empty);
+                }
+
+                EditorGUILayout.Space();
+
+                if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
+                {
+                    cameraNetworkManager.SendLocateSharedSpatialCoordinateCommand();
+                }
+
+                GUI.enabled = true;
             }
             EditorGUILayout.EndVertical();
         }
@@ -175,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             }
         }
 
-        protected void ConnectButtonGUI(string targetIpString, HolographicCameraNetworkManager remoteDevice)
+        protected void ConnectButtonGUI(string targetIpString, ILocatableDeviceNetworkManager remoteDevice)
         {
             string tooltip = string.Empty;
             IPAddress targetIp;
@@ -196,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
             GUI.enabled = validAddress && Application.isPlaying && remoteDevice != null;
             string label = remoteDevice != null && remoteDevice.IsConnecting ? "Disconnect" : "Connect";
-            if (GUILayout.Button(new GUIContent(label, tooltip), GUILayout.Width(90)) && remoteDevice != null)
+            if (GUILayout.Button(new GUIContent(label, tooltip), GUILayout.Width(connectAndDisconnectButtonWidth)) && remoteDevice != null)
             {
                 if (remoteDevice.IsConnecting)
                 {

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// This class observes changes and updates content on a user device.
     /// </summary>
-    public class StateSynchronizationBroadcaster : Singleton<StateSynchronizationBroadcaster>
+    public class StateSynchronizationBroadcaster : CommandRegistry<StateSynchronizationBroadcaster>
     {
         /// <summary>
         /// Check to enable debug logging.
@@ -109,10 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             DebugLog($"Broadcaster received connection from {endpoint.Address}.");
             Connected?.Invoke(endpoint);
 
-            foreach (var handler in CommandService.Instance.CommandHandlers)
-            {
-                handler.OnConnected(endpoint);
-            }
+            NotifyConnected(endpoint);
         }
 
         protected void OnDisconnected(SocketEndpoint endpoint)
@@ -120,10 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             DebugLog($"Broadcaster received disconnect from {endpoint.Address}"); ;
             Disconnected?.Invoke(endpoint);
 
-            foreach (var handler in CommandService.Instance.CommandHandlers)
-            {
-                handler.OnDisconnected(endpoint);
-            }
+            NotifyDisconnected(endpoint);
         }
 
         protected void OnReceive(IncomingMessage data)
@@ -141,13 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         }
                         break;
                     default:
-                        if (CommandService.Instance.CommandHandlerDictionary.TryGetValue(command, out var handlers))
-                        {
-                            foreach (var handler in handlers)
-                            {
-                                handler.HandleCommand(data.Endpoint, command, reader);
-                            }
-                        }
+                        NotifyCommand(data.Endpoint, command, reader, data.Size - (int)stream.Position);
                         break;
                 }
             }

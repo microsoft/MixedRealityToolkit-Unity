@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     processIncomingMessages = (command, reader) =>
                     {
                         DebugLog("Passing on incoming message");
-                        if(!TryProcessIncomingMessage(command, reader))
+                        if (!TryProcessIncomingMessage(command, reader))
                         {
                             spatialLocalizer.ProcessIncomingMessage(role, token, command, reader);
                         }
