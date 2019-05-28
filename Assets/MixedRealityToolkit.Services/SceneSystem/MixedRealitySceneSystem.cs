@@ -820,7 +820,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// This logic could live in the service itself, but there may be cases where devs want to change how content is tracked without changing anything else.
         /// Might be worth putting this into a SystemType field in the profile.
         /// </summary>
-        private class SceneContentTracker
+        private sealed class SceneContentTracker
         {
             public SceneContentTracker (MixedRealitySceneSystemProfile profile)
             {
@@ -834,11 +834,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             public SceneInfo[] SortedContentScenes => sortedContentScenes;
             public SceneInfo[] SortedLightingScenes => sortedLightingScenes;
 
-            public bool PrevContentExists { get { return (largestLoadedContentIndex - 1) >= 0; } }
+            public bool PrevContentExists { get { return smalledLoadedContentIndex > 0; } }
 
-            public bool NextContentExists { get { return (largestLoadedContentIndex + 1) < contentSceneNames.Length; } }
+            public bool NextContentExists { get { return largestLoadedContentIndex < contentSceneNames.Length - 1; } }
 
             private int largestLoadedContentIndex;
+            private int smalledLoadedContentIndex;
             // Cached scene info and scene names
             private string[] contentSceneNames;
             private SceneInfo[] sortedContentScenes;
@@ -884,7 +885,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             public bool GetPrevContent(bool wrap, out string contentSceneName)
             {
                 contentSceneName = string.Empty;
-                int prevIndex = largestLoadedContentIndex - 1;
+                int prevIndex = smalledLoadedContentIndex - 1;
                 if (prevIndex < 0)
                 {
                     if (wrap)
@@ -906,13 +907,15 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             public void RefreshLoadedContent()
             {
-                largestLoadedContentIndex = 0;
+                largestLoadedContentIndex = int.MinValue;
+                smalledLoadedContentIndex = int.MaxValue;
                 for (int i = 0; i < contentSceneNames.Length; i++)
                 {
                     Scene scene = SceneManager.GetSceneByName(contentSceneNames[i]);
                     if (scene.isLoaded)
                     {
-                        largestLoadedContentIndex = i;
+                        largestLoadedContentIndex = Mathf.Max(i, largestLoadedContentIndex);
+                        smalledLoadedContentIndex = Mathf.Min(i, smalledLoadedContentIndex);
                     }
                 }
 
@@ -925,7 +928,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// A utility class used to lerp between and apply lighting settings to the active scene.
         /// </summary>
-        private class SceneLightingExecutor
+        private sealed class SceneLightingExecutor
         {
             public void StartTransition(
                 RuntimeLightingSettings targetLightingSettings, 

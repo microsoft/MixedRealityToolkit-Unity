@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         // So only do it once in a while
         private const float lightingUpdateInterval = 5f;
         private const float managerSceneInstanceCheckInterval = 2f;
-        private const int editorApplicationUpdateTickInterval = 5;
+        private const int editorApplicationUpdateTickInterval = 10;
         private float managerSceneInstanceCheckTime;
         private int editorApplicationUpdateTicks;
 
@@ -186,17 +186,17 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             editorApplicationUpdateTicks++;
             if (editorApplicationUpdateTicks > editorApplicationUpdateTickInterval)
             {
-                editorApplicationUpdateTicks = 0;
                 activeSceneDirty = true;
                 heirarchyDirty = true;
+                editorApplicationUpdateTicks = 0;
                 EditorCheckForChanges();
             }
         }
 
         private void EditorApplicationHeirarcyChanged()
         {
-            heirarchyDirty = true;
             activeSceneDirty = true;
+            heirarchyDirty = true;
         }
 
         private void EditorApplicationProjectChanged()
@@ -268,6 +268,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 EditorUpdateManagerScene();
                 EditorUpdateLightingScene(heirarchyDirty);
                 EditorUpdateContentScenes(activeSceneDirty);
+
+                contentTracker.RefreshLoadedContent();
             }
 
             updatingSettingsOnEditorChanged = false;
@@ -275,8 +277,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             buildSettingsDirty = false;
             heirarchyDirty = false;
             activeSceneDirty = false;
-
-            contentTracker.RefreshLoadedContent();
         }
         
         /// <summary>
