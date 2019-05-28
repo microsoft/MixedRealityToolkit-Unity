@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// are active (IsInteractionEnabled == true), excluding the gaze cursor
         /// </summary>
         public int NumFarPointersActive { get; private set; }
-        
+
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
@@ -791,8 +791,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     LayerMask[] prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
 
                     // Perform raycast to determine focused object
-                    hitResult3d.Clear();
-                    QueryScene(pointer.Pointer, prioritizedLayerMasks, hitResult3d);
+                    var raycaster = ((IMixedRealityInputSystem)Service).RaycasterProvider;
+                    QueryScene(pointer.Pointer, raycaster, prioritizedLayerMasks, hitResult3d);
                     PointerHitResult hit = hitResult3d;
 
                     // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
@@ -848,7 +848,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return (hit1.hitObject != null) ? hit1 : hit2;
         }
-        
+
         /// <summary>
         /// Disable inactive pointers to unclutter the way for active ones.
         /// </summary>
@@ -904,7 +904,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="pointerData"></param>
         /// <param name="prioritizedLayerMasks"></param>
-        private static void QueryScene(IMixedRealityPointer pointer, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
+        private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycasterProvider raycaster, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
         {
             float rayStartDistance = 0;
             RaycastHit physicsHit;
@@ -928,7 +928,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 switch (pointer.SceneQueryType)
                 {
                     case SceneQueryType.SimpleRaycast:
-                        if (MixedRealityRaycaster.RaycastSimplePhysicsStep(pointerRays[i], prioritizedLayerMasks, out physicsHit))
+                        if (raycaster.RaycastSimplePhysicsStep(pointerRays[i], prioritizedLayerMasks, out physicsHit))
                         {
                             UpdatePointerRayOnHit(pointerRays, physicsHit, i, rayStartDistance, hit);
                             return;
@@ -938,7 +938,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
                         break;
                     case SceneQueryType.SphereCast:
-                        if (MixedRealityRaycaster.RaycastSpherePhysicsStep(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, out physicsHit))
+                        if (raycaster.RaycastSpherePhysicsStep(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, out physicsHit))
                         {
                             UpdatePointerRayOnHit(pointerRays, physicsHit, i, rayStartDistance, hit);
                             return;

@@ -58,6 +58,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = Registrar.GetService<IMixedRealityFocusProvider>());
 
+        private IMixedRealityRaycasterProvider raycasterProvider = null;
+
+        /// <inheritdoc />
+        public IMixedRealityRaycasterProvider RaycasterProvider => raycasterProvider ?? (raycasterProvider = Registrar.GetService<IMixedRealityRaycasterProvider>());
+
         /// <inheritdoc />
         public IMixedRealityGazeProvider GazeProvider { get; private set; }
 
@@ -873,7 +878,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
 
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
-            
+
             HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
         }
 
