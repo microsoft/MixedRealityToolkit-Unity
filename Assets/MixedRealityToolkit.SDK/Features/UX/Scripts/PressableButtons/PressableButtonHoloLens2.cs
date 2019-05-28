@@ -44,8 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (movingButtonIconText != null)
             {
-                Debug.Assert(initialTransform != null);
-                movingButtonIconText.transform.position = initialTransform.position + WorldSpacePressDirection * currentPushDistance / 2;
+                // Always move relative to startPushDistance
+                movingButtonIconText.transform.position = GetWorldPositionAlongPushDirection((currentPushDistance - startPushDistance) / 2);
             }
         }
     }
