@@ -52,35 +52,35 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <summary>
         /// Start a new spatial localization session, and return a token for that session.
         /// </summary>
-        /// <param name="role">The role of the requesting entity.</param>
+        /// <param name="actAsHost">If true, this localizer will operate under the assumption that it is hosting the spatial coordinate system.</param>
         /// <param name="cancellationToken">The cancellation token to cancel this async operation.</param>
         /// <returns>The token representing this session, should be used for subsequent calls.</returns>
-        internal abstract Task<Guid> InitializeAsync(Role role, CancellationToken cancellationToken);
+        internal abstract Task<Guid> InitializeAsync(bool actAsHost, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deinitializes the session.
         /// </summary>
-        /// <param name="role">The role of the requesting entity.</param>
+        /// <param name="actAsHost">If true, this localizer will operate under the assumption that it is hosting the spatial coordinate system.</param>
         /// <param name="token">The token representing the session.</param>
-        internal abstract void Uninitialize(Role role, Guid token);
+        internal abstract void Uninitialize(bool actAsHost, Guid token);
 
         /// <summary>
         /// Handles incoming message for the session.
         /// </summary>
-        /// <param name="role">The role of the requesting entity.</param>
+        /// <param name="actAsHost">If true, this localizer will operate under the assumption that it is hosting the spatial coordinate system.</param>
         /// <param name="token">The token representing the session.</param>
         /// <param name="command">The command associated with the binary reader.</param>
         /// <param name="r">The binary reader for the message.</param>
-        internal abstract void ProcessIncomingMessage(Role role, Guid token, string command, BinaryReader r);
+        internal abstract void ProcessIncomingMessage(bool actAsHost, Guid token, string command, BinaryReader r);
 
         /// <summary>
         /// Attempts to localize the given session.
         /// </summary>
-        /// <param name="role">The role of the requesting entity.</param>
+        /// <param name="actAsHost">If true, this localizer will operate under the assumption that it is hosting the spatial coordinate system.</param>
         /// <param name="token">The token representing the session.</param>
         /// <param name="writeAndSendMessage">A function that allows the spatialLocalizer to write and send content to other devices.</param>
         /// <param name="cancellationToken">The cancellation token to cancel this async operation.</param>
         /// <returns>The spatial coordinate when this operation is complete.</returns>
-        internal abstract Task<ISpatialCoordinate> LocalizeAsync(Role role, Guid token, Action<Action<BinaryWriter>> writeAndSendMessage, CancellationToken cancellationToken);
+        internal abstract Task<ISpatialCoordinate> LocalizeAsync(bool actAsHost, Guid token, Action<Action<BinaryWriter>> writeAndSendMessage, CancellationToken cancellationToken);
     }
 }
