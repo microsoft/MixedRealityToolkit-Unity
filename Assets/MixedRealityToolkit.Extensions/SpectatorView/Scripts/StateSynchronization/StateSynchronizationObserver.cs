@@ -13,6 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class StateSynchronizationObserver : LocatableDeviceNetworkManager<StateSynchronizationObserver>
     {
+        public const string SyncCommand = "SYNC";
+        public const string CameraCommand = "Camera";
+        public const string PerfCommand = "Perf";
+
         /// <summary>
         /// Check to enable debug logging.
         /// </summary>
@@ -56,6 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 Debug.LogError("Connection manager not specified for Observer.");
             }
+
+            RegisterCommandHandler(SyncCommand, this);
+            RegisterCommandHandler(CameraCommand, this);
+            RegisterCommandHandler(PerfCommand, this);
         }
 
         protected void Update()
@@ -93,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             switch (command)
             {
-                case "Camera":
+                case CameraCommand:
                     {
                         float timeStamp = reader.ReadSingle();
                         hologramSynchronizer.RegisterCameraUpdate(timeStamp);
@@ -101,13 +109,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         transform.rotation = reader.ReadQuaternion();
                     }
                     break;
-                case "SYNC":
+                case SyncCommand:
                     {
                         float timeStamp = reader.ReadSingle();
                         hologramSynchronizer.RegisterFrameData(reader.ReadBytes(remainingDataSize), timeStamp);
                     }
                     break;
-                case "Perf":
+                case PerfCommand:
                     {
                         int featureCount = reader.ReadInt32();
 

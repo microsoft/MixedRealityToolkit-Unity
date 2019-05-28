@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public void WriteHeader(BinaryWriter message)
         {
-            message.Write("SYNC");
+            message.Write(StateSynchronizationObserver.SyncCommand);
             message.Write(Time.time);
         }
 
