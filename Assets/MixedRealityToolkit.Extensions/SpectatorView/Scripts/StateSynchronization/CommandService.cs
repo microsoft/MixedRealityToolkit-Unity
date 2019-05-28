@@ -57,15 +57,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public bool UnregisterCommandHandler(string command, ICommandHandler handler)
         {
-            if (!commandHandlers.ContainsKey(command) ||
-                !commandHandlers[command].Contains(handler) ||
-                !allHandlers.Contains(handler))
+            lock (lockObject)
             {
-                return false;
-            }
+                if (!commandHandlers.ContainsKey(command) ||
+                    !commandHandlers[command].Contains(handler) ||
+                    !allHandlers.Contains(handler))
+                {
+                    return false;
+                }
 
-            lock(lockObject)
-            {
                 commandHandlers[command].Remove(handler);
                 allHandlers.Remove(handler);
                 UpdateCommandHandlerDictionaryCache();

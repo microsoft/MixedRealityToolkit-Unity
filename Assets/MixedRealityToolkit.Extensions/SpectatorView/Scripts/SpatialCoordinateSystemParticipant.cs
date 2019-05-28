@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// The SpectatorView helper class for managing a participant in the spatial coordinate system
     /// </summary>
-    internal class SpatialCoordinateSystemMember : DisposableBase
+    internal class SpatialCoordinateSystemParticipant : DisposableBase
     {
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken cancellationToken;
@@ -32,13 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private GameObject spatialCoordinateGO = null;
 
         /// <summary>
-        /// Instantiates a new <see cref="SpatialCoordinateSystemMember"/>.
+        /// Instantiates a new <see cref="SpatialCoordinateSystemParticipant"/>.
         /// </summary>
         /// <param name="role">The role of the current device (is it a Broadcaster adding a connected observer to it's list).</param>
         /// <param name="socketEndpoint">The endpoint of the other entity.</param>
         /// <param name="createSpatialCoordinateGO">The function that creates a spatial coordinate game object on detection<see cref="GameObject"/>.</param>
         /// <param name="debugLogging">Flag for enabling troubleshooting logging.</param>
-        public SpatialCoordinateSystemMember(Role role, SocketEndpoint socketEndpoint, Func<GameObject> createSpatialCoordinateGO, bool debugLogging, bool showDebugVisuals = false, GameObject debugVisual = null, float debugVisualScale = 1.0f)
+        public SpatialCoordinateSystemParticipant(Role role, SocketEndpoint socketEndpoint, Func<GameObject> createSpatialCoordinateGO, bool debugLogging, bool showDebugVisuals = false, GameObject debugVisual = null, float debugVisualScale = 1.0f)
         {
             cancellationToken = cancellationTokenSource.Token;
 
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (debugLogging)
             {
-                Debug.Log($"SpatialCoordinateSystemMember [{role} - Connection: {socketEndpoint.Address}]: {message}");
+                Debug.Log($"SpatialCoordinateSystemParticipant [{role} - Connection: {socketEndpoint.Address}]: {message}");
             }
         }
 

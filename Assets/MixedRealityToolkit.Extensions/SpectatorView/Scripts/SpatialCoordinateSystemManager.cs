@@ -54,13 +54,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public float debugVisualScale = 1.0f;
 
         readonly string[] supportedCommands = { SpatialLocalizer.SpatialLocalizationMessageHeader };
-        private Dictionary<SocketEndpoint, SpatialCoordinateSystemMember> members = new Dictionary<SocketEndpoint, SpatialCoordinateSystemMember>();
+        private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> members = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
 
         public void OnConnected(SocketEndpoint endpoint)
         {
             if (members.ContainsKey(endpoint))
             {
-                Debug.LogWarning("SpatialCoordinateSystemMember connected that already existed");
+                Debug.LogWarning("SpatialCoordinateSystemParticipant connected that already existed");
                 return;
             }
 
@@ -69,17 +69,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 if (members.Count > 0 &&
                     !members.ContainsKey(endpoint))
                 {
-                    Debug.LogWarning("A second SpatialCoordinateSystemMember connected while the device was running as a spectator. This is an unexpected scenario.");
+                    Debug.LogWarning("A second SpatialCoordinateSystemParticipant connected while the device was running as a spectator. This is an unexpected scenario.");
                     return;
                 }
             }
 
-            DebugLog($"Creating new SpatialCoordinateSystemMember, Role: {spectatorView.Role}, IPAddress: {endpoint.Address}, SceneRoot: {transformedGameObject}, DebugLogging: {debugLogging}");
-            var member = new SpatialCoordinateSystemMember(spectatorView.Role, endpoint, () => transformedGameObject, debugLogging, showDebugVisuals, debugVisual, debugVisualScale);
+            DebugLog($"Creating new SpatialCoordinateSystemParticipant, Role: {spectatorView.Role}, IPAddress: {endpoint.Address}, SceneRoot: {transformedGameObject}, DebugLogging: {debugLogging}");
+            var member = new SpatialCoordinateSystemParticipant(spectatorView.Role, endpoint, () => transformedGameObject, debugLogging, showDebugVisuals, debugVisual, debugVisualScale);
             members[endpoint] = member;
             if (spatialLocalizer != null)
             {
-                DebugLog($"Localizing SpatialCoordinateSystemMember: {endpoint.Address}");
+                DebugLog($"Localizing SpatialCoordinateSystemParticipant: {endpoint.Address}");
                 member.LocalizeAsync(spatialLocalizer).FireAndForget();
             }
             else
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void CleanUpMembers()
         {
-            foreach(var member in members)
+            foreach (var member in members)
             {
                 member.Value.Dispose();
             }
