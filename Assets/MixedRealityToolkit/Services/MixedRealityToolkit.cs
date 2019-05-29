@@ -228,8 +228,17 @@ namespace Microsoft.MixedReality.Toolkit
             if (IsCoreSystem(interfaceType))
             {
                 activeSystems.Remove(interfaceType);
-                // Core services are always removable
                 MixedRealityServiceRegistry.RemoveService<T>(serviceInstance, this);
+
+                // Reset the convenience properties.
+                if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(interfaceType)) { boundarySystem = null; }
+                else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(interfaceType)) { cameraSystem = null; }
+                else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(interfaceType)) { diagnosticsSystem = null; }
+                // Focus provider reference is not managed by the MixedRealityToolkit class.
+                else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(interfaceType)) { inputSystem = null; }
+                else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(interfaceType)) { spatialAwarenessSystem = null; }
+                else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(interfaceType)) { teleportSystem = null; }
+
                 return true;
             }
 
@@ -927,50 +936,43 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void DestroyAllServices()
         {
-            if (!ExecuteOnAllServices(service => service.Destroy())) { return; }
-
+            // Unregister core services (active systems).
             List<Type> serviceTypes = activeSystems.Keys.ToList<Type>();
             foreach (Type type in serviceTypes)
             {
                 if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
                 {
                     UnregisterService<IMixedRealityBoundarySystem>();
-                    boundarySystem = null;
                 }
                 else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(type))
                 {
                     UnregisterService<IMixedRealityCameraSystem>();
-                    cameraSystem = null;
                 }
                 else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type))
                 {
                     UnregisterService<IMixedRealityDiagnosticsSystem>();
-                    diagnosticsSystem = null;
                 }
                 else if (typeof(IMixedRealityFocusProvider).IsAssignableFrom(type))
                 {
                     UnregisterService<IMixedRealityFocusProvider>();
-                    // Focus provider reference is not managed by the MixedRealityToolkit class.
                 }
                 else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(type))
                 {
                     UnregisterService<IMixedRealityInputSystem>();
-                    inputSystem = null;
                 }
                 else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type))
                 {
                     UnregisterService<IMixedRealitySpatialAwarenessSystem>();
-                    spatialAwarenessSystem = null;
                 }
                 else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type))
                 {
                     UnregisterService<IMixedRealityTeleportSystem>();
-                    teleportSystem = null;
                 }
             }
             serviceTypes.Clear();
             activeSystems.Clear();
 
+            // Unregister extension services.
             List<Tuple<Type, IMixedRealityService>> serviceTuples = new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices.ToArray());
             foreach (Tuple<Type, IMixedRealityService> serviceTuple in serviceTuples)
             {
@@ -978,6 +980,9 @@ namespace Microsoft.MixedReality.Toolkit
             }
             serviceTuples.Clear();
             registeredMixedRealityServices.Clear();
+
+            // Destroy the service instances.
+            if (!ExecuteOnAllServices(service => service.Destroy())) { return; }
         }
 
         private bool ExecuteOnAllServices(Action<IMixedRealityService> execute)
