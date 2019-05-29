@@ -536,6 +536,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static MixedRealityToolkit activeInstance;
         private static bool newInstanceBeingInitialized = false;
 
+#if UNITY_EDITOR
         /// <summary>
         /// Returns the Singleton instance of the classes type.
         /// </summary>
@@ -543,25 +544,34 @@ namespace Microsoft.MixedReality.Toolkit
         {
             get
             {
-                if (activeInstance != null)
-                {
-                    return activeInstance;
-                }
-
-                var mrtks = FindObjectsOfType<MixedRealityToolkit>();
-                for (int i = 0; i < mrtks.Length; i++)
-                {
-                    RegisterInstance(mrtks[i]);
-                }
-
+                // It's possible for MRTK to exist in the scene but for activeInstance to be 
+                // null when a custom editor component accesses Instance before the MRTK 
+                // object has clicked on in object hierarchy (see https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4618)
+                //
+                // To avoid returning null in this case, make sure to search the scene for MRTK.
+                // We do this only when in editor to avoid any performance cost at runtime.
                 if (activeInstance == null)
                 {
-                    Debug.LogError("Didn't find / couldn't create an active instance of mixed reality toolkit. You can add one to your scene via 'Mixed Reality Toolkit->Add to Scene and Configure'");
-                }
+                    var mrtks = FindObjectsOfType<MixedRealityToolkit>();
+                    for (int i = 0; i < mrtks.Length; i++)
+                    {
+                        RegisterInstance(mrtks[i]);
+                    }
 
+                    if (activeInstance == null)
+                    {
+                        Debug.LogError("Didn't find / couldn't create an active instance of mixed reality toolkit. You can add one to your scene via 'Mixed Reality Toolkit->Add to Scene and Configure'");
+                    }
+                }
                 return activeInstance;
             }
         }
+#else
+        /// <summary>
+        /// Returns the Singleton instance of the classes type.
+        /// </summary>
+        public static MixedRealityToolkit Instance => activeInstance;
+#endif
 
         private void InitializeInstance()
         {
