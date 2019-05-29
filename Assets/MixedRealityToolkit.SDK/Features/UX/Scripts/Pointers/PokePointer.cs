@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                     {
-                        InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
+                        InputSystem?.RaisePointerDown(this, selectAction, Handedness);
                     }
                     else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                     {
@@ -179,8 +179,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                 {
-                    InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
-                    InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
+                    InputSystem.RaisePointerClicked(this, selectAction, 0, Handedness);
+                    InputSystem?.RaisePointerUp(this, selectAction, Handedness);
                 }
                 else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {

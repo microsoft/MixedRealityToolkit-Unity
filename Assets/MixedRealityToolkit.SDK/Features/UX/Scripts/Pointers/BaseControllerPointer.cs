@@ -4,7 +4,9 @@
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -32,12 +34,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected Transform raycastOrigin = null;
 
         [SerializeField]
-        [Tooltip("The hold action that will enable the raise the input event for this pointer.")]
+        [Tooltip("The action used when determining a hold.")]
         private MixedRealityInputAction activeHoldAction = MixedRealityInputAction.None;
 
         [SerializeField]
-        [Tooltip("The action that will enable the raise the input event for this pointer.")]
-        protected MixedRealityInputAction pointerAction = MixedRealityInputAction.None;
+        [FormerlySerializedAsAttribute("pointerAction")]
+        [Tooltip("The action used when determining select.")]
+        protected MixedRealityInputAction selectAction = MixedRealityInputAction.None;
 
         [SerializeField]
         [Tooltip("Does the interaction require hold?")]
@@ -45,7 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Does the interaction require the action to occur at least once first?")]
-        private bool requiresActionBeforeEnabling = true;
+        [FormerlySerializedAsAttribute("requiresActionBeforeEnabling")]
+        private bool requiresSelectBeforeEnabling = true;
 
         /// <summary>
         /// True if select is pressed right now
@@ -149,9 +153,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected override void OnDisable()
         {
-            if (IsSelectPressed && InputSystem != null)
+            if (InputSystem != null)
             {
-                InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+                foreach (var action in pointerDownActions)
+                {
+                    InputSystem.RaisePointerUp(this, action, Handedness);
+                }
+                pointerDownActions.Clear();
             }
 
             base.OnDisable();
@@ -248,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return true;
                 }
 
-                return HasSelectPressedOnce || !requiresActionBeforeEnabling;
+                return HasSelectPressedOnce || !requiresSelectBeforeEnabling;
             }
         }
 
@@ -325,6 +333,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The radius to use when SceneQueryType is set to Sphere or SphereColliders.")]
         private float sphereCastRadius = 0.1f;
 
+
+        private HashSet<MixedRealityInputAction> pointerDownActions = new HashSet<MixedRealityInputAction>();
+
         /// <inheritdoc />
         public float SphereCastRadius
         {
@@ -344,9 +355,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnPostSceneQuery()
         {
-            if (IsSelectPressed)
+            if (IsInteractionEnabled)
             {
-                InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+                foreach (var action in pointerDownActions)
+                {
+                    InputSystem.RaisePointerDragged(this, action, Handedness);
+                }
             }
         }
 
@@ -417,10 +431,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     IsHoldPressed = false;
                 }
 
-                if (IsSelectPressed)
+                foreach (var action in pointerDownActions)
                 {
-                    InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+                    InputSystem.RaisePointerUp(this, action, Handedness);
                 }
+
+                pointerDownActions.Clear();
 
                 IsSelectPressed = false;
             }
@@ -442,13 +458,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     IsHoldPressed = false;
                 }
 
-                if (eventData.MixedRealityInputAction == pointerAction)
-                {
-                    IsSelectPressed = false;
+                IsSelectPressed = false;
+                Debug.Assert(pointerDownActions.Contains(eventData.MixedRealityInputAction), "Received an input up but no corresponding input down action to remove");
+                pointerDownActions.Remove(eventData.MixedRealityInputAction);
 
-                    InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
-                    InputSystem.RaisePointerUp(this, pointerAction, Handedness);
-                }
+                InputSystem.RaisePointerClicked(this, eventData.MixedRealityInputAction, 0, Handedness);
+                InputSystem.RaisePointerUp(this, eventData.MixedRealityInputAction, Handedness);
             }
         }
 
@@ -464,15 +479,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     IsHoldPressed = true;
                 }
 
-                if (eventData.MixedRealityInputAction == pointerAction)
-                {
-                    IsSelectPressed = true;
-                    HasSelectPressedOnce = true;
+                IsSelectPressed = true;
+                HasSelectPressedOnce = true;
 
-                    if (IsInteractionEnabled)
-                    {
-                        InputSystem.RaisePointerDown(this, pointerAction, Handedness);
-                    }
+                pointerDownActions.Add(eventData.MixedRealityInputAction);
+                if (IsInteractionEnabled)
+                {
+                    InputSystem.RaisePointerDown(this, eventData.MixedRealityInputAction, Handedness);
                 }
             }
         }
