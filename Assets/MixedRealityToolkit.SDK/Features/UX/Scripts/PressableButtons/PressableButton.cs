@@ -21,12 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("The object that is being pushed.")]
-        private GameObject movingButtonVisuals = null;
+        protected GameObject movingButtonVisuals = null;
 
         [SerializeField]
         [Header("Press Settings")]
         [Tooltip("The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.")]
-        private float startPushDistance = 0.0f;
+        protected float startPushDistance = 0.0f;
         public float StartPushDistance { get => startPushDistance; set => startPushDistance = value; }
 
         [SerializeField]
@@ -94,7 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // The maximum distance before the button is reset to its initial position when retracting.
         private const float MaxRetractDistanceBeforeReset = 0.0001f;
 
-        private float currentPushDistance = 0.0f;
+        public float currentPushDistance = 0.0f;
+        public float CurrentPushDistance { get => currentPushDistance; set => currentPushDistance = value; }
 
         private Dictionary<IMixedRealityController, Vector3> touchPoints = new Dictionary<IMixedRealityController, Vector3>();
 
@@ -347,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region private Methods
 
-        private void UpdateMovingVisualsPosition()
+        protected virtual void UpdateMovingVisualsPosition()
         {
             if (movingButtonVisuals != null)
             {
