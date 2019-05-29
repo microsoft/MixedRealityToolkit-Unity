@@ -59,6 +59,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectionManager: {fileID: 1637570033}
   compositionManager: {fileID: 6067065728461685249}
+  holographicCameraDeviceObserver: {fileID: 1579017802430472267}
+  appDeviceObserver: {fileID: 3060919853072160088}
   remotePort: 7502
 --- !u!114 &1579017802430472267
 MonoBehaviour:

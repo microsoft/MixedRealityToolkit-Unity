@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(stream))
             {
-                message.Write(HolographicCameraNetworkManager.CameraCommand);
+                message.Write(HolographicCameraObserver.CameraCommand);
                 message.Write(timestamp);
                 message.Write(cameraPosition);
                 message.Write(cameraRotation);

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
     /// <summary>
     /// Component that connects to the HoloLens application on the holographic camera rig for synchronizing camera poses and receiving calibration data.
     /// </summary>
-    public class HolographicCameraNetworkManager : NetworkManager<HolographicCameraNetworkManager>, ICommandHandler
+    public class HolographicCameraObserver : NetworkManager<HolographicCameraObserver>, ICommandHandler
     {
         public const string CameraCommand = "Camera";
         public const string CalibrationDataCommand = "CalibrationData";
@@ -21,10 +21,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private CompositionManager compositionManager = null;
 
         [SerializeField]
-        [Tooltip("The port that the " + nameof(HolographicCamera.TCPNetworkListener) + " listens for connections on.")]
+        private LocatableDeviceObserver appDeviceObserver = null;
+
+        [SerializeField]
+        [Tooltip("The port that the " + nameof(HolographicCamera.HolographicCameraBroadcaster) + " listens for connections on.")]
         private int remotePort = 7502;
 
         protected override int RemotePort => remotePort;
+
+        private GameObject sharedSpatialCoordinateProxy;
 
         protected override void Awake()
         {
@@ -41,18 +46,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             compositionManager.ResetOnNewCameraConnection();
         }
 
+        private void Update()
+        {
+            if (appDeviceObserver != null && sharedSpatialCoordinateProxy != null)
+            {
+                sharedSpatialCoordinateProxy.transform.position = appDeviceObserver.SharedSpatialCoordinateWorldPosition;
+                sharedSpatialCoordinateProxy.transform.rotation = appDeviceObserver.SharedSpatialCoordinateWorldRotation;
+            }
+        }
+
         public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             switch (command)
             {
                 case CameraCommand:
                     {
-                        ILocatableDevice device = GetComponent<ILocatableDevice>();
-                        if (device != null)
-                        {
-                            device.NotifyTrackingUpdated();
-                        }
-
                         float timestamp = reader.ReadSingle();
                         Vector3 cameraPosition = reader.ReadVector3();
                         Quaternion cameraRotation = reader.ReadQuaternion();
@@ -68,7 +76,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                         CalculatedCameraCalibration calibration;
                         if (CalculatedCameraCalibration.TryDeserialize(calibrationDataPayload, out calibration))
                         {
-                            compositionManager.EnableHolographicCamera(transform, new CalibrationData(calibration.Intrinsics, calibration.Extrinsics));
+                            if (sharedSpatialCoordinateProxy == null)
+                            {
+                                sharedSpatialCoordinateProxy = new GameObject("App HMD Shared Spatial Coordinate");
+                                sharedSpatialCoordinateProxy.transform.SetParent(transform, worldPositionStays: true);
+                                if (appDeviceObserver != null)
+                                {
+                                    sharedSpatialCoordinateProxy.transform.position = appDeviceObserver.SharedSpatialCoordinateWorldPosition;
+                                    sharedSpatialCoordinateProxy.transform.rotation = appDeviceObserver.SharedSpatialCoordinateWorldRotation;
+                                }
+                            }
+                            compositionManager.EnableHolographicCamera(sharedSpatialCoordinateProxy.transform, new CalibrationData(calibration.Intrinsics, calibration.Extrinsics));
                         }
                         else
                         {

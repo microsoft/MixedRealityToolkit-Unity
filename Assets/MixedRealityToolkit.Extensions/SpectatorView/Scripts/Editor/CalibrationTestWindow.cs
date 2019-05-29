@@ -280,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         {
             get
             {
-                HolographicCameraNetworkManager cameraNetworkManager = GetHolographicCameraNetworkManager();
+                HolographicCameraObserver cameraNetworkManager = GetHolographicCameraObserver();
                 return cameraNetworkManager != null && cameraNetworkManager.IsConnected && !IsPlaying;
             }
         }
@@ -476,20 +476,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             ApplyFrame(currentFrameIndex);
 
             CompositionManager compositionManager = GetCompositionManager();
-            HolographicCameraNetworkManager networkManager = GetHolographicCameraNetworkManager();
+            HolographicCameraObserver networkManager = GetHolographicCameraObserver();
 
             previousCalibrationData = compositionManager.CalibrationData;
             compositionManager.EnableHolographicCamera(networkManager.transform, calibrationDataForPlayback);
 
             testCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            testCube.transform.localScale = Vector3.one * LocatableDevice.arUcoMarkerSizeInMeters;
+            testCube.transform.localScale = Vector3.one * LocatableDeviceObserver.arUcoMarkerSizeInMeters;
             testCube.transform.localPosition = new Vector3(0.0f, 0.0f, 0.05f);
         }
 
         private void StopPlayback()
         {
             CompositionManager compositionManager = GetCompositionManager();
-            HolographicCameraNetworkManager networkManager = GetHolographicCameraNetworkManager();
+            HolographicCameraObserver networkManager = GetHolographicCameraObserver();
 
             if (compositionManager != null && compositionManager.TextureManager != null)
             {

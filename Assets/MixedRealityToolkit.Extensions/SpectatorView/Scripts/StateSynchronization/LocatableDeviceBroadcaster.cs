@@ -18,26 +18,25 @@ using Windows.Networking.Connectivity;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.HolographicCamera
 {
-    [RequireComponent(typeof(TCPConnectionManager))]
-    [RequireComponent(typeof(HolographicCameraOriginAnchor))]
-    public class HolographicCameraStatusMonitor : MonoBehaviour
+    public class LocatableDeviceBroadcaster : MonoBehaviour
     {
-#if UNITY_WSA
-        TCPConnectionManager tcpConnectionManager = null;
-        HolographicCameraOriginAnchor originAnchor = null;
+        [SerializeField]
+        private TCPConnectionManager connectionManager = null;
 
+        [SerializeField]
+        private ArUcoMarkerAnchor originAnchor = null;
+
+#if UNITY_WSA
         private byte[] previousStatusMessage = null;
 
         private void Awake()
         {
-            tcpConnectionManager = GetComponent<TCPConnectionManager>();
-            tcpConnectionManager.OnConnected += TcpConnectionManager_OnConnected;
-            originAnchor = GetComponent<HolographicCameraOriginAnchor>();
+            connectionManager.OnConnected += TcpConnectionManager_OnConnected;
         }
 
         private void OnDestroy()
         {
-            tcpConnectionManager.OnConnected -= TcpConnectionManager_OnConnected;
+            connectionManager.OnConnected -= TcpConnectionManager_OnConnected;
         }
 
         private void TcpConnectionManager_OnConnected(SocketEndpoint obj)
@@ -51,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 
         private void Update()
         {
-            if (!tcpConnectionManager.HasConnections)
+            if (!connectionManager.HasConnections)
             {
                 return;
             }
@@ -59,15 +58,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
-                message.Write(LocatableDevice.StatusCommand);
+                message.Write(LocatableDeviceObserver.StatusCommand);
                 message.Write(WorldManager.state == PositionalLocatorState.Active);
                 message.Write(originAnchor.IsAnchorLocated);
                 message.Write(originAnchor.IsDetectingMarker);
+                message.Write(originAnchor.transform.position);
+                message.Write(originAnchor.transform.rotation);
 
                 byte[] newMessage = memoryStream.ToArray();
                 if (previousStatusMessage == null || !newMessage.SequenceEqual<byte>(previousStatusMessage))
                 {
-                    tcpConnectionManager.Broadcast(newMessage);
+                    connectionManager.Broadcast(newMessage);
                     previousStatusMessage = newMessage;
                 }
             }
@@ -78,11 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
-                message.Write(LocatableDevice.DeviceInfoCommand);
+                message.Write(LocatableDeviceObserver.DeviceInfoCommand);
                 message.Write(GetMachineName());
                 message.Write(GetIPAddress());
 
-                tcpConnectionManager.Broadcast(memoryStream.ToArray());
+                connectionManager.Broadcast(memoryStream.ToArray());
             }
         }
 

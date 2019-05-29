@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         protected string holographicCameraIPAddress;
 
         private CompositionManager cachedCompositionManager;
-        private HolographicCameraNetworkManager cachedHolographicCameraNetworkManager;
+        private HolographicCameraObserver cachedHolographicCameraObserver;
 
         protected int renderFrameWidth;
         protected int renderFrameHeight;
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             aspect = ((float)renderFrameWidth) / renderFrameHeight;
         }
 
-        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, ILocatableDevice locatableDevice, bool showCalibrationStatus, ref string ipAddressField)
+        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, LocatableDeviceObserver locatableDevice, bool showCalibrationStatus, ref string ipAddressField)
         {
             CompositionManager compositionManager = GetCompositionManager();
             
@@ -209,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             }
         }
 
-        protected void ConnectButtonGUI(string targetIpString, ILocatableDevice remoteDevice)
+        protected void ConnectButtonGUI(string targetIpString, LocatableDeviceObserver remoteDevice)
         {
             string tooltip = string.Empty;
             IPAddress targetIp;
@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
             if (remoteDevice == null)
             {
-                tooltip = $"{nameof(HolographicCameraNetworkManager)} is missing from the scene.";
+                tooltip = $"{nameof(HolographicCameraObserver)} is missing from the scene.";
             }
             else if (!Application.isPlaying)
             {
@@ -296,22 +296,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             return cachedCompositionManager;
         }
 
-        protected HolographicCameraNetworkManager GetHolographicCameraNetworkManager()
+        protected HolographicCameraObserver GetHolographicCameraObserver()
         {
-            if (cachedHolographicCameraNetworkManager == null)
+            if (cachedHolographicCameraObserver == null)
             {
-                cachedHolographicCameraNetworkManager = FindObjectOfType<HolographicCameraNetworkManager>();
+                cachedHolographicCameraObserver = FindObjectOfType<HolographicCameraObserver>();
             }
 
-            return cachedHolographicCameraNetworkManager;
+            return cachedHolographicCameraObserver;
         }
 
-        protected ILocatableDevice GetHolographicCameraDevice()
+        protected LocatableDeviceObserver GetHolographicCameraDevice()
         {
-            HolographicCameraNetworkManager networkManager = GetHolographicCameraNetworkManager();
-            if (networkManager != null)
+            HolographicCameraObserver observer = GetHolographicCameraObserver();
+            if (observer != null)
             {
-                return networkManager.GetComponent<ILocatableDevice>();
+                return observer.GetComponent<LocatableDeviceObserver>();
             }
             else
             {

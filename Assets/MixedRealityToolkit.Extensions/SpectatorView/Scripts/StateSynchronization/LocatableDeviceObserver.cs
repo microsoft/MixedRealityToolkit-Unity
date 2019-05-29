@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    public class LocatableDevice : MonoBehaviour, ILocatableDevice, ICommandHandler
+    public class LocatableDeviceObserver : MonoBehaviour, ICommandHandler
     {
         private const float trackingStalledReceiveDelay = 1.0f;
 
@@ -22,28 +22,58 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private bool hasTracking;
         private bool isSharedSpatialCoordinateLocated;
         private bool isLocatingSharedSpatialCoordinate;
+        private Vector3 sharedSpatialCoordinateWorldPosition;
+        private Quaternion sharedSpatialCoordinateWorldRotation;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the network manager associated with the device.
+        /// </summary>
         public INetworkManager NetworkManager => networkManager;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the name of the device.
+        /// </summary>
         public string DeviceName => deviceName;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the IP address reported by the device itself.
+        /// </summary>
         public string DeviceIPAddress => deviceIPAddress;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the last-reported tracking status of the device.
+        /// </summary>
         public bool HasTracking => hasTracking;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the last-reported status of whether or not the WorldAnchor used for spatial position sharing is located
+        /// on the holographic camera rig.
+        /// </summary>
         public bool IsSharedSpatialCoordinateLocated => isSharedSpatialCoordinateLocated;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets whether or not the device is actively attempting to locate the shared spatial coordinate.
+        /// </summary>
         public bool IsLocatingSharedSpatialCoordinate => isLocatingSharedSpatialCoordinate;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets whether or not the receipt of new poses from the device has stalled for an unexpectedly-large time.
+        /// </summary>
         public bool IsTrackingStalled => networkManager.IsConnected && (Time.time - lastReceivedPoseTime) > trackingStalledReceiveDelay;
 
+        /// <summary>
+        /// Gets the position of the shared spatial coordinate in the device's world space.
+        /// </summary>
+        public Vector3 SharedSpatialCoordinateWorldPosition => sharedSpatialCoordinateWorldPosition;
+
+        /// <summary>
+        /// Gets the rotation of the shared spatial coordinate in the device's world space.
+        /// </summary>
+        public Quaternion SharedSpatialCoordinateWorldRotation => sharedSpatialCoordinateWorldRotation;
+
+        /// <summary>
+        /// Sends a command to the device to request that the device should locate the shared spatial coordinate.
+        /// </summary>
         public void SendLocateSharedSpatialCoordinateCommand()
         {
             if (networkManager == null || !networkManager.IsConnected)
@@ -67,6 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             networkManager = GetComponent<INetworkManager>();
             networkManager.RegisterCommandHandler(DeviceInfoCommand, this);
             networkManager.RegisterCommandHandler(StatusCommand, this);
+            networkManager.RegisterCommandHandler(StateSynchronizationObserver.CameraCommand, this);
         }
 
         public void OnConnected(SocketEndpoint endpoint)
@@ -93,12 +124,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         hasTracking = reader.ReadBoolean();
                         isSharedSpatialCoordinateLocated = reader.ReadBoolean();
                         isLocatingSharedSpatialCoordinate = reader.ReadBoolean();
+                        sharedSpatialCoordinateWorldPosition = reader.ReadVector3();
+                        sharedSpatialCoordinateWorldRotation = reader.ReadQuaternion();
+                    }
+                    break;
+                case StateSynchronizationObserver.CameraCommand:
+                    {
+                        NotifyTrackingUpdated();
                     }
                     break;
             }
         }
 
-        public void NotifyTrackingUpdated()
+        /// <summary>
+        /// 
+        /// </summary>
+        private void NotifyTrackingUpdated()
         {
             lastReceivedPoseTime = Time.time;
         }

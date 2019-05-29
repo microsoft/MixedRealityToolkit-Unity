@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.W
     /// <summary>
     /// Wrapper around world anchor store to streamline some of the persistence api busy work.
     /// </summary>
-    public class WorldAnchorManager : MonoBehaviour
+    public class WorldAnchorManager : Singleton<WorldAnchorManager>
     {
 #if UNITY_WSA
         /// <summary>

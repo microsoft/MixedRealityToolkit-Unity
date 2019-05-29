@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 using (MemoryStream memoryStream = new MemoryStream())
                 using (BinaryWriter message = new BinaryWriter(memoryStream))
                 {
-                    message.Write("Camera");
+                    message.Write(StateSynchronizationObserver.CameraCommand);
                     Transform camTrans = Camera.main.transform;
                     message.Write(Time.time);
                     message.Write(camTrans.position);
