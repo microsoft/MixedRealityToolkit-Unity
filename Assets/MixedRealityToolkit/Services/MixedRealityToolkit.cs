@@ -550,18 +550,15 @@ namespace Microsoft.MixedReality.Toolkit
                 //
                 // To avoid returning null in this case, make sure to search the scene for MRTK.
                 // We do this only when in editor to avoid any performance cost at runtime.
-                if (activeInstance == null)
+                if (activeInstance != null)
                 {
-                    var mrtks = FindObjectsOfType<MixedRealityToolkit>();
-                    for (int i = 0; i < mrtks.Length; i++)
-                    {
-                        RegisterInstance(mrtks[i]);
-                    }
+                    return activeInstance;
+                }
 
-                    if (activeInstance == null)
-                    {
-                        Debug.LogError("Didn't find / couldn't create an active instance of mixed reality toolkit. You can add one to your scene via 'Mixed Reality Toolkit->Add to Scene and Configure'");
-                    }
+                var mrtks = FindObjectsOfType<MixedRealityToolkit>();
+                for (int i = 0; i < mrtks.Length; i++)
+                {
+                    RegisterInstance(mrtks[i]);
                 }
                 return activeInstance;
             }
