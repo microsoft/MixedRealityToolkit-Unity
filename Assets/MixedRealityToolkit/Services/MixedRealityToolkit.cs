@@ -255,8 +255,6 @@ namespace Microsoft.MixedReality.Toolkit
                 return true;
             }
 
-            Debug.LogError($"Failed to find registry instance of {interfaceType.Name}.{serviceInstance.Name}!");
-
             return false;
         }
 
@@ -976,7 +974,10 @@ namespace Microsoft.MixedReality.Toolkit
             List<Tuple<Type, IMixedRealityService>> serviceTuples = new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices.ToArray());
             foreach (Tuple<Type, IMixedRealityService> serviceTuple in serviceTuples)
             {
-                UnregisterService<IMixedRealityExtensionService>(serviceTuple.Item2 as IMixedRealityExtensionService);
+                if (serviceTuple.Item2 is IMixedRealityExtensionService)
+                {
+                    UnregisterService<IMixedRealityExtensionService>((IMixedRealityExtensionService)serviceTuple.Item2);
+                }
             }
             serviceTuples.Clear();
             registeredMixedRealityServices.Clear();
