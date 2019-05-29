@@ -4299,7 +4299,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1896405902}
-  m_Text: Toggle Status
+  m_Text: Interaction Status
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1

@@ -42,6 +42,10 @@ Note: Make sure there is a unique voice command on each button. The voice recogn
 **Requires Gaze (Only available when the voice command field has a value)**
 The voice command requires the interactable to have focus to listen for the voice command. There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts. Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.
 
+**Public Properties**
+ClickCount - a read only value that tracks how many clicks have occured.
+
+
 ## Profiles and Themes ##
 
 The profile will define how button content will be linked to and manipulated by themes, based on state changes.
