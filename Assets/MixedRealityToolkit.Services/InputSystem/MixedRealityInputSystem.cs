@@ -84,6 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private InputEventData inputEventData;
         private MixedRealityPointerEventData pointerEventData;
 
+        /// <summary>
+        /// Pointer handlers currently registered as global listeners for pointer events.
+        /// </summary> 
+        private HashSet<IMixedRealityPointerHandler> pointerHandlers;
+
         private InputEventData<float> floatInputEventData;
         private InputEventData<Vector2> vector2InputEventData;
         private InputEventData<Vector3> positionInputEventData;
@@ -867,8 +872,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion Focus Events
 
         #region Pointers
-
-        private HashSet<IMixedRealityPointerHandler> pointerHandlers;
 
         /// <inheritdoc />
         public async void RegisterPointerHandler(IMixedRealityPointerHandler handler)
