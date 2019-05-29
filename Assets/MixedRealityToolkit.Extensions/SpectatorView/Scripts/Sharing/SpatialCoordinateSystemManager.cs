@@ -205,9 +205,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private GameObject CreateDebugVisualParent()
         {
             var go = new GameObject();
-            go.transform.parent = null;
             go.transform.position = Vector3.zero;
             go.transform.rotation = Quaternion.identity;
+
+            if (spectatorView.parentOfMainCamera != null)
+            {
+                go.transform.parent = spectatorView.parentOfMainCamera.transform;
+            }
+
             return go;
         }
     }

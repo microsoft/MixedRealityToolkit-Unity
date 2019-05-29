@@ -118,14 +118,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                             SendCoordinateState();
 
-                            spatialCoordinateGO = createSpatialCoordinateGO();
-                            var spatialCoordinateLocalizer = spatialCoordinateGO.AddComponent<SpatialCoordinateLocalizer>();
-                            spatialCoordinateLocalizer.debugLogging = debugLogging;
-                            spatialCoordinateLocalizer.showDebugVisuals = showDebugVisuals;
-                            spatialCoordinateLocalizer.debugVisual = debugVisual;
-                            spatialCoordinateLocalizer.debugVisualScale = debugVisualScale;
-                            spatialCoordinateLocalizer.Coordinate = coordinate;
-                            DebugLog("Spatial coordinate created, coordinate set");
+                            if (showDebugVisuals)
+                            {
+                                spatialCoordinateGO = createSpatialCoordinateGO();
+                                var spatialCoordinateLocalizer = spatialCoordinateGO.AddComponent<SpatialCoordinateLocalizer>();
+                                spatialCoordinateLocalizer.debugLogging = debugLogging;
+                                spatialCoordinateLocalizer.showDebugVisuals = showDebugVisuals;
+                                spatialCoordinateLocalizer.debugVisual = debugVisual;
+                                spatialCoordinateLocalizer.debugVisualScale = debugVisualScale;
+                                spatialCoordinateLocalizer.Coordinate = coordinate;
+                                DebugLog("Spatial coordinate created, coordinate set");
+                            }
                         }
                     }
                 }
