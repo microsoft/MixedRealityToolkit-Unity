@@ -544,17 +544,17 @@ namespace Microsoft.MixedReality.Toolkit
         {
             get
             {
+                if (activeInstance != null)
+                {
+                    return activeInstance;
+                }
+
                 // It's possible for MRTK to exist in the scene but for activeInstance to be 
                 // null when a custom editor component accesses Instance before the MRTK 
                 // object has clicked on in object hierarchy (see https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4618)
                 //
                 // To avoid returning null in this case, make sure to search the scene for MRTK.
                 // We do this only when in editor to avoid any performance cost at runtime.
-                if (activeInstance != null)
-                {
-                    return activeInstance;
-                }
-
                 var mrtks = FindObjectsOfType<MixedRealityToolkit>();
                 for (int i = 0; i < mrtks.Length; i++)
                 {
