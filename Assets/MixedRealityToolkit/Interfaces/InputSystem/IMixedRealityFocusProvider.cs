@@ -8,7 +8,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Delegate type used to handle primary pointer changes
+    /// Delegate type used to handle primary pointer changes. 
+    /// Old and new pointer values can be null to indicate transition from or to no primary pointer, but they won't both be null simultaneously.
     /// </summary>
     public delegate void PrimaryPointerChangedHandler(IMixedRealityPointer oldPointer, IMixedRealityPointer newPointer);
 
@@ -91,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Subscribes to primary pointer changes.
         /// </summary>
         /// <param name="handler">Handler to be called when the primary pointer changes</param>
-        /// <param name="invokeHandlerWithCurrentPointer">Whether to invoke the handler with the current primary pointer 
+        /// <param name="invokeHandlerWithCurrentPointer">When true, the passed in handler will be invoked immediately with the current primary pointer 
         /// before subscribing. This is useful to avoid having to manually poll the current value.</param>
         void SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler handler, bool invokeHandlerWithCurrentPointer);
 

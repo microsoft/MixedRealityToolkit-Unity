@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Called from the focus provider after updating pointers to obtain the new primary pointer.
         /// </summary>
-        ///<returns>The new primary pointer or null if none.</returns>
+        /// <returns>The new primary pointer or null if none.</returns>
         IMixedRealityPointer Update();
     }
 }
