@@ -85,39 +85,51 @@
 <p>Pointers are instanced automatically at runtime when a new controller is detected. You can have more than one pointer attached to a controller; for example, with the default pointer profile, WMR controllers get both a line and a parabolic pointer for normal selection and teleportation respectively. Pointers communicate with each other to decide which one is active. The pointers created for each controller are set up in the <strong>Pointer Profile</strong>, under the <em>Input System Profile</em>.</p>
 <img src="../Images/Input/PointerProfile.png" style="max-width:100%;">
 <p>MRTK provides a set of pointer prefabs in <em>Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers</em>. You can use your own prefabs as long as they contain one of the pointer scripts in <em>Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers</em> or any other script implementing <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html"><code>IMixedRealityPointer</code></a>.</p>
-<h2 id="pointer-events">Pointer Events</h2>
-<p>To receive pointer events, implement one of the following interfaces in your script:</p>
+<h2 id="events">Events</h2>
+<p>These are all the pointer-related events raised by MRTK:</p>
 <table>
 <thead>
 <tr>
-<th>Handler</th>
-<th>Events</th>
+<th>Event</th>
 <th>Description</th>
+<th>Handler</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html"><code>IMixedRealityFocusChangedHandler</code></a></td>
 <td>Before Focus Changed / Focus Changed</td>
 <td>Raised on both the game object losing focus and the one gaining it every time a pointer changes focus.</td>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html"><code>IMixedRealityFocusChangedHandler</code></a></td>
 </tr>
 <tr>
-<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html"><code>IMixedRealityFocusHandler</code></a></td>
 <td>Focus Enter / Exit</td>
 <td>Raised on the game object gaining focus when the first pointer enters it and on the one losing focus when the last pointer leaves it.</td>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html"><code>IMixedRealityFocusHandler</code></a></td>
 </tr>
 <tr>
-<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html"><code>IMixedRealityPointerHandler</code></a></td>
 <td>Pointer Down / Dragged / Up / Clicked</td>
 <td>Raised to report pointer press, drag and release.</td>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html"><code>IMixedRealityPointerHandler</code></a></td>
 </tr>
 <tr>
-<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.html"><code>IMixedRealityTouchHandler</code></a></td>
 <td>Touch Started / Updated / Completed</td>
 <td>Raised by touch-aware pointers like <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html"><strong>PokePointer</strong></a> to report touch activity.</td>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.html"><code>IMixedRealityTouchHandler</code></a></td>
 </tr>
 </tbody>
 </table>
+<p>To handle them you must implement the corresponding interface in your script. Aditionally, if you want your game object to receive the events raised on all game objects instead of just the ones raised on itself and its children, you must register as a global event listener calling <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_Register_"><code>Register</code></a> on the input system.</p>
+<div class="WARNING">
+<h5>Warning</h5>
+<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html"><code>IMixedRealityFocusChangedHandler</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html"><code>IMixedRealityFocusHandler</code></a> are not raised as global events. You can only handle them in the objects they are raised on.</p>
+</div>
+<p>Alternatively, you can derive your handler script from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html"><code>InputSystemGlobalListener</code></a> if you require global registration or from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html"><code>BaseInputHandler</code></a> if you want to choose in the inspector whether to register as global listener.</p>
+<p>For pointer events, i.e. the ones handled by <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html"><code>IMixedRealityPointerHandler</code></a>, we provide further conveniency in the form of <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerHandler.html"><code>PointerHandler</code></a>. This script allows you to handle pointer events directly via Unity Events.</p>
+<img src="../Images/Input/PointerHandler.PNG" style="max-width:100%;">
+<h2 id="pointer-result">Pointer Result</h2>
+<p>The pointer <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_Result"><code>Result</code></a> property contains the current result for the scene query used to determine the object with focus. For a raycast pointer, like the ones created by default for motion controllers, gaze input and hand rays, it will contain the location and normal of the raycast hit.</p>
+<p>The <em>Pointer Result Example</em> in <code>MixedRealityToolkit.Examples\Demos\Input\Scenes\PointerResult</code> shows how to use the pointer Result to spawn an object at the hit location.</p>
+<img src="../Images/Input/PointerResultExample.png" style="max-width:100%;">
 </article>
           </div>
           
