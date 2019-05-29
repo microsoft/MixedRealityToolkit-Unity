@@ -927,11 +927,10 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void DestroyAllServices()
         {
-            // todo: needed?
             if (!ExecuteOnAllServices(service => service.Destroy())) { return; }
 
-            List<Type> activeSystemTypes = activeSystems.Keys.ToList<Type>();
-            foreach (Type type in activeSystemTypes)
+            List<Type> serviceTypes = activeSystems.Keys.ToList<Type>();
+            foreach (Type type in serviceTypes)
             {
                 if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
                 {
@@ -969,12 +968,15 @@ namespace Microsoft.MixedReality.Toolkit
                     teleportSystem = null;
                 }
             }
+            serviceTypes.Clear();
             activeSystems.Clear();
 
-            for (int i = 0; i < registeredMixedRealityServices.Count; i++)
+            List<Tuple<Type, IMixedRealityService>> serviceTuples = new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices.ToArray());
+            foreach (Tuple<Type, IMixedRealityService> serviceTuple in serviceTuples)
             {
-                // todo
+                UnregisterService<IMixedRealityExtensionService>(serviceTuple.Item2 as IMixedRealityExtensionService);
             }
+            serviceTuples.Clear();
             registeredMixedRealityServices.Clear();
         }
 
