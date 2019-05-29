@@ -221,12 +221,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region Pointers
 
         /// <summary>
-        /// Event raised to notify of pointer activity. This can be used as an alternative to implementing 
-        /// <see cref="IMixedRealityPointerHandler"/> and registering as a event system listener.
+        /// Registers a <see cref="IMixedRealityPointerHandler">pointer handler</see> as global listener for pointer events from this Event System.
         /// </summary>
-        event PointerHandler PointerEvent;
-
+        /// <param name="handler">Pointer handler to register.
         void RegisterPointerHandler(IMixedRealityPointerHandler handler);
+
+        /// <summary>
+        /// Unregisters a <see cref="IMixedRealityPointerHandler">pointer handler</see> as global listener for pointer events from this Event System.
+        /// </summary>
+        /// <param name="handler">Pointer handler to unregister.
         void UnregisterPointerHandler(IMixedRealityPointerHandler handler);
 
         #region Pointer Down

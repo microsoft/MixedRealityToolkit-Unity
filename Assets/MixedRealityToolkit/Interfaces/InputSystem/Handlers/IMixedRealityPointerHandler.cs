@@ -34,20 +34,4 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="eventData"></param>
         void OnPointerClicked(MixedRealityPointerEventData eventData);
     }
-
-    /// <summary>
-    /// Type of pointer event. Matches the methods defined in <see cref="IMixedRealityPointerHandler"/>.
-    /// </summary>
-    public enum PointerEventType
-    {
-        Down,
-        Up,
-        Dragged,
-        Clicked
-    }
-
-    /// <summary>
-    /// Delegate type for handling pointer events. Subscribe via <see cref="IMixedRealityInputSystem.PointerEvent"/>.
-    /// </summary>
-    public delegate void PointerHandler(MixedRealityPointerEventData eventData, PointerEventType eventType);
 }
