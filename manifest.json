@@ -1597,6 +1597,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/ControllerInputMappingProfile.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/ControllerInputMappingProfile.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Input/Diagrams.vsdx",
       "output": {
         "resource": {
@@ -1663,10 +1674,43 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/InputActionAssignment.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/InputActionAssignment.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/InputActionHandler.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/InputActionHandler.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Input/InputActions.png",
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Input/InputActions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/InputActionsExample.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/InputActionsExample.PNG"
         }
       },
       "is_incremental": false,
@@ -3639,7 +3683,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputActions.html",
-          "hash": "JTgpPXBzxiTF9zVXYQeMwA=="
+          "hash": "2prPBQFYV6lYHT6ofu4C1g=="
         }
       },
       "is_incremental": false,
@@ -3651,7 +3695,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputEvents.html",
-          "hash": "mc/LPlWYA6WSxEJyzG//2Q=="
+          "hash": "wOhP2OYcWcCWks/gt1TOkQ=="
         }
       },
       "is_incremental": false,
@@ -3675,7 +3719,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Overview.html",
-          "hash": "+r9gTi9P7eg3T9pIzJAAuQ=="
+          "hash": "xaWQBMIj15aHXXUiB+VKyw=="
         }
       },
       "is_incremental": false,
@@ -14910,6 +14954,13 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -14925,13 +14976,6 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
