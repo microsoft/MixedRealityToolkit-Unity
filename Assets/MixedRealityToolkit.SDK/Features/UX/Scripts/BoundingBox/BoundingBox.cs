@@ -708,11 +708,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Destroys and re-creates the rig around the bounding box
         /// </summary>
-        public void UpdateRig()
+        public void CreateRig()
         {
-            CreateRig();
+            DestroyRig();
+            SetMaterials();
+            InitializeDataStructures();
+            SetBoundingBoxCollider();
+            UpdateBounds();
+            AddCorners();
+            AddLinks();
+            AddBoxDisplay();
+            UpdateRigHandles();
+            Flatten();
+            ResetHandleVisibility();
+            rigRoot.gameObject.SetActive(active);
+            UpdateRigVisibilityInInspector();
         }
-
         #endregion
 
         #region MonoBehaviour Methods
@@ -753,22 +764,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Private Methods
 
-        private void CreateRig()
-        {
-            DestroyRig();
-            SetMaterials();
-            InitializeDataStructures();
-            SetBoundingBoxCollider();
-            UpdateBounds();
-            AddCorners();
-            AddLinks();
-            AddBoxDisplay();
-            UpdateRigHandles();
-            Flatten();
-            ResetHandleVisibility();
-            rigRoot.gameObject.SetActive(active);
-            UpdateRigVisibilityInInspector();
-        }
         private void DestroyRig()
         {
             if (boundsOverride == null)
