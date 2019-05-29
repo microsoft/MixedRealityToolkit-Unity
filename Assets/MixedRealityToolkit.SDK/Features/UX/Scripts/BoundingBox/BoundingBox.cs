@@ -705,6 +705,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Destroys and re-creates the rig around the bounding box
+        /// </summary>
+        public void CreateRig()
+        {
+            DestroyRig();
+            SetMaterials();
+            InitializeDataStructures();
+            SetBoundingBoxCollider();
+            UpdateBounds();
+            AddCorners();
+            AddLinks();
+            AddBoxDisplay();
+            UpdateRigHandles();
+            Flatten();
+            ResetHandleVisibility();
+            rigRoot.gameObject.SetActive(active);
+            UpdateRigVisibilityInInspector();
+        }
         #endregion
 
         #region MonoBehaviour Methods
@@ -744,22 +763,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion MonoBehaviour Methods
 
         #region Private Methods
-        private void CreateRig()
-        {
-            DestroyRig();
-            SetMaterials();
-            InitializeDataStructures();
-            SetBoundingBoxCollider();
-            UpdateBounds();
-            AddCorners();
-            AddLinks();
-            AddBoxDisplay();
-            UpdateRigHandles();
-            Flatten();
-            ResetHandleVisibility();
-            rigRoot.gameObject.SetActive(active);
-            UpdateRigVisibilityInInspector();
-        }
 
         private void DestroyRig()
         {
@@ -1563,7 +1566,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateBounds()
         {
-
             if (cachedTargetCollider != null)
             {
                 // Store current rotation then zero out the rotation so that the bounds
@@ -1602,6 +1604,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (rigRoot != null && Target != null)
             {
+                // We move the rigRoot to the scene root to ensure that non-uniform scaling performed
+                // anywhere above the rigRoot does not impact the position of rig corners / edges
+                rigRoot.parent = null;
+
                 rigRoot.rotation = Quaternion.identity;
                 rigRoot.position = Vector3.zero;
 
@@ -1648,6 +1654,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 //move rig into position and rotation
                 rigRoot.position = cachedTargetCollider.bounds.center;
                 rigRoot.rotation = Target.transform.rotation;
+
+                rigRoot.parent = transform;
             }
         }
         private HandleType GetHandleType(Transform handle)
