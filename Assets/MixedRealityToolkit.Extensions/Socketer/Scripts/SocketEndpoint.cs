@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
 {
@@ -93,6 +94,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         /// <param name="data">data to send</param>
         public void Send(byte[] data)
         {
+            if (!IsConnected)
+            {
+                Debug.LogWarning("Attempted to send message to disconnected SocketEndpoint.");
+                return;
+            }
+
             try
             {
                 socketerClient.SendNetworkMessage(data, sourceId);
