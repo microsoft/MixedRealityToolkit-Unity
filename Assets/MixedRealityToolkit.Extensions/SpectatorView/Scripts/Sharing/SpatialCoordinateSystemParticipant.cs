@@ -17,18 +17,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     internal class SpatialCoordinateSystemParticipant : DisposableBase
     {
+        private const string CoordinateStateMessageHeader = "COORDSTATE";
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken cancellationToken;
 
         private readonly bool isHost;
         private readonly SocketEndpoint socketEndpoint;
         private readonly Func<GameObject> createSpatialCoordinateGO;
+
+        private bool validLocalOrigin = false;
+        private Vector3 localOriginPositionInCoordinateSystem = Vector3.zero;
+        private Quaternion localOriginRotationInCoordinateSystem = Quaternion.identity;
+        private bool validRemoteOrigin = false;
+        private Vector3 remoteOriginPositionInCoordinateSystem = Vector3.zero;
+        private Quaternion remoteOriginRotationInCoordinateSystem = Quaternion.identity;
+
         private readonly bool debugLogging;
         private bool showDebugVisuals = false;
         private GameObject debugVisual = null;
         private float debugVisualScale = 1.0f;
 
-        private Action<string, BinaryReader> processIncomingMessages = null;
+        private Action<SocketEndpoint, Action<BinaryWriter>> writeAndSend = null;
+        private Action<BinaryReader> processIncomingMessages = null;
         private GameObject spatialCoordinateGO = null;
 
         /// <summary>
@@ -38,12 +48,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <param name="socketEndpoint">The endpoint of the other entity.</param>
         /// <param name="createSpatialCoordinateGO">The function that creates a spatial coordinate game object on detection<see cref="GameObject"/>.</param>
         /// <param name="debugLogging">Flag for enabling troubleshooting logging.</param>
-        public SpatialCoordinateSystemParticipant(bool actAsHost, SocketEndpoint socketEndpoint, Func<GameObject> createSpatialCoordinateGO, bool debugLogging, bool showDebugVisuals = false, GameObject debugVisual = null, float debugVisualScale = 1.0f)
+        public SpatialCoordinateSystemParticipant(bool actAsHost, SocketEndpoint socketEndpoint, Action<SocketEndpoint, Action<BinaryWriter>> writeAndSend, Func<GameObject> createSpatialCoordinateGO, bool debugLogging, bool showDebugVisuals = false, GameObject debugVisual = null, float debugVisualScale = 1.0f)
         {
             cancellationToken = cancellationTokenSource.Token;
 
-            this.isHost = actAsHost;
+            isHost = actAsHost;
             this.socketEndpoint = socketEndpoint;
+            this.writeAndSend = writeAndSend;
             this.createSpatialCoordinateGO = createSpatialCoordinateGO;
             this.debugLogging = debugLogging;
             this.showDebugVisuals = showDebugVisuals;
@@ -76,10 +87,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 lock (cancellationTokenSource)
                 {
-                    processIncomingMessages = (command, reader) =>
+                    processIncomingMessages = (reader) =>
                     {
                         DebugLog("Passing on incoming message");
-                        if(!TryProcessIncomingMessage(command, reader))
+                        string command = reader.ReadString();
+                        if (!TryProcessIncomingMessage(command, reader))
                         {
                             spatialLocalizer.ProcessIncomingMessage(isHost, token, command, reader);
                         }
@@ -87,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
 
                 DebugLog("Telling LocalizationMechanims to begin localizng");
-                ISpatialCoordinate coordinate = await spatialLocalizer.LocalizeAsync(isHost, token, WriteAndSendMessage, cancellationToken);
+                ISpatialCoordinate coordinate = await spatialLocalizer.LocalizeAsync(isHost, token, LocalizerWriteAndSend, cancellationToken);
 
                 if (coordinate == null)
                 {
@@ -100,14 +112,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     {
                         if (!cancellationToken.IsCancellationRequested)
                         {
-                            spatialCoordinateGO = createSpatialCoordinateGO();
-                            var spatialCoordinateLocalizer = spatialCoordinateGO.AddComponent<SpatialCoordinateLocalizer>();
-                            spatialCoordinateLocalizer.debugLogging = debugLogging;
-                            spatialCoordinateLocalizer.showDebugVisuals = showDebugVisuals;
-                            spatialCoordinateLocalizer.debugVisual = debugVisual;
-                            spatialCoordinateLocalizer.debugVisualScale = debugVisualScale;
-                            spatialCoordinateLocalizer.Coordinate = coordinate;
-                            DebugLog("Spatial coordinate created, coordinate set");
+                            validLocalOrigin = true;
+                            localOriginPositionInCoordinateSystem = coordinate.WorldToCoordinateSpace(Vector3.zero);
+                            localOriginRotationInCoordinateSystem = coordinate.WorldToCoordinateSpace(Quaternion.identity);
+
+                            SendCoordinateState();
+
+                            if (showDebugVisuals)
+                            {
+                                spatialCoordinateGO = createSpatialCoordinateGO();
+                                var spatialCoordinateLocalizer = spatialCoordinateGO.AddComponent<SpatialCoordinateLocalizer>();
+                                spatialCoordinateLocalizer.debugLogging = debugLogging;
+                                spatialCoordinateLocalizer.showDebugVisuals = showDebugVisuals;
+                                spatialCoordinateLocalizer.debugVisual = debugVisual;
+                                spatialCoordinateLocalizer.debugVisualScale = debugVisualScale;
+                                spatialCoordinateLocalizer.Coordinate = coordinate;
+                                DebugLog("Spatial coordinate created, coordinate set");
+                            }
                         }
                     }
                 }
@@ -129,12 +150,54 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// Handles messages received from the network.
         /// </summary>
         /// <param name="reader">The reader to access the contents of the message.</param>
-        public void ReceiveMessage(string command, BinaryReader reader)
+        public void ReceiveMessage(BinaryReader reader)
         {
             lock (cancellationTokenSource)
             {
-                processIncomingMessages?.Invoke(command, reader);
+                processIncomingMessages?.Invoke(reader);
             }
+        }
+
+        public bool TryTransformToHostWorldSpace(Vector3 localWorldPosition, out Vector3 hostWorldPosition)
+        {
+            hostWorldPosition = Vector3.zero;
+            if (!validLocalOrigin || !validRemoteOrigin)
+            {
+                return false;
+            }
+
+            if (isHost)
+            {
+                hostWorldPosition = localWorldPosition;
+            }
+            else
+            {
+                DebugLog($"Local Origin Position: {localOriginPositionInCoordinateSystem.ToString("G4")}, Remote Origin Position: {remoteOriginPositionInCoordinateSystem.ToString("G4")}");
+                hostWorldPosition = localWorldPosition + localOriginPositionInCoordinateSystem - remoteOriginPositionInCoordinateSystem;
+            }
+
+            return true;
+        }
+
+        public bool TryTransformToHostWorldSpace(Quaternion localWorldRotation, out Quaternion hostWorldRotation)
+        {
+            hostWorldRotation = Quaternion.identity;
+            if (!validLocalOrigin || !validRemoteOrigin)
+            {
+                return false;
+            }
+
+            if (isHost)
+            {
+                hostWorldRotation = localWorldRotation;
+            }
+            else
+            {
+                DebugLog($"Local Origin Rotation: {localOriginRotationInCoordinateSystem.ToString("G4")}, Remote Origin Rotation: {remoteOriginRotationInCoordinateSystem.ToString("G4")}");
+                hostWorldRotation = Quaternion.Inverse(remoteOriginRotationInCoordinateSystem) * localOriginRotationInCoordinateSystem * localWorldRotation;
+            }
+
+            return true;
         }
 
         protected override void OnManagedDispose()
@@ -154,21 +217,56 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private bool TryProcessIncomingMessage(string command, BinaryReader reader)
         {
+            if (command == CoordinateStateMessageHeader)
+            {
+                bool isRemoteHost = reader.ReadBoolean();
+                if (isHost == isRemoteHost)
+                {
+                    Debug.LogError("This spatial coordinate system participant is acting as hosts on multiple devices, which is an unexpected scenario");
+                }
+                else
+                {
+                    validRemoteOrigin = reader.ReadBoolean();
+                    remoteOriginPositionInCoordinateSystem = reader.ReadVector3();
+                    remoteOriginRotationInCoordinateSystem = reader.ReadQuaternion();
+                    DebugLog($"Updated remote origin information: Valid: {validRemoteOrigin}, Position: {remoteOriginPositionInCoordinateSystem.ToString("G4")}, Rotation: {remoteOriginRotationInCoordinateSystem.ToString("G4")}");
+                }
+
+                // We return true even if an error occurs so that no other classes attempt to process this message.
+                return true;
+            }
+
             return false;
         }
 
-        private void WriteAndSendMessage(Action<BinaryWriter> callToWrite)
+        private void SendCoordinateState()
         {
-            DebugLog("Sending message to connected client");
-            using (MemoryStream memoryStream = new MemoryStream())
-            using (BinaryWriter writer = new BinaryWriter(memoryStream))
+            if (writeAndSend == null)
             {
-                // Allow the spatialLocalizer to write its own content to the binary writer with this function
-                callToWrite(writer);
-
-                socketEndpoint.Send(memoryStream.ToArray());
-                DebugLog("Sent Message");
+                Debug.LogWarning("Write and send message was not populated for SpatialCoordinateSystemParticipant");
+                return;
             }
+
+            writeAndSend(socketEndpoint, writer =>
+            {
+                DebugLog($"Sending coordinate state: isHost: {isHost}, validLocalOrigin: {validLocalOrigin}, Position: {localOriginPositionInCoordinateSystem.ToString("G4")}, Rotation: {localOriginRotationInCoordinateSystem.ToString("G4")}");
+                writer.Write(CoordinateStateMessageHeader);
+                writer.Write(isHost);
+                writer.Write(validLocalOrigin);
+                writer.Write(localOriginPositionInCoordinateSystem);
+                writer.Write(localOriginRotationInCoordinateSystem);
+            });
+        }
+
+        private void LocalizerWriteAndSend(Action<BinaryWriter> callToWrite)
+        {
+            if (writeAndSend == null)
+            {
+                Debug.LogWarning("Write and send message was not populated for SpatialCoordinateSystemParticipant");
+                return;
+            }
+
+            writeAndSend(socketEndpoint, callToWrite);
         }
     }
 }

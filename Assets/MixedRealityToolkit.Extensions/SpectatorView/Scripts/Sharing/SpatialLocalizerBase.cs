@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     public abstract class SpatialLocalizerBase : SpatialLocalizer
     {
+        public const string CoordinateIdMessageHeader = "COORDID";
         protected ISpatialCoordinateService spatialCoordinateService = null;
         private Task<ISpatialCoordinate> initializeUserCoordinateTask = null;
         private TaskCompletionSource<string> observerCoordinateIdToLookFor = null;
@@ -66,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         internal override void ProcessIncomingMessage(bool actAsHost, Guid token, string command, BinaryReader r)
         {
             DebugLog("Processing incoming message", token);
-            if (command == SpatialLocalizationMessageHeader &&
+            if (command == CoordinateIdMessageHeader &&
                 !actAsHost)
             {
                 string result = r.ReadString();
@@ -89,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 DebugLog($"Sending coordinate id: {coordinateToReturn.Id}", token);
                 writeAndSendMessage(writer =>
                 {
-                    writer.Write(SpatialLocalizationMessageHeader);
+                    writer.Write(CoordinateIdMessageHeader);
                     writer.Write(coordinateToReturn.Id);
                 });
 
