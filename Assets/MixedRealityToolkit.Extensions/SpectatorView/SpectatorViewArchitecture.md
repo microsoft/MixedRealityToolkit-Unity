@@ -20,12 +20,12 @@ SpectatorView
 
 # Spatial Alignment
 
-SpatialCoordinate
+[ISpatialCoordinate](../Sharing/SpatialAlignment/Common/ISpatialCoordinate.cs)
 
 * SpatialAnchorCoordinate
 * MarkerDetectorCoordinateService.SpatialCoordinate
 
-SpatialCoordinateService
+[ISpatialCoordinateService](../Sharing/SpatialAlignment/Common/ISpatialCoordinateService.cs)
 
 * SpatialAnchorCoordinateService
 * MarkerDetectorCoordinateService
