@@ -1,0 +1,19 @@
+{
+	"name": "com.microsoft.mixedreality.toolkit.providers",
+	"displayName": "Mixed Reality Toolkit Providers",
+	"version": "2.0.0",
+	"unity": "2018.3",
+	"description": "Providers for use with Mixed Reality Toolkit",
+	"keywords": [
+		"mrtk",
+		"microsoft",
+		"mixed",
+		"reality",
+		"augmented",
+		"virtual"
+	],
+	"author": "Microsoft Corporation",
+	"dependencies": {
+		"com.microsoft.mixedreality.toolkit": "2.0.0"
+	}
+}
