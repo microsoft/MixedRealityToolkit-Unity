@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private static void MergeDictionaries(Dictionary<int, Marker> dictionary, Dictionary<int, Marker> update)
         {
             HashSet<int> observedMarkers = new HashSet<int>();
-            foreach(var markerUpdate in update)
+            foreach (var markerUpdate in update)
             {
                 dictionary[markerUpdate.Key] = markerUpdate.Value;
                 observedMarkers.Add(markerUpdate.Key);

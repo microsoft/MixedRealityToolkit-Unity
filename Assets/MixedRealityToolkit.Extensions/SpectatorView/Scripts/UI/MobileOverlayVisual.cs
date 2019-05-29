@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
         private void Awake()
         {
             _overlayChildren = new List<IMobileOverlayVisualChild>();
-            foreach(var child in _children)
+            foreach (var child in _children)
             {
                 var overlayChild = child as IMobileOverlayVisualChild;
                 if (overlayChild != null)

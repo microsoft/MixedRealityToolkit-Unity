@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         [Tooltip("Parent of the main camera, spatial coordinate system transforms will be applied to this game object.")]
         [SerializeField]
-        private GameObject parentOfMainCamera = null;
+        public GameObject parentOfMainCamera = null;
 
         private void Awake()
         {
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (stateSynchronizationSceneManager == null ||
                 stateSynchronizationBroadcaster == null ||
                 stateSynchronizationObserver == null ||
-                broadcastedContent == null ||
+                (broadcastedContent == null && Role == Role.User) ||
                 parentOfMainCamera == null)
             {
                 Debug.LogError("StateSynchronization scene isn't configured correctly");
@@ -112,7 +112,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private void RunStateSynchronizationAsObserver()
         {
             // All content in the observer scene should be dynamically setup/created, so we hide scene content here
-            broadcastedContent.gameObject.SetActive(false);
+            if (broadcastedContent != null)
+            {
+                broadcastedContent.gameObject.SetActive(false);
+            }
 
             stateSynchronizationBroadcaster.gameObject.SetActive(false);
             stateSynchronizationObserver.gameObject.SetActive(true);

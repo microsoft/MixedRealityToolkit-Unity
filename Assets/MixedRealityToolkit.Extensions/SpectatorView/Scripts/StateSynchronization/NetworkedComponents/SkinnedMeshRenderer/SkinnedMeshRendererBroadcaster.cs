@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             Transform[] bones = Renderer.bones;
 
             //Make sure we have transforms ready for all our bones
-            foreach(var b in bones)
+            foreach (var b in bones)
             {
                 if (b.GetComponent<TransformBroadcaster>() == null)
                     return false;

@@ -20,6 +20,20 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
 #endif
 
         /// <summary>
+        /// Location of the anchor used for localization.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Rotation of the anchor used for localization.")]
+        private Vector3 anchorPosition = Vector3.zero;
+
+        /// <summary>
+        /// Location of the anchor used for localization.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Rotation of the anchor used for localization.")]
+        private Vector3 anchorRotation = Vector3.zero;
+
+        /// <summary>
         /// Configuration for the Azure Spatial Anchors service.
         /// </summary>
         [SerializeField]
@@ -28,11 +42,14 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
 
         private void Awake()
         {
-#if UNITY_WSA && SPATIALALIGNMENT_ASA
+#if !SPATIALALIGNMENT_ASA
+            Debug.LogError("Attempting to use SpatialAnchorLocalizer but ASA is not enabled for this build");
+#elif UNITY_WSA && SPATIALALIGNMENT_ASA
             spatialCoordinateService = coordinateService = new SpatialAnchorsUWPCoordinateService(configuration);
 #elif UNITY_ANDROID && SPATIALALIGNMENT_ASA
             spatialCoordinateService = coordinateService = new SpatialAnchorsAndroidCoordinateService(configuration);
 #elif UNITY_IOS && SPATIALALIGNMENT_ASA
+            Debug.LogError("SpatialAnchorLocalizer does not yet support iOS");
 #endif
 
             if ((string.IsNullOrWhiteSpace(configuration.AccountId) || string.IsNullOrWhiteSpace(configuration.AccountKey)) && string.IsNullOrWhiteSpace(configuration.AuthenticationToken) && string.IsNullOrWhiteSpace(configuration.AccessToken))
@@ -57,7 +74,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         /// <inheritdoc/>
         protected override async Task<ISpatialCoordinate> GetHostCoordinateAsync(Guid token)
         {
-            return await coordinateService.TryCreateCoordinateAsync(new Vector3(0f, -0.25f, 0.25f), Quaternion.identity, CancellationToken.None);
+            return await coordinateService.TryCreateCoordinateAsync(anchorPosition, Quaternion.Euler(anchorRotation), CancellationToken.None);
         }
 #else
         protected override Task<ISpatialCoordinate> GetHostCoordinateAsync(Guid token)
