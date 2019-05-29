@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 
                 switch (command)
                 {
-                    case HolographicCameraNetworkManager.CreateSharedSpatialCoordinateCommand:
+                    case LocatableDevice.CreateSharedSpatialCoordinateCommand:
                         {
                             float markerDistance = reader.ReadSingle();
 

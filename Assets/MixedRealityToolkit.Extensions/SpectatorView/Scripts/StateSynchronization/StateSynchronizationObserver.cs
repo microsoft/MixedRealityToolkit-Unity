@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// This class observes changes and updates content on a spectator device.
     /// </summary>
-    public class StateSynchronizationObserver : LocatableDeviceNetworkManager<StateSynchronizationObserver>
+    public class StateSynchronizationObserver : NetworkManager<StateSynchronizationObserver>, ICommandHandler
     {
         public const string SyncCommand = "SYNC";
         public const string CameraCommand = "Camera";
@@ -95,10 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             hologramSynchronizer.Reset(endpoint);
         }
 
-        public override void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            base.HandleCommand(endpoint, command, reader, remainingDataSize);
-
             switch (command)
             {
                 case CameraCommand:
@@ -169,6 +167,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                 return stream.ToArray();
             }
+        }
+
+        void ICommandHandler.OnConnected(SocketEndpoint endpoint)
+        {
+        }
+
+        void ICommandHandler.OnDisconnected(SocketEndpoint endpoint)
+        {
         }
     }
 }

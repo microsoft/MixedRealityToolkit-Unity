@@ -8,17 +8,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// Interface to represent the connection status of a device
     /// that supports locating a shared spatial coordinate.
     /// </summary>
-    public interface ILocatableDeviceNetworkManager
+    public interface ILocatableDevice
     {
         /// <summary>
-        /// Gets whether or not a network connection to the device is established.
+        /// Gets the network manager associated with the device.
         /// </summary>
-        bool IsConnected { get; }
-
-        /// <summary>
-        /// Gets whether or not a network connection to the device is pending.
-        /// </summary>
-        bool IsConnecting { get; }
+        INetworkManager NetworkManager { get; }
 
         /// <summary>
         /// Gets the last-reported tracking status of the device.
@@ -51,13 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         string DeviceIPAddress { get; }
 
-        /// <summary>
-        /// Gets the local IP address reported by the socket used to connect to the device.
-        /// </summary>
-        string ConnectedIPAddress { get; }
-
-        void Disconnect();
-        void ConnectTo(string targetIpString);
         void SendLocateSharedSpatialCoordinateCommand();
+
+        void NotifyTrackingUpdated();
     }
 }

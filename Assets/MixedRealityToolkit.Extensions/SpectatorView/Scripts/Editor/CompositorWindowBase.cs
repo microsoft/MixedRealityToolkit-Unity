@@ -46,18 +46,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             aspect = ((float)renderFrameWidth) / renderFrameHeight;
         }
 
-        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, ILocatableDeviceNetworkManager cameraNetworkManager, bool showCalibrationStatus, ref string ipAddressField)
+        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, ILocatableDevice locatableDevice, bool showCalibrationStatus, ref string ipAddressField)
         {
             CompositionManager compositionManager = GetCompositionManager();
             
             EditorGUILayout.BeginVertical("Box");
             {
                 Color titleColor;
-                if (cameraNetworkManager != null &&
-                    cameraNetworkManager.IsConnected &&
-                    cameraNetworkManager.HasTracking &&
-                    cameraNetworkManager.IsSharedSpatialCoordinateLocated &&
-                    !cameraNetworkManager.IsTrackingStalled &&
+                if (locatableDevice != null &&
+                    locatableDevice.NetworkManager != null &&
+                    locatableDevice.NetworkManager.IsConnected &&
+                    locatableDevice.HasTracking &&
+                    locatableDevice.IsSharedSpatialCoordinateLocated &&
+                    !locatableDevice.IsTrackingStalled &&
                     (!showCalibrationStatus || (compositionManager != null &&
                     compositionManager.IsCalibrationDataLoaded)))
                 {
@@ -69,22 +70,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 }
                 RenderTitle(deviceTypeLabel, titleColor);
 
-                if (cameraNetworkManager != null && cameraNetworkManager.IsConnected)
+                if (locatableDevice != null && locatableDevice.NetworkManager != null && locatableDevice.NetworkManager.IsConnected)
                 {
                     GUILayout.BeginHorizontal();
                     {
-                        if (cameraNetworkManager.ConnectedIPAddress == cameraNetworkManager.DeviceIPAddress)
+                        if (locatableDevice.NetworkManager.ConnectedIPAddress == locatableDevice.DeviceIPAddress)
                         {
-                            GUILayout.Label($"Connected to {cameraNetworkManager.DeviceName} ({cameraNetworkManager.DeviceIPAddress})");
+                            GUILayout.Label($"Connected to {locatableDevice.DeviceName} ({locatableDevice.DeviceIPAddress})");
                         }
                         else
                         {
-                            GUILayout.Label($"Connected to {cameraNetworkManager.DeviceName} ({cameraNetworkManager.ConnectedIPAddress} -> {cameraNetworkManager.DeviceIPAddress})");
+                            GUILayout.Label($"Connected to {locatableDevice.DeviceName} ({locatableDevice.NetworkManager.ConnectedIPAddress} -> {locatableDevice.DeviceIPAddress})");
                         }
 
                         if (GUILayout.Button(new GUIContent("Disconnect", "Disconnects the network connection to the holographic camera."), GUILayout.Width(connectAndDisconnectButtonWidth)))
                         {
-                            cameraNetworkManager.Disconnect();
+                            locatableDevice.NetworkManager.Disconnect();
                         }
                     }
                     GUILayout.EndHorizontal();
@@ -94,30 +95,30 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     GUILayout.BeginHorizontal();
                     {
                         ipAddressField = EditorGUILayout.TextField(ipAddressField);
-                        ConnectButtonGUI(ipAddressField, cameraNetworkManager);
+                        ConnectButtonGUI(ipAddressField, locatableDevice);
                     }
                     GUILayout.EndHorizontal();
                 }
 
-                GUI.enabled = cameraNetworkManager != null && cameraNetworkManager.IsConnected;
+                GUI.enabled = locatableDevice != null && locatableDevice.NetworkManager != null && locatableDevice.NetworkManager.IsConnected;
                 string sharedSpatialCoordinateStatusMessage;
-                if (cameraNetworkManager == null || !cameraNetworkManager.IsConnected)
+                if (locatableDevice == null || locatableDevice.NetworkManager == null || !locatableDevice.NetworkManager.IsConnected)
                 {
                     sharedSpatialCoordinateStatusMessage = notConnectedMessage;
                 }
-                else if (!cameraNetworkManager.HasTracking)
+                else if (!locatableDevice.HasTracking)
                 {
                     sharedSpatialCoordinateStatusMessage = trackingLostStatusMessage;
                 }
-                else if (cameraNetworkManager.IsTrackingStalled)
+                else if (locatableDevice.IsTrackingStalled)
                 {
                     sharedSpatialCoordinateStatusMessage = trackingStalledStatusMessage;
                 }
-                else if (cameraNetworkManager.IsLocatingSharedSpatialCoordinate)
+                else if (locatableDevice.IsLocatingSharedSpatialCoordinate)
                 {
                     sharedSpatialCoordinateStatusMessage = locatingSharedSpatialCoordinate;
                 }
-                else if (!cameraNetworkManager.IsSharedSpatialCoordinateLocated)
+                else if (!locatableDevice.IsSharedSpatialCoordinateLocated)
                 {
                     sharedSpatialCoordinateStatusMessage = notLocatedSharedSpatialCoordinate;
                 }
@@ -158,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
                 if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
                 {
-                    cameraNetworkManager.SendLocateSharedSpatialCoordinateCommand();
+                    locatableDevice.SendLocateSharedSpatialCoordinateCommand();
                 }
 
                 GUI.enabled = true;
@@ -208,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             }
         }
 
-        protected void ConnectButtonGUI(string targetIpString, ILocatableDeviceNetworkManager remoteDevice)
+        protected void ConnectButtonGUI(string targetIpString, ILocatableDevice remoteDevice)
         {
             string tooltip = string.Empty;
             IPAddress targetIp;
@@ -228,16 +229,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             }
 
             GUI.enabled = validAddress && Application.isPlaying && remoteDevice != null;
-            string label = remoteDevice != null && remoteDevice.IsConnecting ? "Disconnect" : "Connect";
+            string label = remoteDevice != null && remoteDevice.NetworkManager != null && remoteDevice.NetworkManager.IsConnecting ? "Disconnect" : "Connect";
             if (GUILayout.Button(new GUIContent(label, tooltip), GUILayout.Width(connectAndDisconnectButtonWidth)) && remoteDevice != null)
             {
-                if (remoteDevice.IsConnecting)
+                if (remoteDevice.NetworkManager.IsConnecting)
                 {
-                    remoteDevice.Disconnect();
+                    remoteDevice.NetworkManager.Disconnect();
                 }
                 else
                 {
-                    remoteDevice.ConnectTo(targetIpString);
+                    remoteDevice.NetworkManager.ConnectTo(targetIpString);
                 }
             }
             GUI.enabled = true;
@@ -303,6 +304,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             }
 
             return cachedHolographicCameraNetworkManager;
+        }
+
+        protected ILocatableDevice GetHolographicCameraDevice()
+        {
+            HolographicCameraNetworkManager networkManager = GetHolographicCameraNetworkManager();
+            if (networkManager != null)
+            {
+                return networkManager.GetComponent<ILocatableDevice>();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

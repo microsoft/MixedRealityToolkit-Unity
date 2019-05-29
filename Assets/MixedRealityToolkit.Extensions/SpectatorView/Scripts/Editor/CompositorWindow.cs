@@ -81,8 +81,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         {
             EditorGUILayout.BeginHorizontal();
             {
-                HolographicCameraNetworkConnectionGUI(AppDeviceTypeLabel, StateSynchronizationObserver.Instance, showCalibrationStatus: false, ref appIPAddress);
-                HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, GetHolographicCameraNetworkManager(), showCalibrationStatus: true, ref holographicCameraIPAddress);
+                ILocatableDevice stateSynchronizationDevice = null;
+                if (StateSynchronizationObserver.IsInitialized)
+                {
+                    stateSynchronizationDevice = StateSynchronizationObserver.Instance.GetComponent<ILocatableDevice>();
+                }
+                ILocatableDevice holographicCameraDevice = GetHolographicCameraDevice();
+
+                HolographicCameraNetworkConnectionGUI(AppDeviceTypeLabel, stateSynchronizationDevice, showCalibrationStatus: false, ref appIPAddress);
+                HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, holographicCameraDevice, showCalibrationStatus: true, ref holographicCameraIPAddress);
             }
             EditorGUILayout.EndHorizontal();
         }

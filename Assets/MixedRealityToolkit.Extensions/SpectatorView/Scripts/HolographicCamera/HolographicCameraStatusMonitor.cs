@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
-                message.Write(StateSynchronizationObserver.StatusCommand);
+                message.Write(LocatableDevice.StatusCommand);
                 message.Write(WorldManager.state == PositionalLocatorState.Active);
                 message.Write(originAnchor.IsAnchorLocated);
                 message.Write(originAnchor.IsDetectingMarker);
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
-                message.Write(StateSynchronizationObserver.DeviceInfoCommand);
+                message.Write(LocatableDevice.DeviceInfoCommand);
                 message.Write(GetMachineName());
                 message.Write(GetIPAddress());
 

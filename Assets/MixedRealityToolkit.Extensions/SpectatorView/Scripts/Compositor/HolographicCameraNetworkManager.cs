@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
     /// <summary>
     /// Component that connects to the HoloLens application on the holographic camera rig for synchronizing camera poses and receiving calibration data.
     /// </summary>
-    public class HolographicCameraNetworkManager : LocatableDeviceNetworkManager<HolographicCameraNetworkManager>
+    public class HolographicCameraNetworkManager : NetworkManager<HolographicCameraNetworkManager>, ICommandHandler
     {
         public const string CameraCommand = "Camera";
         public const string CalibrationDataCommand = "CalibrationData";
@@ -41,15 +41,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             compositionManager.ResetOnNewCameraConnection();
         }
 
-        public override void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            base.HandleCommand(endpoint, command, reader, remainingDataSize);
-
             switch (command)
             {
                 case CameraCommand:
                     {
-                        UpdateTrackingStatus();
+                        ILocatableDevice device = GetComponent<ILocatableDevice>();
+                        if (device != null)
+                        {
+                            device.NotifyTrackingUpdated();
+                        }
 
                         float timestamp = reader.ReadSingle();
                         Vector3 cameraPosition = reader.ReadVector3();
@@ -75,6 +77,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                     }
                     break;
             }
+        }
+
+        void ICommandHandler.OnConnected(SocketEndpoint endpoint)
+        {
+        }
+
+        void ICommandHandler.OnDisconnected(SocketEndpoint endpoint)
+        {
         }
     }
 }
