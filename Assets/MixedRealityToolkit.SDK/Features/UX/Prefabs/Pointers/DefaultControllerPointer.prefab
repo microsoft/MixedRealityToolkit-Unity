@@ -444,12 +444,12 @@ MonoBehaviour:
     id: 0
     description: None
     axisConstraint: 0
-  pointerAction:
+  selectAction:
     id: 1
     description: Select
     axisConstraint: 2
   requiresHoldAction: 0
-  requiresActionBeforeEnabling: 0
+  requiresSelectBeforeEnabling: 0
   overrideGlobalPointerExtent: 0
   pointerExtent: 10
   defaultPointerExtent: 5.5
