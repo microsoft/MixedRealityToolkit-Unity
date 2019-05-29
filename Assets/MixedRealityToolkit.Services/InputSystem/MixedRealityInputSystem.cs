@@ -326,7 +326,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Debug.Assert(eventData != null);
             DispatchEventToGlobalListeners(eventData, eventHandler);
-            PointerEvent?.Invoke(eventData, pointerEventType);
+            //PointerEvent?.Invoke(eventData, pointerEventType);
+
+            if (pointerHandlers != null)
+            {
+                foreach (var handler in pointerHandlers)
+                {
+                    eventHandler.Invoke(handler, eventData);
+                }
+            }
 
             if (eventData.used)
             {
@@ -861,6 +869,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public event PointerHandler PointerEvent;
+
+        private HashSet<IMixedRealityPointerHandler> pointerHandlers;
+
+        public void RegisterPointerHandler(IMixedRealityPointerHandler handler)
+        {
+            if (pointerHandlers == null)
+            {
+                pointerHandlers = new HashSet<IMixedRealityPointerHandler>();
+            }
+
+            bool wasAdded = pointerHandlers.Add(handler);
+            Debug.Assert(wasAdded, "Pointer handler already registered", handler as UnityEngine.Object);
+        }
+
+        public void UnregisterPointerHandler(IMixedRealityPointerHandler handler)
+        {
+            Debug.Assert(pointerHandlers != null, "Tried to unregister an unregistered pointer handler", handler as UnityEngine.Object);
+            bool wasRemoved = pointerHandlers.Remove(handler);
+            Debug.Assert(wasRemoved, "Tried to unregister an unregistered pointer handler", handler as UnityEngine.Object);
+        }
 
         #region Pointer Down
 

@@ -226,6 +226,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         event PointerHandler PointerEvent;
 
+        void RegisterPointerHandler(IMixedRealityPointerHandler handler);
+        void UnregisterPointerHandler(IMixedRealityPointerHandler handler);
+
         #region Pointer Down
 
         /// <summary>
