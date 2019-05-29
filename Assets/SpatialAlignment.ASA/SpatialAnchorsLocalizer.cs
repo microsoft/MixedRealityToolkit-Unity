@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         /// </summary>
         [SerializeField]
         [Tooltip("Rotation of the anchor used for localization.")]
-        private Quaternion anchorRotation = Quaternion.identity;
+        private Vector3 anchorRotation = Vector3.zero;
 
         /// <summary>
         /// Configuration for the Azure Spatial Anchors service.
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         /// <inheritdoc/>
         protected override async Task<ISpatialCoordinate> GetHostCoordinateAsync(Guid token)
         {
-            return await coordinateService.TryCreateCoordinateAsync(anchorPosition, anchorRotation, CancellationToken.None);
+            return await coordinateService.TryCreateCoordinateAsync(anchorPosition, Quaternion.Euler(anchorRotation), CancellationToken.None);
         }
 #else
         protected override Task<ISpatialCoordinate> GetHostCoordinateAsync(Guid token)
