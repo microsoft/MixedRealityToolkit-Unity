@@ -1219,7 +1219,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetCornerPositions_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetCornerPositions*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetCornerPositions_Bounds_Transform_Vector3____" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetCornerPositions(Bounds,Transform,Vector3[]@)">GetCornerPositions(Bounds, Transform, ref Vector3[])</h4>
-  <div class="markdown level1 summary"><p>Gets all the corner points of the bounds in world space</p>
+  <div class="markdown level1 summary"><p>Gets all the corner points of the bounds in world space by transforming input bounds using the given transform</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1239,17 +1239,20 @@
       <tr>
         <td><span class="xref">Bounds</span></td>
         <td><span class="parametername">bounds</span></td>
-        <td></td>
+        <td><p>Input bounds, in local space</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Transform</span></td>
         <td><span class="parametername">transform</span></td>
-        <td></td>
+        <td><p>Local to world transform</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Vector3</span>[]</td>
         <td><span class="parametername">positions</span></td>
-        <td></td>
+        <td><p>Output corner positions</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1261,7 +1264,7 @@ corners array.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetCornerPositions_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetCornerPositions*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetCornerPositions_Bounds_Vector3____" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetCornerPositions(Bounds,Vector3[]@)">GetCornerPositions(Bounds, ref Vector3[])</h4>
-  <div class="markdown level1 summary"><p>Gets all the corner points of the bounds in local space</p>
+  <div class="markdown level1 summary"><p>Gets all the corner points of the bounds</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
