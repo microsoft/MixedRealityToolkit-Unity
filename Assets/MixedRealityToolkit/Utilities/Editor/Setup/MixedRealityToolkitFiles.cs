@@ -124,6 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return null;
         }
 
+        private const string MRTK_PACKAGE_ID = "com.microsoft.mixedrealitytoolkit";
+
         /// <summary>
         /// Are any of the MRTK directories available?
         /// </summary>
@@ -140,7 +142,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (AssetDatabase.IsValidFolder($"Packages/{MRTK_PACKAGE_ID}"))
             {
-                mrtkFolders.Add(Path.GetFullPath($"Packages/{MRTK_PACKAGE_ID}"));
+                var module = MixedRealityToolkitModuleType.Core;
+                if (!mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
+                {
+                    modFolders = new HashSet<string>();
+                    mrtkFolders.Add(module, modFolders);
+                }
+                modFolders.Add(Path.GetFullPath($"Packages/{MRTK_PACKAGE_ID}"));
                 searchForFoldersTask = Task.CompletedTask;
             }
             else

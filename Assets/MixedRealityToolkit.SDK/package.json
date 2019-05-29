@@ -1,5 +1,5 @@
 {
-	"name": "com.microsoft.mixedrealitytoolkit.sdk",
+	"name": "com.microsoft.mixedreality.toolkit.sdk",
 	"displayName": "Mixed Reality Toolkit SDK",
 	"version": "2.0.0",
 	"unity": "2018.3",
@@ -14,8 +14,8 @@
 	],
 	"author": "Microsoft Corporation",
 	"dependencies": {
-		"com.microsoft.mixedrealitytoolkit.services": "2.0.0",
-		"com.microsoft.mixedrealitytoolkit": "2.0.0",
+		"com.microsoft.mixedreality.toolkit.services": "2.0.0",
+		"com.microsoft.mixedreality.toolkit": "2.0.0",
 		"com.unity.textmeshpro": "1.3.0"
 	}
 }
