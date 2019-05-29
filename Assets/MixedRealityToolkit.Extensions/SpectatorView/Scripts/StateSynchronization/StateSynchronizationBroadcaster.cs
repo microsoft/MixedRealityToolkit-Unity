@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 string command = reader.ReadString();
                 switch (command)
                 {
-                    case "SYNC":
+                    case StateSynchronizationObserver.SyncCommand:
                         {
                             reader.ReadSingle(); // float time
                             StateSynchronizationSceneManager.Instance.ReceiveMessage(data.Endpoint, reader);

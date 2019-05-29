@@ -15,9 +15,6 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
     {
         private readonly GameObject anchorGO;
 
-        private readonly Quaternion worldToCoordinateRotation;
-        private readonly Quaternion coordinateToWorldRotation;
-
         /// <summary>
         /// The associated <see cref="CloudSpatialAnchor"/>.
         /// </summary>
@@ -37,8 +34,6 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         {
             this.CloudSpatialAnchor = cloudSpatialAnchor;
             this.anchorGO = anchorGO;
-            coordinateToWorldRotation = anchorGO.transform.rotation;
-            worldToCoordinateRotation = Quaternion.Inverse(worldToCoordinateRotation);
         }
 
         /// <inheritdoc/>
@@ -50,7 +45,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         /// <inheritdoc/>
         protected override Quaternion CoordinateToWorldSpace(Quaternion quaternion)
         {
-            return coordinateToWorldRotation * quaternion;
+            return anchorGO.transform.rotation * quaternion;
         }
 
         /// <inheritdoc/>
@@ -62,7 +57,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         /// <inheritdoc/>
         protected override Quaternion WorldToCoordinateSpace(Quaternion quaternion)
         {
-            return worldToCoordinateRotation * quaternion;
+            return Quaternion.Inverse(anchorGO.transform.rotation) * quaternion;
         }
 
         /// <inheritdoc/>
