@@ -175,7 +175,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
         
-        private Vector3 initialPosition;
+        /// <summary>
+        /// Initial offset from moving visuals to button
+        /// </summary>
+        private Vector3 initialOffsetMovingVisuals = Vector3.zero;
+
         /// <summary>
         /// The position from where the button starts to move. 
         /// </summary>
@@ -183,9 +187,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (Application.isPlaying) // we're using a cached position in play mode as the moving visuals will be moved during button interaction
+                if (Application.isPlaying && movingButtonVisuals) // we're using a cached position in play mode as the moving visuals will be moved during button interaction
                 {
-                    return initialPosition;
+                    return PushSpaceSourceTransform.parent.position + initialOffsetMovingVisuals;
                 }
                 else
                 {
@@ -199,8 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            currentPushDistance = startPushDistance;
-            initialPosition = PushSpaceSourceTransform.position;
+            currentPushDistance = startPushDistance;    
         }
 
         private void Start()
@@ -209,12 +212,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 Debug.LogWarning("PressableButton will not work if game object layer is set to 'Ignore Raycast'.");
             }
+
+            initialOffsetMovingVisuals = PushSpaceSourceTransform.localPosition;
         }
 
         void OnDisable()
         {
             // clear touch points in case we get disabled and can't receive the touch end event anymore
             touchPoints.Clear();
+
+            // make sure button doesn't stay in a pressed state in case we disable the button while pressing it
+            currentPushDistance = startPushDistance;
+            UpdateMovingVisualsPosition();
         }
 
         private void Update()
@@ -258,8 +267,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return;
             }
-
-            initialPosition = PushSpaceSourceTransform.position;
 
             if (enforceFrontPush)
             {
