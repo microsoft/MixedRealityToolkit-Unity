@@ -330,10 +330,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (pointerHandlers != null)
             {
+                eventExecutionDepth++;
                 foreach (var handler in pointerHandlers)
                 {
                     eventHandler.Invoke(handler, eventData);
                 }
+                eventExecutionDepth--;
             }
 
             if (eventData.used)
@@ -872,22 +874,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private HashSet<IMixedRealityPointerHandler> pointerHandlers;
 
-        public void RegisterPointerHandler(IMixedRealityPointerHandler handler)
+        public async void RegisterPointerHandler(IMixedRealityPointerHandler handler)
         {
             if (pointerHandlers == null)
             {
                 pointerHandlers = new HashSet<IMixedRealityPointerHandler>();
+            }
+            // We do this check to guard against changes to the pointer handler collection while we're iterating over it.
+            else if (eventExecutionDepth > 0)
+            {
+                await doneExecutingEvents;
             }
 
             bool wasAdded = pointerHandlers.Add(handler);
             Debug.Assert(wasAdded, "Pointer handler already registered", handler as UnityEngine.Object);
         }
 
-        public void UnregisterPointerHandler(IMixedRealityPointerHandler handler)
+        public async void UnregisterPointerHandler(IMixedRealityPointerHandler handler)
         {
-            Debug.Assert(pointerHandlers != null, "Tried to unregister an unregistered pointer handler", handler as UnityEngine.Object);
+            Debug.Assert(pointerHandlers != null, "Tried to unregister a pointer handler that has not been registered before", handler as UnityEngine.Object);
+
+            // We do this check to guard against changes to the pointer handler collection while we're iterating over it.
+            if (eventExecutionDepth > 0)
+            {
+                await doneExecutingEvents;
+            }
+
             bool wasRemoved = pointerHandlers.Remove(handler);
-            Debug.Assert(wasRemoved, "Tried to unregister an unregistered pointer handler", handler as UnityEngine.Object);
+            Debug.Assert(wasRemoved, "Tried to unregister a pointer handler that has not been registered before", handler as UnityEngine.Object);
         }
 
         #region Pointer Down

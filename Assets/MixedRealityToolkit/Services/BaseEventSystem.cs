@@ -15,8 +15,8 @@ namespace Microsoft.MixedReality.Toolkit
     {
         #region IMixedRealityEventSystem Implementation
 
-        private static int eventExecutionDepth = 0;
-        private readonly WaitUntil doneExecutingEvents = new WaitUntil(() => eventExecutionDepth == 0);
+        protected static int eventExecutionDepth = 0;
+        protected readonly WaitUntil doneExecutingEvents = new WaitUntil(() => eventExecutionDepth == 0);
 
         /// <inheritdoc />
         public List<GameObject> EventListeners { get; } = new List<GameObject>();
