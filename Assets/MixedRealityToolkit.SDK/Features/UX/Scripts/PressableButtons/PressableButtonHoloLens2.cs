@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                return MovingButtonIconText;
+                return movingButtonIconText;
             }
             set
             {
