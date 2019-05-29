@@ -644,9 +644,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            bool isGrab = IsGrab(eventData.Pointer, eventData.MixedRealityInputAction);
-
-            if (ShouldListen(eventData.MixedRealityInputAction) || isGrab)
+            bool isGrab = false;
+            if (ShouldListen(eventData, out isGrab))
             {
                 SetPress(false);
                 if (isGrab)
@@ -671,9 +670,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            bool isGrab = IsGrab(eventData.Pointer, eventData.MixedRealityInputAction);
-
-            if (ShouldListen(eventData.MixedRealityInputAction) || isGrab)
+            bool isGrab = false;
+            if (ShouldListen(eventData, out isGrab))
             {
                 SetPress(true);
                 SetGrab(isGrab);
@@ -685,7 +683,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
-            if (!HasGesture && CanInteract() && (ShouldListen(eventData.MixedRealityInputAction) || eventData.MixedRealityInputAction.Description == "None") && (dragStart - eventData.Pointer.Position).magnitude > 0.1f)
+            bool isGrab = false;
+            if (!HasGesture && CanInteract() && (ShouldListen(eventData, out isGrab) || eventData.MixedRealityInputAction.Description == "None") && (dragStart - eventData.Pointer.Position).magnitude > 0.1f)
             {
                 SetGesture(true);
             }
@@ -707,7 +706,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (StateManager != null)
             {
-                if (eventData != null && ShouldListen(eventData.MixedRealityInputAction))
+                bool isGrab = false;
+                if (eventData != null && ShouldListen(eventData, out isGrab))
                 {
                     IncreaseDimensionIndex();
                     SendOnClick(eventData.Pointer);
@@ -862,10 +862,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        protected virtual bool ShouldListen(MixedRealityInputAction action)
+        protected virtual bool ShouldListen(MixedRealityPointerEventData eventData, out bool isGrab)
         {
+            if (eventData.Pointer as IMixedRealityNearPointer != null)
+            {
+                isGrab = true;
+                return true;
+            }
+            else
+            {
+                isGrab = false;
+            }
+
             bool isListening = HasFocus || IsGlobal;
-            return action == InputAction && isListening;
+            return eventData.MixedRealityInputAction == InputAction && isListening;
         }
 
         /// <summary>
@@ -983,7 +993,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (eventData.Command.Keyword == VoiceCommand && (!RequiresFocus || HasFocus) && Enabled)
             {
                 StartGlobalVisual(true);
-                IncreaseDimensionIndex();
                 SendVoiceCommands(VoiceCommand, 0, 1);
                 OnPointerClicked(null);
                 eventData.Use();
@@ -1036,43 +1045,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion VoiceCommands
 
         #region NearInteractionHandlers
-        /// <summary>
-        /// Is the eventData a grab action or near pointer?
-        /// </summary>
-        /// <param name="eventData"></param>
-        /// <returns></returns>
-        protected bool IsGrab(IMixedRealityPointer pointer, MixedRealityInputAction action)
-        {
-            if (pointer as IMixedRealityNearPointer != null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        protected bool IsControllerGrip(IMixedRealityPointer pointer)
-        {
-            bool hasGrip = false;
-
-            // TODO : detect a controll grip press or grip pose action
-            /*
-            if (pointer.Controller != null)
-            {
-                MixedRealityInteractionMapping[] mappings = pointer.Controller.Interactions;
-
-                for (int i = 0; i < mappings.Length; i++)
-                {
-                    if ((mappings[i].AxisCodeX == ControllerMappingLibrary.AXIS_11 || mappings[i].AxisCodeX == ControllerMappingLibrary.AXIS_12) && mappings[i].BoolData || mappings[i].FloatData > 0.5f)
-                    {
-                        hasGrip = true;
-                    }
-                }
-            }
-            */
-
-            return hasGrip;
-        }
 
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
