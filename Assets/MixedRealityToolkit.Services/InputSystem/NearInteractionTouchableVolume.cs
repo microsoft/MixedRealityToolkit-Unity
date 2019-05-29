@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 base.OnInspectorGUI();
 
                 NearInteractionTouchableVolume t = (NearInteractionTouchableVolume)target;
-                Collider c = t.GetComponent<BoxCollider>();
+                Collider c = t.GetComponent<Collider>();
                 if (c == null)
                 {
                     UnityEditor.EditorGUILayout.HelpBox("A collider is required in order to compute the touchable volume.", UnityEditor.MessageType.Warning);

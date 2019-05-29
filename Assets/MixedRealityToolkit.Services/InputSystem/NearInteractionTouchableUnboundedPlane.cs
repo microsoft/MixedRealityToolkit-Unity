@@ -44,9 +44,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Vector3 center = transform.TransformPoint(localPoint);
             Vector3 forward = transform.TransformVector(localNormal).normalized;
-            Vector3 up = Vector3.Cross(Vector3.Cross(forward, Vector3.up), forward).normalized;
-            Vector3 right = Vector3.Cross(up, forward);
 
+            Vector3 cross = Vector3.Cross(forward, Vector3.up);
+
+            Vector3 right = cross == Vector3.zero ? Vector3.right : cross.normalized;
+            Vector3 up = Vector3.Cross(forward, right).normalized;
+            
             Gizmos.DrawRay(center, right + up);
             Gizmos.DrawRay(center, right - up);
             Gizmos.DrawRay(center, -right + up);

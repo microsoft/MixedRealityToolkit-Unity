@@ -160,7 +160,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The type of surface to calculate the touch point on.")]
         private TouchableSurface touchableSurface = TouchableSurface.BoxCollider;
 
-        public Vector3 LocalRight => Vector3.Cross(localUp, localForward);
+        public Vector3 LocalRight
+        {
+            get
+            {
+                Vector3 cross = Vector3.Cross(localUp, localForward);
+                if (cross == Vector3.zero)
+                {
+                    // vectors are collinear return default right
+                    return Vector3.right;
+                }
+                else
+                {
+                    return cross;
+                }
+            }
+        }
 
         public Vector3 Forward => transform.TransformDirection(localForward);
 
