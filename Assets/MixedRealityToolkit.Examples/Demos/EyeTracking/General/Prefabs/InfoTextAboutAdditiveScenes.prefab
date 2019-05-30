@@ -113,7 +113,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: "This scene depends on a base scene. Please load \n<b><color=#00FF0C>EyeTrackingDemo-00-RootScene.scene</color></b>.\nThe
+  m_text: "This scene depends on a base scene. Please load \n<b><color=#00FF0C>EyeTrackingDemo-00-RootScene.unity</color></b>.\nThe
     other Eye Tracking demo scenes will\nbe loaded additively. \n\nFor more information,
     please see:\n<b><u><color=#00FF0C>https://aka.ms/MRTK-EyeTrackingSamples</color></b></u>"
   m_isRightToLeft: 0
@@ -233,7 +233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1420004699088280648}
   m_Layer: 0
-  m_Name: InfoText
+  m_Name: InfoTextAboutAdditiveScenes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
