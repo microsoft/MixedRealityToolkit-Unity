@@ -116,6 +116,17 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             bbox.BoxMaterial = null;
             yield return WaitForSpeechCommand();
 
+            SetStatus("Scale X and update rig");
+            cube.transform.localScale = new Vector3(2, 1, 1);
+            bbox.CreateRig();
+            yield return WaitForSpeechCommand();
+
+            SetStatus("Rotate 20 degrees and update rig");
+            cube.transform.localRotation = Quaternion.Euler(0, 20, 0);
+            bbox.ShowRotationHandleForY = true;
+            bbox.CreateRig();
+            yield return WaitForSpeechCommand();
+
             SetStatus("Wireframe radius 0.1");
             bbox.WireframeEdgeRadius = 0.1f;
             yield return WaitForSpeechCommand();
