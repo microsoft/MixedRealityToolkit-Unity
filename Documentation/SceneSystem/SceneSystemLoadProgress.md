@@ -6,7 +6,7 @@ When content is being loaded or unloaded, the `SceneOperationInProgress` propert
 
 The `SceneOperationProgress` value is the average of all current async scene operations. At the start of a content load, `SceneOperationProgress` will be zero. Once fully completed, `SceneOperationProgress` will be set to 1 and will remain at 1 until the next operation takes place. Note that only content scene operations affect these properties.
 
-Note that these properties reflect the state of an *entire operation* from start to finish, even if that operation includes multiple steps:
+These properties reflect the state of an *entire operation* from start to finish, even if that operation includes multiple steps:
 ```
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
@@ -75,11 +75,11 @@ The Scene System provides several actions to let you know when scenes are being 
 
 If a load or unload operation involves multiple scenes, the relevant actions will be invoked once per scene name.
 
-Note that these actions are not invoked as individual scenes are loaded or unloaded - rather they are invoked when the load or unload operation is *fully completed.* For this reason it's recommended that you use *OnWillUnload* to detect content that *will* be destroyed rather than *OnUnloaded* to detect destroyed content after the fact.
+These actions are not invoked as individual scenes are loaded or unloaded - rather they are invoked when the load or unload operation is *fully completed.* For this reason it's recommended that you use *OnWillUnload* actions to detect content that *will* be destroyed, as opposed to using *OnUnloaded* actions to detect destroyed content after the fact.
 
-On the flip side, because *OnLoaded* actions are only invoked when all scenes are activated and fully loaded, using *OnLoaded* events to detect and use new content is guaranteed to be safe.
+On the flip side, because *OnLoaded* actions are only invoked when all scenes are activated and fully loaded, using *OnLoaded* actions to detect and use new content is guaranteed to be safe.
 
-Action | When it's called | Content Scenes | Lighting Scenes | Manager Scenes
+Action | When it's invoked | Content Scenes | Lighting Scenes | Manager Scenes
 --- | --- | --- | --- | --- | ---
 `OnWillLoadContent` | Just prior to a content scene load | • | |  
 `OnContentLoaded` | After all content scenes in a load operation have been fully loaded and activated | • | |  
@@ -95,7 +95,7 @@ Action | When it's called | Content Scenes | Lighting Scenes | Manager Scenes
 `OnSceneUnloaded` | After a scene is fully unloaded |  • | • | •
 
 ### Examples
-Another progress dialog example using actions instead of an update loop:
+Another progress dialog example using actions and a coroutine instead of Update:
 ```
 public class ProgressDialog : MonoBehavior
 {
@@ -134,6 +134,7 @@ public class ProgressDialog : MonoBehavior
         HideProgressIndicator();
         displayingProgress = false;
     }
+    
     ...
 }
 ```

@@ -6,9 +6,7 @@ IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<I
 
 sceneSystem.SetLightingScene("MorningLighting");
 ```
-
-
-## Lighting Scene Transitions
+## Lighting Setting Transitions
 `transitionType` controls the style of the transition to new lighting scene.
 ```
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
@@ -31,17 +29,3 @@ Setting | Smooth FadeToBlack Transition | Smooth CrossFade Transition
 Skybox | No | No
 Custom Reflections | No | No
 Sun light realtime shadows | Yes | No
-
-## Cached Lighing Settings
-Your profile stores cached copies of the lighting settings kept in your lighting scenes. If those settings change in your lighting scenes, you will need to update your cache to ensure lighting appears as expected in play mode. Your profile will display a warning when it suspects your cached settings are out of date. Clicking `Update Cached Lighting Settings` will load each of your lighting scenes, extracts their settings, then stores them in the profile.
-
-![](../Images/SceneSystem/MRTK_SceneSystemCachedLightingSettings.png)
-
-## Editor Behavior
-One benefit of using lighting scenes is knowing your content is lit correctly while editing. To this end, the Scene Service will keep a lighting scene loaded at all times, and will copy that scene's lighting settings to the current active scene.\*
-
-You can change which lighting scene is loaded by opening the Scene System's [service inspector.](../MixedRealityConfigurationGuide.md#inspectors) In edit mode you can instantaneously transition between lighting scenes. In play mode, you can preview transitions.
-
-![](../Images/SceneSystem/MRTK_SceneSystemServiceInspector.png)
-
-\**Note: Typically the active scene determines your lighting settings in editor. However we choose not to use this feature to enforce lighting settings, because the active scene is also where newly created objects are placed by default, and lighting scenes are only permitted to contain lighting components. Instead, the current lighting scene's settings are automatically copied to the active scene's settings instead. Keep in mind that this will result in your content scene's lighting settings being over-written.*
