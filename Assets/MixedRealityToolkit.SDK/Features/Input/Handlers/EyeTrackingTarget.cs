@@ -138,11 +138,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 else
                 {
                     LookedAtTarget = null;
+                    LookedAtEyeTarget = null;
                 }
             }
             else if ((DateTime.UtcNow - InputSystem.EyeGazeProvider.Timestamp).TotalMilliseconds > EyeTrackingTimeoutInMilliseconds)
             {
                 LookedAtTarget = null;
+                LookedAtEyeTarget = null;
                 IsLookedAt = false;
             }
             
