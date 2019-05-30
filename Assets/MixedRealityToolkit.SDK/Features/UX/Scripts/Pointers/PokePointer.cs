@@ -101,13 +101,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // we need to to so using the previous touchable in TryRaisePokeUp().
             closestProximityTouchable = newClosestTouchable;
 
-            IsActive = IsNearObject;
-            visuals.SetActive(IsNearObject);
+            visuals.SetActive(IsActive);
         }
 
         public override void OnPostSceneQuery()
         {
             base.OnPostSceneQuery();
+
+            if (!IsActive)
+            {
+                return;
+            }
 
             if (Result?.CurrentPointerTarget != null)
             {
