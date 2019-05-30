@@ -129,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected List<IInteractableHandler> handlers = new List<IInteractableHandler>();
         protected Coroutine globalTimer;
         protected float clickTime = 0.3f;
+        protected Coroutine inputTimer;
 
         // reference to the pointer action that started an interaction
         protected MixedRealityInputAction pointerInputAction;
@@ -650,10 +651,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SetPress(false);
                 if (isGrab)
                 {
+                    // what if we have two hands grabbing?
                     SetGrab(false);
                 }
 
                 SetGesture(false);
+
                 eventData.Use();
             }
         }
@@ -699,7 +702,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             // check to see if is global or focus - or - if is global, pointer event does not fire twice  - or - input event is not taking these actions already
-            if (!CanInteract() || IsGlobal)
+            if (!CanInteract() || (IsGlobal && inputTimer != null))
             {
                 return;
             }
@@ -712,6 +715,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     IncreaseDimensionIndex();
                     SendOnClick(eventData.Pointer);
                     SetVisited(true);
+                    StartInputTimer(false);
+                    print("click 1");
                     eventData.Use();
                 }
                 else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
@@ -719,17 +724,41 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     IncreaseDimensionIndex();
                     StartGlobalVisual(false);
                     SendOnClick(null);
+                    StartInputTimer(false);
                     SetVisited(true);
-
+                    print("click 1");
                 }
                 else if (eventData == null && HasPhysicalTouch) // handle touch interactions
                 {
                     IncreaseDimensionIndex();
                     StartGlobalVisual(false);
                     SendOnClick(null);
+                    StartInputTimer(false);
                     SetVisited(true);
+                    print("click 1");
 
                 }
+            }
+        }
+
+        /// <summary>
+        /// Starts a timer to check if input is in progress
+        ///  - Make sure global pointer events are not double firing
+        ///  - Make sure Global Input events are not double firing
+        ///  - Make sure pointer events are not duplicating an input event
+        /// </summary>
+        /// <param name="isInput"></param>
+        protected void StartInputTimer(bool isInput = false)
+        {
+            if (IsGlobal || isInput)
+            {
+                if (inputTimer != null)
+                {
+                    StopCoroutine(inputTimer);
+                    inputTimer = null;
+                }
+
+                inputTimer = StartCoroutine(InputDownTimer(clickTime));
             }
         }
 
@@ -978,7 +1007,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             globalTimer = null;
         }
-        
+
+        /// <summary>
+        /// A timer for the MixedRealityInputHandlers, clicks should occur within a certain time.
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected IEnumerator InputDownTimer(float time)
+        {
+            yield return new WaitForSeconds(time);
+            inputTimer = null;
+        }
+
         #endregion InteractableUtilities
 
         #region VoiceCommands
