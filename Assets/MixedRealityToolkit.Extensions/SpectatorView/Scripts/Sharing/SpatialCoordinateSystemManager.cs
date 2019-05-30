@@ -7,8 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    public class SpatialCoordinateSystemManager : Singleton<SpatialCoordinateSystemManager>,
-        ICommandHandler
+    public class SpatialCoordinateSystemManager : Singleton<SpatialCoordinateSystemManager>
     {
         /// <summary>
         /// SpectatorView MonoBehaviour running on the device.
@@ -161,11 +160,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 if (StateSynchronizationObserver.IsInitialized)
                 {
-                    StateSynchronizationObserver.Instance.RegisterCommandHandler(command, this);
+                    StateSynchronizationObserver.Instance.Connected += OnConnected;
+                    StateSynchronizationObserver.Instance.Disconnected += OnDisconnected;
+                    StateSynchronizationObserver.Instance.RegisterCommandHandler(command, HandleCommand);
                 }
                 if (StateSynchronizationBroadcaster.IsInitialized)
                 {
-                    StateSynchronizationBroadcaster.Instance.RegisterCommandHandler(command, this);
+                    StateSynchronizationBroadcaster.Instance.Connected += OnConnected;
+                    StateSynchronizationBroadcaster.Instance.Disconnected += OnDisconnected;
+                    StateSynchronizationBroadcaster.Instance.RegisterCommandHandler(command, HandleCommand);
                 }
             }
         }
@@ -177,11 +180,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 if (StateSynchronizationObserver.IsInitialized)
                 {
-                    StateSynchronizationObserver.Instance.UnregisterCommandHandler(command, this);
+                    StateSynchronizationObserver.Instance.Connected -= OnConnected;
+                    StateSynchronizationObserver.Instance.Disconnected -= OnDisconnected;
+                    StateSynchronizationObserver.Instance.UnregisterCommandHandler(command, HandleCommand);
                 }
                 if (StateSynchronizationBroadcaster.IsInitialized)
                 {
-                    StateSynchronizationBroadcaster.Instance.UnregisterCommandHandler(command, this);
+                    StateSynchronizationBroadcaster.Instance.Connected -= OnConnected;
+                    StateSynchronizationBroadcaster.Instance.Disconnected -= OnDisconnected;
+                    StateSynchronizationBroadcaster.Instance.UnregisterCommandHandler(command, HandleCommand);
                 }
             }
         }

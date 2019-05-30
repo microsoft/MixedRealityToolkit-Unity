@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    public class LocatableDeviceObserver : MonoBehaviour, ICommandHandler
+    public class LocatableDeviceObserver : MonoBehaviour
     {
         private const float trackingStalledReceiveDelay = 1.0f;
 
@@ -95,51 +95,44 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private void Awake()
         {
             networkManager = GetComponent<INetworkManager>();
-            networkManager.RegisterCommandHandler(DeviceInfoCommand, this);
-            networkManager.RegisterCommandHandler(StatusCommand, this);
-            networkManager.RegisterCommandHandler(StateSynchronizationObserver.CameraCommand, this);
+            networkManager.Connected += OnConnected;
+            networkManager.RegisterCommandHandler(DeviceInfoCommand, HandleDeviceInfoCommand);
+            networkManager.RegisterCommandHandler(StatusCommand, HandleStatusCommand);
+            networkManager.RegisterCommandHandler(StateSynchronizationObserver.CameraCommand, HandleCameraCommand);
         }
 
-        public void OnConnected(SocketEndpoint endpoint)
+        private void OnDestroy()
+        {
+            if (networkManager != null)
+            {
+                networkManager.Connected -= OnConnected;
+                networkManager.UnregisterCommandHandler(DeviceInfoCommand, HandleDeviceInfoCommand);
+                networkManager.UnregisterCommandHandler(StatusCommand, HandleStatusCommand);
+                networkManager.UnregisterCommandHandler(StateSynchronizationObserver.CameraCommand, HandleCameraCommand);
+            }
+        }
+
+        private void OnConnected(SocketEndpoint endpoint)
         {
             lastReceivedPoseTime = Time.time;
         }
 
-        public void OnDisconnected(SocketEndpoint endpoint)
+        private void HandleDeviceInfoCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
+            deviceName = reader.ReadString();
+            deviceIPAddress = reader.ReadString();
         }
 
-        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleStatusCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            switch (command)
-            {
-                case DeviceInfoCommand:
-                    {
-                        deviceName = reader.ReadString();
-                        deviceIPAddress = reader.ReadString();
-                    }
-                    break;
-                case StatusCommand:
-                    {
-                        hasTracking = reader.ReadBoolean();
-                        isSharedSpatialCoordinateLocated = reader.ReadBoolean();
-                        isLocatingSharedSpatialCoordinate = reader.ReadBoolean();
-                        sharedSpatialCoordinateWorldPosition = reader.ReadVector3();
-                        sharedSpatialCoordinateWorldRotation = reader.ReadQuaternion();
-                    }
-                    break;
-                case StateSynchronizationObserver.CameraCommand:
-                    {
-                        NotifyTrackingUpdated();
-                    }
-                    break;
-            }
+            hasTracking = reader.ReadBoolean();
+            isSharedSpatialCoordinateLocated = reader.ReadBoolean();
+            isLocatingSharedSpatialCoordinate = reader.ReadBoolean();
+            sharedSpatialCoordinateWorldPosition = reader.ReadVector3();
+            sharedSpatialCoordinateWorldRotation = reader.ReadQuaternion();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void NotifyTrackingUpdated()
+        private void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             lastReceivedPoseTime = Time.time;
         }

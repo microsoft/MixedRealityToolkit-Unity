@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
     /// <summary>
     /// Component that connects to the HoloLens application on the holographic camera rig for synchronizing camera poses and receiving calibration data.
     /// </summary>
-    public class HolographicCameraObserver : NetworkManager<HolographicCameraObserver>, ICommandHandler
+    public class HolographicCameraObserver : NetworkManager<HolographicCameraObserver>
     {
         public const string CameraCommand = "Camera";
         public const string CalibrationDataCommand = "CalibrationData";
@@ -35,8 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         {
             base.Awake();
 
-            RegisterCommandHandler(CameraCommand, this);
-            RegisterCommandHandler(CalibrationDataCommand, this);
+            RegisterCommandHandler(CameraCommand, HandleCameraCommand);
+            RegisterCommandHandler(CalibrationDataCommand, HandleCalibrationDataCommand);
         }
 
         protected override void OnConnected(SocketEndpoint endpoint)
@@ -55,54 +55,39 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             }
         }
 
-        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            switch (command)
+            float timestamp = reader.ReadSingle();
+            Vector3 cameraPosition = reader.ReadVector3();
+            Quaternion cameraRotation = reader.ReadQuaternion();
+
+            compositionManager.AddCameraPose(cameraPosition, cameraRotation, timestamp);
+        }
+
+        public void HandleCalibrationDataCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            int calibrationDataPayloadLength = reader.ReadInt32();
+            byte[] calibrationDataPayload = reader.ReadBytes(calibrationDataPayloadLength);
+
+            CalculatedCameraCalibration calibration;
+            if (CalculatedCameraCalibration.TryDeserialize(calibrationDataPayload, out calibration))
             {
-                case CameraCommand:
+                if (sharedSpatialCoordinateProxy == null)
+                {
+                    sharedSpatialCoordinateProxy = new GameObject("App HMD Shared Spatial Coordinate");
+                    sharedSpatialCoordinateProxy.transform.SetParent(transform, worldPositionStays: true);
+                    if (appDeviceObserver != null)
                     {
-                        float timestamp = reader.ReadSingle();
-                        Vector3 cameraPosition = reader.ReadVector3();
-                        Quaternion cameraRotation = reader.ReadQuaternion();
-
-                        compositionManager.AddCameraPose(cameraPosition, cameraRotation, timestamp);
+                        sharedSpatialCoordinateProxy.transform.position = appDeviceObserver.SharedSpatialCoordinateWorldPosition;
+                        sharedSpatialCoordinateProxy.transform.rotation = appDeviceObserver.SharedSpatialCoordinateWorldRotation;
                     }
-                    break;
-                case CalibrationDataCommand:
-                    {
-                        int calibrationDataPayloadLength = reader.ReadInt32();
-                        byte[] calibrationDataPayload = reader.ReadBytes(calibrationDataPayloadLength);
-
-                        CalculatedCameraCalibration calibration;
-                        if (CalculatedCameraCalibration.TryDeserialize(calibrationDataPayload, out calibration))
-                        {
-                            if (sharedSpatialCoordinateProxy == null)
-                            {
-                                sharedSpatialCoordinateProxy = new GameObject("App HMD Shared Spatial Coordinate");
-                                sharedSpatialCoordinateProxy.transform.SetParent(transform, worldPositionStays: true);
-                                if (appDeviceObserver != null)
-                                {
-                                    sharedSpatialCoordinateProxy.transform.position = appDeviceObserver.SharedSpatialCoordinateWorldPosition;
-                                    sharedSpatialCoordinateProxy.transform.rotation = appDeviceObserver.SharedSpatialCoordinateWorldRotation;
-                                }
-                            }
-                            compositionManager.EnableHolographicCamera(sharedSpatialCoordinateProxy.transform, new CalibrationData(calibration.Intrinsics, calibration.Extrinsics));
-                        }
-                        else
-                        {
-                            Debug.LogError("Received a CalibrationData packet from the HoloLens that could not be understood.");
-                        }
-                    }
-                    break;
+                }
+                compositionManager.EnableHolographicCamera(sharedSpatialCoordinateProxy.transform, new CalibrationData(calibration.Intrinsics, calibration.Extrinsics));
             }
-        }
-
-        void ICommandHandler.OnConnected(SocketEndpoint endpoint)
-        {
-        }
-
-        void ICommandHandler.OnDisconnected(SocketEndpoint endpoint)
-        {
+            else
+            {
+                Debug.LogError("Received a CalibrationData packet from the HoloLens that could not be understood.");
+            }
         }
     }
 }

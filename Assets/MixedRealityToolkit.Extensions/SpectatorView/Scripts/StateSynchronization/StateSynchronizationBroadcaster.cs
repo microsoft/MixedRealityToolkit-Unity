@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// This class observes changes and updates content on a user device.
     /// </summary>
-    public class StateSynchronizationBroadcaster : NetworkManager<StateSynchronizationBroadcaster>, ICommandHandler
+    public class StateSynchronizationBroadcaster : NetworkManager<StateSynchronizationBroadcaster>
     {
         /// <summary>
         /// Check to enable debug logging.
@@ -27,16 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Port used for sending data.")]
         public int Port = 7410;
 
-        /// <summary>
-        /// Called when a socket end point has connected.
-        /// </summary>
-        public event Action<SocketEndpoint> Connected;
-
-        /// <summary>
-        /// Called when a socket end point has disconnected.
-        /// </summary>
-        public event Action<SocketEndpoint> Disconnected;
-
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
 
@@ -47,11 +37,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             DebugLog($"Awoken!");
             base.Awake();
 
-            RegisterCommandHandler(StateSynchronizationObserver.SyncCommand, this);
+            RegisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
 
             // Ensure that runInBackground is set to true so that the app continues to send network
             // messages even if it loses focus
             Application.runInBackground = true;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            UnregisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
         }
 
         protected void Start()
@@ -85,16 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             DebugLog($"Broadcaster received connection from {endpoint.Address}.");
             base.OnConnected(endpoint);
-
-            Connected?.Invoke(endpoint);
         }
 
         protected override void OnDisconnected(SocketEndpoint endpoint)
         {
             DebugLog($"Broadcaster received disconnect from {endpoint.Address}"); ;
             base.OnDisconnected(endpoint);
-
-            Disconnected?.Invoke(endpoint);
         }
 
         /// <summary>
@@ -185,25 +178,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        void ICommandHandler.OnConnected(SocketEndpoint endpoint)
+        public void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-        }
-
-        void ICommandHandler.OnDisconnected(SocketEndpoint endpoint)
-        {
-        }
-
-        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
-        {
-            switch (command)
-            {
-                case StateSynchronizationObserver.SyncCommand:
-                    {
-                        reader.ReadSingle(); // float time
-                        StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
-                    }
-                    break;
-            }
+            reader.ReadSingle(); // float time
+            StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
         }
     }
 }

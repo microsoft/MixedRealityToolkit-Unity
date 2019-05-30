@@ -80,6 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         protected virtual void OnConnected(SocketEndpoint endpoint)
         {
             currentConnection = endpoint;
+
+            NotifyConnected(endpoint);
         }
 
         protected virtual void OnDisconnected(SocketEndpoint endpoint)
@@ -88,6 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 currentConnection = null;
             }
+
+            NotifyDisconnected(endpoint);
         }
 
         protected void OnReceive(IncomingMessage data)
