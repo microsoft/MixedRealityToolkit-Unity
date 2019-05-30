@@ -102,6 +102,8 @@
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><span class="xref">IMixedRealityMouseDeviceManager</span></div>
+    <div><span class="xref">IMixedRealityInputDeviceManager</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -183,7 +185,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_Input_UnityInput_MouseDeviceManager_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[MixedRealityDataProvider(typeof(IMixedRealityInputSystem), null, &quot;Unity Mouse Device Manager&quot;)]
-public class MouseDeviceManager : BaseInputDeviceManager, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+public class MouseDeviceManager : BaseInputDeviceManager, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable, IMixedRealityMouseDeviceManager, IMixedRealityInputDeviceManager</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -347,6 +349,12 @@ public class MouseDeviceManager : BaseInputDeviceManager, IMixedRealityInputDevi
   </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityMouseDeviceManager</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityInputDeviceManager</span>
   </div>
 </article>
           </div>

@@ -284,7 +284,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IMixedRealitySpatialAwarenessObserver GetObserver(string name)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObserver will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProvider.&quot;)]
+IMixedRealitySpatialAwarenessObserver GetObserver(string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -332,7 +333,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">T GetObserver&lt;T&gt;(string name)
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObserver&lt;T&gt; will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProvider&lt;T&gt;.&quot;)]
+T GetObserver&lt;T&gt;(string name = null)
     where T : IMixedRealitySpatialAwarenessObserver</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -397,7 +399,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;IMixedRealitySpatialAwarenessObserver&gt; GetObservers()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObservers will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProviders.&quot;)]
+IReadOnlyList&lt;IMixedRealitySpatialAwarenessObserver&gt; GetObservers()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -424,7 +427,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;T&gt; GetObservers&lt;T&gt;()
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObservers&lt;T&gt; will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProviders&lt;T&gt;.&quot;)]
+IReadOnlyList&lt;T&gt; GetObservers&lt;T&gt;()
     where T : IMixedRealitySpatialAwarenessObserver</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
