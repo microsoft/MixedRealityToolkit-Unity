@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
         "Windows Dictation Input")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Dictation.html")]
+    [UnityEngine.Scripting.Preserve] 
     public class WindowsDictationInputProvider : BaseInputDeviceManager, IMixedRealityDictationSystem
     {
         /// <summary>
@@ -28,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [UnityEngine.Scripting.Preserve]
         public WindowsDictationInputProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,

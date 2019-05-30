@@ -11,6 +11,9 @@ using UnityEngine.Windows.Speech;
 using UInput = UnityEngine.Input;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
+[assembly: UnityEngine.Scripting.Preserve]
+
 namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
     [MixedRealityDataProvider(
@@ -18,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
         "Windows Speech Input")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Speech.html")]
+    [UnityEngine.Scripting.Preserve]
     public class WindowsSpeechInputProvider : BaseInputDeviceManager, IMixedRealitySpeechSystem
     {
         /// <summary>
@@ -28,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [UnityEngine.Scripting.Preserve]
         public WindowsSpeechInputProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,

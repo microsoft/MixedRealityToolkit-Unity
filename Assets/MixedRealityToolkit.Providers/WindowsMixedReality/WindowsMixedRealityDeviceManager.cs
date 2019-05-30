@@ -14,12 +14,16 @@ using UnityEngine.XR.WSA.Input;
 using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 #endif // UNITY_WSA
 
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
+[assembly: UnityEngine.Scripting.Preserve]
+
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsUniversal,
         "Windows Mixed Reality Device Manager")]
+    [UnityEngine.Scripting.Preserve]
     public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager
     {
         /// <summary>
@@ -30,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [UnityEngine.Scripting.Preserve]
         public WindowsMixedRealityDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,

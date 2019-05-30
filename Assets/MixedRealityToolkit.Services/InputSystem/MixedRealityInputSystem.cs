@@ -218,6 +218,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     MixedRealityInputDataProviderConfiguration configuration = profile.DataProviderConfigurations[i];
                     object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
 
+                    if (configuration.ComponentType.Type == null)
+                    {
+                        Debug.LogError($"Component Type is null for {configuration.ComponentName}. Check if this component has been stripped from the build. See: https://docs.unity3d.com/2018.4/Documentation/Manual/ManagedCodeStripping.html");
+                    }
+
                     if (Registrar.RegisterDataProvider<IMixedRealityInputDeviceManager>(
                         configuration.ComponentType.Type,
                         configuration.RuntimePlatform,

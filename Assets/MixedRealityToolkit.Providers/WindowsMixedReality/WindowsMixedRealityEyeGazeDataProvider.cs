@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         SupportedPlatforms.WindowsUniversal,
         "Windows Mixed Reality Eye Gaze Provider",
         "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK")]
+    [UnityEngine.Scripting.Preserve]
     public class WindowsMixedRealityEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider
     {
         /// <summary>
@@ -31,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [UnityEngine.Scripting.Preserve]
         public WindowsMixedRealityEyeGazeDataProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,

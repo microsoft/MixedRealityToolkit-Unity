@@ -4,14 +4,20 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
+[assembly: UnityEngine.Scripting.Preserve]
+
 namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     /// <summary>
     /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html")]
+    [UnityEngine.Scripting.Preserve]
     public class MixedRealityDiagnosticsSystem : BaseCoreSystem, IMixedRealityDiagnosticsSystem
     {
+        [UnityEngine.Scripting.Preserve]
         public MixedRealityDiagnosticsSystem(
             IMixedRealityServiceRegistrar registrar,
             MixedRealityDiagnosticsProfile profile) : base(registrar, profile)

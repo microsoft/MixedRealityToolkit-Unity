@@ -5,14 +5,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
+[assembly: UnityEngine.Scripting.Preserve]
+
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    [UnityEngine.Scripting.Preserve]
     public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem
     {
+        [UnityEngine.Scripting.Preserve]
         public MixedRealitySpatialAwarenessSystem(
             IMixedRealityServiceRegistrar registrar,
             MixedRealitySpatialAwarenessSystemProfile profile) : base(registrar, profile)
