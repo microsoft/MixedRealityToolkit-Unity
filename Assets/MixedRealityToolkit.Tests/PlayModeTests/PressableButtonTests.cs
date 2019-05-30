@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Utilities
         private GameObject InstantiateSceneAndDefaultPressableButton()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
             RenderSettings.skybox = null;
