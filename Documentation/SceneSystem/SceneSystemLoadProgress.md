@@ -55,7 +55,6 @@ public class ProgressDialog : MonoBehavior
     {
         IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
-        // Don't update foos while a scene operation is in progress
         if (sceneSystem.SceneOperationInProgress) 
         {
             DisplayProgressIndicator(sceneSystem.SceneOperationProgress);
@@ -71,11 +70,9 @@ public class ProgressDialog : MonoBehavior
 ---
 ## Monitoring With Actions
 
-The Scene System provides several actions to let you know when scenes are being loaded or unloaded.
+The Scene System provides several actions to let you know when scenes are being loaded or unloaded. Each action relays the name of the affected scene.
 
-If a load or unload operation involves multiple scenes, the relevant actions will be invoked once per scene name.
-
-These actions are not invoked as individual scenes are loaded or unloaded - rather they are invoked when the load or unload operation is *fully completed.* For this reason it's recommended that you use *OnWillUnload* actions to detect content that *will* be destroyed, as opposed to using *OnUnloaded* actions to detect destroyed content after the fact.
+If a load or unload operation involves multiple scenes, the relevant actions will be invoked once per affected scene. They are also invoked all at once when the load or unload operation is *fully completed.* For this reason it's recommended that you use *OnWillUnload* actions to detect content that *will* be destroyed, as opposed to using *OnUnloaded* actions to detect destroyed content after the fact.
 
 On the flip side, because *OnLoaded* actions are only invoked when all scenes are activated and fully loaded, using *OnLoaded* actions to detect and use new content is guaranteed to be safe.
 
@@ -134,7 +131,7 @@ public class ProgressDialog : MonoBehavior
         HideProgressIndicator();
         displayingProgress = false;
     }
-    
+
     ...
 }
 ```

@@ -1,8 +1,9 @@
 # Scene System Overview
 
 ## When to use the scene system
-If your project consists of a single scene, the Scene System probably isn't necessary. The scene system is most useful when:
+If your project consists of a single scene, the Scene System probably isn't necessary. The scene system is most useful when one or more of the following are true:
 
+- Your project has multiple scenes.
 - You're used to single scene loading, but you don't like the way it destroyes the MixedRealityToolkit instance.
 - You want a simple way to to additively load multiple scenes to construct your experience.
 - You want a simple way to keep track of load operations in progress, or a simple way to control scene activation for multiple scenes being loaded at once.
@@ -12,7 +13,7 @@ If your project consists of a single scene, the Scene System probably isn't nece
 
 - [Scene Types](SceneSystemSceneTypes.md)
 - [Content Scene Loading](SceneSystemContentLoading.md)
-- [Monitoring Content Loading.](SceneSystemLoadProgress.md)
+- [Monitoring Content Loading](SceneSystemLoadProgress.md)
 - [Lighting Scene Loading](SceneSystemLightingScenes.md)
 
 # Editor Settings
