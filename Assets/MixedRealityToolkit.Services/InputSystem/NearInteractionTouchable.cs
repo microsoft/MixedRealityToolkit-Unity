@@ -103,18 +103,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         protected Vector3 localForward = Vector3.forward;
 
+        public Vector3 LocalForward { get => localForward; }
+
         /// <summary>
         /// Local space forward direction
         /// </summary>
         [SerializeField]
         protected Vector3 localUp = Vector3.up;
 
+        public Vector3 LocalUp { get => localUp; }
+
         /// <summary>
         /// Local space object center
         /// </summary>
         [SerializeField]
         protected Vector3 localCenter = Vector3.zero;
-
 
         [SerializeField]
         private TouchableEventType eventsToReceive = TouchableEventType.Touch;
@@ -128,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The type of surface to calculate the touch point on.")]
         private TouchableSurface touchableSurface = TouchableSurface.BoxCollider;
 
-        protected Vector3 LocalRight => Vector3.Cross(localUp, localForward);
+        public Vector3 LocalRight => Vector3.Cross(localUp, localForward);
 
         public Vector3 Forward => transform.TransformDirection(localForward);
 
