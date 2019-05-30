@@ -5519,7 +5519,7 @@ Transform:
 --- !u!199 &995125853
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -6425,7 +6425,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 658445383, guid: d9db4fe4b37b2024ea85c888f8d74e12, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1597255435, guid: d9db4fe4b37b2024ea85c888f8d74e12, type: 3}
       propertyPath: keywords.Array.size
@@ -6906,7 +6906,7 @@ MonoBehaviour:
   Dimensions: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  VoiceCommand: 
   RequiresFocus: 1
   Profiles:
   - Target: {fileID: 93553565640916291}
@@ -12104,7 +12104,7 @@ ParticleSystem:
 --- !u!199 &118407342925172904
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -12334,7 +12334,7 @@ MonoBehaviour:
   Dimensions: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  VoiceCommand: 
   RequiresFocus: 1
   Profiles:
   - Target: {fileID: 24050898187404380}
@@ -13358,7 +13358,7 @@ MonoBehaviour:
   Dimensions: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  VoiceCommand: 
   RequiresFocus: 1
   Profiles:
   - Target: {fileID: 2283218539602596063}
@@ -14058,8 +14058,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ccc66cc8439d047be737bcfdba2662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   Overlay_UseIt: 1
   Overlay_GameObj: {fileID: 1206941308118206135}
   startTransparency: 0
@@ -14908,14 +14906,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 0
   selectAction:
     id: 0
     description: None
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 1
+  voiceSelect:
+  - id: 1
+    description: Select
+    axisConstraint: 2
+  eyeCursorSnapToTargetCenter: 1
+  dwellTimeInSec: 0.8
   OnLookAtStart:
     m_PersistentCalls:
       m_Calls: []
@@ -14960,7 +14960,18 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   OnSelected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4208573982162094300}
+        m_MethodName: LoadScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!4 &4438739616769918184
@@ -14989,8 +15000,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ccc66cc8439d047be737bcfdba2662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   Overlay_UseIt: 1
   Overlay_GameObj: {fileID: 1034750304144829227}
   startTransparency: 0
@@ -15030,8 +15039,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ccc66cc8439d047be737bcfdba2662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   Overlay_UseIt: 1
   Overlay_GameObj: {fileID: 1100294177935430196}
   startTransparency: 0
@@ -15093,7 +15100,7 @@ Transform:
 --- !u!199 &4694138267578307187
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20147,14 +20154,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 0
   selectAction:
     id: 0
     description: None
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 1
+  voiceSelect:
+  - id: 1
+    description: Select
+    axisConstraint: 2
+  eyeCursorSnapToTargetCenter: 1
+  dwellTimeInSec: 0.8
   OnLookAtStart:
     m_PersistentCalls:
       m_Calls: []
@@ -20199,7 +20208,18 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   OnSelected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5755958761325800711}
+        m_MethodName: LoadScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!4 &5261928644328183852
@@ -20228,14 +20248,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 0
   selectAction:
     id: 0
     description: None
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 1
+  voiceSelect:
+  - id: 1
+    description: Select
+    axisConstraint: 2
+  eyeCursorSnapToTargetCenter: 1
+  dwellTimeInSec: 0.8
   OnLookAtStart:
     m_PersistentCalls:
       m_Calls: []
@@ -20280,7 +20302,18 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   OnSelected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5690414324206343192}
+        m_MethodName: LoadScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &5326639788756330384
@@ -20346,8 +20379,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ccc66cc8439d047be737bcfdba2662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   Overlay_UseIt: 1
   Overlay_GameObj: {fileID: 8924645350298455792}
   startTransparency: 0
@@ -20902,14 +20933,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 0
   selectAction:
     id: 0
     description: None
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 1
+  voiceSelect:
+  - id: 1
+    description: Select
+    axisConstraint: 2
+  eyeCursorSnapToTargetCenter: 1
+  dwellTimeInSec: 0.8
   OnLookAtStart:
     m_PersistentCalls:
       m_Calls: []
@@ -20954,7 +20987,18 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   OnSelected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5837373949691363483}
+        m_MethodName: LoadScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &6273452675219474956
@@ -21518,7 +21562,7 @@ MeshRenderer:
 --- !u!199 &7464439474405025122
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -27146,7 +27190,7 @@ MonoBehaviour:
   Dimensions: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  VoiceCommand: 
   RequiresFocus: 1
   Profiles:
   - Target: {fileID: 8415750213202434200}

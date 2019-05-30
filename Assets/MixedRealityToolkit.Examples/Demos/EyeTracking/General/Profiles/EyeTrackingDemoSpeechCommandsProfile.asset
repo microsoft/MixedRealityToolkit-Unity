@@ -130,7 +130,7 @@ MonoBehaviour:
       axisConstraint: 0
   - localizationKey: 
     keyword: Come to me
-    keyCode: 13
+    keyCode: 0
     action:
       id: 25
       description: SummonTargetStart

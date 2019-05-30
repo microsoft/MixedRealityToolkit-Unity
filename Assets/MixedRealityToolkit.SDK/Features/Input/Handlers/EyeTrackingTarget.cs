@@ -3,69 +3,184 @@
 
 using UnityEngine;
 using UnityEngine.Events;
+using Microsoft.MixedReality.Toolkit.Input;
+using System;
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     /// <summary>
-    /// A game object with the "Target" script attached can be selected and may react to hover states.
+    /// A game object with the "EyeTrackingTarget" script attached reacts to being looked at independent of other available inputs.
     /// </summary>
-    public class EyeTrackingTarget : BaseEyeFocusHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
+    [RequireComponent(typeof(EyeTrackingTarget))]
+    public class EyeTrackingTarget : InputSystemGlobalListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
     {
         [SerializeField]
         private MixedRealityInputAction selectAction = MixedRealityInputAction.None;
 
         [SerializeField]
-        private MixedRealityInputAction[] voice_select = null;
+        private MixedRealityInputAction[] voiceSelect = null;
 
-        [Tooltip("If true, the game object is set to the center of the currently looked at target.")]
-        public bool cursor_snapToCenter = false;
-
-        [Tooltip("Event is triggered when the user starts to look at the target.")]
-        [SerializeField]
-        private UnityEvent OnLookAtStart = null;
-
-        [Tooltip("Event is triggered when the user continues to look at the target.")]
-        [SerializeField]
-        private UnityEvent WhileLookingAtTarget = null;
-
-        [Tooltip("Event to be triggered when the user is looking away from the target.")]
-        [SerializeField]
-        private UnityEvent OnLookAway = null;
-
-        [Tooltip("Event to be triggered when the target has been looked at for a given predefined duration.")]
-        [SerializeField]
-        private UnityEvent OnDwell = null;
+        public bool eyeCursorSnapToTargetCenter = false;
 
         [Tooltip("Event to be triggered when the looked at target is selected.")]
+        [Range(0, 10)]
         [SerializeField]
-        private UnityEvent OnSelected = null;
+        private float dwellTimeInSec = 0.8f;
 
-        #region BaseEyeFocusHandler
+        [Tooltip("Event is triggered when the user starts to look at the target.")]        
+        public UnityEvent OnLookAtStart = null;
 
-        protected override void OnEyeFocusStart()
+        [Tooltip("Event is triggered when the user continues to look at the target.")]
+        public UnityEvent WhileLookingAtTarget = null;
+
+        [Tooltip("Event to be triggered when the user is looking away from the target.")]
+        public UnityEvent OnLookAway = null;
+
+        [Tooltip("Event to be triggered when the target has been looked at for a given predefined duration.")]
+        public UnityEvent OnDwell = null;
+
+        [Tooltip("Event to be triggered when the looked at target is selected.")]
+        public UnityEvent OnSelected = null;
+        
+        public bool IsLookedAt { get; private set; }
+
+        private bool isDwelledOn = false;
+        /// <summary>
+        /// Returns true if the user has been looking at the target for a certain amount of time specified by dwellTimeInSec.
+        /// </summary>
+        public bool IsDwelledOn
         {
-            OnLookAtStart.Invoke();
+            get { return isDwelledOn; }
         }
 
-        protected override void OnEyeFocusStay()
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+        
+        private DateTime lookAtStartTime;
+        private float EyeTrackerFramerate = 30; // In Hz -> This means that every 1000ms/30 = 33.33ms a new sample should arrive. 
+        private float EyeTrackingTimeoutInMilliseconds = 100; // To account for blinks
+
+        private static DateTime lastTimeStamp = DateTime.MinValue;
+        public static GameObject LookedAtTarget { get;  private set; }
+        public static EyeTrackingTarget LookedAtEyeTarget { get; private set; }
+        public static Vector3 LookedAtPoint { get; private set; }
+
+        #region Focus handling
+        private void Start()
+        {
+            IsLookedAt = false;
+            LookedAtTarget = null;
+            LookedAtEyeTarget = null;
+        }
+        private void Update()
+        {
+            // Try to manually poll the eye tracking data
+            if ((InputSystem?.EyeGazeProvider != null) && (InputSystem?.EyeGazeProvider?.UseEyeTracking == true) && (InputSystem?.EyeGazeProvider?.IsEyeGazeValid == true))
+            {
+                UpdateHitTarget();
+
+                bool isLookedAtNow = (LookedAtTarget == this.gameObject);
+                                
+                if (IsLookedAt && (!isLookedAtNow))
+                {
+                    // Stopped looking at the target
+                    OnEyeFocusStop();
+                }
+                else if ((!IsLookedAt) && (isLookedAtNow))
+                {
+                    // Started looking at the target
+                    OnEyeFocusStart();
+                }
+                else if (IsLookedAt && (isLookedAtNow))
+                {
+                    // Keep looking at the target
+                    OnEyeFocusStay();
+                }
+            }
+        }
+
+        private void OnDisable()
+        {
+            OnEyeFocusStop();
+        }
+
+        private void UpdateHitTarget()
+        {
+            if (lastTimeStamp != InputSystem.EyeGazeProvider.Timestamp)
+            {
+                lastTimeStamp = InputSystem.EyeGazeProvider.Timestamp;
+
+                // ToDo: Handle raycasting layers
+                RaycastHit hitInfo = default(RaycastHit);
+                Ray lookRay = new Ray(InputSystem.EyeGazeProvider.GazeOrigin, InputSystem.EyeGazeProvider.GazeDirection.normalized);
+                bool isHit = UnityEngine.Physics.Raycast(lookRay, out hitInfo);
+
+                if (isHit)
+                {
+                    LookedAtTarget = hitInfo.collider.gameObject;
+                    LookedAtEyeTarget = LookedAtTarget.GetComponent<EyeTrackingTarget>();
+                    LookedAtPoint = hitInfo.point;
+                }
+                else
+                {
+                    LookedAtTarget = null;
+                }
+            }
+            else if ((DateTime.UtcNow - InputSystem.EyeGazeProvider.Timestamp).TotalMilliseconds > EyeTrackingTimeoutInMilliseconds)
+            {
+                LookedAtTarget = null;
+                IsLookedAt = false;
+            }
+            
+        }
+        
+        protected void OnEyeFocusStart()
+        {
+            lookAtStartTime = DateTime.UtcNow;
+            IsLookedAt = true;
+            OnLookAtStart.Invoke();            
+        }
+
+        protected void OnEyeFocusStay()
         {
             WhileLookingAtTarget.Invoke();
+
+            if ((!isDwelledOn) && (DateTime.UtcNow - lookAtStartTime).TotalSeconds > dwellTimeInSec)
+            {
+                OnEyeFocusDwell();
+            }
         }
 
-        protected override void OnEyeFocusDwell()
+        protected void OnEyeFocusDwell()
         {
+            isDwelledOn = true;
             OnDwell.Invoke();
         }
 
-        protected override void OnEyeFocusStop()
+        protected void OnEyeFocusStop()
         {
-            OnLookAway.Invoke();
+            isDwelledOn = false;
+            IsLookedAt = false;
+            OnLookAway.Invoke();            
         }
 
-        #endregion BaseEyeFocusHandler
+        #endregion 
 
         #region IMixedRealityPointerHandler
-
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData) { }
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData) { }
@@ -74,19 +189,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
         {
-            if (eventData.MixedRealityInputAction == selectAction && HasFocus)
+            if ((eventData.MixedRealityInputAction == selectAction) && IsLookedAt)
             {
                 OnSelected.Invoke();
             }
         }
-
+        
         void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            for (int i = 0; i < voice_select.Length; i++)
+            if ((IsLookedAt) && (this.gameObject == LookedAtTarget))
             {
-                if (eventData.MixedRealityInputAction == voice_select[i] && HasFocus)
+                if (voiceSelect != null)
                 {
-                    OnSelected.Invoke();
+                    for (int i = 0; i < voiceSelect.Length; i++)
+                    {
+                        if (eventData.MixedRealityInputAction == voiceSelect[i])
+                        {
+                            OnSelected.Invoke();
+                        }
+                    }
                 }
             }
         }
