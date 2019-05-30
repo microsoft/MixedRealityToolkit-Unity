@@ -31,7 +31,9 @@
       
 4) On awake and for every related hierarchy change, the TransformBroadcaster will ensure that all of its children also have TransformBroadcasters. On creation, TransformBroadcasters also make sure that their associated game objects have ComponentBroadcasters created for all components with registered ComponentBroadcasterServices. This effectively sets up the classes needed for components in the user application to broadcast state information to spectator devices.
 
-5) After each frame on the user device, the StateSynchronizationSceneManager will observer network connection changes. It also observes if any ComponentBroadcasters have been destroyed. It then hands all of the known network connections to each ComponentBroadcaster so that state information can be sent to the spectator devices.
+5) After each frame on the user device, the StateSynchronizationSceneManager will monitor network connection changes. It also determine if any ComponentBroadcasters have been destroyed. It then hands all of the known network connections to each ComponentBroadcaster so that state information can be sent to the spectator devices.
+
+6) On the spectator device, the StateSynchronizationSceneManager will receive network messages to relay to the appropriate ComponentBroadcasterServices. These messages signal component creation, updates and destruction on the users device. This component state information also contains unique component ids that allow specific instances of ComponentBroadcasters on the user device to map 1:1 with specific instances of ComponentObservers on the spectator device. Through this state information, the spectator device's scene is updated to reflect content on the user's device.
 
 #### Spatial alignment
 
