@@ -21,7 +21,14 @@ The equivalent of a single scene load can be achieved via the optional `mode` ar
 ```
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
-await sceneSystem.LoadContent("MyContentScene", LoadSceneMode.Single);
+// ContentScene1, ContentScene2 and ContentScene3 will be loaded additively
+await sceneSystem.LoadContent("ContentScene1");
+await sceneSystem.LoadContent("ContentScene2");
+await sceneSystem.LoadContent("ContentScene3");
+
+// ContentScene1, ContentScene2 and ContentScene3 will be unloaded
+// SingleContentScene will be loaded additively
+await sceneSystem.LoadContent("SingleContentScene", LoadSceneMode.Single);
 ```
 
 ## Next / Previous Scene Loading
@@ -69,7 +76,45 @@ It's sometimes desirable to load content scenes in groups. Eg, a stage of an exp
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
 await LoadContentByTag("Stage1");
+
+// Wait until stage 1 is complete
+
+await UnloadContentByTag("Stage1");
+await LoadContentByTag("Stage2);
 ```
+
+Loading by tag can also be useful if artists want to incorporate / remove elements from an experience without having to modify scripts. For instance, running this script with the following two sets of tags produces different results:
+```
+IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
+
+await LoadContentByTag("Terrain");
+await LoadContentByTag("Structures");
+await LoadContentByTag("Vegetation");
+```
+
+### Testing content
+
+Scene Name | Scene Tag | Loaded by script
+---|---|---
+DebugTerrainPhysics | Terrain | •
+StructureTesting | Structures | •
+VegetationTools | Vegetation | •
+Mountain | Terrain | •
+Cabin | Structures | •
+Trees | Vegetation | •
+
+### Final content
+
+Scene Name | Scene Tag | Loaded by script
+---|---|---
+DebugTerrainPhysics | DoNotInclude |
+StructureTesting | DoNotInclude | 
+VegetationTools | DoNotInclude | 
+Mountain | Terrain | •
+Cabin | Structures | •
+Trees | Vegetation | •
+
+---
 
 ## Editor Behavior
 You can perform all these operations in editor and in play mode by using the Scene System's [service inspector.](../MixedRealityConfigurationGuide.md#inspectors) In edit mode scene loads will be instantaeous, while in play mode you can observe loading progress and use [activation tokens.](SceneSystemLoadProgress.md)

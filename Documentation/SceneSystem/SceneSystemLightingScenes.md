@@ -1,5 +1,5 @@
 # Lighting Scene Operations
-The default lighting scene defined in your profile is loaded on startup. That lightin scene remains loaded until `SetLightingScene` is called.
+The default lighting scene defined in your profile is loaded on startup. That lighting scene remains loaded until `SetLightingScene` is called.
 
 ```
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
