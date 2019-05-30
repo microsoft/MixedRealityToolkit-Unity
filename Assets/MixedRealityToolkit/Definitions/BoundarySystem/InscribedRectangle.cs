@@ -85,6 +85,12 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// </remarks>
         public InscribedRectangle(Edge[] geometryEdges, int randomSeed)
         {
+            if (geometryEdges == null || geometryEdges.Length == 0)
+            {
+                Debug.LogError("InscribedRectangle requires an array of Edges. You passed in a null or empty array.");
+                return;
+            }
+
             // Clear previous rectangle
             Center = EdgeUtilities.InvalidPoint;
             Width = 0;

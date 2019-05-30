@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                     if (solver.enabled)
                     {
-                        solver.SolverUpdate();
+                        solver.SolverUpdateEntry();
                     }
                 }
             }
