@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// This class observes changes and updates content on a user device.
     /// </summary>
-    public class StateSynchronizationBroadcaster : Singleton<StateSynchronizationBroadcaster>
+    public class StateSynchronizationBroadcaster : NetworkManager<StateSynchronizationBroadcaster>, ICommandHandler
     {
         /// <summary>
         /// Check to enable debug logging.
@@ -20,13 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Check to enable debug logging.")]
         [SerializeField]
         protected bool debugLogging;
-
-        /// <summary>
-        /// Network connection manager that facilitates sending data between devices.
-        /// </summary>
-        [Tooltip("Network connection manager that facilitates sending data between devices.")]
-        [SerializeField]
-        protected TCPConnectionManager connectionManager;
 
         /// <summary>
         /// Port used for sending data.
@@ -47,10 +40,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
 
+        protected override int RemotePort => Port;
+
         protected override void Awake()
         {
             DebugLog($"Awoken!");
             base.Awake();
+
+            RegisterCommandHandler(StateSynchronizationObserver.SyncCommand, this);
 
             // Ensure that runInBackground is set to true so that the app continues to send network
             // messages even if it loses focus
@@ -67,32 +64,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (connectionManager != null)
             {
                 DebugLog("Setting up connection manager");
-                connectionManager.OnConnected += OnConnected;
-                connectionManager.OnDisconnected += OnDisconnected;
-                connectionManager.OnReceive += OnReceive;
+
                 connectionManager.StartListening(Port);
             }
             else
             {
                 Debug.LogWarning("Connection Manager not defined for Broadcaster.");
-            }
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            CleanUpNetworkConnectionManager();
-        }
-
-        protected virtual void CleanUpNetworkConnectionManager()
-        {
-            if (connectionManager != null)
-            {
-                connectionManager.OnConnected -= OnConnected;
-                connectionManager.OnDisconnected -= OnDisconnected;
-                connectionManager.OnReceive -= OnReceive;
-                connectionManager.StopListening();
-                connectionManager.DisconnectAll();
             }
         }
 
@@ -104,53 +81,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        protected void OnConnected(SocketEndpoint endpoint)
+        protected override void OnConnected(SocketEndpoint endpoint)
         {
             DebugLog($"Broadcaster received connection from {endpoint.Address}.");
-            Connected?.Invoke(endpoint);
+            base.OnConnected(endpoint);
 
-            foreach (var handler in CommandService.Instance.CommandHandlers)
-            {
-                handler.OnConnected(endpoint);
-            }
+            Connected?.Invoke(endpoint);
         }
 
-        protected void OnDisconnected(SocketEndpoint endpoint)
+        protected override void OnDisconnected(SocketEndpoint endpoint)
         {
             DebugLog($"Broadcaster received disconnect from {endpoint.Address}"); ;
+            base.OnDisconnected(endpoint);
+
             Disconnected?.Invoke(endpoint);
-
-            foreach (var handler in CommandService.Instance.CommandHandlers)
-            {
-                handler.OnDisconnected(endpoint);
-            }
-        }
-
-        protected void OnReceive(IncomingMessage data)
-        {
-            using (MemoryStream stream = new MemoryStream(data.Data))
-            using (BinaryReader reader = new BinaryReader(stream))
-            {
-                string command = reader.ReadString();
-                switch (command)
-                {
-                    case "SYNC":
-                        {
-                            reader.ReadSingle(); // float time
-                            StateSynchronizationSceneManager.Instance.ReceiveMessage(data.Endpoint, reader);
-                        }
-                        break;
-                    default:
-                        if (CommandService.Instance.CommandHandlerDictionary.TryGetValue(command, out var handlers))
-                        {
-                            foreach (var handler in handlers)
-                            {
-                                handler.HandleCommand(data.Endpoint, command, reader);
-                            }
-                        }
-                        break;
-                }
-            }
         }
 
         /// <summary>
@@ -212,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 using (MemoryStream memoryStream = new MemoryStream())
                 using (BinaryWriter message = new BinaryWriter(memoryStream))
                 {
-                    message.Write("Camera");
+                    message.Write(StateSynchronizationObserver.CameraCommand);
                     Transform camTrans = Camera.main.transform;
                     message.Write(Time.time);
                     message.Write(camTrans.position);
@@ -238,6 +182,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     message.Flush();
                     connectionManager.Broadcast(memoryStream.ToArray());
                 }
+            }
+        }
+
+        void ICommandHandler.OnConnected(SocketEndpoint endpoint)
+        {
+        }
+
+        void ICommandHandler.OnDisconnected(SocketEndpoint endpoint)
+        {
+        }
+
+        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            switch (command)
+            {
+                case StateSynchronizationObserver.SyncCommand:
+                    {
+                        reader.ReadSingle(); // float time
+                        StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
+                    }
+                    break;
             }
         }
     }

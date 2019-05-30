@@ -8,14 +8,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     internal class TimeSynchronizer : Singleton<TimeSynchronizer>
     {
-        private CompositionManager compositionManager;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            compositionManager = FindObjectOfType<CompositionManager>();
-        }
+        [SerializeField]
+        private CompositionManager compositionManager = null;
 
         public float GetHologramTime()
         {

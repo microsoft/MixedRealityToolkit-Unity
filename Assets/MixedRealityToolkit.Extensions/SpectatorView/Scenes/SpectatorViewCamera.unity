@@ -667,6 +667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ad6074e2b1f36e449761021b37b6aeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectionManager: {fileID: 1937314663}
   listeningPort: 7502
 --- !u!114 &1937314667
 MonoBehaviour:
@@ -680,6 +681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbce40d33e599cc4e8160e9072726b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkManagerGameObject: {fileID: 1937314661}
 --- !u!114 &1937314668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -704,6 +706,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74847b432cd730c4d896483060087a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectionManager: {fileID: 1937314663}
+  originAnchor: {fileID: 1937314667}
 --- !u!114 &1937314670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -718,6 +722,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _markerSize: 0.03
   _markerPositionBehavior: 0
+  RequiredObservations: 5
+  RequiredInlierCount: 5
+  MaximumMarkerSampleCount: 15
+  MaximumPositionDistanceStandardDeviation: 0.01
+  MaximumRotationAngleStandardDeviation: 0.75
+  MarkerInlierStandardDeviationThreshold: 1.5
 --- !u!1 &1940026536
 GameObject:
   m_ObjectHideFlags: 0

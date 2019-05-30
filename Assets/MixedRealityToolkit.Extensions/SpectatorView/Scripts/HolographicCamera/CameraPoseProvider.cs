@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Globalization;
 using System;
 using System.IO;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor;
 
 #if !UNITY_EDITOR && UNITY_WSA
 using Windows.Perception;
@@ -84,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(stream))
             {
-                message.Write("Camera");
+                message.Write(HolographicCameraObserver.CameraCommand);
                 message.Write(timestamp);
                 message.Write(cameraPosition);
                 message.Write(cameraRotation);

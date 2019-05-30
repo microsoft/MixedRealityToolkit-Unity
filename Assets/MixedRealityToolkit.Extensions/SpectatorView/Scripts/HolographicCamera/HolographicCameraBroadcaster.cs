@@ -11,19 +11,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
     /// <summary>
     /// Represents the network listener for the camera pose provider app.
     /// </summary>
-    [RequireComponent(typeof(TCPConnectionManager))]
-    public class TCPNetworkListener : MonoBehaviour
+    public class HolographicCameraBroadcaster : NetworkManager<HolographicCameraBroadcaster>
     {
         [SerializeField]
         [Tooltip("The TCP port that the listening socket should be bound to.")]
         private int listeningPort = 7502;
 
-        private TCPConnectionManager tcpConnectionManager;
+        protected override int RemotePort => listeningPort;
 
-        private void Awake()
+        protected override void Awake()
         {
-            tcpConnectionManager = GetComponent<TCPConnectionManager>();
-            tcpConnectionManager.StartListening(listeningPort);
+            base.Awake();
+
+            connectionManager.StartListening(listeningPort);
         }
     }
 }

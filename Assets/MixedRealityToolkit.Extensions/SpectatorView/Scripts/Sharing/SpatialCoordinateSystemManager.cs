@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader)
+        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             if (command == SpatialLocalizationMessageHeader)
             {
@@ -156,19 +156,33 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void RegisterCommands()
         {
-            DebugLog($"Registering for appropriate commands: CommandService.IsInitialized: {CommandService.IsInitialized}");
+            DebugLog($"Registering for appropriate commands: StateSynchronizationObserver.IsInitialized: {StateSynchronizationObserver.IsInitialized}, StateSynchronizationBroadcaster.IsInitialized: {StateSynchronizationBroadcaster.IsInitialized}");
             foreach (var command in supportedCommands)
             {
-                CommandService.Instance.RegisterCommandHandler(command, this);
+                if (StateSynchronizationObserver.IsInitialized)
+                {
+                    StateSynchronizationObserver.Instance.RegisterCommandHandler(command, this);
+                }
+                if (StateSynchronizationBroadcaster.IsInitialized)
+                {
+                    StateSynchronizationBroadcaster.Instance.RegisterCommandHandler(command, this);
+                }
             }
         }
 
         private void UnregisterCommands()
         {
-            DebugLog($"Unregistering for appropriate commands: CommandService.IsInitialized: {CommandService.IsInitialized}");
+            DebugLog($"Unregistering for appropriate commands: StateSynchronizationObserver.IsInitialized: {StateSynchronizationObserver.IsInitialized}, StateSynchronizationBroadcaster.IsInitialized: {StateSynchronizationBroadcaster.IsInitialized}");
             foreach (var command in supportedCommands)
             {
-                CommandService.Instance.UnregisterCommandHandler(command, this);
+                if (StateSynchronizationObserver.IsInitialized)
+                {
+                    StateSynchronizationObserver.Instance.UnregisterCommandHandler(command, this);
+                }
+                if (StateSynchronizationBroadcaster.IsInitialized)
+                {
+                    StateSynchronizationBroadcaster.Instance.UnregisterCommandHandler(command, this);
+                }
             }
         }
 
