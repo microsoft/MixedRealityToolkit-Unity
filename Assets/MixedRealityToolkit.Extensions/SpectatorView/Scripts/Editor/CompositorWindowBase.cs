@@ -48,6 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
         protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, LocatableDeviceObserver locatableDevice, bool showCalibrationStatus, ref string ipAddressField)
         {
+            GUIStyle boldLabelStyle = new GUIStyle(GUI.skin.label);
+            boldLabelStyle.fontStyle = FontStyle.Bold;
+
             CompositionManager compositionManager = GetCompositionManager();
             
             EditorGUILayout.BeginVertical("Box");
@@ -74,14 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 {
                     GUILayout.BeginHorizontal();
                     {
-                        if (locatableDevice.NetworkManager.ConnectedIPAddress == locatableDevice.DeviceIPAddress)
-                        {
-                            GUILayout.Label($"Connected to {locatableDevice.DeviceName} ({locatableDevice.DeviceIPAddress})");
-                        }
-                        else
-                        {
-                            GUILayout.Label($"Connected to {locatableDevice.DeviceName} ({locatableDevice.NetworkManager.ConnectedIPAddress} -> {locatableDevice.DeviceIPAddress})");
-                        }
+                        GUILayout.Label("Connection status", boldLabelStyle);
 
                         if (GUILayout.Button(new GUIContent("Disconnect", "Disconnects the network connection to the holographic camera."), GUILayout.Width(connectAndDisconnectButtonWidth)))
                         {
@@ -89,6 +85,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                         }
                     }
                     GUILayout.EndHorizontal();
+
+                    if (locatableDevice.NetworkManager.ConnectedIPAddress == locatableDevice.DeviceIPAddress)
+                    {
+                        GUILayout.Label($"Connected to {locatableDevice.DeviceName} ({locatableDevice.DeviceIPAddress})");
+                    }
+                    else
+                    {
+                        GUILayout.Label($"Connected to {locatableDevice.DeviceName} ({locatableDevice.NetworkManager.ConnectedIPAddress} -> {locatableDevice.DeviceIPAddress})");
+                    }
+
+                    EditorGUILayout.Space();
                 }
                 else
                 {
@@ -98,6 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                         ConnectButtonGUI(ipAddressField, locatableDevice);
                     }
                     GUILayout.EndHorizontal();
+
+                    GUILayout.Label(notConnectedMessage);
+                    EditorGUILayout.Space();
                 }
 
                 GUI.enabled = locatableDevice != null && locatableDevice.NetworkManager != null && locatableDevice.NetworkManager.IsConnected;
@@ -127,9 +137,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     sharedSpatialCoordinateStatusMessage = locatedSharedSpatialCoordinateMessage;
                 }
 
-                GUIStyle boldLabelStyle = new GUIStyle(GUI.skin.label);
-                boldLabelStyle.fontStyle = FontStyle.Bold;
-
                 GUILayout.Label("Shared spatial coordinate status", boldLabelStyle);
                 GUILayout.Label(sharedSpatialCoordinateStatusMessage);
 
@@ -151,6 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 }
                 else
                 {
+                    // Empty label to remain as a placeholder for the Calibration status
                     GUILayout.Label(string.Empty, boldLabelStyle);
                     GUILayout.Label(string.Empty);
                 }
@@ -167,11 +175,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             EditorGUILayout.EndVertical();
         }
 
+        protected virtual Rect ComputeCompositeGUIRect(float frameWidth, float frameHeight)
+        {
+            return GUILayoutUtility.GetRect(frameWidth, frameHeight);
+        }
+
         protected void CompositeTextureGUI(int textureRenderMode)
         {
             UpdateFrameDimensions();
 
-            Rect framesRect = GUILayoutUtility.GetRect(uiFrameWidth, uiFrameHeight);
+            Rect framesRect = ComputeCompositeGUIRect(uiFrameWidth, uiFrameHeight);
 
             if (Event.current != null && Event.current.type == EventType.Repaint)
             {
@@ -259,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
         private void UpdateFrameDimensions()
         {
-            uiFrameWidth = position.width;
+            uiFrameWidth = position.width - horizontalFrameRectangleMargin;
             uiFrameHeight = position.height;
 
             if (uiFrameWidth <= uiFrameHeight * aspect)
@@ -270,8 +283,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             {
                 uiFrameWidth = uiFrameHeight * aspect;
             }
-
-            uiFrameWidth -= horizontalFrameRectangleMargin;
         }
 
         private Rect[] CalculateVideoQuadrants(Rect videoRect)

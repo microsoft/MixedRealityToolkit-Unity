@@ -15,6 +15,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
     {
         public int TextureRenderMode { get; set; }
 
+        protected override Rect ComputeCompositeGUIRect(float frameWidth, float frameHeight)
+        {
+            frameWidth = position.width;
+            frameHeight = position.height;
+
+            if (frameWidth <= frameHeight * aspect)
+            {
+                frameHeight = frameWidth / aspect;
+            }
+            else
+            {
+                frameWidth = frameHeight * aspect;
+            }
+            return new Rect((position.width - frameWidth) / 2, (position.height - frameHeight) / 2, frameWidth, frameHeight);
+        }
+
         public static void ShowFullscreen()
         {
             ShowWindow();
