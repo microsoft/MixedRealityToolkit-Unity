@@ -33,22 +33,20 @@ These are the scenes you're used to dealing with. Any kind of content can be sto
 Content scenes are enabled by default. Any scenes included in your profile's `ContentScenes` array can be loaded / unloaded by the service.
 
 ## Manager scene
-A single scene with a required MixedRealityToolkit instance. This scene will be loaded first on launch and will remain loaded for the lifetime of the app. This is the preferred alternative to DontDestroyOnLoad.
-
-Your manager scene is a single scene with a MixedRealityToolkit instance. This scene will be loaded first on launch and will remain loaded for the lifetime of the app. The manager scene can also host other objects that should never be destroyed.
+A single scene with a required MixedRealityToolkit instance. This scene will be loaded first on launch and will remain loaded for the lifetime of the app. The manager scene can also host other objects that should never be destroyed. This is the preferred alternative to DontDestroyOnLoad.
 
 To enable this feature, check `Use Manager Scene` in your profile and drag a scene object into the `Manager Scene` field.
 
 ## Lighting Scene
 A set of scenes which store lighting information and lighting objects. Only one can be loaded at a time, and their settings can be blended during loads for smooth lighting transitions.
 
-The benefits of lighting scenes aren't as straightforward as the manager scene. Unity's lighting settings - ambient light, skyboxes, etc - can be tricky to manage. When using single loading, the last loaded scene will determine the lighting settings. When using additive loading, the active scene determines lighting settings, and unless you set the active scene manually, the *first* loaded scene remains the active scene. While viewing content in the editor this can be even more confusing. lighting scenes can help avoid this confusion.
+Unity's lighting settings - ambient light, skyboxes, etc - can be tricky to manage when using additive loading because they're tied to invidiual scenes and override behavior is not straightforward. In practice this can cause confusion when assets are authored in lighting conditions that don't obtain at runtime.
 
 ![](../Images/SceneSystem/MRTK_SceneSystemLightingSettings.png)
 
-To enable this feature, check `Use Lighting Scene` in your profile and populate the `Lighting Scenes` array.
+The Scene System uses lighting scenes to ensure that these settings remain consistent regardless of what scenes are loaded or active, both in edit mode and in play mode.
 
-(Note that if these scenes contain any component types, those components will be moved out of your lighting scene. It's best to start with an empty scene.)
+To enable this feature, check `Use Lighting Scene` in your profile and populate the `Lighting Scenes` array.
 
 # Next Steps
 
