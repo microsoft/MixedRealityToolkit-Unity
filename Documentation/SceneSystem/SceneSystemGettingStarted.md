@@ -52,6 +52,6 @@ To enable this feature, check `Use Lighting Scene` in your profile and populate 
 
 # Next Steps
 
-- [Content Scene Loading](SceneSystemLoadOperations.md)
+- [Content Scene Loading](SceneSystemContentLoading.md)
 - [Monitoring Content Loading.](SceneSystemLoadProgress.md)
 - [Lighting Scene Loading](SceneSystemLightingScenes.md)
