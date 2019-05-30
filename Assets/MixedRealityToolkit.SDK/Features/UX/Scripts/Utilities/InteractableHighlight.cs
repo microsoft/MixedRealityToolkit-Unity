@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Refresh();
         }
 
-        #endregion Monobehavior Implementation
+        #endregion MonoBehaviour Implementation
 
         private void Refresh()
         {

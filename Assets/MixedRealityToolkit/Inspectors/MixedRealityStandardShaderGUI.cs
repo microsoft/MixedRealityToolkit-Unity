@@ -113,8 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent rimColor = new GUIContent("Color", "Rim Highlight Color");
             public static GUIContent rimPower = new GUIContent("Power", "Rim Highlight Saturation");
             public static GUIContent vertexColors = new GUIContent("Vertex Colors", "Enable Vertex Color Tinting");
-            public static GUIContent vertexExtrusion = new GUIContent("Vertex Extrusion", "Enable Vertex Extrusion Along the Vetex Normal");
-            public static GUIContent vertexExtrusionValue = new GUIContent("Vertex Extrusion Value", "How Far to Extrude the Vertex Along the Vetex Normal");
+            public static GUIContent vertexExtrusion = new GUIContent("Vertex Extrusion", "Enable Vertex Extrusion Along the Vertex Normal");
+            public static GUIContent vertexExtrusionValue = new GUIContent("Vertex Extrusion Value", "How Far to Extrude the Vertex Along the Vertex Normal");
             public static GUIContent clippingPlane = new GUIContent("Clipping Plane", "Enable Clipping Against a Plane");
             public static GUIContent clippingSphere = new GUIContent("Clipping Sphere", "Enable Clipping Against a Sphere");
             public static GUIContent clippingBox = new GUIContent("Clipping Box", "Enable Clipping Against a Box");
@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent nearLightFade = new GUIContent("Use Light", "A Hover or Proximity Light (Rather Than the Camera) Determines Near Fade Distance");
             public static GUIContent fadeBeginDistance = new GUIContent("Fade Begin", "Distance From Camera to Begin Fade In");
             public static GUIContent fadeCompleteDistance = new GUIContent("Fade Complete", "Distance From Camera When Fade is Fully In");
-            public static GUIContent fadeMinValue = new GUIContent("Fade Min Value", "Clamps the Fade Ammount to a Minimum Value");
+            public static GUIContent fadeMinValue = new GUIContent("Fade Min Value", "Clamps the Fade Amount to a Minimum Value");
             public static GUIContent hoverLight = new GUIContent("Hover Light", "Enable utilization of Hover Light(s)");
             public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Light Color");
             public static GUIContent hoverColorOverride = new GUIContent("Color", "Override Hover Light Color");

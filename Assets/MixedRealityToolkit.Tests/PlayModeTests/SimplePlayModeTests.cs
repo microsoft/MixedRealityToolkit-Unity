@@ -3,7 +3,7 @@
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the the required assemblies (i.e. the ones below).
+// Unity doesn't include the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
 using System.Collections;

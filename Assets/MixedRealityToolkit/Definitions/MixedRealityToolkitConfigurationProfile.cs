@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit
         private SystemType spatialAwarenessSystemType;
 
         /// <summary>
-        /// Spatial Awarenss System class to instantiate at runtime.
+        /// Spatial Awareness System class to instantiate at runtime.
         /// </summary>
         public SystemType SpatialAwarenessSystemSystemType
         {

@@ -726,7 +726,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             // If we do, then it's not this instance, so deactivate this instance
             toolkitInstance.name = InactiveInstanceGameObjectName;
-            // Move to the bottom of the heirarchy so it stays out of the way
+            // Move to the bottom of the hierarchy so it stays out of the way
             toolkitInstance.transform.SetSiblingIndex(int.MaxValue);
         }
 
@@ -738,7 +738,7 @@ namespace Microsoft.MixedReality.Toolkit
             {   // If this is the active instance, we need to break it down
                 toolkitInstance.DestroyAllServices();
                 toolkitInstance.ClearCoreSystemCache();
-                // If this was the active instance, un-register the active instance
+                // If this was the active instance, unregister the active instance
                 MixedRealityToolkit.activeInstance = null;
                 if (MixedRealityToolkit.isApplicationQuitting)
                 {   // Don't search for additional instances if we're quitting
@@ -769,7 +769,7 @@ namespace Microsoft.MixedReality.Toolkit
             {   // If this is the active instance, we need to break it down
                 toolkitInstance.DestroyAllServices();
                 toolkitInstance.ClearCoreSystemCache();
-                // If this was the active instance, un-register the active instance
+                // If this was the active instance, unregister the active instance
                 MixedRealityToolkit.activeInstance = null;
             }
             toolkitInstance.name = InactiveInstanceGameObjectName;
