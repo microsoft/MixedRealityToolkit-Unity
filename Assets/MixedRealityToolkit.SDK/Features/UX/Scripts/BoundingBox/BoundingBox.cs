@@ -363,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("cornerRadius")]
         [Tooltip("Size of the cube collidable used in scale handles")]
-        private float scaleHandleSize = 0.03f;
+        private float scaleHandleSize = 0.08f;
 
         public float ScaleHandleSize
         {
@@ -380,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("Scale override for custom Corner Handlers: Size of its collider")]
-        private float cornerHandleColliderScale = 0.02f;
+        private float cornerHandleColliderScale = 2.0f;
         [SerializeField]
         [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead")]
         GameObject rotationHandlePrefab = null;
@@ -518,13 +518,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float closeScale = 3.0f;
         [SerializeField]
         [Range(0.0f, 1.0f)]
-        private float farGrowRate = 0.05f;
+        private float farGrowRate = 0.3f;
         [SerializeField]
         [Range(0.0f, 1.0f)]
-        private float mediumGrowRate = 0.05f;
+        private float mediumGrowRate = 0.2f;
         [SerializeField]
         [Range(0.0f, 1.0f)]
-        private float closeGrowRate = 0.2f;
+        private float closeGrowRate = 0.3f;
 
         public bool DrawTetherWhenManipulating
         {
