@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         MonoBehaviour,
         IMixedRealityFocusChangedHandler,
         IMixedRealityFocusHandler,
-        IMixedRealityPointerHandler,
+        IMixedRealityInputHandler,
         IMixedRealitySpeechHandler,
         IMixedRealityTouchHandler
     {
@@ -130,15 +130,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected Coroutine globalTimer;
         protected float clickTime = 0.3f;
         protected Coroutine inputTimer;
-
-        // reference to the pointer action that started an interaction
-        protected MixedRealityInputAction pointerInputAction;
-
         // how many clicks does it take?
         protected int clickCount = 0;
-
-        // cache a drag value
-        protected Vector3 dragStart = Vector3.zero;
 
         /// <summary>
         /// how many times this interactable was clicked
@@ -634,114 +627,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region MixedRealityPointerHandlers
 
         /// <summary>
-        /// pointer up event has fired
-        /// </summary>
-        /// <param name="eventData"></param>
-        public void OnPointerUp(MixedRealityPointerEventData eventData)
-        {
-            pointerInputAction = eventData.MixedRealityInputAction;
-            if ((!CanInteract() && !HasPress))
-            {
-                return;
-            }
-
-            bool isGrab = false;
-            if (ShouldListen(eventData, out isGrab))
-            {
-                SetPress(false);
-                if (isGrab)
-                {
-                    // what if we have two hands grabbing?
-                    SetGrab(false);
-                }
-
-                SetGesture(false);
-
-                eventData.Use();
-            }
-        }
-
-        /// <summary>
-        /// Pointer down event has fired
-        /// </summary>
-        /// <param name="eventData"></param>
-        public void OnPointerDown(MixedRealityPointerEventData eventData)
-        {
-            pointerInputAction = eventData.MixedRealityInputAction;
-            if (!CanInteract())
-            {
-                return;
-            }
-
-            bool isGrab = false;
-            if (ShouldListen(eventData, out isGrab))
-            {
-                SetPress(true);
-                SetGrab(isGrab);
-
-                dragStart = eventData.Pointer.Position;
-                eventData.Use();
-            }
-        }
-
-        public void OnPointerDragged(MixedRealityPointerEventData eventData)
-        {
-            bool isGrab = false;
-            if (!HasGesture && CanInteract() && (ShouldListen(eventData, out isGrab) || eventData.MixedRealityInputAction.Description == "None") && (dragStart - eventData.Pointer.Position).magnitude > 0.1f)
-            {
-                SetGesture(true);
-            }
-        }
-
-        public void OnPointerClicked(MixedRealityPointerEventData eventData)
-        {
-            // let the Input Handlers know what the pointer action is
-            if (eventData != null)
-            {
-                pointerInputAction = eventData.MixedRealityInputAction;
-            }
-
-            // check to see if is global or focus - or - if is global, pointer event does not fire twice  - or - input event is not taking these actions already
-            if (!CanInteract() || (IsGlobal && inputTimer != null))
-            {
-                return;
-            }
-
-            if (StateManager != null)
-            {
-                bool isGrab = false;
-                if (eventData != null && ShouldListen(eventData, out isGrab))
-                {
-                    IncreaseDimensionIndex();
-                    SendOnClick(eventData.Pointer);
-                    SetVisited(true);
-                    StartInputTimer(false);
-                    print("click 1");
-                    eventData.Use();
-                }
-                else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
-                {
-                    IncreaseDimensionIndex();
-                    StartGlobalVisual(false);
-                    SendOnClick(null);
-                    StartInputTimer(false);
-                    SetVisited(true);
-                    print("click 1");
-                }
-                else if (eventData == null && HasPhysicalTouch) // handle touch interactions
-                {
-                    IncreaseDimensionIndex();
-                    StartGlobalVisual(false);
-                    SendOnClick(null);
-                    StartInputTimer(false);
-                    SetVisited(true);
-                    print("click 1");
-
-                }
-            }
-        }
-
-        /// <summary>
         /// Starts a timer to check if input is in progress
         ///  - Make sure global pointer events are not double firing
         ///  - Make sure Global Input events are not double firing
@@ -891,20 +776,54 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        protected virtual bool ShouldListen(MixedRealityPointerEventData eventData, out bool isGrab)
+        protected virtual bool ShouldListen(InputEventData data)
         {
-            if (eventData.Pointer as IMixedRealityNearPointer != null)
+            if (!(HasFocus || IsGlobal))
             {
-                isGrab = true;
-                return true;
-            }
-            else
-            {
-                isGrab = false;
+                return false;
             }
 
-            bool isListening = HasFocus || IsGlobal;
-            return eventData.MixedRealityInputAction == InputAction && isListening;
+            // Special case: Make sure that we are not being focused only by a PokePointer, since PokePointer
+            // dispatches touch events and should not be dispatching button presses like select, grip, menu, etc.
+            int pointerCount = 0;
+            int pokePointerCount = 0;
+            for (int i = 0; i < pointers.Count; i++)
+            {
+                if(pointers[i].InputSourceParent.SourceId == data.SourceId)
+                {
+                    pointerCount++;
+                    if (pointers[i] is PokePointer)
+                    {
+                        pokePointerCount++;
+                    }
+                }
+            }
+
+            if (pointerCount == pokePointerCount)
+            {
+                return false;
+            }
+
+            return data.MixedRealityInputAction == InputAction;
+        }
+
+        /// <summary>
+        /// Returns true if the inputeventdata is being dispatched from a near pointer
+        /// </summary>
+        /// <param name="eventData"></param>
+        /// <returns></returns>
+        private bool IsInputFromNearInteraction(InputEventData eventData)
+        {
+            bool isAnyNearpointerFocusing = false;
+            for (int i = 0; i < pointers.Count; i++)
+            {
+                if (pointers[i] is IMixedRealityNearPointer && pointers[i].InputSourceParent.SourceId == eventData.InputSource.SourceId)
+                {
+                    isAnyNearpointerFocusing = true;
+                    break;
+                }
+            }
+            return isAnyNearpointerFocusing;
         }
 
         /// <summary>
@@ -932,6 +851,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void TriggerOnClick()
         {
             OnPointerClicked(null);
+        }
+
+        public void OnPointerClicked(MixedRealityPointerEventData eventData)
+        {
+            // check to see if is global or focus - or - if is global, pointer event does not fire twice  - or - input event is not taking these actions already
+            if (!CanInteract() || (IsGlobal && inputTimer != null))
+            {
+                return;
+            }
+
+            if (StateManager != null)
+            {
+                if (eventData != null && ShouldListen(eventData))
+                {
+                    IncreaseDimensionIndex();
+                    SendOnClick(eventData.Pointer);
+                    SetVisited(true);
+                    StartInputTimer(false);
+                    eventData.Use();
+                }
+                else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
+                {
+                    IncreaseDimensionIndex();
+                    StartGlobalVisual(false);
+                    SendOnClick(null);
+                    StartInputTimer(false);
+                    SetVisited(true);
+                }
+                else if (eventData == null && HasPhysicalTouch) // handle touch interactions
+                {
+                    IncreaseDimensionIndex();
+                    StartGlobalVisual(false);
+                    SendOnClick(null);
+                    StartInputTimer(false);
+                    SetVisited(true);
+                }
+            }
         }
 
         /// <summary>
@@ -1084,7 +1040,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion VoiceCommands
 
-        #region NearInteractionHandlers
+        #region TouchHandlers
 
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
@@ -1101,7 +1057,46 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData){}
-
         #endregion NearInteractionHandlers
+
+
+        public void OnInputUp(InputEventData eventData)
+        {
+            if ((!CanInteract() && !HasPress))
+            {
+                return;
+            }
+
+            if (ShouldListen(eventData))
+            {
+                SetPress(false);
+                if (IsInputFromNearInteraction(eventData))
+                {
+                    // what if we have two hands grabbing?
+                    SetGrab(false);
+                }
+
+                SetGesture(false);
+
+                eventData.Use();
+            }
+        }
+
+        public void OnInputDown(InputEventData eventData)
+        {
+            if (!CanInteract())
+            {
+                return;
+            }
+
+            if (ShouldListen(eventData))
+            {
+                SetPress(true);
+                SetGrab(IsInputFromNearInteraction(eventData));
+
+                eventData.Use();
+            }
+        }
+
     }
 }
