@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region InspectorHelpers
         public static bool TryGetInputActions(out string[] descriptionsArray)
         {
-            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile)
+            if (!MixedRealityToolkit.ConfirmInitialized() || !MixedRealityToolkit.Instance.HasActiveProfile)
             {
                 descriptionsArray = null;
                 return false;

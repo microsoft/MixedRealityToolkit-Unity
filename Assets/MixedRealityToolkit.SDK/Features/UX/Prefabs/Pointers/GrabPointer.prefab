@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4338333115073164}
   - component: {fileID: 114997244636705472}
   - component: {fileID: 7376459786343609486}
+  - component: {fileID: 7543848034581082309}
   m_Layer: 0
   m_Name: GrabPointer
   m_TagString: Untagged
@@ -42,6 +43,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1507865967819406}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 2dfa7178ac1c18947adff71ef2792a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -70,7 +72,6 @@ MonoBehaviour:
   pointerExtent: 10
   defaultPointerExtent: 10
   sphereCastRadius: 0.15
-  pointerOrientation: 0
   debugMode: 0
 --- !u!114 &7376459786343609486
 MonoBehaviour:
@@ -81,6 +82,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1507865967819406}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 6682dc6245ac3fd4ea723a628fbee9ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -88,6 +90,23 @@ MonoBehaviour:
   visualsRoot: {fileID: 3410206553793258817}
   tetherEndPoint: {fileID: 7841524068500827546}
   tetherLine: {fileID: 7611780190825123387}
+--- !u!114 &7543848034581082309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507865967819406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 889e684278db8a542aa634e254b665aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointerVisual: {fileID: 7376459786343609486}
+  grabPointMesh: {fileID: 4300012, guid: fd9ad33176d03dd42885a4dce3cb38fb, type: 3}
+  grabPointMaterial: {fileID: 2100000, guid: fc1d56dcfc4950949a5b56a1399a1822, type: 2}
+  scale: 1.2
 --- !u!1 &3601038615599929105
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,13 +149,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3601038615599929105}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 81c169a39f8e430d869bbc5d938b0e5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineStartClamp: 0
-  lineEndClamp: 1
+  lineStartClamp: 0.0001
+  lineEndClamp: 0.9999
   customLineTransform: {fileID: 0}
   loops: 0
+  transformMode: 0
   rotationMode: 1
   flipUpVector: 0
   originOffset: {x: 0, y: 0, z: 0}
@@ -147,6 +168,7 @@ MonoBehaviour:
   - {x: 0, y: 1, z: 0}
   velocitySearchRange: 0.02
   distorters: []
+  distortionEnabled: 1
   distortionMode: 0
   distortionStrength:
     serializedVersion: 2
@@ -177,7 +199,7 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
   endPoint:
-    position: {x: 0.24, y: 0.18222976, z: 0}
+    position: {x: 0.5, y: 0.5, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!120 &4601683360483888622
 LineRenderer:
@@ -196,7 +218,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 11727442de02c1d4b8d37a063c748aec, type: 2}
+  - {fileID: 2100000, guid: e74b90b0fec1bef4fa500cebdb12d821, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -217,8 +239,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0.000023999999, y: 0.000018222976, z: 0}
-  - {x: 0.23997599, y: 0.18221153, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
@@ -227,7 +249,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.5
+        value: 0.15
         inSlope: 0
         outSlope: 0
         tangentMode: 34
@@ -236,7 +258,7 @@ LineRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0.5
+        value: 0.15
         inSlope: 0
         outSlope: 0
         tangentMode: 34
@@ -275,10 +297,10 @@ LineRenderer:
       m_Mode: 1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 8
-    numCapVertices: 8
+    numCornerVertices: 0
+    numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 3
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 1
@@ -292,6 +314,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3601038615599929105}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 1287d4d138a242f794bcfc01354d3ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -330,7 +353,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.5
+      value: 0.15
       inSlope: 0
       outSlope: 0
       tangentMode: 34
@@ -339,7 +362,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0.5
+      value: 0.15
       inSlope: 0
       outSlope: 0
       tangentMode: 34
@@ -352,12 +375,40 @@ MonoBehaviour:
   widthMultiplier: 0.01
   colorOffset: 0
   widthOffset: 0
-  stepMode: 0
+  stepMode: 1
   lineStepCount: 2
-  lineMaterial: {fileID: 2100000, guid: 11727442de02c1d4b8d37a063c748aec, type: 2}
-  roundedEdges: 1
-  roundedCaps: 1
+  pointDistributionMode: 0
+  customPointDistributionLength: 0.1
+  customPointDistributionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  lineMaterial: {fileID: 2100000, guid: e74b90b0fec1bef4fa500cebdb12d821, type: 2}
+  roundedEdges: 0
+  roundedCaps: 0
   lineRenderer: {fileID: 4601683360483888622}
+  tileMaterialByWorldLength: 1
+  tileMaterialScale: 48
 --- !u!1 &6853725420856786351
 GameObject:
   m_ObjectHideFlags: 0
