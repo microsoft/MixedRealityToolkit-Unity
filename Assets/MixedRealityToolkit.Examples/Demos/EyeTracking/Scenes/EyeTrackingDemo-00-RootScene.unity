@@ -6425,7 +6425,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 658445383, guid: d9db4fe4b37b2024ea85c888f8d74e12, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1597255435, guid: d9db4fe4b37b2024ea85c888f8d74e12, type: 3}
       propertyPath: keywords.Array.size
