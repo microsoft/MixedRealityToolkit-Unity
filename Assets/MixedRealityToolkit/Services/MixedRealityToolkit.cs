@@ -689,6 +689,8 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
+            internalShutdown = false;
+
             if (MixedRealityToolkit.activeInstance == null)
             {   // If we don't have an instance, set it here
                 // Set the instance to active
