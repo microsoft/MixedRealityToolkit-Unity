@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected string[] shaderOptions;
 
         protected string[] actionOptions = null;
+        protected string[] speechKeywords = null;
 
         protected static bool ProfilesSetup = false;
 
@@ -65,6 +67,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public sealed override void OnInspectorGUI()
         {
             if (actionOptions == null && !Interactable.TryGetInputActions(out actionOptions))
+            {
+                EditorGUILayout.HelpBox("Mixed Reality Toolkit is missing, configure it by invoking the 'Mixed Reality Toolkit > Add to Scene and Configure...' menu", MessageType.Error);
+            }
+
+            if (speechKeywords ==  null && !TryGetSpeechKeywords(out speechKeywords))
             {
                 EditorGUILayout.HelpBox("Mixed Reality Toolkit is missing, configure it by invoking the 'Mixed Reality Toolkit > Add to Scene and Configure...' menu", MessageType.Error);
             }
@@ -158,12 +165,37 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     actionId.intValue = newActionId;
                 }
             }
-            
+
+            EditorGUI.indentLevel = indentOnSectionStart + 1;
             SerializedProperty isGlobal = serializedObject.FindProperty("IsGlobal");
             isGlobal.boolValue = EditorGUILayout.Toggle(new GUIContent("Is Global", "Like a modal, does not require focus"), isGlobal.boolValue);
 
+            EditorGUI.indentLevel = indentOnSectionStart;
+
             SerializedProperty voiceCommands = serializedObject.FindProperty("VoiceCommand");
-            voiceCommands.stringValue = EditorGUILayout.TextField(new GUIContent("Voice Command", "A voice command to trigger the click event"), voiceCommands.stringValue);
+            
+            if(speechKeywords != null)
+            {
+                int currentIndex = KeywordLookup(voiceCommands.stringValue, speechKeywords);
+
+                Rect position = EditorGUILayout.GetControlRect();
+                GUIContent label = new GUIContent("Speech Command", "speech keyword to trigger Interactable");
+                EditorGUI.BeginProperty(position, label, voiceCommands);
+                {
+                    currentIndex = EditorGUI.Popup(position, label.text, currentIndex, speechKeywords);
+
+                    if (currentIndex > 0)
+                    {
+                        voiceCommands.stringValue = speechKeywords[currentIndex];
+                    }
+                    else
+                    {
+                        voiceCommands.stringValue = "";
+                        InspectorUIUtility.DrawNotice("Create speech commands in the MRTK/Input/Speech Commands Profile");
+                    }
+                }
+                EditorGUI.EndProperty();
+            }
 
             // show requires gaze because voice command has a value
             if (!string.IsNullOrEmpty(voiceCommands.stringValue))
@@ -175,6 +207,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
+
+            EditorGUILayout.Space();
 
             SerializedProperty dimensions = serializedObject.FindProperty("Dimensions");
             dimensions.intValue = EditorGUILayout.IntField(new GUIContent("Dimensions", "Toggle or sequence button levels"), dimensions.intValue);
@@ -671,6 +705,53 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected void SetupEventOptions()
         {
             eventOptions = InteractableEvent.GetEventTypes();
+        }
+
+        protected bool TryGetSpeechKeywords(out string[] keywords)
+        {
+            List<string> keys = new List<string>();
+            
+            if (MixedRealityToolkit.Instance && (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile != null ||
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length > 0))
+            {
+                int keywordCount = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length;
+
+                for (var i = 0; i < keywordCount; i++)
+                {
+                    keys.Add(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword);
+                }
+
+                keys.Insert(0, "None");
+                keywords = keys.ToArray();
+
+                return true;
+            }
+            else
+            {
+                keywords = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Get the index of the speech keyword array item based on it's name, pop-up field helper
+        /// </summary>
+        /// <param name="option"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public int KeywordLookup(string option, string[] options)
+        {
+            // starting on 1 to skip the "None" value
+            for (int i = 1; i < options.Length; i++)
+            {
+                if (options[i] == option)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
     }
 #endif
