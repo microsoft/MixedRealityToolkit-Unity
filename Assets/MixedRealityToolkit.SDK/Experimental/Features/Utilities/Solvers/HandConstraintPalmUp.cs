@@ -2,9 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 {
     /// <summary>
     /// Augments the HandConstraint to also check if the palm is facing the user before activation.

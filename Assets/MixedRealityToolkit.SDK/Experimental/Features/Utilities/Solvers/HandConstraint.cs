@@ -2,12 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 {
     /// <summary>
     /// Provides a solver that constrains the target to a region safe for hand constrained content.
