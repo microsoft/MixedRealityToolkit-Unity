@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            if (IsGlobal)
+            if (IsGlobal || !RequiresFocus)
             {
                 InputSystem.Register(gameObject);
             }
@@ -215,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnDisable()
         {
-            if (IsGlobal)
+            if (IsGlobal ||!RequiresFocus)
             {
                 InputSystem.Unregister(gameObject);
             }
@@ -942,7 +942,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 StartGlobalVisual(true);
                 IncreaseDimensionIndex();
-                OnPointerClicked(null);
+                SendOnClick(null);
                 eventData.Use();
             }
 
