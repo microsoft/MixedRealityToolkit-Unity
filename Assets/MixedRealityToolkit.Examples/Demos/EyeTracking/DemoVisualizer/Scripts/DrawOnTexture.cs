@@ -27,28 +27,44 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public Material HeatmapOverlayMaterialTemplate;
 
-        private IMixedRealityInputSystem inputSystem = null;
+        private EyeTrackingTarget eyeTarget = null;
 
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
+        private EyeTrackingTarget EyeTarget
         {
             get
             {
-                if (inputSystem == null)
+                if (eyeTarget == null)
                 {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                    eyeTarget = this.GetComponent<EyeTrackingTarget>();
                 }
-                return inputSystem;
+                return eyeTarget;
             }
         }
-
+        
         private void Update()
         {
-            if (UseLiveInputStream && InputSystem?.EyeGazeProvider?.GazeTarget == gameObject && InputSystem.EyeGazeProvider.IsEyeGazeValid)
+            //if (UseLiveInputStream && InputSystem?.EyeGazeProvider?.GazeTarget == gameObject && InputSystem.EyeGazeProvider.IsEyeGazeValid)
+            //{
+            //    DrawAtThisHitPos(InputSystem.EyeGazeProvider.HitPosition);
+            //}
+        }
+
+        private void Start()
+        {
+            if (EyeTarget != null)
             {
-                DrawAtThisHitPos(InputSystem.EyeGazeProvider.HitPosition);
+                EyeTarget.WhileLookingAtTarget.AddListener(OnLookAt);
+            }
+            Debug.Log("Start");
+        }
+
+        public void OnLookAt()
+        {
+            Debug.Log("OnLookAt");
+            if (UseLiveInputStream && (EyeTarget != null) && (EyeTarget.IsLookedAt))
+            {
+                Debug.Log("Draw");
+                DrawAtThisHitPos(EyeTrackingTarget.LookedAtPoint);
             }
         }
 
