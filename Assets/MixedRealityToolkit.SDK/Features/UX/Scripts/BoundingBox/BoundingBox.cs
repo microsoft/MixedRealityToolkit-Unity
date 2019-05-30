@@ -511,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Range(0.005f, 1.5f)]
         private float handleCloseProximity = 0.0015f;
         [SerializeField]
-        private float farScale = 0.5f;
+        private float farScale = 0.0f;
         [SerializeField]
         private float mediumScale = 2.0f;
         [SerializeField]
