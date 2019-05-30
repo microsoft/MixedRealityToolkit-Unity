@@ -38,6 +38,8 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static bool isApplicationQuitting = false;
 
+        private static bool internalShutdown = false;
+
         /// <summary>
         /// Checks if there is a valid instance of the MixedRealityToolkit, then checks if there is there a valid Active Profile.
         /// </summary>
@@ -710,6 +712,9 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void UnregisterInstance(MixedRealityToolkit toolkitInstance)
         {
+            // We are shutting this instance down.
+            internalShutdown = true;
+
             toolkitInstances.Remove(toolkitInstance);
 
             if (MixedRealityToolkit.activeInstance == toolkitInstance)
@@ -934,6 +939,8 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void DestroyAllServices()
         {
+            // NOTE: Service instances are destroyed as part of the unregister process.
+
             // Unregister core services (active systems).
             List<Type> serviceTypes = activeSystems.Keys.ToList<Type>();
             foreach (Type type in serviceTypes)
@@ -981,9 +988,6 @@ namespace Microsoft.MixedReality.Toolkit
             }
             serviceTuples.Clear();
             registeredMixedRealityServices.Clear();
-
-            // Destroy the service instances.
-            if (!ExecuteOnAllServices(service => service.Destroy())) { return; }
         }
 
         private bool ExecuteOnAllServices(Action<IMixedRealityService> execute)
@@ -1157,10 +1161,15 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Checks if the system is ready to get a service.
         /// </summary>
-        /// <param name="interfaceType"></param>
+        /// <param name="interfaceType">The interface type of the service being checked.</param>
         /// <returns></returns>
         private static bool CanGetService(Type interfaceType)
         {
+            if (isApplicationQuitting && !internalShutdown)
+            {
+                return false;
+            }
+
             if (!IsInitialized)
             {
                 Debug.LogError("The Mixed Reality Toolkit has not been initialized!");
