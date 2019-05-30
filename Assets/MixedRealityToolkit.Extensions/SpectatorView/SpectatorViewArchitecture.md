@@ -4,17 +4,17 @@
 
 ## Application Flow
 
-#### Pre-compilation
+### Pre-compilation
 1) All of the assets in the unity project are assigned unique identifiers. This allows content in the user's application scene to be recreated/updated/destroyed dynamically in the spectator's application scene. This is done through calling [Spectator View -> Update All Asset Caches](Scripts/Editor/StateSynchronizationMenuItems.cs) in the Unity toolbar.
 
 2) The main user's ip address as well as a network port are hardcoded in the application. This ip address allows spectator devices to connect to the user device. Hardcoding ip addresses and port numbers has limitations (The same compiled application cannot currently be used for different user devices). Long term, this matchmaking process will be replaced with a more robust solution.
 
-#### In application
+### In application
 1) First, the user's device starts listening for network connections on the specified network port. Spectator devices then connect to the user's device using the user ip address and the same network port. This is facilitated through the [TCPConnectionManager](../Socketer/Scripts/TCPConnectionManager.cs).
 
 2) With each connection, the user application sets up state synchronization and spatial alignment for the spectator application. Both state synchronization and spatial alignment use the same network connection, but they aren't directly related to one another and run in parallel.
 
-#### State synchronization
+### State synchronization
 1) On the user device, a [StateSynchronizationBroadcaster](Scripts/StateSynchronization/StateSynchronizationBroadcaster.cs) is enabled, while on the spectator device a 
 [StateSynchronizationObserver](Scripts/StateSynchronization/StateSynchronizationObserver.cs) is enabled.
     * These classes are responsible for delegating both network messages and network changes to the [StateSynchronizationSceneManager](Scripts/StateSynchronization/StateSynchronizationSceneManager.cs), which drives scene state synchronization.
@@ -45,7 +45,7 @@
 6) On the spectator device, the [StateSynchronizationSceneManager](Scripts/StateSynchronization/StateSynchronizationSceneManager.cs) will receive network messages to relay to the appropriate [ComponentBroadcasterServices](Scripts/StateSynchronization/ComponentBroadcasterService.cs). These messages signal component creation, updates and destruction on the users device. This component state information also contains unique component ids that allow specific instances of [ComponentBroadcasters](Scripts/StateSynchronization/ComponentBroadcaster.cs)
  on the user device to map 1:1 with specific instances of [ComponentObservers](Scripts/StateSynchronization/ComponentObserver.cs) on the spectator device. Through this state information, the spectator device's scene is updated to reflect content on the user's device.
 
-#### Spatial alignment
+### Spatial alignment
 
 # Networking
 
