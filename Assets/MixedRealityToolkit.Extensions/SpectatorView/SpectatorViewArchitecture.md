@@ -47,31 +47,7 @@
 
 ### Spatial alignment
 
-# Networking
-
-[TCPConnectionManager](../Socketer/Scripts/TCPConnectionManager.cs)
-
-[SocketEndpoint](../Socketer/Scripts/SocketEndpoint.cs)
-
-# State Synchronization
-
-[StateSynchronizationSceneManager](Scripts/StateSynchronization/StateSynchronizationSceneManager.cs)
-
-[StateSynchronizationBroadcaster](Scripts/StateSynchronization/StateSynchronizationBroadcaster.cs)
-
-[StateSynchronizationObserver](Scripts/StateSynchronization/StateSynchronizationObserver.cs)
-
-[CommandService](Scripts/StateSynchronization/CommandService.cs)
-
-[GameObjectHierarchyBroadcaster](Scripts/StateSynchronization/GameObjectHierarchyBroadcaster.cs)
-
-[ComponentBroadcasterService](Scripts/StateSynchronization/ComponentBroadcasterService.cs)
-
-[ComponentBroadcaster](Scripts/StateSynchronization/ComponentBroadcaster.cs)
-
-[ComponentObserver](Scripts/StateSynchronization/ComponentObserver.cs)
-
-[AssetCache](Scripts/StateSynchronization/AssetCache.cs)
+Coming soon...
 
 # Spatial Alignment
 
