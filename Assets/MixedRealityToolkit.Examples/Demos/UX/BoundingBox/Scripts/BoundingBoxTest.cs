@@ -91,10 +91,6 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             bbox.BoxPadding = Vector3.zero;
             yield return WaitForSpeechCommand();
 
-            SetStatus("FarScale = 1.5");
-            bbox.FarScale = 1.5f;
-            yield return WaitForSpeechCommand();
-
             SetStatus("Set scale handle widget prefab");
             bbox.ScaleHandleSize = 0.3f;
             Debug.Assert(scaleWidget != null);
