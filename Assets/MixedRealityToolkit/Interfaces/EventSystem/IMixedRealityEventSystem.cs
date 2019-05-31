@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,6 +18,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         List<GameObject> EventListeners { get; }
 
+        Dictionary<Type, HashSet<IEventSystemHandler>> HandlerListeners { get; }
+
         /// <summary>
         /// The main function for handling and forwarding all events to their intended recipients.
         /// </summary>
@@ -31,6 +34,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="listener"><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to add to <see cref="EventListeners"/>.</param>
         void Register(GameObject listener);
+
+        void RegisterHandler<T>(T handler) where T : IEventSystemHandler;
+        void UnregisterHandler<T>(T handler) where T : IEventSystemHandler;
 
         /// <summary>
         /// Unregisters a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening for events from this Event System.

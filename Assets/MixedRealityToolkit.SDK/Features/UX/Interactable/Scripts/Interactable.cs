@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (IsGlobal)
             {
-                InputSystem.Register(gameObject);
+                InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
             }
 
             // validate states and reset if needed
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (IsGlobal)
             {
-                InputSystem.Unregister(gameObject);
+                InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
             }
         }
 

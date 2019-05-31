@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             if (MixedRealityToolkit.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
             {
-                TeleportSystem.Register(gameObject);
+                TeleportSystem.RegisterHandler<IMixedRealityTeleportHandler>(this);
             }
         }
 
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 }
 
                 lateRegisterTeleport = false;
-                TeleportSystem.Register(gameObject);
+                TeleportSystem.RegisterHandler<IMixedRealityTeleportHandler>(this);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             base.OnDisable();
 
-            TeleportSystem?.Unregister(gameObject);
+            TeleportSystem?.UnregisterHandler<IMixedRealityTeleportHandler>(this);
         }
 
         private Vector2 currentInputPosition = Vector2.zero;
