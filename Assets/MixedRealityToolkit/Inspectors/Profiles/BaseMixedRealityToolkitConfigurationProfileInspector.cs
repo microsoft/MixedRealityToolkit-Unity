@@ -99,10 +99,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (docLink != null)
                 {
-                    GUIContent buttonContent = new GUIContent();
-                    buttonContent.image = EditorGUIUtility.IconContent("_Help").image;
-                    buttonContent.text = " Documentation";
-                    buttonContent.tooltip = docLink.URL;
+                    var buttonContent = new GUIContent()
+                    {
+                        image = MixedRealityEditorUtility.HelpIcon,
+                        text = " Documentation",
+                        tooltip = docLink.URL,
+                    };
+
                     if (MixedRealityEditorUtility.RenderIndentedButton(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(MixedRealityInspectorUtility.DocLinkWidth)))
                     {
                         Application.OpenURL(docLink.URL);
