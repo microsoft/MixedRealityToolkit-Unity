@@ -20,6 +20,8 @@
 4. In both the Android and WSA unity player settings, add the SPATIALALIGNMENT_ASA preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 5. In your Unity project, call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
 
+>> NOTE: Both the HoloLens and android applications should be compiled from the same PC with the same unity project. Updating the asset cache assigns unique identifiers to each item in the unity project. Doing this on different computers can break synchronization.
+
 ### HoloLens scene setup
 6. Add the [SpectatorView.ASA.HoloLens prefab](Prefabs/SpectatorView.ASA.HoloLens.prefab) to the scene you intend to run on the HoloLens device.
 7. Add a GameObjectHierarchyBroadcaster to the root game object of the content you want synchronized. 
@@ -35,3 +37,7 @@
 15. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
 16. In the unity inspector, set the Account Domain, Account Id and Account Key for the Spatial Anchors Localizer using values you obtained creating an azure spatial anchors account above.
 17. Build and deploy the application to your android device.
+
+# Example Scenes
+HoloLens: [SpectatorView.ASA.HoloLens](Scenes/SpectatorView.ASA.HoloLens.unity)
+Android: [SpectatorView.ASA.Android](Scenes/SpectatorView.ASA.Android.unity)
