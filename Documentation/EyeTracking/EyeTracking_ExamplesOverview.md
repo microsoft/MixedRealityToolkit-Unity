@@ -15,7 +15,7 @@ The [Eye Tracking example package](https://github.com/Microsoft/MixedRealityTool
 
 - EyeTrackingDemo-00-RootScene.unity:
 This is the main (_root_) scene that has all the core MRTK components included.
-It comes with a graphical scene menu that allows you to easily switch between the different Eye Tracking scenes which will be [loaded additively](href:https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
+It comes with a graphical scene menu that allows you to easily switch between the different Eye Tracking scenes which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
 To try out the Eye Tracking demos in your Unity Player, all you have to do is to load this scene and hit play.
 Make sure that the _'OnLoad_StartScene'_ script is enabled for this so that the root scene knows which additive scene to load first.
 

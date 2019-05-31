@@ -45,6 +45,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247086986094436}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 04b1ba3412a235c4d8c3eb2a18528b67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -158,7 +159,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.2
+        value: 0.15
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -167,7 +168,7 @@ LineRenderer:
         outWeight: 0
       - serializedVersion: 3
         time: 1
-        value: 0.2
+        value: 0.15
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -223,6 +224,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247086986094436}
   m_Enabled: 0
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 1287d4d138a242f794bcfc01354d3ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -261,7 +263,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.2
+      value: 0.15
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -270,7 +272,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0.2
+      value: 0.15
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -324,6 +326,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247086986094436}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 1287d4d138a242f794bcfc01354d3ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -362,7 +365,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.2
+      value: 0.15
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -371,7 +374,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0.2
+      value: 0.15
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -425,6 +428,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247086986094436}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 2a969079783d81144bce7e89bd03ac89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -617,12 +621,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247086986094436}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 9f0601d0cb497ac4a95c6f4b33459229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bezier: {fileID: 8090720277987393429}
-  inertia: 10
-  dampen: 6
-  seekTargetStrength: 1.5
+  inertia: 15
+  dampen: 12
+  seekTargetStrength: 5
   p1Target: {x: 0, y: 0, z: 0.33}
   p2Target: {x: 0, y: 0, z: 0.66}

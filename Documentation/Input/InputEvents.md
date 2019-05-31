@@ -1,6 +1,11 @@
 # Input Events
 
-At the script level you consume input events by implementing one of the event handler interfaces:
+At the script level you consume input events by implementing one of the event handler interfaces shown in the table below.
+
+> [!IMPORTANT]
+> By default a script will receive events only while in focus by a pointer. To receive events while out of focus, in addition to implementing the desired handler interfaces, you have to do one of the following:
+> - Register the script's game object as a global listener via [`MixedRealityToolkit.InputSystem.Register`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem).
+> - Derive the script from [`InputSystemGlobalListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener).
 
 Handler | Events | Description
 --- | --- | ---
@@ -13,8 +18,6 @@ Handler | Events | Description
 [`IMixedRealityGestureHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler) | Gesture Started / Updated / Completed / Canceled | Raised on gesture detection.
 [`IMixedRealityGestureHandler<T>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) | Gesture Updated / Completed | Raised on detection of gestures containing additional data of the given type. See [**Gesture Events**](Gestures.md#gesture-events) for details on possible values for **T**.
 [`IMixedRealityHandJointHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler) | Hand Joints Updated | Raised by articulated hand controllers when hand joints are updated.
-[`IMixedRealityHandMeshHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler) | Hand Mesh Updated |  Raised by articulated hand controllers when a hand mesh is updated.
+[`IMixedRealityHandMeshHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler) | Hand Mesh Updated | Raised by articulated hand controllers when a hand mesh is updated.
+[`IMixedRealityInputActionHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputActionHandler) | Action Started / Ended | Raise to indicate action start and end for inputs mapped to actions.
 
-By default a script will receive events only while in focus by a pointer. To receive events while out of focus, in addition to implementing the desired handler interfaces, you have to do one of the following:
-- Register the script's game object as a global listener via [`MixedRealityToolkit.InputSystem.Register`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem).
-- Derive the script from [`InputSystemGlobalListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener).

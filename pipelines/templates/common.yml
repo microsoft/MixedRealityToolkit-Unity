@@ -1,0 +1,35 @@
+# [Template] Common build tasks shared between CI builds and PR validation.
+
+steps:
+# Build UWP x86
+- template: tasks/unitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PublishArtifacts: true
+
+# Build UWP ARM
+- template: tasks/unitybuild.yml
+  parameters:
+    Arch: 'arm'
+    Platform: 'UWP'
+    UnityArgs: '-targetUwpSdk 10.0.18432.0'
+    PublishArtifacts: true
+    PackagingDir: 'ARM'
+
+# Build UWP x86 .NET backend
+- template: tasks/unitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PublishArtifacts: true
+    ScriptingBackend: '.NET'
+
+# Build Standalone x86
+- template: tasks/unitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+
+- template: assetretargeting.yml
+- template: tests.yml

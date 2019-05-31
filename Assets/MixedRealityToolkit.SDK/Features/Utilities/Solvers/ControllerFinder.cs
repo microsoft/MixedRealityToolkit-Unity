@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// The active instance of the input system.
         /// </summary>
-        private IMixedRealityInputSystem InputSystem
+        protected IMixedRealityInputSystem InputSystem
         {
             get
             {

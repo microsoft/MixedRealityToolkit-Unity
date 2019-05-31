@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -81,10 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Each object listed must have a script that implements the IHandPanHandler interface or it will not receive events")]
         private GameObject[] panEventReceivers = null;
 
-        [Header("Geometry")]
+        [Header("Visual affordance")]
         [SerializeField]
         [Tooltip("If affordace geometry is desired to emphasize the touch points(leftPoint and rightPoint) and the center point between them (reticle), assign them here.")]
-        private GameObject reticle = null;
+        [FormerlySerializedAs("reticle")]
+        private GameObject centerPoint = null;
         [SerializeField]
         private GameObject leftPoint = null;
         [SerializeField]
@@ -97,6 +99,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return currentScale; }
         }
+
+        [Header("Events")]
+        public UnityEvent PanStarted;
+        public UnityEvent PanStopped;
+
         #endregion Serialized Fields
 
 
@@ -181,9 +188,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (affordancesVisible)
                 {
-                    if (reticle != null)
+                    if (centerPoint != null)
                     {
-                        reticle.transform.position = GetContactCenter();
+                        centerPoint.transform.position = GetContactCenter();
                     }
                     if (leftPoint != null)
                     {
@@ -425,9 +432,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void SetAffordancesActive(bool active)
         {
             affordancesVisible = active;
-            if (reticle != null)
+            if (centerPoint != null)
             {
-                reticle.SetActive(affordancesVisible);
+                centerPoint.SetActive(affordancesVisible);
             }
             if (leftPoint != null)
             {
@@ -643,21 +650,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
         private bool TryGetHandPositionFromController(IMixedRealityController controller, TrackedHandJoint joint, out Vector3 position)
         {
-            if (controller != null && controller.Visualizer is IMixedRealityHandVisualizer)
+            if (controller != null &&
+                HandJointUtils.TryGetJointPose(joint, controller.ControllerHandedness, out MixedRealityPose pose))
             {
-                if ((controller.Visualizer as IMixedRealityHandVisualizer).TryGetJointTransform(joint, out Transform palm) == true)
-                {
-                    position = palm.position;
-                    return true;
-                }
-            }
-            else if (controller != null)
-            {
-                if (true == HandJointUtils.TryGetJointPose(joint, controller.ControllerHandedness, out MixedRealityPose pose))
-                {
-                    position = pose.Position;
-                    return true;
-                }
+                position = pose.Position;
+                return true;
             }
 
             position = Vector3.zero;
@@ -688,6 +685,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             UpdateTouchUVOffset(sourceId);
             FirePanStarted(sourceId);
+            PanStarted?.Invoke();
         }
         private void EndTouch(uint sourceId)
         {
@@ -695,6 +693,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 handDataMap.Remove(sourceId);
                 FirePanEnded(0);
+                PanStopped?.Invoke();
             }
         }
         private void EndAllTouches()

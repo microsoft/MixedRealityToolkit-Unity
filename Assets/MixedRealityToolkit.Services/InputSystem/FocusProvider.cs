@@ -32,6 +32,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
 
+        /// <summary>
+        /// Number of IMixedRealityNearPointers that are active (IsInteractionEnabled == true).
+        /// </summary>
+        public int NumNearPointersActive { get; private set; }
+
+        /// <summary>
+        /// The number of pointers that support far interaction (like motion controller rays, hand rays) that 
+        /// are active (IsInteractionEnabled == true), excluding the gaze cursor
+        /// </summary>
+        public int NumFarPointersActive { get; private set; }
+        
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
@@ -429,6 +440,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
@@ -436,19 +449,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!IsSetupValid) { return; }
 
-#if UNITY_EDITOR
-            var existingUiRaycastCameraObject = GameObject.Find("UIRaycastCamera");
-
-            if (existingUiRaycastCameraObject != null)
-            {
-                Debug.LogError("There's already a UIRaycastCamera in the scene. It will be ignored, so please delete it to avoid confusion.", existingUiRaycastCameraObject);
-            }
-#endif
-
             if (Application.isPlaying)
             {
                 Debug.Assert(uiRaycastCamera == null);
-                CreateUiRaycastCamera();
+                FindOrCreateUiRaycastCamera();
             }
 
             foreach (var inputSource in InputSystem.DetectedInputSources)
@@ -529,10 +533,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Utility for creating the UIRaycastCamera.
         /// </summary>
         /// <returns>The UIRaycastCamera</returns>
-        private void CreateUiRaycastCamera()
+        private void FindOrCreateUiRaycastCamera()
         {
-            var cameraObject = new GameObject { name = "UIRaycastCamera" };
-            uiRaycastCamera = cameraObject.AddComponent<Camera>();
+            GameObject cameraObject = null;
+
+            var existingUiRaycastCameraObject = GameObject.Find("UIRaycastCamera");
+            if (existingUiRaycastCameraObject != null)
+            {
+                cameraObject = existingUiRaycastCameraObject;
+            }
+            else
+            {
+                cameraObject = new GameObject { name = "UIRaycastCamera" };
+            }
+
+            uiRaycastCamera = cameraObject.EnsureComponent<Camera>();
             uiRaycastCamera.enabled = false;
             uiRaycastCamera.clearFlags = CameraClearFlags.Color;
             uiRaycastCamera.backgroundColor = new Color(0, 0, 0, 1);
@@ -551,9 +566,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             uiRaycastCamera.targetDisplay = 0;
             uiRaycastCamera.stereoTargetEye = StereoTargetEyeMask.Both;
 
-            // Set target texture to specific pixel size so that drag thresholds are treated the same regardless of underlying
-            // device display resolution.
-            uiRaycastCameraTargetTexture = new RenderTexture(128, 128, 0);
+            if (uiRaycastCameraTargetTexture == null)
+            {
+                // Set target texture to specific pixel size so that drag thresholds are treated the same regardless of underlying
+                // device display resolution.
+                uiRaycastCameraTargetTexture = new RenderTexture(128, 128, 0);
+            }
+
             uiRaycastCamera.targetTexture = uiRaycastCameraTargetTexture;
         }
 
@@ -596,9 +615,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             IMixedRealityPointerMediator mediator = null;
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
+            if (InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
             {
-                mediator = Activator.CreateInstance(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
+                mediator = Activator.CreateInstance(InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
             }
 
             if (mediator != null)
@@ -829,37 +848,52 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return (hit1.hitObject != null) ? hit1 : hit2;
         }
-
+        
         /// <summary>
         /// Disable inactive pointers to unclutter the way for active ones.
         /// </summary>
         private void ReconcilePointers()
         {
             var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
-            if (gazePointer != null)
+            NumFarPointersActive = 0;
+            NumNearPointersActive = 0;
+            int numFarPointersWithoutCursorActive = 0;
+
+            foreach (var pointerData in pointers)
             {
-                int numFarCursors = 0;
-                int numNearPointersActive = 0;
-                foreach (var p in pointers)
+                if (pointerData.Pointer is IMixedRealityNearPointer)
                 {
-                    if (p.Pointer != null)
+                    if (pointerData.Pointer.IsInteractionEnabled)
                     {
-                        if (p.Pointer is IMixedRealityNearPointer)
-                        {
-                            if (p.Pointer.IsInteractionEnabled)
-                            {
-                                numNearPointersActive++;
-                            }
-                        }
-                        else if (p.Pointer.BaseCursor != null)
-                        {
-                            numFarCursors++;
-                        }
+                        NumNearPointersActive++;
                     }
                 }
+                else if (
+                    // pointerData.Pointer.BaseCursor == null means this is a GGV Pointer
+                    pointerData.Pointer.BaseCursor != null
+                    && !(pointerData.Pointer == gazePointer)
+                    && pointerData.Pointer.IsInteractionEnabled)
+                {
+                    // We ignore the currentGazePointer here because for cases like HoloLens 1
+                    // hand input or the gamepad, we want to show the cursor still.
+                    NumFarPointersActive++;
+                }
+                else if (pointerData.Pointer.BaseCursor == null
+                    && pointerData.Pointer.IsInteractionEnabled)
+                {
+                    numFarPointersWithoutCursorActive++;
+                }
+            }
+            if (gazePointer != null)
+            {
+                gazePointerStateMachine.UpdateState(
+                    NumNearPointersActive,
+                    NumFarPointersActive,
+                    numFarPointersWithoutCursorActive,
+                    InputSystem.EyeGazeProvider.IsEyeGazeValid);
+
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
-                // Show the gaze cursor if there are no other pointers that are showing a cursor
-                gazePointer.IsInteractionEnabled = numFarCursors == 1 && numNearPointersActive == 0;
+                gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;
             }
         }
 
@@ -1186,6 +1220,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+
         #endregion ISourceState Implementation
+
+        #region IMixedRealitySpeechHandler Implementation
+        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
+        {
+            gazePointerStateMachine.OnSpeechKeywordRecognized(eventData);
+        }
+        #endregion
     }
 }

@@ -31,7 +31,9 @@ namespace Microsoft.MixedReality.Toolkit
 
                 if (CameraCache.Main.transform.parent == null)
                 {
-                    mixedRealityPlayspace = new GameObject(Name).transform;
+                    // Create a new mixed reality playspace
+                    GameObject mixedRealityPlayspaceGo = new GameObject(Name);
+                    mixedRealityPlayspace = mixedRealityPlayspaceGo.transform;
                     CameraCache.Main.transform.SetParent(mixedRealityPlayspace);
                 }
                 else

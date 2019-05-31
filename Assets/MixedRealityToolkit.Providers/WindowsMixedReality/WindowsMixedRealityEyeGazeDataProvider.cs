@@ -28,19 +28,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </summary>
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
         /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
-        /// <param name="inputSystemProfile">The input system configuration profile.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsMixedRealityEyeGazeDataProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile inputSystemProfile,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
 
         public bool SmoothEyeTracking { get; set; } = false;
+
+        public IMixedRealityEyeSaccadeProvider SaccadeProvider => this;
 
         private readonly float smoothFactorNormalized = 0.96f;
         private readonly float saccadeThreshInDegree = 2.5f; // In degrees (not radians)

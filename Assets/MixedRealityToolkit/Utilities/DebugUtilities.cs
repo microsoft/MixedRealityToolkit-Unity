@@ -75,5 +75,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 Debug.DrawLine(a, b, color);
             }
         }
+
+        /// <summary>
+        /// Draws the minimum and maximum points of the given bounds
+        /// </summary>
+        /// <param name="bounds"></param>
+        /// <param name="minColor"></param>
+        /// <param name="maxColor"></param>
+        public static void DrawBounds(Bounds bounds, Color minColor, Color maxColor)
+        {
+            DrawPoint(bounds.min, minColor);
+            DrawPoint(bounds.max, maxColor);
+        }
     }
 }
