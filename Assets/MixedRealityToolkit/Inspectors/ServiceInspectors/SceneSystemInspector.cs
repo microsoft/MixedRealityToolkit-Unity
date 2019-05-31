@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (Application.isPlaying)
                 {
-                    ServiceContentLoadNext(sceneSystem);
+                    ServiceContentLoadPrev(sceneSystem);
                 }
                 else
                 {

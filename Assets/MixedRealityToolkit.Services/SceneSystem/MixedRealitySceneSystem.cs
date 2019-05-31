@@ -240,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public async Task LoadPrevContent(bool wrap = false, LoadSceneMode mode = LoadSceneMode.Single, SceneActivationToken activationToken = null)
         {
             string prevContent;
-            if (contentTracker.GetNextContent(wrap, out prevContent))
+            if (contentTracker.GetPrevContent(wrap, out prevContent))
             {
                 await LoadContent(new string[] { prevContent }, mode, activationToken);
             }
