@@ -36,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         Color defaultHeaderColor = (Color)new Color32(194, 194, 194, 255);
 
         const int headerXOffset = 48;
-        const int docLinkWidth = 175;
 
         [SerializeField]
         private Texture2D logoLightTheme = null;
@@ -98,10 +97,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
             InitializeServiceInspectorLookup();
 
-            bool drawDocLink = DrawDocLink(facade.ServiceType);
             bool drawDataProviders = DrawDataProviders(facade.ServiceType);
             bool drawProfile = DrawProfile(facade.ServiceType);
             bool drawInspector = DrawInspector(facade);
+
+            // Only draw the doc link if we didn't draw a profile
+            // Profiles include doc links by default now
+            if (!drawProfile)
+            {
+                DrawDocLink(facade.ServiceType);
+            }
 
             bool drewSomething = drawProfile | drawInspector | drawDataProviders;
 
@@ -131,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button(buttonContent, GUILayout.MaxWidth(docLinkWidth)))
+                if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(MixedRealityInspectorUtility.DocLinkWidth)))
                 {
                     Application.OpenURL(docLink.URL);
                 }
