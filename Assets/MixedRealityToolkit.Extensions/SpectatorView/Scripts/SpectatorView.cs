@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         public Role Role;
 
+        [Header("State Synchronization")]
         /// <summary>
         /// User ip address
         /// </summary>
@@ -61,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private GameObjectHierarchyBroadcaster broadcastedContent = null;
 
+        [Header("Spatial Alignment")]
         /// <summary>
         /// Parent of the main camera, spatial coordinate system transforms will be applied to this game object.
         /// </summary>
