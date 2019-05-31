@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public GameObject GazeTarget { get; private set; }
 
         /// <inheritdoc />
-        public RaycastHit HitInfo { get; private set; }
+        public RaycasterHit HitInfo { get; private set; }
 
         /// <inheritdoc />
         public Vector3 HitPosition { get; private set; }
@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (Result != null)
                 {
-                    gazeProvider.HitInfo = Result.Details.LastRaycastHit;
+                    gazeProvider.HitInfo = Result.Details.LastRaycasterHit;
                     gazeProvider.GazeTarget = Result.Details.Object;
 
                     if (Result.Details.Object != null)

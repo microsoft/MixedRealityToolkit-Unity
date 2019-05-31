@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private class PointerHitResult
         {
-            public RaycastHit raycastHit;
+            public RaycasterHit raycastHit;
             public RaycastResult graphicsRaycastResult;
 
             public GameObject hitObject;
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public void Clear()
             {
-                raycastHit = default(RaycastHit);
+                raycastHit = default;
                 graphicsRaycastResult = default(RaycastResult);
 
                 hitObject = null;
@@ -200,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public void Set(GameObject hitObject, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
-                raycastHit = default(RaycastHit);
+                raycastHit = default;
                 graphicsRaycastResult = default(RaycastResult);
 
                 this.hitObject = hitObject;
@@ -215,14 +215,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Set hit focus information from a physics raycast.
             /// </summary>
-            public void Set(RaycastHit hit, RayStep ray, int rayStepIndex, float rayDistance)
+            public void Set(RaycasterHit hit, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = hit;
                 graphicsRaycastResult = default(RaycastResult);
 
-                hitObject = hit.transform.gameObject;
-                hitPointOnObject = hit.point;
-                hitNormalOnObject = hit.normal;
+                hitObject = hit.Transform.gameObject;
+                hitPointOnObject = hit.Point;
+                hitNormalOnObject = hit.Normal;
 
                 this.ray = ray;
                 this.rayStepIndex = rayStepIndex;
@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public void Set(RaycastResult result, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
-                raycastHit = default(RaycastHit);
+                raycastHit = default;
                 graphicsRaycastResult = result;
 
                 this.hitObject = result.gameObject;
@@ -306,7 +306,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 PreviousPointerTarget = CurrentPointerTarget;
 
                 focusDetails.Object = hitResult.hitObject;
-                focusDetails.LastRaycastHit = hitResult.raycastHit;
+                focusDetails.LastRaycasterHit = hitResult.raycastHit;
                 focusDetails.LastGraphicsRaycastResult = hitResult.graphicsRaycastResult;
 
                 if (hitResult.rayStepIndex >= 0)
@@ -907,7 +907,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycasterProvider raycaster, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
         {
             float rayStartDistance = 0;
-            RaycastHit physicsHit;
+            RaycasterHit physicsHit;
             RayStep[] pointerRays = pointer.Rays;
 
             if (pointerRays == null)
@@ -991,12 +991,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static void UpdatePointerRayOnHit(RayStep[] raySteps, RaycastHit physicsHit, int hitRayIndex, float rayStartDistance, PointerHitResult hit)
+        private static void UpdatePointerRayOnHit(RayStep[] raySteps, RaycasterHit physicsHit, int hitRayIndex, float rayStartDistance, PointerHitResult hit)
         {
             Vector3 origin = raySteps[hitRayIndex].Origin;
-            Vector3 terminus = physicsHit.point;
+            Vector3 terminus = physicsHit.Point;
             raySteps[hitRayIndex].UpdateRayStep(ref origin, ref terminus);
-            hit.Set(physicsHit, raySteps[hitRayIndex], hitRayIndex, rayStartDistance + physicsHit.distance);
+            hit.Set(physicsHit, raySteps[hitRayIndex], hitRayIndex, rayStartDistance + physicsHit.Distance);
         }
 
         #endregion Physics Raycasting

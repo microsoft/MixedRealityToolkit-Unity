@@ -275,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         {
                             // If it's NOT a hotspot, check if the hit normal is too steep
                             // (Hotspots override dot requirements)
-                            TeleportSurfaceResult = Vector3.Dot(Result.Details.LastRaycastHit.normal, Vector3.up) > upDirectionThreshold
+                            TeleportSurfaceResult = Vector3.Dot(Result.Details.LastRaycasterHit.Normal, Vector3.up) > upDirectionThreshold
                                 ? TeleportSurfaceResult.Valid
                                 : TeleportSurfaceResult.Invalid;
                         }
