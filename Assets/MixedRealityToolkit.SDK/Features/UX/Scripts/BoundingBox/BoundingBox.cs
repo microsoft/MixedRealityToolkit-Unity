@@ -776,6 +776,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
         private static readonly string rigRootName = "rigRoot";
+        private List<Vector3> inputPoints = new List<Vector3>();
 
         #endregion Private Properties
 
@@ -1815,12 +1816,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private void ScaleHandleByProximity(Transform handle, Renderer renderer, HandleProximityState state, Vector3 leftHand, Vector3 rightHand, Vector3 gazePoint, float defaultScale)
+        private void ScaleHandleByProximity(Transform handle, Renderer renderer, HandleProximityState state, List<Vector3> points, float defaultScale)
         {
-            float leftDistanceSqr = float.IsNaN(leftHand.x) == false ? (handle.position - leftHand).sqrMagnitude : float.MaxValue;
-            float rightDistanceSqr = float.IsNaN(rightHand.x) == false ? (handle.position - rightHand).sqrMagnitude : float.MaxValue;
-            float eyeDistSqr = float.IsNaN(gazePoint.x) == false ? (handle.position - gazePoint).sqrMagnitude : float.MaxValue;
-            float closestDistanceSqr = Mathf.Min(eyeDistSqr, Mathf.Min(leftDistanceSqr, rightDistanceSqr));
+            float closestDistanceSqr = float.MaxValue;
+            foreach (Vector3 point in points)
+            {
+                closestDistanceSqr = Mathf.Min(closestDistanceSqr,(handle.position - point).sqrMagnitude);
+            }
 
             if (closestDistanceSqr < handleCloseProximity)
             {
@@ -1863,24 +1865,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 //only use proximity effect if nothing is being dragged or grabbed
                 if (currentPointer == null && forceFar == false)
                 {
-                    Vector3 leftHandPoint;
-                    Vector3 rightHandPoint;
-                    Vector3 eyePt;
+                    inputPoints.Clear();
+                    Vector3 point;
+                    if (TryGetPointerPoint(Handedness.Left, out point))
+                    {
+                        inputPoints.Add(point);
+                    }
+                    if (TryGetPointerPoint(Handedness.Right, out point))
+                    {
+                        inputPoints.Add(point);
+                    }
+                    if (TryGetEyeGazePoint(out point))
+                    {
+                        inputPoints.Add(point);
+                    }
 
-                    TryGetPointerPoint(Handedness.Left, out leftHandPoint);
-                    TryGetPointerPoint(Handedness.Right, out rightHandPoint);
-                    TryGetEyeGazePoint(out eyePt);
+                    GetControllerPoints(inputPoints);
 
-                    if (!float.IsNaN(leftHandPoint.x) || !float.IsNaN(rightHandPoint.x) || !float.IsNaN(eyePt.x))
+                    if (inputPoints.Count > 0)
                     {
                         for (int i = 0; i < corners.Count; ++i)
                         {
-                            ScaleHandleByProximity(corners[i], cornerRenderers.Count > 0 ? cornerRenderers[i] : null, cornersProximate[i], leftHandPoint, rightHandPoint, eyePt, scaleHandleSize);
+                            ScaleHandleByProximity(corners[i], cornerRenderers.Count > 0 ? cornerRenderers[i] : null, cornersProximate[i], inputPoints, scaleHandleSize);
                         }
 
                         for (int i = 0; i < balls.Count; ++i)
                         {
-                            ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], leftHandPoint, rightHandPoint, eyePt, rotationHandleDiameter);
+                            ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], inputPoints, rotationHandleDiameter);
                         }
                     }
                 }
@@ -1959,6 +1970,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             point = new Vector3(float.NaN, float.NaN, float.NaN);
             return false;
+        }
+        private void GetControllerPoints(List<Vector3> points)
+        {
+            foreach (IMixedRealityInputSource source in inputSystem.DetectedInputSources)
+            {
+                if (source.SourceType == InputSourceType.Controller && source.Pointers[0].Result != null)
+                {
+                    points.Add(source.Pointers[0].Result.Details.Point);
+                }
+            }
         }
         private void Flatten()
         {
@@ -2176,7 +2197,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (sourcesDetected.Count == 0 || sourcesDetected.Contains(eventData.Controller) == false)
                 {
                     sourcesDetected.Add(eventData.Controller);
-                    Debug.Log(eventData.Controller.InputSource.SourceName);
                 }
             }
         }
