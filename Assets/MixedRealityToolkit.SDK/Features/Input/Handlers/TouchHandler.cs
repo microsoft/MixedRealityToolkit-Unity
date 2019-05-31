@@ -16,16 +16,16 @@ public class TouchHandler : MonoBehaviour, IMixedRealityTouchHandler
 
     void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
     {
-        OnTouchCompleted.Invoke(new TouchEventData { });
+        OnTouchCompleted.Invoke(new TouchEventData(eventData));
     }
 
     void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
     {
-        OnTouchStarted.Invoke(new TouchEventData { });
+        OnTouchStarted.Invoke(new TouchEventData(eventData));
     }
 
     void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
     {
-        OnTouchUpdated.Invoke(new TouchEventData { });
+        OnTouchUpdated.Invoke(new TouchEventData(eventData));
     }
 }
