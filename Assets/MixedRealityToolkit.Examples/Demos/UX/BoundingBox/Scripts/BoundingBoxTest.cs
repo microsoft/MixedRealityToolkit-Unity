@@ -53,10 +53,6 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             bbox.HideElementsInInspector = false;
             bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
             var mh = cube.AddComponent<ManipulationHandler>();
-            bbox.CloseScale = 1.8f;
-            bbox.MediumScale = 1.5f;
-            bbox.FarScale = 1.0f;
-            bbox.ScaleHandleSize = 0.04f;
             yield return WaitForSpeechCommand();
 
             SetStatus("HideElementsInInspector true");

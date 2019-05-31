@@ -831,6 +831,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region MonoBehaviour Methods
         private void Start()
         {
+            //override Shell Parity settings if no prefab is specified for corner handles;
+            if (scaleHandlePrefab == null)
+            {
+                closeScale = 1.8f;
+                mediumScale = 1.5f;
+                farScale = 1.0f;
+                scaleHandleSize = 0.04f;
+            }
             CreateRig();
             CaptureInitialState();
 
