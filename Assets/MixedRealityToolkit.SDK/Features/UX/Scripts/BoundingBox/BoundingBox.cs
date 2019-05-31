@@ -685,8 +685,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = InputSystem?.EyeGazeProvider);
         private IMixedRealityEyeGazeProvider eyeTrackingProvider = null;
 
-
-
         private List<IMixedRealityInputSource> touchingSources;
         private List<Transform> links;
         private List<Transform> corners;
@@ -1954,7 +1952,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         private bool TryGetEyeGazePoint(out Vector3 point)
         {
-            if (EyeTrackingProvider != null && EyeTrackingProvider.GazePointer != null)
+            if (EyeTrackingProvider != null && EyeTrackingProvider.GazePointer != null && eyeTrackingProvider.GazePointer.Result != null)
             {
                 point = eyeTrackingProvider.GazePointer.Result.Details.Point;
                 return true;
@@ -2079,10 +2077,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
-        {
-           
-        }
+        void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData) { }
 
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
@@ -2181,6 +2176,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (sourcesDetected.Count == 0 || sourcesDetected.Contains(eventData.Controller) == false)
                 {
                     sourcesDetected.Add(eventData.Controller);
+                    Debug.Log(eventData.Controller.InputSource.SourceName);
                 }
             }
         }
