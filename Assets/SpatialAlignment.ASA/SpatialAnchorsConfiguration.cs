@@ -12,34 +12,39 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
     [Serializable]
     public class SpatialAnchorsConfiguration
     {
+        [Header("Azure Spatial Anchor Prototyping Properties")]
         /// <summary>
-        /// The AAD Access Token to use for Azure Spatial Anchors.
+        /// The Account Domain URL to use for Azure Spatial Anchors. NOTE: These values should be used for development/prototyping.
+        /// In the shipping application its strongly recommended to use user-based or server-based AAD authentication approaches.
         /// </summary>
-        [Tooltip("The AAD Access Token to use for Azure Spatial Anchors.")]
-        public string AccessToken;
-
-        /// <summary>
-        /// The Account Domain URL to use for Azure Spatial Anchors.
-        /// </summary>
-        [Tooltip("The Account Domain URL to use for Azure Spatial Anchors.")]
+        [Tooltip("The Account Domain URL to use for Azure Spatial Anchors. NOTE: These values should be used for development/prototyping. In a shipping application its strongly recommended to use user-based or server-based AAD authentication approaches.")]
         public string AccountDomain;
 
         /// <summary>
-        /// The Azure Spatial Anchors service Account Id from Azure portal.
+        /// The Azure Spatial Anchors service Account Id from Azure portal. NOTE: These values should be used for development/prototyping.
+        /// In the shipping application its strongly recommended to use user-based or server-based AAD authentication approaches.
         /// </summary>
-        [Tooltip("The Azure Spatial Anchors service Account Id from Azure portal.")]
+        [Tooltip("The Azure Spatial Anchors service Account Id from Azure portal. NOTE: These values should be used for development/prototyping. In a shipping application its strongly recommended to use user-based or server-based AAD authentication approaches.")]
         public string AccountId;
 
         /// <summary>
-        /// The Azure Spatial Anchors service Account Key from Azure portal.
+        /// The Azure Spatial Anchors service Account Key from Azure portal. NOTE: These values should be used for development/prototyping.
+        /// In the shipping application its strongly recommended to use user-based or server-based AAD authentication approaches.
         /// </summary>
-        [Tooltip("The Azure Spatial Anchors service Account Key from Azure portal.")]
+        [Tooltip("The Azure Spatial Anchors service Account Key from Azure portal. NOTE: These values should be used for development/prototyping. In a shipping application its strongly recommended to use user-based or server-based AAD authentication approaches.")]
         public string AccountKey;
 
+        [Header("Azure Active Directory Properties")]
         /// <summary>
-        /// The AAD Authentication Token to use for Azure Spatial Anchors.
+        /// The AAD Access Token to use for Azure Spatial Anchors. NOTE: An AccessToken is not needed if the AccountDomain, AccountId and AccountKey have been populated.
         /// </summary>
-        [Tooltip("The AAD Authentication Token to use for Azure Spatial Anchors.")]
+        [Tooltip("The AAD Access Token to use for Azure Spatial Anchors. NOTE: An AccessToken is not needed if the AccountDomain, AccountId and AccountKey have been populated.")]
+        public string AccessToken;
+
+        /// <summary>
+        /// The AAD Authentication Token to use for Azure Spatial Anchors. NOTE: An Authentication Token is not needed if the AccountDomain, AccountId and AccountKey have been populated.
+        /// </summary>
+        [Tooltip("The AAD Authentication Token to use for Azure Spatial Anchors. NOTE: An Authentication Token is not needed if the AccountDomain, AccountId and AccountKey have been populated.")]
         public string AuthenticationToken;
 
         public SpatialAnchorsConfiguration() { }
