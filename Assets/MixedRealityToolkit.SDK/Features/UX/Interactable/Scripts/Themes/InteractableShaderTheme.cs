@@ -55,6 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (Host == null)
                 return;
 
+            renderer.GetPropertyBlock(propertyBlock);
+
             string propId = property.GetShaderPropId();
             float newValue;
             switch (property.Type)
@@ -83,8 +85,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (Host == null)
                 return emptyValue;
 
-            startValue.Reset();
+            renderer.GetPropertyBlock(propertyBlock);
 
+            startValue.Reset();
+            
             string propId = property.GetShaderPropId();
             switch (property.Type)
             {

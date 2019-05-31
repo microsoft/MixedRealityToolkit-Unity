@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
-    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService
+    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService, IMixedRealityEyeGazeDataProvider
     {
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
@@ -49,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public InputSimulationService(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            string name, 
-            uint priority, 
+            string name,
+            uint priority,
             BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <inheritdoc />
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (profile.SimulateEyePosition)
             {
-                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(null, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), System.DateTime.UtcNow);
+                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
             }
 
             switch (profile.HandSimulationMode)
@@ -162,6 +162,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return inputSimulationProfile;
             }
         }
+
+        /// <inheritdoc/>
+        IMixedRealityEyeSaccadeProvider IMixedRealityEyeGazeDataProvider.SaccadeProvider => null;
+
+        /// <inheritdoc/>
+        bool IMixedRealityEyeGazeDataProvider.SmoothEyeTracking { get; set; }
 
         private void EnableCameraControl()
         {
