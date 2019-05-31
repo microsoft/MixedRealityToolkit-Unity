@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: b81dae1d46879b444aa9847f7961649f, type: 3}
   m_Name: DefaultMixedRealitySceneSystemProfile
   m_EditorClassIdentifier: 
@@ -21,7 +20,7 @@ MonoBehaviour:
     Included: 1
     BuildIndex: 0
     Tag: Untagged
-    Asset: {fileID: 3671201678493226958, guid: ae7bb08d297fb69408695d8de0962524, type: 3}
+    Asset: {fileID: 102900000, guid: ae7bb08d297fb69408695d8de0962524, type: 3}
   useLightingScene: 1
   defaultLightingSceneIndex: 0
   lightingScenes:
@@ -30,7 +29,7 @@ MonoBehaviour:
     Included: 1
     BuildIndex: 1
     Tag: Untagged
-    Asset: {fileID: 3671201678493226958, guid: 7e54e36c44f826c438c95da79f8de638, type: 3}
+    Asset: {fileID: 102900000, guid: 7e54e36c44f826c438c95da79f8de638, type: 3}
   contentScenes: []
   permittedLightingSceneComponentTypes:
   - reference: UnityEngine.Transform, UnityEngine.CoreModule
