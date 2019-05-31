@@ -144,53 +144,54 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (contentTags.Count == 0)
             {
                 EditorGUILayout.LabelField("(No scenes with content tags found)", EditorStyles.miniLabel);
-                return;
             }
-
-            foreach (string tag in contentTags)
+            else
             {
-                EditorGUILayout.BeginVertical(GUILayout.MaxWidth(tagLoadButtonSetWidth));
-                EditorGUILayout.LabelField(tag, EditorStyles.miniLabel);
-                EditorGUILayout.BeginHorizontal();
-
-                if (GUILayout.Button("Load", EditorStyles.miniButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
+                foreach (string tag in contentTags)
                 {
+                    EditorGUILayout.BeginVertical(GUILayout.MaxWidth(tagLoadButtonSetWidth));
+                    EditorGUILayout.LabelField(tag, EditorStyles.miniLabel);
+                    EditorGUILayout.BeginHorizontal();
 
-                    if (Application.isPlaying)
+                    if (GUILayout.Button("Load", EditorStyles.miniButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
                     {
-                        ServiceContentLoadByTag(sceneSystem, tag);
-                    }
-                    else
-                    {
-                        foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
+
+                        if (Application.isPlaying)
                         {
-                            if (contentScene.Tag == tag)
+                            ServiceContentLoadByTag(sceneSystem, tag);
+                        }
+                        else
+                        {
+                            foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
                             {
-                                EditorSceneManager.OpenScene(contentScene.Path, OpenSceneMode.Additive);
+                                if (contentScene.Tag == tag)
+                                {
+                                    EditorSceneManager.OpenScene(contentScene.Path, OpenSceneMode.Additive);
+                                }
                             }
                         }
                     }
-                }
-                if (GUILayout.Button("Unload", EditorStyles.miniButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
-                {
-                    if (Application.isPlaying)
+                    if (GUILayout.Button("Unload", EditorStyles.miniButton, GUILayout.MaxWidth(maxLoadButtonWidth)))
                     {
-                        ServiceContentUnloadByTag(sceneSystem, tag);
-                    }
-                    else
-                    {
-                        foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
+                        if (Application.isPlaying)
                         {
-                            if (contentScene.Tag == tag)
+                            ServiceContentUnloadByTag(sceneSystem, tag);
+                        }
+                        else
+                        {
+                            foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
                             {
-                                Scene scene = EditorSceneManager.GetSceneByName(contentScene.Name);
-                                EditorSceneManager.CloseScene(scene, false);
+                                if (contentScene.Tag == tag)
+                                {
+                                    Scene scene = EditorSceneManager.GetSceneByName(contentScene.Name);
+                                    EditorSceneManager.CloseScene(scene, false);
+                                }
                             }
                         }
                     }
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.EndVertical();
                 }
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
             }
 
             EditorGUILayout.Space();
