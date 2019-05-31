@@ -88,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 PlayerSettings.SetScriptingBackend(buildTargetGroup, buildInfo.ScriptingBackend.Value);
 
+#if !UNITY_2019_1_OR_NEWER
                 // When building the .NET backend, also build the C# projects, as the
                 // intent of this build process is to prove that it's possible build
                 // a solution where the local dev loop can be accomplished in the
@@ -96,6 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     EditorUserBuildSettings.wsaGenerateReferenceProjects = true;
                 }
+#endif
             }
 
             BuildTarget oldBuildTarget = EditorUserBuildSettings.activeBuildTarget;

@@ -8,6 +8,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class SpherePointerVisual : MonoBehaviour
     {
+        public Transform TetherEndPoint => tetherEndPoint;
+
+        public bool TetherVisualsEnabled => tetherVisualsEnabled;
+
         [Tooltip("The pointer these visuals decorate")]
         private SpherePointer pointer;
 
@@ -24,6 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Assumption: Tether line is a child of the visuals!
         [SerializeField]
         private BaseMixedRealityLineDataProvider tetherLine = null;
+
+        private bool tetherVisualsEnabled;
 
         public void OnValidate()
         {
@@ -76,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void Update()
         {
-            bool tetherVisualsEnabled = false;
+            tetherVisualsEnabled = false;
             if (pointer.IsFocusLocked && pointer.IsTargetPositionLockedOnFocusLock && pointer.Result != null)
             {
                 NearInteractionGrabbable grabbedObject = GetGrabbedObject();

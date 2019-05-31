@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestGazeCursorArticulated()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
             RenderSettings.skybox = null;
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // raise hand up -- gaze cursor should no longer be visible
             // disable user input
-            InputSimulationService inputSimulationService = MixedRealityToolkit.Instance.GetService<InputSimulationService>();
+            InputSimulationService inputSimulationService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<InputSimulationService>();
             Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
 
             inputSimulationService.UserInputEnabled = false;
