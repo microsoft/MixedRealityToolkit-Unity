@@ -1048,7 +1048,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (ShouldListen(eventData))
             {
                 SetPress(false);
-                SetInputUp(IsInputFromNearInteraction(eventData));
+                SetInputUp();
+                if (IsInputFromNearInteraction(eventData))
+                {
+                    // TODO:what if we have two hands grabbing?
+                    SetGrab(false);
+                }
 
                 eventData.Use();
             }
@@ -1064,7 +1069,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (ShouldListen(eventData))
             {
-                SetInputDown(IsInputFromNearInteraction(eventData));
+                SetInputDown();
+                SetGrab(IsInputFromNearInteraction(eventData));
 
                 eventData.Use();
             }
@@ -1074,25 +1080,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Public method that can be used to set state of interactable
         /// corresponding to an input going down (select button, menu button, touch) 
         /// </summary>
-        /// <param name="isNearInteraction"></param>
-        public void SetInputDown(bool isNearInteraction)
+        public void SetInputDown()
         {
             if (!CanInteract())
             {
                 return;
             }
 
-            StartClickTimer(true);
             SetPress(true);
-            SetGrab(isNearInteraction);
+            StartClickTimer(true);
         }
 
         /// <summary>
         /// Public method that can be used to set state of interactable
         /// corresponding to an input going up.
         /// </summary>
-        /// <param name="isNearInteraction"></param>
-        public void SetInputUp(bool isNearInteraction)
+        public void SetInputUp()
         {
             if (!CanInteract())
             {
@@ -1100,11 +1103,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             SetPress(false);
-            if (isNearInteraction)
-            {
-                // what if we have two hands grabbing?
-                SetGrab(false);
-            }
 
             SetGesture(false);
             SetPress(false);
