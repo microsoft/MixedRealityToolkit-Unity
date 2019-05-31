@@ -32,8 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         private float hologramAlpha;
 
         private float statisticsUpdateTimeSeconds = 0.0f;
+        private string appIPAddress;
 
         private static string holographicCameraIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(holographicCameraIPAddress)}";
+        private static string appIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(appIPAddress)}";
 
         [MenuItem("Spectator View/Compositor", false, 0)]
         public static void ShowCompositorWindow()
@@ -52,11 +54,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             }
 
             holographicCameraIPAddress = PlayerPrefs.GetString(holographicCameraIPAddressKey, "localhost");
+            appIPAddress = PlayerPrefs.GetString(appIPAddressKey, "localhost");
         }
 
         private void OnDisable()
         {
             PlayerPrefs.SetString(holographicCameraIPAddressKey, holographicCameraIPAddress);
+            PlayerPrefs.SetString(appIPAddressKey, appIPAddress);
             PlayerPrefs.Save();
         }
 
@@ -75,7 +79,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
         private void NetworkConnectionGUI()
         {
-            HolographicCameraNetworkConnectionGUI();
+            EditorGUILayout.BeginHorizontal();
+            {
+                LocatableDeviceObserver stateSynchronizationDevice = null;
+                if (StateSynchronizationObserver.IsInitialized)
+                {
+                    stateSynchronizationDevice = StateSynchronizationObserver.Instance.GetComponent<LocatableDeviceObserver>();
+                }
+                LocatableDeviceObserver holographicCameraDevice = GetHolographicCameraDevice();
+
+                HolographicCameraNetworkConnectionGUI(AppDeviceTypeLabel, stateSynchronizationDevice, showCalibrationStatus: false, ref appIPAddress);
+                HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, holographicCameraDevice, showCalibrationStatus: true, ref holographicCameraIPAddress);
+            }
+            EditorGUILayout.EndHorizontal();
         }
 
         private void CompositeGUI()

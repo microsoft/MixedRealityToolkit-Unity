@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 writer.Write(DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.ObserverObjectCreated);
 
                 writer.Flush();
-                StateSynchronizationObserver.Instance.SendComponentMessage(stream.ToArray());
+                StateSynchronizationObserver.Instance.Broadcast(stream.ToArray());
             }
         }
 
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 writer.Write(DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.ObserverHierarchyBound);
 
                 writer.Flush();
-                StateSynchronizationObserver.Instance.SendComponentMessage(stream.ToArray());
+                StateSynchronizationObserver.Instance.Broadcast(stream.ToArray());
             }
         }
 

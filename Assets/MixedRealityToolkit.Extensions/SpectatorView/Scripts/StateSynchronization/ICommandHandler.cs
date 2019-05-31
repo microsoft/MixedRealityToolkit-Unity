@@ -10,6 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     {
         void OnConnected(SocketEndpoint endpoint);
         void OnDisconnected(SocketEndpoint endpoint);
-        void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader);
+        void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize);
     }
 }
