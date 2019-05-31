@@ -155,7 +155,7 @@ SubShader {
         uniform float		_UnderlayDilate;			// v[-1, 1]
         uniform float		_UnderlaySoftness;			// v[ 0, 1]
         
-        uniform fixed4 		_GlowColor;					// RGBA : Color + Intesity
+        uniform fixed4 		_GlowColor;					// RGBA : Color + Intensity
         uniform float 		_GlowOffset;				// v[-1, 1]
         uniform float 		_GlowOuter;					// v[ 0, 1]
         uniform float 		_GlowInner;					// v[ 0, 1]

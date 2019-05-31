@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // Set new touchable only now: If we have to raise a poke-up event for the previous touchable object,
-            // we need to to so using the previous touchable in TryRaisePokeUp().
+            // we need to do so using the previous touchable in TryRaisePokeUp().
             closestProximityTouchable = newClosestTouchable;
 
             IsActive = IsNearObject;
