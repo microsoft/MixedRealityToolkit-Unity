@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             GUI.color = Color.white;
-            EditorGUILayout.HelpBox("Some scenes in your build settings have duplicate names. This can cause problems when attempting to load scenes by name. Please ensure the highlighted sceens have unique names.", MessageType.Warning);
+            EditorGUILayout.HelpBox("Some scenes in your build settings have duplicate names. This can cause problems when attempting to load scenes by name. Please ensure the highlighted scenes have unique names.", MessageType.Warning);
 
             bool readyToApply = true;
 
