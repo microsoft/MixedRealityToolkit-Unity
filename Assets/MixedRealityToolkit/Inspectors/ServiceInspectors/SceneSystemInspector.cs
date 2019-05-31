@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SceneActivationToken activationToken = new SceneActivationToken();
         private static bool requireActivationToken = false;
         private LightingSceneTransitionType transitionType = LightingSceneTransitionType.None;
+        private LoadSceneMode loadSceneMode = LoadSceneMode.Additive;
         private float transitionSpeed = 1f;
 
         public override bool DrawProfileField { get { return true; } }
@@ -65,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                     EditorGUILayout.LabelField("Current Scene Operation", EditorStyles.boldLabel);
+                    loadSceneMode = (LoadSceneMode)EditorGUILayout.EnumPopup("Load Mode", loadSceneMode);
                     EditorGUILayout.Toggle("Scene Operation In Progress", sceneSystem.SceneOperationInProgress);
                     EditorGUILayout.FloatField("Progress", sceneSystem.SceneOperationProgress);
 
@@ -201,14 +203,28 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUI.BeginDisabledGroup(!sceneSystem.PrevContentExists);
             if (GUILayout.Button("Load Prev Content", EditorStyles.miniButton))
             {
-                sceneSystem.EditorLoadPrevContent();
+                if (Application.isPlaying)
+                {
+                    ServiceContentLoadNext(sceneSystem);
+                }
+                else
+                {
+                    sceneSystem.EditorLoadPrevContent();
+                }
             }
             EditorGUI.EndDisabledGroup();
 
             EditorGUI.BeginDisabledGroup(!sceneSystem.NextContentExists);
             if (GUILayout.Button("Load Next Content", EditorStyles.miniButton))
             {
-                sceneSystem.EditorLoadNextContent();
+                if (Application.isPlaying)
+                {
+                    ServiceContentLoadNext(sceneSystem);
+                }
+                else
+                {
+                    sceneSystem.EditorLoadNextContent();
+                }
             }
             EditorGUI.EndDisabledGroup();
 
@@ -257,6 +273,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        private async void ServiceContentLoadNext(MixedRealitySceneSystem sceneSystem)
+        {
+            await sceneSystem.LoadNextContent(false, activationToken);
+        }
+
+        private async void ServiceContentLoadPrev(MixedRealitySceneSystem sceneSystem)
+        {
+            await sceneSystem.LoadPrevContent(false, activationToken);
+        }
+
         private async void ServiceContentLoadByTag(MixedRealitySceneSystem sceneSystem, string tag)
         {
             if (requireActivationToken)
@@ -264,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 activationToken.AllowSceneActivation = false;
             }
 
-            await sceneSystem.LoadContentByTag(tag, LoadSceneMode.Additive, activationToken);
+            await sceneSystem.LoadContentByTag(tag, loadSceneMode, activationToken);
         }
 
         private async void ServiceContentUnloadByTag(MixedRealitySceneSystem sceneSystem, string tag)
@@ -279,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 activationToken.AllowSceneActivation = false;
             }
 
-            await sceneSystem.LoadContent(sceneName, LoadSceneMode.Additive, activationToken);
+            await sceneSystem.LoadContent(sceneName, loadSceneMode, activationToken);
         }
 
         private async void ServiceContentUnload(MixedRealitySceneSystem sceneSystem, string sceneName)

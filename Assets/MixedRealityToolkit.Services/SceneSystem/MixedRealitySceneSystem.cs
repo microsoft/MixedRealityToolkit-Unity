@@ -948,8 +948,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             public void RefreshLoadedContent()
             {
-                largestLoadedContentIndex = int.MinValue;
-                smalledLoadedContentIndex = int.MaxValue;
+                largestLoadedContentIndex = -1;
+                smalledLoadedContentIndex = contentSceneNames.Length;
                 for (int i = 0; i < contentSceneNames.Length; i++)
                 {
                     Scene scene = SceneManager.GetSceneByName(contentSceneNames[i]);
