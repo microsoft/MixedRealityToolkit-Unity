@@ -321,8 +321,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public void UpdateWorkingToGoal()
         {
             UpdateWorkingPositionToGoal();
-			UpdateWorkingRotationToGoal();
-			UpdateWorkingScaleToGoal();
+            UpdateWorkingRotationToGoal();
+            UpdateWorkingScaleToGoal();
         }
 
         /// <summary>
