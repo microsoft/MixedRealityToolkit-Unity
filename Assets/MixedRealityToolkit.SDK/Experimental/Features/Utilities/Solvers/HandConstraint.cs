@@ -41,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             BelowWrist = 3
         }
 
+        [Experimental]
         [Header("Hand Constraint")]
         [SerializeField]
         [Tooltip("Which part of the hand to move the tracked object towards.")]
