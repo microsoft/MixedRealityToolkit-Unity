@@ -10,9 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         [SerializeField]
         [Tooltip("An opional object for visualizing the carry mode state")]
-        private GameObject visualizationObject;
+        private GameObject visualizationObject = null;
 
-        private Orbital orbital;
+        private Orbital orbital = null;
 
         private void Start()
         {
