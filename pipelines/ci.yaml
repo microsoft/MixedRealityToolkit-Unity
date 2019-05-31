@@ -15,4 +15,5 @@ jobs:
   steps:
   - template: templates/common.yml
   - template: templates/package.yml
+  - template: templates/publishpackages.yml
   - template: templates/end.yml

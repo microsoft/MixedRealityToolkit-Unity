@@ -36,5 +36,7 @@ jobs:
     parameters:
       ConfigName: "MRTKSignConfig.xml"
   - template: templates/package.yml
+  - template: templates/tasks/signing.yml
     parameters:
-      Sign: true
+      ConfigName: "MRTKNuGetSignConfig.xml"
+  - template: templates/publishpackages.yml
