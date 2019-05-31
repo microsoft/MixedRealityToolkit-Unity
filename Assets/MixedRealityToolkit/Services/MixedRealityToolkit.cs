@@ -696,9 +696,9 @@ namespace Microsoft.MixedReality.Toolkit
             UnregisterInstance(this);
         }
 
-#endregion MonoBehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
-#region Instance Registration
+        #region Instance Registration
 
         public static void SetActiveInstance(MixedRealityToolkit toolkitInstance)
         {
@@ -781,9 +781,9 @@ namespace Microsoft.MixedReality.Toolkit
             toolkitInstance.name = InactiveInstanceGameObjectName;
         }
 
-#endregion Instance Registration
+        #endregion Instance Registration
 
-#region Service Container Management
+        #region Service Container Management
 
         #region Registration
         // NOTE: This method intentionally does not add to the registry. This is actually mostly a helper function for RegisterServiceInternal<T>.
@@ -847,9 +847,9 @@ namespace Microsoft.MixedReality.Toolkit
             return false;
         }
 
-        #endregion Registration
+#endregion Registration
 
-        #region Multiple Service Management
+#region Multiple Service Management
 
         /// <summary>
         /// Enable all services in the Mixed Reality Toolkit active service registry for a given type
@@ -986,9 +986,9 @@ namespace Microsoft.MixedReality.Toolkit
             return true;
         }
 
-        #endregion Multiple Service Management
+#endregion Multiple Service Management
 
-        #region Service Utilities
+#region Service Utilities
 
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.
@@ -1170,7 +1170,7 @@ namespace Microsoft.MixedReality.Toolkit
             return true;
         }
 
-        #endregion Service Utilities
+#endregion Service Utilities
 
 #endregion Service Container Management
 
