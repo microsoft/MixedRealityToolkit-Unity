@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [FormerlySerializedAs(oldName: "UseAngleSteppingForWorldOffset")]
+        [FormerlySerializedAs(oldName: "useAngleSteppingForWorldOffset")]
         [Tooltip("Lock the rotation to a specified number of steps around the tracked object.")]
         private bool useAngleStepping = false;
 
