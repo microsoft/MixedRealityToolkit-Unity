@@ -29,14 +29,17 @@
 9. Add a parent game object to your unity camera.
 10. In the unity inspector, set 'Parent Of Main Camera' in the Spectator View script to be the parent game object you just created.
 11. In the unity inspector, set the Account Domain, Account Id and Account Key for the Spatial Anchors Localizer using values you obtained creating an azure spatial anchors account above.
-12. Build and deploy the application to your HoloLens device.
+12. Press the 'HoloLens' button on the [Platform Switcher](Scripts/Editor/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
+13. Build and deploy the application to your HoloLens device.
 
 ### Android scene setup
-13. Open the [SpectatorView.ASA.Android unity scene](Scenes/SpectatorView.ASA.Android.unity) in your unity project.
-14. Again call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
-15. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
-16. In the unity inspector, set the Account Domain, Account Id and Account Key for the Spatial Anchors Localizer using values you obtained creating an azure spatial anchors account above.
-17. Build and deploy the application to your android device.
+14. Open the [SpectatorView.ASA.Android unity scene](Scenes/SpectatorView.ASA.Android.unity) in your unity project.
+15. Again call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
+16. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
+17. In the unity inspector, set the Account Domain, Account Id and Account Key for the Spatial Anchors Localizer using values you obtained creating an azure spatial anchors account above.
+18. Press the 'Android' button on the [Platform Switcher](Scripts/Editor/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
+19. Check 'ARCore Supported' under Build Settings -> Player Settings -> Android -> XR Settings
+20. Build and deploy the application to your android device.
 
 # Example Scenes
 * HoloLens: [SpectatorView.ASA.HoloLens](Scenes/SpectatorView.ASA.HoloLens.unity)
