@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Invoked whent the event is changed.
+        /// Invoked when the event is changed.
         /// </summary>
         /// <param name="indexArray">
         /// A two-element sized index array where the first element is the index of the

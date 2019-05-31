@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static bool CheckMixedRealityConfigured(bool renderEditorElements = false)
         {
             if (!MixedRealityToolkit.IsInitialized)
-            {   // Don't proceeed
+            {   // Don't proceed
                 return false;
             }
 

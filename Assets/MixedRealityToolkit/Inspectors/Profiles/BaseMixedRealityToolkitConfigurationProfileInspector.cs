@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected abstract bool IsProfileInActiveInstance();
 
         /// <summary>
-        /// Internal enum used for back navigation along profile hiearchy. 
+        /// Internal enum used for back navigation along profile hierarchy. 
         /// Indicates what type of parent profile the current profile will return to for going back
         /// </summary>
         protected enum BackProfileType

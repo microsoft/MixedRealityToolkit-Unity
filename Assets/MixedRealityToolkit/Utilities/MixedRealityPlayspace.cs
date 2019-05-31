@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Adds a child object to the playspace's heirarchy.
+        /// Adds a child object to the playspace's hierarchy.
         /// </summary>
         /// <param name="transform">The child object's transform.</param>
         public static void AddChild(Transform transform)
