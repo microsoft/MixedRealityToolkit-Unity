@@ -113,6 +113,8 @@ Note: Make sure there is a unique voice command on each button. The voice recogn
  
 <strong>Requires Gaze (Only available when the voice command field has a value)</strong>
 The voice command requires the interactable to have focus to listen for the voice command. There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts. Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.</p>
+<p><strong>Public Properties</strong>
+ClickCount - a read only value that tracks how many clicks have occured.</p>
 <h2 id="profiles-and-themes">Profiles and Themes</h2>
 <p>The profile will define how button content will be linked to and manipulated by themes, based on state changes.</p>
 <img src="Images/Interactable/Profiles_noTarget.png" width="450">
@@ -151,6 +153,8 @@ SetDimensionIndex(0);
 <p><em>Example of Toggle events</em></p>
 <img src="Images/Interactable/Event_hold.png" width="450">
 <p><em>Example of a hold event</em></p>
+<img src="Images/Interactable/Event_onClickEffect.png" width="450">
+<p><em>Example of a modified OnClick event to spawn a gameObject on click</em></p>
 <p>Events can be placed on an object to monitor a separate interactable. Use <code>InteractableReceiver</code> for a single event (from the list) or <code>InteractableReceiverList</code> for a list of events similar to the interactable event list.</p>
 <img src="Images/Interactable/InteractableReceiver.png" width="450">
 <p><em>Example of InteractableReceiver existing on a separate gameObject from the Interactable, referencing the Interactable for event and state updates</em></p>
@@ -165,12 +169,29 @@ SetDimensionIndex(0);
 </ul>
 <img src="Images/Interactable/StatesScriptableObject.png" width="450">
 <p>The InteractableStates State Model will handle any state list with a layered ranking system, starting with the most isolated state and ending with the state that could contain all other states.</p>
-<p>The DefaultInteractableStates list contains 4 states:
-<strong>Default</strong>: Nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.
-<strong>Focus</strong>: The object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.
-<strong>Press</strong>: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus.
-<strong>Disabled</strong>: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.</p>
+<p>The DefaultInteractableStates list contains 4 states:</p>
+<ul>
+<li><p><strong>Default</strong>: Nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.</p>
+</li>
+<li><p><strong>Focus</strong>: The object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.</p>
+</li>
+<li><p><strong>Press</strong>: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus. This state will also get set as a fallback to Physcial Press.</p>
+</li>
+<li><p><strong>Disabled</strong>: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.</p>
+</li>
+</ul>
 <p>A bit value (#) is assigned to the state depending on the order in the list.</p>
+<p>There are currently 17 states total that you can used to drive themes, though some are meant to be driven by other components. Here's a list of those with built-in functionality.</p>
+<ul>
+<li>Default, Focus, Pressed and Disabled are mentioned above</li>
+<li>Visited: the Interactable has been clicked.</li>
+<li>Toggled: The button is in a toggled state or Dimension idex is an odd number.</li>
+<li>Gesture: The hand or controller was pressed and has moved from the original position.</li>
+<li>VoiceCommand: The internal voice command was used, or if using global voice commands, set this manually.</li>
+<li>PhyscialTouch: A touch input is currently detected, use NearInteractionTouchable to enable.</li>
+<li>Grab: A hand is currently grabbing in the bounds of the object, use NearInteractionGrabbable to enable</li>
+</ul>
+<p>States have corresponding properties and Methods in the Interactable, like SetFocus(bool focus) or HasFocus.</p>
 <h2 id="extending-themes">Extending themes</h2>
 <p>Extend <code>InteractableThemeBase</code> to create a new theme that will show up in the theme property drop-down list. Themes can be created to control anything based on state changes. We could have a custom component on a GameObject that is driven by a custom theme with the values for each state being set in the inspector.</p>
 <p>Setup the configuration of the theme settings in the constructor.</p>
@@ -193,6 +214,19 @@ SetDimensionIndex(0);
 <strong>Name</strong>: The name that will show up in the inspector.
 <strong>ThemeProperties</strong>: A list of properties that theme will store to be used when the state changes.</p>
 <p>Each Theme Property has a name, type (defining the fields to display for each state), a set of values for each state and a default value for the fields. The state fields can also be hidden in the inspector, if the theme does not require them to be visible.</p>
+<pre><code class="lang-csharp">    // custom settings will appear in the configuration section of the theme inspector
+    // expose properties to allow more customization to the theme
+    CustomSettings = new List&lt;InteractableCustomSetting&gt;()
+    {
+        new InteractableCustomSetting()
+        {
+            Name = &quot;ScaleMagnifier&quot;,
+            Type = InteractableThemePropertyValueTypes.Vector3,
+            Value = new InteractableThemePropertyValue() { Vector3 = Vector3.one }
+        }
+    };
+
+</code></pre>
 <p>Override Init to run any startup code, that needs references to the Host GameObject.</p>
 <pre><code class="lang-csharp">public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
 {
@@ -267,6 +301,10 @@ public virtual void OnClick(InteractableStates state, Interactable source, IMixe
 {
     // click called
 }
+</code></pre>
+<p>ReceiverBase scripts use InspectorField attributes to expose custom properties in the inspector. Here's an example of Vector3 a custom property with tooltip and label information.</p>
+<pre><code class="lang-csharp"> [InspectorField(Label = &quot;Offset Position&quot;, Tooltip = &quot;Spawn the prefab relative to the Interactive position&quot;, Type = InspectorField.FieldTypes.Vector3)]
+        public Vector3 EffectOffset = Vector3.zero;
 </code></pre>
 <h2 id="extending-states">Extending states</h2>
 <p>The functionality of how states are ranked can be overridden by extending <code>InteractableStates</code> class. Override the <code>CompareStates</code> method to manually control the ranking.</p>

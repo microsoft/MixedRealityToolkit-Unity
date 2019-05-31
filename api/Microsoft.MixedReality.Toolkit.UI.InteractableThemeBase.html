@@ -96,6 +96,7 @@
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableActivateTheme.html">InteractableActivateTheme</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableAnimatorTheme.html">InteractableAnimatorTheme</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableAudioTheme.html">InteractableAudioTheme</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableGrabScaleTheme.html">InteractableGrabScaleTheme</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableMaterialTheme.html">InteractableMaterialTheme</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOffsetTheme.html">InteractableOffsetTheme</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableRotationTheme.html">InteractableRotationTheme</a></div>
@@ -167,7 +168,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;InteractableThemePropertyValue&gt; CustomSettings</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;InteractableCustomSetting&gt; CustomSettings</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -179,7 +180,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertyValue.html">InteractableThemePropertyValue</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableCustomSetting.html">InteractableCustomSetting</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -577,12 +578,12 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_OnUpdate_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.OnUpdate*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_OnUpdate_System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.OnUpdate(System.Int32,System.Boolean)">OnUpdate(Int32, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_OnUpdate_System_Int32_Microsoft_MixedReality_Toolkit_UI_Interactable_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.OnUpdate(System.Int32,Microsoft.MixedReality.Toolkit.UI.Interactable,System.Boolean)">OnUpdate(Int32, Interactable, Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void OnUpdate(int state, bool force = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void OnUpdate(int state, Interactable source, bool force = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -597,6 +598,11 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">state</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interactable.html">Interactable</a></td>
+        <td><span class="parametername">source</span></td>
         <td></td>
       </tr>
       <tr>
