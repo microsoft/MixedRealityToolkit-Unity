@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -128,8 +129,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // IInteractableEvents
         protected List<IInteractableHandler> handlers = new List<IInteractableHandler>();
         protected Coroutine globalTimer;
-        protected float clickTime = 0.3f;
-        protected Coroutine inputTimer;
+        // A click must occur within this time after an input down
+        protected float clickTime = 0.5f;
+        protected Coroutine clickValidTimer;
         // how many clicks does it take?
         protected int clickCount = 0;
 
@@ -624,30 +626,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion MixedRealityFocusHandlers
 
-        #region MixedRealityPointerHandlers
-
         /// <summary>
         /// Starts a timer to check if input is in progress
         ///  - Make sure global pointer events are not double firing
         ///  - Make sure Global Input events are not double firing
         ///  - Make sure pointer events are not duplicating an input event
         /// </summary>
-        /// <param name="isInput"></param>
-        protected void StartInputTimer(bool isInput = false)
+        /// <param name="isFromInputDown"></param>
+        protected void StartClickTimer(bool isFromInputDown = false)
         {
-            if (IsGlobal || isInput)
+            if (IsGlobal || isFromInputDown)
             {
-                if (inputTimer != null)
+                if (clickValidTimer != null)
                 {
-                    StopCoroutine(inputTimer);
-                    inputTimer = null;
+                    StopCoroutine(clickValidTimer);
+                    clickValidTimer = null;
                 }
 
-                inputTimer = StartCoroutine(InputDownTimer(clickTime));
+                clickValidTimer = StartCoroutine(InputDownTimer(clickTime));
             }
         }
 
-        #endregion MixedRealityPointerHandlers
+        protected void StopClickTimer()
+        {
+            Debug.Assert(clickValidTimer != null, "StopClickTimer called but no click timer is running");
+            StopCoroutine(clickValidTimer);
+            clickValidTimer = null;
+        }
 
         #region MixedRealityInputHandlers
 
@@ -850,44 +855,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void TriggerOnClick()
         {
-            OnPointerClicked(null);
-        }
-
-        public void OnPointerClicked(MixedRealityPointerEventData eventData)
-        {
-            // check to see if is global or focus - or - if is global, pointer event does not fire twice  - or - input event is not taking these actions already
-            if (!CanInteract() || (IsGlobal && inputTimer != null))
-            {
-                return;
-            }
-
-            if (StateManager != null)
-            {
-                if (eventData != null && ShouldListen(eventData))
-                {
-                    IncreaseDimensionIndex();
-                    SendOnClick(eventData.Pointer);
-                    SetVisited(true);
-                    StartInputTimer(false);
-                    eventData.Use();
-                }
-                else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
-                {
-                    IncreaseDimensionIndex();
-                    StartGlobalVisual(false);
-                    SendOnClick(null);
-                    StartInputTimer(false);
-                    SetVisited(true);
-                }
-                else if (eventData == null && HasPhysicalTouch) // handle touch interactions
-                {
-                    IncreaseDimensionIndex();
-                    StartGlobalVisual(false);
-                    SendOnClick(null);
-                    StartInputTimer(false);
-                    SetVisited(true);
-                }
-            }
+            IncreaseDimensionIndex();
+            SendOnClick(null);
         }
 
         /// <summary>
@@ -972,7 +941,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected IEnumerator InputDownTimer(float time)
         {
             yield return new WaitForSeconds(time);
-            inputTimer = null;
+            clickValidTimer = null;
         }
 
         #endregion InteractableUtilities
@@ -990,7 +959,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 StartGlobalVisual(true);
                 SendVoiceCommands(VoiceCommand, 0, 1);
-                OnPointerClicked(null);
+                TriggerOnClick();
                 eventData.Use();
             }
         }
@@ -1057,9 +1026,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData){}
-        #endregion NearInteractionHandlers
+        #endregion TouchHandlers
 
-
+        #region InputHandlers
         public void OnInputUp(InputEventData eventData)
         {
             if ((!CanInteract() && !HasPress))
@@ -1077,9 +1046,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
 
                 SetGesture(false);
+                SetPress(false);
+
+                if (CanFireClick())
+                {
+                    StopClickTimer();
+
+                    TriggerOnClick();
+                    SetVisited(true);
+                }
 
                 eventData.Use();
             }
+            
+        }
+
+        /// <summary>
+        /// Return true if the interactable can fire a click event.
+        /// Clicks can only occur within a short duration of an input down firing.
+        /// </summary>
+        /// <returns></returns>
+        private bool CanFireClick()
+        {
+            return clickValidTimer != null;
         }
 
         public void OnInputDown(InputEventData eventData)
@@ -1091,12 +1080,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (ShouldListen(eventData))
             {
+                StartClickTimer(true);
                 SetPress(true);
                 SetGrab(IsInputFromNearInteraction(eventData));
 
                 eventData.Use();
             }
         }
-
+        #endregion InputHandlers
     }
 }
