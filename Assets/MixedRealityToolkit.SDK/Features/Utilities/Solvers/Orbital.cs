@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
@@ -59,6 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
+        [FormerlySerializedAs(oldName: "UseAngleSteppingForWorldOffset")]
         [Tooltip("Lock the rotation to a specified number of steps around the tracked object.")]
         private bool useAngleStepping = false;
 

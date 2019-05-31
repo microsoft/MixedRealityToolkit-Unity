@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
@@ -235,6 +236,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             WorkingPosition = position;
             WorkingRotation = rotation;
             WorkingScale = scale;
+        }
+
+        [Obsolete("Use SnapTo(Vector3, Quaternion, Vector3) instead.")]
+        public virtual void SnapTo(Vector3 position, Quaternion rotation)
+        {
+            GoalPosition = position;
+            GoalRotation = rotation;
+        }
+
+        [Obsolete("Use SnapGoalTo(Vector3, Quaternion, Vector3) instead.")]
+        public virtual void SnapGoalTo(Vector3 position, Quaternion rotation)
+        {
+            GoalPosition = position;
+            GoalRotation = rotation;
         }
 
         /// <summary>
