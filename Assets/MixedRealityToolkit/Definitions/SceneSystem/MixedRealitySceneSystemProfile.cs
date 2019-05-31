@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private bool editorManageLoadedScenes = true;
 
         [SerializeField]
-        [Tooltip("If true, service will ensure that only lighting-related components are allowd in lighting scenes. Disable if you want total control over the content of lighting scenes.")]
+        [Tooltip("If true, service will ensure that only lighting-related components are allowed in lighting scenes. Disable if you want total control over the content of lighting scenes.")]
         private bool editorEnforceLightingSceneTypes = true;
 
         [SerializeField]
