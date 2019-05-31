@@ -25,19 +25,6 @@ steps:
     PublishArtifacts: true
     ScriptingBackend: '.NET'
 
-- powershell: |
-   $AutoMrtkVersion = Get-Date -format "dd.MM.yyyy"
-   .\build.ps1 -Version $AutoMrtkVersion -NoNuget
-  displayName: 'Build Unity and NuGet packages'
-
-- powershell: |
-   Get-ChildItem "." -Filter Build-UnityPackage*.log | 
-   Foreach-Object {
-       echo "=======================" "Contents of log file $_.FullName:" "======================="
-       Get-Content $_.FullName
-   }
-  displayName: 'Echo packaging logs'
-
 # Build Standalone x86
 - template: tasks/unitybuild.yml
   parameters:
