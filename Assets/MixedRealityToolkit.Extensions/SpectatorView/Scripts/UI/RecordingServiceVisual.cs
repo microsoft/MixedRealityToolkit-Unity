@@ -100,7 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
             if (_recordingService != null &&
                 _previewButton != null)
             {
-                _previewButton.gameObject?.SetActive(_recordingService.IsRecordingAvailable());
+                bool showPreviewButton = _recordingService.IsRecordingAvailable() && _recordButton.gameObject.activeSelf;
+                _previewButton.gameObject?.SetActive(showPreviewButton);
             }
 
             if (state == RecordingState.Initializing)
