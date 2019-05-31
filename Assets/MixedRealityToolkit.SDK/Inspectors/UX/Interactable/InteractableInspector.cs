@@ -134,6 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (states.objectReferenceValue == null)
             {
                 InspectorUIUtility.DrawError("Please assign a States object!");
+                EditorGUILayout.EndVertical();
                 serializedObject.ApplyModifiedProperties();
                 return;
             }
@@ -161,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             
             SerializedProperty isGlobal = serializedObject.FindProperty("IsGlobal");
             isGlobal.boolValue = EditorGUILayout.Toggle(new GUIContent("Is Global", "Like a modal, does not require focus"), isGlobal.boolValue);
-
+            
             SerializedProperty voiceCommands = serializedObject.FindProperty("VoiceCommand");
             voiceCommands.stringValue = EditorGUILayout.TextField(new GUIContent("Voice Command", "A voice command to trigger the click event"), voiceCommands.stringValue);
 
@@ -191,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
-
+            
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
             InspectorUIUtility.DrawDivider();
@@ -316,7 +317,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             EditorGUI.indentLevel = indentOnSectionStart + 3;
 
                             string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
+                            bool hasPref = EditorPrefs.HasKey(prefKey);
                             bool showSettings = EditorPrefs.GetBool(prefKey);
+                            if (!hasPref)
+                            {
+                                showSettings = true;
+                            }
                             
                             InspectorUIUtility.ListSettings settings = listSettings[i];
                             bool show = InspectorUIUtility.DrawSectionStart(themeItem.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 3, showSettings, FontStyle.Normal, false);

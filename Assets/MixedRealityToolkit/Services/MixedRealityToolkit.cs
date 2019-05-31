@@ -542,10 +542,39 @@ namespace Microsoft.MixedReality.Toolkit
         private static MixedRealityToolkit activeInstance;
         private static bool newInstanceBeingInitialized = false;
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// Returns the Singleton instance of the classes type.
+        /// </summary>
+        public static MixedRealityToolkit Instance
+        {
+            get
+            {
+                if (activeInstance != null)
+                {
+                    return activeInstance;
+                }
+
+                // It's possible for MRTK to exist in the scene but for activeInstance to be 
+                // null when a custom editor component accesses Instance before the MRTK 
+                // object has clicked on in object hierarchy (see https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4618)
+                //
+                // To avoid returning null in this case, make sure to search the scene for MRTK.
+                // We do this only when in editor to avoid any performance cost at runtime.
+                var mrtks = FindObjectsOfType<MixedRealityToolkit>();
+                for (int i = 0; i < mrtks.Length; i++)
+                {
+                    RegisterInstance(mrtks[i]);
+                }
+                return activeInstance;
+            }
+        }
+#else
         /// <summary>
         /// Returns the Singleton instance of the classes type.
         /// </summary>
         public static MixedRealityToolkit Instance => activeInstance;
+#endif
 
         private void InitializeInstance()
         {
@@ -686,10 +715,10 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            if (MixedRealityToolkit.activeInstance == null)
+            if (activeInstance == null)
             {   // If we don't have an instance, set it here
                 // Set the instance to active
-                MixedRealityToolkit.activeInstance = toolkitInstance;
+                activeInstance = toolkitInstance;
                 toolkitInstances.Add(toolkitInstance);
                 toolkitInstance.name = ActiveInstanceGameObjectName;
                 toolkitInstance.InitializeInstance();

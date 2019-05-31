@@ -10,10 +10,10 @@ Material:
   m_Name: MRTK_PressableInteractablesButtonBox
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: USE_GLOBAL_LEFT_INDEX_ON USE_GLOBAL_RIGHT_INDEX_ON _ALPHABLEND_ON
-    _BLOB_ENABLE_2__ON _BLOB_ENABLE__ON _DISABLE_ALBEDO_MAP _ENABLE_FADE__ON _INNER_GLOW
+    _BLOB_ENABLE_2__ON _BLOB_ENABLE__ON _BORDER_LIGHT _DISABLE_ALBEDO_MAP _ENABLE_FADE__ON
     _NEAR_LIGHT_FADE _NEAR_PLANE_FADE _SMOOTH_ACTIVE_FACE__ON
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
   stringTagMap:
@@ -42,13 +42,13 @@ Material:
     - _AlbedoAlphaMode: 0
     - _AlbedoAssignedAtRuntime: 0
     - _BlendOp: 0
-    - _BorderLight: 0
+    - _BorderLight: 1
     - _BorderLightOpaque: 0
     - _BorderLightOpaqueAlpha: 1
     - _BorderLightReplacesAlbedo: 0
     - _BorderLightUsesHoverColor: 0
-    - _BorderMinValue: 0.1
-    - _BorderWidth: 0.1
+    - _BorderMinValue: 1
+    - _BorderWidth: 0.08
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
     - _ClippingBox: 0
@@ -60,7 +60,7 @@ Material:
     - _Cutoff: 0.5
     - _DirectionalLight: 0
     - _DstBlend: 1
-    - _EdgeSmoothingValue: 0.002
+    - _EdgeSmoothingValue: 0.0001
     - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOverride: 0
@@ -71,10 +71,11 @@ Material:
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
     - _FadeBeginDistance: 0.01
-    - _FadeCompleteDistance: 0.1
+    - _FadeCompleteDistance: 0.15
+    - _FadeMinValue: 0
     - _HoverLight: 0
-    - _InnerGlow: 1
-    - _InnerGlowPower: 16
+    - _InnerGlow: 0
+    - _InnerGlowPower: 24.5
     - _InstancedColor: 0
     - _Iridescence: 0
     - _IridescenceAngle: -0.78
@@ -106,6 +107,10 @@ Material:
     - _StencilReference: 0
     - _TriplanarMappingBlendSharpness: 4
     - _VertexColors: 0
+    - _VertexExtrusion: 0
+    - _VertexExtrusionValue: 0
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
     - _ZTest: 4
     - _ZWrite: 0
     m_Colors:
@@ -116,5 +121,5 @@ Material:
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.9411765}
+    - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.5568628}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
