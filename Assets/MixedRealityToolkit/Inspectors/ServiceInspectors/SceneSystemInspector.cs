@@ -275,12 +275,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private async void ServiceContentLoadNext(MixedRealitySceneSystem sceneSystem)
         {
-            await sceneSystem.LoadNextContent(false, activationToken);
+            await sceneSystem.LoadNextContent(false, LoadSceneMode.Single, activationToken);
         }
 
         private async void ServiceContentLoadPrev(MixedRealitySceneSystem sceneSystem)
         {
-            await sceneSystem.LoadPrevContent(false, activationToken);
+            await sceneSystem.LoadPrevContent(false, LoadSceneMode.Single, activationToken);
         }
 
         private async void ServiceContentLoadByTag(MixedRealitySceneSystem sceneSystem, string tag)
