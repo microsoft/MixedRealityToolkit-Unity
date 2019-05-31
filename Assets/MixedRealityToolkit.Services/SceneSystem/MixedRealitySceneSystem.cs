@@ -228,10 +228,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             string nextContent;
             if (contentTracker.GetNextContent(wrap, out nextContent))
             {
-                await LoadScenesInternal(new string[] { nextContent }, SceneType.Content, mode, activationToken);
+                await LoadContent(new string[] { nextContent }, mode, activationToken);
             }
-
-            Debug.LogWarning("Attempted to load next content when no next content exists. Taking no action.");
+            else
+            {
+                Debug.LogWarning("Attempted to load next content when no next content exists. Taking no action.");
+            }
         }
 
         /// <inheritdoc />
@@ -240,46 +242,71 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             string prevContent;
             if (contentTracker.GetNextContent(wrap, out prevContent))
             {
-                await LoadScenesInternal(new string[] { prevContent }, SceneType.Content, mode, activationToken);
+                await LoadContent(new string[] { prevContent }, mode, activationToken);
             }
-
-            Debug.LogWarning("Attempted to load prev content when no next content exists. Taking no action.");
+            else
+            {
+                Debug.LogWarning("Attempted to load prev content when no next content exists. Taking no action.");
+            }
         }
 
         /// <inheritdoc />
         public async Task LoadContent(string sceneToLoad, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
         {
-            await LoadScenesInternal(new string[] { sceneToLoad }, SceneType.Content, mode, activationToken);
+            await LoadContent(new string[] { sceneToLoad }, mode, activationToken);
         }
 
         /// <inheritdoc />
         public async Task UnloadContent(string sceneToUnload)
         {
-            await UnloadScenesInternal(new string[] { sceneToUnload }, SceneType.Content);
-        }
-
-        /// <inheritdoc />
-        public async Task LoadContent(IEnumerable<string> scenesToLoad, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
-        {
-            await LoadScenesInternal(scenesToLoad, SceneType.Content, mode, activationToken);
-        }
-
-        /// <inheritdoc />
-        public async Task UnloadContent(IEnumerable<string> scenesToUnload)
-        {
-            await UnloadScenesInternal(scenesToUnload, SceneType.Content);
+            await UnloadContent(new string[] { sceneToUnload });
         }
 
         /// <inheritdoc />
         public async Task LoadContentByTag(string tag, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
         {
-            await LoadScenesInternal(profile.GetContentSceneNamesByTag(tag), SceneType.Content, mode, activationToken);
+            await LoadContent(profile.GetContentSceneNamesByTag(tag), mode, activationToken);
         }
 
         /// <inheritdoc />
         public async Task UnloadContentByTag(string tag)
         {
             await UnloadScenesInternal(profile.GetContentSceneNamesByTag(tag), SceneType.Content);
+        }
+
+        /// <inheritdoc />
+        public async Task LoadContent(IEnumerable<string> scenesToLoad, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
+        {
+            if (!CanSceneOpProceed(SceneType.Content))
+            {
+                Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");
+                return;
+            }
+
+            IEnumerable<string> loadedContentScenes;
+            if (mode == LoadSceneMode.Single && GetLoadedContentScenes(out loadedContentScenes))
+            {
+                await UnloadScenesInternal(loadedContentScenes, SceneType.Content, 0, 0.5f, true);
+                await LoadScenesInternal(scenesToLoad, SceneType.Content, activationToken, 0.5f, 1f, false);
+            }
+            else
+            {
+                await LoadScenesInternal(scenesToLoad, SceneType.Content, activationToken);
+            }
+
+            await LoadScenesInternal(scenesToLoad, SceneType.Content, activationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task UnloadContent(IEnumerable<string> scenesToUnload)
+        {
+            if (!CanSceneOpProceed(SceneType.Content))
+            {
+                Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");
+                return;
+            }
+
+            await UnloadScenesInternal(scenesToUnload, SceneType.Content);
         }
 
         /// <inheritdoc />
@@ -341,10 +368,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             // Load the new lighting scene immediately
-            await LoadScenesInternal(new string[] { newLightingSceneName }, SceneType.Lighting, LoadSceneMode.Additive);
+            await LoadScenesInternal(new string[] { newLightingSceneName }, SceneType.Lighting, null, 0f, 0.5f, true);
 
             // Unload the other lighting scenes
-            await UnloadScenesInternal(lightingSceneNames, SceneType.Lighting);
+            await UnloadScenesInternal(lightingSceneNames, SceneType.Lighting, 0.5f, 1f, false);
         }
 
         /// <summary>
@@ -366,23 +393,24 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// Internal method to handle scene loads
         /// </summary>
         /// <param name="scenesToLoad"></param>
-        /// <param name="mode"></param>
+        /// <param name="sceneType"></param>
         /// <param name="activationToken"></param>
+        /// <param name="progressOffset"></param>
+        /// <param name="progressTarget"></param>
+        /// <param name="sceneOpInProgressWhenFinished"></param>
         /// <returns></returns>
-        private async Task LoadScenesInternal(IEnumerable<string> scenesToLoad, SceneType sceneType, LoadSceneMode mode = LoadSceneMode.Additive, SceneActivationToken activationToken = null)
+        private async Task LoadScenesInternal(
+            IEnumerable<string> scenesToLoad,
+            SceneType sceneType,
+            SceneActivationToken activationToken = null,
+            float progressOffset = 0,
+            float progressTarget = 1,
+            bool sceneOpInProgressWhenFinished = false)
         {
-            Debug.Log("LoadScenesInternal " + sceneType + String.Join(",", scenesToLoad.ToArray<string>()));
-
-            if (!CanSceneOpProceed(sceneType))
-            {
-                Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");
-                return;
-            }
-
             // If we're using an activation token let it know that we're NOT ready to proceed
             activationToken?.SetReadyToProceed(false);
 
-            SetSceneOpProgress(true, 0, sceneType);
+            SetSceneOpProgress(true, progressOffset, sceneType);
 
             // Validate our scenes
             List<string> validNames = new List<string>();
@@ -408,7 +436,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             if (totalSceneOps < 1)
             {
                 Debug.LogWarning("No valid scenes found to load.");
-                SetSceneOpProgress(false, 1, sceneType);
+                SetSceneOpProgress(sceneOpInProgressWhenFinished, progressTarget, sceneType);
                 return;
             }
 
@@ -471,8 +499,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     activationToken?.SetReadyToProceed(readyToProceed);
 
                     sceneOpProgress = Mathf.Clamp01(SceneOperationProgress / totalSceneOps);
-
-                    SetSceneOpProgress(true, sceneOpProgress, sceneType);
+                    
+                    SetSceneOpProgress(true, Mathf.Lerp(progressOffset, progressTarget, sceneOpProgress), sceneType);
 
                     await Task.Yield();
                 }
@@ -500,7 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             contentTracker.RefreshLoadedContent();
 
             // We're done!
-            SetSceneOpProgress(false, 1, sceneType);
+            SetSceneOpProgress(sceneOpInProgressWhenFinished, progressTarget, sceneType);
             
             InvokeLoadedActions(validNames, sceneType);
         }
@@ -510,18 +538,18 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         /// <param name="scenesToUnload"></param>
         /// <param name="sceneType"></param>
+        /// <param name="progressOffset"></param>
+        /// <param name="progressTarget"></param>
+        /// <param name="sceneOpInProgressWhenFinished"></param>
         /// <returns></returns>
-        private async Task UnloadScenesInternal(IEnumerable<string> scenesToUnload, SceneType sceneType)
+        private async Task UnloadScenesInternal(
+            IEnumerable<string> scenesToUnload, 
+            SceneType sceneType,
+            float progressOffset = 0,
+            float progressTarget = 1,
+            bool sceneOpInProgressWhenFinished = false)
         {
-            Debug.Log("UnloadScenesInternal " + sceneType + String.Join(",", scenesToUnload.ToArray<string>()));
-
-            if (!CanSceneOpProceed(sceneType))
-            {
-                Debug.LogError("Attempting to perform a scene op when a scene op is already in progress.");
-                return;
-            }
-
-            SetSceneOpProgress(true, 0, sceneType);
+            SetSceneOpProgress(true, progressOffset, sceneType);
 
             List<string> validNames = new List<string>();
             List<int> validIndexes = new List<int>();
@@ -546,7 +574,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             if (totalSceneOps < 1)
             {
                 Debug.LogWarning("No valid scenes found to unload.");
-                SetSceneOpProgress(false, 1, sceneType);
+                SetSceneOpProgress(sceneOpInProgressWhenFinished, progressTarget, sceneType);
                 return;
             }
 
@@ -586,7 +614,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     }
                     sceneOpProgress = Mathf.Clamp01(SceneOperationProgress / totalSceneOps);
 
-                    SetSceneOpProgress(true, sceneOpProgress, sceneType);
+                    SetSceneOpProgress(true, Mathf.Lerp(progressOffset, progressTarget, sceneOpProgress), sceneType);
 
                     await Task.Yield();
                 }
@@ -606,11 +634,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 {
                     Scene scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
                     scenesUnloaded &= !scene.isLoaded;
-
-                    if (scene.isLoaded)
-                    {
-                        Debug.Log("Waiting for " + scene.name + " to unload...");
-                    }
                 }
                 await Task.Yield();
             }
@@ -619,7 +642,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             contentTracker.RefreshLoadedContent();
 
             // We're done!
-            SetSceneOpProgress(false, 1, sceneType);
+            SetSceneOpProgress(sceneOpInProgressWhenFinished, progressTarget, sceneType);
 
             // Invoke our actions
             InvokeUnloadedActions(validNames, sceneType);          
@@ -627,8 +650,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         
         private void SetSceneOpProgress(bool inProgress, float progress, SceneType sceneType)
         {
-            Debug.Log("Set scene op progress: " + inProgress + " " + progress + " " + sceneType);
-
             switch (sceneType)
             {
                 case SceneType.Manager:
@@ -792,6 +813,26 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             Scene scene = default(Scene);
             RuntimeSceneUtils.FindScene(sceneName, out scene, out int sceneIndex);
             return scene;
+        }
+
+        /// <summary>
+        /// Checks whether any content scenes are loaded
+        /// If they are, adds them to loadedContentScenes and returns true
+        /// </summary>
+        /// <param name="loadedContentScenes"></param>
+        /// <returns></returns>
+        private bool GetLoadedContentScenes(out IEnumerable<string> loadedContentScenes)
+        {
+            List<string> loadedContentScenesList = new List<string>();
+            foreach (string sceneName in ContentSceneNames)
+            {
+                if (IsContentLoaded(sceneName))
+                {
+                    loadedContentScenesList.Add(sceneName);
+                }
+            }
+            loadedContentScenes = loadedContentScenesList;
+            return loadedContentScenesList.Count > 0;
         }
 
         #endregion
