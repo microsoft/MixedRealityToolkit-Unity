@@ -89,7 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             MixedRealityServiceProfileAttribute profileAttribute = profileObject.GetType().GetCustomAttribute<MixedRealityServiceProfileAttribute>();
             if (profileAttribute == null)
             {   // Can't proceed without the profile attribute.
-                Debug.Log("No profile attribute");
                 return;
             }
 
