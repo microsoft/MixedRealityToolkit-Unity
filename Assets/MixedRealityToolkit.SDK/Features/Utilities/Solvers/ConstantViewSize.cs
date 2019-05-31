@@ -135,8 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 // Save some state information for external use
                 CurrentDistancePercent = Mathf.InverseLerp(minDistance, maxDistance, distance);
                 CurrentScalePercent = Mathf.InverseLerp(minScale, maxScale, scale);
-
-                UpdateWorkingScaleToGoal();
             }
 
             float scaleDifference = (CurrentScalePercent - lastScalePct) / SolverHandler.DeltaTime;

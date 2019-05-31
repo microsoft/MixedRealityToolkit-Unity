@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("XYZ offset for this object in relation to the TrackedObject/TargetTransform. Mixing local and world offsets is not recommended.")]
+        [Tooltip("XYZ offset for this object oriented to the TrackedObject/TargetTransform's forward. Mixing local and world offsets is not recommended. Local offsets are applied before world offsets.")]
         private Vector3 localOffset = new Vector3(0, -1, 1);
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("XYZ offset for this object in worldspace, best used with the YawOnly orientationType. Mixing local and world offsets is not recommended.")]
+        [Tooltip("XYZ offset for this object in worldspace, best used with the YawOnly orientationType. Mixing local and world offsets is not recommended. Local offsets are applied before world offsets.")]
         private Vector3 worldOffset = Vector3.zero;
 
         /// <summary>
@@ -60,15 +60,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Lock the rotation to a specified number of steps around the tracked object.")]
-        private bool useAngleSteppingForWorldOffset = false;
+        private bool useAngleStepping = false;
 
         /// <summary>
         /// Lock the rotation to a specified number of steps around the tracked object.
         /// </summary>
-        public bool UseAngleSteppingForWorldOffset
+        public bool UseAngleStepping
         {
-            get { return useAngleSteppingForWorldOffset; }
-            set { useAngleSteppingForWorldOffset = value; }
+            get { return useAngleStepping; }
+            set { useAngleStepping = value; }
         }
 
         [Range(2, 24)]
@@ -101,15 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             GoalPosition = desiredPos;
             GoalRotation = desiredRot;
-
-            UpdateWorkingPositionToGoal();
-            UpdateWorkingRotationToGoal();
         }
 
 
         private Quaternion SnapToTetherAngleSteps(Quaternion rotationToSnap)
         {
-            if (!UseAngleSteppingForWorldOffset || SolverHandler.TransformTarget == null)
+            if (!UseAngleStepping || SolverHandler.TransformTarget == null)
             {
                 return rotationToSnap;
             }
@@ -152,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     break;
             }
 
-            if (UseAngleSteppingForWorldOffset)
+            if (UseAngleStepping)
             {
                 desiredRot = SnapToTetherAngleSteps(desiredRot);
             }

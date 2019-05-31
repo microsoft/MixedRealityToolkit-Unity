@@ -90,9 +90,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         /// <inheritdoc />
-        public override void SnapTo(Vector3 position, Quaternion rotation)
+        public override void SnapTo(Vector3 position, Quaternion rotation, Vector3 scale)
         {
-            base.SnapTo(position, rotation);
+            base.SnapTo(position, rotation, scale);
             velocity = Vector3.zero;
         }
     }

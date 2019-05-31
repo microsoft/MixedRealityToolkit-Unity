@@ -84,7 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 Vector3 centerline = targetTransform.position - secondTransform.position;
                 GoalPosition = secondTransform.position + (centerline * partwayOffset);
-                UpdateWorkingPositionToGoal();
             }
         }
 

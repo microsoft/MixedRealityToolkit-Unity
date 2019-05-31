@@ -12,30 +12,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// </summary>
     [RequireComponent(typeof(SolverHandler))]
     public abstract class Solver : MonoBehaviour
-    {
+    {        
         [SerializeField]
         [Tooltip("If true, the position and orientation will be calculated, but not applied, for other components to use")]
         private bool updateLinkedTransform = false;
 
         [SerializeField]
-        [Tooltip("Position lerp multiplier")]
+        [Tooltip("If 0, the position will update immediately.  Otherwise, the higher this attribute the slower the position updates")]
         private float moveLerpTime = 0.1f;
 
         [SerializeField]
-        [Tooltip("Rotation lerp multiplier")]
+        [Tooltip("If 0, the rotation will update immediately.  Otherwise, the higher this attribute the slower the rotation updates")]
         private float rotateLerpTime = 0.1f;
 
         [SerializeField]
-        [Tooltip("Scale lerp multiplier")]
+        [Tooltip("If 0, the scale will update immediately.  Otherwise, the higher this attribute the slower the scale updates")]
         private float scaleLerpTime = 0;
-
+		
         [SerializeField]
         [Tooltip("If true, the Solver will respect the object's original scale values")]
         private bool maintainScale = true;
-
         [SerializeField]
-        [Tooltip("Working output is smoothed if true. Otherwise, snapped")]
-        private bool smoothing = true;
+        [Tooltip("If true, updates are smoothed to the target. Otherwise, they are snapped to the target")]
+        public bool smoothing = true;
 
         [SerializeField]
         [Tooltip("If > 0, this solver will deactivate after this much time, even if the state is still active")]
@@ -53,17 +52,47 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// The final position to be attained
         /// </summary>
-        protected Vector3 GoalPosition;
+        protected Vector3 GoalPosition
+        {
+            get
+            {
+                return SolverHandler.GoalPosition;
+            }
+            set
+            {
+                SolverHandler.GoalPosition = value;
+            }
+        }
 
         /// <summary>
         /// The final rotation to be attained
         /// </summary>
-        protected Quaternion GoalRotation;
+        protected Quaternion GoalRotation
+        {
+            get
+            {
+                return SolverHandler.GoalRotation;
+            }
+            set
+            {
+                SolverHandler.GoalRotation = value;
+            }
+        }
 
         /// <summary>
         /// The final scale to be attained
         /// </summary>
-        protected Vector3 GoalScale;
+        protected Vector3 GoalScale
+        {
+            get
+            {
+                return SolverHandler.GoalScale;
+            }
+            set
+            {
+                SolverHandler.GoalScale = value;
+            }
+        }
 
         /// <summary>
         /// Automatically uses the shared position if the solver is set to use the 'linked transform'.
@@ -74,13 +103,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             get
             {
-                return updateLinkedTransform ? SolverHandler.GoalPosition : transform.position;
+                return updateLinkedTransform ? GoalPosition : transform.position;
             }
             protected set
             {
                 if (updateLinkedTransform)
                 {
-                    SolverHandler.GoalPosition = value;
+                    GoalPosition = value;
                 }
                 else
                 {
@@ -96,13 +125,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             get
             {
-                return updateLinkedTransform ? SolverHandler.GoalRotation : transform.rotation;
+                return updateLinkedTransform ? GoalRotation : transform.rotation;
             }
             protected set
             {
                 if (updateLinkedTransform)
                 {
-                    SolverHandler.GoalRotation = value;
+                    GoalRotation = value;
                 }
                 else
                 {
@@ -118,13 +147,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             get
             {
-                return updateLinkedTransform ? SolverHandler.GoalScale : transform.localScale;
+                return updateLinkedTransform ? GoalScale : transform.localScale;
             }
             protected set
             {
                 if (updateLinkedTransform)
                 {
-                    SolverHandler.GoalScale = value;
+                    GoalScale = value;
                 }
                 else
                 {
@@ -161,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             if (SolverHandler != null)
             {
-                SnapGoalTo(SolverHandler.GoalPosition, SolverHandler.GoalRotation);
+                SnapGoalTo(GoalPosition, GoalRotation, GoalScale);
             }
 
             currentLifetime = 0;
@@ -188,6 +217,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             SolverUpdate();
+
+            UpdateWorkingToGoal();
         }
 
         /// <summary>
@@ -198,12 +229,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </remarks>
         /// <param name="position"></param>
         /// <param name="rotation"></param>
-        public virtual void SnapTo(Vector3 position, Quaternion rotation)
+        public virtual void SnapTo(Vector3 position, Quaternion rotation, Vector3 scale)
         {
-            SnapGoalTo(position, rotation);
+            SnapGoalTo(position, rotation, scale);
 
             WorkingPosition = position;
             WorkingRotation = rotation;
+            WorkingScale = scale;
         }
 
         /// <summary>
@@ -211,10 +243,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         /// <param name="position"></param>
         /// <param name="rotation"></param>
-        public virtual void SnapGoalTo(Vector3 position, Quaternion rotation)
+        public virtual void SnapGoalTo(Vector3 position, Quaternion rotation, Vector3 scale)
         {
             GoalPosition = position;
             GoalRotation = rotation;
+            GoalScale = scale;
         }
 
         /// <summary>
@@ -287,18 +320,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public void UpdateWorkingToGoal()
         {
-            if (smoothing)
-            {
-                WorkingPosition = SmoothTo(WorkingPosition, GoalPosition, SolverHandler.DeltaTime, moveLerpTime);
-                WorkingRotation = SmoothTo(WorkingRotation, GoalRotation, SolverHandler.DeltaTime, rotateLerpTime);
-                WorkingScale = SmoothTo(WorkingScale, GoalScale, SolverHandler.DeltaTime, scaleLerpTime);
-            }
-            else
-            {
-                WorkingPosition = GoalPosition;
-                WorkingRotation = GoalRotation;
-                WorkingScale = GoalScale;
-            }
+            UpdateWorkingPositionToGoal();
+			UpdateWorkingRotationToGoal();
+			UpdateWorkingScaleToGoal();
         }
 
         /// <summary>

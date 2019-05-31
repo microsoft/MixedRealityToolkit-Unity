@@ -265,10 +265,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     SphereRaycastStepUpdate(rayStep);
                     break;
             }
-
-            // Do frame to frame updates of transform, smoothly toward the goal, if desired
-            UpdateWorkingPositionToGoal();
-            UpdateWorkingRotationToGoal();
         }
 
         private void SimpleRaycastStepUpdate(RayStep rayStep)
