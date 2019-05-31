@@ -11,7 +11,7 @@ Inputs are produced by [**Input Providers**](InputProviders.md). Each provider c
 
 [**Controllers**](Controllers.md) are created by *input providers* when input devices are detected and destroyed when they're lost or disconnected. The WMR input provider, for example, will create *WMR controllers* for 6 DOF devices and *WMR articulated hand controllers* for articulated hands. Controller inputs can be mapped to input actions via the **Controller Mapping Profile**, inside the *Input System Profile*. Inputs events raised by controllers will include the associated input action, if any.
 
-Controllers can have [**Pointers**](Pointers.md) attached to them that query the scene to determine the game object with focus and raise [**Pointer Events**](Pointers.md#pointer-events) on it. As an example, our *line pointer* performs a raycast against the scene using the controller pose to compute the origin and direction of the ray. The pointers created for each controller are set up in the **Pointer Profile**, under the *Input System Profile*.
+Controllers can have [**Pointers**](Pointers.md) attached to them that query the scene to determine the game object with focus and raise [**Pointer Events**](Pointers.md#events) on it. As an example, our *line pointer* performs a raycast against the scene using the controller pose to compute the origin and direction of the ray. The pointers created for each controller are set up in the **Pointer Profile**, under the *Input System Profile*.
 
 <img src="../../Documentation/Images/Input/EventFlow.png" style="display:block;margin-left:auto;margin-right:auto;">
 
