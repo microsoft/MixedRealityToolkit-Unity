@@ -813,7 +813,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            if (pointerCount == pokePointerCount)
+            if (pointerCount > 0 && pointerCount == pokePointerCount)
             {
                 return false;
             }
@@ -1057,7 +1057,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 eventData.Use();
             }
-            
         }
 
         public void OnInputDown(InputEventData eventData)
