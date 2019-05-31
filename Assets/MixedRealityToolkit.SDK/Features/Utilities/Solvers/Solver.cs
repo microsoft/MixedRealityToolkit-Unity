@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// </summary>
     [RequireComponent(typeof(SolverHandler))]
     public abstract class Solver : MonoBehaviour
-    {        
+    {
         [SerializeField]
         [Tooltip("If true, the position and orientation will be calculated, but not applied, for other components to use")]
         private bool updateLinkedTransform = false;
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [SerializeField]
         [Tooltip("If 0, the scale will update immediately.  Otherwise, the greater this attribute the slower the scale updates")]
         private float scaleLerpTime = 0;
-		
+
         [SerializeField]
         [Tooltip("If true, the Solver will respect the object's original scale values")]
         private bool maintainScale = true;
@@ -217,7 +217,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             SolverUpdate();
-
             UpdateWorkingToGoal();
         }
 

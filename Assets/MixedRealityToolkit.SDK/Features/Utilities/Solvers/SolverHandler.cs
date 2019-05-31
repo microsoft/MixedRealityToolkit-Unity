@@ -176,6 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             if (UpdateSolvers)
             {
+                //Before calling solvers, update goal to be the transform so that working and transform will match
                 GoalPosition = transform.position;
                 GoalRotation = transform.rotation;
                 GoalScale = transform.localScale;
