@@ -1048,29 +1048,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (ShouldListen(eventData))
             {
                 SetPress(false);
-                if (IsInputFromNearInteraction(eventData))
-                {
-                    // what if we have two hands grabbing?
-                    SetGrab(false);
-                }
-
-                SetGesture(false);
-                SetPress(false);
-
-                if (CanFireClick())
-                {
-                    StopClickTimer();
-
-                    TriggerOnClick();
-                    SetVisited(true);
-                }
+                SetInputUp(IsInputFromNearInteraction(eventData));
 
                 eventData.Use();
             }
             
         }
-
-       
 
         public void OnInputDown(InputEventData eventData)
         {
@@ -1081,11 +1064,57 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (ShouldListen(eventData))
             {
-                StartClickTimer(true);
-                SetPress(true);
-                SetGrab(IsInputFromNearInteraction(eventData));
+                SetInputDown(IsInputFromNearInteraction(eventData));
 
                 eventData.Use();
+            }
+        }
+
+        /// <summary>
+        /// Public method that can be used to set state of interactable
+        /// corresponding to an input going down (select button, menu button, touch) 
+        /// </summary>
+        /// <param name="isNearInteraction"></param>
+        public void SetInputDown(bool isNearInteraction)
+        {
+            if (!CanInteract())
+            {
+                return;
+            }
+
+            StartClickTimer(true);
+            SetPress(true);
+            SetGrab(isNearInteraction);
+        }
+
+        /// <summary>
+        /// Public method that can be used to set state of interactable
+        /// corresponding to an input going up.
+        /// </summary>
+        /// <param name="isNearInteraction"></param>
+        public void SetInputUp(bool isNearInteraction)
+        {
+            if (!CanInteract())
+            {
+                return;
+            }
+
+            SetPress(false);
+            if (isNearInteraction)
+            {
+                // what if we have two hands grabbing?
+                SetGrab(false);
+            }
+
+            SetGesture(false);
+            SetPress(false);
+
+            if (CanFireClick())
+            {
+                StopClickTimer();
+
+                TriggerOnClick();
+                SetVisited(true);
             }
         }
 
