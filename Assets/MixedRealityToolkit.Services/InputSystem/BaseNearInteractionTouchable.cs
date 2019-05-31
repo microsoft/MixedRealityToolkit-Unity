@@ -44,12 +44,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [FormerlySerializedAs("collider")]
         protected Collider touchableCollider;
 
+        protected float distFront = 0.2f;
+
+        [Tooltip("Distance behind the surface at which you will receive a touch up event")]
         [SerializeField]
         protected float distBack = 0.25f;
 
-        [SerializeField]
-        protected float distFront = 0.2f;
-
+        [Tooltip("Distance in front of the surface at which you will receive a touch up event")]
         [SerializeField]
         protected float debounceThreshold = 0.01f;
 
