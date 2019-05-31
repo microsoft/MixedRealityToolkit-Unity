@@ -12,7 +12,7 @@ jobs:
     demands:
     - Unity2018.3.7f1  # variable expansion not allowed here
     - COG-UnityCache-WUS2-01
-    - SDK_18352 -equals TRUE
+    - SDK_18362 -equals TRUE
   steps:
   - template: templates/common.yml
   - task: PublishBuildArtifacts@1
