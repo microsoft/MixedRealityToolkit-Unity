@@ -665,6 +665,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private BoundsCalculationMethod boundsMethod;
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
+        private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = InputSystem?.EyeGazeProvider);
+        private IMixedRealityEyeGazeProvider eyeTrackingProvider = null;
+
 
 
         private List<IMixedRealityInputSource> touchingSources;
@@ -1797,11 +1817,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private void ScaleHandleByProximity(Transform handle, Renderer renderer, HandleProximityState state, Vector3 leftHand, Vector3 rightHand, float defaultScale)
+        private void ScaleHandleByProximity(Transform handle, Renderer renderer, HandleProximityState state, Vector3 leftHand, Vector3 rightHand, Vector3 gazePoint, float defaultScale)
         {
             float leftDistanceSqr = float.IsNaN(leftHand.x) == false ? (handle.position - leftHand).sqrMagnitude : float.MaxValue;
             float rightDistanceSqr = float.IsNaN(rightHand.x) == false ? (handle.position - rightHand).sqrMagnitude : float.MaxValue;
-            float closestDistanceSqr = Mathf.Min(leftDistanceSqr, rightDistanceSqr);
+            float eyeDistSqr = float.IsNaN(gazePoint.x) == false ? (handle.position - gazePoint).sqrMagnitude : float.MaxValue;
+            float closestDistanceSqr = Mathf.Min(eyeDistSqr, Mathf.Min(leftDistanceSqr, rightDistanceSqr));
 
             if (closestDistanceSqr < handleCloseProximity)
             {
@@ -1846,20 +1867,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     Vector3 leftHandPoint;
                     Vector3 rightHandPoint;
+                    Vector3 eyePt;
 
                     TryGetPointerPoint(Handedness.Left, out leftHandPoint);
                     TryGetPointerPoint(Handedness.Right, out rightHandPoint);
+                    TryGetEyeGazePoint(out eyePt);
 
-                    if (!float.IsNaN(leftHandPoint.x) || !float.IsNaN(rightHandPoint.x))
+                    if (!float.IsNaN(leftHandPoint.x) || !float.IsNaN(rightHandPoint.x) || !float.IsNaN(eyePt.x))
                     {
                         for (int i = 0; i < corners.Count; ++i)
                         {
-                            ScaleHandleByProximity(corners[i], cornerRenderers.Count > 0 ? cornerRenderers[i] : null, cornersProximate[i], leftHandPoint, rightHandPoint, scaleHandleSize);
+                            ScaleHandleByProximity(corners[i], cornerRenderers.Count > 0 ? cornerRenderers[i] : null, cornersProximate[i], leftHandPoint, rightHandPoint, eyePt, scaleHandleSize);
                         }
 
                         for (int i = 0; i < balls.Count; ++i)
                         {
-                            ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], leftHandPoint, rightHandPoint, rotationHandleDiameter);
+                            ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], leftHandPoint, rightHandPoint, eyePt, rotationHandleDiameter);
                         }
                     }
                 }
@@ -1918,9 +1941,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     point = hand.InputSource.Pointers[0].Result.Details.Point;
                     return true;
                 }
-                if (HandJointUtils.TryGetJointPose(Utilities.TrackedHandJoint.IndexTip, handed, out MixedRealityPose leftPose))
+                MixedRealityPose pose;
+                if (HandJointUtils.TryGetJointPose(Utilities.TrackedHandJoint.IndexTip, handed, out pose))
                 {
-                    point = leftPose.Position;
+                    point = pose.Position;
                     return true;
                 }
             }
@@ -1928,7 +1952,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             point = new Vector3(float.NaN, float.NaN, float.NaN);
             return false;
         }
-
+        private bool TryGetEyeGazePoint(out Vector3 point)
+        {
+            if (EyeTrackingProvider != null)
+            {
+                point = eyeTrackingProvider.GazePointer.Result.Details.Point;
+                return true;
+                //Debug.DrawLine(eyePt - new Vector3(0.1f, 0, 0), eyePt + new Vector3(0.1f, 0, 0));
+                //Debug.DrawLine(eyePt - new Vector3(0, 0.1f, 0), eyePt + new Vector3(0, 0.1f, 0));
+                //Debug.DrawLine(eyePt - new Vector3(0, 0, 0.1f), eyePt + new Vector3(0, 0, 0.1f));
+            }
+            point = new Vector3(float.NaN, float.NaN, float.NaN);
+            return false;
+        }
         private void Flatten()
         {
             if (flattenAxis == FlattenModeType.FlattenX)
@@ -2048,6 +2084,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
+           
         }
 
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
@@ -2136,7 +2173,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+        }
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
