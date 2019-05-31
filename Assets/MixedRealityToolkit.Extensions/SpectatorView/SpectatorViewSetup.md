@@ -39,5 +39,5 @@
 17. Build and deploy the application to your android device.
 
 # Example Scenes
-HoloLens: [SpectatorView.ASA.HoloLens](Scenes/SpectatorView.ASA.HoloLens.unity)
-Android: [SpectatorView.ASA.Android](Scenes/SpectatorView.ASA.Android.unity)
+* HoloLens: [SpectatorView.ASA.HoloLens](Scenes/SpectatorView.ASA.HoloLens.unity)
+* Android: [SpectatorView.ASA.Android](Scenes/SpectatorView.ASA.Android.unity)
