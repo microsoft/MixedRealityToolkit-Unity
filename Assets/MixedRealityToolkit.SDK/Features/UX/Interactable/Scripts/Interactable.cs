@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -654,6 +653,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             clickValidTimer = null;
         }
 
+        /// <summary>
+        /// Return true if the interactable can fire a click event.
+        /// Clicks can only occur within a short duration of an input down firing.
+        /// </summary>
+        /// <returns></returns>
+        private bool CanFireClick()
+        {
+            return clickValidTimer != null;
+        }
+
         #region MixedRealityInputHandlers
 
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
@@ -1061,15 +1070,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             
         }
 
-        /// <summary>
-        /// Return true if the interactable can fire a click event.
-        /// Clicks can only occur within a short duration of an input down firing.
-        /// </summary>
-        /// <returns></returns>
-        private bool CanFireClick()
-        {
-            return clickValidTimer != null;
-        }
+       
 
         public void OnInputDown(InputEventData eventData)
         {
@@ -1087,6 +1088,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 eventData.Use();
             }
         }
+
         #endregion InputHandlers
     }
 }
