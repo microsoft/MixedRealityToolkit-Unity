@@ -21,7 +21,7 @@
 5. In your Unity project, call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
 
 ### HoloLens scene setup
-6. Add the SpectatorView.ASA.HoloLens prefab to the scene you intend to run on the HoloLens device.
+6. Add the [SpectatorView.ASA.HoloLens prefab](Prefabs/SpectatorView.ASA.HoloLens.prefab) to the scene you intend to run on the HoloLens device.
 7. Add a GameObjectHierarchyBroadcaster to the root game object of the content you want synchronized. 
 8. In the unity inspector, set 'Broadcasted Content' in the Spectator View script to be the root game object that now contains the GameObjectHierarchyBroadcaster.
 9. Add a parent game object to your unity camera.
@@ -30,7 +30,7 @@
 12. Build and deploy the application to your HoloLens device.
 
 ### Android scene setup
-13. Open the SpectatorView.ASA.Android unity scene in your unity project.
+13. Open the [SpectatorView.ASA.Android unity scene](Scenes/SpectatorView.ASA.Android.unity) in your unity project.
 14. Again call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
 15. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
 16. In the unity inspector, set the Account Domain, Account Id and Account Key for the Spatial Anchors Localizer using values you obtained creating an azure spatial anchors account above.
