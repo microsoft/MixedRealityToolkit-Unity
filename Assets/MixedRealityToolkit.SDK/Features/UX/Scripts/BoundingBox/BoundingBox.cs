@@ -1954,13 +1954,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         private bool TryGetEyeGazePoint(out Vector3 point)
         {
-            if (EyeTrackingProvider != null)
+            if (EyeTrackingProvider != null && EyeTrackingProvider.GazePointer != null)
             {
                 point = eyeTrackingProvider.GazePointer.Result.Details.Point;
                 return true;
-                //Debug.DrawLine(eyePt - new Vector3(0.1f, 0, 0), eyePt + new Vector3(0.1f, 0, 0));
-                //Debug.DrawLine(eyePt - new Vector3(0, 0.1f, 0), eyePt + new Vector3(0, 0.1f, 0));
-                //Debug.DrawLine(eyePt - new Vector3(0, 0, 0.1f), eyePt + new Vector3(0, 0, 0.1f));
             }
             point = new Vector3(float.NaN, float.NaN, float.NaN);
             return false;
