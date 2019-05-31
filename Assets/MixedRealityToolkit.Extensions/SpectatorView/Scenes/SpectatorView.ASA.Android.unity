@@ -159,7 +159,8 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: c10877f7cd5764de18d46d7b777d1faa, type: 3}
 --- !u!4 &97747991 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 4442908887562770, guid: c10877f7cd5764de18d46d7b777d1faa,
+    type: 3}
   m_PrefabInstance: {fileID: 97747990}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1855549803
@@ -193,7 +194,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &5528765749296735693
+--- !u!1001 &2055598404
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -265,5 +266,11 @@ PrefabInstance:
       propertyPath: parentOfMainCamera
       value: 
       objectReference: {fileID: 1855549803}
+    - target: {fileID: 5528765750979992934, guid: 07101e997098a6f49a61983c9bd4e111,
+        type: 3}
+      propertyPath: mobileRecordingServiceVisualPrefab
+      value: 
+      objectReference: {fileID: 3991847289853751625, guid: 9771d3a665ea3184f9c3731093a51da4,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07101e997098a6f49a61983c9bd4e111, type: 3}

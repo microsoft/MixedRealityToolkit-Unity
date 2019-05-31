@@ -93,9 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
                 Debug.LogError("Error: Recording service not set for RecordingServiceVisual");
                 return;
             }
-
-            _recordButton.onClick.AddListener(OnRecordClick);
-            _previewButton.onClick.AddListener(OnPreviewClick);
         }
 
         protected void Update()
@@ -132,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
             }
         }
 
-        private void OnRecordClick()
+        public void OnRecordClick()
         {
             Debug.Log("Record button clicked");
 
@@ -174,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
             _readyToRecord = false;
         }
 
-        private void OnPreviewClick()
+        public void OnPreviewClick()
         {
             Debug.Log("Preview button clicked");
 
@@ -237,13 +234,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
                 StopRecording();
             }
 
-            gameObject.SetActive(true);
+            _recordButton.gameObject.SetActive(true);
+            _previewButton.gameObject.SetActive(true);
         }
 
         /// <inheritdoc/>
         public void Hide()
         {
-            gameObject.SetActive(false);
+            _recordButton.gameObject.SetActive(false);
+            _previewButton.gameObject.SetActive(false);
 
             if (_readyToRecord)
             {
