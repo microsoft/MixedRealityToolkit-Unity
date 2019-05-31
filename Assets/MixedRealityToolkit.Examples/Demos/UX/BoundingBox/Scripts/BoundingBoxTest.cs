@@ -53,6 +53,10 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
             bbox.HideElementsInInspector = false;
             bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
             var mh = cube.AddComponent<ManipulationHandler>();
+            bbox.CloseScale = 1.8f;
+            bbox.MediumScale = 1.5f;
+            bbox.FarScale = 1.0f;
+            bbox.ScaleHandleSize = 0.04f;
             yield return WaitForSpeechCommand();
 
             SetStatus("HideElementsInInspector true");
@@ -89,6 +93,10 @@ public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHan
 
             SetStatus("BoxPadding 0");
             bbox.BoxPadding = Vector3.zero;
+            yield return WaitForSpeechCommand();
+
+            SetStatus("FarScale = 1.5");
+            bbox.FarScale = 1.5f;
             yield return WaitForSpeechCommand();
 
             SetStatus("Set scale handle widget prefab");

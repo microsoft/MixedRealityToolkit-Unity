@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Enum which describes whether a boundingbox handle which has been grabbed, is 
         /// a Rotation Handle (sphere) or a Scale Handle( cube)
         /// </summary>
-        private enum HandleType
+        public enum HandleType
         {
             None = 0,
             Rotation,
@@ -381,6 +381,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Scale override for custom Corner Handlers: Size of its collider")]
         private float cornerHandleColliderScale = 2.0f;
+        public float HandleColliderScale
+        {
+            get
+            {
+                return cornerHandleColliderScale;
+            }
+            set
+            {
+                cornerHandleColliderScale = value;
+            }
+        }
         [SerializeField]
         [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead")]
         GameObject rotationHandlePrefab = null;
@@ -502,6 +513,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Header("Proximity")]
         [SerializeField]
         private bool proximityEffectActive = true;
+        public bool ProximityEffectActive
+        {
+            get
+            {
+                return proximityEffectActive;
+            }
+            set
+            {
+                proximityEffectActive = value;
+            }
+        }
         [SerializeField]
         [Tooltip("By a factor of how much do the handles grow when a hand gets close")]
         [Range(0.005f, 1.5f)]
@@ -512,10 +534,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float handleCloseProximity = 0.0015f;
         [SerializeField]
         private float farScale = 0.0f;
+        public float FarScale
+        {
+            get
+            {
+                return farScale;
+            }
+            set
+            {
+                farScale = value;
+            }
+        }
         [SerializeField]
         private float mediumScale = 2.0f;
+        public float MediumScale
+        {
+            get
+            {
+                return mediumScale;
+            }
+            set
+            {
+                mediumScale = value;
+            }
+        }
         [SerializeField]
         private float closeScale = 3.0f;
+        public float CloseScale
+        {
+            get
+            {
+                return closeScale;
+            }
+            set
+            {
+                closeScale = value;
+            }
+        }
         [SerializeField]
         [Range(0.0f, 1.0f)]
         private float farGrowRate = 0.3f;
