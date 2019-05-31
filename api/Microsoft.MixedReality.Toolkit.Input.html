@@ -125,6 +125,12 @@ and animate accordingly</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html">BaseInputHandler</a></h4>
       <section><p>Base class for the Mixed Reality Toolkit's SDK input handlers.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html">BaseNearInteractionTouchable</a></h4>
+      <section><p>Base class for all NearInteractionTouchables</p>
+<p>Technical details:
+Provides a listing of near field touch proximity bounds.
+This is used to detect if a contact point is near an object to turn on near field interactions</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerMappingLibrary.html">ControllerMappingLibrary</a></h4>
       <section><p>Helper utility to manage all the required Axis configuration for platforms, where required</p>
 </section>
@@ -297,9 +303,15 @@ decorated object is the closest object to the near pointer</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html">NearInteractionTouchable</a></h4>
       <section><p>Add a NearInteractionTouchable to your scene and configure a touchable surface
 in order to get PointerDown and PointerUp events whenever a PokePointer touches this surface.</p>
-<p>Technical details:
-Provides a listing of near field touch proximity bounds.
-This is used to detect if a contact point is near an object to turn on near field interactions</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnboundedPlane.html">NearInteractionTouchableUnboundedPlane</a></h4>
+      <section><p>Add a NearInteractionTouchableUnboundedPlane to your scene and configure a touchable volume
+in order to get PointerDown and PointerUp events whenever a PokePointer touches the
+attached collider through this surface.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume.html">NearInteractionTouchableVolume</a></h4>
+      <section><p>Add a NearInteractionTouchableVolume to your scene and configure a touchable volume
+in order to get PointerDown and PointerUp events whenever a PokePointer collides with this volume.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ObjectCursor.html">ObjectCursor</a></h4>
       <section><p>The object cursor can switch between different game objects based on its state.

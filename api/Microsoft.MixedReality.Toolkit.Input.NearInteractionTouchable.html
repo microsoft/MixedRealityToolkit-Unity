@@ -88,21 +88,64 @@
   </h1>
   <div class="markdown level0 summary"><p>Add a NearInteractionTouchable to your scene and configure a touchable surface
 in order to get PointerDown and PointerUp events whenever a PokePointer touches this surface.</p>
-<p>Technical details:
-Provides a listing of near field touch proximity bounds.
-This is used to detect if a contact point is near an object to turn on near field interactions</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">NearInteractionTouchable</span></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html">BaseNearInteractionTouchable</a></div>
+    <div class="level2"><span class="xref">NearInteractionTouchable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_Instances">BaseNearInteractionTouchable.Instances</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_eventsToReceive">BaseNearInteractionTouchable.eventsToReceive</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_EventsToReceive">BaseNearInteractionTouchable.EventsToReceive</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_ColliderEnabled">BaseNearInteractionTouchable.ColliderEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_usesCollider">BaseNearInteractionTouchable.usesCollider</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_touchableCollider">BaseNearInteractionTouchable.touchableCollider</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_distFront">BaseNearInteractionTouchable.distFront</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_distBack">BaseNearInteractionTouchable.distBack</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_debounceThreshold">BaseNearInteractionTouchable.debounceThreshold</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistBack">BaseNearInteractionTouchable.DistBack</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistFront">BaseNearInteractionTouchable.DistFront</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DebounceThreshold">BaseNearInteractionTouchable.DebounceThreshold</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_OnEnable">BaseNearInteractionTouchable.OnEnable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_OnDisable">BaseNearInteractionTouchable.OnDisable()</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class NearInteractionTouchable : MonoBehaviour</code></pre>
+    <pre><code class="lang-csharp hljs">public class NearInteractionTouchable : BaseNearInteractionTouchable</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -210,57 +253,6 @@ This is used to detect if a contact point is near an object to turn on near fiel
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_ColliderEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.ColliderEnabled*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_ColliderEnabled" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.ColliderEnabled">ColliderEnabled</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ColliderEnabled { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_EventsToReceive_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.EventsToReceive*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_EventsToReceive" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.EventsToReceive">EventsToReceive</h4>
-  <div class="markdown level1 summary"><p>The type of event to receive.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TouchableEventType EventsToReceive { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.TouchableEventType.html">TouchableEventType</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_Forward_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.Forward*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_Forward" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.Forward">Forward</h4>
   <div class="markdown level1 summary"></div>
@@ -280,31 +272,6 @@ This is used to detect if a contact point is near an object to turn on near fiel
     <tbody>
       <tr>
         <td><span class="xref">Vector3</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_Instances_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.Instances*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_Instances" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.Instances">Instances</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IReadOnlyCollection&lt;NearInteractionTouchable&gt; Instances { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IReadOnlyCollection</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html">NearInteractionTouchable</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -388,13 +355,13 @@ This is used to detect if a contact point is near an object to turn on near fiel
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_DistanceToSurface_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.DistanceToSurface*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_DistanceToSurface_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.DistanceToSurface(Vector3)">DistanceToSurface(Vector3)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_DistanceToTouchable_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.DistanceToTouchable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_DistanceToTouchable_Vector3_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.DistanceToTouchable(Vector3,Vector3@)">DistanceToTouchable(Vector3, out Vector3)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual float DistanceToSurface(Vector3 samplePoint)</code></pre>
+    <pre><code class="lang-csharp hljs">public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -409,6 +376,11 @@ This is used to detect if a contact point is near an object to turn on near fiel
       <tr>
         <td><span class="xref">Vector3</span></td>
         <td><span class="parametername">samplePoint</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">normal</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -428,26 +400,8 @@ This is used to detect if a contact point is near an object to turn on near fiel
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_OnDisable_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.OnDisable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_OnDisable" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.OnDisable">OnDisable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnDisable()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.OnEnable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.OnEnable">OnEnable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnEnable()</code></pre>
-  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistanceToTouchable_Vector3_Vector3__">BaseNearInteractionTouchable.DistanceToTouchable(Vector3, out Vector3)</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchable_OnValidate_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.OnValidate*"></a>
