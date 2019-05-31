@@ -192,35 +192,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
-        /// <summary>
-        /// Lerps Vector3 source to goal.
-        /// </summary>
-        /// <remarks>
-        /// Handles lerpTime of 0.
-        /// </remarks>
-        /// <param name="source"></param>
-        /// <param name="goal"></param>
-        /// <param name="deltaTime"></param>
-        /// <param name="lerpTime"></param>
-        /// <returns></returns>
-        public static Vector3 SmoothTo(Vector3 source, Vector3 goal, float deltaTime, float lerpTime)
-        {
-            return Vector3.Lerp(source, goal, lerpTime.Equals(0.0f) ? 1f : deltaTime / lerpTime);
-        }
-
-        /// <summary>
-        /// Slerps Quaternion source to goal, handles lerpTime of 0
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="goal"></param>
-        /// <param name="deltaTime"></param>
-        /// <param name="lerpTime"></param>
-        /// <returns></returns>
-        public static Quaternion SmoothTo(Quaternion source, Quaternion goal, float deltaTime, float lerpTime)
-        {
-            return Quaternion.Slerp(source, goal, lerpTime.Equals(0.0f) ? 1f : deltaTime / lerpTime);
-        }
-
         protected void OnDestroy()
         {
             DetachFromCurrentTrackedObject();

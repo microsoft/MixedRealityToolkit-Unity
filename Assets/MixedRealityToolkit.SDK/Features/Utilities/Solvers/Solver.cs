@@ -18,15 +18,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private bool updateLinkedTransform = false;
 
         [SerializeField]
-        [Tooltip("If 0, the position will update immediately.  Otherwise, the higher this attribute the slower the position updates")]
+        [Tooltip("If 0, the position will update immediately.  Otherwise, the greater this attribute the slower the position updates")]
         private float moveLerpTime = 0.1f;
 
         [SerializeField]
-        [Tooltip("If 0, the rotation will update immediately.  Otherwise, the higher this attribute the slower the rotation updates")]
+        [Tooltip("If 0, the rotation will update immediately.  Otherwise, the greater this attribute the slower the rotation updates")]
         private float rotateLerpTime = 0.1f;
 
         [SerializeField]
-        [Tooltip("If 0, the scale will update immediately.  Otherwise, the higher this attribute the slower the scale updates")]
+        [Tooltip("If 0, the scale will update immediately.  Otherwise, the greater this attribute the slower the scale updates")]
         private float scaleLerpTime = 0;
 		
         [SerializeField]
