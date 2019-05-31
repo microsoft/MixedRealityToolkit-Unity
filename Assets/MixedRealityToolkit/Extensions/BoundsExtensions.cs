@@ -91,11 +91,11 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Gets all the corner points of the bounds in world space
+        /// Gets all the corner points of the bounds in world space by transforming input bounds using the given transform
         /// </summary>
-        /// <param name="transform"></param>
-        /// <param name="positions"></param>
-        /// <param name="bounds"></param>
+        /// <param name="transform">Local to world transform</param>
+        /// <param name="positions">Output corner positions</param>
+        /// <param name="bounds">Input bounds, in local space</param>
         /// <remarks>
         /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
         /// corners array.
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Gets all the corner points of the bounds in local space
+        /// Gets all the corner points of the bounds 
         /// </summary>
         /// <param name="transform"></param>
         /// <param name="positions"></param>

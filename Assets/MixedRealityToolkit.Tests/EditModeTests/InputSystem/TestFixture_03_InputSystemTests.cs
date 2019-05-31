@@ -44,7 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Retrieve Input System
-            var inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
+            IMixedRealityInputSystem inputSystem = null;
+            MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
 
             // Tests
             Assert.IsNotNull(inputSystem);

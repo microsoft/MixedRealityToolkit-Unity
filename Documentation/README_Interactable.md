@@ -42,6 +42,10 @@ Note: Make sure there is a unique voice command on each button. The voice recogn
 **Requires Gaze (Only available when the voice command field has a value)**
 The voice command requires the interactable to have focus to listen for the voice command. There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts. Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.
 
+**Public Properties**
+ClickCount - a read only value that tracks how many clicks have occured.
+
+
 ## Profiles and Themes ##
 
 The profile will define how button content will be linked to and manipulated by themes, based on state changes.
@@ -109,6 +113,10 @@ You can use Interactable to detect input events other than just OnClick. The Eve
 
 *Example of a hold event*
 
+<img src="../Documentation/Images/Interactable/Event_onClickEffect.png" width="450">
+
+*Example of a modified OnClick event to spawn a gameObject on click*
+
 Events can be placed on an object to monitor a separate interactable. Use `InteractableReceiver` for a single event (from the list) or `InteractableReceiverList` for a list of events similar to the interactable event list.
 
 <img src="../Documentation/Images/Interactable/InteractableReceiver.png" width="450">
@@ -131,12 +139,28 @@ Interactable states provide two major roles:
 The InteractableStates State Model will handle any state list with a layered ranking system, starting with the most isolated state and ending with the state that could contain all other states.
 
 The DefaultInteractableStates list contains 4 states:
-**Default**: Nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.
-**Focus**: The object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.
-**Press**: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus.
-**Disabled**: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.
+
+- **Default**: Nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.
+
+- **Focus**: The object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.
+
+- **Press**: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus. This state will also get set as a fallback to Physcial Press.
+
+- **Disabled**: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.
 
 A bit value (#) is assigned to the state depending on the order in the list.
+
+There are currently 17 states total that you can used to drive themes, though some are meant to be driven by other components. Here's a list of those with built-in functionality.
+- Default, Focus, Pressed and Disabled are mentioned above
+- Visited: the Interactable has been clicked.
+- Toggled: The button is in a toggled state or Dimension idex is an odd number.
+- Gesture: The hand or controller was pressed and has moved from the original position.
+- VoiceCommand: The internal voice command was used, or if using global voice commands, set this manually.
+- PhyscialTouch: A touch input is currently detected, use NearInteractionTouchable to enable.
+- Grab: A hand is currently grabbing in the bounds of the object, use NearInteractionGrabbable to enable
+
+States have corresponding properties and Methods in the Interactable, like SetFocus(bool focus) or HasFocus.
+
 
 ## Extending themes ##
 Extend `InteractableThemeBase` to create a new theme that will show up in the theme property drop-down list. Themes can be created to control anything based on state changes. We could have a custom component on a GameObject that is driven by a custom theme with the values for each state being set in the inspector.
@@ -165,6 +189,21 @@ public NewCustomTheme()
 **ThemeProperties**: A list of properties that theme will store to be used when the state changes.
 
 Each Theme Property has a name, type (defining the fields to display for each state), a set of values for each state and a default value for the fields. The state fields can also be hidden in the inspector, if the theme does not require them to be visible.
+
+``` csharp
+    // custom settings will appear in the configuration section of the theme inspector
+    // expose properties to allow more customization to the theme
+    CustomSettings = new List<InteractableCustomSetting>()
+    {
+        new InteractableCustomSetting()
+        {
+            Name = "ScaleMagnifier",
+            Type = InteractableThemePropertyValueTypes.Vector3,
+            Value = new InteractableThemePropertyValue() { Vector3 = Vector3.one }
+        }
+    };
+
+```
 
 Override Init to run any startup code, that needs references to the Host GameObject.
 
@@ -256,6 +295,13 @@ public virtual void OnClick(InteractableStates state, Interactable source, IMixe
 {
     // click called
 }
+```
+
+ReceiverBase scripts use InspectorField attributes to expose custom properties in the inspector. Here's an example of Vector3 a custom property with tooltip and label information.
+
+``` csharp
+ [InspectorField(Label = "Offset Position", Tooltip = "Spawn the prefab relative to the Interactive position", Type = InspectorField.FieldTypes.Vector3)]
+        public Vector3 EffectOffset = Vector3.zero;
 ```
 
 ## Extending states ##
