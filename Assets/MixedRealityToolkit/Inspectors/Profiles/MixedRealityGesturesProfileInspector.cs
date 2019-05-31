@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static MixedRealityInputAction[] GetInputActions()
         {
             if (!MixedRealityToolkit.IsInitialized ||
-                MixedRealityToolkit.Instance.ActiveProfile == null ||
+                !MixedRealityToolkit.Instance.HasActiveProfile ||
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null ||
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {

@@ -13,7 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         protected virtual void OnEnable()
         {
-            //MixedRealityInspectorUtility.CheckMixedRealityConfigured(false);
             isFocusRequiredProperty = serializedObject.FindProperty("isFocusRequired");
         }
 
@@ -25,6 +24,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// If MRTK is not initialized in scene, then show an error message and button to add MRTK to the scene
+        /// If MRTK does not has an active profile, show an error message
+        /// </summary>
+        /// <returns>true if MRTK is initialized and has active profile, false otherwise</returns>
         protected bool CheckMixedRealityToolkit()
         {
             if (!MixedRealityToolkit.IsInitialized)
