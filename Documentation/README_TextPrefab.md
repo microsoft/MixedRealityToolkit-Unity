@@ -50,7 +50,7 @@ When adding a UI or canvas based Text element to a scene, the size disparity is 
 
 ![Font size with scaling factors](../Documentation/Images/TextPrefab/TextPrefabInstructions07.png)
 
-### [Text3DSelawik.mat](/Assets/MixedRealityToolkit/StandardAssets/Fonts/)
+### [Text3DSelawik.mat](/Assets/MixedRealityToolkit/StandardAssets/Materials/)
 
 Material for 3DTextPrefab with occlusion support. Requires 3DTextShader.shader
 
