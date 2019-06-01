@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator Test01_WhizzySphere()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             MixedRealityPlayspace.PerformTransformation(
                 p =>

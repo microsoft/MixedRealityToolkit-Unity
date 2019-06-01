@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void TestHeadGazeHandAndSpeechBehaviour()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Note that in this section, the numFarPointersActive == 1 to simulate the far pointer
             // of the gaze pointer itself.
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// </summary>
         public void TestHeadGazeHoloLens1GGV()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// </summary>
         public void TestHeadGazeGGVArticulatedHands()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void TestEyeGazeHandAndSpeechBehaviour()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();
@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void TestEyeGazeToHeadGazeTransition()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();
@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void TestHeadGazeToEyeGazeTransition()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Initial state: gaze pointer active
             var gsm = new GazePointerVisibilityStateMachine();
