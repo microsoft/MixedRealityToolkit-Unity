@@ -1,15 +1,15 @@
 # Text Prefab
 These prefabs are optimized for the rendering quality in Windows Mixed Reality. For more information, please read the guideline [Text in Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity) on Microsoft Windows Dev Center.
 
-#### [3DTextPrefab.prefab](/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/3DTextPrefab.prefab)
+#### [3DTextPrefab.prefab](/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/Text/)
 
 3D Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please read the instructions below)
 
-#### [UITextPrefab.prefab](/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/UITextPrefab.prefab)
+#### [UITextPrefab.prefab](/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/Text/)
 
 UI Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please read the instructions below)
 
-#### [Fonts](/Assets/MixedRealityToolkit.SDK/StandardAssets/Fonts)
+#### [Fonts](/Assets/MixedRealityToolkit/StandardAssets/Fonts)
 
 Open-source fonts included in Mixed Reality Toolkit.
 
@@ -50,7 +50,7 @@ When adding a UI or canvas based Text element to a scene, the size disparity is 
 
 ![Font size with scaling factors](../Documentation/Images/TextPrefab/TextPrefabInstructions07.png)
 
-### [Text3DSelawik.mat](/Assets/MixedRealityToolkit/StandardAssets/Fonts/)
+### [Text3DSelawik.mat](/Assets/MixedRealityToolkit/StandardAssets/Materials/)
 
 Material for 3DTextPrefab with occlusion support. Requires 3DTextShader.shader
 
