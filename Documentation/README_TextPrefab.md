@@ -9,7 +9,7 @@ These prefabs are optimized for the rendering quality in Windows Mixed Reality. 
 
 UI Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please read the instructions below)
 
-#### [Fonts](/Assets/MixedRealityToolkit.SDK/StandardAssets/Fonts)
+#### [Fonts](/Assets/MixedRealityToolkit/StandardAssets/Fonts)
 
 Open-source fonts included in Mixed Reality Toolkit.
 
