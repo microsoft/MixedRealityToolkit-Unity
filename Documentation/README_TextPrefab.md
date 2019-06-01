@@ -1,11 +1,11 @@
 # Text Prefab
 These prefabs are optimized for the rendering quality in Windows Mixed Reality. For more information, please read the guideline [Text in Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity) on Microsoft Windows Dev Center.
 
-#### [3DTextPrefab.prefab](/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/)
+#### [3DTextPrefab.prefab](/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/Text/)
 
 3D Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please read the instructions below)
 
-#### [UITextPrefab.prefab](/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/)
+#### [UITextPrefab.prefab](/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/Text/)
 
 UI Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please read the instructions below)
 
