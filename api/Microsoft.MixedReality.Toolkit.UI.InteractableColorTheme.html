@@ -86,7 +86,10 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme" class="text-break">Class InteractableColorTheme
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>A color theme that can set colors on renderers or common text objects
+This theme will try to set color on text objects first, if none can be found,
+then we fall back to renderer color setting using the parent class.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -249,6 +252,49 @@
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme.html#Microsoft_MixedReality_Toolkit_UI_InteractableShaderTheme_GetProperty_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_">InteractableShaderTheme.GetProperty(InteractableThemeProperty)</a></div>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_HasTextComponentOnObject_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.HasTextComponentOnObject*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_HasTextComponentOnObject_GameObject_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.HasTextComponentOnObject(GameObject)">HasTextComponentOnObject(GameObject)</h4>
+  <div class="markdown level1 summary"><p>Looks to see if a text component exists on the host</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool HasTextComponentOnObject(GameObject host)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">host</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_Init_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.Init*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_Init_GameObject_Microsoft_MixedReality_Toolkit_UI_InteractableThemePropertySettings_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.Init(GameObject,Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertySettings)">Init(GameObject, InteractableThemePropertySettings)</h4>
   <div class="markdown level1 summary"></div>
@@ -320,6 +366,546 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme.html#Microsoft_MixedReality_Toolkit_UI_InteractableShaderTheme_SetValue_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_System_Int32_System_Single_">InteractableShaderTheme.SetValue(InteractableThemeProperty, Int32, Single)</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TryGetRendererColor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TryGetRendererColor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TryGetRendererColor_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_Color__" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TryGetRendererColor(Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,Color@)">TryGetRendererColor(InteractableThemeProperty, out Color)</h4>
+  <div class="markdown level1 summary"><p>Try to get color from the renderer
+return true, no text components exists, so falling back to base</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool TryGetRendererColor(InteractableThemeProperty property, out Color color)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">color</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TryGetTextColor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TryGetTextColor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TryGetTextColor_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_Color__" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TryGetTextColor(Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,Color@)">TryGetTextColor(InteractableThemeProperty, out Color)</h4>
+  <div class="markdown level1 summary"><p>Try to get a color from UI Text
+if no color is found, a text component does not exist on this object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool TryGetTextColor(InteractableThemeProperty property, out Color color)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">color</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TryGetTextMeshColor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TryGetTextMeshColor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TryGetTextMeshColor_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_Color__" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TryGetTextMeshColor(Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,Color@)">TryGetTextMeshColor(InteractableThemeProperty, out Color)</h4>
+  <div class="markdown level1 summary"><p>Try to get color from TextMesh
+If no color is found, not TextMesh on this object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool TryGetTextMeshColor(InteractableThemeProperty property, out Color color)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">color</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TryGetTextMeshProColor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TryGetTextMeshProColor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TryGetTextMeshProColor_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_Color__" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TryGetTextMeshProColor(Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,Color@)">TryGetTextMeshProColor(InteractableThemeProperty, out Color)</h4>
+  <div class="markdown level1 summary"><p>Try to get color from TextMeshPro
+If no color is found, TextMeshPro is not on the object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool TryGetTextMeshProColor(InteractableThemeProperty property, out Color color)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">color</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TryGetTextMeshProUGUIColor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TryGetTextMeshProUGUIColor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TryGetTextMeshProUGUIColor_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_Color__" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TryGetTextMeshProUGUIColor(Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,Color@)">TryGetTextMeshProUGUIColor(InteractableThemeProperty, out Color)</h4>
+  <div class="markdown level1 summary"><p>Try to get color from TextMeshProUGUI
+If no color is found, TextMeshProUGUI is not on the object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool TryGetTextMeshProUGUIColor(InteractableThemeProperty property, out Color color)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">color</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TrySetRendererColor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TrySetRendererColor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TrySetRendererColor_Color_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_System_Int32_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TrySetRendererColor(Color,Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,System.Int32,System.Single)">TrySetRendererColor(Color, InteractableThemeProperty, Int32, Single)</h4>
+  <div class="markdown level1 summary"><p>Try to set color on a renderer
+should just return true - falling back to base</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool TrySetRendererColor(Color colour, InteractableThemeProperty property, int index, float percentage)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">colour</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">percentage</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TrySetTextColor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TrySetTextColor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TrySetTextColor_Color_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_System_Int32_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TrySetTextColor(Color,Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,System.Int32,System.Single)">TrySetTextColor(Color, InteractableThemeProperty, Int32, Single)</h4>
+  <div class="markdown level1 summary"><p>Try to set color on UI Text
+If false, no UI Text was found</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool TrySetTextColor(Color colour, InteractableThemeProperty property, int index, float percentage)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">colour</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">percentage</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TrySetTextMeshColor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TrySetTextMeshColor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TrySetTextMeshColor_Color_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_System_Int32_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TrySetTextMeshColor(Color,Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,System.Int32,System.Single)">TrySetTextMeshColor(Color, InteractableThemeProperty, Int32, Single)</h4>
+  <div class="markdown level1 summary"><p>Try to set color on TextMesh
+If false, no TextMesh was found</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool TrySetTextMeshColor(Color colour, InteractableThemeProperty property, int index, float percentage)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">colour</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">percentage</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TrySetTextMeshProColor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TrySetTextMeshProColor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TrySetTextMeshProColor_Color_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_System_Int32_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TrySetTextMeshProColor(Color,Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,System.Int32,System.Single)">TrySetTextMeshProColor(Color, InteractableThemeProperty, Int32, Single)</h4>
+  <div class="markdown level1 summary"><p>Try to set color on TextMeshPro
+If false, no TextMeshPro was found</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool TrySetTextMeshProColor(Color colour, InteractableThemeProperty property, int index, float percentage)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">colour</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">percentage</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TrySetTextMeshProUGUIColor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TrySetTextMeshProUGUIColor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme_TrySetTextMeshProUGUIColor_Color_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_System_Int32_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.TrySetTextMeshProUGUIColor(Color,Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,System.Int32,System.Single)">TrySetTextMeshProUGUIColor(Color, InteractableThemeProperty, Int32, Single)</h4>
+  <div class="markdown level1 summary"><p>Try to set color on TextMeshProUGUI
+If false, no TextMeshProUGUI was found</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool TrySetTextMeshProUGUIColor(Color colour, InteractableThemeProperty property, int index, float percentage)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">colour</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">percentage</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
