@@ -716,7 +716,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     SendOnClick(eventData.Pointer);
                     SetVisited(true);
                     StartInputTimer(false);
-                    print("click 1");
                     eventData.Use();
                 }
                 else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
@@ -726,7 +725,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     SendOnClick(null);
                     StartInputTimer(false);
                     SetVisited(true);
-                    print("click 1");
                 }
                 else if (eventData == null && HasPhysicalTouch) // handle touch interactions
                 {
@@ -735,8 +733,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     SendOnClick(null);
                     StartInputTimer(false);
                     SetVisited(true);
-                    print("click 1");
-
                 }
             }
         }
