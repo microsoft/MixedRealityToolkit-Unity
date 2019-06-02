@@ -61,12 +61,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-
+        /// <summary>
+        /// This test reproduces P0 issue 4263 which caused null pointers when pressing buttons
+        /// See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4683
+        /// </summary>
         [UnityTest]
         public IEnumerator PressButtonWithHand()
         {
             GameObject testButton = InstantiateSceneAndDefaultPressableButton();
-            testButton.transform.position = new Vector3(0, 0, 1.5f);
+
+            // Move the camera to origin looking at +z to more easily see the button.
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            // For some reason, we would only get null pointers when the hand tries to click a button
+            // at specific positions, hence the unusal z value.
+            testButton.transform.position = new Vector3(0, 0, 1.067121f);
+            // The scale of the button was also unusual in the repro case
+            testButton.transform.localScale = Vector3.one * 1.5f;
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -75,21 +91,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             buttonComponent.ButtonPressed.AddListener(() =>
             {
                 buttonPressed = true;
-                Debug.Log("Button has been pressed!");
             });
 
-            // Move the hand forward to press button
-
+            // Move the hand forward to press button, then off to the right
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             int numSteps = 60;
-            Vector3 p1 = new Vector3(0, 0, 1.0f);
-            Vector3 p2 = new Vector3(0, 0, 1.8f);
-            Vector3 p3 = new Vector3(0, 0.2f, 1.8f);
+            Vector3 p1 = new Vector3(0, 0, 0.5f);
+            Vector3 p2 = new Vector3(0, 0, 1.08f);
+            Vector3 p3 = new Vector3(0.1f, 0, 1.08f);
             
             yield return PlayModeTestUtilities.MoveHandFromTo(inputSimulationService, p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right);
             yield return PlayModeTestUtilities.MoveHandFromTo(inputSimulationService, p2, p3, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right);
 
             Assert.IsTrue(buttonPressed);
+
+            yield return PlayModeTestUtilities.HideHand(inputSimulationService, Handedness.Right);
+            Object.Destroy(testButton);
+
+            yield return null;
         }
 
 

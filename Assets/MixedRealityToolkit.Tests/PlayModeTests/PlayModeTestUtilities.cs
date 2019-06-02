@@ -56,5 +56,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return null;
             }
         }
+
+        internal static IEnumerator HideHand(InputSimulationService inputSimulationService, Handedness handedness)
+        {
+            SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
+            inputSimulationService.HandDataRight.Update(false, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
+            // Wait one frame for the hand to actually go away
+            yield return null;
+        }
     }
 }
