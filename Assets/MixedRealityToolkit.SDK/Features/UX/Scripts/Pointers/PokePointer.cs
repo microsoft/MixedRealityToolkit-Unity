@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            if (Result?.CurrentPointerTarget != null)
+            if (Result?.CurrentPointerTarget != null && closestProximityTouchable != null)
             {
                 float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - closestProximityTouchable.DistBack;
                 bool newIsDown = (distToFront < 0);
