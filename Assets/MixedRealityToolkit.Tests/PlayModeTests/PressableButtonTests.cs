@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
-            Assert.IsTrue(buttonPressed);
+            Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
 
             Object.Destroy(testButton);
 
