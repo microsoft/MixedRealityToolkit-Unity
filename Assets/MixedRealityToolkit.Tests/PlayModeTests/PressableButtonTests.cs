@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
 using UnityEditor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -31,6 +32,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return testButton;
         }
 
+        /// <summary>
+        /// Useful when debugging
+        /// </summary>
+        private IEnumerator WaitForEnterKey()
+        {
+            Debug.Log(Time.time + "Press Enter...");
+            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
+            {
+                yield return null;
+            }
+        }
+
         #endregion
 
         #region Tests
@@ -46,6 +59,37 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+        }
+
+
+        [UnityTest]
+        public IEnumerator PressButtonWithHand()
+        {
+            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            testButton.transform.position = new Vector3(0, 0, 1.5f);
+
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(buttonComponent);
+
+            bool buttonPressed = false;
+            buttonComponent.ButtonPressed.AddListener(() =>
+            {
+                buttonPressed = true;
+                Debug.Log("Button has been pressed!");
+            });
+
+            // Move the hand forward to press button
+
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            int numSteps = 60;
+            Vector3 p1 = new Vector3(0, 0, 1.0f);
+            Vector3 p2 = new Vector3(0, 0, 1.8f);
+            Vector3 p3 = new Vector3(0, 0.2f, 1.8f);
+            
+            yield return PlayModeTestUtilities.MoveHandFromTo(inputSimulationService, p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right);
+            yield return PlayModeTestUtilities.MoveHandFromTo(inputSimulationService, p2, p3, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right);
+
+            Assert.IsTrue(buttonPressed);
         }
 
 

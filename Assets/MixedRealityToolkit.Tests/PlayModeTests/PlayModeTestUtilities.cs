@@ -4,20 +4,57 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
+using NUnit.Framework;
+using System.Collections;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class PlayModeTestUtilities
     {
-        public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 screenPosition)
+        public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 worldPosition)
         {
             return (jointsOut) =>
             {
                 ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
                 Quaternion rotation = Quaternion.identity;
-                Vector3 position = CameraCache.Main.ScreenToWorldPoint(screenPosition);
-                gesturePose.ComputeJointPoses(handedness, rotation, position, jointsOut);
+                gesturePose.ComputeJointPoses(handedness, rotation, worldPosition, jointsOut);
             };
+        }
+
+        public static IMixedRealityInputSystem GetInputSystem()
+        {
+            IMixedRealityInputSystem inputSystem;
+            MixedRealityServiceRegistry.TryGetService(out inputSystem);
+            Assert.IsNotNull(inputSystem, "MixedRealityInputSystem is null!");
+            return inputSystem;
+        }
+
+        public static InputSimulationService GetInputSimulationService()
+        {
+            IMixedRealityInputSystem inputSystem = GetInputSystem();
+            InputSimulationService inputSimulationService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<InputSimulationService>();
+            Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
+            inputSimulationService.UserInputEnabled = false;
+
+            return inputSimulationService;
+        }
+
+        internal static IEnumerator MoveHandFromTo(InputSimulationService inputSimulationService, Vector3 startPos, Vector3 endPos, int numSteps, ArticulatedHandPose.GestureId gestureId, Handedness handedness)
+        {
+            for (int i = 0; i < numSteps; i++)
+            {
+                float t = 1.0f / numSteps * i;
+                Vector3 handPos = Vector3.Lerp(startPos, endPos, t);
+                var handDataGenerator = GenerateHandPose(
+                        gestureId,
+                        handedness,
+                        handPos);
+                Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
+                SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
+                bool isPinching = gestureId == ArticulatedHandPose.GestureId.Grab || gestureId == ArticulatedHandPose.GestureId.Pinch || gestureId == ArticulatedHandPose.GestureId.PinchSteadyWrist;
+                inputSimulationService.HandDataRight.Update(true, false, handDataGenerator);
+                yield return null;
+            }
         }
     }
 }
