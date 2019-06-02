@@ -33,7 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Useful when debugging
+        /// Waits for the user to press the enter key before a test continues.
+        /// Not actually used by any test, but it is useful when debugging since you can 
+        /// pause the state of the test and inspect the scene.
         /// </summary>
         private IEnumerator WaitForEnterKey()
         {

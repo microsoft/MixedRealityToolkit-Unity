@@ -35,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InputSimulationService inputSimulationService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<InputSimulationService>();
             Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
             inputSimulationService.UserInputEnabled = false;
-
             return inputSimulationService;
         }
 
@@ -61,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             inputSimulationService.HandDataRight.Update(false, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
-            // Wait one frame for the hand to actually go away
+            // Wait one frame for the hand to actually appear
             yield return null;
         }
 
