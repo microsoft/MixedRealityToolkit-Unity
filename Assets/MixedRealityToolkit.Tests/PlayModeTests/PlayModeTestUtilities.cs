@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return inputSimulationService;
         }
 
-        internal static IEnumerator MoveHandFromTo(InputSimulationService inputSimulationService, Vector3 startPos, Vector3 endPos, int numSteps, ArticulatedHandPose.GestureId gestureId, Handedness handedness)
+        internal static IEnumerator MoveHandFromTo(Vector3 startPos, Vector3 endPos, int numSteps, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
             for (int i = 0; i < numSteps; i++)
             {
@@ -57,10 +57,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        internal static IEnumerator HideHand(InputSimulationService inputSimulationService, Handedness handedness)
+        internal static IEnumerator HideHand(Handedness handedness, InputSimulationService inputSimulationService)
         {
             SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             inputSimulationService.HandDataRight.Update(false, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
+            // Wait one frame for the hand to actually go away
+            yield return null;
+        }
+
+        internal static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService)
+        {
+            SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
+            inputSimulationService.HandDataRight.Update(true, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
             // Wait one frame for the hand to actually go away
             yield return null;
         }
