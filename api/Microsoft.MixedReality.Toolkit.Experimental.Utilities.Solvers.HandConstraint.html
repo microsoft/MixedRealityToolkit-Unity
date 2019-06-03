@@ -1,0 +1,655 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class HandConstraint
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class HandConstraint
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint" class="text-break">Class HandConstraint
+  </h1>
+  <div class="markdown level0 summary"><p>Provides a solver that constrains the target to a region safe for hand constrained content.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">HandConstraint</span></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraintPalmUp.html">HandConstraintPalmUp</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealitySourceStateHandler</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.html">Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class HandConstraint : Solver, IMixedRealitySourceStateHandler</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_handBounds" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.handBounds">handBounds</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected HandBounds handBounds</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">HandBounds</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_handStack" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.handStack">handStack</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected List&lt;IMixedRealityHand&gt; handStack</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<span class="xref">IMixedRealityHand</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_trackedHand" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.trackedHand">trackedHand</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IMixedRealityHand trackedHand</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityHand</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_BillboardToCamera_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.BillboardToCamera*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_BillboardToCamera" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.BillboardToCamera">BillboardToCamera</h4>
+  <div class="markdown level1 summary"><p>Should the solver billboard to the camera or use the tracked object rotation?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool BillboardToCamera { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_HideHandCursorsOnActivate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.HideHandCursorsOnActivate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_HideHandCursorsOnActivate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.HideHandCursorsOnActivate">HideHandCursorsOnActivate</h4>
+  <div class="markdown level1 summary"><p>When a hand is activated for tracking, should the cursor(s) be disabled on that hand?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HideHandCursorsOnActivate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnFirstHandDetected_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnFirstHandDetected*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnFirstHandDetected" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnFirstHandDetected">OnFirstHandDetected</h4>
+  <div class="markdown level1 summary"><p>Event which is triggered when zero hands to one hand is tracked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent OnFirstHandDetected { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnHandActivate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnHandActivate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnHandActivate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnHandActivate">OnHandActivate</h4>
+  <div class="markdown level1 summary"><p>Event which is triggered when a hand begins being tracked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent OnHandActivate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnHandDeactivate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnHandDeactivate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnHandDeactivate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnHandDeactivate">OnHandDeactivate</h4>
+  <div class="markdown level1 summary"><p>Event which is triggered when a hand stops being tracked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent OnHandDeactivate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnLastHandLost_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnLastHandLost*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnLastHandLost" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnLastHandLost">OnLastHandLost</h4>
+  <div class="markdown level1 summary"><p>Event which is triggered when all hands are lost.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent OnLastHandLost { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_SafeZone_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.SafeZone*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_SafeZone" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.SafeZone">SafeZone</h4>
+  <div class="markdown level1 summary"><p>Which part of the hand to move the tracked object towards.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HandConstraint.HandSafeZone SafeZone { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.HandSafeZone.html">HandConstraint.HandSafeZone</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_SafeZoneBuffer_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.SafeZoneBuffer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_SafeZoneBuffer" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.SafeZoneBuffer">SafeZoneBuffer</h4>
+  <div class="markdown level1 summary"><p>Additional offset to apply to the intersection point with the hand bounds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float SafeZoneBuffer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_TransitionBetweenHands_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.TransitionBetweenHands*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_TransitionBetweenHands" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.TransitionBetweenHands">TransitionBetweenHands</h4>
+  <div class="markdown level1 summary"><p>Should the solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TransitionBetweenHands { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_CalculateGoalPosition_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.CalculateGoalPosition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_CalculateGoalPosition" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.CalculateGoalPosition">CalculateGoalPosition()</h4>
+  <div class="markdown level1 summary"><p>Performs a ray vs AABB test to determine where the solver can constrain the tracked object without intersection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Vector3 CalculateGoalPosition()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>The new goal position.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_IsHandActive_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.IsHandActive*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_IsHandActive_IMixedRealityHand_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.IsHandActive(IMixedRealityHand)">IsHandActive(IMixedRealityHand)</h4>
+  <div class="markdown level1 summary"><p>Determines if a hand meets the requirements for use with constraining the tracked object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsHandActive(IMixedRealityHand hand)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityHand</span></td>
+        <td><span class="parametername">hand</span></td>
+        <td><p>The hand to check against.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if this hand should be used from tracking.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnSourceDetected_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnSourceDetected*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnSourceDetected_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnSourceDetected(SourceStateEventData)">OnSourceDetected(SourceStateEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnSourceDetected(SourceStateEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SourceStateEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnSourceLost_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnSourceLost*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_OnSourceLost_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.OnSourceLost(SourceStateEventData)">OnSourceLost(SourceStateEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnSourceLost(SourceStateEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SourceStateEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_SolverUpdate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.SolverUpdate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_SolverUpdate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.SolverUpdate">SolverUpdate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SolverUpdate()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_Start_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.Start*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_Start" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.Start">Start()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Start()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_ToggleCursor_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.ToggleCursor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Solvers_HandConstraint_ToggleCursor_System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.ToggleCursor(System.Boolean,System.Boolean)">ToggleCursor(Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Enables/disables all cursors on the currently tracked hand.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerator ToggleCursor(bool visible, bool frameDelay = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">visible</span></td>
+        <td><p>Is the cursor visable?</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">frameDelay</span></td>
+        <td><p>Delay one frame before performing the toggle to allow the pointers to instantiate their cursors.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealitySourceStateHandler</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

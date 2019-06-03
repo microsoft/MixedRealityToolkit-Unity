@@ -6988,6 +6988,54 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.HandSafeZone.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.HandSafeZone.html",
+          "hash": "wl9uOBp/Lhs2PhCyCozenA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.html",
+          "hash": "LFSxDH9VChWcsKCnEiLwbQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraintPalmUp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraintPalmUp.html",
+          "hash": "gv691kgitAOJz50G4WDoDg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.html",
+          "hash": "wvi54PCyLMWtySacwmL+GA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.ExtendsAttribute.yml",
       "output": {
         ".html": {
@@ -7773,6 +7821,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.GestureInputType.html",
           "hash": "WITa8UHG74SE2+58lm/4bg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandBounds.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandBounds.html",
+          "hash": "Sgd3Od07K6fkGS6oO2i+Jg=="
         }
       },
       "is_incremental": false,
@@ -9632,7 +9692,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "lTjN9cfx3L3j7Vj0L8eIqA=="
+          "hash": "QbE6jCKPbjFBp9f6JMMAhQ=="
         }
       },
       "is_incremental": false,
@@ -15644,7 +15704,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "chnLh/lagwMWljpXQKghDg=="
+          "hash": "VfFCFqwt9/VruVG7V5GvPg=="
         }
       },
       "is_incremental": false,
@@ -15703,16 +15763,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 935,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 97,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 930,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
