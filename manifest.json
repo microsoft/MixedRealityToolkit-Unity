@@ -3071,6 +3071,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG",
       "output": {
         "resource": {
@@ -3339,6 +3350,83 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Pointers/MRTK_PokePointer.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemBuildSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemBuildSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemCachedLightingSettings.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemCachedLightingSettings.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemEditorSceneHeirarchy.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemEditorSceneHeirarchy.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemLightingSettings.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemLightingSettings.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemLoadingByTag.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemLoadingByTag.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemProfileEditorSettings.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemProfileEditorSettings.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemServiceInspector.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemServiceInspector.PNG"
         }
       },
       "is_incremental": false,
@@ -4001,7 +4089,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MixedRealityConfigurationGuide.html",
-          "hash": "SGAWP99KusBKIUwwj/nroQ=="
+          "hash": "951BWb4139ytXfkdsa0Jbg=="
         }
       },
       "is_incremental": false,
@@ -4249,6 +4337,66 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/SceneSystem/SceneSystemContentLoading.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SceneSystem/SceneSystemContentLoading.html",
+          "hash": "ddUp8EzdXuAvWcaWrfMi+A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/SceneSystem/SceneSystemGettingStarted.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SceneSystem/SceneSystemGettingStarted.html",
+          "hash": "xp5UJ6N1CEdCsjVgV207Iw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/SceneSystem/SceneSystemLightingScenes.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SceneSystem/SceneSystemLightingScenes.html",
+          "hash": "u3lr45FugGgE8SsQZTHTWA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/SceneSystem/SceneSystemLoadProgress.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SceneSystem/SceneSystemLoadProgress.html",
+          "hash": "YlIftQbu5/5AbORDa3p+DQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/SceneSystem/SceneSystemSceneTypes.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SceneSystem/SceneSystemSceneTypes.html",
+          "hash": "ofwt4HvSbd0dj6fPBMiTOw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md",
       "output": {
         ".html": {
@@ -4432,7 +4580,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseCoreSystem.html",
-          "hash": "1Bw1qI/uSqCIk33ZOpXEjA=="
+          "hash": "a8/hJ3HmzMPzYsYOh5u6MA=="
         }
       },
       "is_incremental": false,
@@ -4480,7 +4628,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html",
-          "hash": "1lmKhfupoQJTR5y7cJhrEw=="
+          "hash": "wn6DgTXMtnm54E2qW7lENA=="
         }
       },
       "is_incremental": false,
@@ -5044,7 +5192,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityServiceInspector.html",
-          "hash": "QY7JoL/5bTmP6VqwI/StgA=="
+          "hash": "UQRqkbPl1i1ADsc1oEMVaQ=="
         }
       },
       "is_incremental": false,
@@ -5068,7 +5216,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.html",
-          "hash": "2Lo2GAAH4vVFCAGColJwHg=="
+          "hash": "fN6oMnVW0WlAYlu366HCEQ=="
         }
       },
       "is_incremental": false,
@@ -5328,6 +5476,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.MixedRealitySceneSystemProfileInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealitySceneSystemProfileInspector.html",
+          "hash": "016LfwSTPgPX/lJKRHO6XQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.MixedRealitySpeechCommandsProfileInspector.yml",
       "output": {
         ".html": {
@@ -5496,11 +5656,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.SceneInfoDrawer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.SceneInfoDrawer.html",
+          "hash": "AnOHzKNmFUVCJfU8QUMFbw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.ScenePickPropertyDrawer.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.ScenePickPropertyDrawer.html",
           "hash": "dM5bMYpvN75z1vzRMh5QIQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.SceneSystemInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.SceneSystemInspector.html",
+          "hash": "NwL9ePHnWLi6ahTZnfK6Kg=="
         }
       },
       "is_incremental": false,
@@ -5656,7 +5840,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.html",
-          "hash": "2fW3zKewIYZjXVpDxzFikw=="
+          "hash": "X7YzffajlfM2soYMBIsmbA=="
         }
       },
       "is_incremental": false,
@@ -9604,7 +9788,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityPlayspace.html",
-          "hash": "lHjSWil79pw8JBme2W2Keg=="
+          "hash": "6J9VJ2/QIKtU6SXtlLp8+g=="
         }
       },
       "is_incremental": false,
@@ -9676,7 +9860,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html",
-          "hash": "87+Xs76cuh6Fo986NtRIrw=="
+          "hash": "ekMrvpcvacHEzLZkJ1m19A=="
         }
       },
       "is_incremental": false,
@@ -9688,7 +9872,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile.html",
-          "hash": "1rfaKny32IEHUn6gG88ORw=="
+          "hash": "O8/qfjfK5IUT/OQYtp31lA=="
         }
       },
       "is_incremental": false,
@@ -10188,11 +10372,155 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneAssetReferenceAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneAssetReferenceAttribute.html",
+          "hash": "RANdvtxUYZnGPJYtr+YrKw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneAssetReferenceAttributeDrawer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneAssetReferenceAttributeDrawer.html",
+          "hash": "u/QS7MUIn1lS0fTb2kKSNA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.ScenePickAttribute.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.ScenePickAttribute.html",
           "hash": "p8t5Q2/IKm0DHTpDxf8BxQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.html",
+          "hash": "H4V4X4iOOcb8stAahUdUcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.LightingSceneTransitionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.LightingSceneTransitionType.html",
+          "hash": "t/DzKMQeVMjCA0Cg/JmO3A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.html",
+          "hash": "dlOm+hoBbFbgNfBv7az14Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystemProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystemProfile.html",
+          "hash": "KeiUWw4GWX5pGLPGDZNVZg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.RuntimeLightingSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.RuntimeLightingSettings.html",
+          "hash": "qnfrlafF3zCYSIqoGiEqiQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.RuntimeRenderSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.RuntimeRenderSettings.html",
+          "hash": "25bYGGOh4HYdIE5bS8EaWA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.RuntimeSunlightSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.RuntimeSunlightSettings.html",
+          "hash": "UlN03psaDbaw3Iee1XVI2g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken.html",
+          "hash": "cBCoyJumze9cCo2kRAlvNw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.SceneInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.SceneInfo.html",
+          "hash": "CD65GrNDPikdRohuttvyww=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.html",
+          "hash": "2OaBFrmi/KmB5hwE6Bv/dA=="
         }
       },
       "is_incremental": false,
@@ -12616,7 +12944,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.CreateProfileMenuItemIndices.html",
-          "hash": "PL6Aj5udz8eYSJ/FM8SZmA=="
+          "hash": "rAzbanGYvm8ONUc9PbBiZw=="
         }
       },
       "is_incremental": false,
@@ -14412,6 +14740,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.RuntimeSceneUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.RuntimeSceneUtils.html",
+          "hash": "autJBRPKbo+oSWd40Lr9zw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.ScaleState.yml",
       "output": {
         ".html": {
@@ -14764,7 +15104,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.html",
-          "hash": "ICRxdzdvjKncwemSOfRgIA=="
+          "hash": "p2a1nlNlYrJXLyjv1CsBFQ=="
         }
       },
       "is_incremental": false,
@@ -15292,7 +15632,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "9YgXJEwN88Rjeoo1/PQ1+A=="
+          "hash": "TW5cB6fkJfTowzwWbBG7tQ=="
         }
       },
       "is_incremental": false,
@@ -15304,7 +15644,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "1lqrNlDScTzbXaWwytddVg=="
+          "hash": "chnLh/lagwMWljpXQKghDg=="
         }
       },
       "is_incremental": false,
@@ -15366,7 +15706,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 92,
+          "total_file_count": 97,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 930,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -15374,12 +15720,6 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 914,
           "skipped_file_count": 0
         }
       }

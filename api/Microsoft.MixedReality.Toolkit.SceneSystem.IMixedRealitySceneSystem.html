@@ -1,0 +1,1383 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IMixedRealitySceneSystem
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IMixedRealitySceneSystem
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem" class="text-break">Interface IMixedRealitySceneSystem
+  </h1>
+  <div class="markdown level0 summary"><p>Interface for managing scenes in Unity.
+Scenes are divided into three categories: Manager, Lighting and Content.</p>
+<p>The Manager scene is loaded first and remains loaded for the duration of the app.
+Only one Manager scene is ever loaded, and no scene operation will ever unload it.</p>
+<p>The Lighting scene is a largely empty scene which controls lighting settings.
+Ambient lighting, skybox, sun direction, etc. A default lighting scene is loaded on initialization.
+After that the active lighting scene may be changed at any time via SetLightingScene.
+Only one lighting scene can ever be loaded at a time.</p>
+<p>Content scenes are everything else. These can be loaded and unloaded at will in any combination.</p>
+<p>The scene actions provided improve on unity's SceneManagement events by ensuring that scenes
+are considered valid before the action is invoked.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_EventListeners">IMixedRealityEventSystem.EventListeners</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0__">IMixedRealityEventSystem.HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_Register_GameObject_">IMixedRealityEventSystem.Register(GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_Unregister_GameObject_">IMixedRealityEventSystem.Unregister(GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSource_SourceId">IMixedRealityEventSource.SourceId</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSource_SourceName">IMixedRealityEventSource.SourceName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Name">IMixedRealityService.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Priority">IMixedRealityService.Priority</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_ConfigurationProfile">IMixedRealityService.ConfigurationProfile</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Initialize">IMixedRealityService.Initialize()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Reset">IMixedRealityService.Reset()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Enable">IMixedRealityService.Enable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Update">IMixedRealityService.Update()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_LateUpdate">IMixedRealityService.LateUpdate()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Disable">IMixedRealityService.Disable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Destroy">IMixedRealityService.Destroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.html">Microsoft.MixedReality.Toolkit.SceneSystem</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IMixedRealitySceneSystem : IMixedRealityEventSystem, IMixedRealityEventSource, IEqualityComparer, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_ActiveLightingScene_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.ActiveLightingScene*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_ActiveLightingScene" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.ActiveLightingScene">ActiveLightingScene</h4>
+  <div class="markdown level1 summary"><p>Name of the currently loaded lighting scene.
+If a transition is in progress, this reports the target lighting scene we're transitioning to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string ActiveLightingScene { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_ContentSceneNames_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.ContentSceneNames*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_ContentSceneNames" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.ContentSceneNames">ContentSceneNames</h4>
+  <div class="markdown level1 summary"><p>An array of content scenes available to load / unload. Order in array matches build order.
+Useful if you want to present an ordered list of options, or if you want to track which scenes are loaded via IsContentLoaded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string[] ContentSceneNames { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LightingOperationInProgress_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LightingOperationInProgress*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LightingOperationInProgress" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LightingOperationInProgress">LightingOperationInProgress</h4>
+  <div class="markdown level1 summary"><p>True if the scene system is transitioning from one lighting scene to anthother.
+Lighting operations will not impede other operations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool LightingOperationInProgress { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LightingOperationProgress_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LightingOperationProgress*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LightingOperationProgress" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LightingOperationProgress">LightingOperationProgress</h4>
+  <div class="markdown level1 summary"><p>Progress of current lighting operation, from 0-1</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">float LightingOperationProgress { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_NextContentExists_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.NextContentExists*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_NextContentExists" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.NextContentExists">NextContentExists</h4>
+  <div class="markdown level1 summary"><p>Returns true if a content scene appears in build settings AFTER the latest loaded build index.
+Use to verify that LoadNextContent can be performed without wrapping.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool NextContentExists { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnContentLoaded_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnContentLoaded*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnContentLoaded" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnContentLoaded">OnContentLoaded</h4>
+  <div class="markdown level1 summary"><p>Called when a set of content scenes have been loaded, activated and are valid.
+Includes names of all scenes loaded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;IEnumerable&lt;string&gt;&gt; OnContentLoaded { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnContentUnloaded_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnContentUnloaded*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnContentUnloaded" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnContentUnloaded">OnContentUnloaded</h4>
+  <div class="markdown level1 summary"><p>Called after a set of content scenes have been completely unloaded.
+Includes names of all scenes about to be unloaded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;IEnumerable&lt;string&gt;&gt; OnContentUnloaded { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnLightingLoaded_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnLightingLoaded*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnLightingLoaded" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnLightingLoaded">OnLightingLoaded</h4>
+  <div class="markdown level1 summary"><p>Called when a lighting scene has been loaded, activated and is valid.
+Includes scene name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;string&gt; OnLightingLoaded { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnLightingUnloaded_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnLightingUnloaded*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnLightingUnloaded" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnLightingUnloaded">OnLightingUnloaded</h4>
+  <div class="markdown level1 summary"><p>Called after a lighting scene has been completely unloaded.
+Includes scene name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;string&gt; OnLightingUnloaded { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnSceneLoaded_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnSceneLoaded*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnSceneLoaded" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnSceneLoaded">OnSceneLoaded</h4>
+  <div class="markdown level1 summary"><p>Called when scene has been loaded, activated and is valid.
+Called for all scene types (content, lighting and manager)
+Includes scene name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;string&gt; OnSceneLoaded { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnSceneUnloaded_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnSceneUnloaded*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnSceneUnloaded" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnSceneUnloaded">OnSceneUnloaded</h4>
+  <div class="markdown level1 summary"><p>Called when scene has been unloaded
+Called for all scene types (content, lighting and manager)
+Includes scene name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;string&gt; OnSceneUnloaded { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillLoadContent_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillLoadContent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillLoadContent" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillLoadContent">OnWillLoadContent</h4>
+  <div class="markdown level1 summary"><p>Called just before a set of content scenes is loaded.
+Includes names of all scenes about to be loaded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;IEnumerable&lt;string&gt;&gt; OnWillLoadContent { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillLoadLighting_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillLoadLighting*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillLoadLighting" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillLoadLighting">OnWillLoadLighting</h4>
+  <div class="markdown level1 summary"><p>Called just before a lighting scene is loaded.
+Includes name of scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;string&gt; OnWillLoadLighting { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillLoadScene_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillLoadScene*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillLoadScene" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillLoadScene">OnWillLoadScene</h4>
+  <div class="markdown level1 summary"><p>Called just before a scene is loaded.
+Called for all scene types (content, lighting and manager)
+Includes scene name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;string&gt; OnWillLoadScene { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillUnloadContent_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillUnloadContent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillUnloadContent" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillUnloadContent">OnWillUnloadContent</h4>
+  <div class="markdown level1 summary"><p>Called just before a set of content scenes will be unloaded.
+Includes names of all scenes about to be unloaded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;IEnumerable&lt;string&gt;&gt; OnWillUnloadContent { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillUnloadLighting_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillUnloadLighting*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillUnloadLighting" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillUnloadLighting">OnWillUnloadLighting</h4>
+  <div class="markdown level1 summary"><p>Called just before a lighting scene unload operation begins.
+Includes scene name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;string&gt; OnWillUnloadLighting { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillUnloadScene_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillUnloadScene*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_OnWillUnloadScene" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.OnWillUnloadScene">OnWillUnloadScene</h4>
+  <div class="markdown level1 summary"><p>Called just before a scene will be unloaded
+Called for all scene types (content, lighting and manager)
+Includes scene name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Action&lt;string&gt; OnWillUnloadScene { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_PrevContentExists_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.PrevContentExists*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_PrevContentExists" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.PrevContentExists">PrevContentExists</h4>
+  <div class="markdown level1 summary"><p>Returns true if a content scene appears in build settings PRIOR to the latest loaded build index.
+Use to verify that LoadPrevContent can be performed without wrapping.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool PrevContentExists { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_SceneOperationInProgress_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.SceneOperationInProgress*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_SceneOperationInProgress" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.SceneOperationInProgress">SceneOperationInProgress</h4>
+  <div class="markdown level1 summary"><p>True if the scene system is loading or unloading content scenes.
+Manager and lighting scenes are ignored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool SceneOperationInProgress { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_SceneOperationProgress_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.SceneOperationProgress*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_SceneOperationProgress" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.SceneOperationProgress">SceneOperationProgress</h4>
+  <div class="markdown level1 summary"><p>Progress of the current scene operation, from 0-1.
+A scene operation may include multiple concurrently loaded scenes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">float SceneOperationProgress { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_WaitingToProceed_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.WaitingToProceed*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_WaitingToProceed" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.WaitingToProceed">WaitingToProceed</h4>
+  <div class="markdown level1 summary"><p>True when content has been loaded with an activation token and AllowSceneActivation has not been set to true.
+Useful for existing entities that shouldn't act until a newly loaded scene is actually activated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool WaitingToProceed { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_GetScene_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.GetScene*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_GetScene_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.GetScene(System.String)">GetScene(String)</h4>
+  <div class="markdown level1 summary"><p>Returns a scene by name.
+Useful for processing events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Scene GetScene(string sceneName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">sceneName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Scene</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_GetScenes_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.GetScenes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_GetScenes_IEnumerable_System_String__" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.GetScenes(IEnumerable{System.String})">GetScenes(IEnumerable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns a set of scenes by name.
+Useful for processing events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;Scene&gt; GetScenes(IEnumerable&lt;string&gt; sceneNames)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">sceneNames</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Scene</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_IsContentLoaded_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.IsContentLoaded*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_IsContentLoaded_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.IsContentLoaded(System.String)">IsContentLoaded(String)</h4>
+  <div class="markdown level1 summary"><p>Returns true if a content scene is fully loaded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsContentLoaded(string sceneName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">sceneName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LoadContent_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LoadContent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LoadContent_IEnumerable_System_String__LoadSceneMode_Microsoft_MixedReality_Toolkit_SceneSystem_SceneActivationToken_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LoadContent(IEnumerable{System.String},LoadSceneMode,Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken)">LoadContent(IEnumerable&lt;String&gt;, LoadSceneMode, SceneActivationToken)</h4>
+  <div class="markdown level1 summary"><p>Async method to load the scenes by name.
+If a scene operation is in progress, no action will be taken.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task LoadContent(IEnumerable&lt;string&gt; scenesToLoad, LoadSceneMode mode = null, SceneActivationToken activationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">scenesToLoad</span></td>
+        <td><p>Names of content scenes to load. Invalid scenes will be ignored.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">LoadSceneMode</span></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>Additive mode will load the content additively. Single mode will first unload all loaded content scenes first.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken.html">SceneActivationToken</a></td>
+        <td><span class="parametername">activationToken</span></td>
+        <td><p>Optional token for manual scene activation. Useful for loading screens and multiplayer.
+If not null, operation will wait until activationToken's AllowSceneActivation value is true before activating scene objects.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LoadContent_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LoadContent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LoadContent_System_String_LoadSceneMode_Microsoft_MixedReality_Toolkit_SceneSystem_SceneActivationToken_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LoadContent(System.String,LoadSceneMode,Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken)">LoadContent(String, LoadSceneMode, SceneActivationToken)</h4>
+  <div class="markdown level1 summary"><p>Async method to load a single scene by name.
+If a scene operation is in progress, no action will be taken.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task LoadContent(string sceneToLoad, LoadSceneMode mode = null, SceneActivationToken activationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">sceneToLoad</span></td>
+        <td><p>Name of content scene to load. Invalid scenes will be ignored.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">LoadSceneMode</span></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>Additive mode will load the content additively. Single mode will first unload all loaded content scenes first.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken.html">SceneActivationToken</a></td>
+        <td><span class="parametername">activationToken</span></td>
+        <td><p>Optional token for manual scene activation. Useful for loading screens and multiplayer.
+If not null, operation will wait until activationToken's AllowSceneActivation value is true before activating scene objects.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LoadContentByTag_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LoadContentByTag*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LoadContentByTag_System_String_LoadSceneMode_Microsoft_MixedReality_Toolkit_SceneSystem_SceneActivationToken_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LoadContentByTag(System.String,LoadSceneMode,Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken)">LoadContentByTag(String, LoadSceneMode, SceneActivationToken)</h4>
+  <div class="markdown level1 summary"><p>Async method to load content scenes by tag. All scenes with the supplied tag will be loaded.
+If no scenes with this tag are found, no action will be taken.
+If a scene operation is in progress, no action will be taken.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task LoadContentByTag(string tag, LoadSceneMode mode = null, SceneActivationToken activationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">tag</span></td>
+        <td><p>Scene tag.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">LoadSceneMode</span></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>Additive mode will load the content additively. Single mode will first unload all loaded content scenes first.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken.html">SceneActivationToken</a></td>
+        <td><span class="parametername">activationToken</span></td>
+        <td><p>Optional token for manual scene activation. Useful for loading screens and multiplayer.
+If not null, operation will wait until activationToken's AllowSceneActivation value is true before activating scene objects.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LoadNextContent_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LoadNextContent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LoadNextContent_System_Boolean_LoadSceneMode_Microsoft_MixedReality_Toolkit_SceneSystem_SceneActivationToken_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LoadNextContent(System.Boolean,LoadSceneMode,Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken)">LoadNextContent(Boolean, LoadSceneMode, SceneActivationToken)</h4>
+  <div class="markdown level1 summary"><p>Loads the next content scene according to build index.
+Uses the last-loaded content scene as previous build index.
+If no next content exists, and wrap is false, no action is taken.
+Use NextContentExists to verify that this operation is possible (if not using wrap).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task LoadNextContent(bool wrap = false, LoadSceneMode mode = null, SceneActivationToken activationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">wrap</span></td>
+        <td><p>If true, if the current scene is the LAST content scene, the FIRST content scene will be loaded.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">LoadSceneMode</span></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>Additive mode will load the content additively. Single mode will first unload all loaded content scenes first.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken.html">SceneActivationToken</a></td>
+        <td><span class="parametername">activationToken</span></td>
+        <td><p>Optional token for manual scene activation. Useful for loading screens and multiplayer.
+If not null, operation will wait until activationToken's AllowSceneActivation value is true before activating scene objects.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LoadPrevContent_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LoadPrevContent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_LoadPrevContent_System_Boolean_LoadSceneMode_Microsoft_MixedReality_Toolkit_SceneSystem_SceneActivationToken_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.LoadPrevContent(System.Boolean,LoadSceneMode,Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken)">LoadPrevContent(Boolean, LoadSceneMode, SceneActivationToken)</h4>
+  <div class="markdown level1 summary"><p>Loads the previous content scene according to build index.
+Uses the loaded content scene with the smallest build index as previous build index.
+If no previous content exists, and wrap is false, no action is taken.
+Use PrevContentExists to verify that this operation is possible (if not using wrap).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task LoadPrevContent(bool wrap = false, LoadSceneMode mode = null, SceneActivationToken activationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">wrap</span></td>
+        <td><p>If true, if the current scene is the FIRST content scene, the LAST content scene will be loaded.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">LoadSceneMode</span></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>Additive mode will load the content additively. Single mode will first unload all loaded content scenes first.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.SceneActivationToken.html">SceneActivationToken</a></td>
+        <td><span class="parametername">activationToken</span></td>
+        <td><p>Optional token for manual scene activation. Useful for loading screens and multiplayer.
+If not null, operation will wait until activationToken's AllowSceneActivation value is true before activating scene objects.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_SetLightingScene_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.SetLightingScene*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_SetLightingScene_System_String_Microsoft_MixedReality_Toolkit_SceneSystem_LightingSceneTransitionType_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.SetLightingScene(System.String,Microsoft.MixedReality.Toolkit.SceneSystem.LightingSceneTransitionType,System.Single)">SetLightingScene(String, LightingSceneTransitionType, Single)</h4>
+  <div class="markdown level1 summary"><p>Sets the current lighting scene. The lighting scene determines ambient light and skybox settings. It can optionally contain light objects.
+If the lighting scene is already loaded, no action will be taken.
+If a lighting scene transition is in progress, request will be queued and executed when the transition is complete.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void SetLightingScene(string newLightingSceneName, LightingSceneTransitionType transitionType = LightingSceneTransitionType.None, float transitionDuration = 1F)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">newLightingSceneName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.LightingSceneTransitionType.html">LightingSceneTransitionType</a></td>
+        <td><span class="parametername">transitionType</span></td>
+        <td><p>The transition type to use. See LightingSceneTransitionType for information about each transition type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">transitionDuration</span></td>
+        <td><p>The duration of the transition (if not None).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_UnloadContent_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.UnloadContent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_UnloadContent_IEnumerable_System_String__" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.UnloadContent(IEnumerable{System.String})">UnloadContent(IEnumerable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Async method to unload scenes by name.
+If a scene is not loaded, it will be ignored.
+If a scene operation is in progress, no action will be taken.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task UnloadContent(IEnumerable&lt;string&gt; scenesToUnload)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">scenesToUnload</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_UnloadContent_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.UnloadContent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_UnloadContent_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.UnloadContent(System.String)">UnloadContent(String)</h4>
+  <div class="markdown level1 summary"><p>Async method to unload a single scene by name.
+If the scene is not loaded, no action will be taken.
+If a scene operation is in progress, no action will be taken.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task UnloadContent(string sceneToUnload)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">sceneToUnload</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_UnloadContentByTag_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.UnloadContentByTag*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_UnloadContentByTag_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.UnloadContentByTag(System.String)">UnloadContentByTag(String)</h4>
+  <div class="markdown level1 summary"><p>Async method to unload scenes by name.
+If a scene is not loaded, it will be ignored.
+If a scene operation is in progress, no action will be taken.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task UnloadContentByTag(string tag)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">tag</span></td>
+        <td><p>Scene tag</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

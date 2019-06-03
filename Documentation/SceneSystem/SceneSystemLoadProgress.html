@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Monitoring Content Loading | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Monitoring Content Loading | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="monitoring-content-loading">Monitoring Content Loading</h1>
+
+<h2 id="scene-operation-progress">Scene Operation Progress</h2>
+<p>When content is being loaded or unloaded, the <code>SceneOperationInProgress</code> property will return true. You can monitor the progress of this operation via the <code>SceneOperationProgress</code> property.</p>
+<p>The <code>SceneOperationProgress</code> value is the average of all current async scene operations. At the start of a content load, <code>SceneOperationProgress</code> will be zero. Once fully completed, <code>SceneOperationProgress</code> will be set to 1 and will remain at 1 until the next operation takes place. Note that only content scene operations affect these properties.</p>
+<p>These properties reflect the state of an <em>entire operation</em> from start to finish, even if that operation includes multiple steps:</p>
+<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+// First do an additive scene load
+// SceneOperationInProgress will be true for the duration of this operation
+// SceneOperationProgress will show 0-1 as it completes
+await sceneSystem.LoadContent(&quot;ContentScene1&quot;);
+
+// Now do a single scene load
+// This will result in two actions back-to-back
+// First &quot;ContentScene1&quot; will be unloaded
+// Then &quot;ContentScene2&quot; will be loaded
+// SceneOperationInProgress will be true for the duration of this operation
+// SceneOperationProgress will show 0-1 as it completes
+sceneSystem.LoadContent(&quot;ContentScene2&quot;, LoadSceneMode.Single)
+</code></pre>
+<h3 id="examples">Examples</h3>
+<p><code>SceneOperationInProgress</code> can be useful if activity should be suspended while content is being loaded:</p>
+<pre><code>public class FooManager : MonoBehavior
+{
+    private void Update() 
+    {
+        IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+        // Don't update foos while a scene operation is in progress
+        if (sceneSystem.SceneOperationInProgress) 
+        {
+            return;
+        }
+
+        // Update foos
+        ...
+    }
+    ...
+}
+</code></pre>
+<p><code>SceneOperationProgress</code> can be used to display progress dialogs:</p>
+<pre><code>public class ProgressDialog : MonoBehavior
+{
+    private void Update() 
+    {
+        IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+        if (sceneSystem.SceneOperationInProgress) 
+        {
+            DisplayProgressIndicator(sceneSystem.SceneOperationProgress);
+        }
+        else
+        {
+            HideProgressIndicator();
+        }
+    }
+    ...
+}
+</code></pre>
+<hr>
+<h2 id="monitoring-with-actions">Monitoring With Actions</h2>
+<p>The Scene System provides several actions to let you know when scenes are being loaded or unloaded. Each action relays the name of the affected scene.</p>
+<p>If a load or unload operation involves multiple scenes, the relevant actions will be invoked once per affected scene. They are also invoked all at once when the load or unload operation is <em>fully completed.</em> For this reason it's recommended that you use <em>OnWillUnload</em> actions to detect content that <em>will</em> be destroyed, as opposed to using <em>OnUnloaded</em> actions to detect destroyed content after the fact.</p>
+<p>On the flip side, because <em>OnLoaded</em> actions are only invoked when all scenes are activated and fully loaded, using <em>OnLoaded</em> actions to detect and use new content is guaranteed to be safe.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>When it's invoked</th>
+<th>Content Scenes</th>
+<th>Lighting Scenes</th>
+<th>Manager Scenes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OnWillLoadContent</code></td>
+<td>Just prior to a content scene load</td>
+<td>•</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>OnContentLoaded</code></td>
+<td>After all content scenes in a load operation have been fully loaded and activated</td>
+<td>•</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>OnWillUnloadContent</code></td>
+<td>Just prior to a content scene unload operation</td>
+<td>•</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>OnContentUnloaded</code></td>
+<td>After all content scenes in an unload operation have been fully unloaded</td>
+<td>•</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>OnWillLoadLighting</code></td>
+<td>Just prior to a lighting scene load</td>
+<td></td>
+<td>•</td>
+<td></td>
+</tr>
+<tr>
+<td><code>OnLightingLoaded</code></td>
+<td>After a lighting scene has been fully loaded and activated</td>
+<td></td>
+<td>•</td>
+<td></td>
+</tr>
+<tr>
+<td><code>OnWillUnloadLighting</code></td>
+<td>Just prior to a lighting scene unload</td>
+<td></td>
+<td>•</td>
+<td></td>
+</tr>
+<tr>
+<td><code>OnLightingUnloaded</code></td>
+<td>After a lighting scene has been fully unloaded</td>
+<td></td>
+<td>•</td>
+<td></td>
+</tr>
+<tr>
+<td><code>OnWillLoadScene</code></td>
+<td>Just prior to a scene load</td>
+<td>•</td>
+<td>•</td>
+<td>•</td>
+</tr>
+<tr>
+<td><code>OnSceneLoaded</code></td>
+<td>After all scenes in an operation are fully loaded and activated</td>
+<td>•</td>
+<td>•</td>
+<td>•</td>
+</tr>
+<tr>
+<td><code>OnWillUnloadScene</code></td>
+<td>Just prior to a scene unload</td>
+<td>•</td>
+<td>•</td>
+<td>•</td>
+</tr>
+<tr>
+<td><code>OnSceneUnloaded</code></td>
+<td>After a scene is fully unloaded</td>
+<td>•</td>
+<td>•</td>
+<td>•</td>
+</tr>
+</tbody>
+</table>
+<h3 id="examples-1">Examples</h3>
+<p>Another progress dialog example using actions and a coroutine instead of Update:</p>
+<pre><code>public class ProgressDialog : MonoBehavior
+{
+    private bool displayingProgress = false;
+
+    private void Start() 
+    {
+        IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+        sceneSystem.OnWillLoadContent += HandleSceneOperation;
+        sceneSystem.OnWillUnloadContent += HandleSceneOperation;
+    }
+
+    private void HandleSceneOperation (string sceneName)
+    {
+        // This may be invoked multiple times per frame - once per scene being loaded or unloaded.
+        // So filter the events appropriately.
+        if (displayingProgress)
+        {
+            return;            
+        }
+
+        displayingProgress = true;
+        StartCoroutine(DisplayProgress());
+    }
+
+    private IEnumerator DisplayProgress() 
+    {
+        IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+        while (sceneSystem.SceneOperationInProgress) 
+        {
+            DisplayProgressIndicator(sceneSystem.SceneOperationProgress);
+            yield return null;
+        }
+
+        HideProgressIndicator();
+        displayingProgress = false;
+    }
+
+    ...
+}
+</code></pre>
+<hr>
+<h2 id="controlling-scene-activation">Controlling Scene Activation</h2>
+<p>By default content scenes are set to activate when loaded. If you want to control scene activation manually, you can pass a <code>SceneActivationToken</code> to any content load method. If multiple content scenes are being loaded by a single operation, this activation token will apply to all scenes.</p>
+<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+SceneActivationToken activationToken = new SceneActivationToken();
+
+// Load the content and pass the activation token
+sceneSystem.LoadContent(new string[] { &quot;ContentScene1&quot;, &quot;ContentScene2&quot;, &quot;ContentScene3&quot; }, LoadSceneMode.Additive, activationToken);
+
+// Wait until all users have joined the experience
+while (!AllUsersHaveJoinedExperience())
+{
+    await Task.Yield();
+}
+
+// Let scene system know we're ready to activate all scenes
+activationToken.AllowSceneActivation = true;
+
+// Wait for all scenes to be fully loaded and activated
+while (sceneSystem.SceneOperationInProgress)
+{
+    await Task.Yield();
+}
+
+// Proceed with experience
+</code></pre>
+<hr>
+<h2 id="checking-which-content-is-loaded">Checking which content is loaded</h2>
+<p>The <code>ContentSceneNames</code> property provides an array of available content scenes in order of build index. You can check whether these scenes are loaded via <code>IsContentLoaded(string contentName)</code>.</p>
+<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+string[] contentSceneNames = sceneSystem.ContentSceneNames;
+bool[] loadStatus = new bool[contentSceneNames.Length];
+
+for (int i = 0; i &lt; contentSceneNames.Length; i++&gt;)
+{
+    loadStatus[i] = sceneSystem.IsContentLoaded(contentSceneNames[i]);
+}
+
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/SceneSystem/SceneSystemLoadProgress.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

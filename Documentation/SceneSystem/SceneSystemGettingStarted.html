@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Scene System Overview | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Scene System Overview | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="scene-system-overview">Scene System Overview</h1>
+
+<h2 id="when-to-use-the-scene-system">When to use the scene system</h2>
+<p>If your project consists of a single scene, the Scene System probably isn't necessary. The scene system is most useful when one or more of the following are true:</p>
+<ul>
+<li>Your project has multiple scenes.</li>
+<li>You're used to single scene loading, but you don't like the way it destroyes the MixedRealityToolkit instance.</li>
+<li>You want a simple way to to additively load multiple scenes to construct your experience.</li>
+<li>You want a simple way to keep track of load operations in progress, or a simple way to control scene activation for multiple scenes being loaded at once.</li>
+<li>You want to keep lighting consistent and predictable across all your scenes.</li>
+</ul>
+<h2 id="how-to-use-the-scene-system">How to use the scene system</h2>
+<ul>
+<li><a href="SceneSystemSceneTypes.html">Scene Types</a></li>
+<li><a href="SceneSystemContentLoading.html">Content Scene Loading</a></li>
+<li><a href="SceneSystemLoadProgress.html">Monitoring Content Loading</a></li>
+<li><a href="SceneSystemLightingScenes.html">Lighting Scene Loading</a></li>
+</ul>
+<h1 id="editor-settings">Editor Settings</h1>
+<p>By default the Scene System enforces several behaviors in the Unity editor. If you find any of these behaviors heavy-handed they can be disabled in the <strong>Editor Settings</strong> section of your Scene System profile.</p>
+<ul>
+<li><p><code>Editor Manage Build Settings:</code> If true, the service will update your build settings automatically, ensuring that all manager, lighting and content scenes are added. Disable this if you want total control over build settings.</p>
+</li>
+<li><p><code>Editor Enforce Scene Order:</code> If true, the service will ensure manager scene is displayed first in scene heirarchy, followed by lighting and then content. Disable this if you want total control over scene heirarchy.</p>
+</li>
+<li><p><code>Editor Manage Loaded Scenes:</code> If true, service will ensure that manager scenes and lighting scenes are always loaded. Disable if you want total control over which scenes are loaded in editor.</p>
+</li>
+<li><p><code>Editor Enforce lighting scene Types:</code> If true, service will ensure that only the lighting-related components defined in <code>PermittedLightingSceneComponentTypes</code> are allowd in lighting scenes. Disable if you want total control over the content of lighting scenes.</p>
+</li>
+</ul>
+<p><img src="../Images/SceneSystem/MRTK_SceneSystemProfileEditorSettings.PNG" alt=""></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/SceneSystem/SceneSystemGettingStarted.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

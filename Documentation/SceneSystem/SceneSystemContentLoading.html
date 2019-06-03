@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Content Scene Loading | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Content Scene Loading | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="content-scene-loading">Content Scene Loading</h1>
+
+<p>All content load operations are asynchronous, and by default all content loading is additive. Manager and lighting scenes are never affected by content loading operations. For information about monitoring load progress and scene activation, see <a href="SceneSystemLoadProgress.html">Monitoring Content Loading.</a></p>
+<h2 id="loading-content">Loading Content</h2>
+<p>To load content scenes use the <code>LoadContent</code> method:</p>
+<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+// Additively load a single content scene
+await sceneSystem.LoadContent(&quot;MyContentScene&quot;);
+
+// Additively load a set of content scenes
+await sceneSystem.LoadContent(new string[] { &quot;MyContentScene1&quot;, &quot;MyContentScene2&quot;, &quot;MyContentScene3&quot; });
+</code></pre>
+<h2 id="single-scene-loading">Single Scene Loading</h2>
+<p>The equivalent of a single scene load can be achieved via the optional <code>mode</code> argument. <code>LoadSceneMode.Single</code> will first unload all loaded content scenes before proceeding with the load.</p>
+<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+// ContentScene1, ContentScene2 and ContentScene3 will be loaded additively
+await sceneSystem.LoadContent(&quot;ContentScene1&quot;);
+await sceneSystem.LoadContent(&quot;ContentScene2&quot;);
+await sceneSystem.LoadContent(&quot;ContentScene3&quot;);
+
+// ContentScene1, ContentScene2 and ContentScene3 will be unloaded
+// SingleContentScene will be loaded additively
+await sceneSystem.LoadContent(&quot;SingleContentScene&quot;, LoadSceneMode.Single);
+</code></pre>
+<h2 id="next--previous-scene-loading">Next / Previous Scene Loading</h2>
+<p>Content can be singly loaded in order of build index. This is useful for showcase applications that take users through a set of demonstration scenes one-by-one.</p>
+<p><img src="../Images/SceneSystem/MRTK_SceneSystemBuildSettings.png" alt=""></p>
+<p>Note that next / prev content loading uses LoadSceneMode.Single by default to ensure that the previous content is unloaded.</p>
+<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+if (nextSceneRequested &amp;&amp; sceneSystem.NextContentExists) 
+{
+    await sceneSystem.LoadNextContent();
+}
+
+if (prevSceneRequested &amp;&amp; sceneSystem.PrevContentExists)
+{
+    await sceneSystem.LoadPrevContent();
+}
+</code></pre>
+<p><code>PrevContentExists</code> will return true if there is at least one content scene that has a lower build index than the lowest build index currently loaded. <code>NextContentExists</code> will return true if there is at least one content scene that has a higher build index than the highest build index currently loaded.</p>
+<p>If the <code>wrap</code> argument is true, content will loop back to the first / last build index. This removes the need to check for next / previous content:</p>
+<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+if (nextSceneRequested) 
+{
+    await sceneSystem.LoadNextContent(true);
+}
+
+if (prevSceneRequested)
+{
+    await sceneSystem.LoadPrevContent(true);
+}
+</code></pre>
+<h2 id="loading-by-tag">Loading by Tag</h2>
+<p><img src="../Images/SceneSystem/MRTK_SceneSystemLoadingByTag.png" alt=""></p>
+<p>It's sometimes desirable to load content scenes in groups. Eg, a stage of an experience may be composed of multiple scenes, all of which must be loaded simultanously to function. To facilitate this, you can tag your scenes and then load them or unload them with that tag.</p>
+<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+await LoadContentByTag(&quot;Stage1&quot;);
+
+// Wait until stage 1 is complete
+
+await UnloadContentByTag(&quot;Stage1&quot;);
+await LoadContentByTag(&quot;Stage2);
+</code></pre>
+<p>Loading by tag can also be useful if artists want to incorporate / remove elements from an experience without having to modify scripts. For instance, running this script with the following two sets of tags produces different results:</p>
+<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+
+await LoadContentByTag(&quot;Terrain&quot;);
+await LoadContentByTag(&quot;Structures&quot;);
+await LoadContentByTag(&quot;Vegetation&quot;);
+</code></pre>
+<h3 id="testing-content">Testing content</h3>
+<table>
+<thead>
+<tr>
+<th>Scene Name</th>
+<th>Scene Tag</th>
+<th>Loaded by script</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DebugTerrainPhysics</td>
+<td>Terrain</td>
+<td>•</td>
+</tr>
+<tr>
+<td>StructureTesting</td>
+<td>Structures</td>
+<td>•</td>
+</tr>
+<tr>
+<td>VegetationTools</td>
+<td>Vegetation</td>
+<td>•</td>
+</tr>
+<tr>
+<td>Mountain</td>
+<td>Terrain</td>
+<td>•</td>
+</tr>
+<tr>
+<td>Cabin</td>
+<td>Structures</td>
+<td>•</td>
+</tr>
+<tr>
+<td>Trees</td>
+<td>Vegetation</td>
+<td>•</td>
+</tr>
+</tbody>
+</table>
+<h3 id="final-content">Final content</h3>
+<table>
+<thead>
+<tr>
+<th>Scene Name</th>
+<th>Scene Tag</th>
+<th>Loaded by script</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DebugTerrainPhysics</td>
+<td>DoNotInclude</td>
+<td></td>
+</tr>
+<tr>
+<td>StructureTesting</td>
+<td>DoNotInclude</td>
+<td></td>
+</tr>
+<tr>
+<td>VegetationTools</td>
+<td>DoNotInclude</td>
+<td></td>
+</tr>
+<tr>
+<td>Mountain</td>
+<td>Terrain</td>
+<td>•</td>
+</tr>
+<tr>
+<td>Cabin</td>
+<td>Structures</td>
+<td>•</td>
+</tr>
+<tr>
+<td>Trees</td>
+<td>Vegetation</td>
+<td>•</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="editor-behavior">Editor Behavior</h2>
+<p>You can perform all these operations in editor and in play mode by using the Scene System's <a href="../MixedRealityConfigurationGuide.html#inspectors">service inspector.</a> In edit mode scene loads will be instantaeous, while in play mode you can observe loading progress and use <a href="SceneSystemLoadProgress.html">activation tokens.</a></p>
+<p><img src="../Images/SceneSystem/MRTK_SceneSystemServiceInspector.PNG" alt=""></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/SceneSystem/SceneSystemContentLoading.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
