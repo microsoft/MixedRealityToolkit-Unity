@@ -21,11 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (experimental != null)
             {
-                GUIStyle style = GUI.skin.GetStyle("HelpBox");
-                var defaultValue = style.richText;
-                style.richText = true;
+                var defaultValue = EditorStyles.helpBox.richText;
+                EditorStyles.helpBox.richText = true;
                 EditorGUI.HelpBox(position, experimental.Text, MessageType.Warning);
-                style.richText = defaultValue;
+                EditorStyles.helpBox.richText = defaultValue;
             }
         }
 
