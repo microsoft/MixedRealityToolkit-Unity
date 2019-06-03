@@ -69,11 +69,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             SupportedPlatforms supportedPlatforms = 0;
 
-            if (Application.platform == RuntimePlatform.WindowsEditor)
+            // Editor platforms
+            switch (Application.platform)
             {
-                supportedPlatforms |= SupportedPlatforms.WindowsEditor;
+                case RuntimePlatform.WindowsEditor:
+                    supportedPlatforms |= SupportedPlatforms.WindowsEditor;
+                    break;
+
+                case RuntimePlatform.OSXEditor:
+                    supportedPlatforms |= SupportedPlatforms.MacEditor;
+                    break;
+
+                case RuntimePlatform.LinuxEditor:
+                    supportedPlatforms |= SupportedPlatforms.LinuxEditor;
+                    break;
             }
 
+            // Build target platforms
             switch (editorBuildTarget)
             {
                 case UnityEditor.BuildTarget.StandaloneWindows:
