@@ -1,6 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if !WINDOWS_UWP
+// When the .NET scripting backend is enabled and C# projects are built
+// Unity doesn't include the the required assemblies (i.e. the ones below).
+// Given that the .NET backend is deprecated by Unity at this point it's we have
+// to work around this on our end.
+
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
@@ -73,3 +79,4 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
     }
 }
+#endif
