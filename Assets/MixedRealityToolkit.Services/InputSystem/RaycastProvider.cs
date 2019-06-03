@@ -18,10 +18,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHitInfo hitInfo)
+        public bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo)
         {
             var result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
-            hitInfo = new MixedRealityRaycastHitInfo(physicsHit);
+            hitInfo = new MixedRealityRaycastHit(physicsHit);
             return result;
         }
 
@@ -33,10 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHitInfo hitInfo)
+        public bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo)
         {
             var result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, maxDistance, prioritizedLayerMasks, out RaycastHit physicsHit);
-            hitInfo = new MixedRealityRaycastHitInfo(physicsHit);
+            hitInfo = new MixedRealityRaycastHit(physicsHit);
             return result;
         }
 
@@ -48,17 +48,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHitInfo hitInfo)
+        public bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo)
         {
             var result = MixedRealityRaycaster.RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
-            hitInfo = new MixedRealityRaycastHitInfo(physicsHit);
+            hitInfo = new MixedRealityRaycastHit(physicsHit);
             return result;
         }
 
-        public bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHitInfo hitInfo)
+        public bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo)
         {
             var result = MixedRealityRaycaster.RaycastSpherePhysicsStep(step, radius, maxDistance, prioritizedLayerMasks, out RaycastHit physicsHit);
-            hitInfo = new MixedRealityRaycastHitInfo(physicsHit);
+            hitInfo = new MixedRealityRaycastHit(physicsHit);
             return result;
         }
     }

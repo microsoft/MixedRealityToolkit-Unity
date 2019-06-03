@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private class PointerHitResult
         {
-            public MixedRealityRaycastHitInfo raycastHit;
+            public MixedRealityRaycastHit raycastHit;
             public RaycastResult graphicsRaycastResult;
 
             public GameObject hitObject;
@@ -215,14 +215,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Set hit focus information from a physics raycast.
             /// </summary>
-            public void Set(MixedRealityRaycastHitInfo hit, RayStep ray, int rayStepIndex, float rayDistance)
+            public void Set(MixedRealityRaycastHit hit, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = hit;
                 graphicsRaycastResult = default(RaycastResult);
 
-                hitObject = hit.Transform.gameObject;
-                hitPointOnObject = hit.Point;
-                hitNormalOnObject = hit.Normal;
+                hitObject = hit.transform.gameObject;
+                hitPointOnObject = hit.point;
+                hitNormalOnObject = hit.normal;
 
                 this.ray = ray;
                 this.rayStepIndex = rayStepIndex;
@@ -907,7 +907,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
         {
             float rayStartDistance = 0;
-            MixedRealityRaycastHitInfo hitInfo;
+            MixedRealityRaycastHit hitInfo;
             RayStep[] pointerRays = pointer.Rays;
 
             if (pointerRays == null)
@@ -991,12 +991,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static void UpdatePointerRayOnHit(RayStep[] raySteps, MixedRealityRaycastHitInfo physicsHit, int hitRayIndex, float rayStartDistance, PointerHitResult hit)
+        private static void UpdatePointerRayOnHit(RayStep[] raySteps, MixedRealityRaycastHit physicsHit, int hitRayIndex, float rayStartDistance, PointerHitResult hit)
         {
             Vector3 origin = raySteps[hitRayIndex].Origin;
-            Vector3 terminus = physicsHit.Point;
+            Vector3 terminus = physicsHit.point;
             raySteps[hitRayIndex].UpdateRayStep(ref origin, ref terminus);
-            hit.Set(physicsHit, raySteps[hitRayIndex], hitRayIndex, rayStartDistance + physicsHit.Distance);
+            hit.Set(physicsHit, raySteps[hitRayIndex], hitRayIndex, rayStartDistance + physicsHit.distance);
         }
 
         #endregion Physics Raycasting
