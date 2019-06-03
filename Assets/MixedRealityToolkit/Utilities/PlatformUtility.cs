@@ -81,7 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     supportedPlatforms |= SupportedPlatforms.WindowsStandalone;
                     break;
                 case UnityEditor.BuildTarget.WSAPlayer:
-                case UnityEditor.BuildTarget.XboxOne:
                     supportedPlatforms |= SupportedPlatforms.WindowsUniversal;
                     break;
                 case UnityEditor.BuildTarget.StandaloneOSX:
@@ -94,6 +93,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
                 case UnityEditor.BuildTarget.Android:
                     supportedPlatforms |= SupportedPlatforms.Android;
+                    break;
+                case UnityEditor.BuildTarget.iOS:
+                    supportedPlatforms |= SupportedPlatforms.IOS;
+                    break;
+                case UnityEditor.BuildTarget.WebGL:
+                    supportedPlatforms |= SupportedPlatforms.Web;
+                    break;
+                case UnityEditor.BuildTarget.Lumin:
+                    supportedPlatforms |= SupportedPlatforms.Lumin;
                     break;
             }
 
