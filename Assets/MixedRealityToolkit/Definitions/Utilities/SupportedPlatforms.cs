@@ -16,6 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         LinuxStandalone = 1 << 2,
         WindowsUniversal = 1 << 3,
         WindowsEditor = 1 << 4,
-        Android = 1 << 5
+        Android = 1 << 5,
+        IOS = 1 << 6,
+        Web = 1 << 7,
+        Lumin = 1 << 8
     }
 }

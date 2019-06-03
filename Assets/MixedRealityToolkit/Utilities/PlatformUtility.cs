@@ -26,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 case RuntimePlatform.WSAPlayerARM:
                 case RuntimePlatform.WSAPlayerX86:
                 case RuntimePlatform.WSAPlayerX64:
-                case RuntimePlatform.XboxOne:
                     supportedPlatforms |= SupportedPlatforms.WindowsUniversal;
                     break;
                 case RuntimePlatform.OSXPlayer:
@@ -39,6 +38,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
                 case RuntimePlatform.Android:
                     supportedPlatforms |= SupportedPlatforms.Android;
+                    break;
+                case RuntimePlatform.IPhonePlayer:
+                    supportedPlatforms |= SupportedPlatforms.IOS;
+                    break;
+                case RuntimePlatform.WebGLPlayer:
+                    supportedPlatforms |= SupportedPlatforms.Web;
+                    break;
+                case RuntimePlatform.Lumin:
+                    supportedPlatforms |= SupportedPlatforms.Lumin;
                     break;
             }
 
