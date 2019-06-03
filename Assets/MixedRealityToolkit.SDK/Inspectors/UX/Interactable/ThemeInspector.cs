@@ -973,9 +973,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             if (renderHost != null)
                             {
                                 Renderer renderer = renderHost.GetComponent<Renderer>();
-                                TextMesh mesh = renderHost.GetComponent<TextMesh>();
-                                Text text = renderHost.GetComponent<Text>();
-                                hasTextComp = text != null || mesh != null;
+                                hasTextComp = InteractableColorTheme.HasTextComponentOnObject(renderHost);
                                 if (renderer != null && !hasTextComp)
                                 {
                                     ShaderPropertyType[] filter = new ShaderPropertyType[0];
@@ -1029,7 +1027,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         }
                         else
                         {
-                            EditorGUILayout.LabelField(new GUIContent("Text Property: " + (InteractableThemePropertyValueTypes)propId.intValue));
+                            EditorGUILayout.LabelField(new GUIContent("Text Property: Color"));
                         }
 
                         // Handle issue where the material color id renders on objects it shouldn't

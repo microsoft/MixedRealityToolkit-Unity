@@ -47,23 +47,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (property.objectReferenceValue != null)
             {
-                UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
+                bool showReadOnlyProfile = SessionState.GetBool(property.name + ".ReadOnlyProfile", false);
 
-                // If this is a default MRTK configuration profile, ask it to render as a sub-profile
-                if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
+                EditorGUI.indentLevel++;
+                RenderFoldout(ref showReadOnlyProfile, property.displayName, () =>
                 {
-                    BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
-                    configProfile.RenderAsSubProfile = true;
-                }
-
-                EditorGUILayout.BeginHorizontal();
-                    EditorGUI.indentLevel++;
-                    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                    using (new EditorGUI.IndentLevelScope())
+                    {
+                        UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
+                        // If this is a default MRTK configuration profile, ask it to render as a sub-profile
+                        if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
+                        {
+                            BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
+                            configProfile.RenderAsSubProfile = true;
+                        }
                         subProfileEditor.OnInspectorGUI();
-                        EditorGUILayout.Space();
-                    EditorGUILayout.EndVertical();
-                    EditorGUI.indentLevel--;
-                EditorGUILayout.EndHorizontal();
+                    }
+                });
+                EditorGUI.indentLevel--;
+
+                SessionState.SetBool(property.name + ".ReadOnlyProfile", showReadOnlyProfile);
             }
         }
 

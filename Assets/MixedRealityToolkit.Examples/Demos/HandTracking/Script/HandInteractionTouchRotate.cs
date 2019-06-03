@@ -12,11 +12,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         [FormerlySerializedAs("TargetObjectTransform")]
         private Transform targetObjectTransform = null;
+
+        [SerializeField]
+        private float rotateSpeed = 300.0f;
+
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
             if (targetObjectTransform != null)
             {
-                targetObjectTransform.Rotate(Vector3.up * (300.0f * Time.deltaTime));
+                targetObjectTransform.Rotate(Vector3.up * (rotateSpeed * Time.deltaTime));
             }
         }
     }
