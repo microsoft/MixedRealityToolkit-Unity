@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// HitInfo property gives access to information at the object being gazed at, if any.
         /// </summary>
-        RaycasterHit HitInfo { get; }
+        MixedRealityRaycastHitInfo HitInfo { get; }
 
         /// <summary>
         /// Position at which the gaze manager hit an object.

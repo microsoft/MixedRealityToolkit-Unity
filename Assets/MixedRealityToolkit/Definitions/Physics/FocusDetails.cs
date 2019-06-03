@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// The last raycast hit info.
         /// </summary>
-        public RaycasterHit LastRaycasterHit { get; set; }
+        public MixedRealityRaycastHitInfo LastRaycastHit { get; set; }
 
         /// <summary>
         /// The last raycast hit info for graphic raycast

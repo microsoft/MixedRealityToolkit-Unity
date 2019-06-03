@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class RaycasterProvider : BaseDataProvider, IMixedRealityRaycasterProvider
+    public class RaycastProvider : BaseDataProvider, IMixedRealityRaycastProvider
     {
-        public RaycasterProvider(
+        public RaycastProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             MixedRealityInputSystemProfile profile) : base(registrar, inputSystem, null, DefaultPriority, profile)
@@ -18,10 +18,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycasterHit raycasterHit)
+        public bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHitInfo hitInfo)
         {
             var result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
-            raycasterHit = new RaycasterHit(physicsHit);
+            hitInfo = new MixedRealityRaycastHitInfo(physicsHit);
             return result;
         }
 
@@ -33,10 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, out RaycasterHit raycasterHit)
+        public bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHitInfo hitInfo)
         {
             var result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, maxDistance, prioritizedLayerMasks, out RaycastHit physicsHit);
-            raycasterHit = new RaycasterHit(physicsHit);
+            hitInfo = new MixedRealityRaycastHitInfo(physicsHit);
             return result;
         }
 
@@ -48,17 +48,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out RaycasterHit raycasterHit)
+        public bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHitInfo hitInfo)
         {
             var result = MixedRealityRaycaster.RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
-            raycasterHit = new RaycasterHit(physicsHit);
+            hitInfo = new MixedRealityRaycastHitInfo(physicsHit);
             return result;
         }
 
-        public bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, out RaycasterHit raycasterHit)
+        public bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHitInfo hitInfo)
         {
             var result = MixedRealityRaycaster.RaycastSpherePhysicsStep(step, radius, maxDistance, prioritizedLayerMasks, out RaycastHit physicsHit);
-            raycasterHit = new RaycasterHit(physicsHit);
+            hitInfo = new MixedRealityRaycastHitInfo(physicsHit);
             return result;
         }
     }

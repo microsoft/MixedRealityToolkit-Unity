@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private SerializedProperty focusProviderType;
 
-        private SerializedProperty raycasterProviderType;
+        private SerializedProperty raycastProviderType;
 
         private static bool showPointerProperties = false;
         private SerializedProperty pointerProfile;
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             dataProviderConfigurations = serializedObject.FindProperty("dataProviderConfigurations");
             focusProviderType = serializedObject.FindProperty("focusProviderType");
-            raycasterProviderType = serializedObject.FindProperty("raycasterProviderType");
+            raycastProviderType = serializedObject.FindProperty("raycastProviderType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(focusProviderType);
-                EditorGUILayout.PropertyField(raycasterProviderType);
+                EditorGUILayout.PropertyField(raycastProviderType);
                 EditorGUILayout.Space();
 
                 bool isSubProfile = RenderAsSubProfile;

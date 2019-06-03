@@ -42,17 +42,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("The raycaster provider service concrete type to use when raycasting.")]
-        [Implements(typeof(IMixedRealityRaycasterProvider), TypeGrouping.ByNamespaceFlat)]
-        private SystemType raycasterProviderType;
+        [Tooltip("The raycast provider service concrete type to use when raycasting.")]
+        [Implements(typeof(IMixedRealityRaycastProvider), TypeGrouping.ByNamespaceFlat)]
+        private SystemType raycastProviderType;
 
         /// <summary>
-        /// The raycaster provider service concrete type to use when raycasting.
+        /// The raycast provider service concrete type to use when raycasting.
         /// </summary>
-        public SystemType RaycasterProviderType
+        public SystemType RaycastProviderType
         {
-            get { return raycasterProviderType; }
-            internal set { raycasterProviderType = value; }
+            get { return raycastProviderType; }
+            internal set { raycastProviderType = value; }
         }
 
         [SerializeField]

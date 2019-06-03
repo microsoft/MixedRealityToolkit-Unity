@@ -383,9 +383,9 @@ namespace Microsoft.MixedReality.Toolkit
                     return;
                 }
 
-                if (!RegisterDataProvider<IMixedRealityRaycasterProvider>(ActiveProfile.InputSystemProfile.RaycasterProviderType, args: args))
+                if (!RegisterDataProvider<IMixedRealityRaycastProvider>(ActiveProfile.InputSystemProfile.RaycastProviderType, args: args))
                 {
-                    Debug.LogError("Failed to register the raycaster provider! The input system will not function without it.");
+                    Debug.LogError("Failed to register the raycast provider! The input system will not function without it.");
                     return;
                 }
             }
@@ -1016,7 +1016,7 @@ namespace Microsoft.MixedReality.Toolkit
             return typeof(IMixedRealityInputSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityCameraSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityFocusProvider).IsAssignableFrom(type) ||
-                   typeof(IMixedRealityRaycasterProvider).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityRaycastProvider).IsAssignableFrom(type) ||
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||
