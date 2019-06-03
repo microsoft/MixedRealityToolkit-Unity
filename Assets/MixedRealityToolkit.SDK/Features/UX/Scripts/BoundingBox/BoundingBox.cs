@@ -103,6 +103,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MediumProximity,
             CloseProximity
         }
+
+        /// <summary>
+        /// This enum defines the type of collider in use when a rotation handle prefab is provided.
+        /// </summary>
+        public enum RotationHandlePrefabCollider
+        {
+            Sphere,
+            Box
+        }
         #endregion Enums
 
         #region Serialized Fields
@@ -420,6 +429,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (rotationHandleDiameter != value)
                 {
                     rotationHandleDiameter = value;
+                    CreateRig();
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Only used if rotationHandlePrefab is specified. Determines the type of collider that will surround the rotation handle prefab.")]
+        private RotationHandlePrefabCollider rotationHandlePrefabColliderType = RotationHandlePrefabCollider.Sphere;
+        public RotationHandlePrefabCollider RotationHandlePrefabColliderType
+        {
+            get
+            {
+                return rotationHandlePrefabColliderType;
+            }
+            set
+            {
+                if (rotationHandlePrefabColliderType != value)
+                {
+                    rotationHandlePrefabColliderType = value;
                     CreateRig();
                 }
             }
@@ -1206,8 +1234,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         ball.transform.localRotation = realignment * ball.transform.localRotation;
                     }
 
-                    SphereCollider collider = ball.AddComponent<SphereCollider>();
-                    collider.radius = 0.5f * rotationHandleDiameter;
+                    if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Sphere)
+                    {
+                        SphereCollider sphereCollider = ball.AddComponent<SphereCollider>();
+                        sphereCollider.radius = 0.5f * rotationHandleDiameter;
+                    }
+                    else
+                    {
+                        Debug.Assert(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box);
+                        BoxCollider collider = ball.AddComponent<BoxCollider>();
+                        collider.size = rotationHandleDiameter * Vector3.one;
+                    }
 
                     // In order for the ball to be grabbed using near interaction we need
                     // to add NearInteractionGrabbable;
