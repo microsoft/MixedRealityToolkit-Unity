@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move the hand forward to press button, then off to the right
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            int numSteps = 60;
+            int numSteps = 30;
             Vector3 p1 = new Vector3(0, 0, 0.5f);
             Vector3 p2 = new Vector3(0, 0, 1.08f);
             Vector3 p3 = new Vector3(0.1f, 0, 1.08f);
