@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static bool CheckMixedRealityConfigured(bool renderEditorElements = false)
         {
             if (!MixedRealityToolkit.IsInitialized)
-            {   // Don't proceeed
+            {   // Don't proceed
                 return false;
             }
 
@@ -141,6 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly Color HandleColorRotation = new Color(0.0f, 1f, 0.2f);
         public static readonly Color HandleColorTangent = new Color(0.1f, 0.8f, 0.5f, 0.7f);
         public static readonly Color LineVelocityColor = new Color(0.9f, 1f, 0f, 0.8f);
+        public static readonly float DocLinkWidth = 175f;
 
         #endregion Colors
 

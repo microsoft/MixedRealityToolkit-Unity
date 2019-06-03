@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// Base folder types for modules searched by the MixedRealityToolkitFiles utilty.
+    /// Base folder types for modules searched by the MixedRealityToolkitFiles utility.
     /// </summary>
     public enum MixedRealityToolkitModuleType
     {
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         /// <summary>
         /// In order to subscribe for a <see cref="OnPostprocessAllAssets(string[], string[], string[], string[])"/> callback, 
-        /// the class declaring the method must derive from AssetPostprocessor. So this class is nested privately as to prevent instnatiation of it.
+        /// the class declaring the method must derive from AssetPostprocessor. So this class is nested privately as to prevent instantiation of it.
         /// </summary>
         private class AssetPostprocessor : UnityEditor.AssetPostprocessor
         {

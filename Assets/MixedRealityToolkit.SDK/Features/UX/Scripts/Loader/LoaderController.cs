@@ -15,10 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
 
         /// <summary>
-        /// Total strength of momvent of the loading animation
+        /// Total strength of movement of the loading animation
         /// </summary>
         [SerializeField]
-        [Tooltip("Total strength of momvent of the loading animation")]
+        [Tooltip("Total strength of movement of the loading animation")]
         private float amplitude = 0.05f;
 
         public float Amplitude
@@ -67,10 +67,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Use low frequency oscilation with the Sine calculation.
+        /// Use low frequency oscillation with the Sine calculation.
         /// </summary>
         [SerializeField]
-        [Tooltip("Use low frequency oscilation with the Sine calculation.")]
+        [Tooltip("Use low frequency oscillation with the Sine calculation.")]
         private bool lFOsin = false;
 
         public bool LFOsin
@@ -80,10 +80,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Use low frequency oscilation with the Cosine calculation.
+        /// Use low frequency oscillation with the Cosine calculation.
         /// </summary>
         [SerializeField]
-        [Tooltip("Use low frequency oscilation with the Cosine calculation.")]
+        [Tooltip("Use low frequency oscillation with the Cosine calculation.")]
         private bool lFOcos = false;
 
         public bool LFOcos
@@ -93,10 +93,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Low Frequency oscilation frequency 
+        /// Low Frequency oscillation frequency 
         /// </summary>
         [SerializeField]
-        [Tooltip("Low frequency oscilation frequency")]
+        [Tooltip("Low frequency oscillation frequency")]
         private float lFOfreq = 1.0f;
 
         public float LFOfreq
@@ -106,10 +106,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Low Frequency oscilation amplitude 
+        /// Low Frequency oscillation amplitude 
         /// </summary>
         [SerializeField]
-        [Tooltip("Low Frequency oscilation amplitude")]
+        [Tooltip("Low Frequency oscillation amplitude")]
         private float lFOamp = 0.1f;
 
         public float LFOamp

@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool OnlyInEditMode;
 
         /// <summary>
-        /// Set the size based on the Achor's size and the buffers
+        /// Set the size based on the anchor's size and the buffers
         /// </summary>
         private void UpdateSize()
         {

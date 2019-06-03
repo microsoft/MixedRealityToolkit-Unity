@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected abstract bool IsProfileInActiveInstance();
 
         /// <summary>
-        /// Internal enum used for back navigation along profile hiearchy. 
+        /// Internal enum used for back navigation along profile hierarchy. 
         /// Indicates what type of parent profile the current profile will return to for going back
         /// </summary>
         protected enum BackProfileType
@@ -66,6 +68,52 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             MixedRealityEditorUtility.RenderMixedRealityToolkitLogo();
+        }
+
+        /// <summary>
+        /// Draws a documentation link for the service.
+        /// </summary>
+        protected void RenderDocLink(Object profileObject)
+        {
+            if (profileObject == null)
+            {   // Can't proceed if profile is null.
+                return;
+            }
+
+            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile)
+            {   // Can't proceed without an active profile
+                return;
+            }
+
+            // Find the service associated with this profile
+            MixedRealityServiceProfileAttribute profileAttribute = profileObject.GetType().GetCustomAttribute<MixedRealityServiceProfileAttribute>();
+            if (profileAttribute == null)
+            {   // Can't proceed without the profile attribute.
+                return;
+            }
+
+            IMixedRealityService service;
+            if (MixedRealityToolkit.Instance.ActiveSystems.TryGetValue(profileAttribute.ServiceType, out service))
+            {
+                DocLinkAttribute docLink = service.GetType().GetCustomAttribute<DocLinkAttribute>();
+
+                if (docLink != null)
+                {
+                    var buttonContent = new GUIContent()
+                    {
+                        image = MixedRealityEditorUtility.HelpIcon,
+                        text = " Documentation",
+                        tooltip = docLink.URL,
+                    };
+
+                    if (MixedRealityEditorUtility.RenderIndentedButton(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(MixedRealityInspectorUtility.DocLinkWidth)))
+                    {
+                        Application.OpenURL(docLink.URL);
+                    }
+                }
+
+                return;
+            }
         }
 
         protected bool DrawBacktrackProfileButton(BackProfileType returnProfileTarget = BackProfileType.Configuration)
@@ -192,6 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(new GUIContent(title, description), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
+                RenderDocLink(selectionObject);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
