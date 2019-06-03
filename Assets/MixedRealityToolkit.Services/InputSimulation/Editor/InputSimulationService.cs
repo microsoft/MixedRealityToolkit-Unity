@@ -98,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (profile.SimulateEyePosition)
             {
                 InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
+                InputSystem?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
             }
 
             switch (profile.HandSimulationMode)
