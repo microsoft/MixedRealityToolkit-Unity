@@ -20,12 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Utilities
         private GameObject InstantiateSceneAndDefaultPressableButton()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
             RenderSettings.skybox = null;
 
-            Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButton.prefab", typeof(Object));
+            Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab", typeof(Object));
             GameObject testButton = Object.Instantiate(pressableButtonPrefab) as GameObject;
 
             return testButton;
