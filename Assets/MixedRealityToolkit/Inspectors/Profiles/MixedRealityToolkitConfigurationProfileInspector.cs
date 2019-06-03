@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -43,6 +44,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty enableDiagnosticsSystem;
         private SerializedProperty diagnosticsSystemType;
         private SerializedProperty diagnosticsSystemProfile;
+        // Scene system properties
+        private SerializedProperty enableSceneSystem;
+        private SerializedProperty sceneSystemType;
+        private SerializedProperty sceneSystemProfile;
 
         // Additional registered components profile
         private SerializedProperty registeredServiceProvidersProfile;
@@ -53,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private MixedRealityToolkitConfigurationProfile configurationProfile;
         private Func<bool>[] RenderProfileFuncs;
 
-        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "Extensions", "Editor" };
+        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "Scene System", "Extensions", "Editor" };
         private static int SelectedProfileTab = 0;
 
         protected override void OnEnable()
@@ -91,6 +96,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
             diagnosticsSystemProfile = serializedObject.FindProperty("diagnosticsSystemProfile");
+            // Scene system configuration
+            enableSceneSystem = serializedObject.FindProperty("enableSceneSystem");
+            sceneSystemType = serializedObject.FindProperty("sceneSystemType");
+            sceneSystemProfile = serializedObject.FindProperty("sceneSystemProfile");
 
             // Additional registered components configuration
             registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
@@ -108,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         return RenderProfile(cameraProfile, typeof(MixedRealityCameraProfile), true, false);
                     },
                     () => {
-                         EditorGUILayout.PropertyField(enableInputSystem);
+                        EditorGUILayout.PropertyField(enableInputSystem);
                         EditorGUILayout.PropertyField(inputSystemType);
                         return RenderProfile(inputSystemProfile, null, true, false, typeof(IMixedRealityInputSystem));
                     },
@@ -141,6 +150,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         EditorGUILayout.PropertyField(enableDiagnosticsSystem);
                         EditorGUILayout.PropertyField(diagnosticsSystemType);
                         return RenderProfile(diagnosticsSystemProfile, typeof(MixedRealityDiagnosticsProfile));
+                    },
+                    () => {
+                        EditorGUILayout.PropertyField(enableSceneSystem);
+                        EditorGUILayout.PropertyField(sceneSystemType);
+                        return RenderProfile(sceneSystemProfile, typeof(MixedRealitySceneSystemProfile), true, true, typeof(IMixedRealitySceneSystem));
                     },
                     () => {
                         return RenderProfile(registeredServiceProvidersProfile, typeof(MixedRealityRegisteredServiceProvidersProfile), true, false);

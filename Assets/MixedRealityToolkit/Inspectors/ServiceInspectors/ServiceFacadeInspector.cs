@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
@@ -243,6 +244,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(serviceType))
                 {
                     SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("cameraProfile");
+                    BaseMixedRealityProfileInspector.RenderReadOnlyProfile(serviceProfileProp);
+                    EditorGUILayout.Space();
+                    foundAndDrewProfile = true;
+                }
+                else if (typeof(IMixedRealitySceneSystem).IsAssignableFrom(serviceType))
+                {
+                    SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("sceneSystemProfile");
                     BaseMixedRealityProfileInspector.RenderReadOnlyProfile(serviceProfileProp);
                     EditorGUILayout.Space();
                     foundAndDrewProfile = true;
