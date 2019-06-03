@@ -46,6 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         internal static IEnumerator MoveHandFromTo(Vector3 startPos, Vector3 endPos, int numSteps, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
+            Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
+            bool isPinching = gestureId == ArticulatedHandPose.GestureId.Grab || gestureId == ArticulatedHandPose.GestureId.Pinch || gestureId == ArticulatedHandPose.GestureId.PinchSteadyWrist;
             for (int i = 0; i < numSteps; i++)
             {
                 float t = 1.0f / numSteps * i;
@@ -54,10 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         gestureId,
                         handedness,
                         handPos);
-                Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
                 SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
-                bool isPinching = gestureId == ArticulatedHandPose.GestureId.Grab || gestureId == ArticulatedHandPose.GestureId.Pinch || gestureId == ArticulatedHandPose.GestureId.PinchSteadyWrist;
-                inputSimulationService.HandDataRight.Update(true, false, handDataGenerator);
+                inputSimulationService.HandDataRight.Update(true, isPinching, handDataGenerator);
                 yield return null;
             }
         }
