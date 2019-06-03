@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            if (IsGlobal)
+            if (IsGlobal || !RequiresFocus)
             {
                 InputSystem.Register(gameObject);
             }
@@ -656,7 +656,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
 
                 SetGesture(false);
-
                 eventData.Use();
             }
         }
@@ -678,7 +677,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 SetPress(true);
                 SetGrab(isGrab);
-
                 dragStart = eventData.Pointer.Position;
                 eventData.Use();
             }
@@ -714,9 +712,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     IncreaseDimensionIndex();
                     SendOnClick(eventData.Pointer);
-                    SetVisited(true);
                     StartInputTimer(false);
                     eventData.Use();
+                    SetVisited(true);
                 }
                 else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
                 {
@@ -927,7 +925,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void TriggerOnClick()
         {
-            OnPointerClicked(null);
+			IncreaseDimensionIndex();
+            SendOnClick(null);
+            SetVisited(true);
         }
 
         /// <summary>
@@ -1030,7 +1030,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 StartGlobalVisual(true);
                 SendVoiceCommands(VoiceCommand, 0, 1);
-                OnPointerClicked(null);
+                TriggerOnClick();
                 eventData.Use();
             }
         }
