@@ -43,10 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         
         private void Update()
         {
-            //if (UseLiveInputStream && InputSystem?.EyeGazeProvider?.GazeTarget == gameObject && InputSystem.EyeGazeProvider.IsEyeGazeValid)
-            //{
-            //    DrawAtThisHitPos(InputSystem.EyeGazeProvider.HitPosition);
-            //}
         }
 
         private void Start()
@@ -55,15 +51,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             {
                 EyeTarget.WhileLookingAtTarget.AddListener(OnLookAt);
             }
-            Debug.Log("Start");
         }
 
         public void OnLookAt()
         {
-            Debug.Log("OnLookAt");
             if (UseLiveInputStream && (EyeTarget != null) && (EyeTarget.IsLookedAt))
             {
-                Debug.Log("Draw");
                 DrawAtThisHitPos(EyeTrackingTarget.LookedAtPoint);
             }
         }
