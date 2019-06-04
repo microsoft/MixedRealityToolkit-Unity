@@ -81,10 +81,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
         
         private DateTime lookAtStartTime;
-        private float EyeTrackerFramerate = 30; // In Hz -> This means that every 1000ms/30 = 33.33ms a new sample should arrive. 
-        private float EyeTrackingTimeoutInMilliseconds = 100; // To account for blinks
 
-        private static DateTime lastTimeStamp = DateTime.MinValue;
+        /// <summary>
+        /// Current expected framerate of the eye tracking system.
+        /// </summary>
+        private float EyeTrackerFramerate = 30; // In Hz -> This means that every 1000ms/30 = 33.33ms a new sample should arrive. 
+        
+        /// <summary>
+        /// Duration in milliseconds to indicate that if more time than this passes without new eye tracking data, then timeout. 
+        /// </summary>
+        private float EyeTrackingTimeoutInMilliseconds = 200;
+
+        /// <summary>
+        /// The time stamp received from the eye tracker to indicate when the eye tracking signal was last updated.
+        /// </summary>
+        private static DateTime lastEyeSignalUpdateTimeFromET = DateTime.MinValue;
+
+        /// <summary>
+        /// The time stamp from the eye tracker has its own time frame, which makes it difficult to compare to local times. 
+        /// </summary>
+        private static DateTime lastEyeSignalUpdateTimeLocal = DateTime.MinValue; 
+
         public static GameObject LookedAtTarget { get;  private set; }
         public static EyeTrackingTarget LookedAtEyeTarget { get; private set; }
         public static Vector3 LookedAtPoint { get; private set; }
@@ -128,36 +145,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void OnDisable()
         {
             OnEyeFocusStop();
-        }
+        }      
 
         private void UpdateHitTarget()
         {
-            if (lastTimeStamp != InputSystem?.EyeGazeProvider?.Timestamp)
+            if (lastEyeSignalUpdateTimeFromET != InputSystem?.EyeGazeProvider?.Timestamp)
             {
-                lastTimeStamp = InputSystem.EyeGazeProvider.Timestamp;
-
-                // ToDo: Handle raycasting layers
-                RaycastHit hitInfo = default(RaycastHit);
-                Ray lookRay = new Ray(InputSystem.EyeGazeProvider.GazeOrigin, InputSystem.EyeGazeProvider.GazeDirection.normalized);
-                bool isHit = UnityEngine.Physics.Raycast(lookRay, out hitInfo);
-
-                if (isHit)
+                if ((InputSystem != null) && (InputSystem.EyeGazeProvider != null))
                 {
-                    LookedAtTarget = hitInfo.collider.gameObject;
-                    LookedAtEyeTarget = LookedAtTarget.GetComponent<EyeTrackingTarget>();
-                    LookedAtPoint = hitInfo.point;
-                }
-                else
-                {
-                    LookedAtTarget = null;
-                    LookedAtEyeTarget = null;
+                    lastEyeSignalUpdateTimeFromET = (InputSystem?.EyeGazeProvider?.Timestamp).Value;
+                    lastEyeSignalUpdateTimeLocal = DateTime.UtcNow;
+
+                    // ToDo: Handle raycasting layers
+                    RaycastHit hitInfo = default(RaycastHit);
+                    Ray lookRay = new Ray(InputSystem.EyeGazeProvider.GazeOrigin, InputSystem.EyeGazeProvider.GazeDirection.normalized);
+                    bool isHit = UnityEngine.Physics.Raycast(lookRay, out hitInfo);
+
+                    if (isHit)
+                    {
+                        LookedAtTarget = hitInfo.collider.gameObject;
+                        LookedAtEyeTarget = LookedAtTarget.GetComponent<EyeTrackingTarget>();
+                        LookedAtPoint = hitInfo.point;
+                    }
+                    else
+                    {
+                        LookedAtTarget = null;
+                        LookedAtEyeTarget = null;
+                    }
                 }
             }
-            else if ((DateTime.UtcNow - InputSystem.EyeGazeProvider.Timestamp).TotalMilliseconds > EyeTrackingTimeoutInMilliseconds)
+            else if ((DateTime.UtcNow - lastEyeSignalUpdateTimeLocal).TotalMilliseconds > EyeTrackingTimeoutInMilliseconds)
             {
                 LookedAtTarget = null;
                 LookedAtEyeTarget = null;
-                IsLookedAt = false;
             }
         }
         
