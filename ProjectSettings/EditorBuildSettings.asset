@@ -6,24 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
-    guid: 3dd4a396b5225f8469b9a1eb608bfa57
+    path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultManagerScene.unity
+    guid: ae7bb08d297fb69408695d8de0962524
   - enabled: 1
-    path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-00-RootScene.unity
-    guid: 27c3fbe0128089f48994cdc6af8668fc
-  - enabled: 1
-    path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-01-BasicSetup.unity
-    guid: 3ac2cf3aa0e281340babd2053d8b7d46
-  - enabled: 1
-    path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
-    guid: 55643f7e4eceb734784192b162f565e0
-  - enabled: 1
-    path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
-    guid: 5df475f0bf57b1f488d59e0e16040d9a
-  - enabled: 1
-    path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity
-    guid: 91ded1f5ef2ae854ba4ac94eca7a2494
-  - enabled: 1
-    path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity
-    guid: 2d6c43a82f3a88c4dbdc3b5e99a68d8a
+    path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultLightingScene.unity
+    guid: 7e54e36c44f826c438c95da79f8de638
   m_configObjects: {}

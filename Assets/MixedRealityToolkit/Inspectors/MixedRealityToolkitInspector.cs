@@ -26,13 +26,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             MixedRealityToolkit instance = (MixedRealityToolkit)target;
 
             if (MixedRealityToolkit.Instance == null)
-            {   // See if an active instance exists at all. If it doesn't register this instance pre-emptively.
+            {   // See if an active instance exists at all. If it doesn't register this instance preemptively.
                 MixedRealityToolkit.SetActiveInstance(instance);
             }
 
             if (!instance.IsActiveInstance)
             {
-                EditorGUILayout.HelpBox("This instance of the toolkt is inactive. There can only be one active instance loaded at any time.", MessageType.Warning);
+                EditorGUILayout.HelpBox("This instance of the toolkit is inactive. There can only be one active instance loaded at any time.", MessageType.Warning);
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("Select Active Instance"))
                 {
