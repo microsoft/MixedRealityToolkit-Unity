@@ -6808,6 +6808,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.Rotator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.Rotator.html",
+          "hash": "9ah1y6/HQjxsVMSVuCIlxg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ShowSliderValue.yml",
       "output": {
         ".html": {
@@ -6837,6 +6849,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.SliderLunarLander.html",
           "hash": "mIEEHn6CPOhmWu5diKfxtw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.SpawnOnPointerEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.SpawnOnPointerEvent.html",
+          "hash": "CrrEk6n4uJjN/AM/fjnl1A=="
         }
       },
       "is_incremental": false,
@@ -6944,7 +6968,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "BOK6o/r8wQ2zUUE9kyYrRA=="
+          "hash": "AUFew8nHEO1U5ZPK6aUKhA=="
         }
       },
       "is_incremental": false,
@@ -11416,6 +11440,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.BoundingBoxTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.BoundingBoxTest.html",
+          "hash": "qiSE2JbRfY/QcrouD/IuNw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ButtonBackgroundSize.yml",
       "output": {
         ".html": {
@@ -12752,7 +12788,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "uaxuRCA2GF3k/SDSHSQq9A=="
+          "hash": "VhWn9tcF7E6GyeNf9P8VTw=="
         }
       },
       "is_incremental": false,
@@ -15728,7 +15764,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "3rWeMFTmPlFyfB11Gan3RA=="
+          "hash": "qk77dDbva3uG1z4tgPuXmw=="
         }
       },
       "is_incremental": false,
@@ -15780,6 +15816,13 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -15789,19 +15832,12 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 937,
+          "total_file_count": 940,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
