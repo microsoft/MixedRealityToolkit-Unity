@@ -1029,6 +1029,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (eventData.Command.Keyword == VoiceCommand && (!RequiresFocus || HasFocus) && Enabled)
             {
                 StartGlobalVisual(true);
+                SetVoiceCommand(true);
                 SendVoiceCommands(VoiceCommand, 0, 1);
                 TriggerOnClick();
                 eventData.Use();

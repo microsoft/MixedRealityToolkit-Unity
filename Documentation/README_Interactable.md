@@ -34,13 +34,11 @@ This is different from disabling input all together (using *Enable Input*). It m
 **IsGlobal**
 Focus is not required to detect input actions, default behavior is false.
  
-**Voice Commands**
-A voice command to trigger an OnClick event. This will also trigger a quick state change to drive any themes visuals.
+**Speech Commands**
+Select a Speech Command that has been setup in the MRTK Speech Commands Profile to trigger an OnClick event. This will also provide an automated Focus and Press state change to drive any theme feedback.
  
-Note: Make sure there is a unique voice command on each button. The voice recognizer is global (even if the interactable is not) and will not register the same voice command twice; in this case an error will be thrown.
- 
-**Requires Gaze (Only available when the voice command field has a value)**
-The voice command requires the interactable to have focus to listen for the voice command. There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts. Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.
+**Requires Gaze (Only available when a speech command is selected)**
+The speech command requires the interactable to have focus to listen for the speech command. Unchecked, the spoken command will trigger the Interactables OnClick no matter what is in focus. Users should know which commands can be used globally, it is also a best practice for global speech commands to consist of multi-syllable words or up to a few words to avoid accidental triggers from common conversational words.
 
 **Public Properties**
 ClickCount - a read only value that tracks how many clicks have occured.
@@ -155,7 +153,7 @@ There are currently 17 states total that you can used to drive themes, though so
 - Visited: the Interactable has been clicked.
 - Toggled: The button is in a toggled state or Dimension idex is an odd number.
 - Gesture: The hand or controller was pressed and has moved from the original position.
-- VoiceCommand: The internal voice command was used, or if using global voice commands, set this manually.
+- VoiceCommand: A speech command was used to trigger an Interactable.
 - PhyscialTouch: A touch input is currently detected, use NearInteractionTouchable to enable.
 - Grab: A hand is currently grabbing in the bounds of the object, use NearInteractionGrabbable to enable
 
