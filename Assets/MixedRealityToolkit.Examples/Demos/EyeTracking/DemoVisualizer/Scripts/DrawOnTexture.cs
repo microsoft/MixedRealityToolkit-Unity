@@ -40,10 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 return eyeTarget;
             }
         }
-        
-        private void Update()
-        {
-        }
 
         private void Start()
         {
