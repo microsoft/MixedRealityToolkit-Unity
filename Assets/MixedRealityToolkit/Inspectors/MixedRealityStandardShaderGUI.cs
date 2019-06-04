@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent cullMode = new GUIContent("Cull Mode", "Triangle Culling Mode");
             public static GUIContent renderQueueOverride = new GUIContent("Render Queue Override", "Manually Override the Render Queue");
             public static GUIContent albedo = new GUIContent("Albedo", "Albedo (RGB) and Transparency (Alpha)");
-            public static GUIContent albedoAssignedAtRuntime = new GUIContent("Albedo Assigned at Runtime", "As an optimization albedo operations are disabled when no albedo texture is specified. If a albedo texture will be specified at runtime enable this option.");
+            public static GUIContent albedoAssignedAtRuntime = new GUIContent("Assigned at Runtime", "As an optimization albedo operations are disabled when no albedo texture is specified. If a albedo texture will be specified at runtime enable this option.");
             public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Threshold for Alpha Cutoff");
             public static GUIContent metallic = new GUIContent("Metallic", "Metallic Value");
             public static GUIContent smoothness = new GUIContent("Smoothness", "Smoothness Value");
@@ -501,6 +501,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUILayout.Label(Styles.primaryMapsTitle, EditorStyles.boldLabel);
 
             materialEditor.TexturePropertySingleLine(Styles.albedo, albedoMap, albedoColor);
+
+            if (albedoMap.textureValue == null)
+            {
+                materialEditor.ShaderProperty(albedoAssignedAtRuntime, Styles.albedoAssignedAtRuntime, 2);
+            }
+
             materialEditor.ShaderProperty(enableChannelMap, Styles.enableChannelMap);
 
             if (PropertyEnabled(enableChannelMap))
@@ -785,11 +791,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!GUI.enabled && !material.enableInstancing)
             {
                 material.enableInstancing = true;
-            }
-
-            if (albedoMap.textureValue == null)
-            {
-                materialEditor.ShaderProperty(albedoAssignedAtRuntime, Styles.albedoAssignedAtRuntime);
             }
 
             materialEditor.EnableInstancingField();
