@@ -625,11 +625,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            if (eventData.NewFocusedObject == gameObject)
+            if (eventData.NewFocusedObject == null)
+            {
+                RemovePointer(eventData.Pointer);
+            }
+            else if (eventData.NewFocusedObject.transform.IsChildOf(gameObject.transform))
             {
                 AddPointer(eventData.Pointer);
             }
-            else if (eventData.OldFocusedObject == gameObject)
+            else if (eventData.OldFocusedObject.transform.IsChildOf(gameObject.transform))
             {
                 RemovePointer(eventData.Pointer);
             }
