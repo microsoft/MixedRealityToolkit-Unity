@@ -13,14 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class EyeTrackingTarget : InputSystemGlobalListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
     {
+        [Tooltip("Select action that are specific to when the target is looked at.")]
         [SerializeField]
         private MixedRealityInputAction selectAction = MixedRealityInputAction.None;
 
+        [Tooltip("List of voice commands to trigger selecting this target only if it is looked at.")]
         [SerializeField]
         [FormerlySerializedAs("voice_select")]
         private MixedRealityInputAction[] voiceSelect = null;
-
-        public bool eyeCursorSnapToTargetCenter = false;
 
         [Tooltip("Duration in seconds that the user needs to keep looking at the target to select it via dwell activation.")]
         [Range(0, 10)]
@@ -48,7 +48,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool IsLookedAt { get; private set; }
 
+        /// <summary>
+        /// If true, the eye cursor (if enabled) will snap to the center of this object. 
+        /// </summary>
+        public bool eyeCursorSnapToTargetCenter = false;
+
         private bool isDwelledOn = false;
+
         /// <summary>
         /// Returns true if the user has been looking at the target for a certain amount of time specified by dwellTimeInSec.
         /// </summary>
