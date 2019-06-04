@@ -3,26 +3,26 @@
 
 using UnityEngine;
 using UnityEngine.Events;
-using Microsoft.MixedReality.Toolkit.Input;
 using System;
+using UnityEngine.Serialization;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// A game object with the "EyeTrackingTarget" script attached reacts to being looked at independent of other available inputs.
     /// </summary>
-    [RequireComponent(typeof(EyeTrackingTarget))]
     public class EyeTrackingTarget : InputSystemGlobalListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
     {
         [SerializeField]
         private MixedRealityInputAction selectAction = MixedRealityInputAction.None;
 
         [SerializeField]
+        [FormerlySerializedAs("voice_select")]
         private MixedRealityInputAction[] voiceSelect = null;
 
         public bool eyeCursorSnapToTargetCenter = false;
 
-        [Tooltip("Event to be triggered when the looked at target is selected.")]
+        [Tooltip("Duration in seconds that the user needs to keep looking at the target to select it via dwell activation.")]
         [Range(0, 10)]
         [SerializeField]
         private float dwellTimeInSec = 0.8f;
@@ -42,6 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [Tooltip("Event to be triggered when the looked at target is selected.")]
         public UnityEvent OnSelected = null;
         
+        /// <summary>
+        /// Returns true if the user looks at the target or more specifically when the eye gaze ray intersects 
+        /// with the target's bounding box.
+        /// </summary>
         public bool IsLookedAt { get; private set; }
 
         private bool isDwelledOn = false;
@@ -89,7 +93,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private void Update()
         {
             // Try to manually poll the eye tracking data
-            if ((InputSystem?.EyeGazeProvider != null) && (InputSystem?.EyeGazeProvider?.UseEyeTracking == true) && (InputSystem?.EyeGazeProvider?.IsEyeGazeValid == true))
+            if ((InputSystem?.EyeGazeProvider != null) && 
+                (InputSystem?.EyeGazeProvider?.UseEyeTracking == true) && 
+                (InputSystem?.EyeGazeProvider?.IsEyeGazeValid == true))
             {
                 UpdateHitTarget();
 
