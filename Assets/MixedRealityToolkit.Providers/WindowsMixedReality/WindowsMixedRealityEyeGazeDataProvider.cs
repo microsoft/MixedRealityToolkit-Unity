@@ -40,8 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         public bool SmoothEyeTracking { get; set; } = false;
 
-        private readonly float smoothFactorNormalized = 0.96f;
-        private readonly float saccadeThreshInDegree = 2.5f; // In degrees (not radians)
+        private readonly float smoothFactorNormalized = 0.1f;
+        private readonly float saccadeThreshInDegree = 2f; // In degrees (not radians)
 
         private Ray? oldGaze;
         private int confidenceOfSaccade = 0;
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
 #if WINDOWS_UWP
         /// <summary>
-        /// Triggers a prompt to let the user decide whether to permit using eye tracking 
+        /// Triggers a prompt to let the user decide whether to permit using eye tracking
         /// </summary>
         private async void AskForETPermission()
         {
@@ -138,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             Ray smoothedGaze = new Ray();
             bool isSaccading = false;
 
-            // Handle saccades vs. outliers: Instead of simply checking that two successive gaze points are sufficiently 
+            // Handle saccades vs. outliers: Instead of simply checking that two successive gaze points are sufficiently
             // apart, we check for clusters of gaze points instead.
             // 1. If the user's gaze points are far enough apart, this may be a saccade, but also could be an outlier.
             //    So, let's mark it as a potential saccade.
@@ -149,14 +149,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 saccade_newGazeCluster.Clear();
                 saccade_newGazeCluster.Add(newGaze.Value);
             }
-            // 2. If we have a potential saccade marked, let's check if the new points are within the proximity of 
+            // 2. If we have a potential saccade marked, let's check if the new points are within the proximity of
             //    the initial saccade point.
             else if ((confidenceOfSaccade > 0) && (confidenceOfSaccade < confidenceOfSaccadeThreshold))
             {
                 confidenceOfSaccade++;
 
                 // First, let's check that we don't just have a bunch of random outliers
-                // The assumption is that after a person saccades, they fixate for a certain 
+                // The assumption is that after a person saccades, they fixate for a certain
                 // amount of time resulting in a cluster of gaze points.
                 for (int i = 0; i < saccade_newGazeCluster.Count; i++)
                 {
@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         confidenceOfSaccade = 0;
                     }
 
-                    // Meanwhile we want to make sure that we are still looking sufficiently far away from our 
+                    // Meanwhile we want to make sure that we are still looking sufficiently far away from our
                     // original gaze point before saccading.
                     if (!IsSaccading(saccade_initialGazePoint, newGaze.Value))
                     {
