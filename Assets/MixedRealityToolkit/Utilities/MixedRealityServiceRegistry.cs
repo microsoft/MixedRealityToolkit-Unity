@@ -166,13 +166,15 @@ namespace Microsoft.MixedReality.Toolkit
 
             List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
 
-            bool result = services.Remove(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
-            if(services.Count == 0)
+            bool removed = services.Remove(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
+
+            if (services.Count == 0)
             {
+                // If the last service was removed, the key can be removed.
                 registry.Remove(interfaceType);
             }
 
-            return result;
+            return removed;
         }
 
         /// <summary>

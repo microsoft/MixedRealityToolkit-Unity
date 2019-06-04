@@ -61,6 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 OutputDirectory = buildDirectory,
                 Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
                 BuildAppx = !showDialog,
+                BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
 
                 // Configure a post build action that will compile the generated solution
                 PostBuildAction = PostBuildAction

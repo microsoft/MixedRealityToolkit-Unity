@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 
 #if UNITY_EDITOR
@@ -37,6 +38,8 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool isInitializing = false;
 
         private static bool isApplicationQuitting = false;
+
+        private static bool internalShutdown = false;
 
         /// <summary>
         /// Checks if there is a valid instance of the MixedRealityToolkit, then checks if there is there a valid Active Profile.
@@ -228,8 +231,17 @@ namespace Microsoft.MixedReality.Toolkit
             if (IsCoreSystem(interfaceType))
             {
                 activeSystems.Remove(interfaceType);
-                // Core services are always removable
                 MixedRealityServiceRegistry.RemoveService<T>(serviceInstance, this);
+
+                // Reset the convenience properties.
+                if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(interfaceType)) { boundarySystem = null; }
+                else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(interfaceType)) { cameraSystem = null; }
+                else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(interfaceType)) { diagnosticsSystem = null; }
+                // Focus provider reference is not managed by the MixedRealityToolkit class.
+                else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(interfaceType)) { inputSystem = null; }
+                else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(interfaceType)) { spatialAwarenessSystem = null; }
+                else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(interfaceType)) { teleportSystem = null; }
+
                 return true;
             }
 
@@ -245,8 +257,6 @@ namespace Microsoft.MixedReality.Toolkit
                 }
                 return true;
             }
-
-            Debug.LogError($"Failed to find registry instance of {interfaceType.Name}.{serviceInstance.Name}!");
 
             return false;
         }
@@ -442,6 +452,15 @@ namespace Microsoft.MixedReality.Toolkit
                 }
             }
 
+            if (ActiveProfile.IsSceneSystemEnabled)
+            {
+                object[] args = { this, ActiveProfile.SceneSystemProfile };
+                if (!RegisterService<IMixedRealitySceneSystem>(ActiveProfile.SceneSystemSystemType, args: args) || SceneSystem == null)
+                {
+                    Debug.LogError("Failed to start the Scene System!");
+                }
+            }
+
             if (ActiveProfile.RegisteredServiceProvidersProfile != null)
             {
                 for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile?.Configurations?.Length; i++)
@@ -536,10 +555,39 @@ namespace Microsoft.MixedReality.Toolkit
         private static MixedRealityToolkit activeInstance;
         private static bool newInstanceBeingInitialized = false;
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// Returns the Singleton instance of the classes type.
+        /// </summary>
+        public static MixedRealityToolkit Instance
+        {
+            get
+            {
+                if (activeInstance != null)
+                {
+                    return activeInstance;
+                }
+
+                // It's possible for MRTK to exist in the scene but for activeInstance to be
+                // null when a custom editor component accesses Instance before the MRTK
+                // object has clicked on in object hierarchy (see https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4618)
+                //
+                // To avoid returning null in this case, make sure to search the scene for MRTK.
+                // We do this only when in editor to avoid any performance cost at runtime.
+                var mrtks = FindObjectsOfType<MixedRealityToolkit>();
+                for (int i = 0; i < mrtks.Length; i++)
+                {
+                    RegisterInstance(mrtks[i]);
+                }
+                return activeInstance;
+            }
+        }
+#else
         /// <summary>
         /// Returns the Singleton instance of the classes type.
         /// </summary>
         public static MixedRealityToolkit Instance => activeInstance;
+#endif
 
         private void InitializeInstance()
         {
@@ -680,10 +728,12 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            if (MixedRealityToolkit.activeInstance == null)
+            internalShutdown = false;
+
+            if (activeInstance == null)
             {   // If we don't have an instance, set it here
                 // Set the instance to active
-                MixedRealityToolkit.activeInstance = toolkitInstance;
+                activeInstance = toolkitInstance;
                 toolkitInstances.Add(toolkitInstance);
                 toolkitInstance.name = ActiveInstanceGameObjectName;
                 toolkitInstance.InitializeInstance();
@@ -697,19 +747,22 @@ namespace Microsoft.MixedReality.Toolkit
 
             // If we do, then it's not this instance, so deactivate this instance
             toolkitInstance.name = InactiveInstanceGameObjectName;
-            // Move to the bottom of the heirarchy so it stays out of the way
+            // Move to the bottom of the hierarchy so it stays out of the way
             toolkitInstance.transform.SetSiblingIndex(int.MaxValue);
         }
 
         private static void UnregisterInstance(MixedRealityToolkit toolkitInstance)
         {
+            // We are shutting this instance down.
+            internalShutdown = true;
+
             toolkitInstances.Remove(toolkitInstance);
 
             if (MixedRealityToolkit.activeInstance == toolkitInstance)
             {   // If this is the active instance, we need to break it down
                 toolkitInstance.DestroyAllServices();
                 toolkitInstance.ClearCoreSystemCache();
-                // If this was the active instance, un-register the active instance
+                // If this was the active instance, unregister the active instance
                 MixedRealityToolkit.activeInstance = null;
                 if (MixedRealityToolkit.isApplicationQuitting)
                 {   // Don't search for additional instances if we're quitting
@@ -737,7 +790,8 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             if (toolkitInstance == activeInstance)
-            {   // If this is the active instance, we need to break it down
+            {   // If this was the active instance, un-register the active instance
+                // Break down all services
                 if (Application.isPlaying)
                 {
                     toolkitInstance.DisableAllServices();
@@ -745,9 +799,10 @@ namespace Microsoft.MixedReality.Toolkit
 
                 toolkitInstance.DestroyAllServices();
                 toolkitInstance.ClearCoreSystemCache();
-                // If this was the active instance, un-register the active instance
+                // If this was the active instance, unregister the active instance
                 MixedRealityToolkit.activeInstance = null;
             }
+
             toolkitInstance.name = InactiveInstanceGameObjectName;
         }
 
@@ -932,14 +987,54 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void DestroyAllServices()
         {
-            if (!ExecuteOnAllServices(service => service.Destroy())) { return; }
+            // NOTE: Service instances are destroyed as part of the unregister process.
 
-            foreach (var system in activeSystems)
+            // Unregister core services (active systems).
+            List<Type> serviceTypes = activeSystems.Keys.ToList<Type>();
+            foreach (Type type in serviceTypes)
             {
-                MixedRealityServiceRegistry.RemoveService(system.Key, system.Value, this);
+                if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityBoundarySystem>();
+                }
+                else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityCameraSystem>();
+                }
+                else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityDiagnosticsSystem>();
+                }
+                else if (typeof(IMixedRealityFocusProvider).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityFocusProvider>();
+                }
+                else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityInputSystem>();
+                }
+                else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealitySpatialAwarenessSystem>();
+                }
+                else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityTeleportSystem>();
+                }
             }
-
+            serviceTypes.Clear();
             activeSystems.Clear();
+
+            // Unregister extension services.
+            List<Tuple<Type, IMixedRealityService>> serviceTuples = new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices.ToArray());
+            foreach (Tuple<Type, IMixedRealityService> serviceTuple in serviceTuples)
+            {
+                if (serviceTuple.Item2 is IMixedRealityExtensionService)
+                {
+                    UnregisterService<IMixedRealityExtensionService>((IMixedRealityExtensionService)serviceTuple.Item2);
+                }
+            }
+            serviceTuples.Clear();
             registeredMixedRealityServices.Clear();
         }
 
@@ -994,7 +1089,8 @@ namespace Microsoft.MixedReality.Toolkit
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||
-                   typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type);
+                   typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealitySceneSystem).IsAssignableFrom(type);
         }
 
         private void ClearCoreSystemCache()
@@ -1005,6 +1101,7 @@ namespace Microsoft.MixedReality.Toolkit
             boundarySystem = null;
             spatialAwarenessSystem = null;
             diagnosticsSystem = null;
+            sceneSystem = null;
         }
 
         private IMixedRealityService GetServiceByNameInternal(Type interfaceType, string serviceName)
@@ -1114,11 +1211,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Checks if the system is ready to get a service.
         /// </summary>
-        /// <param name="interfaceType"></param>
+        /// <param name="interfaceType">The interface type of the service being checked.</param>
         /// <returns></returns>
         private static bool CanGetService(Type interfaceType)
         {
-            if (isApplicationQuitting)
+            if (isApplicationQuitting && !internalShutdown)
             {
                 return false;
             }
@@ -1334,6 +1431,40 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         private static bool logDiagnosticsSystem = true;
+
+        private static IMixedRealitySceneSystem sceneSystem = null;
+
+        /// <summary>
+        /// Returns true if the MixedRealityToolkit exists and has an active profile that has Scene system enabled.
+        /// </summary>
+        public static bool IsSceneSystemEnabled => IsInitialized && Instance.HasActiveProfile && Instance.ActiveProfile.IsSceneSystemEnabled;
+
+        /// <summary>
+        /// The current Scene System registered with the Mixed Reality Toolkit.
+        /// </summary>
+        public static IMixedRealitySceneSystem SceneSystem
+        {
+            get
+            {
+                if (isApplicationQuitting)
+                {
+                    return null;
+                }
+
+                if (sceneSystem != null)
+                {
+                    return sceneSystem;
+                }
+
+                sceneSystem = Instance.GetService<IMixedRealitySceneSystem>(showLogs: logSceneSystem);
+                // If we found a valid system, then we turn logging back on for the next time we need to search.
+                // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
+                logSceneSystem = sceneSystem != null;
+                return sceneSystem;
+            }
+        }
+
+        private static bool logSceneSystem = true;
 
 #endregion Core System Accessors
     }
