@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
     /// <summary>
     /// Used to recycle Unity GameObjects. When ever you create GameObjects during runtime some overhead is incurred. Additionally
     /// memory can become highly fragment as well as possibly causing the garbage collector to perform a collection (which is also
-    /// a performance hit). This is especially prevelant when you are spawning and destroying GameObjects of the same type
+    /// a performance hit). This is especially prevalent when you are spawning and destroying GameObjects of the same type
     /// very quickly in large quantities (such as bullets). The GameObject pool allows you to recycle objects so they can be
     /// reused upon request.
     /// </summary>
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
 
         /// <summary>
         /// GameObjects are created by an implementation of IGameObjectCreator in this GameObjectPool. This
-        /// method adds your implemenation of the IGameObjectCreator to use for objects that share a specific
+        /// method adds your implementation of the IGameObjectCreator to use for objects that share a specific
         /// object identifier.
         /// </summary>
         /// <param name="creator">The implementation of IGameObjectCreator to use for GameObjects associated with the objectIdentifier.</param>
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         /// being requested is not in the pool, then it will get created by a IGameObjectCreator that was
         /// added to the pool for handling objects associated with the objectIdentifier.
         /// </summary>
-        /// <param name="objectIdentifier">The identifier you want to use to identifiy the kind of game object you want to retrieve.</param>
+        /// <param name="objectIdentifier">The identifier you want to use to identify the kind of game object you want to retrieve.</param>
         /// <param name="position">The position that the game object should have before it is activated.</param>
         /// <param name="rotation">The rotation that the game object should have before it is activated.</param>
         /// <returns></returns>
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         /// <summary>
         /// Same as calling GetGameObject(objectIdentifier, Vector3.zero, Quaternion.identity)
         /// </summary>
-        /// <param name="objectIdentifier">The identifier you want to use to identifiy the kind of game object you want to retrieve.</param>
+        /// <param name="objectIdentifier">The identifier you want to use to identify the kind of game object you want to retrieve.</param>
         public GameObject GetGameObject(string objectIdentifier)
         {
             return GetGameObject(objectIdentifier, Vector3.zero, Quaternion.identity);
