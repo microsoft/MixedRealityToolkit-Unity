@@ -99,9 +99,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void Update()
         {
             // Try to manually poll the eye tracking data
-            if ((InputSystem?.EyeGazeProvider != null) && 
-                (InputSystem?.EyeGazeProvider?.UseEyeTracking == true) && 
-                (InputSystem?.EyeGazeProvider?.IsEyeGazeValid == true))
+            if ((InputSystem != null) && (InputSystem.EyeGazeProvider != null) && 
+                InputSystem.EyeGazeProvider.UseEyeTracking && 
+                InputSystem.EyeGazeProvider.IsEyeGazeValid)
             {
                 UpdateHitTarget();
 
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void UpdateHitTarget()
         {
-            if (lastTimeStamp != InputSystem.EyeGazeProvider.Timestamp)
+            if (lastTimeStamp != InputSystem?.EyeGazeProvider?.Timestamp)
             {
                 lastTimeStamp = InputSystem.EyeGazeProvider.Timestamp;
 
@@ -159,7 +159,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 LookedAtEyeTarget = null;
                 IsLookedAt = false;
             }
-            
         }
         
         protected void OnEyeFocusStart()
