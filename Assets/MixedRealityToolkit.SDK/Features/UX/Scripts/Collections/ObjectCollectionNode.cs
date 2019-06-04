@@ -10,11 +10,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// Collection node is a data storage class for individual data about an object in a collection.
     /// </summary>
     [Serializable]
-    public struct ObjectCollectionNode
+    public class ObjectCollectionNode
     {
         public string Name;
         public Vector2 Offset;
         public float Radius;
         public Transform Transform;
+        public GameObject GameObject;
+        public Collider Collider;
+        public Collider[] Colliders;
+        public bool isClipped;
     }
 }

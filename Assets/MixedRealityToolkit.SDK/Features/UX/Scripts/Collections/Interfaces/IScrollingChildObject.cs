@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Definition for a child of a ScrollingObject, used to propigate events deemed correct from the scrolling Object
