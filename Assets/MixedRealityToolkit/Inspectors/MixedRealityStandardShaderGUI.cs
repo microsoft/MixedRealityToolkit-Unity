@@ -517,7 +517,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 albedoAlphaMode.floatValue = EditorGUILayout.Popup(albedoAlphaMode.displayName, (int)albedoAlphaMode.floatValue, Styles.albedoAlphaModeNames);
 
-                if ((RenderingMode)renderingMode.floatValue == RenderingMode.TransparentCutout)
+                if ((RenderingMode)renderingMode.floatValue == RenderingMode.TransparentCutout || 
+                    (RenderingMode)renderingMode.floatValue == RenderingMode.Custom)
                 {
                     materialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoff.text);
                 }
