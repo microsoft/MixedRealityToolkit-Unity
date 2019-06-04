@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private Ray latestEyeGaze = default(Ray);
         private DateTime latestEyeTrackingUpdate = DateTime.MinValue;
-        private bool isEyeCalibrated = false;
+        private bool? isEyeCalibrated = null;
 
         private readonly float maxEyeTrackingTimeoutInSeconds = 2.0f;
 
@@ -532,7 +532,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Boolean to check whether the user went through the eye tracking calibration.
         /// </summary>
-        public bool IsEyeCalibrationValid => isEyeCalibrated;
+        public bool? IsEyeCalibrationValid => isEyeCalibrated;
         #endregion Utilities
     }
 }

@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Whether the user is eye calibrated.
         /// </summary>
-        bool IsEyeCalibrationValid { get; }
+        bool? IsEyeCalibrationValid { get; }
 
         /// <summary>
         /// If true, eye-based tracking will be used when available.

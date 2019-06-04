@@ -12,12 +12,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// </summary>
     public class EyeCalibrationChecker : MonoBehaviour
     {
-        public bool testCalibrated = true;
+        [Tooltip("For testing purposes, you can manually assign whether the user is eye calibrated or not.")]
+        [SerializeField]
+        private bool editorTestUserIsCalibrated = true;
 
         public UnityEvent OnEyeCalibrationDetected;
         public UnityEvent OnNoEyeCalibrationDetected;
+
         private bool? prevCalibrationStatus = null;        
-        
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
@@ -41,22 +43,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             bool? calibrStatus = InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
 
 #if UNITY_EDITOR
-            //TEST
-            calibrStatus = testCalibrated;
-            /// End TEST
+            calibrStatus = editorTestUserIsCalibrated;            
 #endif
-
-            if (prevCalibrationStatus != calibrStatus)
+            if (calibrStatus != null)
             {
-                if (calibrStatus == false)
+                if (prevCalibrationStatus != calibrStatus)
                 {
-                    OnNoEyeCalibrationDetected.Invoke();
+                    if (calibrStatus == false)
+                    {
+                        OnNoEyeCalibrationDetected.Invoke();
+                    }
+                    else
+                    {
+                        OnEyeCalibrationDetected.Invoke();
+                    }
+                    prevCalibrationStatus = calibrStatus;
                 }
-                else
-                {
-                    OnEyeCalibrationDetected.Invoke();
-                }
-                prevCalibrationStatus = calibrStatus;
             }
         }
     }
