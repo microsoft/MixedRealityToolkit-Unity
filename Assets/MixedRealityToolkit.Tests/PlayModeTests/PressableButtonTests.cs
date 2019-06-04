@@ -31,6 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return testButton;
         }
 
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
         #endregion
 
         #region Tests
