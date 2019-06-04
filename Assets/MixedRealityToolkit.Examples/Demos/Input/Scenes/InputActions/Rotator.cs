@@ -3,13 +3,16 @@
 
 using UnityEngine;
 
-// Silly script that applies a rotation about the up axis on demand.
-public class Rotator : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    public float angle = 45f;
-
-    public void Rotate()
+    // Silly script that applies a rotation about the up axis on demand.
+    public class Rotator : MonoBehaviour
     {
-        transform.Rotate(0, angle, 0);
+        public float angle = 45f;
+
+        public void Rotate()
+        {
+            transform.Rotate(0, angle, 0);
+        }
     }
 }
