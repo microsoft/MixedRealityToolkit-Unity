@@ -792,6 +792,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     // Perform raycast to determine focused object
                     var raycastProvider = ((IMixedRealityInputSystem)Service).RaycastProvider;
+                    hitResult3d.Clear();
                     QueryScene(pointer.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d);
                     PointerHitResult hit = hitResult3d;
 
@@ -928,7 +929,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 switch (pointer.SceneQueryType)
                 {
                     case SceneQueryType.SimpleRaycast:
-                        if (raycastProvider.RaycastSimplePhysicsStep(pointerRays[i], prioritizedLayerMasks, out hitInfo))
+                        if (raycastProvider.Raycast(pointerRays[i], prioritizedLayerMasks, out hitInfo))
                         {
                             UpdatePointerRayOnHit(pointerRays, hitInfo, i, rayStartDistance, hit);
                             return;
@@ -938,7 +939,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
                         break;
                     case SceneQueryType.SphereCast:
-                        if (raycastProvider.RaycastSpherePhysicsStep(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, out hitInfo))
+                        if (raycastProvider.SphereCast(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, out hitInfo))
                         {
                             UpdatePointerRayOnHit(pointerRays, hitInfo, i, rayStartDistance, hit);
                             return;
