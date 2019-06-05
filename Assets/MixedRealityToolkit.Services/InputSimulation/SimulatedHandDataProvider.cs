@@ -240,8 +240,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Vector3 mouseDelta = (lastMousePosition.HasValue ? UnityEngine.Input.mousePosition - lastMousePosition.Value : Vector3.zero);
             mouseDelta.z += UnityEngine.Input.GetAxis("Mouse ScrollWheel") * profile.HandDepthMultiplier;
-            float rotationDelta = profile.HandRotationSpeed * Time.deltaTime;
+
+            float rotationDelta = profile.HandRotationSpeed * Time.unscaledDeltaTime;
             Vector3 rotationDeltaEulerAngles = Vector3.zero;
+
             if (UnityEngine.Input.GetKey(profile.YawHandCCWKey))
             {
                 rotationDeltaEulerAngles.y = -rotationDelta;
@@ -270,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SimulateHandInput(ref lastSimulatedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, rotationDeltaEulerAngles);
             SimulateHandInput(ref lastSimulatedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, rotationDeltaEulerAngles);
 
-            float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.deltaTime;
+            float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.unscaledDeltaTime;
             HandStateLeft.GestureBlending += gestureAnimDelta;
             HandStateRight.GestureBlending += gestureAnimDelta;
 

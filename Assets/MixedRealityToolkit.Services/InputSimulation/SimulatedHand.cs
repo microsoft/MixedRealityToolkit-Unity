@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    jointPositions[i] = Vector3.SmoothDamp(jointPoses[handJoint].Position, jointPositions[i], ref jointPositionVelocities[i], 0.15f);
+                    jointPositions[i] = Vector3.SmoothDamp(jointPoses[handJoint].Position, jointPositions[i], ref jointPositionVelocities[i], 0.15f, Mathf.Infinity, Time.unscaledDeltaTime);
                     jointPoses[handJoint] = new MixedRealityPose(jointPositions[i], jointOrientations[i]);
                 }
             }
