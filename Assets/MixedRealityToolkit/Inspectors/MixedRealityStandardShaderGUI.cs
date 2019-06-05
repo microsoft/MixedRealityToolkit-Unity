@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.IO;
 using UnityEditor;
@@ -81,7 +82,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent destinationBlend = new GUIContent("Destination Blend", "Blend Mode of Existing Color");
             public static GUIContent blendOperation = new GUIContent("Blend Operation", "Operation for Blending New Color With Existing Color");
             public static GUIContent depthTest = new GUIContent("Depth Test", "How Should Depth Testing Be Performed.");
-            public static GUIContent depthWrite = new GUIContent("Depth Write", "Controls Whether Pixels From This Object Are Written to the Depth Buffer");
+            public static GUIContent depthWrite = new GUIContent("Depth Write", "Controls Whether Pixels From This Material Are Written to the Depth Buffer");
+            public static GUIContent depthWriteWarning = new GUIContent("<color=yellow>Warning:</color> Depth buffer sharing is enabled for this project, but this material does not write depth. Enabling depth will improve reprojection, but may cause rendering artifacts in translucent materials.");
+            public static GUIContent depthWriteFixNowButton = new GUIContent("Fix Now", "Enables Depth Write For This Material");
             public static GUIContent depthOffsetFactor = new GUIContent("Depth Offset Factor", "Scales the Maximum Z Slope, with Respect to X or Y of the Polygon");
             public static GUIContent depthOffsetUnits = new GUIContent("Depth Offset Units", "Scales the Minimum Resolvable Depth Buffer Value");
             public static GUIContent colorWriteMask = new GUIContent("Color Write Mask", "Color Channel Writing Mask");
@@ -491,6 +494,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(depthOffsetUnits, Styles.depthOffsetUnits);
                 materialEditor.ShaderProperty(colorWriteMask, Styles.colorWriteMask);
                 EditorGUI.indentLevel -= 2;
+            }
+
+            if (!PropertyEnabled(depthWrite) && IsDepthBufferSharingEnabled())
+            {
+                var defaultValue = EditorStyles.helpBox.richText;
+                EditorStyles.helpBox.richText = true;
+
+                if (materialEditor.HelpBoxWithButton(Styles.depthWriteWarning, Styles.depthWriteFixNowButton))
+                {
+                    if (EditorUtility.DisplayDialog("Depth Write", "Change this material to write to the depth buffer?", "Yes", "No"))
+                    {
+                        renderingMode.floatValue = (float)RenderingMode.Custom;
+                        depthWrite.floatValue = (float)DepthWrite.On;
+                    }
+                }
+
+                EditorStyles.helpBox.richText = defaultValue;
             }
 
             materialEditor.ShaderProperty(cullMode, Styles.cullMode);
@@ -1064,6 +1084,30 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 material.SetColor(propertyName, propertyValue.Value);
             }
+        }
+
+        protected static bool IsDepthBufferSharingEnabled()
+        {
+            if (PlayerSettings.VROculus.sharedDepthBuffer)
+            {
+                return true;
+            }
+
+#if UNITY_2019_1_OR_NEWER
+            if (PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled)
+            {
+                return true;
+            }
+#else
+            var playerSettings = MixedRealityOptimizeUtils.GetSettingsObject("PlayerSettings");
+            var property = playerSettings?.FindProperty("vrSettings.hololens.depthBufferSharingEnabled");
+            if (property != null && property.boolValue)
+            {
+                return true;
+            }
+#endif
+
+            return false;
         }
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline")]
