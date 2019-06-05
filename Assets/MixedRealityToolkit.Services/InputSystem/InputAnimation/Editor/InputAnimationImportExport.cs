@@ -15,9 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public static class InputAnimationMenu
     {
-        [MenuItem("Mixed Reality Toolkit/Utilities/Import Input Animation")]
-        private static void ImportInputAnimation()
+        private static void ImportInputAnimation(string outputDirectory)
         {
+            Debug.Log($"DIR = {outputDirectory}");
             string filepath = EditorUtility.OpenFilePanel(
                 "Select input animation file",
                 "",
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (clip)
                     {
                         string newFilename = Path.GetFileNameWithoutExtension(filepath) + ".asset";
-                        string newFilepath = Path.Combine(GetOutputAssetDirectory(), newFilename);
+                        string newFilepath = Path.Combine(outputDirectory, newFilename);
                         AssetDatabase.CreateAsset(clip, newFilepath);
                     }
                 }
@@ -48,22 +48,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Export Input Animation")]
-        private static void ExportInputAnimation()
+        [MenuItem("Mixed Reality Toolkit/Utilities/Import Input Animation")]
+        private static void ImportInputAnimationFromMenu()
         {
-            AnimationClip clip = Selection.activeObject as AnimationClip;
-            if (!clip)
-            {
-                return;
-            }
+            ImportInputAnimation(GetOutputAssetDirectory());
+        }
 
+        [MenuItem("Assets/Mixed Reality Toolkit/Import Input Animation")]
+        private static void ImportInputAnimationFromAssets()
+        {
+            ImportInputAnimation(GetOutputAssetDirectory());
+        }
+
+        private static void ExportInputAnimation(AnimationClip clip, string outputDirectory)
+        {
             string filepath = AssetDatabase.GetAssetPath(clip);
             string filename = Path.GetFileName(filepath);
             string newFilename = Path.ChangeExtension(filename, InputAnimationSerializationUtils.Extension);
 
             string outputPath = EditorUtility.SaveFilePanel(
                 "Select output path",
-                GetOutputAssetDirectory(),
+                outputDirectory,
                 newFilename,
                 InputAnimationSerializationUtils.Extension);
 
@@ -83,8 +88,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        [MenuItem("Mixed Reality Toolkit/Utilities/Export Input Animation")]
+        private static void ExportInputAnimationFromMenu()
+        {
+            AnimationClip clip = Selection.activeObject as AnimationClip;
+            if (clip)
+            {
+                ExportInputAnimation(clip, GetOutputAssetDirectory());
+            }
+        }
+
         [MenuItem("Mixed Reality Toolkit/Utilities/Export Input Animation", true)]
-        private static bool ExportInputAnimationValidation()
+        private static bool ExportInputAnimationFromMenuValidation()
+        {
+            return Selection.activeObject is AnimationClip;
+        }
+
+        [MenuItem("Assets/Mixed Reality Toolkit/Export Input Animation")]
+        private static void ExportInputAnimationFromAssets()
+        {
+            AnimationClip clip = Selection.activeObject as AnimationClip;
+            if (clip)
+            {
+                ExportInputAnimation(clip, GetOutputAssetDirectory());
+            }
+        }
+
+        [MenuItem("Assets/Mixed Reality Toolkit/Export Input Animation", true)]
+        private static bool ExportInputAnimationFromAssetsValidation()
         {
             return Selection.activeObject is AnimationClip;
         }
