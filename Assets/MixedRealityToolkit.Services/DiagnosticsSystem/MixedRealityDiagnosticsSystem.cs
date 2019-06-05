@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
                     // The voice commands are handled by the diagnosticVisualizationParent GameObject, we cannot disable the parent 
                     // or we lose the ability to re-show the visualizations. Instead, disable
-                    if(ShowProfiler)
+                    if (ShowProfiler)
                     {
                         visualProfiler.IsVisible = value;
                     }
