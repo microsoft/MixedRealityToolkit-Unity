@@ -17,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private static void ImportInputAnimation(string outputDirectory)
         {
-            Debug.Log($"DIR = {outputDirectory}");
             string filepath = EditorUtility.OpenFilePanel(
                 "Select input animation file",
                 "",
