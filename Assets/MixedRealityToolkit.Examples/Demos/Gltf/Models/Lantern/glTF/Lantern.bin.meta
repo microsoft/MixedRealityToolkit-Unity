@@ -1,10 +1,7 @@
 fileFormatVersion: 2
 guid: 97b55e0fbe107b74fba508653770d1a4
-ScriptedImporter:
-  fileIDToRecycleName:
-    2186277476908879412: ImportLogs
+DefaultImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-  script: {fileID: 11500000, guid: cab2276269e515841879fbfbef14711a, type: 3}
