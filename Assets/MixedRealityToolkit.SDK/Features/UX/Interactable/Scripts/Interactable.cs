@@ -47,17 +47,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        protected List<IMixedRealityPointer> focusingPointers = new List<IMixedRealityPointer>();
+        protected readonly List<IMixedRealityPointer> focusingPointers = new List<IMixedRealityPointer>();
         /// <summary>
         /// Pointers that are focusing the interactable
         /// </summary>
-        public List<IMixedRealityPointer> Focusers => focusingPointers;
+        public List<IMixedRealityPointer> FocusingPointers => focusingPointers;
 
-        protected HashSet<IMixedRealityInputSource> pressingInputSources = new HashSet<IMixedRealityInputSource>();
+        protected readonly HashSet<IMixedRealityInputSource> pressingInputSources = new HashSet<IMixedRealityInputSource>();
         /// <summary>
         /// Input sources that are pressing the interactable
         /// </summary>
-        public HashSet<IMixedRealityInputSource> Pressers => pressingInputSources;
+        public HashSet<IMixedRealityInputSource> PressingInputSources => pressingInputSources;
 
         // is the interactable enabled?
         public bool Enabled = true;
@@ -246,21 +246,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             // validate states and reset if needed
-            int pointersWithFocus = 0;
             int pointerCount = focusingPointers.Count - 1;
-            for (int i = pointerCount; i > -1; i--)
-            {
-                if ((Interactable)focusingPointers[i].FocusTarget != this)
-                {
-                    focusingPointers.RemoveAt(i);
-                }
-                else
-                {
-                    pointersWithFocus++;
-                }
-            }
+            focusingPointers.RemoveAll((focusingPointer) => (Interactable)focusingPointer.FocusTarget != this);
 
-            if (pointersWithFocus == 0)
+            if (focusingPointers.Count == 0)
             {
                 ResetBaseStates();
             }
@@ -575,8 +564,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void ResetAllStates()
         {
-            focusingPointers = new List<IMixedRealityPointer>();
-            pressingInputSources = new HashSet<IMixedRealityInputSource>();
+            focusingPointers.Clear();
+            pressingInputSources.Clear();
             ResetBaseStates();
             SetCollision(false);
             SetCustom(false);
@@ -678,8 +667,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (clickValidTimer != null)
                 {
-                    StopCoroutine(clickValidTimer);
-                    clickValidTimer = null;
+                    StopClickTimer();
                 }
 
                 clickValidTimer = StartCoroutine(InputDownTimer(clickTime));
@@ -826,7 +814,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Based on inputAction and state, should this interaction listen to this input?
+        /// Based on inputAction and state, should interactable listen to this up/down event.
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
@@ -837,28 +825,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            // Special case: Make sure that we are not being focused only by a PokePointer, since PokePointer
-            // dispatches touch events and should not be dispatching button presses like select, grip, menu, etc.
-            int pointerCount = 0;
-            int pokePointerCount = 0;
-            for (int i = 0; i < focusingPointers.Count; i++)
-            {
-                if(focusingPointers[i].InputSourceParent.SourceId == data.SourceId)
-                {
-                    pointerCount++;
-                    if (focusingPointers[i] is PokePointer)
-                    {
-                        pokePointerCount++;
-                    }
-                }
-            }
-
-            if (pointerCount > 0 && pointerCount == pokePointerCount)
+            if (data.MixedRealityInputAction != InputAction)
             {
                 return false;
             }
 
-            return data.MixedRealityInputAction == InputAction;
+            // Special case: Make sure that we are not being focused only by a PokePointer, since PokePointer
+            // dispatches touch events and should not be dispatching button presses like select, grip, menu, etc.
+            int focusingPointerCount = 0;
+            int focusingPokePointerCount = 0;
+            for (int i = 0; i < focusingPointers.Count; i++)
+            {
+                if(focusingPointers[i].InputSourceParent.SourceId == data.SourceId)
+                {
+                    focusingPointerCount++;
+                    if (focusingPointers[i] is PokePointer)
+                    {
+                        focusingPokePointerCount++;
+                    }
+                }
+            }
+
+            if (focusingPointerCount > 0 && focusingPointerCount == focusingPokePointerCount)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -871,7 +864,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             bool isAnyNearpointerFocusing = false;
             for (int i = 0; i < focusingPointers.Count; i++)
             {
-                if (focusingPointers[i] is IMixedRealityNearPointer && focusingPointers[i].InputSourceParent.SourceId == eventData.InputSource.SourceId)
+                if (focusingPointers[i].InputSourceParent.SourceId == eventData.InputSource.SourceId && focusingPointers[i] is IMixedRealityNearPointer)
                 {
                     isAnyNearpointerFocusing = true;
                     break;
@@ -1087,7 +1080,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (ShouldListenToUpDownEvent(eventData))
             {
-                SetPress(false);
                 SetInputUp();
                 if (IsInputFromNearInteraction(eventData))
                 {
@@ -1140,15 +1132,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void SetInputUp()
         {
-            if (!CanInteract())
+            if (!CanInteract() || !HasPress)
             {
                 return;
             }
 
             SetPress(false);
-
             SetGesture(false);
-            SetPress(false);
 
             if (CanFireClick())
             {
