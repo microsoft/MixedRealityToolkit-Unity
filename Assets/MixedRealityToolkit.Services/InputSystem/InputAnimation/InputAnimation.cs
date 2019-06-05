@@ -45,6 +45,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float duration = 0.0f;
         public float Duration => duration;
 
+        public class PoseCurves
+        {
+            readonly public AnimationCurve PositionX = new AnimationCurve();
+            readonly public AnimationCurve PositionY = new AnimationCurve();
+            readonly public AnimationCurve PositionZ = new AnimationCurve();
+            readonly public AnimationCurve RotationX = new AnimationCurve();
+            readonly public AnimationCurve RotationY = new AnimationCurve();
+            readonly public AnimationCurve RotationZ = new AnimationCurve();
+            readonly public AnimationCurve RotationW = new AnimationCurve();
+        }
+
         [SerializeField]
         private AnimationCurve handTrackedCurveLeft;
         [SerializeField]
@@ -54,11 +65,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private AnimationCurve handPinchCurveRight;
         [SerializeField]
-        private AnimationCurve[] handJointCurvesLeft;
+        private Dictionary<TrackedHandJoint, PoseCurves> handJointCurvesLeft;
         [SerializeField]
-        private AnimationCurve[] handJointCurvesRight;
+        private Dictionary<TrackedHandJoint, PoseCurves> handJointCurvesRight;
         [SerializeField]
-        private AnimationCurve[] cameraCurves;
+        private PoseCurves cameraCurves;
 
         /// <summary>
         /// Number of markers in the animation.
@@ -81,55 +92,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handTrackedCurveRight = new AnimationCurve();
             handPinchCurveLeft = new AnimationCurve();
             handPinchCurveRight = new AnimationCurve();
-            handJointCurvesLeft = CreateAnimationCurveArray(7 * jointCount);
-            handJointCurvesRight = CreateAnimationCurveArray(7 * jointCount);
-            cameraCurves = CreateAnimationCurveArray(7);
+            handJointCurvesLeft = new Dictionary<TrackedHandJoint, PoseCurves>();
+            handJointCurvesRight = new Dictionary<TrackedHandJoint, PoseCurves>();
+            cameraCurves = new PoseCurves();
 
             markers = new List<InputAnimationMarker>();
         }
 
-        private AnimationCurve[] CreateAnimationCurveArray(int count)
+        protected bool TryGetHandJointCurves(Handedness handedness, TrackedHandJoint joint, out PoseCurves curves)
         {
-            var curves = new AnimationCurve[count];
-            for (int i = 0; i < count; ++i)
-            {
-                curves[i] = new AnimationCurve();
-            }
-            return curves;
-        }
-
-        protected AnimationCurve GetHandJointCurve(Handedness handedness, TrackedHandJoint joint, int component)
-        {
-            const int maxComponent = 7;
-            Debug.Assert(component < maxComponent);
-
-            int index = (int)joint * maxComponent + component;
-
             if (handedness == Handedness.Left)
             {
-                return handJointCurvesLeft[index];
+                return handJointCurvesLeft.TryGetValue(joint, out curves);
             }
             else if (handedness == Handedness.Right)
             {
-                return handJointCurvesRight[index];
+                return handJointCurvesRight.TryGetValue(joint, out curves);
             }
-            return null;
-        }
-
-        protected AnimationCurve GetHeadPositionCurve(int component)
-        {
-            const int maxComponent = 3;
-            Debug.Assert(component < maxComponent);
-
-            return cameraCurves[component];
-        }
-
-        protected AnimationCurve GetHeadRotationCurve(int component)
-        {
-            const int maxComponent = 4;
-            Debug.Assert(component < maxComponent);
-
-            return cameraCurves[component + 3];
+            curves = new PoseCurves();
+            return false;
         }
 
         /// <summary>
@@ -162,29 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        // /// <summary>
-        // /// Add a keyframe for an entire hand pose containing all the joints.
-        // /// </summary>
-        // public void AddHandDataKeys(float time, Handedness handedness, SimulatedHandData data, float positionThreshold, float rotationThreshold)
-        // {
-        //     if (handedness == Handedness.Left)
-        //     {
-        //         AddHandStateKey(time, data.IsTracked, data.IsPinching, handTrackedCurveLeft, handPinchCurveLeft);
-        //         for (int i = 0; i < jointCount; ++i)
-        //         {
-        //             AddHandJointKey(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesLeft, positionThreshold);
-        //         }
-        //     }
-        //     else if (handedness == Handedness.Right)
-        //     {
-        //         AddHandStateKey(time, data.IsTracked, data.IsPinching, handTrackedCurveRight, handPinchCurveRight);
-        //         for (int i = 0; i < jointCount; ++i)
-        //         {
-        //             AddHandJointKey(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesRight, positionThreshold);
-        //         }
-        //     }
-        // }
-
         /// Add a keyframe for the tracking state of a hand.
         private void AddHandStateKey(float time, bool isTracked, bool isPinching, AnimationCurve trackedCurve, AnimationCurve pinchCurve)
         {
@@ -195,17 +153,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// Add a keyframe for one hand joint.
-        private void AddHandJointKey(float time, TrackedHandJoint joint, MixedRealityPose jointPose, AnimationCurve[] jointCurves, float positionThreshold, float rotationThreshold)
+        private void AddHandJointKey(float time, TrackedHandJoint joint, MixedRealityPose jointPose, Dictionary<TrackedHandJoint, PoseCurves> jointCurves, float positionThreshold, float rotationThreshold)
         {
-            int curveIndex = (int)joint * 7;
-            AddFloatKeyFiltered(jointCurves[curveIndex + 0], time, jointPose.Position.x, positionThreshold);
-            AddFloatKeyFiltered(jointCurves[curveIndex + 1], time, jointPose.Position.y, positionThreshold);
-            AddFloatKeyFiltered(jointCurves[curveIndex + 2], time, jointPose.Position.z, positionThreshold);
+            if (!jointCurves.TryGetValue(joint, out PoseCurves curves))
+            {
+                curves = new PoseCurves();
+                jointCurves.Add(joint, curves);
+            }
 
-            AddFloatKeyFiltered(jointCurves[curveIndex + 3], time, jointPose.Rotation.x, rotationThreshold);
-            AddFloatKeyFiltered(jointCurves[curveIndex + 4], time, jointPose.Rotation.y, rotationThreshold);
-            AddFloatKeyFiltered(jointCurves[curveIndex + 5], time, jointPose.Rotation.z, rotationThreshold);
-            AddFloatKeyFiltered(jointCurves[curveIndex + 6], time, jointPose.Rotation.w, rotationThreshold);
+            AddPoseKeyFiltered(curves, time, jointPose, positionThreshold, rotationThreshold);
 
             duration = Mathf.Max(duration, time);
         }
@@ -215,16 +171,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public void AddCameraPoseKey(float time, MixedRealityPose cameraPose, float positionThreshold, float rotationThreshold)
         {
-            AddFloatKeyFiltered(cameraCurves[0], time, cameraPose.Position.x, positionThreshold);
-            AddFloatKeyFiltered(cameraCurves[1], time, cameraPose.Position.y, positionThreshold);
-            AddFloatKeyFiltered(cameraCurves[2], time, cameraPose.Position.z, positionThreshold);
-
-            AddFloatKeyFiltered(cameraCurves[3], time, cameraPose.Rotation.x, rotationThreshold);
-            AddFloatKeyFiltered(cameraCurves[4], time, cameraPose.Rotation.y, rotationThreshold);
-            AddFloatKeyFiltered(cameraCurves[5], time, cameraPose.Rotation.z, rotationThreshold);
-            AddFloatKeyFiltered(cameraCurves[6], time, cameraPose.Rotation.w, rotationThreshold);
+            AddPoseKeyFiltered(cameraCurves, time, cameraPose, positionThreshold, rotationThreshold);
 
             duration = Mathf.Max(duration, time);
+        }
+
+        private static void AddPoseKey(PoseCurves curves, float time, MixedRealityPose pose)
+        {
+            AddFloatKey(curves.PositionX, time, pose.Position.x);
+            AddFloatKey(curves.PositionY, time, pose.Position.y);
+            AddFloatKey(curves.PositionZ, time, pose.Position.z);
+
+            AddFloatKey(curves.RotationX, time, pose.Rotation.x);
+            AddFloatKey(curves.RotationY, time, pose.Rotation.y);
+            AddFloatKey(curves.RotationZ, time, pose.Rotation.z);
+            AddFloatKey(curves.RotationW, time, pose.Rotation.w);
+        }
+
+        private static void AddPoseKeyFiltered(PoseCurves curves, float time, MixedRealityPose pose, float positionThreshold, float rotationThreshold)
+        {
+            AddFloatKeyFiltered(curves.PositionX, time, pose.Position.x, positionThreshold);
+            AddFloatKeyFiltered(curves.PositionY, time, pose.Position.y, positionThreshold);
+            AddFloatKeyFiltered(curves.PositionZ, time, pose.Position.z, positionThreshold);
+
+            AddFloatKeyFiltered(curves.RotationX, time, pose.Rotation.x, rotationThreshold);
+            AddFloatKeyFiltered(curves.RotationY, time, pose.Rotation.y, rotationThreshold);
+            AddFloatKeyFiltered(curves.RotationZ, time, pose.Rotation.z, rotationThreshold);
+            AddFloatKeyFiltered(curves.RotationW, time, pose.Rotation.w, rotationThreshold);
         }
 
         /// Add a float value to an animation curve
@@ -342,18 +315,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 yield return animation.handTrackedCurveRight;
                 yield return animation.handPinchCurveLeft;
                 yield return animation.handPinchCurveRight;
-                foreach (var curve in animation.handJointCurvesLeft)
+                foreach (var curves in animation.handJointCurvesLeft.Values)
                 {
-                    yield return curve;
+                    yield return curves.PositionX;
+                    yield return curves.PositionY;
+                    yield return curves.PositionZ;
+                    yield return curves.RotationX;
+                    yield return curves.RotationY;
+                    yield return curves.RotationZ;
+                    yield return curves.RotationW;
                 }
-                foreach (var curve in animation.handJointCurvesRight)
+                foreach (var curves in animation.handJointCurvesRight.Values)
                 {
-                    yield return curve;
+                    yield return curves.PositionX;
+                    yield return curves.PositionY;
+                    yield return curves.PositionZ;
+                    yield return curves.RotationX;
+                    yield return curves.RotationY;
+                    yield return curves.RotationZ;
+                    yield return curves.RotationW;
                 }
-                foreach (var curve in animation.cameraCurves)
-                {
-                    yield return curve;
-                }
+                yield return animation.cameraCurves.PositionX;
+                yield return animation.cameraCurves.PositionY;
+                yield return animation.cameraCurves.PositionZ;
+                yield return animation.cameraCurves.RotationX;
+                yield return animation.cameraCurves.RotationY;
+                yield return animation.cameraCurves.RotationZ;
+                yield return animation.cameraCurves.RotationW;
             }
 
             IEnumerator IEnumerable.GetEnumerator()
@@ -472,89 +460,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// Evaluate joint pose at the given time.
-        private MixedRealityPose EvaluateHandJoint(float time, TrackedHandJoint joint, AnimationCurve[] jointCurves)
+        private MixedRealityPose EvaluateHandJoint(float time, TrackedHandJoint joint, Dictionary<TrackedHandJoint, PoseCurves> jointCurves)
         {
-            const int maxComponent = 7;
-
-            int index0 = (int)joint * maxComponent;
-            float px = jointCurves[index0 + 0].Evaluate(time);
-            float py = jointCurves[index0 + 1].Evaluate(time);
-            float pz = jointCurves[index0 + 2].Evaluate(time);
-            float rx = jointCurves[index0 + 3].Evaluate(time);
-            float ry = jointCurves[index0 + 4].Evaluate(time);
-            float rz = jointCurves[index0 + 5].Evaluate(time);
-            float rw = jointCurves[index0 + 6].Evaluate(time);
-
-            var jointPose = new MixedRealityPose();
-            jointPose.Position = new Vector3(px, py, pz);
-            jointPose.Rotation = new Quaternion(rx, ry, rz, rw).normalized;
-
-            return jointPose;
+            if (jointCurves.TryGetValue(joint, out PoseCurves curves))
+            {
+                return EvaluatePose(curves, time);
+            }
+            else
+            {
+                return MixedRealityPose.ZeroIdentity;
+            }
         }
-
-        // /// <summary>
-        // /// Evaluate hand tracking state and joint poses at the given time.
-        // /// </summary>
-        // public void EvaluateHandData(float time, Handedness handedness, SimulatedHandData result)
-        // {
-        //     if (handedness == Handedness.Left)
-        //     {
-        //         EvaluateHandData(time, result, handTrackedCurveLeft, handPinchCurveLeft, handJointCurvesLeft);
-        //     }
-        //     else if (handedness == Handedness.Right)
-        //     {
-        //         EvaluateHandData(time, result, handTrackedCurveRight, handPinchCurveRight, handJointCurvesRight);
-        //     }
-        // }
-
-        // /// Evaluate hand tracking state and joint poses at the given time.
-        // private void EvaluateHandData(float time, SimulatedHandData result, AnimationCurve trackedCurve, AnimationCurve pinchCurve, AnimationCurve[] jointCurves)
-        // {
-        //     bool isTracked = (trackedCurve.Evaluate(time) > 0.5f);
-        //     bool isPinching = (pinchCurve.Evaluate(time) > 0.5f);
-        //     result.Update(isTracked, isPinching,
-        //         (MixedRealityPose[] jointPoses) =>
-        //         {
-        //             int jointCurve = 0;
-        //             for (int i = 0; i < jointCount; ++i)
-        //             {
-        //                 float px = jointCurves[jointCurve++].Evaluate(time);
-        //                 float py = jointCurves[jointCurve++].Evaluate(time);
-        //                 float pz = jointCurves[jointCurve++].Evaluate(time);
-        //                 float rx = jointCurves[jointCurve++].Evaluate(time);
-        //                 float ry = jointCurves[jointCurve++].Evaluate(time);
-        //                 float rz = jointCurves[jointCurve++].Evaluate(time);
-        //                 float rw = jointCurves[jointCurve++].Evaluate(time);
-        //                 jointPoses[i].Position.Set(px, py, pz);
-        //                 jointPoses[i].Rotation.Set(rx, ry, rz, rw);
-        //                 jointPoses[i].Rotation.Normalize();
-        //             }
-        //         });
-        // }
 
         /// <summary>
         /// Evaluate the camera transform at the given time.
         /// </summary>
         public MixedRealityPose EvaluateCameraPose(float time)
         {
-            var cameraPose = new MixedRealityPose();
+            return EvaluatePose(cameraCurves, time);
+        }
 
-            {
-                float x = cameraCurves[0].Evaluate(time);
-                float y = cameraCurves[1].Evaluate(time);
-                float z = cameraCurves[2].Evaluate(time);
-                cameraPose.Position = new Vector3(x, y, z);
-            }
+        private static MixedRealityPose EvaluatePose(PoseCurves curves, float time)
+        {
+            float px = curves.PositionX.Evaluate(time);
+            float py = curves.PositionY.Evaluate(time);
+            float pz = curves.PositionZ.Evaluate(time);
+            float rx = curves.RotationX.Evaluate(time);
+            float ry = curves.RotationY.Evaluate(time);
+            float rz = curves.RotationZ.Evaluate(time);
+            float rw = curves.RotationW.Evaluate(time);
 
-            {
-                float x = cameraCurves[0].Evaluate(time);
-                float y = cameraCurves[1].Evaluate(time);
-                float z = cameraCurves[2].Evaluate(time);
-                float w = cameraCurves[3].Evaluate(time);
-                cameraPose.Rotation = new Quaternion(x, y, z, w).normalized;
-            }
-
-            return cameraPose;
+            var pose = new MixedRealityPose();
+            pose.Position.Set(px, py, pz);
+            pose.Rotation.Set(rx, ry, rz, rw);
+            pose.Rotation.Normalize();
+            return pose;
         }
 
         /// <summary>
@@ -615,15 +555,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public void ToStream(Stream stream)
         {
+            PoseCurves defaultCurves = new PoseCurves();
+
             var writer = new BinaryWriter(stream);
 
-            InputAnimationSerializationUtils.WriteFloatCurveArray(writer, cameraCurves);
+            PoseCurvesToStream(writer, cameraCurves);
+
             InputAnimationSerializationUtils.WriteBoolCurve(writer, handTrackedCurveLeft);
             InputAnimationSerializationUtils.WriteBoolCurve(writer, handTrackedCurveRight);
             InputAnimationSerializationUtils.WriteBoolCurve(writer, handPinchCurveLeft);
             InputAnimationSerializationUtils.WriteBoolCurve(writer, handPinchCurveRight);
-            InputAnimationSerializationUtils.WriteFloatCurveArray(writer, handJointCurvesLeft);
-            InputAnimationSerializationUtils.WriteFloatCurveArray(writer, handJointCurvesRight);
+
+            for (int i = 0; i < jointCount; ++i)
+            {
+                if (!handJointCurvesLeft.TryGetValue((TrackedHandJoint)i, out PoseCurves curves))
+                {
+                    curves = defaultCurves;
+                }
+                PoseCurvesToStream(writer, curves);
+            }
+            for (int i = 0; i < jointCount; ++i)
+            {
+                if (!handJointCurvesRight.TryGetValue((TrackedHandJoint)i, out PoseCurves curves))
+                {
+                    curves = defaultCurves;
+                }
+                PoseCurvesToStream(writer, curves);
+            }
+
             InputAnimationSerializationUtils.WriteMarkerList(writer, markers);
         }
 
@@ -634,16 +593,59 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var reader = new BinaryReader(stream);
 
-            InputAnimationSerializationUtils.ReadFloatCurveArray(reader, cameraCurves);
+            PoseCurvesFromStream(reader, cameraCurves);
+
             InputAnimationSerializationUtils.ReadBoolCurve(reader, handTrackedCurveLeft);
             InputAnimationSerializationUtils.ReadBoolCurve(reader, handTrackedCurveRight);
             InputAnimationSerializationUtils.ReadBoolCurve(reader, handPinchCurveLeft);
             InputAnimationSerializationUtils.ReadBoolCurve(reader, handPinchCurveRight);
-            InputAnimationSerializationUtils.ReadFloatCurveArray(reader, handJointCurvesLeft);
-            InputAnimationSerializationUtils.ReadFloatCurveArray(reader, handJointCurvesRight);
+
+            for (int i = 0; i < jointCount; ++i)
+            {
+                if (!handJointCurvesLeft.TryGetValue((TrackedHandJoint)i, out PoseCurves curves))
+                {
+                    curves = new PoseCurves();
+                    handJointCurvesLeft.Add((TrackedHandJoint)i, curves);
+                }
+                PoseCurvesFromStream(reader, curves);
+            }
+            for (int i = 0; i < jointCount; ++i)
+            {
+                if (!handJointCurvesRight.TryGetValue((TrackedHandJoint)i, out PoseCurves curves))
+                {
+                    curves = new PoseCurves();
+                    handJointCurvesRight.Add((TrackedHandJoint)i, curves);
+                }
+                PoseCurvesFromStream(reader, curves);
+            }
+
             InputAnimationSerializationUtils.ReadMarkerList(reader, markers);
 
             ComputeDuration();
+        }
+
+        private static void PoseCurvesToStream(BinaryWriter writer, PoseCurves curves)
+        {
+            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.PositionX);
+            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.PositionY);
+            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.PositionZ);
+
+            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.RotationX);
+            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.RotationY);
+            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.RotationZ);
+            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.RotationW);
+        }
+
+        private static void PoseCurvesFromStream(BinaryReader reader, PoseCurves curves)
+        {
+            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionX);
+            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionY);
+            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionZ);
+
+            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationX);
+            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationY);
+            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationZ);
+            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationW);
         }
     }
 }
