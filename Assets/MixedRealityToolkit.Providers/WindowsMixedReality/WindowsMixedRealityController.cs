@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         #region Update data functions
 
         /// <summary>
-        /// Update the controller data from the provided platform state
+        /// Update the controller data from the provided platform state.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         public override void UpdateController(InteractionSourceState interactionSourceState)
@@ -79,6 +79,162 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             EnsureControllerModel(interactionSourceState);
 
             base.UpdateController(interactionSourceState);
+
+            for (int i = 0; i < Interactions?.Length; i++)
+            {
+                switch (Interactions[i].InputType)
+                {
+                    case DeviceInputType.None:
+                        break;
+                    case DeviceInputType.ThumbStick:
+                    case DeviceInputType.ThumbStickPress:
+                        UpdateThumbstickData(interactionSourceState, Interactions[i]);
+                        break;
+                    case DeviceInputType.Touchpad:
+                    case DeviceInputType.TouchpadTouch:
+                    case DeviceInputType.TouchpadPress:
+                        UpdateTouchpadData(interactionSourceState, Interactions[i]);
+                        break;
+                    case DeviceInputType.Menu:
+                        UpdateMenuData(interactionSourceState, Interactions[i]);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update the touchpad input from the device.
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
+        /// <param name="interactionMapping"></param>
+        private void UpdateTouchpadData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
+        {
+            switch (interactionMapping.InputType)
+            {
+                case DeviceInputType.TouchpadTouch:
+                {
+                    // Update the interaction data source
+                    interactionMapping.BoolData = interactionSourceState.touchpadTouched;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        if (interactionSourceState.touchpadTouched)
+                        {
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+                    break;
+                }
+                case DeviceInputType.TouchpadPress:
+                {
+                    // Update the interaction data source
+                    interactionMapping.BoolData = interactionSourceState.touchpadPressed;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        if (interactionSourceState.touchpadPressed)
+                        {
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+                    break;
+                }
+                case DeviceInputType.Touchpad:
+                {
+                    // Update the interaction data source
+                    interactionMapping.Vector2Data = interactionSourceState.touchpadPosition;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
+                    }
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update the thumbstick input from the device.
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
+        /// <param name="interactionMapping"></param>
+        private void UpdateThumbstickData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
+        {
+            switch (interactionMapping.InputType)
+            {
+                case DeviceInputType.ThumbStickPress:
+                {
+                    // Update the interaction data source
+                    interactionMapping.BoolData = interactionSourceState.thumbstickPressed;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        if (interactionSourceState.thumbstickPressed)
+                        {
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+                    break;
+                }
+                case DeviceInputType.ThumbStick:
+                {
+                    // Update the interaction data source
+                    interactionMapping.Vector2Data = interactionSourceState.thumbstickPosition;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
+                    }
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update the menu button state.
+        /// </summary>
+        /// <param name="interactionSourceState"></param>
+        /// <param name="interactionMapping"></param>
+        private void UpdateMenuData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
+        {
+            // Update the interaction data source
+            interactionMapping.BoolData = interactionSourceState.menuPressed;
+
+            // If our value changed raise it.
+            if (interactionMapping.Changed)
+            {
+                // Raise input system Event if it enabled
+                if (interactionSourceState.menuPressed)
+                {
+                    InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                }
+                else
+                {
+                    InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                }
+            }
         }
 
         #endregion Update data functions
