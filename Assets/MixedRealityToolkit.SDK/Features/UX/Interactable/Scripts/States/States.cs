@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public static States GetDefaultInteractableStates()
         {
-            States result = new States();
+            States result = CreateInstance<States>();
 
             InteractableStates allInteractableStates = new InteractableStates();
 
