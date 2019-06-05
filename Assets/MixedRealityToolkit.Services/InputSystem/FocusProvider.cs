@@ -804,6 +804,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                         hit = GetPrioritizedHitResult(hit, hitResultUi, prioritizedLayerMasks);
                     }
+                    
+                    if (hit != null && hit.rayStepIndex >= 0)
+                    {
+                        RayStep rayStep = pointer.Pointer.Rays[hit.rayStepIndex];
+                        Vector3 origin = rayStep.Origin;
+                        Vector3 terminus = hit.raycastHit.point;
+                        rayStep.UpdateRayStep(ref origin, ref terminus);
+                    }
 
                     // Make sure to keep focus on the previous object if focus is locked (no target position lock here).
                     if (pointer.Pointer.IsFocusLocked && pointer.Pointer.Result?.CurrentPointerTarget != null)
@@ -930,7 +938,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     case SceneQueryType.SimpleRaycast:
                         if (MixedRealityRaycaster.RaycastSimplePhysicsStep(pointerRays[i], prioritizedLayerMasks, out physicsHit))
                         {
-                            UpdatePointerRayOnHit(pointerRays, physicsHit, i, rayStartDistance, hit);
+                            hit.Set(physicsHit, pointerRays[i], i, rayStartDistance + physicsHit.distance);
                             return;
                         }
                         break;
@@ -940,7 +948,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     case SceneQueryType.SphereCast:
                         if (MixedRealityRaycaster.RaycastSpherePhysicsStep(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, out physicsHit))
                         {
-                            UpdatePointerRayOnHit(pointerRays, physicsHit, i, rayStartDistance, hit);
+                            hit.Set(physicsHit, pointerRays[i], i, rayStartDistance + physicsHit.distance);
                             return;
                         }
                         break;
@@ -989,14 +997,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 rayStartDistance += pointer.Rays[i].Length;
             }
-        }
-
-        private static void UpdatePointerRayOnHit(RayStep[] raySteps, RaycastHit physicsHit, int hitRayIndex, float rayStartDistance, PointerHitResult hit)
-        {
-            Vector3 origin = raySteps[hitRayIndex].Origin;
-            Vector3 terminus = physicsHit.point;
-            raySteps[hitRayIndex].UpdateRayStep(ref origin, ref terminus);
-            hit.Set(physicsHit, raySteps[hitRayIndex], hitRayIndex, rayStartDistance + physicsHit.distance);
         }
 
         #endregion Physics Raycasting
