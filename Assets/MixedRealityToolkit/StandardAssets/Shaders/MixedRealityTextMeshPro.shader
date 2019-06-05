@@ -9,6 +9,7 @@
 // MRTK Additions
 // - Single Pass Instanced Stereo Rendering Support
 // - Support for Clipping Primitives (Plane, Sphere, Box)
+// - ZWrite Property
 
 Shader "Mixed Reality Toolkit/TextMeshPro" {
 
@@ -57,6 +58,7 @@ Properties {
 	_StencilReadMask	("Stencil Read Mask", Float) = 255
 	
 	_ColorMask			("Color Mask", Float) = 15
+    _ZWrite             ("Depth Write", Float) = 0
 }
 
 SubShader {
@@ -78,7 +80,7 @@ SubShader {
 	}
 
 	Cull [_CullMode]
-	ZWrite Off
+    ZWrite[_ZWrite]
 	Lighting Off
 	Fog { Mode Off }
 	ZTest [unity_GUIZTestMode]
@@ -393,5 +395,5 @@ SubShader {
 	}
 }
 
-CustomEditor "TMPro.EditorUtilities.TMP_SDFShaderGUI"
+CustomEditor "Microsoft.MixedReality.Toolkit.Editor.MixedRealityTextMeshProShaderGUI"
 }
