@@ -25,17 +25,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public HandJointService(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile inputSystemProfile,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <inheritdoc />
         public override void LateUpdate()
         {
             leftHand = null;
             rightHand = null;
-            foreach (var detectedController in MixedRealityToolkit.InputSystem.DetectedControllers)
+
+            foreach (var detectedController in InputSystem.DetectedControllers)
             {
                 var hand = detectedController as IMixedRealityHand;
                 if (hand != null)

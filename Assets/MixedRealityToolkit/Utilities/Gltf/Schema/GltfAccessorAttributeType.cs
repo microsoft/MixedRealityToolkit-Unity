@@ -4,7 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
-    /// Specifieds if the attribute is a scalar, vector, or matrix.
+    /// Specifies if the attribute is a scalar, vector, or matrix.
     /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/accessor.schema.json
     /// </summary>
     public enum GltfAccessorAttributeType

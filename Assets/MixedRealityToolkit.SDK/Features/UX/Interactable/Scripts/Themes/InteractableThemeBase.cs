@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public Type[] Types;
         public string Name = "Base Theme";
         public List<InteractableThemeProperty> ThemeProperties = new List<InteractableThemeProperty>();
-        public List<InteractableThemePropertyValue> CustomSettings = new List<InteractableThemePropertyValue>();
+        public List<InteractableCustomSetting> CustomSettings = new List<InteractableCustomSetting>();
         public GameObject Host;
         public Easing Ease;
         public bool NoEasing;
@@ -46,16 +46,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 prop.ShaderOptions = settings.Properties[i].ShaderOptions;
                 prop.PropId = settings.Properties[i].PropId;
                 prop.Values = settings.Properties[i].Values;
-
-
+                
                 ThemeProperties[i] = prop;
+            }
+
+            for (int i = 0; i < settings.CustomSettings.Count; i++)
+            {
+                InteractableCustomSetting setting = CustomSettings[i];
+                setting.Name = settings.CustomSettings[i].Name;
+                setting.Type = settings.CustomSettings[i].Type;
+                setting.Value = settings.CustomSettings[i].Value;
+                CustomSettings[i] = setting;
             }
 
             Ease = CopyEase(settings.Easing);
             Ease.Stop();
 
             Loaded = true;
-
         }
 
         protected float LerpFloat(float s, float e, float t)
@@ -78,8 +85,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return newEase;
         }
 
-        public virtual void OnUpdate(int state, bool force = false)
+        public virtual void OnUpdate(int state, Interactable source, bool force = false)
         {
+
             if (state != lastState || force)
             {
                 int themePropCount = ThemeProperties.Count;

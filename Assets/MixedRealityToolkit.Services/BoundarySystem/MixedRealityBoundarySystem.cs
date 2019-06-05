@@ -289,6 +289,21 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// </summary>
         private int ignoreRaycastLayerValue = 2;
 
+        private MixedRealityBoundaryVisualizationProfile boundaryVisualizationProfile = null;
+        
+        /// <inheritdoc/>
+        public MixedRealityBoundaryVisualizationProfile BoundaryVisualizationProfile
+        {
+            get
+            {
+                if (boundaryVisualizationProfile == null)
+                {
+                    boundaryVisualizationProfile = ConfigurationProfile as MixedRealityBoundaryVisualizationProfile;
+                }
+                return boundaryVisualizationProfile;
+            }
+        }
+
         /// <inheritdoc/>
         public ExperienceScale Scale { get; set; }
 
@@ -891,7 +906,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             var boundaryGeometry = new List<Vector3>(0);
             var boundaryEdges = new List<Edge>(0);
 
-            if (UnityBoundary.TryGetGeometry(boundaryGeometry, UnityBoundary.Type.TrackedArea))
+            if (UnityBoundary.TryGetGeometry(boundaryGeometry, UnityBoundary.Type.TrackedArea) && boundaryGeometry.Count > 0)
             {
                 // FloorHeight starts out as null. Use a suitably high value for the floor to ensure
                 // that we do not accidentally set it too low.

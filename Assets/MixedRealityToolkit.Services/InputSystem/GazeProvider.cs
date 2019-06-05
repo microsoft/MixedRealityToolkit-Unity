@@ -82,11 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("If true, eye-based tracking will be used when available. Requires the 'Gaze Input' permission and device eye calibration to have been run.")]
-        [Help("When enabling eye tracking, please follow the instructions at " 
+        [Help("When enabling eye tracking, please follow the instructions at "
                + "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/EyeTracking/EyeTracking_BasicSetup.html#eye-tracking-requirements "
                + "to set up 'Gaze Input' capabilities through Visual Studio.", "", false)]
         [FormerlySerializedAs("preferEyeTracking")]
-        private bool useEyeTracking = false;
+        private bool useEyeTracking = true;
 
         /// <inheritdoc />
         public bool UseEyeTracking
@@ -94,9 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return useEyeTracking; }
             set { useEyeTracking = value; }
         }
-
-        /// <inheritdoc />
-        public IMixedRealityInputSystem InputSystem { private get; set; }
 
         /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
@@ -138,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Vector3 HitNormal { get; private set; }
 
         /// <inheritdoc />
-        public Vector3 GazeOrigin => GazePointer.Rays[0].Origin;
+        public Vector3 GazeOrigin => gazePointer != null ? gazePointer.Rays[0].Origin : Vector3.zero;
 
         /// <inheritdoc />
         public Vector3 GazeDirection => GazePointer.Rays[0].Direction;
@@ -273,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (isDown)
                 {
-                    MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
+                    InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
                 }
             }
 
@@ -381,10 +378,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
             // but don't touch the visibility when not active or not flagged.
-            if (setCursorInvisibleWhenFocusLocked && GazePointer != null && 
-                GazePointer.IsInteractionEnabled && GazePointer.IsFocusLocked  == GazeCursor.IsVisible)
+            if (setCursorInvisibleWhenFocusLocked && gazePointer != null &&
+                gazePointer.IsInteractionEnabled && gazePointer.IsFocusLocked == GazeCursor.IsVisible)
             {
-                GazeCursor.SetVisibility(!GazePointer.IsFocusLocked);
+                GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
             }
         }
 
@@ -521,7 +518,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Ensure that we work with recent Eye Tracking data. Return false if we haven't received any 
+        /// Ensure that we work with recent Eye Tracking data. Return false if we haven't received any
         /// new Eye Tracking data for more than 'maxETTimeoutInSeconds' seconds.
         /// </summary>
         private bool IsEyeTrackingAvailable => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;

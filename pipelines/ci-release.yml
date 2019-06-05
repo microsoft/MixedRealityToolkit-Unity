@@ -1,0 +1,43 @@
+# CI build for release packages.
+
+variables:
+  UnityVersion: Unity2018.3.7f1
+  MRTKVersion: 2.0.0
+
+jobs:
+- job: CIReleaseValidation
+  timeoutInMinutes: 90
+  pool:
+    name: Analog On-Prem
+    demands:
+    - Unity2018.3.7f1  # variable expansion not allowed here
+    - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
+  steps:
+  - template: templates/common.yml
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)\NuGet'
+      ArtifactName: 'NuGet'
+  - template: templates/releasesigning.yml
+  - template: templates/end.yml
+
+- job: ReleaseSigning
+  dependsOn: CIReleaseValidation
+  pool:
+    name: Package ES Lab E
+  steps:
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'NuGet'
+      downloadPath: '$(Build.SourcesDirectory)'
+  - template: templates/tasks/signing.yml
+    parameters:
+      ConfigName: "MRTKSignConfig.xml"
+  - template: templates/package.yml
+  - template: templates/tasks/signing.yml
+    parameters:
+      ConfigName: "MRTKNuGetSignConfig.xml"
+  - template: templates/publishpackages.yml

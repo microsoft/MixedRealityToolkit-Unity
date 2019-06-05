@@ -16,21 +16,17 @@ MonoBehaviour:
   startBehavior: 0
   recognitionConfidenceLevel: 1
   speechCommands:
-  - keyword: Menu
-    keyCode: 9
+  - localizationKey: 
+    keyword: Menu
+    keyCode: 51
     action:
       id: 2
       description: Menu
       axisConstraint: 2
-  - keyword: Toggle Diagnostics
-    keyCode: 100
+  - localizationKey: 
+    keyword: Select
+    keyCode: 49
     action:
       id: 1
-      description: Toggle Diagnostics
-      axisConstraint: 0
-  - keyword: Toggle Profiler
-    keyCode: 112
-    action:
-      id: 7
-      description: Grip Press
-      axisConstraint: 3
+      description: Select
+      axisConstraint: 2

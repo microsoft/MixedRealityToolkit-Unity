@@ -37,7 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 return;
             }

@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool TryGetDistanceToNearestSurface(out float distance)
         {
-            var focusProvider = MixedRealityToolkit.InputSystem?.FocusProvider;
+            var focusProvider = InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
                 FocusDetails focusDetails;
@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool TryGetNormalToNearestSurface(out Vector3 normal)
         {
-            var focusProvider = MixedRealityToolkit.InputSystem?.FocusProvider;
+            var focusProvider = InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
                 FocusDetails focusDetails;

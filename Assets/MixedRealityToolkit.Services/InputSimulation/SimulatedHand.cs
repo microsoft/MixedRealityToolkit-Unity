@@ -32,6 +32,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public delegate void HandJointDataGenerator(MixedRealityPose[] jointPoses);
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         public void Copy(SimulatedHandData other)
         {
             timestamp = other.timestamp;
@@ -115,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            MixedRealityToolkit.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
+            InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
 
             UpdateVelocity();
 

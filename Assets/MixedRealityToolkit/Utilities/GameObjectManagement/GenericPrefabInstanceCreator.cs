@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
     public class GenericPrefabInstanceCreator : GameObjectCreator
     {
         /// <summary>
-        /// The prefab to instatiate
+        /// The prefab to instantiate
         /// </summary>
         public GameObject Prefab;
 
