@@ -129,6 +129,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             base.UpdateController(interactionSourceState);
 
+            UpdateHandData(interactionSourceState);
+
             for (int i = 0; i < Interactions?.Length; i++)
             {
                 switch (Interactions[i].InputType)
@@ -189,13 +191,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #endif
 
         /// <summary>
-        /// Update the "Controller" input from the device
+        /// Update the hand data from the device.
         /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        protected override void UpdateControllerData(InteractionSourceState interactionSourceState)
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
+        private void UpdateHandData(InteractionSourceState interactionSourceState)
         {
-            base.UpdateControllerData(interactionSourceState);
-
 #if WINDOWS_UWP
             // Articulated hand support is only present in the 18362 version and beyond Windows
             // SDK (which contains the V8 drop of the Universal API Contract). In particular,
