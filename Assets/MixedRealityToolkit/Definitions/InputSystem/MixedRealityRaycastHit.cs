@@ -32,10 +32,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
             transform = hitInfo.transform;
             lightmapCoord = hitInfo.lightmapCoord;
         }
-
-        public static implicit operator MixedRealityRaycastHit(RaycastHit hitInfo)
-        {
-            return new MixedRealityRaycastHit(hitInfo);
-        }
     }
 }

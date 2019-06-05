@@ -7,32 +7,25 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Implements the Raycast Provider for handling raycasts into the scene.
+    /// Interface to handle raycasts into the scene.
     /// </summary>
+    /// <remarks>
+    /// Default implementations would likely use Unity's physics system to get hit results from Colliders. However, with a custom
+    /// implementation of the interface, the raycast does not have to rely only on Unity-based Colliders to provide hit results, e.g. a
+    /// GameObject may use a different mechanism for raycasting, and with a custom implementation, it could be included in the hit result.
+    /// </remarks>
     public interface IMixedRealityRaycastProvider : IMixedRealityDataProvider
     {
         /// <summary>
-        /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
+        /// Performs a raycast using the specified <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
         /// </summary>
         /// <returns>Whether or not the raycast hit something.</returns>
-        bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo);
+        bool Raycast(RayStep step, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo);
 
         /// <summary>
-        /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> within a specified maximum distance.
+        /// Performs a sphere cast with the specified <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> and radius.
         /// </summary>
-        /// <returns>Whether or not the raycast hit something.</returns>
-        bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo);
-
-        /// <summary>
-        /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
-        /// </summary>
-        /// <returns>Whether or not the raycast hit something.</returns>
-        bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo);
-
-        /// <summary>
-        /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
-        /// </summary>
-        /// <returns>Whether or not the raycast hit something.</returns>
-        bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo);
+        /// <returns>Whether or not the SphereCast hit something.</returns>
+        bool SphereCast(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo);
     }
 }
