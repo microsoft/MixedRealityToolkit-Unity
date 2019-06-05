@@ -252,6 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     using (Stream fileStream = File.Open(path, FileMode.Create))
                     {
                         recordingBuffer.ToStream(fileStream);
+                        Debug.Log($"Recorded input animation exported to {path}");
                     }
                 }
                 catch (IOException ex)
