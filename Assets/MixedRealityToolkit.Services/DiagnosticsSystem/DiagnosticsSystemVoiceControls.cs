@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
+    /// <summary>
+    /// Class that listens for and acts upon diagnostic system voice commands.
+    /// </summary>
     public class DiagnosticsSystemVoiceControls : MonoBehaviour, IMixedRealitySpeechHandler
     {
         private IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
@@ -46,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 if (InputSystem != null)
                 {
                     InputSystem.Register(gameObject);
+                    registeredForInput = true;
                 }
             }
         }
@@ -55,9 +59,11 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             if (registeredForInput)
             {
                 InputSystem.Unregister(gameObject);
+                registeredForInput = false;
             }
         }
 
+        /// <inheritdoc />
         void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             switch (eventData.Command.Keyword.ToLower())

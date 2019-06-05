@@ -113,8 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private bool showDiagnostics;
 
-        private bool previousShowProfiler;
-
         /// <inheritdoc />
         public bool ShowDiagnostics
         {
@@ -127,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     showDiagnostics = value;
 
                     // The voice commands are handled by the diagnosticVisualizationParent GameObject, we cannot disable the parent 
-                    // or we lose the ability to re-show the visualizations. Instead, disable
+                    // or we lose the ability to re-show the visualizations. Instead, disable each visualization as appropriate.
                     if (ShowProfiler)
                     {
                         visualProfiler.IsVisible = value;
