@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private SerializedProperty scrollDirection;
         private SerializedProperty viewableArea;
+        private SerializedProperty collectionForward;
         private SerializedProperty columns;
         private SerializedProperty useCameraPreRender;
 
@@ -43,9 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty untouchEvent;
         private SerializedProperty momentumEvent;
 
-
         private bool showOverrideButtons = true;
         private bool showUnityEvents = false;
+
+        //Serialized properties purely for inspector visualization
+        private SerializedProperty pressPlane;
 
         private void OnEnable()
         {
@@ -56,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             columns = serializedObject.FindProperty("columns");
             scrollDirection = serializedObject.FindProperty("scrollDirection");
+            collectionForward = serializedObject.FindProperty("collectionForward");
             viewableArea = serializedObject.FindProperty("viewableArea");
             setUpAtRuntime = serializedObject.FindProperty("setUpAtRuntime");
             useCameraPreRender = serializedObject.FindProperty("useOnPreRender");
@@ -78,6 +82,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             untouchEvent = serializedObject.FindProperty("TouchEnded");
             momentumEvent = serializedObject.FindProperty("ListMomentumEnded");
 
+
+            //serialized properties for vizualisation
+            pressPlane = serializedObject.FindProperty("thresholdPoint");
         }
 
         public override void OnInspectorGUI()
@@ -107,6 +114,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             {
 
                 EditorGUILayout.PropertyField(scrollDirection);
+                EditorGUILayout.PropertyField(collectionForward);
+
                 EditorGUILayout.PropertyField(viewableArea);
                 EditorGUILayout.PropertyField(setUpAtRuntime);
                 EditorGUILayout.PropertyField(useCameraPreRender);
@@ -211,6 +220,63 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        [DrawGizmo(GizmoType.Selected)]
+        private void OnSceneGUI()
+        {
+            ScrollingObjectCollection scrollContainer = (ScrollingObjectCollection)target;
+
+            if (Event.current.type == EventType.Repaint)
+            {
+                Color arrowColor = Color.white;
+                Vector3 center;
+                if (pressPlane != null)
+                {
+                    center = pressPlane.vector3Value;// + scrollContainer.transform.position;
+                    arrowColor = Color.green;
+                }
+                else if (scrollContainer.ClippingObject != null)
+                {
+                    center = scrollContainer.ClippingObject.transform.position;
+                    center.z = scrollContainer.ClippingObject.transform.position.z + scrollContainer.ClippingObject.transform.localScale.z * (ScrollingObjectCollection.AxisOrientationToDirection(scrollContainer.CollectionForward).z * 0.5f);
+                }
+                else
+                {
+                    center = scrollContainer.transform.position;
+                    arrowColor = Color.yellow;
+                }
+
+                UnityEditor.Handles.color = arrowColor;
+
+                float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
+                UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(scrollContainer.transform.rotation * ScrollingObjectCollection.AxisOrientationToDirection(scrollContainer.CollectionForward)), arrowSize, EventType.Repaint);
+
+                Vector3 rightDelta = scrollContainer.transform.localToWorldMatrix.MultiplyVector(scrollContainer.transform.right * scrollContainer.ClippingObject.transform.localScale.x * 0.5f);
+                Vector3 upDelta = scrollContainer.transform.localToWorldMatrix.MultiplyVector(scrollContainer.transform.up * scrollContainer.ClippingObject.transform.localScale.y * 0.5f);
+
+                Vector3[] points = new Vector3[4];
+                points[0] = center + rightDelta + upDelta;
+                points[1] = center - rightDelta + upDelta;
+                points[2] = center - rightDelta - upDelta;
+                points[3] = center + rightDelta - upDelta;
+                UnityEditor.Handles.DrawSolidRectangleWithOutline(points, Color.clear, arrowColor);
+                UnityEditor.Handles.Label(center + new Vector3(-0.003f, 0.003f, 0.0f), new GUIContent("touch plane", "The plane which the finger will need to cross in order for the touch to be calculated as a scroll"));
+
+
+                //Display the item number on the list items
+                for (int i = 0; i < scrollContainer.CollectionNodes.Count; i++)
+                {
+                    ObjectCollectionNode node = scrollContainer.CollectionNodes[i];
+                    Vector3 cp = node.Transform.position;
+                    cp.z = center.z;
+                    if(scrollContainer.IsItemVisible(i))
+                    {
+                        UnityEditor.Handles.Label(cp, new GUIContent(i.ToString()));
+                    }
+                }
+
+            }
         }
     }
 }

@@ -9,13 +9,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     public enum AxisOrientationType
     {
         /// <summary>
-        /// No Specified orientation
-        /// </summary>
-        None = 0,
-        /// <summary>
         /// X+, right
         /// </summary>
-        PositiveX,
+        PositiveX = 0,
         /// <summary>
         /// X-, left
         /// </summary>
