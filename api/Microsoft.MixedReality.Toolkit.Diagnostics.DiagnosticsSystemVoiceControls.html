@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class DiagnosticsDemoControls
+    <title>Class DiagnosticsSystemVoiceControls
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class DiagnosticsDemoControls
+    <meta name="title" content="Class DiagnosticsSystemVoiceControls
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.42.4.0">
     
@@ -81,47 +81,56 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DiagnosticsDemoControls">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.DiagnosticsSystemVoiceControls">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DiagnosticsDemoControls" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DiagnosticsDemoControls" class="text-break">Class DiagnosticsDemoControls
+  <h1 id="Microsoft_MixedReality_Toolkit_Diagnostics_DiagnosticsSystemVoiceControls" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.DiagnosticsSystemVoiceControls" class="text-break">Class DiagnosticsSystemVoiceControls
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Class that listens for and acts upon diagnostic system voice commands.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">DiagnosticsDemoControls</span></div>
+    <div class="level1"><span class="xref">DiagnosticsSystemVoiceControls</span></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Examples.Demos.html">Microsoft.MixedReality.Toolkit.Examples.Demos</a></h6>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealitySpeechHandler</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Diagnostics.html">Microsoft.MixedReality.Toolkit.Diagnostics</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DiagnosticsDemoControls_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Diagnostics_DiagnosticsSystemVoiceControls_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DiagnosticsDemoControls : MonoBehaviour</code></pre>
+    <pre><code class="lang-csharp hljs">public class DiagnosticsSystemVoiceControls : MonoBehaviour, IMixedRealitySpeechHandler</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DiagnosticsDemoControls_OnToggleDiagnostics_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DiagnosticsDemoControls.OnToggleDiagnostics*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DiagnosticsDemoControls_OnToggleDiagnostics" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DiagnosticsDemoControls.OnToggleDiagnostics">OnToggleDiagnostics()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_DiagnosticsSystemVoiceControls_ToggleDiagnostics_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.DiagnosticsSystemVoiceControls.ToggleDiagnostics*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_DiagnosticsSystemVoiceControls_ToggleDiagnostics" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.DiagnosticsSystemVoiceControls.ToggleDiagnostics">ToggleDiagnostics()</h4>
   <div class="markdown level1 summary"><p>Shows or hides all enabled diagnostics.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnToggleDiagnostics()</code></pre>
+    <pre><code class="lang-csharp hljs">public void ToggleDiagnostics()</code></pre>
   </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DiagnosticsDemoControls_OnToggleProfiler_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DiagnosticsDemoControls.OnToggleProfiler*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DiagnosticsDemoControls_OnToggleProfiler" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DiagnosticsDemoControls.OnToggleProfiler">OnToggleProfiler()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_DiagnosticsSystemVoiceControls_ToggleProfiler_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.DiagnosticsSystemVoiceControls.ToggleProfiler*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_DiagnosticsSystemVoiceControls_ToggleProfiler" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.DiagnosticsSystemVoiceControls.ToggleProfiler">ToggleProfiler()</h4>
   <div class="markdown level1 summary"><p>Shows or hides the profiler display.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnToggleProfiler()</code></pre>
+    <pre><code class="lang-csharp hljs">public void ToggleProfiler()</code></pre>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealitySpeechHandler</span>
   </div>
 </article>
           </div>
