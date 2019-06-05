@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal abstract class ComponentBroadcasterDefinition
+    public abstract class ComponentBroadcasterDefinition
     {
         public abstract void EnsureComponentBroadcastersCreated(GameObject gameObject, out bool changesDetected);
         public abstract bool IsTransformBroadcasterController { get; }
     }
 
-    internal class ComponentBroadcasterDefinition<TComponentBroadcaster> : ComponentBroadcasterDefinition where TComponentBroadcaster : Component
+    public class ComponentBroadcasterDefinition<TComponentBroadcaster> : ComponentBroadcasterDefinition where TComponentBroadcaster : Component
     {
         private readonly Type[] requiredComponents;
         private readonly bool isTransformBroadcasterController;

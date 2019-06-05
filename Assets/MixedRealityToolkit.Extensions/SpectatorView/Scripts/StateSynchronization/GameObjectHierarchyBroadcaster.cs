@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class GameObjectHierarchyBroadcaster : MonoBehaviour
+    public class GameObjectHierarchyBroadcaster : MonoBehaviour
     {
         private TransformBroadcaster TransformBroadcaster;
 

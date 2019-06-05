@@ -15,7 +15,7 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class StateSynchronizationSceneManager : Singleton<StateSynchronizationSceneManager>
+    public class StateSynchronizationSceneManager : Singleton<StateSynchronizationSceneManager>
     {
         private const int FrameVotesUntilChangingFrameSkipCount = 10;
         private const int MaximumQueuedByteCount = 2048;
@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public void SendGlobalShaderProperties(IList<GlobalMaterialPropertyAsset> changedProperties, IEnumerable<SocketEndpoint> endpoints)
+        internal void SendGlobalShaderProperties(IList<GlobalMaterialPropertyAsset> changedProperties, IEnumerable<SocketEndpoint> endpoints)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
