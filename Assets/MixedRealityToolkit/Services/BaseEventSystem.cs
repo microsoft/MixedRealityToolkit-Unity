@@ -13,18 +13,19 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public abstract class BaseEventSystem : BaseService, IMixedRealityEventSystem
     {
-        #region IMixedRealityEventSystem Implementation
-
         private static int eventExecutionDepth = 0;
         private readonly Type eventSystemHandlerType = typeof(IEventSystemHandler);
+
+        private List<(Type, IEventSystemHandler)> handlersToAdd = new List<(Type, IEventSystemHandler)>();
+        private List<(Type, IEventSystemHandler)> handlersToRemove = new List<(Type, IEventSystemHandler)>();
+
+        #region IMixedRealityEventSystem Implementation
 
         /// <inheritdoc />
         public List<GameObject> EventListeners { get; } = new List<GameObject>();
 
-        public Dictionary<Type, HashSet<IEventSystemHandler>> HandlerListeners { get; } = new Dictionary<Type, HashSet<IEventSystemHandler>>();
-
-        private List<(Type, IEventSystemHandler)> handlersToAdd    = new List<(Type, IEventSystemHandler)>();
-        private List<(Type, IEventSystemHandler)> handlersToRemove = new List<(Type, IEventSystemHandler)>();
+        /// <inheritdoc />
+        public Dictionary<Type, HashSet<IEventSystemHandler>> HandlerEventListeners { get; } = new Dictionary<Type, HashSet<IEventSystemHandler>>();
 
         /// <inheritdoc />
         public virtual void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
@@ -32,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit
             Debug.Assert(!eventData.used);
 
             HashSet<IEventSystemHandler> handlers;
-            if (!HandlerListeners.TryGetValue(typeof(T), out handlers))
+            if (!HandlerEventListeners.TryGetValue(typeof(T), out handlers))
             {
                 return;
             }
@@ -47,127 +48,56 @@ namespace Microsoft.MixedReality.Toolkit
 
             eventExecutionDepth--;
 
-            if(eventExecutionDepth == 0)
+            if(eventExecutionDepth == 0 && (handlersToRemove.Count > 0 || handlersToAdd.Count > 0))
             {
                 foreach(var handler in handlersToRemove)
                 {
-                    Unregister(handler.Item1, handler.Item2);
+                    RemoveHandlerFromMap(handler.Item1, handler.Item2);
                 }
 
                 foreach (var handler in handlersToAdd)
                 {
-                    Register(handler.Item1, handler.Item2);
+                    AddHandlerToMap(handler.Item1, handler.Item2);
                 }
-            }
-        }
-
-        public virtual void RegisterHandler<T>(T handler) where T : IEventSystemHandler
-        {
-            RegisterHandler(typeof(T), handler);
-
-            foreach (var iface in typeof(T).GetInterfaces())
-            {
-                if (!iface.Equals(typeof(IEventSystemHandler)))
-                {
-                    RegisterHandler(iface, handler);
-                }
-            }
-        }
-
-        private void RegisterHandler(Type handlerType, IEventSystemHandler handler)
-        {
-            if (eventExecutionDepth == 0)
-            {
-                Register(handlerType, handler);
-            }
-            else
-            {
-                handlersToAdd.Add((handlerType, handler));
-            }
-        }
-
-        private void Register(Type handlerType, IEventSystemHandler handler)
-        {
-            HashSet<IEventSystemHandler> handlers;
-
-            if (!HandlerListeners.TryGetValue(handlerType, out handlers))
-            {
-                handlers = new HashSet<IEventSystemHandler> { handler };
-                HandlerListeners.Add(handlerType, handlers);
-                return;
-            }
-
-            if(!handlers.Contains(handler))
-            {
-                handlers.Add(handler);
-            }
-        }
-        public virtual void UnregisterHandler<T>(T handler) where T : IEventSystemHandler
-        {
-            UnregisterHandler(typeof(T), handler);
-
-            foreach (var iface in typeof(T).GetInterfaces())
-            {
-                if (!iface.Equals(eventSystemHandlerType))
-                {
-                    UnregisterHandler(iface, handler);
-                }
-            }
-        }
-
-        private void UnregisterHandler(Type handlerType, IEventSystemHandler handler)
-        {
-            if (eventExecutionDepth == 0)
-            {
-                Unregister(handlerType, handler);
-            }
-            else
-            {
-                handlersToRemove.Add((handlerType, handler));
             }
         }
 
         /// <inheritdoc />
-        private void Unregister(Type handlerType, IEventSystemHandler handler)
+        public virtual void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
-            HashSet<IEventSystemHandler> handlers;
-
-            if (!HandlerListeners.TryGetValue(handlerType, out handlers))
-            {
-                return;
-            }
-
-            if(handlers.Contains(handler))
-            {
-                handlers.Remove(handler);
-
-                if (handlers.Count == 0)
-                {
-                    HandlerListeners.Remove(handlerType);
-                }
-            }
+            TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
         }
 
+        /// <inheritdoc />
+        public virtual void RegisterAllHandlers<T>(T component) where T : IEventSystemHandler
+        {
+            TraverseComponentHandlerHierarchy<T>(component, RegisterHandler);
+        }
+
+        /// <inheritdoc />
+        public virtual void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
+        {
+            TraverseEventSystemHandlerHierarchy<T>(handler, UnregisterHandler);
+        }
+
+        /// <inheritdoc />
+        public virtual void UnregisterAllHandlers<T>(T component) where T : IEventSystemHandler
+        {
+            TraverseComponentHandlerHierarchy<T>(component, UnregisterHandler);
+        }
+
+        /// <inheritdoc />
         public virtual void Register(GameObject listener)
         {
             if (!EventListeners.Contains(listener))
             {
                 EventListeners.Add(listener);
             }
-
-            foreach (var component in listener.GetComponents<IEventSystemHandler>())
-            {
-                var ifaces = component.GetType().GetInterfaces();
-                foreach (var iface in ifaces)
-                {
-                    if (eventSystemHandlerType.IsAssignableFrom(iface) && !eventSystemHandlerType.Equals(iface))
-                    {
-                        RegisterHandler(iface, component);
-                    }
-                }
-            }
+            
+            TraverseEventSystemHandlerComponents(listener, RegisterHandler);
         }
 
+        /// <inheritdoc />
         public virtual void Unregister(GameObject listener)
         {
             if (EventListeners.Contains(listener))
@@ -175,21 +105,117 @@ namespace Microsoft.MixedReality.Toolkit
                 EventListeners.Remove(listener);
             }
 
-            foreach (var component in listener.GetComponents<IEventSystemHandler>())
-            {
-                var ifaces = component.GetType().GetInterfaces();
-                foreach (var iface in ifaces)
-                {
-                    if (eventSystemHandlerType.IsAssignableFrom(iface) && !eventSystemHandlerType.Equals(iface))
-                    {
-                        UnregisterHandler(iface, component);
-                    }
-                }
-            }
+            TraverseEventSystemHandlerComponents(listener, UnregisterHandler);
         }
 
         #endregion IMixedRealityEventSystem Implementation
 
+        #region Registration helpers
+
+        private void UnregisterHandler(Type handlerType, IEventSystemHandler handler)
+        {
+            if (eventExecutionDepth == 0)
+            {
+                RemoveHandlerFromMap(handlerType, handler);
+            }
+            else
+            {
+                handlersToRemove.Add((handlerType, handler));
+            }
+        }
+
+        private void RegisterHandler(Type handlerType, IEventSystemHandler handler)
+        {
+            if (eventExecutionDepth == 0)
+            {
+                AddHandlerToMap(handlerType, handler);
+            }
+            else
+            {
+                handlersToAdd.Add((handlerType, handler));
+            }
+        }
+
+        private void AddHandlerToMap(Type handlerType, IEventSystemHandler handler)
+        {
+            HashSet<IEventSystemHandler> handlers;
+
+            if (!HandlerEventListeners.TryGetValue(handlerType, out handlers))
+            {
+                handlers = new HashSet<IEventSystemHandler> { handler };
+                HandlerEventListeners.Add(handlerType, handlers);
+                return;
+            }
+
+            if (!handlers.Contains(handler))
+            {
+                handlers.Add(handler);
+            }
+        }
+
+        /// <inheritdoc />
+        private void RemoveHandlerFromMap(Type handlerType, IEventSystemHandler handler)
+        {
+            HashSet<IEventSystemHandler> handlers;
+
+            if (!HandlerEventListeners.TryGetValue(handlerType, out handlers))
+            {
+                return;
+            }
+
+            if (handlers.Contains(handler))
+            {
+                handlers.Remove(handler);
+
+                if (handlers.Count == 0)
+                {
+                    HandlerEventListeners.Remove(handlerType);
+                }
+            }
+        }
+
+        #endregion Registration helpers
+
+        #region Utilities
+
+        private void TraverseEventSystemHandlerHierarchy<T>(IEventSystemHandler handler, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
+        {
+            var handlerType = typeof(T);
+
+            func(handlerType, handler);
+
+            foreach (var iface in handlerType.GetInterfaces())
+            {
+                if (!iface.Equals(eventSystemHandlerType))
+                {
+                    func(iface, handler);
+                }
+            }
+        }
+
+        private void TraverseComponentHandlerHierarchy<T>(T component, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
+        {
+            foreach (var iface in component.GetType().GetInterfaces())
+            {
+                if (eventSystemHandlerType.IsAssignableFrom(iface) && !eventSystemHandlerType.Equals(iface))
+                {
+                    func(iface, component);
+                }
+            }
+        }
+
+        private void TraverseEventSystemHandlerComponents(GameObject obj, Action<Type, IEventSystemHandler> func)
+        {
+            foreach (var component in obj.GetComponents<IEventSystemHandler>())
+            {
+                // Call a function on every interface which inherits from IEventSystemHandler, of every component.
+                // This will register all event handlers, which could potentially be called by UnityEngine.EventSystems.ExecuteEvents.Execute.
+                // which was previously used to handle events.
+                TraverseComponentHandlerHierarchy(component, func);
+            }
+        }
+
+        #endregion Utilities
         // Example Event Pattern #############################################################
 
         //public void RaiseGenericEvent(IEventSource eventSource)
