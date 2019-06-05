@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Update the source data from the provided platform state.
         /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         public virtual void UpdateController(InteractionSourceState interactionSourceState)
         {
             if (!Enabled) { return; }
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Update the source input from the device.
         /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateSourceData(InteractionSourceState interactionSourceState)
         {
             var lastState = TrackingState;
@@ -167,9 +167,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
         /// <summary>
-        /// Update the "Spatial Pointer" input from the device
+        /// Update the spatial pointer input from the device.
         /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         /// <param name="interactionMapping"></param>
         private void UpdatePointerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
@@ -196,9 +196,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
         /// <summary>
-        /// Update the "Spatial Grip" input from the device
+        /// Update the spatial grip input from the device.
         /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         /// <param name="interactionMapping"></param>
         private void UpdateGripData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
@@ -227,9 +227,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
         /// <summary>
-        /// Update the Trigger input from the device
+        /// Update the trigger and grasped input from the device.
         /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         /// <param name="interactionMapping"></param>
         private void UpdateTriggerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {

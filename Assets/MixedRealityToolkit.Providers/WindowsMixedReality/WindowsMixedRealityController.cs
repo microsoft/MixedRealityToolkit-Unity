@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Update the touchpad input from the device.
         /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         /// <param name="interactionMapping"></param>
         private void UpdateTouchpadData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Update the thumbstick input from the device.
         /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         /// <param name="interactionMapping"></param>
         private void UpdateThumbstickData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
@@ -215,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Update the menu button state.
         /// </summary>
-        /// <param name="interactionSourceState"></param>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         /// <param name="interactionMapping"></param>
         private void UpdateMenuData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
@@ -242,9 +242,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         #region Controller model functions
 
         /// <summary>
-        /// Ensure that if a controller model was desired that we have attempted initialization
+        /// Ensure that if a controller model was desired that we have attempted initialization.
         /// </summary>
-        /// <param name="interactionSourceState"></param>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void EnsureControllerModel(InteractionSourceState interactionSourceState)
         {
             if (controllerModelInitialized ||
