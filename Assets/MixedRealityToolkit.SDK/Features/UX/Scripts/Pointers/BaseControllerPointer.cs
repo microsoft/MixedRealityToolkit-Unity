@@ -145,6 +145,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             SetCursor();
+
+            BaseCursor c = BaseCursor as BaseCursor;
+            if (c != null)
+            {
+                c.VisibleSourcesCount++;
+            }
         }
 
         protected override void OnDisable()
@@ -423,6 +429,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 IsSelectPressed = false;
+
+                BaseCursor c = BaseCursor as BaseCursor;
+                if (c != null)
+                {
+                    c.VisibleSourcesCount--;
+                }
             }
         }
 

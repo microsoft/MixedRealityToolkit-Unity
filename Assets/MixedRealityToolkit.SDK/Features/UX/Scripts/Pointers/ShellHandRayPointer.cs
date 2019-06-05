@@ -37,28 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             inertia = gameObject.EnsureComponent<BezierInertia>();
         }
 
-        protected override void Start()
-        {
-            base.Start();
-
-            BaseCursor c = BaseCursor as BaseCursor;
-            if (c != null)
-            {
-                c.VisibleSourcesCount++;
-            }
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            BaseCursor c = BaseCursor as BaseCursor;
-            if (c != null)
-            {
-                c.VisibleSourcesCount--;
-            }
-        }
-
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
