@@ -97,8 +97,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (profile.SimulateEyePosition)
             {
-                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
+                // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
                 InputSystem?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+
+                // Update the simulated eye gaze with the current camera position and forward vector
+                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
             }
 
             switch (profile.HandSimulationMode)
