@@ -45,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <returns>
         /// Read only copy of the list of registered observers.
         /// </returns>
-        [Obsolete("GetObservers will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProviders.")]
         IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers();
 
         /// <summary>
@@ -55,7 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <returns>
         /// Readonly copy of the list of registered observers that implement the specified type.
         /// </returns>
-        [Obsolete("GetObservers<T> will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProviders<T>.")]
         IReadOnlyList<T> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
@@ -68,7 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <remarks>
         /// If more than one observer is registered under the specified name, the first will be returned.
         /// </remarks>
-        [Obsolete("GetObserver will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProvider.")]
         IMixedRealitySpatialAwarenessObserver GetObserver(string name);
 
         /// <summary>
@@ -82,7 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <remarks>
         /// If more than one observer is registered under the specified name, the first will be returned.
         /// </remarks>
-        [Obsolete("GetObserver<T> will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProvider<T>.")]
         T GetObserver<T>(string name = null) where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
