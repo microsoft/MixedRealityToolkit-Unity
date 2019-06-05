@@ -258,17 +258,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-            this.gazeProvider = InputSystem.GazeProvider as GazeProvider;
-            BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
-            if (c != null)
-            {
-                c.VisibleSourcesCount--;
-            }
-        }
-
         #region IMixedRealitySourcePoseHandler
 
         public void OnInputPressed(InputEventData<float> eventData)
@@ -316,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (gazeProvider != null)
                 {
-                    BaseCursor c = gazeProvider.GazePointer as BaseCursor;
+                    BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
                     if (c != null)
                     {
                         c.VisibleSourcesCount--;
