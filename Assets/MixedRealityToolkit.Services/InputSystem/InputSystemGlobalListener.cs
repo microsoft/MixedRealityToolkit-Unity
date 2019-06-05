@@ -15,18 +15,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private bool lateInitialize = true;
 
+        private IMixedRealityInputSystem inputSystem = null;
+
         /// <summary>
-        /// Prefer using EnsureInputSystemValid(), which will only await if the input system isn't
-        /// yet valid.
+        /// The active instance of the input system.
         /// </summary>
-        [Obsolete("Prefer using EnsureInputSystemValid()")]
-        protected readonly WaitUntil WaitUntilInputSystemValid = new WaitUntil(() => MixedRealityToolkit.InputSystem != null);
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
 
         protected virtual void OnEnable()
         {
-            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.InputSystem != null && !lateInitialize)
+            if (InputSystem != null && !lateInitialize)
             {
-                MixedRealityToolkit.InputSystem.Register(gameObject);
+                InputSystem.Register(gameObject);
             }
         }
 
@@ -43,13 +53,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 lateInitialize = false;
-                MixedRealityToolkit.InputSystem.Register(gameObject);
+                InputSystem.Register(gameObject);
             }
         }
 
         protected virtual void OnDisable()
         {
-            MixedRealityToolkit.InputSystem?.Unregister(gameObject);
+            InputSystem?.Unregister(gameObject);
         }
 
         /// <summary>
@@ -61,11 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         protected async Task EnsureInputSystemValid()
         {
-            if (MixedRealityToolkit.InputSystem == null)
+            if (InputSystem == null)
             {
-#pragma warning disable CS0618 // WaitUntilInputSystemValid is obsolete for outside-of-class usage.
-                await WaitUntilInputSystemValid;
-#pragma warning restore CS0618
+                await new WaitUntil(() => InputSystem != null);
             }
         }
     }

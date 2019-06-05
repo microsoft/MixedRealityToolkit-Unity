@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
-    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService
+    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService, IMixedRealityEyeGazeDataProvider
     {
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
@@ -55,10 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public InputSimulationService(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile inputSystemProfile,
-            string name, 
-            uint priority, 
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, name, priority, profile) { }
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <inheritdoc />
         public override IMixedRealityController[] GetActiveControllers()
@@ -104,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (profile.SimulateEyePosition)
             {
-                MixedRealityToolkit.InputSystem?.EyeGazeProvider?.UpdateEyeGaze(null, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), System.DateTime.UtcNow);
+                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
             }
 
             switch (profile.HandSimulationMode)
@@ -155,21 +154,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion BaseInputDeviceManager Implementation
 
-        /// <summary>
-        /// Return the service profile and ensure that the type is correct
-        /// </summary>
+        private MixedRealityInputSimulationProfile inputSimulationProfile = null;
+
+        /// <inheritdoc/>
         public MixedRealityInputSimulationProfile InputSimulationProfile
         {
             get
+            {
+                if (inputSimulationProfile == null)
                 {
-                var profile = ConfigurationProfile as MixedRealityInputSimulationProfile;
-                if (!profile)
-                {
-                    Debug.LogError("Profile for Input Simulation Service must be a MixedRealityInputSimulationProfile");
+                    inputSimulationProfile = ConfigurationProfile as MixedRealityInputSimulationProfile;
                 }
-                return profile;
+                return inputSimulationProfile;
             }
         }
+
+        /// <inheritdoc/>
+        IMixedRealityEyeSaccadeProvider IMixedRealityEyeGazeDataProvider.SaccadeProvider => null;
+
+        /// <inheritdoc/>
+        bool IMixedRealityEyeGazeDataProvider.SmoothEyeTracking { get; set; }
 
         private void EnableCameraControl()
         {
@@ -256,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SupportedControllerType st = simulationMode == HandSimulationMode.Gestures ? SupportedControllerType.GGVHand : SupportedControllerType.ArticulatedHand;
             IMixedRealityPointer[] pointers = RequestPointers(st, handedness);
 
-            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
+            var inputSource = InputSystem?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
             switch (simulationMode)
             {
                 case HandSimulationMode.Articulated:
@@ -290,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 controller.InputSource.Pointers[i].Controller = controller;
             }
 
-            MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+            InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
 
             trackedHands.Add(handedness, controller);
             UpdateActiveControllers();
@@ -303,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var controller = GetHandDevice(handedness);
             if (controller != null)
             {
-                MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
 
                 trackedHands.Remove(handedness);
                 UpdateActiveControllers();
@@ -314,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             foreach (var controller in trackedHands.Values)
             {
-                MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
             }
             trackedHands.Clear();
             UpdateActiveControllers();

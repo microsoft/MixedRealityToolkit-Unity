@@ -31,6 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private static readonly int frameRange = 30;
         private static readonly Vector2 defaultWindowRotation = new Vector2(10.0f, 20.0f);
         private static readonly Vector3 defaultWindowScale = new Vector3(0.2f, 0.04f, 1.0f);
+        private static readonly Vector3[] backgroundScales = { new Vector3(1.0f, 1.0f, 1.0f), new Vector3(1.0f, 0.5f, 1.0f), new Vector3(1.0f, 0.25f, 1.0f) };
+        private static readonly Vector3[] backgroundOffsets = { new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.25f, 0.0f), new Vector3(0.0f, 0.375f, 0.0f) };
         private static readonly string usedMemoryString = "Used: ";
         private static readonly string peakMemoryString = "Peak: ";
         private static readonly string limitMemoryString = "Limit: ";
@@ -45,6 +47,24 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         {
             get { return isVisible; }
             set { isVisible = value; }
+        }
+
+        [SerializeField, Tooltip("Should the frame info (colored bars) be displayed.")]
+        private bool frameInfoVisible = true;
+
+        public bool FrameInfoVisible
+        {
+            get { return frameInfoVisible; }
+            set { frameInfoVisible = value; }
+        }
+
+        [SerializeField, Tooltip("Should memory stats (used, peak, and limit) be displayed.")]
+        private bool memoryStatsVisible = true;
+
+        public bool MemoryStatsVisible
+        {
+            get { return memoryStatsVisible; }
+            set { memoryStatsVisible = value; }
         }
 
         [SerializeField, Tooltip("The amount of time, in seconds, to collect frames for frame rate calculation.")]
@@ -96,12 +116,29 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         [Header("UI Settings")]
         [SerializeField, Range(0, 3), Tooltip("How many decimal places to display on numeric strings.")]
         private int displayedDecimalDigits = 1;
+
+        [System.Serializable]
+        private struct FrameRateColor
+        {
+            [Range(0.0f, 1.0f), Tooltip("The percentage of the target frame rate.")]
+            public float percentageOfTarget;
+            [Tooltip("The color to display for frames which meet or exceed the percentage of the target frame rate.")]
+            public Color color;
+        }
+
+        [SerializeField, Tooltip("A list of colors to display for different percentage of target frame rates.")]
+        private FrameRateColor[] frameRateColors = new FrameRateColor[] 
+        {
+            // Green
+            new FrameRateColor() { percentageOfTarget = 0.95f, color = new Color(127 / 256.0f, 186 / 256.0f, 0 / 256.0f, 1.0f) },
+            // Yellow
+            new FrameRateColor() { percentageOfTarget = 0.75f, color = new Color(255 / 256.0f, 185 / 256.0f, 0 / 256.0f, 1.0f) },
+            // Red
+            new FrameRateColor() { percentageOfTarget = 0.0f, color = new Color(255 / 256.0f, 0 / 256.0f, 0 / 256.0f, 1.0f) },
+        };
+
         [SerializeField, Tooltip("The color of the window backplate.")]
         private Color baseColor = new Color(80 / 256.0f, 80 / 256.0f, 80 / 256.0f, 1.0f);
-        [SerializeField, Tooltip("The color to display on frames which meet or exceed the target frame rate.")]
-        private Color targetFrameRateColor = new Color(127 / 256.0f, 186 / 256.0f, 0 / 256.0f, 1.0f);
-        [SerializeField, Tooltip("The color to display on frames which fall below the target frame rate.")]
-        private Color missedFrameRateColor = new Color(242 / 256.0f, 80 / 256.0f, 34 / 256.0f, 1.0f);
         [SerializeField, Tooltip("The color to display for current memory usage values.")]
         private Color memoryUsedColor = new Color(0 / 256.0f, 164 / 256.0f, 239 / 256.0f, 1.0f);
         [SerializeField, Tooltip("The color to display for peak (aka max) memory usage values.")]
@@ -109,9 +146,11 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         [SerializeField, Tooltip("The color to display for the platforms memory usage limit.")]
         private Color memoryLimitColor = new Color(150 / 256.0f, 150 / 256.0f, 150 / 256.0f, 1.0f);
 
-        private GameObject window;
+        private Transform window;
+        private Transform background;
         private TextMesh cpuFrameRateText;
         private TextMesh gpuFrameRateText;
+        private Transform memoryStats;
         private TextMesh usedMemoryText;
         private TextMesh peakMemoryText;
         private TextMesh limitMemoryText;
@@ -218,7 +257,10 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private void OnDestroy()
         {
-            Destroy(window);
+            if (window != null)
+            {
+                Destroy(window.gameObject);
+            }
         }
 
         private void LateUpdate()
@@ -231,12 +273,13 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             // Update window transformation.
             Transform cameraTransform = Camera.main ? Camera.main.transform : null;
 
-            if (window.activeSelf && cameraTransform != null)
+            if (isVisible && cameraTransform != null)
             {
                 float t = Time.deltaTime * windowFollowSpeed;
-                window.transform.position = Vector3.Lerp(window.transform.position, CalculateWindowPosition(cameraTransform), t);
-                window.transform.rotation = Quaternion.Slerp(window.transform.rotation, CalculateWindowRotation(cameraTransform), t);
-                window.transform.localScale = defaultWindowScale * windowScale;
+                window.position = Vector3.Lerp(window.position, CalculateWindowPosition(cameraTransform), t);
+                window.rotation = Quaternion.Slerp(window.rotation, CalculateWindowRotation(cameraTransform), t);
+                window.localScale = defaultWindowScale * windowScale;
+                CalculateBackgroundSize();
             }
 
             // Capture frame timings every frame and read from it depending on the frameSampleRate.
@@ -272,16 +315,16 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 }
 
                 // Update frame colors.
-                for (int i = frameRange - 1; i > 0; --i)
+                if (frameInfoVisible)
                 {
-                    frameInfoColors[i] = frameInfoColors[i - 1];
-                }
+                    for (int i = frameRange - 1; i > 0; --i)
+                    {
+                        frameInfoColors[i] = frameInfoColors[i - 1];
+                    }
 
-                // Ideally we would query a device specific API (like the HolographicFramePresentationReport) to detect missed frames.
-                // But, many of these APIs are inaccessible in Unity. Currently missed frames are assumed when the average cpuFrameRate 
-                // is under the target frame rate.
-                frameInfoColors[0] = (cpuFrameRate < ((int)(AppFrameRate) - 1)) ? missedFrameRateColor : targetFrameRateColor;
-                frameInfoPropertyBlock.SetVectorArray(colorID, frameInfoColors);
+                    frameInfoColors[0] = CalculateFrameColor(cpuFrameRate);
+                    frameInfoPropertyBlock.SetVectorArray(colorID, frameInfoColors);
+                }
 
                 // Reset timers.
                 frameCount = 0;
@@ -290,9 +333,9 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Draw frame info.
-            if (window.activeSelf)
+            if (isVisible && frameInfoVisible)
             {
-                Matrix4x4 parentLocalToWorldMatrix = window.transform.localToWorldMatrix;
+                Matrix4x4 parentLocalToWorldMatrix = window.localToWorldMatrix;
 
                 if (defaultInstancedMaterial != null)
                 {
@@ -311,45 +354,50 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Update memory statistics.
-            ulong limit = AppMemoryUsageLimit;
-
-            if (limit != limitMemoryUsage)
+            if (isVisible && memoryStatsVisible)
             {
-                if (window.activeSelf && WillDisplayedMemoryUsageDiffer(limitMemoryUsage, limit, displayedDecimalDigits))
+                ulong limit = AppMemoryUsageLimit;
+
+                if (limit != limitMemoryUsage)
                 {
-                    MemoryUsageToString(stringBuffer, displayedDecimalDigits, limitMemoryText, limitMemoryString, limit);
+                    if (WillDisplayedMemoryUsageDiffer(limitMemoryUsage, limit, displayedDecimalDigits))
+                    {
+                        MemoryUsageToString(stringBuffer, displayedDecimalDigits, limitMemoryText, limitMemoryString, limit);
+                    }
+
+                    limitMemoryUsage = limit;
                 }
 
-                limitMemoryUsage = limit;
-            }
+                ulong usage = AppMemoryUsage;
 
-            ulong usage = AppMemoryUsage;
-
-            if (usage != memoryUsage)
-            {
-                usedAnchor.localScale = new Vector3((float)usage / limitMemoryUsage, usedAnchor.localScale.y, usedAnchor.localScale.z);
-
-                if (window.activeSelf && WillDisplayedMemoryUsageDiffer(memoryUsage, usage, displayedDecimalDigits))
+                if (usage != memoryUsage)
                 {
-                    MemoryUsageToString(stringBuffer, displayedDecimalDigits, usedMemoryText, usedMemoryString, usage);
+                    usedAnchor.localScale = new Vector3((float)usage / limitMemoryUsage, usedAnchor.localScale.y, usedAnchor.localScale.z);
+
+                    if (WillDisplayedMemoryUsageDiffer(memoryUsage, usage, displayedDecimalDigits))
+                    {
+                        MemoryUsageToString(stringBuffer, displayedDecimalDigits, usedMemoryText, usedMemoryString, usage);
+                    }
+
+                    memoryUsage = usage;
                 }
 
-                memoryUsage = usage;
-            }
-
-            if (memoryUsage > peakMemoryUsage)
-            {
-                peakAnchor.localScale = new Vector3((float)memoryUsage / limitMemoryUsage, peakAnchor.localScale.y, peakAnchor.localScale.z);
-
-                if (window.activeSelf && WillDisplayedMemoryUsageDiffer(peakMemoryUsage, memoryUsage, displayedDecimalDigits))
+                if (memoryUsage > peakMemoryUsage)
                 {
-                    MemoryUsageToString(stringBuffer, displayedDecimalDigits, peakMemoryText, peakMemoryString, memoryUsage);
-                }
+                    peakAnchor.localScale = new Vector3((float)memoryUsage / limitMemoryUsage, peakAnchor.localScale.y, peakAnchor.localScale.z);
 
-                peakMemoryUsage = memoryUsage;
+                    if (WillDisplayedMemoryUsageDiffer(peakMemoryUsage, memoryUsage, displayedDecimalDigits))
+                    {
+                        MemoryUsageToString(stringBuffer, displayedDecimalDigits, peakMemoryText, peakMemoryString, memoryUsage);
+                    }
+
+                    peakMemoryUsage = memoryUsage;
+                }
             }
 
-            window.SetActive(isVisible);
+            // Update visibility state.
+            window.gameObject.SetActive(isVisible);
+            memoryStats.gameObject.SetActive(memoryStatsVisible);
         }
 
         private Vector3 CalculateWindowPosition(Transform cameraTransform)
@@ -393,6 +441,52 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             return rotation;
         }
 
+        private Color CalculateFrameColor(int frameRate)
+        {
+            // Ideally we would query a device specific API (like the HolographicFramePresentationReport) to detect missed frames.
+            // But, many of these APIs are inaccessible in Unity. Currently missed frames are assumed when the average cpuFrameRate 
+            // is under the target frame rate.
+
+            int colorCount = frameRateColors.Length;
+
+            if (colorCount == 0)
+            {
+                return baseColor;
+            }
+
+            float percentageOfTarget = frameRate / AppTargetFrameRate;
+            int lastColor = colorCount - 1;
+
+            for (int i = 0; i < lastColor; ++i)
+            {
+                if (percentageOfTarget >= frameRateColors[i].percentageOfTarget)
+                {
+                    return frameRateColors[i].color;
+                }
+            }
+
+            return frameRateColors[lastColor].color;
+        }
+
+        private void CalculateBackgroundSize()
+        {
+            if (frameInfoVisible && memoryStatsVisible || memoryStatsVisible)
+            {
+                background.localPosition = backgroundOffsets[0];
+                background.localScale = backgroundScales[0];
+            }
+            else if (frameInfoVisible)
+            {
+                background.localPosition = backgroundOffsets[1];
+                background.localScale = backgroundScales[1];
+            }
+            else
+            {
+                background.localPosition = backgroundOffsets[2];
+                background.localScale = backgroundScales[2];
+            }
+        }
+
         private void BuildWindow()
         {
             // Initialize property block state.
@@ -401,20 +495,26 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
             // Build the window root.
             {
-                window = CreateQuad("VisualProfiler", null);
-                window.transform.parent = WindowParent;
-                InitializeRenderer(window, backgroundMaterial, colorID, baseColor);
-                window.transform.localScale = defaultWindowScale;
+                window = new GameObject("VisualProfiler").transform;
+                window.parent = WindowParent;
+                window.localScale = defaultWindowScale;
                 windowHorizontalRotation = Quaternion.AngleAxis(defaultWindowRotation.y, Vector3.right);
                 windowHorizontalRotationInverse = Quaternion.Inverse(windowHorizontalRotation);
                 windowVerticalRotation = Quaternion.AngleAxis(defaultWindowRotation.x, Vector3.up);
                 windowVerticalRotationInverse = Quaternion.Inverse(windowVerticalRotation);
             }
 
+            // Build the window background.
+            {
+                background = CreateQuad("Background", window).transform;
+                InitializeRenderer(background.gameObject, backgroundMaterial, colorID, baseColor);
+                CalculateBackgroundSize();
+            }
+
             // Add frame rate text and frame indicators.
             {
-                cpuFrameRateText = CreateText("CPUFrameRateText", new Vector3(-0.495f, 0.5f, 0.0f), window.transform, TextAnchor.UpperLeft, textMaterial, Color.white, string.Empty);
-                gpuFrameRateText = CreateText("GPUFrameRateText", new Vector3(0.495f, 0.5f, 0.0f), window.transform, TextAnchor.UpperRight, textMaterial, Color.white, string.Empty);
+                cpuFrameRateText = CreateText("CPUFrameRateText", new Vector3(-0.495f, 0.5f, 0.0f), window, TextAnchor.UpperLeft, textMaterial, Color.white, string.Empty);
+                gpuFrameRateText = CreateText("GPUFrameRateText", new Vector3(0.495f, 0.5f, 0.0f), window, TextAnchor.UpperRight, textMaterial, Color.white, string.Empty);
                 gpuFrameRateText.gameObject.SetActive(false);
 
                 frameInfoMatrices = new Matrix4x4[frameRange];
@@ -426,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 {
                     frameInfoMatrices[i] = Matrix4x4.TRS(position, Quaternion.identity, new Vector3(scale.x * 0.8f, scale.y, scale.z));
                     position.x -= scale.x;
-                    frameInfoColors[i] = targetFrameRateColor;
+                    frameInfoColors[i] = CalculateFrameColor((int)AppTargetFrameRate);
                 }
 
                 frameInfoPropertyBlock = new MaterialPropertyBlock();
@@ -435,11 +535,15 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
             // Add memory usage text and bars.
             {
-                usedMemoryText = CreateText("UsedMemoryText", new Vector3(-0.495f, 0.0f, 0.0f), window.transform, TextAnchor.UpperLeft, textMaterial, memoryUsedColor, usedMemoryString);
-                peakMemoryText = CreateText("PeakMemoryText", new Vector3(0.0f, 0.0f, 0.0f), window.transform, TextAnchor.UpperCenter, textMaterial, memoryPeakColor, peakMemoryString);
-                limitMemoryText = CreateText("LimitMemoryText", new Vector3(0.495f, 0.0f, 0.0f), window.transform, TextAnchor.UpperRight, textMaterial, Color.white, limitMemoryString);
+                memoryStats = new GameObject("MemoryStats").transform;
+                memoryStats.parent = window;
+                memoryStats.localScale = Vector3.one;
 
-                GameObject limitBar = CreateQuad("LimitBar", window.transform);
+                usedMemoryText = CreateText("UsedMemoryText", new Vector3(-0.495f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperLeft, textMaterial, memoryUsedColor, usedMemoryString);
+                peakMemoryText = CreateText("PeakMemoryText", new Vector3(0.0f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperCenter, textMaterial, memoryPeakColor, peakMemoryString);
+                limitMemoryText = CreateText("LimitMemoryText", new Vector3(0.495f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperRight, textMaterial, Color.white, limitMemoryString);
+
+                GameObject limitBar = CreateQuad("LimitBar", memoryStats);
                 InitializeRenderer(limitBar, defaultMaterial, colorID, memoryLimitColor);
                 limitBar.transform.localScale = new Vector3(0.99f, 0.2f, 1.0f);
                 limitBar.transform.localPosition = new Vector3(0.0f, -0.37f, 0.0f);
@@ -462,7 +566,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 }
             }
 
-            window.SetActive(isVisible);
+            window.gameObject.SetActive(isVisible);
+            memoryStats.gameObject.SetActive(memoryStatsVisible);
         }
 
         private void BuildFrameRateStrings()
@@ -608,7 +713,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             return bufferIndex;
         }
 
-        private static float AppFrameRate
+        private static float AppTargetFrameRate
         {
             get
             {

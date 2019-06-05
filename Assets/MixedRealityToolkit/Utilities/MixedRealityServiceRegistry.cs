@@ -40,6 +40,12 @@ namespace Microsoft.MixedReality.Toolkit
         /// </returns>
         public static bool AddService<T>(T serviceInstance, IMixedRealityServiceRegistrar registrar) where T : IMixedRealityService
         {
+            if (serviceInstance == null)
+            {
+                // Adding a null service instance is not supported.
+                return false;
+            }
+
             if (serviceInstance is IMixedRealityDataProvider)
             {
                 // Data providers are generally not used by application code. Services that intend for clients to
@@ -146,7 +152,15 @@ namespace Microsoft.MixedReality.Toolkit
 
             List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
 
-            return services.Remove(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
+            bool removed = services.Remove(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
+
+            if (services.Count == 0)
+            {
+                // If the last service was removed, the key can be removed.
+                registry.Remove(interfaceType);
+            }
+
+            return removed;
         }
 
         /// <summary>

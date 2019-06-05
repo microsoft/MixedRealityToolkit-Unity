@@ -4,10 +4,6 @@ As part of the Mixed Reality Toolkit SDK, we provide scripts / controls for mana
 
 Currently we provide components for:
 
-## AttachToController
-
-Manages child gameobjects that are bound to a controller and enables / disables them when controllers are attached or removed.  Ensures controller UI is only available when there is a controller.
-
 ## Controller Visualizer
 
 Provides a singular function for rendering controller models in a scene, whether it's a generic model for all controller, or controller specific models.

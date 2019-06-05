@@ -291,7 +291,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Vector3 mouseDelta,
             Vector3 rotationDeltaEulerAngles)
         {
-            if (!state.IsTracked && isSimulating)
+            bool enableTracking = isAlwaysVisible || isSimulating;
+            if (!state.IsTracked && enableTracking)
             {
                 // Start at current mouse position
                 Vector3 mousePos = UnityEngine.Input.mousePosition;
@@ -319,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // TODO: DateTime.UtcNow can be quite imprecise, better use Stopwatch.GetTimestamp
             // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
             DateTime currentTime = DateTime.UtcNow;
-            if (isAlwaysVisible || isSimulating)
+            if (enableTracking)
             {
                 state.IsTracked = true;
                 lastSimulatedTimestamp = currentTime.Ticks;

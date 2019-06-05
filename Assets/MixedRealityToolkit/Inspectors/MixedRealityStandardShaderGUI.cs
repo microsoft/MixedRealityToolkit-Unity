@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -59,6 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static string blendOperationName = "_BlendOp";
             public static string depthTestName = "_ZTest";
             public static string depthWriteName = "_ZWrite";
+            public static string depthOffsetFactorName = "_ZOffsetFactor";
+            public static string depthOffsetUnitsName = "_ZOffsetUnits";
             public static string colorWriteMaskName = "_ColorWriteMask";
             public static string instancedColorName = "_InstancedColor";
             public static string instancedColorFeatureName = "_INSTANCED_COLOR";
@@ -79,6 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent blendOperation = new GUIContent("Blend Operation", "Operation for Blending New Color With Existing Color");
             public static GUIContent depthTest = new GUIContent("Depth Test", "How Should Depth Testing Be Performed.");
             public static GUIContent depthWrite = new GUIContent("Depth Write", "Controls Whether Pixels From This Object Are Written to the Depth Buffer");
+            public static GUIContent depthOffsetFactor = new GUIContent("Depth Offset Factor", "Scales the Maximum Z Slope, with Respect to X or Y of the Polygon");
+            public static GUIContent depthOffsetUnits = new GUIContent("Depth Offset Units", "Scales the Minimum Resolvable Depth Buffer Value");
             public static GUIContent colorWriteMask = new GUIContent("Color Write Mask", "Color Channel Writing Mask");
             public static GUIContent instancedColor = new GUIContent("Instanced Color", "Enable a Unique Color Per Instance");
             public static GUIContent cullMode = new GUIContent("Cull Mode", "Triangle Culling Mode");
@@ -108,6 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent rimColor = new GUIContent("Color", "Rim Highlight Color");
             public static GUIContent rimPower = new GUIContent("Power", "Rim Highlight Saturation");
             public static GUIContent vertexColors = new GUIContent("Vertex Colors", "Enable Vertex Color Tinting");
+            public static GUIContent vertexExtrusion = new GUIContent("Vertex Extrusion", "Enable Vertex Extrusion Along the Vertex Normal");
+            public static GUIContent vertexExtrusionValue = new GUIContent("Vertex Extrusion Value", "How Far to Extrude the Vertex Along the Vertex Normal");
             public static GUIContent clippingPlane = new GUIContent("Clipping Plane", "Enable Clipping Against a Plane");
             public static GUIContent clippingSphere = new GUIContent("Clipping Sphere", "Enable Clipping Against a Sphere");
             public static GUIContent clippingBox = new GUIContent("Clipping Box", "Enable Clipping Against a Box");
@@ -118,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent nearLightFade = new GUIContent("Use Light", "A Hover or Proximity Light (Rather Than the Camera) Determines Near Fade Distance");
             public static GUIContent fadeBeginDistance = new GUIContent("Fade Begin", "Distance From Camera to Begin Fade In");
             public static GUIContent fadeCompleteDistance = new GUIContent("Fade Complete", "Distance From Camera When Fade is Fully In");
+            public static GUIContent fadeMinValue = new GUIContent("Fade Min Value", "Clamps the Fade Amount to a Minimum Value");
             public static GUIContent hoverLight = new GUIContent("Hover Light", "Enable utilization of Hover Light(s)");
             public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Light Color");
             public static GUIContent hoverColorOverride = new GUIContent("Color", "Override Hover Light Color");
@@ -163,6 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty blendOperation;
         protected MaterialProperty depthTest;
         protected MaterialProperty depthWrite;
+        protected MaterialProperty depthOffsetFactor;
+        protected MaterialProperty depthOffsetUnits;
         protected MaterialProperty colorWriteMask;
         protected MaterialProperty instancedColor;
         protected MaterialProperty cullMode;
@@ -194,6 +204,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty rimColor;
         protected MaterialProperty rimPower;
         protected MaterialProperty vertexColors;
+        protected MaterialProperty vertexExtrusion;
+        protected MaterialProperty vertexExtrusionValue;
         protected MaterialProperty clippingPlane;
         protected MaterialProperty clippingSphere;
         protected MaterialProperty clippingBox;
@@ -204,6 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty nearLightFade;
         protected MaterialProperty fadeBeginDistance;
         protected MaterialProperty fadeCompleteDistance;
+        protected MaterialProperty fadeMinValue;
         protected MaterialProperty hoverLight;
         protected MaterialProperty enableHoverColorOverride;
         protected MaterialProperty hoverColorOverride;
@@ -248,6 +261,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             blendOperation = FindProperty(Styles.blendOperationName, props);
             depthTest = FindProperty(Styles.depthTestName, props);
             depthWrite = FindProperty(Styles.depthWriteName, props);
+            depthOffsetFactor = FindProperty(Styles.depthOffsetFactorName, props);
+            depthOffsetUnits = FindProperty(Styles.depthOffsetUnitsName, props);
             colorWriteMask = FindProperty(Styles.colorWriteMaskName, props);
             instancedColor = FindProperty(Styles.instancedColorName, props);
             cullMode = FindProperty("_CullMode", props);
@@ -279,6 +294,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             rimColor = FindProperty("_RimColor", props);
             rimPower = FindProperty("_RimPower", props);
             vertexColors = FindProperty("_VertexColors", props);
+            vertexExtrusion = FindProperty("_VertexExtrusion", props);
+            vertexExtrusionValue = FindProperty("_VertexExtrusionValue", props);
             clippingPlane = FindProperty("_ClippingPlane", props);
             clippingSphere = FindProperty("_ClippingSphere", props);
             clippingBox = FindProperty("_ClippingBox", props);
@@ -289,6 +306,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             nearLightFade = FindProperty("_NearLightFade", props);
             fadeBeginDistance = FindProperty("_FadeBeginDistance", props);
             fadeCompleteDistance = FindProperty("_FadeCompleteDistance", props);
+            fadeMinValue = FindProperty("_FadeMinValue", props);
             hoverLight = FindProperty("_HoverLight", props);
             enableHoverColorOverride = FindProperty("_EnableHoverColorOverride", props);
             hoverColorOverride = FindProperty("_HoverColorOverride", props);
@@ -469,6 +487,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(blendOperation, Styles.blendOperation);
                 materialEditor.ShaderProperty(depthTest, Styles.depthTest);
                 depthWrite.floatValue = EditorGUILayout.Popup(depthWrite.displayName, (int)depthWrite.floatValue, Styles.depthWriteNames);
+                materialEditor.ShaderProperty(depthOffsetFactor, Styles.depthOffsetFactor);
+                materialEditor.ShaderProperty(depthOffsetUnits, Styles.depthOffsetUnits);
                 materialEditor.ShaderProperty(colorWriteMask, Styles.colorWriteMask);
                 EditorGUI.indentLevel -= 2;
             }
@@ -587,6 +607,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             materialEditor.ShaderProperty(vertexColors, Styles.vertexColors);
 
+            materialEditor.ShaderProperty(vertexExtrusion, Styles.vertexExtrusion);
+
+            if (PropertyEnabled(vertexExtrusion))
+            {
+                materialEditor.ShaderProperty(vertexExtrusionValue, Styles.vertexExtrusionValue, 2);
+            }
+
             materialEditor.ShaderProperty(clippingPlane, Styles.clippingPlane);
 
             if (PropertyEnabled(clippingPlane))
@@ -626,6 +653,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(nearLightFade, Styles.nearLightFade, 2);
                 materialEditor.ShaderProperty(fadeBeginDistance, Styles.fadeBeginDistance, 2);
                 materialEditor.ShaderProperty(fadeCompleteDistance, Styles.fadeCompleteDistance, 2);
+                materialEditor.ShaderProperty(fadeMinValue, Styles.fadeMinValue, 2);
             }
         }
 
@@ -749,9 +777,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.enabled = false;
             materialEditor.RenderQueueField();
 
-            // When round corner or border light features are used, enable instancing to disable batching. Static and dynamic 
-            // batching will normalize the object scale, which breaks border related features.
-            GUI.enabled = !PropertyEnabled(roundCorners) && !PropertyEnabled(borderLight);
+            // Enable instancing to disable batching. Static and dynamic batching will normalize the object scale, which breaks 
+            // features which utilize object scale.
+            GUI.enabled = !ScaleRequired();
 
             if (!GUI.enabled && !material.enableInstancing)
             {
@@ -791,6 +819,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 material.SetInt(Styles.stencilComparisonName, (int)CompareFunction.Disabled);
                 material.SetInt(Styles.stencilOperationName, (int)StencilOp.Keep);
             }
+        }
+
+        protected bool ScaleRequired()
+        {
+            return PropertyEnabled(roundCorners) || 
+                   PropertyEnabled(borderLight) ||
+                   (PropertyEnabled(enableTriplanarMapping) && PropertyEnabled(enableLocalSpaceTriplanarMapping));
         }
 
         protected static void SetupMaterialWithAlbedo(Material material, MaterialProperty albedoMap, MaterialProperty albedoAlphaMode, MaterialProperty albedoAssignedAtRuntime)
@@ -842,6 +877,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.SetInt(Styles.blendOperationName, (int)BlendOp.Add);
                         material.SetInt(Styles.depthTestName, (int)CompareFunction.LessEqual);
                         material.SetInt(Styles.depthWriteName, (int)DepthWrite.On);
+                        material.SetFloat(Styles.depthOffsetFactorName, 0.0f);
+                        material.SetFloat(Styles.depthOffsetUnitsName, 0.0f);
                         material.SetInt(Styles.colorWriteMaskName, (int)ColorWriteMask.All);
                         material.DisableKeyword(Styles.alphaTestOnName);
                         material.DisableKeyword(Styles.alphaBlendOnName);
@@ -858,6 +895,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.SetInt(Styles.blendOperationName, (int)BlendOp.Add);
                         material.SetInt(Styles.depthTestName, (int)CompareFunction.LessEqual);
                         material.SetInt(Styles.depthWriteName, (int)DepthWrite.On);
+                        material.SetFloat(Styles.depthOffsetFactorName, 0.0f);
+                        material.SetFloat(Styles.depthOffsetUnitsName, 0.0f);
                         material.SetInt(Styles.colorWriteMaskName, (int)ColorWriteMask.All);
                         material.EnableKeyword(Styles.alphaTestOnName);
                         material.DisableKeyword(Styles.alphaBlendOnName);
@@ -874,6 +913,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.SetInt(Styles.blendOperationName, (int)BlendOp.Add);
                         material.SetInt(Styles.depthTestName, (int)CompareFunction.LessEqual);
                         material.SetInt(Styles.depthWriteName, (int)DepthWrite.Off);
+                        material.SetFloat(Styles.depthOffsetFactorName, 0.0f);
+                        material.SetFloat(Styles.depthOffsetUnitsName, 0.0f);
                         material.SetInt(Styles.colorWriteMaskName, (int)ColorWriteMask.All);
                         material.DisableKeyword(Styles.alphaTestOnName);
                         material.EnableKeyword(Styles.alphaBlendOnName);
@@ -890,6 +931,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.SetInt(Styles.blendOperationName, (int)BlendOp.Add);
                         material.SetInt(Styles.depthTestName, (int)CompareFunction.LessEqual);
                         material.SetInt(Styles.depthWriteName, (int)DepthWrite.Off);
+                        material.SetFloat(Styles.depthOffsetFactorName, 0.0f);
+                        material.SetFloat(Styles.depthOffsetUnitsName, 0.0f);
                         material.SetInt(Styles.colorWriteMaskName, (int)ColorWriteMask.All);
                         material.DisableKeyword(Styles.alphaTestOnName);
                         material.EnableKeyword(Styles.alphaBlendOnName);
@@ -906,6 +949,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.SetInt(Styles.blendOperationName, (int)BlendOp.Add);
                         material.SetInt(Styles.depthTestName, (int)CompareFunction.LessEqual);
                         material.SetInt(Styles.depthWriteName, (int)DepthWrite.Off);
+                        material.SetFloat(Styles.depthOffsetFactorName, 0.0f);
+                        material.SetFloat(Styles.depthOffsetUnitsName, 0.0f);
                         material.SetInt(Styles.colorWriteMaskName, (int)ColorWriteMask.All);
                         material.DisableKeyword(Styles.alphaTestOnName);
                         material.EnableKeyword(Styles.alphaBlendOnName);
@@ -1017,6 +1062,50 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 material.SetColor(propertyName, propertyValue.Value);
             }
+        }
+
+        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline")]
+        protected static void UpgradeShaderForLightweightRenderPipeline()
+        {
+            if (EditorUtility.DisplayDialog("Upgrade MRTK Standard Shader?", 
+                                            "This will alter the MRTK Standard Shader for use with Unity's Lightweight Render Pipeline. You cannot undo this action.", 
+                                            "Ok", 
+                                            "Cancel"))
+            {
+                string shaderName = "Mixed Reality Toolkit/Standard";
+                string path = AssetDatabase.GetAssetPath(Shader.Find(shaderName));
+
+                if (!string.IsNullOrEmpty(path))
+                {
+                    try
+                    {
+                        string upgradedShader = File.ReadAllText(path);
+                        upgradedShader = upgradedShader.Replace("Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"ForwardBase\" }",
+                                                                "Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"LightweightForward\" }");
+                        upgradedShader = upgradedShader.Replace("//#define _LIGHTWEIGHT_RENDER_PIPELINE",
+                                                                "#define _LIGHTWEIGHT_RENDER_PIPELINE");
+                        File.WriteAllText(path, upgradedShader);
+                        AssetDatabase.Refresh();
+
+                        Debug.LogFormat("Upgraded {0} for use with the Lightweight Render Pipeline.", path);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                    }
+                }
+                else
+                {
+                    Debug.LogErrorFormat("Failed to get asset path to: {0}", shaderName);
+                }
+            }
+        }
+
+        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline", true)]
+        protected static bool UpgradeShaderForLightweightRenderPipelineValidate()
+        {
+            // If a scriptable render pipeline is not present, no need to upgrade the shader.
+            return GraphicsSettings.renderPipelineAsset != null;
         }
     }
 }

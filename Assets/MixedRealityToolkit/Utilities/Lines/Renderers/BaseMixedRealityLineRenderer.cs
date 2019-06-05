@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private float customPointDistributionLength = 0.1f;
 
         [SerializeField]
-        [Tooltip("Custom function for distribing points along curve.Used when DistanceCurveValue is set to Distance. Total points set by LineStepCount.")]
+        [Tooltip("Custom function for distributing points along curve.Used when DistanceCurveValue is set to Distance. Total points set by LineStepCount.")]
         private AnimationCurve customPointDistributionCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
         /// <summary>

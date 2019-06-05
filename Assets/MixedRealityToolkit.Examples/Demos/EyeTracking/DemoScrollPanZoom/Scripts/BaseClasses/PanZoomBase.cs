@@ -123,9 +123,39 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         protected Vector2 originalScale;
         protected Vector2 originalOffset;
 
-        protected IMixedRealityEyeSaccadeProvider EyeSaccadeProvider => eyeSaccadeProvider ?? (eyeSaccadeProvider = MixedRealityToolkit.Instance.GetService<IMixedRealityEyeSaccadeProvider>());
         private IMixedRealityEyeSaccadeProvider eyeSaccadeProvider = null;
+
+        protected IMixedRealityEyeSaccadeProvider EyeSaccadeProvider
+        {
+            get
+            {
+                if (eyeSaccadeProvider == null)
+                {
+                    IMixedRealityEyeGazeDataProvider eyeGazeProvider = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityEyeGazeDataProvider>();
+                    eyeSaccadeProvider = eyeGazeProvider?.SaccadeProvider;
+                }
+                return eyeSaccadeProvider;
+            }
+        }
+
         #endregion
+
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
 
         public abstract void Initialize();
         public abstract float ComputePanSpeed(float cursorPosInOneDir, float maxSpeed, float minDistFromCenterForAutoPan);
@@ -285,7 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         // Update is called once per frame
         protected virtual void Update()
         {
-            //# Let's make sure that the correct gameobject is targeted and update the pan and zoom parameters.
+            //# Let's make sure that the correct GameObject is targeted and update the pan and zoom parameters.
             if (UpdateCursorPosInHitBox())
             {
                 //# Dynamically increase hit box size once user looks at this target
@@ -567,7 +597,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            foreach (var pointer in MixedRealityToolkit.InputSystem.GazeProvider.GazeInputSource.Pointers)
+            foreach (var pointer in InputSystem.GazeProvider.GazeInputSource.Pointers)
             {
                 pointer.IsFocusLocked = false;
             }

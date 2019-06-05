@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -12,44 +12,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class MixedRealityMouseInputProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private SerializedProperty mouseSpeed;
+        private const string ProfileTitle = "Mouse Input Settings";
+        private const string ProfileDescription = "Settings for mouse input in the editor.";
 
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false)) { return; }
-
             mouseSpeed = serializedObject.FindProperty("mouseSpeed");
         }
 
         public override void OnInspectorGUI()
         {
-            RenderTitleDescriptionAndLogo(
-                "Mouse Input settings",
-                "Settings for mouse input in the editor.");
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
 
-            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(true, !RenderAsSubProfile))
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target), false))
             {
-                if (GUILayout.Button("Back to Input Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
-                }
+                serializedObject.Update();
+                EditorGUILayout.PropertyField(mouseSpeed);
+                serializedObject.ApplyModifiedProperties();
             }
-            else
-            {
-                return;
-            }
+        }
 
-            CheckProfileLock(target);
-
-            serializedObject.Update();
-
-            bool isGUIEnabled = GUI.enabled;
-
-            GUILayout.Space(12f);
-            EditorGUILayout.PropertyField(mouseSpeed);
-
-            serializedObject.ApplyModifiedProperties();
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            var mouseManager = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>();
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                mouseManager != null && profile == mouseManager.MouseInputProfile;
         }
     }
 }

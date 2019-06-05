@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (destroyOnSourceLost)
                 {
-                    if (Application.isEditor)
+                    if (!Application.isPlaying)
                     {
                         DestroyImmediate(gameObject);
                     }

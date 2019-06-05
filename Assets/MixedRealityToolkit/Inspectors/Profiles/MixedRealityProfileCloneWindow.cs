@@ -70,8 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             this.parentProfile = parentProfile;
             this.childProfile = childProfile;
 
-            childSerializedObject = new SerializedObject(childProperty.objectReferenceValue);
-            childProfileTypeName = childProperty.objectReferenceValue.GetType().Name;
+            childSerializedObject = new SerializedObject(childProfile);
+            childProfileTypeName = childProfile.GetType().Name;
             childProfileAssetName = "New " + childProfileTypeName;
 
             // Find all the serialized properties for sub-profiles
@@ -120,11 +120,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 cloneWindow.maxSize = minWindowSize;
             }
+
+            targetFolder = EnsureTargetFolder(targetFolder);
         }
 
         private void OnGUI()
         {
-            if (cloneWindow == null || parentProfile == null || childProfile == null)
+            if (cloneWindow == null || childProfile == null)
             {
                 Close();
                 return;
@@ -132,13 +134,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.ObjectField("Cloning profile", childProfile, typeof(BaseMixedRealityProfile), false);
-            EditorGUILayout.ObjectField("from parent profile", parentProfile, typeof(BaseMixedRealityProfile), false);
+            if (parentProfile != null)
+            {   // Only show this if we're initiating this from a parent profile
+                EditorGUILayout.ObjectField("from parent profile", parentProfile, typeof(BaseMixedRealityProfile), false);
+            }
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
 
             if (subProfileActions.Count > 0)
             {
-                EditorGUILayout.HelpBox("This profile has sub-profiles. By defult your clone will reference the existing profiles. If you want to specify a different profile, or if you want to clone the sub-profile, use the options below.", MessageType.Info);
+                EditorGUILayout.HelpBox("This profile has sub-profiles. By default your clone will reference the existing profiles. If you want to specify a different profile, or if you want to clone the sub-profile, use the options below.", MessageType.Info);
 
                 EditorGUILayout.BeginVertical();
 
@@ -185,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             GUI.color = Color.white;
-            // Space between props and buttons at botton
+            // Space between props and buttons at bottom
             GUILayout.FlexibleSpace();
 
             // Get the selected folder in the project window
@@ -265,7 +270,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             newChildSerializedObject.ApplyModifiedProperties();
 
-            Selection.activeObject = newChildProfile;
+            // If we're not working with a parent profile, select the newly created profile
+            if (parentProfile == null)
+            {
+                Selection.activeObject = newChildProfile;
+            }
+
             cloneWindow.Close();
         }
 
@@ -279,15 +289,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Debug.Log("Creating asset in path " + targetFolder);
 
             var newChildProfile = instance.CreateAsset(path, fileName) as BaseMixedRealityProfile;
-            childProperty.objectReferenceValue = newChildProfile;
-            childProperty.serializedObject.ApplyModifiedProperties();
+
+            if (childProperty != null)
+            {
+                childProperty.objectReferenceValue = newChildProfile;
+                childProperty.serializedObject.ApplyModifiedProperties();
+            }
 
             return newChildProfile;
         }
 
         private static void PasteProfileValues(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile profileToCopy, SerializedObject targetProfile)
         {
-            Undo.RecordObject(parentProfile, "Paste Profile Values");
+            if (parentProfile != null)
+            {
+                Undo.RecordObject(parentProfile, "Paste Profile Values");
+            }
 
             bool targetIsCustom = targetProfile.FindProperty(IsCustomProfileProperty).boolValue;
             string originalName = targetProfile.targetObject.name;
