@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            switch(eventData.Command.Keyword.ToLower())
+            switch (eventData.Command.Keyword.ToLower())
             {
                 case "toggle diagnostics":
                     ToggleDiagnostics();
