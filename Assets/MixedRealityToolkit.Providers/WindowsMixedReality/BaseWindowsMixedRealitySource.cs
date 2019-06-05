@@ -12,7 +12,7 @@ using UnityEngine.XR.WSA.Input;
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     /// <summary>
-    /// A Windows Mixed Reality Controller Instance.
+    /// A Windows Mixed Reality Source Instance.
     /// </summary>
     public abstract class BaseWindowsMixedRealitySource : BaseController
     {
@@ -20,11 +20,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Constructor.
         /// </summary>
         /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
+        /// <param name="sourceHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public BaseWindowsMixedRealitySource(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+        public BaseWindowsMixedRealitySource(TrackingState trackingState, Handedness sourceHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+                : base(trackingState, sourceHandedness, inputSource, interactions)
         {
         }
 
@@ -47,10 +47,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </summary>
         public InteractionSourceState LastSourceStateReading { get; protected set; }
 
-        private Vector3 currentControllerPosition = Vector3.zero;
-        private Quaternion currentControllerRotation = Quaternion.identity;
-        private MixedRealityPose lastControllerPose = MixedRealityPose.ZeroIdentity;
-        private MixedRealityPose currentControllerPose = MixedRealityPose.ZeroIdentity;
+        private Vector3 currentSourcePosition = Vector3.zero;
+        private Quaternion currentSourceRotation = Quaternion.identity;
+        private MixedRealityPose lastSourcePose = MixedRealityPose.ZeroIdentity;
+        private MixedRealityPose currentSourcePose = MixedRealityPose.ZeroIdentity;
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
@@ -63,14 +63,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         #region Update data functions
 
         /// <summary>
-        /// Update the controller data from the provided platform state
+        /// Update the source data from the provided platform state.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         public virtual void UpdateController(InteractionSourceState interactionSourceState)
         {
             if (!Enabled) { return; }
 
-            UpdateControllerData(interactionSourceState);
+            UpdateSourceData(interactionSourceState);
 
             if (Interactions == null)
             {
@@ -115,22 +115,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
         /// <summary>
-        /// Update the "Controller" input from the device
+        /// Update the source input from the device.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        protected virtual void UpdateControllerData(InteractionSourceState interactionSourceState)
+        private void UpdateSourceData(InteractionSourceState interactionSourceState)
         {
             var lastState = TrackingState;
             var sourceKind = interactionSourceState.source.kind;
 
-            lastControllerPose = currentControllerPose;
+            lastSourcePose = currentSourcePose;
 
             if (sourceKind == InteractionSourceKind.Hand ||
                (sourceKind == InteractionSourceKind.Controller && interactionSourceState.source.supportsPointing))
             {
                 // The source is either a hand or a controller that supports pointing.
                 // We can now check for position and rotation.
-                IsPositionAvailable = interactionSourceState.sourcePose.TryGetPosition(out currentControllerPosition);
+                IsPositionAvailable = interactionSourceState.sourcePose.TryGetPosition(out currentSourcePosition);
 
                 if (IsPositionAvailable)
                 {
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     IsPositionApproximate = false;
                 }
 
-                IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentControllerRotation);
+                IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentSourceRotation);
 
                 // Devices are considered tracked if we receive position OR rotation data from the sensors.
                 TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
@@ -152,8 +152,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 TrackingState = TrackingState.NotApplicable;
             }
 
-            currentControllerPose.Position = currentControllerPosition;
-            currentControllerPose.Rotation = currentControllerRotation;
+            currentSourcePose.Position = currentSourcePosition;
+            currentSourcePose.Rotation = currentSourceRotation;
 
             // Raise input system events if it is enabled.
             if (lastState != TrackingState)
@@ -161,19 +161,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
             }
 
-            if (TrackingState == TrackingState.Tracked && lastControllerPose != currentControllerPose)
+            if (TrackingState == TrackingState.Tracked && lastSourcePose != currentSourcePose)
             {
                 if (IsPositionAvailable && IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourcePoseChanged(InputSource, this, currentControllerPose);
+                    InputSystem?.RaiseSourcePoseChanged(InputSource, this, currentSourcePose);
                 }
                 else if (IsPositionAvailable && !IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourcePositionChanged(InputSource, this, currentControllerPosition);
+                    InputSystem?.RaiseSourcePositionChanged(InputSource, this, currentSourcePosition);
                 }
                 else if (!IsPositionAvailable && IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourceRotationChanged(InputSource, this, currentControllerRotation);
+                    InputSystem?.RaiseSourceRotationChanged(InputSource, this, currentSourceRotation);
                 }
             }
         }
@@ -190,8 +190,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
                 interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
 
-                // We want the controller to follow the Playspace, so fold in the playspace transform here to 
-                // put the controller pose into world space.
+                // We want the source to follow the Playspace, so fold in the playspace transform here to 
+                // put the source pose into world space.
                 currentPointerPose.Position = MixedRealityPlayspace.TransformPoint(currentPointerPosition);
                 currentPointerPose.Rotation = MixedRealityPlayspace.Rotation * currentPointerRotation;
             }
