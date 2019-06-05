@@ -951,23 +951,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 switch (typeOfVelocity)
                 {
                     case VelocityType.NoVeloctySnapToItem:
+                        velocityState = VelocityState.None;
                         avgVelocity = 0.0f;
                         //Round to the nearest list item
                         if (scrollDirection == ScrollDirectionType.UpAndDown)
                         {
-                            workingScrollerPos.y = StepMultiplier((int)Mathf.Round(scrollContainer.transform.localPosition.y / CellHeight), Columns) * CellHeight;
+                            float pos = Mathf.Round(workingScrollerPos.y / CellHeight);
+                            float step = StepMultiplier((int)pos, Columns);
+                            workingScrollerPos.y = step * CellHeight;
                         }
                         else
                         {
-                            workingScrollerPos.x = StepMultiplier((int)Mathf.Round(scrollContainer.transform.localPosition.x / CellWidth), Columns) * CellWidth;
+                        //    workingScrollerPos.x = StepMultiplier((int)Mathf.Round(scrollContainer.transform.localPosition.x / CellWidth), Columns) * CellWidth;
                         }
                         initialScrollerPos = workingScrollerPos;
-
+                        CalculateDragMove(workingScrollerPos);
                         ListMomentumEnded?.Invoke();
-                        break;
+                        return;
 
                     case VelocityType.None:
-
+                        velocityState = VelocityState.None;
                         avgVelocity = 0.0f;
                         ListMomentumEnded?.Invoke();
                         //apply no velocity
