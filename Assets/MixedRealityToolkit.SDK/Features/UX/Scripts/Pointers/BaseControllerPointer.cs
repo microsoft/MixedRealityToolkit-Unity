@@ -88,7 +88,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (cursorInstance != null)
             {
                 cursorInstance.name = $"{Handedness}_{name}_Cursor";
+
+                BaseCursor oldC = BaseCursor as BaseCursor;
+                if (oldC != null && hasSource)
+                {
+                    oldC.VisibleSourcesCount--;
+                }
+
                 BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
+
+                BaseCursor newC = BaseCursor as BaseCursor;
+                if (newC != null && hasSource)
+                {
+                    newC.VisibleSourcesCount++;
+                }
 
                 if (BaseCursor != null)
                 {
