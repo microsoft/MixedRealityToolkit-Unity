@@ -229,14 +229,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (Event.current.type == EventType.Repaint)
             {
-                Color arrowColor = Color.white;
+                Color arrowColor = Color.green;
                 Vector3 center;
-                if (pressPlane != null)
-                {
-                    center = pressPlane.vector3Value;// + scrollContainer.transform.position;
-                    arrowColor = Color.green;
-                }
-                else if (scrollContainer.ClippingObject != null)
+                if (scrollContainer.ClippingObject != null)
                 {
                     center = scrollContainer.ClippingObject.transform.position;
                     center.z = scrollContainer.ClippingObject.transform.position.z + scrollContainer.ClippingObject.transform.localScale.z * (ScrollingObjectCollection.AxisOrientationToDirection(scrollContainer.CollectionForward).z * 0.5f);
@@ -246,6 +241,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     center = scrollContainer.transform.position;
                     arrowColor = Color.yellow;
                 }
+
+                if (Application.isPlaying)
+                {
+                    //now that its running lets show the press plane so users have feedback about touch
+                    center.z = pressPlane.vector3Value.z;
+                }
+
 
                 UnityEditor.Handles.color = arrowColor;
 
@@ -275,8 +277,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         UnityEditor.Handles.Label(cp, new GUIContent(i.ToString()));
                     }
                 }
-
             }
         }
+
     }
 }
