@@ -161,8 +161,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // 
         // Variables for determining gesture state
         //
-        protected Vector3? dragStart3 = null;
-        protected Vector2? dragStart2 = null;
+
+        /// <summary>
+        /// The position of the controller when input down occurs.
+        /// Used to determine when controller has moved far enough to trigger gesture
+        /// </summary>
+        protected Vector3? dragStartPosition = null;
         // Input must move at least this distance before a gesture is considered started, for 2D input like thumbstick
         static readonly float gestureStartThresholdVector2 = 0.1f;
         // Input must move at least this distance before a gesture is considered started, for 3D input
@@ -555,8 +559,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 globalTimer = null;
             }
 
-            dragStart3 = null;
-            dragStart2 = null;
+            dragStartPosition = null;
         }
 
         /// <summary>
@@ -1102,8 +1105,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return;
             }
-            dragStart3 = null;
-            dragStart2 = null;
+            dragStartPosition = null;
 
             SetPress(true);
             StartClickTimer(true);
@@ -1132,7 +1134,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void OnInputChanged(InputEventData<Vector2> eventData)
+        private void OnInputChangedHelper<T>(InputEventData<T> eventData, Vector3 inputPosition, float gestureDeadzoneThreshold)
         {
             if (!CanInteract())
             {
@@ -1141,66 +1143,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (ShouldListenToMoveEvent(eventData))
             {
-                if (dragStart2 == null)
+                if (dragStartPosition == null)
                 {
-                    dragStart2 = eventData.InputData;
+                    dragStartPosition = inputPosition;
                 }
-                else
+                else if (!HasGesture)
                 {
-                    if (Vector2.Distance(dragStart2.Value, eventData.InputData) > gestureStartThresholdVector2)
+                    if (Vector3.Distance(dragStartPosition.Value, inputPosition) > gestureStartThresholdVector2)
                     {
                         SetGesture(true);
                     }
                 }
             }
+        }
+
+        public void OnInputChanged(InputEventData<Vector2> eventData)
+        {
+            OnInputChangedHelper(eventData, eventData.InputData, gestureStartThresholdVector2);
         }
 
 
         public void OnInputChanged(InputEventData<Vector3> eventData)
         {
-            if (!CanInteract())
-            {
-                return;
-            }
-
-            if (ShouldListenToMoveEvent(eventData))
-            {
-                if (dragStart3 == null)
-                {
-                    dragStart3 = eventData.InputData;
-                }
-                else
-                {
-                    if (Vector3.Distance(dragStart3.Value, eventData.InputData) > gestureStartThresholdVector3)
-                    {
-                        SetGesture(true);
-                    }
-                }
-            }
+            OnInputChangedHelper(eventData, eventData.InputData, gestureStartThresholdVector3);
         }
 
         public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
         {
-            if (!CanInteract())
-            {
-                return;
-            }
-
-            if (ShouldListenToMoveEvent(eventData))
-            {
-                if (dragStart3 == null)
-                {
-                    dragStart3 = eventData.InputData.Position;
-                }
-                else
-                {
-
-                    if (Vector3.Distance(dragStart3.Value, eventData.InputData.Position) > gestureStartThresholdMixedRealityPose)
-                    {
-                        SetGesture(true);
-                    }
-                }
-            }
+            OnInputChangedHelper(eventData, eventData.InputData.Position, gestureStartThresholdMixedRealityPose);
         }
 
         private bool ShouldListenToMoveEvent<T>(InputEventData<T> eventData)
@@ -1210,17 +1180,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
+            if (!HasPress)
+            {
+                return false;
+            }
+
             // Ensure that this move event is from a pointer that is pressing the interactable
             int matchingPointerCount = 0;
-            for (int i = 0; i < pressingInputSources.Count; i++)
+            foreach (var pressingInputSource in pressingInputSources)
             {
-                if (focusingPointers[i].InputSourceParent == eventData.InputSource)
+                if (pressingInputSource == eventData.InputSource)
                 {
                     matchingPointerCount++;
                 }
             }
 
-            return HasPress && matchingPointerCount > 0;
+            return matchingPointerCount > 0;
         }
         #endregion InputHandlers
     }
