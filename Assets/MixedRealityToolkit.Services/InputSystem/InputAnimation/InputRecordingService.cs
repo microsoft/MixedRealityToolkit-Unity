@@ -110,19 +110,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public void StartRecording(bool useTimeLimit = false)
+        public void StartRecording()
         {
             IsRecording = true;
-            UseBufferTimeLimit = useTimeLimit;
-        }
-
-        /// <inheritdoc />
-        public void StartRecording(float bufferTimeLimit)
-        {
-            IsRecording = true;
-            UseBufferTimeLimit = true;
-            RecordingBufferTimeLimit = bufferTimeLimit;
-            PruneBuffer();
+            if (UseBufferTimeLimit)
+            {
+                PruneBuffer();
+            }
         }
 
         /// <inheritdoc />
@@ -221,31 +215,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public void ExportRecordedInput()
+        public string ExportRecordedInput(string directory = null)
         {
-            if (IsEnabled)
-            {
-                var profile = InputRecordingProfile;
-                string filename;
-                if (profile.AppendTimestamp)
-                {
-                    filename = String.Format("{0}-{1}.{2}", profile.OutputFilename, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), InputAnimationSerializationUtils.Extension);
-                }
-                else
-                {
-                    filename = profile.OutputFilename;
-                }
-
-                ExportRecordedInput(filename);
-            }
+            return ExportRecordedInput(GenerateOutputFilename(), directory);
         }
 
         /// <inheritdoc />
-        public void ExportRecordedInput(string filename)
+        public string ExportRecordedInput(string filename, string directory = null)
         {
             if (IsEnabled)
             {
-                string path = Path.Combine(Application.persistentDataPath, filename);
+                string path = Path.Combine(directory ?? Application.persistentDataPath, filename);
 
                 try
                 {
@@ -254,12 +234,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         recordingBuffer.ToStream(fileStream);
                         Debug.Log($"Recorded input animation exported to {path}");
                     }
+                    return path;
                 }
                 catch (IOException ex)
                 {
                     Debug.LogWarning(ex.Message);
                 }
             }
+            return "";
+        }
+
+        /// <inheritdoc />
+        public string GenerateOutputFilename()
+        {
+            var profile = InputRecordingProfile;
+            string filename;
+            if (profile.AppendTimestamp)
+            {
+                filename = String.Format("{0}-{1}.{2}", profile.OutputFilename, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), InputAnimationSerializationUtils.Extension);
+            }
+            else
+            {
+                filename = profile.OutputFilename;
+            }
+
+            return filename;
         }
 
         /// Discard keyframes before the cutoff time.

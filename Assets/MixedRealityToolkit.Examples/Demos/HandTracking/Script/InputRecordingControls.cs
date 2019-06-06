@@ -63,7 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             else
             {
-                RecordingService.StartRecording(true);
+                RecordingService.UseBufferTimeLimit = true;
+                RecordingService.StartRecording();
             }
         }
 

@@ -22,23 +22,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// If recording is limited any input older than the RecordingBufferTimeLimit will be discarded.
         /// </remarks>
-        bool UseBufferTimeLimit { get; }
+        bool UseBufferTimeLimit { get; set; }
 
         /// <summary>
         /// Size of the input recording buffer.
         /// </summary>
-        float RecordingBufferTimeLimit { get; }
+        float RecordingBufferTimeLimit { get; set; }
 
         /// <summary>
         /// Start unlimited input recording.
         /// </summary>
-        void StartRecording(bool useTimeLimit = false);
-
-        /// <summary>
-        /// Start limited input recording.
-        /// </summary>
-        /// <param name="bufferTimeLimit">Time limit after which to discard keyframes.</param>
-        void StartRecording(float bufferTimeLimit);
+        void StartRecording();
 
         /// <summary>
         /// Stop recording input.
@@ -53,14 +47,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Export recorded input animation to a file.
         /// </summary>
+        /// <param name="directory">Directory in which to create the file. If null the persistent data path of the app is used.</param>
+        /// <returns>File path where input has been recorded.</returns>
         /// <remarks>
         /// Filename is determined automatically.
         /// </remarks>
-        void ExportRecordedInput();
+        string ExportRecordedInput(string directory = null);
 
         /// <summary>
         /// Export recorded input animation to a file.
         /// </summary>
-        void ExportRecordedInput(string filename);
+        /// <param name="filename">Name of the file to create.</param>
+        /// <param name="directory">Directory in which to create the file. If null the persistent data path of the app is used.</param>
+        /// <returns>File path where input has been recorded.</returns>
+        string ExportRecordedInput(string filename, string directory = null);
+
+        /// <summary>
+        /// Generate a file name for export.
+        /// </summary>
+        string GenerateOutputFilename();
     }
 }

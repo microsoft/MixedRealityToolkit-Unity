@@ -18,6 +18,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class InputRecordingWindow : EditorWindow
     {
+        private InputAnimation animation = null;
+        
+        private string loadedFilePath = "";
+
+        private IMixedRealityInputRecordingService recService = null;
+        private IMixedRealityInputRecordingService RecService => recService ?? (recService = MixedRealityToolkit.Instance.GetService<IMixedRealityInputRecordingService>());
+
+        private IInputSimulationService simService = null;
+        private IInputSimulationService SimService => simService ?? (simService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
+
         public enum RecordingMode
         {
             /// <summary>
@@ -67,7 +77,237 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             LoadIcons();
 
-            Mode = RecordingMode.Recording;
+            string[] modeStrings = { "Record", "Playback" };
+            Mode = (RecordingMode)GUILayout.SelectionGrid((int)Mode, modeStrings, modeStrings.Length);
+
+            switch (mode)
+            {
+                case RecordingMode.Recording:
+                    DrawRecordingGUI();
+                    break;
+                case RecordingMode.Playback:
+                    DrawPlaybackGUI();
+                    break;
+            }
+
+            EditorGUILayout.Space();
+
+// XXX Reloading the scene is currently not supported,
+// due to the life cycle of the MRTK "instance" object.
+// Enable the button below once scene reloading is supported!
+#if false
+            using (new GUIEnabledWrapper(Application.isPlaying))
+            {
+                bool reloadScene = GUILayout.Button("Reload Scene");
+                if (reloadScene)
+                {
+                    Scene activeScene = SceneManager.GetActiveScene();
+                    if (activeScene.IsValid())
+                    {
+                        SceneManager.LoadScene(activeScene.name);
+                        return;
+                    }
+                }
+            }
+#endif
+        }
+
+        private void DrawRecordingGUI()
+        {
+            if (!Application.isPlaying)
+            {
+                EditorGUILayout.HelpBox("Input test recording is only available in play mode", MessageType.Info);
+                return;
+            }
+            if (RecService == null)
+            {
+                EditorGUILayout.HelpBox("No input recording service found", MessageType.Info);
+                return;
+            }
+
+            using (new GUILayout.HorizontalScope())
+            {
+                bool newUseTimeLimit = GUILayout.Toggle(RecService.UseBufferTimeLimit, "Use buffer time limit");
+                if (newUseTimeLimit != RecService.UseBufferTimeLimit)
+                {
+                    RecService.UseBufferTimeLimit = newUseTimeLimit;
+                }
+
+                using (new GUIEnabledWrapper(RecService.UseBufferTimeLimit))
+                {
+                    float newTimeLimit = EditorGUILayout.FloatField(RecService.RecordingBufferTimeLimit);
+                    if (newTimeLimit != RecService.RecordingBufferTimeLimit)
+                    {
+                        RecService.RecordingBufferTimeLimit = newTimeLimit;
+                    }
+                }
+            }
+
+            bool wasRecording = RecService.IsRecording;
+            bool record = GUILayout.Toggle(wasRecording, wasRecording ? new GUIContent(iconRecordActive, "Stop recording input animation") : new GUIContent(iconRecord, "Record new input animation"), "Button");
+
+            if (record != wasRecording)
+            {
+                if (record)
+                {
+                    RecService.StartRecording();
+                }
+                else
+                {
+                    RecService.StopRecording();
+
+                    ExportAnimation(true);
+                }
+            }
+
+            DrawAnimationInfo();
+        }
+
+        private void DrawPlaybackGUI()
+        {
+            if (!Application.isPlaying)
+            {
+                EditorGUILayout.HelpBox("Input test playback is only available in play mode", MessageType.Info);
+                return;
+            }
+            if (SimService == null)
+            {
+                EditorGUILayout.HelpBox("No input simulation service found", MessageType.Info);
+                return;
+            }
+
+            DrawAnimationInfo();
+
+            using (new GUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("Load ..."))
+                {
+                    string filepath = EditorUtility.OpenFilePanel(
+                        "Select input animation file",
+                        "",
+                        InputAnimationSerializationUtils.Extension);
+
+                    LoadAnimation(filepath);
+                }
+            }
+
+            EditorGUILayout.Space();
+
+            // bool wasPlaying = (director.state == PlayState.Playing);
+            // bool wasPaused = (director.state == PlayState.Paused);
+
+            // EditorGUILayout.BeginHorizontal();
+            // bool jumpBack = GUILayout.Button(new GUIContent(iconJumpBack, "Reset input animation"), "Button");
+            // bool play = GUILayout.Toggle(wasPlaying, wasPlaying ? new GUIContent(iconPlay, "Stop playing input animation") : new GUIContent(iconPlay, "Play back input animation"), "Button");
+            // bool stepFwd = GUILayout.Button(new GUIContent(iconStepFwd, "Step forward one frame"), "Button");
+            // EditorGUILayout.EndHorizontal();
+
+            // float time = (float)director.time;
+            // float newTime = GUILayout.HorizontalSlider(time, 0.0f, (float)inputAnimation.duration);
+
+            // if (play != wasPlaying)
+            // {
+            //     if (play)
+            //     {
+            //         director.Play();
+            //     }
+            //     else
+            //     {
+            //         director.Pause();
+            //     }
+            // }
+            // if (jumpBack)
+            // {
+            //     director.time = 0.0f;
+            //     director.Evaluate();
+            // }
+            // if (stepFwd)
+            // {
+            //     director.time += Time.deltaTime;
+            //     director.Evaluate();
+            // }
+            // if (newTime != time)
+            // {
+            //     director.time = newTime;
+            //     director.Evaluate();
+            // }
+
+            // // Repaint while playing to update the timeline
+            // if (director.state == PlayState.Playing)
+            // {
+            //     Repaint();
+            // }
+        }
+
+        private void DrawAnimationInfo()
+        {
+            using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                GUILayout.Label("Animation Info:", EditorStyles.boldLabel);
+
+                if (animation != null)
+                {
+                    GUILayout.Label($"File Path: {loadedFilePath}");
+                    GUILayout.Label($"Duration: {animation.Duration}");
+                }
+            }
+        }
+
+        private void ExportAnimation(bool loadAfterExport)
+        {
+            string outputPath;
+            if (loadedFilePath.Length > 0)
+            {
+                string loadedFilename = Path.GetFileName(loadedFilePath);
+                string loadedDirectory = Path.GetDirectoryName(loadedFilePath);
+                outputPath = EditorUtility.SaveFilePanel(
+                    "Select output path",
+                    loadedDirectory,
+                    loadedFilename,
+                    InputAnimationSerializationUtils.Extension);
+            }
+            else
+            {
+                outputPath = EditorUtility.SaveFilePanelInProject(
+                    "Select output path",
+                    RecService.GenerateOutputFilename(),
+                    InputAnimationSerializationUtils.Extension,
+                    "Enter filename for exporting input animation");
+            }
+
+            if (outputPath.Length > 0)
+            {
+                string filename = Path.GetFileName(outputPath);
+                string directory = Path.GetDirectoryName(outputPath);
+
+                string result = RecService.ExportRecordedInput(filename, directory);
+
+                if (loadAfterExport)
+                {
+                    LoadAnimation(result);
+                }
+            }
+        }
+
+        private void LoadAnimation(string filepath)
+        {
+            if (filepath.Length > 0)
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(filepath, FileMode.Open))
+                    {
+                        animation = new InputAnimation();
+                        animation.FromStream(fs);
+                        loadedFilePath = filepath;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    Debug.LogError(ex.Message);
+                    loadedFilePath = "";
+                }
+            }
         }
 
         private void LoadIcons()
@@ -191,89 +431,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 //             GUI.enabled = isGUIEnabled;
 //             DrawDefaultInspector();
-//         }
-
-//         private void DrawRecordingGUI()
-//         {
-//             bool isGUIEnabled = GUI.enabled;
-//             if (!Application.isPlaying)
-//             {
-//                 EditorGUILayout.HelpBox("Input test recording is only available in play mode", MessageType.Info);
-//                 return;
-//             }
-
-//             bool wasRecording = (recorder != null);
-//             bool record = GUILayout.Toggle(wasRecording, wasRecording ? new GUIContent(iconRecordActive, "Stop recording input animation") : new GUIContent(iconRecord, "Record new input animation"), "Button");
-
-//             if (record != wasRecording)
-//             {
-//                 if (record)
-//                 {
-//                     StartRecording();
-//                 }
-//                 else
-//                 {
-//                     StopRecording();
-//                     EditorUtility.SetDirty(inputAnimation);
-//                 }
-//             }
-//         }
-
-//         private void DrawPlaybackGUI()
-//         {
-//             Debug.Assert(director != null);
-
-//             bool isGUIEnabled = GUI.enabled;
-//             if (!Application.isPlaying)
-//             {
-//                 EditorGUILayout.HelpBox("Input test playback is only available in play mode", MessageType.Info);
-//                 return;
-//             }
-
-//             bool wasPlaying = (director.state == PlayState.Playing);
-//             bool wasPaused = (director.state == PlayState.Paused);
-
-//             EditorGUILayout.BeginHorizontal();
-//             bool jumpBack = GUILayout.Button(new GUIContent(iconJumpBack, "Reset input animation"), "Button");
-//             bool play = GUILayout.Toggle(wasPlaying, wasPlaying ? new GUIContent(iconPlay, "Stop playing input animation") : new GUIContent(iconPlay, "Play back input animation"), "Button");
-//             bool stepFwd = GUILayout.Button(new GUIContent(iconStepFwd, "Step forward one frame"), "Button");
-//             EditorGUILayout.EndHorizontal();
-
-//             float time = (float)director.time;
-//             float newTime = GUILayout.HorizontalSlider(time, 0.0f, (float)inputAnimation.duration);
-
-//             if (play != wasPlaying)
-//             {
-//                 if (play)
-//                 {
-//                     director.Play();
-//                 }
-//                 else
-//                 {
-//                     director.Pause();
-//                 }
-//             }
-//             if (jumpBack)
-//             {
-//                 director.time = 0.0f;
-//                 director.Evaluate();
-//             }
-//             if (stepFwd)
-//             {
-//                 director.time += Time.deltaTime;
-//                 director.Evaluate();
-//             }
-//             if (newTime != time)
-//             {
-//                 director.time = newTime;
-//                 director.Evaluate();
-//             }
-
-//             // Repaint while playing to update the timeline
-//             if (director.state == PlayState.Playing)
-//             {
-//                 Repaint();
-//             }
 //         }
 
 //         public void DrawMarkersGUI()
