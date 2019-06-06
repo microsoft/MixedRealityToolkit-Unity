@@ -10,5 +10,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// A UnityEvent callback containing a TouchEventData payload.
     /// </summary>
     [System.Serializable]
-    public class TouchEvent : UnityEvent<TouchEventData> { }
+    public class TouchEvent : UnityEvent<HandTrackingInputEventData> { }
 }
