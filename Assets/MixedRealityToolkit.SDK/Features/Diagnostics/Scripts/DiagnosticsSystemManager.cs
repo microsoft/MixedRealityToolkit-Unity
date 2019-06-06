@@ -17,11 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         [SerializeField]
         private MixedRealityDiagnosticsProfile profile = null;
 
-        /// <summary>
-        /// Instance of the diagnostics system being managed.
-        /// </summary>
-        private IMixedRealityDiagnosticsSystem DiagnosticsSystem => service as IMixedRealityDiagnosticsSystem;
-
         private void Awake()
         {
             Initialize();

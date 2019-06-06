@@ -21,11 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         [SerializeField]
         private MixedRealityBoundaryVisualizationProfile profile = null;
 
-        /// <summary>
-        /// Instance of the boundary system being managed.
-        /// </summary>
-        private IMixedRealityBoundarySystem BoundarySystem => service as IMixedRealityBoundarySystem;
-
         private void Awake()
         {
             Initialize();

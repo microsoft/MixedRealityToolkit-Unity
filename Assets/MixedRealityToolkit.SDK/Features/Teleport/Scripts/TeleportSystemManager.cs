@@ -13,11 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         [Implements(typeof(IMixedRealityTeleportSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType TeleportSystemType = null;
 
-        /// <summary>
-          /// Instance of the teleport system being managed.
-          /// </summary>
-        private IMixedRealityTeleportSystem TeleportSystem => service as IMixedRealityTeleportSystem;
-
         private void Awake()
         {
             Initialize();

@@ -17,16 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         [SerializeField]
         private MixedRealityCameraProfile profile = null;
 
-        /// <summary>
-        /// Instance of the camera system being managed.
-        /// </summary>
-        private IMixedRealityCameraSystem CameraSystem => service as IMixedRealityCameraSystem;
-
-        private void Awake()
-        {
-            Initialize();
-        }
-
         protected override void OnDestroy()
         {
             Uninitialize();
