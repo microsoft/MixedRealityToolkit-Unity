@@ -582,27 +582,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region PointerManagement
 
-        /// <summary>
-        /// Adds a pointer to pointers, means a pointer is giving focus
-        /// </summary>
-        /// <param name="pointer"></param>
-        private void AddPointer(IMixedRealityPointer pointer)
-        {
-            if (!focusingPointers.Contains(pointer))
-            {
-                focusingPointers.Add(pointer);
-            }
-        }
-
-        /// <summary>
-        /// Removes a pointer, lost focus
-        /// </summary>
-        /// <param name="pointer"></param>
-        private void RemovePointer(IMixedRealityPointer pointer)
-        {
-            focusingPointers.Remove(pointer);
-        }
-
         #endregion PointerManagement
 
         #region MixedRealityFocusChangedHandlers
@@ -616,15 +595,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (eventData.NewFocusedObject == null)
             {
-                RemovePointer(eventData.Pointer);
+                focusingPointers.Remove(eventData.Pointer);
             }
             else if (eventData.NewFocusedObject.transform.IsChildOf(gameObject.transform))
             {
-                AddPointer(eventData.Pointer);
+                if (!focusingPointers.Contains(eventData.Pointer))
+                {
+                    focusingPointers.Add(eventData.Pointer);
+                }
             }
             else if (eventData.OldFocusedObject.transform.IsChildOf(gameObject.transform))
             {
-                RemovePointer(eventData.Pointer);
+                focusingPointers.Remove(eventData.Pointer);
             }
         }
 
@@ -636,9 +618,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnFocusEnter(FocusEventData eventData)
         {
+            Debug.Assert(focusingPointers.Count > 0, "OnFocusEnter focusingPointers.Count should be zero");
             if (CanInteract())
             {
-                SetFocus(focusingPointers.Count > 0);
+                SetFocus(true);
             }
         }
 
