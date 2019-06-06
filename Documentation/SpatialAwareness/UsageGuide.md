@@ -15,9 +15,11 @@ unless you have extended the spatial awareness system.
 ```C#
 if (MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out var service))
 {
-    IMixedRealitySpatialAwarenessMeshObserver observer = 
-        service.GetObserver<IMixedRealitySpatialAwarenessMeshObserver>();
-    
+    IMixedRealityDataProviderAccess dataProviderAccess = service as IMixedRealityDataProviderAccess;
+
+    IMixedRealitySpatialAwarenessMeshObserver observer =
+        dataProviderAccess.GetDataProvider<IMixedRealitySpatialAwarenessMeshObserver>();
+
     foreach (SpatialAwarenessMeshObject meshObject in observer.Meshes.Values)
     {
         Mesh mesh = meshObject.Filter.mesh;
@@ -29,3 +31,25 @@ if (MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSyste
 
 Please see the [DemoSpatialMeshHandler](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/SpatialAwareness/Scripts/DemoSpatialMeshHandler.cs)
 for an example of how to listen to mesh events.
+
+## Starting and stopping mesh observation
+
+It's possible to programmatically suspend and resume mesh observation. The sample code below shows
+how to access a particular observer (the mixed reality spatial mesh observer) to pause and then
+immediately resume observation.
+
+```C#
+if (MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out var service))
+{
+    IMixedRealityDataProviderAccess dataProviderAccess = service as IMixedRealityDataProviderAccess;
+
+    IMixedRealitySpatialAwarenessMeshObserver observer =
+        dataProviderAccess.GetDataProvider<IMixedRealitySpatialAwarenessMeshObserver>();
+
+    // Suspends observation.
+    observer.Suspend();
+
+    // Resumes observation.
+    observer.Resume();
+}
+```
