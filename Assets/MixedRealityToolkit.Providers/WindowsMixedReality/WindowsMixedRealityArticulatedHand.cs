@@ -10,12 +10,12 @@ using UnityEngine.XR.WSA.Input;
 #endif
 
 #if WINDOWS_UWP
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System;
 using System.Collections.Generic;
 using Windows.Perception;
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
-using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
         new[] { Handedness.Left, Handedness.Right })]
-    public class WindowsMixedRealityArticulatedHand : WindowsMixedRealityController, IMixedRealityHand
+    public class WindowsMixedRealityArticulatedHand : BaseWindowsMixedRealitySource, IMixedRealityHand
     {
     /// <summary>
         /// Constructor.
@@ -127,41 +127,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
-            UpdateControllerData(interactionSourceState);
+            base.UpdateController(interactionSourceState);
 
-            if (Interactions == null)
-            {
-                Debug.LogError($"No interaction configuration for Windows Mixed Reality Articulated Hand {ControllerHandedness}");
-                Enabled = false;
-            }
+            UpdateHandData(interactionSourceState);
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
                 switch (Interactions[i].InputType)
                 {
-                    case DeviceInputType.None:
-                        break;
-                    case DeviceInputType.SpatialPointer:
-                        UpdatePointerData(interactionSourceState, Interactions[i]);
-                        break;
-                    case DeviceInputType.Select:
-                    case DeviceInputType.TriggerPress:
-                        UpdateTriggerData(interactionSourceState, Interactions[i]);
-                        break;
-                    case DeviceInputType.SpatialGrip:
-                        UpdateGripData(interactionSourceState, Interactions[i]);
-                        break;
                     case DeviceInputType.IndexFinger:
                         UpdateIndexFingerData(interactionSourceState, Interactions[i]);
                         break;
-                    default:
-                        Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [WindowsMixedRealityArticulatedHand]");
-                        Enabled = false;
-                        break;
                 }
             }
-
-            LastSourceStateReading = interactionSourceState;
         }
 
 #if WINDOWS_UWP
@@ -213,15 +191,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #endif
 
         /// <summary>
-        /// Update the "Controller" input from the device
+        /// Update the hand data from the device.
         /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        protected override void UpdateControllerData(InteractionSourceState interactionSourceState)
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
+        private void UpdateHandData(InteractionSourceState interactionSourceState)
         {
-            base.UpdateControllerData(interactionSourceState);
-
 #if WINDOWS_UWP
-            // The articulated hand support is only present in the 18361 version and beyond Windows
+            // Articulated hand support is only present in the 18362 version and beyond Windows
             // SDK (which contains the V8 drop of the Universal API Contract). In particular,
             // the HandPose related APIs are only present on this version and above.
             if (!WindowsApiChecker.UniversalApiContractV8_IsAvailable)
