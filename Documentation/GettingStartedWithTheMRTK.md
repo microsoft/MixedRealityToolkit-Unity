@@ -9,7 +9,7 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 To get started with the Mixed Reality Toolkit you will need:
 
 * [Visual Studio 2017](http://dev.windows.com/downloads)
-* [Unity 2018.3.x](https://unity3d.com/get-unity/download/archive)
+* [Unity 2018.4.x](https://unity3d.com/get-unity/download/archive)
 
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
 
@@ -34,7 +34,7 @@ For instance, if you want to create a HoloLens application, switch to Universal 
 - Click on the **Switch Platform** button
 
 ## Import MRTK packages into your Unity project
-1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.
+1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. 
 
 2. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
 
