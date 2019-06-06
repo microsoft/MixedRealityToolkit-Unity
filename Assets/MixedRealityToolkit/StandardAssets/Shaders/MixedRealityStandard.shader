@@ -54,6 +54,10 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_HOVER_COLOR_OVERRIDE)] _EnableHoverColorOverride("Hover Color Override", Float) = 0.0
         _HoverColorOverride("Hover Color Override", Color) = (1.0, 1.0, 1.0, 1.0)
         [Toggle(_PROXIMITY_LIGHT)] _ProximityLight("Proximity Light", Float) = 0.0
+        [Toggle(_PROXIMITY_LIGHT_COLOR_OVERRIDE)] _EnableProximityLightColorOverride("Proximity Light Color Override", Float) = 0.0
+        [HDR]_ProximityLightCenterColorOverride("Proximity Light Center Color Override", Color) = (1.0, 0.0, 0.0, 0.0)
+        [HDR]_ProximityLightMiddleColorOverride("Proximity Light Middle Color Override", Color) = (0.0, 1.0, 0.0, 0.5)
+        [HDR]_ProximityLightOuterColorOverride("Proximity Light Outer Color Override", Color) = (0.0, 0.0, 1.0, 1.0)
         [Toggle(_PROXIMITY_LIGHT_SUBTRACTIVE)] _ProximityLightSubtractive("Proximity Light Subtractive", Float) = 0.0
         [Toggle(_PROXIMITY_LIGHT_TWO_SIDED)] _ProximityLightTwoSided("Proximity Light Two Sided", Float) = 0.0
         [Toggle(_ROUND_CORNERS)] _RoundCorners("Round Corners", Float) = 0.0
@@ -239,6 +243,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _HOVER_LIGHT
             #pragma shader_feature _HOVER_COLOR_OVERRIDE
             #pragma shader_feature _PROXIMITY_LIGHT
+            #pragma shader_feature _PROXIMITY_LIGHT_COLOR_OVERRIDE
             #pragma shader_feature _PROXIMITY_LIGHT_SUBTRACTIVE
             #pragma shader_feature _PROXIMITY_LIGHT_TWO_SIDED
             #pragma shader_feature _ROUND_CORNERS
@@ -483,6 +488,11 @@ Shader "Mixed Reality Toolkit/Standard"
 #define PROXIMITY_LIGHT_COUNT 2
 #define PROXIMITY_LIGHT_DATA_SIZE 6
             float4 _ProximityLightData[PROXIMITY_LIGHT_COUNT * PROXIMITY_LIGHT_DATA_SIZE];
+#if defined(_PROXIMITY_LIGHT_COLOR_OVERRIDE)
+            float4 _ProximityLightCenterColorOverride;
+            float4 _ProximityLightMiddleColorOverride;
+            float4 _ProximityLightOuterColorOverride;
+#endif
 #endif     
 
 #if defined(_ROUND_CORNERS)
@@ -945,7 +955,11 @@ Shader "Mixed Reality Toolkit/Standard"
                     fixed colorValue;
                     fixed proximityValue = ProximityLight(_ProximityLightData[dataIndex], _ProximityLightData[dataIndex + 1], _ProximityLightData[dataIndex + 2], i.worldPosition.xyz, i.worldNormal, colorValue);
                     pointToLight += proximityValue;
+#if defined(_PROXIMITY_LIGHT_COLOR_OVERRIDE)
+                    fixed3 proximityColor = MixProximityLightColor(_ProximityLightCenterColorOverride, _ProximityLightMiddleColorOverride, _ProximityLightOuterColorOverride, colorValue);
+#else
                     fixed3 proximityColor = MixProximityLightColor(_ProximityLightData[dataIndex + 3], _ProximityLightData[dataIndex + 4], _ProximityLightData[dataIndex + 5], colorValue);
+#endif  
 #if defined(_PROXIMITY_LIGHT_SUBTRACTIVE)
                     lightColor -= lerp(fixed3(0.0, 0.0, 0.0), proximityColor, proximityValue);
 #else
