@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected string[] shaderOptions;
 
         protected string[] actionOptions = null;
-		protected string[] speechKeywords = null;										 
+        protected string[] speechKeywords = null;										 
 
         protected static bool ProfilesSetup = false;
 
@@ -53,6 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             enabled = true;
         }
+
+        #region OnInspector
 
         protected virtual void RenderBaseInspector()
         {
@@ -521,16 +523,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             serializedObject.ApplyModifiedProperties();
         }
 
-        protected virtual State[] GetStates()
-        {
-            return instance.GetStates();
-        }
-
-        protected string[] GetEventList()
-        {
-            return new string[] { };
-        }
-
+        #endregion OnInspector
+        
+        #region Profiles
         /*
          * PROFILES
          */
@@ -553,6 +548,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             profileList.DeleteArrayElementAtIndex(index);
         }
 
+        #endregion Profiles
+
+        #region Themes
         /*
          * THEMES
          */
@@ -664,6 +662,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        protected virtual State[] GetStates()
+        {
+            return instance.GetStates();
+        }
+
+
+        #endregion Themes
+
+        #region Events
         /*
          * EVENTS
          */
@@ -707,13 +714,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             eventOptions = InteractableEvent.GetEventTypes();
         }
-		
+
+        protected string[] GetEventList()
+        {
+            return new string[] { };
+        }
+
+        #endregion Events
+
+        #region PopupUtilities
+
         /// <summary>
         /// Look for speech commands in the MRTK Speech Command profile
         /// </summary>
         /// <param name="keywords"></param>
         /// <returns></returns>
-		protected bool TryGetSpeechKeywords(out string[] keywords)
+        protected bool TryGetSpeechKeywords(out string[] keywords)
         {
             List<string> keys = new List<string>();
             
@@ -739,8 +755,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
         }
-
-		/// <summary>
+        
+        /// <summary>
         /// Get the index of the speech keyword array item based on it's name, pop-up field helper
         /// </summary>
         /// <param name="option"></param>
@@ -777,5 +793,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
     }
+    #endregion KeywordUtilities
 #endif
 }

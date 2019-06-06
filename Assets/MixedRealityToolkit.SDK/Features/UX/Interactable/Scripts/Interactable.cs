@@ -925,7 +925,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void TriggerOnClick()
         {
-			IncreaseDimensionIndex();
+            IncreaseDimensionIndex();
             SendOnClick(null);
             SetVisited(true);
         }
