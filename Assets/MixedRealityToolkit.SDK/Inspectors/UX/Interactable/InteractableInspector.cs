@@ -163,10 +163,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             }
 
-			EditorGUI.indentLevel = indentOnSectionStart + 1;												 
+            EditorGUI.indentLevel = indentOnSectionStart + 1;												 
             SerializedProperty isGlobal = serializedObject.FindProperty("IsGlobal");
             EditorGUILayout.PropertyField(isGlobal, new GUIContent("Is Global", "Like a modal, does not require focus"));
-			EditorGUI.indentLevel = indentOnSectionStart;
+            EditorGUI.indentLevel = indentOnSectionStart;
             SerializedProperty voiceCommands = serializedObject.FindProperty("VoiceCommand");
 
 			if(speechKeywords == null)
@@ -379,13 +379,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                                 }
 
                                 int[] location = new int[] { i, t, 0 };
-
                                 State[] iStates = GetStates();
 
                                 ThemeInspector.RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location, iStates);
-
                                 InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), location, AddThemeProperty);
-
                                 ThemeInspector.RenderThemeStates(themeObjSettings, iStates, 30);
 
                                 themeObj.ApplyModifiedProperties();
@@ -415,7 +412,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
 
                             themeMsg += "above to add visual effects";
-
                             SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
 
                             if (!hadDefault.boolValue && t == 0)
@@ -451,11 +447,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
 
                     EditorGUI.indentLevel = indentOnSectionStart;
-
                     EditorGUILayout.EndVertical();
-
                     themeCnt += themes.arraySize;
-
                 }
 
                 if (GUILayout.Button(new GUIContent("Add Profile")))
@@ -619,16 +612,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             themeObjSettings.DeleteArrayElementAtIndex(index);
 
             themeObj.ApplyModifiedProperties();
-
         }
 
         protected virtual SerializedObject ChangeThemeProperty(int index, SerializedObject themeObj, SerializedProperty target, bool isNew = false)
         {
-
             SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
-
             themeObjSettings = ThemeInspector.ChangeThemeProperty(index, themeObjSettings, target, GetStates(), isNew);
-
             return themeObj;
         }
 
