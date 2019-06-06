@@ -25,20 +25,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected string[] shaderOptions;
 
         protected string[] actionOptions = null;
-        protected string[] speechKeywords = null;										 
-
+        protected string[] speechKeywords = null;
         protected static bool ProfilesSetup = false;
 
         // indent tracker
         protected static int indentOnSectionStart = 0;
 
         protected List<InspectorUIUtility.ListSettings> listSettings;
-
         protected GUIStyle boxStyle;
-
         private SerializedProperty tempSettings;
-
-
+        
         protected virtual void OnEnable()
         {
             instance = (Interactable)target;
@@ -160,7 +156,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 position = EditorGUILayout.GetControlRect();
                 DrawDropDownProperty(position, actionId, actionOptions, new GUIContent("Input Actions", "The input action filter"));
-
             }
 
             EditorGUI.indentLevel = indentOnSectionStart + 1;												 
