@@ -8,7 +8,7 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 
 To get started with the Mixed Reality Toolkit you will need:
 
-* [Visual Studio 2017](http://dev.windows.com/downloads)
+* [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/)
 * [Unity 2018.4.x](https://unity3d.com/get-unity/download/archive)
 
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
