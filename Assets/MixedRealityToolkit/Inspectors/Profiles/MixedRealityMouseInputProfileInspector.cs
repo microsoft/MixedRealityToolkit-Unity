@@ -36,9 +36,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected override bool IsProfileInActiveInstance()
         {
             var profile = target as BaseMixedRealityProfile;
-            var mouseManager = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>();
-            return MixedRealityToolkit.IsInitialized && profile != null &&
-                mouseManager != null && profile == mouseManager.MouseInputProfile;
+            if (!MixedRealityToolkit.IsInitialized || profile == null)
+            {
+                return false;
+            }
+
+            var mouseManager = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>(null, false);
+            return mouseManager != null && profile == mouseManager.MouseInputProfile;
         }
     }
 }
