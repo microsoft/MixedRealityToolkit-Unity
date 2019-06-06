@@ -103,6 +103,7 @@
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html">IMixedRealityEventSystem</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html">IMixedRealityDataProviderAccess</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -175,7 +176,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DocLink(&quot;https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html&quot;)]
-public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem, IMixedRealityEventSystem, IMixedRealityService, IDisposable</code></pre>
+public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem, IMixedRealityEventSystem, IMixedRealityService, IDisposable, IMixedRealityDataProviderAccess</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -387,7 +388,8 @@ public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealityS
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProvider*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProvider(System.String)">GetDataProvider(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Get the data provider that is registered under the specified name.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -406,7 +408,8 @@ public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealityS
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The friendly name of the data provider.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -421,15 +424,20 @@ public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealityS
     <tbody>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></td>
-        <td></td>
+        <td><p>The requested data provider, or null if one cannot be found.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If more than one data provider is registered under the specified name, the first will be returned.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProvider*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider__1_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProvider``1(System.String)">GetDataProvider&lt;T&gt;(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Get the data provider that is registered under the specified name (optional) and matching the specified type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -449,7 +457,8 @@ public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealityS
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The friendly name of the data provider.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -464,7 +473,8 @@ public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealityS
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td></td>
+        <td><p>The requested data provider, or null if one cannot be found.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -479,15 +489,20 @@ public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealityS
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The desired data provider type.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider__1_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If more than one data provider is registered under the specified name, the first will be returned.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProviders_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProviders*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProviders" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProviders">GetDataProviders()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the collection of registered data providers.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -504,7 +519,8 @@ public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealityS
     <tbody>
       <tr>
         <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a>&gt;</td>
-        <td></td>
+        <td><p>Read only copy of the list of registered data providers.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -512,7 +528,8 @@ public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealityS
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProviders_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProviders*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProviders__1" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProviders``1">GetDataProviders&lt;T&gt;()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Get the collection of registered observers of the specified type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -530,7 +547,8 @@ public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealityS
     <tbody>
       <tr>
         <td><span class="xref">IReadOnlyList</span>&lt;T&gt;</td>
-        <td></td>
+        <td><p>Read-only copy of the list of registered data providers that implement the specified type.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -545,7 +563,8 @@ public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealityS
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The desired data provider type</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1067,6 +1086,9 @@ This method is called once all services have been registered in the Mixed Realit
   </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html">IMixedRealityDataProviderAccess</a>
   </div>
 </article>
           </div>
