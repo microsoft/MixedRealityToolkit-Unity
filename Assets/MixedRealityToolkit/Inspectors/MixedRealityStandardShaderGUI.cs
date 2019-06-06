@@ -130,6 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Light Color");
             public static GUIContent hoverColorOverride = new GUIContent("Color", "Override Hover Light Color");
             public static GUIContent proximityLight = new GUIContent("Proximity Light", "Enable utilization of Proximity Light(s)");
+            public static GUIContent proximityLightSubtractive = new GUIContent("Subtractive", "Proximity Lights Remove Light from a Surface, Used to Mimic a Shadow");
             public static GUIContent proximityLightTwoSided = new GUIContent("Two Sided", "Proximity Lights Apply to Both Sides of a Surface");
             public static GUIContent roundCorners = new GUIContent("Round Corners", "(Assumes UVs Specify Borders of Surface, Works Best on Unity Cube, Quad, and Plane)");
             public static GUIContent roundCornerRadius = new GUIContent("Unit Radius", "Rounded Rectangle Corner Unit Sphere Radius");
@@ -221,6 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty enableHoverColorOverride;
         protected MaterialProperty hoverColorOverride;
         protected MaterialProperty proximityLight;
+        protected MaterialProperty proximityLightSubtractive;
         protected MaterialProperty proximityLightTwoSided;
         protected MaterialProperty roundCorners;
         protected MaterialProperty roundCornerRadius;
@@ -311,6 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             enableHoverColorOverride = FindProperty("_EnableHoverColorOverride", props);
             hoverColorOverride = FindProperty("_HoverColorOverride", props);
             proximityLight = FindProperty("_ProximityLight", props);
+            proximityLightSubtractive = FindProperty("_ProximityLightSubtractive", props);
             proximityLightTwoSided = FindProperty("_ProximityLightTwoSided", props);
             roundCorners = FindProperty("_RoundCorners", props);
             roundCornerRadius = FindProperty("_RoundCornerRadius", props);
@@ -698,6 +701,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (PropertyEnabled(proximityLight))
             {
+                materialEditor.ShaderProperty(proximityLightSubtractive, Styles.proximityLightSubtractive, 2);
                 materialEditor.ShaderProperty(proximityLightTwoSided, Styles.proximityLightTwoSided, 2);
                 GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ProximityLight), Styles.proximityLight.text), EditorStyles.helpBox, new GUILayoutOption[0]);
             }

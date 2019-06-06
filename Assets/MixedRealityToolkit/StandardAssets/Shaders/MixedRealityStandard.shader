@@ -54,6 +54,7 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_HOVER_COLOR_OVERRIDE)] _EnableHoverColorOverride("Hover Color Override", Float) = 0.0
         _HoverColorOverride("Hover Color Override", Color) = (1.0, 1.0, 1.0, 1.0)
         [Toggle(_PROXIMITY_LIGHT)] _ProximityLight("Proximity Light", Float) = 0.0
+        [Toggle(_PROXIMITY_LIGHT_SUBTRACTIVE)] _ProximityLightSubtractive("Proximity Light Subtractive", Float) = 0.0
         [Toggle(_PROXIMITY_LIGHT_TWO_SIDED)] _ProximityLightTwoSided("Proximity Light Two Sided", Float) = 0.0
         [Toggle(_ROUND_CORNERS)] _RoundCorners("Round Corners", Float) = 0.0
         _RoundCornerRadius("Round Corner Radius", Range(0.0, 0.5)) = 0.25
@@ -238,6 +239,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _HOVER_LIGHT
             #pragma shader_feature _HOVER_COLOR_OVERRIDE
             #pragma shader_feature _PROXIMITY_LIGHT
+            #pragma shader_feature _PROXIMITY_LIGHT_SUBTRACTIVE
             #pragma shader_feature _PROXIMITY_LIGHT_TWO_SIDED
             #pragma shader_feature _ROUND_CORNERS
             #pragma shader_feature _BORDER_LIGHT
@@ -927,7 +929,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
                 }
 #if defined(_HOVER_COLOR_OVERRIDE)
-                lightColor = _HoverColorOverride.rgb;
+                lightColor = _HoverColorOverride.rgb * pointToLight;
 #endif
 #endif
 
@@ -944,7 +946,11 @@ Shader "Mixed Reality Toolkit/Standard"
                     fixed proximityValue = ProximityLight(_ProximityLightData[dataIndex], _ProximityLightData[dataIndex + 1], _ProximityLightData[dataIndex + 2], i.worldPosition.xyz, i.worldNormal, colorValue);
                     pointToLight += proximityValue;
                     fixed3 proximityColor = MixProximityLightColor(_ProximityLightData[dataIndex + 3], _ProximityLightData[dataIndex + 4], _ProximityLightData[dataIndex + 5], colorValue);
+#if defined(_PROXIMITY_LIGHT_SUBTRACTIVE)
+                    lightColor -= lerp(fixed3(0.0, 0.0, 0.0), proximityColor, proximityValue);
+#else
                     lightColor += lerp(fixed3(0.0, 0.0, 0.0), proximityColor, proximityValue);
+#endif    
                 }
 #endif    
 
