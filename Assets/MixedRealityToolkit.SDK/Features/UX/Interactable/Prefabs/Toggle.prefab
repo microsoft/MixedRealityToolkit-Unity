@@ -433,13 +433,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  touchableCollider: {fileID: 65620022048249504}
+  distBack: 0.25
+  debounceThreshold: 0.01
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0.05, y: 0, z: -0.0125}
-  eventsToReceive: 1
   touchableSurface: 0
   bounds: {x: 0.18, y: 0.05}
-  touchableCollider: {fileID: 65620022048249504}
 --- !u!1 &1935185642534412
 GameObject:
   m_ObjectHideFlags: 0

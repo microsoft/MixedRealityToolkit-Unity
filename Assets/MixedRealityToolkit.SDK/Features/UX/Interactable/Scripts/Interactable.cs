@@ -147,8 +147,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Clicking
         //
 
-        // A click must occur within this time after an input down
-        protected float clickTime = 0.5f;
+        // A click must occur within this many seconds after an input down
+        protected float clickTime = 1.5f;
         protected Coroutine clickValidTimer;
         // how many clicks does it take?
         protected int clickCount = 0;
@@ -1041,14 +1041,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            SetPress(true);
+            SetInputDown();
             SetPhysicalTouch(true);
             eventData.Use();
         }
 
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-            SetPress(false);
+            SetInputUp();
             SetPhysicalTouch(false);
             eventData.Use();
         }
