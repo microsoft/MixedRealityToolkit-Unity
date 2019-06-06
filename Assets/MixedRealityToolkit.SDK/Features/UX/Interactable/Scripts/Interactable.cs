@@ -249,8 +249,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 InputSystem.Register(gameObject);
             }
 
-            // validate states and reset if needed
-            int pointerCount = focusingPointers.Count - 1;
             focusingPointers.RemoveAll((focusingPointer) => (Interactable)focusingPointer.FocusTarget != this);
 
             if (focusingPointers.Count == 0)
