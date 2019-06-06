@@ -90,6 +90,13 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+        private bool usingMixedRealityToolkitObject = false;
+
+        private void Awake()
+        {
+            usingMixedRealityToolkitObject = (GameObject.Find("MixedRealityToolkit") != null);    
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -99,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 gravityDistorter = GetComponent<DistorterGravity>();
             }
 
-            if (MixedRealityToolkit.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
+            if (TeleportSystem != null && !lateRegisterTeleport)
             {
                 TeleportSystem.Register(gameObject);
             }
@@ -109,7 +116,14 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             base.Start();
 
-            if (lateRegisterTeleport && MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled)
+            // todo: this wont work if mixing and matching MRTK and standalone teleport system
+            // If using the MixedRealityToolkit scene object, check to ensure the teleport system has been enabled.
+            //if (usingMixedRealityToolkitObject && !MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled)
+            //{
+            //    return;
+            //}
+
+            if (lateRegisterTeleport)
             {
                 if (TeleportSystem == null)
                 {
@@ -181,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
-        public override bool IsInteractionEnabled => !isTeleportRequestActive && teleportEnabled && MixedRealityToolkit.IsTeleportSystemEnabled;
+        public override bool IsInteractionEnabled => !isTeleportRequestActive && teleportEnabled;
 
         [SerializeField]
         [Range(0f, 360f)]
@@ -321,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             // Don't process input if we've got an active teleport request in progress.
-            if (isTeleportRequestActive || !MixedRealityToolkit.IsTeleportSystemEnabled)
+            if (isTeleportRequestActive)
             {
                 return;
             }
