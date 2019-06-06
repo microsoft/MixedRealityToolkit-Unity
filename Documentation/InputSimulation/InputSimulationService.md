@@ -7,6 +7,9 @@ The Input Simulation Service emulates the behaviour of devices and platforms tha
 
 Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.
 
+  | __Warning__: This does not work when using Unity's XR Holographic Emulation -> Emulation Mode = "Simulate in Editor". Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = "None"|
+  | --- |
+
 ## Enabling the Input Simulation Service
 
 Input simulation is enabled by default in MRTK.
