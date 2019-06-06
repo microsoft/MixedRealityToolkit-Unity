@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
@@ -1039,14 +1039,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            SetInputDown();
+            SetPress(true);
             SetPhysicalTouch(true);
             eventData.Use();
         }
 
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-            SetInputUp();
+            SetPress(false);
             SetPhysicalTouch(false);
             eventData.Use();
         }
@@ -1115,7 +1115,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void SetInputUp()
         {
-            if (!CanInteract() || !HasPress)
+            if (!CanInteract())
             {
                 return;
             }

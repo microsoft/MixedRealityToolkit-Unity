@@ -3078,7 +3078,7 @@ MonoBehaviour:
     id: 0
     description: 
     axisConstraint: 0
-  InputActionId: 0
+  InputActionId: 10
   IsGlobal: 0
   Dimensions: 1
   CanSelect: 1
