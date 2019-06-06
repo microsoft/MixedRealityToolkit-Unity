@@ -386,8 +386,8 @@ namespace Microsoft.MixedReality.Toolkit
                     Debug.LogError("Failed to start the Input System!");
                 }
 
-                args = new object[] { this, InputSystem, ActiveProfile.InputSystemProfile };
-                if (!RegisterDataProvider<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType, args: args))
+                args = new object[] { this, ActiveProfile.InputSystemProfile };
+                if (!RegisterService<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType, args: args))
                 {
                     Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
                     return;
