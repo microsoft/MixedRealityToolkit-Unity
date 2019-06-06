@@ -89,6 +89,13 @@
 <li>HoloLens 2 articulated hand tracking</li>
 </ul>
 <p>Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Warning</strong>: This does not work when using Unity's XR Holographic Emulation -&gt; Emulation Mode = &quot;Simulate in Editor&quot;. Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = &quot;None&quot;</th>
+</tr>
+</thead>
+</table>
 <h2 id="enabling-the-input-simulation-service">Enabling the Input Simulation Service</h2>
 <p>Input simulation is enabled by default in MRTK.</p>
 <p>Input simulation is an optional <a href="../MixedRealityServices.html">Mixed Reality service</a>. It can be added as a data provider in the <a href="../TODO.html">Input System profile</a>.</p>
@@ -157,7 +164,18 @@
 <a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png">
   <img src="../Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png" title="Full Hand Mesh" width="80%" class="center">
 </a>
-<p>Hands can be moved further or closer to the camera using the <em>mouse wheel</em>.</p>
+<p>Hands can be moved further or closer to the camera using the <em>mouse wheel</em>.
+By default the hand will move somewhat slowly in response to mouse scroll,
+and this can be made faster by changing the <em>Hand Depth Multiplier</em> to a
+larger number.</p>
+<p>The initial distance from the camera that the hand appears at is controlled by
+<em>Default Hand Distance.</em></p>
+<p>By default, the simulated hand joints will be perfectly still. Note that on devices there
+will always be some amount of jitter/noise due to the underlying hand tracking.
+You can see this on the device when you have hand mesh or joints enabled (and
+see how it has slightly jitter even if you have your hand perfectly still). It's possible
+to simulate jitter by changing <em>Hand Jitter Amount</em> to a positive value (for example, 0.1
+as is shown in the image above).</p>
 <a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png">
   <img src="../Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png" title="Full Hand Mesh" width="80%" class="center">
 </a>
