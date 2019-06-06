@@ -7,11 +7,11 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Interface to handle raycasts into the scene.
+    /// Interface to handle raycasts into the scene. Used by FocusProvider to perform ray and sphere cast queries for pointers.
     /// </summary>
     /// <remarks>
-    /// Default implementations would likely use Unity's physics system to get hit results from Colliders. However, with a custom
-    /// implementation of the interface, the raycast does not have to rely only on Unity-based Colliders to provide hit results, e.g. a
+    /// Implementations of IMixedRealityRaycastProvider would likely use Unity's physics system to get hit results from Colliders. However,
+    /// in a custom implementation, the raycast does not have to rely only on Unity-based Colliders to provide hit results, e.g. a
     /// GameObject may use a different mechanism for raycasting, and with a custom implementation, it could be included in the hit result.
     /// </remarks>
     public interface IMixedRealityRaycastProvider : IMixedRealityDataProvider
