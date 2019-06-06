@@ -127,6 +127,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected State lastState;
         protected bool wasDisabled = false;
 
+        // check for isGlobal or RequiresFocus changes
+        protected bool requiresFocusValueCheck;
+        protected bool isGlobalValueCheck;
+
         // cache of current dimension
         protected int dimensionIndex = 0;
 
@@ -244,10 +248,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            if (IsGlobal)
+            if (IsGlobal || RequiresFocus)
             {
                 InputSystem.Register(gameObject);
             }
+
+            requiresFocusValueCheck = RequiresFocus;
+            isGlobalValueCheck = IsGlobal;
 
             focusingPointers.RemoveAll((focusingPointer) => (Interactable)focusingPointer.FocusTarget != this);
 
@@ -259,7 +266,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnDisable()
         {
-            if (IsGlobal)
+            if (IsGlobal || RequiresFocus)
+            {
+                InputSystem.Unregister(gameObject);
+            }
+        }
+
+        private void RegisterGlobalListeners(bool register)
+        {
+            if (register)
+            {
+                InputSystem.Register(gameObject);
+            }
+            else
             {
                 InputSystem.Unregister(gameObject);
             }
@@ -315,6 +334,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             lastState = StateManager.CurrentState();
+            
+            if (requiresFocusValueCheck != RequiresFocus || isGlobalValueCheck != IsGlobal)
+            {
+                requiresFocusValueCheck = RequiresFocus;
+                isGlobalValueCheck = IsGlobal;
+
+                RegisterGlobalListeners(RequiresFocus || IsGlobal);
+            }
         }
 
         #endregion MonoBehaviorImplimentation
@@ -883,6 +910,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             IncreaseDimensionIndex();
             SendOnClick(null);
+            SetVisited(true);
         }
 
         /// <summary>
@@ -984,6 +1012,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (eventData.Command.Keyword == VoiceCommand && (!RequiresFocus || HasFocus) && Enabled)
             {
                 StartGlobalVisual(true);
+                SetVoiceCommand(true);
                 SendVoiceCommands(VoiceCommand, 0, 1);
                 TriggerOnClick();
                 eventData.Use();
