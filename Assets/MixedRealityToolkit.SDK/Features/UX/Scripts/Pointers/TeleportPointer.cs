@@ -90,6 +90,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+<<<<<<< HEAD
+=======
+        private bool usingMixedRealityToolkitObject = false;
+
+>>>>>>> 6c13a8766... fix pointer 'mediation' when using both svc locator and standalone teleport
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -99,9 +104,13 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 gravityDistorter = GetComponent<DistorterGravity>();
             }
 
+<<<<<<< HEAD
             if (MixedRealityToolkit.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
+=======
+            if (!lateRegisterTeleport)
+>>>>>>> 6c13a8766... fix pointer 'mediation' when using both svc locator and standalone teleport
             {
-                TeleportSystem.Register(gameObject);
+                TeleportSystem?.Register(gameObject);
             }
         }
 
@@ -109,7 +118,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             base.Start();
 
+<<<<<<< HEAD
             if (lateRegisterTeleport && MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled)
+=======
+            if (lateRegisterTeleport)
+>>>>>>> 6c13a8766... fix pointer 'mediation' when using both svc locator and standalone teleport
             {
                 if (TeleportSystem == null)
                 {
@@ -128,7 +141,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         return;
                     }
                 }
-
                 lateRegisterTeleport = false;
                 TeleportSystem.Register(gameObject);
             }
@@ -321,7 +333,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             // Don't process input if we've got an active teleport request in progress.
+<<<<<<< HEAD
             if (isTeleportRequestActive || !MixedRealityToolkit.IsTeleportSystemEnabled)
+=======
+            if (isTeleportRequestActive || TeleportSystem == null)
+>>>>>>> 6c13a8766... fix pointer 'mediation' when using both svc locator and standalone teleport
             {
                 return;
             }
