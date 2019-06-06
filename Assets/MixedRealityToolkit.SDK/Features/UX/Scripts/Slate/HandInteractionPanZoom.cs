@@ -839,8 +839,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion IMixedRealitySourceStateHandler Methods
 
         #region Unused Methods
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
-        public void OnInputPressed(InputEventData<float> eventData) { }
         public void OnSourceDetected(SourceStateEventData eventData) { }   
         public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
