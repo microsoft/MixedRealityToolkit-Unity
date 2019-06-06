@@ -15,12 +15,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public static class InputAnimationMenu
     {
-        private static void ImportInputAnimation(string outputDirectory)
+        private static void ImportInputAnimation(string filepath, string outputDirectory)
         {
-            string filepath = EditorUtility.OpenFilePanel(
-                "Select input animation file",
-                "",
-                InputAnimationSerializationUtils.Extension);
+            if (filepath.Length == 0)
+            {
+                filepath = EditorUtility.OpenFilePanel(
+                    "Select input animation file",
+                    "",
+                    InputAnimationSerializationUtils.Extension);
+            }
 
             if (filepath.Length > 0)
             {
@@ -50,13 +53,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [MenuItem("Mixed Reality Toolkit/Utilities/Import Input Animation")]
         private static void ImportInputAnimationFromMenu()
         {
-            ImportInputAnimation(GetOutputAssetDirectory());
+            ImportInputAnimation("", GetOutputAssetDirectory());
         }
 
         [MenuItem("Assets/Mixed Reality Toolkit/Import Input Animation")]
         private static void ImportInputAnimationFromAssets()
         {
-            ImportInputAnimation(GetOutputAssetDirectory());
+            ImportInputAnimation(GetAssetFilePath(), GetOutputAssetDirectory());
         }
 
         private static void ExportInputAnimation(AnimationClip clip, string outputDirectory)
@@ -117,6 +120,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static bool ExportInputAnimationFromAssetsValidation()
         {
             return Selection.activeObject is AnimationClip;
+        }
+
+        private static string GetAssetFilePath()
+        {
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            if (File.Exists(path))
+            {
+                return path;
+            }
+            return "";
         }
 
         private static string GetOutputAssetDirectory()
