@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b71cb900fa9dec5488df2deb180db58f, type: 3}
   m_Name: DefaultHoloLens2InputSystemProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   dataProviderConfigurations:
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager,
