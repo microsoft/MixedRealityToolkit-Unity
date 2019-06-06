@@ -646,15 +646,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (data.currentPointer != null)
             {
                 Vector3 pt = data.currentPointer.Position;
-                //if (data.currentController.IsRotationAvailable)
-                //{
-                //   // Vector3 dir = controller.InputSource.Pointers[0].Rays[0].Direction * (controller.InputSource.Pointers[0].SphereCastRadius);
-                //    data.initialProjectedOffset = SnapFingerToQuad(pt);
-                //}
-                //else//pointer is GGVPOinter and has no SphereCastRadius
-                //{
-                    data.initialProjectedOffset = SnapFingerToQuad(pt);
-                //}
+                data.initialProjectedOffset = SnapFingerToQuad(pt);
             }
 
             data.touchingQuadCoord = GetUVFromPoint(data.touchingPoint);
