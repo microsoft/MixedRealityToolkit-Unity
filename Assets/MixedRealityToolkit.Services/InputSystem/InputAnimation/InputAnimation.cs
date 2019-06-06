@@ -70,6 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Dictionary<TrackedHandJoint, PoseCurves> handJointCurvesRight;
         [SerializeField]
         private PoseCurves cameraCurves;
+        public PoseCurves CameraCurves => cameraCurves;
 
         /// <summary>
         /// Number of markers in the animation.
@@ -99,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             markers = new List<InputAnimationMarker>();
         }
 
-        protected bool TryGetHandJointCurves(Handedness handedness, TrackedHandJoint joint, out PoseCurves curves)
+        public bool TryGetHandJointCurves(Handedness handedness, TrackedHandJoint joint, out PoseCurves curves)
         {
             if (handedness == Handedness.Left)
             {
@@ -111,6 +112,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             curves = new PoseCurves();
             return false;
+        }
+
+        public PoseCurves CreateHandJointCurves(Handedness handedness, TrackedHandJoint joint)
+        {
+            if (handedness == Handedness.Left)
+            {
+                if (!handJointCurvesLeft.TryGetValue(joint, out PoseCurves curves))
+                {
+                    curves = new PoseCurves();
+                    handJointCurvesLeft.Add(joint, curves);
+                }
+                return curves;
+            }
+            else if (handedness == Handedness.Right)
+            {
+                if (!handJointCurvesRight.TryGetValue(joint, out PoseCurves curves))
+                {
+                    curves = new PoseCurves();
+                    handJointCurvesRight.Add(joint, curves);
+                }
+                return curves;
+            }
+            return null;
         }
 
         /// <summary>
