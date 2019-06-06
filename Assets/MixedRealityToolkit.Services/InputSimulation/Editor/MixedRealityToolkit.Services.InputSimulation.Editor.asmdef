@@ -5,7 +5,6 @@
         "Microsoft.MixedReality.Toolkit.Core.Inspectors",
         "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
-        "Microsoft.MixedReality.Toolkit.Services.InputSystem.InputAnimation",
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation"
     ],
     "optionalUnityReferences": [],

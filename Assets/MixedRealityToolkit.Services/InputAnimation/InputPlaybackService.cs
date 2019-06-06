@@ -1,0 +1,154 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+using System.IO;
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.Input
+{
+    /// <summary>
+    /// Plays back input animation via the input simulation system.
+    /// </summary>
+    [MixedRealityDataProvider(
+        typeof(IMixedRealityInputSystem),
+        (SupportedPlatforms)(-1), // Supported on all platforms
+        "Input Playback Service")]
+    public class InputPlaybackService :
+        BaseInputDeviceManager,
+        IMixedRealityInputPlaybackService
+    {
+        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public InputPlaybackService(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile)
+        {}
+
+        private IInputSimulationService inputSimService = null;
+        private IInputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
+
+        private InputAnimation animation = null;
+        public InputAnimation Animation
+        {
+            get { return animation; }
+            set
+            {
+                animation = value;
+                Evaluate();
+            }
+        }
+
+        public float Duration => (animation != null ? animation.Duration : 0.0f);
+
+        private bool isPlaying = false;
+        public bool IsPlaying => isPlaying;
+
+        private float localTime = 0.0f;
+        public float LocalTime
+        {
+            get { return localTime; }
+            set
+            {
+                localTime = value;
+                Evaluate();
+            }
+        }
+
+        public void Play()
+        {
+            if (animation != null)
+            {
+                SetPlaying(true);
+            }
+        }
+
+        public void Stop()
+        {
+            SetPlaying(false);
+            localTime = 0.0f;
+
+            Evaluate();
+        }
+
+        public void Pause()
+        {
+            SetPlaying(false);
+        }
+
+        /// <inheritdoc />
+        public override void Update()
+        {
+            if (isPlaying)
+            {
+                localTime += Time.deltaTime;
+
+                if (localTime >= Duration)
+                {
+                    localTime = 0.0f;
+                    SetPlaying(false);
+                }
+
+                Evaluate();
+            }
+        }
+
+        private void SetPlaying(bool playing)
+        {
+            isPlaying = playing;
+            if (InputSimService != null)
+            {
+                // Disable user input while playing animation
+                InputSimService.UserInputEnabled = !isPlaying;
+            }
+        }
+
+        private void Evaluate()
+        {
+            if (animation == null)
+            {
+                SetPlaying(false);
+                localTime = 0.0f;
+                return;
+            }
+
+            if (CameraCache.Main)
+            {
+                var cameraPose = animation.EvaluateCameraPose(localTime);
+                CameraCache.Main.transform.SetPositionAndRotation(cameraPose.Position, cameraPose.Rotation);
+            }
+
+            if (InputSimService != null)
+            {
+                EvaluateHandData(InputSimService.HandDataLeft, Handedness.Left);
+                EvaluateHandData(InputSimService.HandDataRight, Handedness.Right);
+            }
+        }
+
+        private void EvaluateHandData(SimulatedHandData handData, Handedness handedness)
+        {
+            animation.EvaluateHandState(localTime, handedness, out bool isTracked, out bool isPinching);
+
+            handData.Update(isTracked, isPinching,
+                (MixedRealityPose[] joints) =>
+                {
+                    for (int i = 0; i < jointCount; ++i)
+                    {
+                        joints[i] = animation.EvaluateHandJoint(localTime, handedness, (TrackedHandJoint)i);
+                    }
+                });
+        }
+    }
+}
