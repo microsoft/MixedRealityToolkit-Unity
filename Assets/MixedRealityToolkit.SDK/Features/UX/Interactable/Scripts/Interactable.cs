@@ -621,10 +621,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnFocusEnter(FocusEventData eventData)
         {
-            Debug.Assert(focusingPointers.Count > 0, "OnFocusEnter focusingPointers.Count should be zero");
             if (CanInteract())
             {
-                SetFocus(true);
+                SetFocus(focusingPointers.Count > 0);
             }
         }
 
