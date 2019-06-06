@@ -206,6 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region Private Methods
         private bool TryGetMRControllerRayPoint(HandPanData data, out Vector3 rayPoint)
         {
+           
             if (data.currentPointer != null && data.currentController != null && data.currentController.IsPositionAvailable)
             {
                 rayPoint = data.touchingInitialPt + (SnapFingerToQuad(data.currentPointer.Position) - data.initialProjectedOffset);
@@ -226,17 +227,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (data.IsActive == true)
                 {
-                    if (TryGetMRControllerRayPoint(data, out tryHandPoint))
-                    {
-                        tryGetSucceeded = true;
-                    }
-                    else if (data.IsSourceNear == true)
+                    if (data.IsSourceNear == true)
                     {
                         tryGetSucceeded = TryGetHandPositionFromController(data.currentController, TrackedHandJoint.IndexTip, out tryHandPoint);
                     }
                     else
                     {
                         tryGetSucceeded = TryGetHandPositionFromController(data.currentController, TrackedHandJoint.Palm, out tryHandPoint);
+                    }
+                    if (!tryGetSucceeded)
+                    {
+                        tryGetSucceeded = TryGetMRControllerRayPoint(data, out tryHandPoint);
                     }
 
                     if (tryGetSucceeded == true)
