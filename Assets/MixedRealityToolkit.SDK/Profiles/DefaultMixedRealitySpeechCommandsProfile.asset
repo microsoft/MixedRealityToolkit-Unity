@@ -30,3 +30,17 @@ MonoBehaviour:
       id: 1
       description: Select
       axisConstraint: 2
+  - localizationKey: 
+    keyword: Toggle Diagnostics
+    keyCode: 48
+    action:
+      id: 14
+      description: Toggle Diagnostics
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Toggle Profiler
+    keyCode: 57
+    action:
+      id: 15
+      description: Toggle Profiler
+      axisConstraint: 0

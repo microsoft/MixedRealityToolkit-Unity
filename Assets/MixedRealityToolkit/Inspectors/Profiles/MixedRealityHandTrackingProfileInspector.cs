@@ -56,9 +56,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         protected override bool IsProfileInActiveInstance()
         {
             var profile = target as BaseMixedRealityProfile;
-            return MixedRealityToolkit.IsInitialized &&
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
                    MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
-                   profile != null &&
                    profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile;
         }
     }

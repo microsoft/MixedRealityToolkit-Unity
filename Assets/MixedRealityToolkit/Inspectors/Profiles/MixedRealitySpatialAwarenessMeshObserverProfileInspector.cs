@@ -127,6 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             var profile = target as BaseMixedRealityProfile;
 
             return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
                    MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile != null &&
                    MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile.ObserverConfigurations != null &&
                    MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile.ObserverConfigurations.Any(s => s.ObserverProfile == profile);
