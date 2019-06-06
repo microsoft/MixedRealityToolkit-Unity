@@ -92,11 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         private bool usingMixedRealityToolkitObject = false;
 
-        private void Awake()
-        {
-            usingMixedRealityToolkitObject = (GameObject.Find("MixedRealityToolkit") != null);    
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -106,22 +101,15 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 gravityDistorter = GetComponent<DistorterGravity>();
             }
 
-            if (TeleportSystem != null && !lateRegisterTeleport)
+            if (!lateRegisterTeleport)
             {
-                TeleportSystem.Register(gameObject);
+                TeleportSystem?.Register(gameObject);
             }
         }
 
         protected override async void Start()
         {
             base.Start();
-
-            // todo: this wont work if mixing and matching MRTK and standalone teleport system
-            // If using the MixedRealityToolkit scene object, check to ensure the teleport system has been enabled.
-            //if (usingMixedRealityToolkitObject && !MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled)
-            //{
-            //    return;
-            //}
 
             if (lateRegisterTeleport)
             {
@@ -142,7 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         return;
                     }
                 }
-
                 lateRegisterTeleport = false;
                 TeleportSystem.Register(gameObject);
             }
@@ -335,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             // Don't process input if we've got an active teleport request in progress.
-            if (isTeleportRequestActive)
+            if (isTeleportRequestActive || TeleportSystem == null)
             {
                 return;
             }
