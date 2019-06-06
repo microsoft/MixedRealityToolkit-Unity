@@ -191,11 +191,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
             set
             {
-                if (value != displayOption)
-                {
-                    displayOption = value;
-                    ApplyUpdatedMeshDisplayOption(displayOption);
-                }
+                displayOption = value;
+                ApplyUpdatedMeshDisplayOption(displayOption);
             }
         }
 

@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         Vector3 normal;
                         float dist = prox.DistanceToTouchable(Position, out normal);
-                        if (dist < closestDistance)
+                        if (dist < prox.DistFront && dist < closestDistance)
                         {   
                             closestDistance = dist;
                             newClosestTouchable = prox;
