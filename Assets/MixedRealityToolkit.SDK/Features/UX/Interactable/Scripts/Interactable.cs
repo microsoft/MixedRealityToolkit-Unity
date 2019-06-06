@@ -1039,21 +1039,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region TouchHandlers
 
-        void OnTouchStarted(HandTrackingInputEventData eventData)
+        public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
             SetInputDown();
             SetPhysicalTouch(true);
             eventData.Use();
         }
 
-        void OnTouchCompleted(HandTrackingInputEventData eventData)
+        public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
             SetInputUp();
             SetPhysicalTouch(false);
             eventData.Use();
         }
 
-        void OnTouchUpdated(HandTrackingInputEventData eventData){}
+        public void OnTouchUpdated(HandTrackingInputEventData eventData){}
         #endregion TouchHandlers
 
         #region InputHandlers
