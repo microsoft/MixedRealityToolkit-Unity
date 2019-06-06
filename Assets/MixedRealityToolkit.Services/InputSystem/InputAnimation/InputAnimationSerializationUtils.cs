@@ -176,8 +176,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             WriteBoolCurve(clip, writer, "rightHand.isTracked");
             WriteBoolCurve(clip, writer, "leftHand.isPinching");
             WriteBoolCurve(clip, writer, "rightHand.isPinching");
-            WriteJointCurves(clip, writer, "leftHand.joints");
-            WriteJointCurves(clip, writer, "rightHand.joints");
+            WriteJointCurves(clip, writer, "leftHand.joint");
+            WriteJointCurves(clip, writer, "rightHand.joint");
             WriteMarkerList(clip, writer);
         }
 
