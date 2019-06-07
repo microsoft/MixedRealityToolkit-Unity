@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -16,20 +17,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public InteractableThemePropertyValueTypes Type;
         public List<InteractableThemePropertyValue> Values;
         public InteractableThemePropertyValue StartValue;
-        public int PropId;
+        public int PropId; // i.e OptionIndex
         public List<ShaderProperties> ShaderOptions;
         public List<string> ShaderOptionNames;
         public InteractableThemePropertyValue Default;
         public string ShaderName;
 
-        public string GetShaderPropId()
+        private List<int> ShaderPropertyIDs = null;
+        private const string DefaultProperty = "_Color";
+
+        public int GetShaderPropertyId()
         {
-            if (ShaderOptionNames.Count > PropId)
+            // Lazy load Shader Properties
+            if (ShaderPropertyIDs == null)
+            {
+                ShaderPropertyIDs = new List<int>(ShaderOptionNames.Count);
+                for(int i = 0; i < this.ShaderOptionNames.Count; i++)
+                {
+                    ShaderPropertyIDs.Add(Shader.PropertyToID(this.ShaderOptionNames[i]));
+                }
+            }
+
+            if (ShaderPropertyIDs.Count > PropId)
+            {
+                return ShaderPropertyIDs[PropId];
+            }
+
+            return Shader.PropertyToID(DefaultProperty);
+        }
+
+        public string GetShaderPropertyName()
+        {
+            if (ShaderOptions.Count > PropId)
             {
                 return ShaderOptionNames[PropId];
             }
 
-            return "_Color";
+            return DefaultProperty;
         }
     }
 }
