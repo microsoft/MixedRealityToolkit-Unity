@@ -12,8 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class ControllerPoseSynchronizer : InputSystemGlobalListener, IMixedRealityControllerPoseSynchronizer
     {
-        protected bool hasSource = false;
-
         #region IMixedRealityControllerPoseSynchronizer Implementation
 
         [SerializeField]
@@ -93,16 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region IMixedRealitySourcePoseHandler Implementation
 
         /// <inheritdoc />
-        public virtual void OnSourceDetected(SourceStateEventData eventData)
-        {
-            hasSource = true;
-        }
+        public virtual void OnSourceDetected(SourceStateEventData eventData) { }
 
         /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            hasSource = false;
-
             if (eventData.SourceId == Controller?.InputSource.SourceId &&
                 eventData.Controller?.ControllerHandedness == Handedness)
             {

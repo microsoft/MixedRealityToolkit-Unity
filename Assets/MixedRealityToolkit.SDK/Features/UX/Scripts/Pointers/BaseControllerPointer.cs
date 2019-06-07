@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 cursorInstance.name = $"{Handedness}_{name}_Cursor";
 
                 BaseCursor oldC = BaseCursor as BaseCursor;
-                if (oldC != null && hasSource)
+                if (oldC != null && enabled)
                 {
                     oldC.VisibleSourcesCount--;
                 }
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
 
                 BaseCursor newC = BaseCursor as BaseCursor;
-                if (newC != null && hasSource)
+                if (newC != null && enabled)
                 {
                     newC.VisibleSourcesCount++;
                 }
@@ -136,6 +136,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     renderer.enabled = false;
                 }
             }
+
+            SetCursor();
+
+            BaseCursor c = BaseCursor as BaseCursor;
+            if (c != null)
+            {
+                c.VisibleSourcesCount++;
+            }
         }
 
         protected override async void Start()
@@ -156,14 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Destroy(gameObject);
                 return;
             }
-
-            SetCursor();
-
-            BaseCursor c = BaseCursor as BaseCursor;
-            if (c != null)
-            {
-                c.VisibleSourcesCount++;
-            }
         }
 
         protected override void OnDisable()
@@ -179,6 +179,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsSelectPressed = false;
             HasSelectPressedOnce = false;
             BaseCursor?.SetVisibility(false);
+
+            BaseCursor c = BaseCursor as BaseCursor;
+            if (c != null)
+            {
+                c.VisibleSourcesCount--;
+            }
         }
 
         #endregion  MonoBehaviour Implementation
@@ -442,12 +448,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 IsSelectPressed = false;
-
-                BaseCursor c = BaseCursor as BaseCursor;
-                if (c != null)
-                {
-                    c.VisibleSourcesCount--;
-                }
             }
         }
 

@@ -247,14 +247,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion  IMixedRealityInputHandler Implementation
 
-        protected override void Start()
+        protected override void OnEnable()
         {
-            base.Start();
+            base.OnEnable();
             this.gazeProvider = InputSystem.GazeProvider as GazeProvider;
             BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
             if (c != null)
             {
                 c.VisibleSourcesCount++;
+            }
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            if (gazeProvider != null)
+            {
+                BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
+                if (c != null)
+                {
+                    c.VisibleSourcesCount--;
+                }
             }
         }
 
@@ -301,15 +319,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     // Raise OnInputUp if pointer is lost while select is pressed
                     InputSystem.RaisePointerUp(this, selectAction, lastControllerHandedness);
-                }
-
-                if (gazeProvider != null)
-                {
-                    BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
-                    if (c != null)
-                    {
-                        c.VisibleSourcesCount--;
-                    }
                 }
                 
                 // Destroy the pointer since nobody else is destroying us
