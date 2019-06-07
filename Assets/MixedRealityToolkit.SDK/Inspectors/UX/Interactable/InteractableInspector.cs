@@ -192,6 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 EditorGUI.EndProperty();
             }
+
             
             // show requires gaze because voice command has a value
             if (!string.IsNullOrEmpty(voiceCommands.stringValue))
