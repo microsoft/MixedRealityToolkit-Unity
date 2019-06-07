@@ -252,7 +252,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             TeleportSurfaceResult = TeleportSurfaceResult.None;
             GravityDistorter.enabled = false;
 
-
             if (IsInteractionEnabled)
             {
                 LineBase.enabled = true;
