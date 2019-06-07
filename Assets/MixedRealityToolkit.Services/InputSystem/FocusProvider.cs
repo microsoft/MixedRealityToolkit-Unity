@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public void Clear()
             {
-                raycastHit = default;
+                raycastHit = default(MixedRealityRaycastHit);
                 graphicsRaycastResult = default(RaycastResult);
 
                 hitObject = null;
@@ -200,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public void Set(GameObject hitObject, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
-                raycastHit = default;
+                raycastHit = default(MixedRealityRaycastHit);
                 graphicsRaycastResult = default(RaycastResult);
 
                 this.hitObject = hitObject;
@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public void Set(RaycastResult result, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
-                raycastHit = default;
+                raycastHit = default(MixedRealityRaycastHit);
                 graphicsRaycastResult = result;
 
                 this.hitObject = result.gameObject;
