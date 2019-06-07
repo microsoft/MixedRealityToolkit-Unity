@@ -48,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         protected readonly List<IMixedRealityPointer> focusingPointers = new List<IMixedRealityPointer>();
+
         /// <summary>
         /// Pointers that are focusing the interactable
         /// </summary>
@@ -59,29 +60,61 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public HashSet<IMixedRealityInputSource> PressingInputSources => pressingInputSources;
 
-        // is the interactable enabled?
+        /// <summary>
+        /// Is the interactable enabled?
+        /// </summary>
         public bool Enabled = true;
-        // a collection of states and basic state logic
+
+        /// <summary>
+        /// A collection of states and basic state logic
+        /// </summary>
         public States States;
-        // the state logic for comparing state
+
+        /// <summary>
+        /// The state logic for comparing state
+        /// </summary>
         public InteractableStates StateManager;
-        // which action is this interactable listening for
+
+        /// <summary>
+        /// Which action is this interactable listening for
+        /// </summary>
         public MixedRealityInputAction InputAction;
 
         // the id of the selected inputAction, for serialization
         [HideInInspector]
         public int InputActionId;
-        // is the interactable listening to global events
+
+        /// <summary>
+        /// Is the interactable listening to global events (input only)
+        /// </summary>
         public bool IsGlobal = false;
-        // a way of adding more layers of states for toggles
+
+        /// <summary>
+        /// A way of adding more layers of states for controls like toggles
+        /// </summary>
         public int Dimensions = 1;
-        // is the interactive selectable
+
+        /// <summary>
+        /// Is the interactive selectable?
+        /// When a multi-dimension button, can the user initiate switching dimensions?
+        /// </summary>
         public bool CanSelect = true;
-        // can deselect a toggle, a radial button or tab would set this to false
+
+        /// <summary>
+        /// Can the user deselect a toggle?
+        /// A radial button or tab should set this to false
+        /// </summary>
         public bool CanDeselect = true;
-        // a voice command to fire a click event
+
+        /// <summary>
+        /// A voice command to fire a click event
+        /// </summary>
         public string VoiceCommand = "";
-        // does the voice command require this to have focus?
+
+        /// <summary>
+        /// Does the voice command require this to have focus?
+        /// Registers as a global listener for speech commands, ignores input events
+        /// </summary>
         public bool RequiresFocus = true;
 
         /// <summary>
@@ -89,13 +122,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool FocusEnabled { get { return !IsGlobal; } set { IsGlobal = !value; } }
 
-        // list of profiles can match themes with gameObjects
+        /// <summary>
+        /// List of profiles can match themes with gameObjects
+        /// </summary>
         public List<InteractableProfileItem> Profiles = new List<InteractableProfileItem>();
-        // Base onclick event
+
+        /// <summary>
+        /// Base onclick event
+        /// </summary>
         public UnityEvent OnClick = new UnityEvent();
-        // list of events added to this interactable
+
+        /// <summary>
+        /// List of events added to this interactable
+        /// </summary>
         public List<InteractableEvent> Events = new List<InteractableEvent>();
-        // the list of running theme instances to receive state changes
+
+        /// <summary>
+        /// The list of running theme instances to receive state changes
+        /// When the dimension index changes, the list of themes that are updated changes to those assigned to that dimension.
+        /// </summary>
         public List<InteractableThemeBase> runningThemesList = new List<InteractableThemeBase>();
 
         // the list of profile settings, so theme values are not directly effected
@@ -103,24 +148,90 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // directly manipulate a theme value, skip blending
         protected bool forceUpdate = false;
 
-        // basic button states
+        //
+        // States
+        //
+
+        /// <summary>
+        /// Has focus
+        /// </summary>
         public bool HasFocus { get; private set; }
+
+        /// <summary>
+        /// Currently being pressed
+        /// </summary>
         public bool HasPress { get; private set; }
+
+        /// <summary>
+        /// Is disabled
+        /// </summary>
         public bool IsDisabled { get; private set; }
 
         // advanced button states from InteractableStates.InteractableStateEnum
+        /// <summary>
+        /// Has focus, finger up - custom: not set by Interactable
+        /// </summary>
         public bool IsTargeted { get; private set; }
+
+        /// <summary>
+        /// No focus, finger is up - custom: not set by Interactable
+        /// </summary>
         public bool IsInteractive { get; private set; }
+
+        /// <summary>
+        /// Has focus, finger down - custom: not set by Interactable
+        /// </summary>
         public bool HasObservationTargeted { get; private set; }
+
+        /// <summary>
+        /// No focus, finger down - custom: not set by Interactable
+        /// </summary>
         public bool HasObservation { get; private set; }
+
+        /// <summary>
+        /// The Interactable has been clicked
+        /// </summary>
         public bool IsVisited { get; private set; }
+
+        /// <summary>
+        /// The dimension index is not zero, in a toggled state
+        /// </summary>
         public bool IsToggled { get; private set; }
+
+        /// <summary>
+        /// Currently pressed and some movement has occurred
+        /// </summary>
         public bool HasGesture { get; private set; }
+
+        /// <summary>
+        /// Gesture reached max threshold or limits - custom: not set by Interactable
+        /// </summary>
         public bool HasGestureMax { get; private set; }
+
+        /// <summary>
+        /// Interactable is touching another object - custom: not set by Interactable
+        /// </summary>
         public bool HasCollision { get; private set; }
+
+        /// <summary>
+        /// A voice command has occurred, this does not automatically reset
+        /// Can be reset using the SetVoiceCommand(bool) method.
+        /// </summary>
         public bool HasVoiceCommand { get; private set; }
+
+        /// <summary>
+        /// A near interaction touchable is actively being touched
+        /// </summary>
         public bool HasPhysicalTouch { get; private set; }
+
+        /// <summary>
+        /// Misc - custom: not set by Interactable
+        /// </summary>
         public bool HasCustom { get; private set; }
+
+        /// <summary>
+        /// A near interaction grabbable is actively being grabbed/
+        /// </summary>
         public bool HasGrab { get; private set; }
 
         // internal cached states
@@ -156,6 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected Coroutine clickValidTimer;
         // how many clicks does it take?
         protected int clickCount = 0;
+
         /// <summary>
         /// how many times this interactable was clicked
         /// good for checking when a click event occurs.
@@ -179,7 +291,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // mixed reality pose input. This is the distance and hand or controller needs to move
         static readonly float gestureStartThresholdMixedRealityPose = 0.1f;
 
-
+        /// <summary>
+        /// Register OnClick extra handlers
+        /// </summary>
+        /// <param name="handler"></param>
         public void AddHandler(IInteractableHandler handler)
         {
             if (!handlers.Contains(handler))
@@ -188,6 +303,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Remove onClick handlers
+        /// </summary>
+        /// <param name="handler"></param>
         public void RemoveHandler(IInteractableHandler handler)
         {
             if (handlers.Contains(handler))
@@ -197,6 +316,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #region InspectorHelpers
+        /// <summary>
+        /// Get a list of Mixed Reality Input Actions from the input actions profile.
+        /// </summary>
+        /// <param name="descriptionsArray"></param>
+        /// <returns></returns>
         public static bool TryGetInputActions(out string[] descriptionsArray)
         {
             if (!MixedRealityToolkit.ConfirmInitialized() || !MixedRealityToolkit.Instance.HasActiveProfile)
@@ -450,12 +574,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetState(InteractableStates.InteractableStateEnum.Focus, focus);
         }
 
+        /// <summary>
+        /// Change the press state
+        /// </summary>
+        /// <param name="press"></param>
         public virtual void SetPress(bool press)
         {
             HasPress = press;
             SetState(InteractableStates.InteractableStateEnum.Pressed, press);
         }
 
+        /// <summary>
+        /// Change the disabled state, will override the Enabled property
+        /// </summary>
+        /// <param name="disabled"></param>
         public virtual void SetDisabled(bool disabled)
         {
             IsDisabled = disabled;
@@ -463,78 +595,130 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetState(InteractableStates.InteractableStateEnum.Disabled, disabled);
         }
 
+        /// <summary>
+        /// Change the targeted state
+        /// </summary>
+        /// <param name="targeted"></param>
         public virtual void SetTargeted(bool targeted)
         {
             IsTargeted = targeted;
             SetState(InteractableStates.InteractableStateEnum.Targeted, targeted);
         }
 
+        /// <summary>
+        /// Change the Interactive state
+        /// </summary>
+        /// <param name="interactive"></param>
         public virtual void SetInteractive(bool interactive)
         {
             IsInteractive = interactive;
             SetState(InteractableStates.InteractableStateEnum.Interactive, interactive);
         }
 
+        /// <summary>
+        /// Change the observation targeted state
+        /// </summary>
+        /// <param name="targeted"></param>
         public virtual void SetObservationTargeted(bool targeted)
         {
             HasObservationTargeted = targeted;
             SetState(InteractableStates.InteractableStateEnum.ObservationTargeted, targeted);
         }
 
+        /// <summary>
+        /// Change the observation state
+        /// </summary>
+        /// <param name="observation"></param>
         public virtual void SetObservation(bool observation)
         {
             HasObservation = observation;
             SetState(InteractableStates.InteractableStateEnum.Observation, observation);
         }
 
+        /// <summary>
+        /// Change the visited state
+        /// </summary>
+        /// <param name="visited"></param>
         public virtual void SetVisited(bool visited)
         {
             IsVisited = visited;
             SetState(InteractableStates.InteractableStateEnum.Visited, visited);
         }
 
+        /// <summary>
+        /// Change the toggled state
+        /// </summary>
+        /// <param name="toggled"></param>
         public virtual void SetToggled(bool toggled)
         {
             IsToggled = toggled;
             SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
         }
 
+        /// <summary>
+        /// Change the gesture state
+        /// </summary>
+        /// <param name="gesture"></param>
         public virtual void SetGesture(bool gesture)
         {
             HasGesture = gesture;
             SetState(InteractableStates.InteractableStateEnum.Gesture, gesture);
         }
 
+        /// <summary>
+        /// Change the gesture max state
+        /// </summary>
+        /// <param name="gesture"></param>
         public virtual void SetGestureMax(bool gesture)
         {
             HasGestureMax = gesture;
             SetState(InteractableStates.InteractableStateEnum.GestureMax, gesture);
         }
 
+        /// <summary>
+        /// Change the collision state
+        /// </summary>
+        /// <param name="collision"></param>
         public virtual void SetCollision(bool collision)
         {
             HasCollision = collision;
             SetState(InteractableStates.InteractableStateEnum.Collision, collision);
         }
 
+        /// <summary>
+        /// Change the custom state
+        /// </summary>
+        /// <param name="custom"></param>
         public virtual void SetCustom(bool custom)
         {
             HasCustom = custom;
             SetState(InteractableStates.InteractableStateEnum.Custom, custom);
         }
 
+        /// <summary>
+        /// Change the voice command state
+        /// </summary>
+        /// <param name="voice"></param>
         public virtual void SetVoiceCommand(bool voice)
         {
             HasVoiceCommand = voice;
             SetState(InteractableStates.InteractableStateEnum.VoiceCommand, voice);
         }
 
+        /// <summary>
+        /// Change the physical touch state
+        /// </summary>
+        /// <param name="touch"></param>
         public virtual void SetPhysicalTouch(bool touch)
         {
             HasPhysicalTouch = touch;
             SetState(InteractableStates.InteractableStateEnum.PhysicalTouch, touch);
         }
 
+        /// <summary>
+        /// Change the grab state
+        /// </summary>
+        /// <param name="grab"></param>
         public virtual void SetGrab(bool grab)
         {
             HasGrab = grab;
@@ -1160,7 +1344,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SetVisited(true);
             }
         }
-
+        
         private void OnInputChangedHelper<T>(InputEventData<T> eventData, Vector3 inputPosition, float gestureDeadzoneThreshold)
         {
             if (!CanInteract())

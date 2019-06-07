@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             EditorGUI.indentLevel = indentOnSectionStart;
             SerializedProperty voiceCommands = serializedObject.FindProperty("VoiceCommand");
 
-			if(speechKeywords == null)
+            if (speechKeywords == null)
             {
                 GUI.enabled = false;
                 EditorGUILayout.Popup("Speech Command", 0, new string[] { "Missing Speech Commands" });
@@ -412,7 +412,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             if (!hadDefault.boolValue && t == 0)
                             {
                                 string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme");
-
                                 if (themeLocations.Length > 0)
                                 {
                                     for (int j = 0; j < themeLocations.Length; j++)
@@ -436,7 +435,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                                     InspectorUIUtility.DrawError("DefaultTheme missing from project!");
                                 }
                             }
-
                             InspectorUIUtility.DrawError(themeMsg);
                         }
                     }
@@ -475,7 +473,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             hadDefault.boolValue = true;
                         }
                     }
-
                     themeCnt += themes.arraySize;
                 }
             }
@@ -650,8 +647,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             return instance.GetStates();
         }
-
-
+        
         #endregion Themes
 
         #region Events
@@ -672,7 +668,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             SerializedProperty events = serializedObject.FindProperty("Events");
             events.InsertArrayElementAtIndex(events.arraySize);
-
         }
 
         protected void ChangeEvent(int[] indexArray, SerializedProperty prop = null)
@@ -741,12 +736,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         
         /// <summary>
-        /// Get the index of the speech keyword array item based on it's name, pop-up field helper
+        /// Get the index of the speech keyword array item based on its name, pop-up field helper
         /// </summary>
         /// <param name="option"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public int KeywordLookup(string option, string[] options)
+        protected int KeywordLookup(string option, string[] options)
         {
             // starting on 1 to skip the "None" value
             for (int i = 1; i < options.Length; i++)
@@ -775,7 +770,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             EditorGUI.EndProperty();
         }
-
     }
     #endregion KeywordUtilities
 #endif
