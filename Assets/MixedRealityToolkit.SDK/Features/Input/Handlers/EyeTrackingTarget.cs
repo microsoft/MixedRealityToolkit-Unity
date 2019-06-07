@@ -103,7 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// If true, the eye cursor (if enabled) will snap to the center of this object.
         /// </summary>
-        public bool EyeCursorSnapToTargetCenter { get; set; }
+        public bool EyeCursorSnapToTargetCenter
+        {
+            get { return eyeCursorSnapToTargetCenter; }
+            set { eyeCursorSnapToTargetCenter = value; }
+        }
 
         /// <summary>
         /// Returns true if the user looks at the target or more specifically when the eye gaze ray intersects 
