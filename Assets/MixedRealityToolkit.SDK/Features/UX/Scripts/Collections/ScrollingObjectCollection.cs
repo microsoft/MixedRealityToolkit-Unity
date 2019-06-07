@@ -1124,8 +1124,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                             if (scrollDirection == ScrollDirectionType.UpAndDown)
                             {
-                                if (scrollContainer.transform.localPosition.y > maxY + Mathf.Abs(velocitySnapshot * velocityFalloff)
-                                    || scrollContainer.transform.localPosition.y < minY - Mathf.Abs(velocitySnapshot * velocityFalloff))
+                                if (scrollContainer.transform.localPosition.y > maxY + thresholdOffset
+                                    || scrollContainer.transform.localPosition.y < minY - thresholdOffset) // TODO: ADD A MULTIPLIER TO BOUNCE FACTOR
                                 {
                                     velocityState = VelocityState.Bouncing;
                                     velocitySnapshot = 0.0f;
@@ -1151,8 +1151,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                             }
                             else
                             {
-                                if (scrollContainer.transform.localPosition.x < maxX + Mathf.Abs(velocitySnapshot * velocityFalloff)
-                                    || scrollContainer.transform.localPosition.x > minX - Mathf.Abs(velocitySnapshot * velocityFalloff))
+                                if (scrollContainer.transform.localPosition.x > maxX + thresholdOffset
+                                    || scrollContainer.transform.localPosition.x < minX - thresholdOffset) // TODO: ADD A MULTIPLIER TO BOUNCE FACTOR
                                 {
                                     velocityState = VelocityState.Bouncing;
                                     velocitySnapshot = 0.0f;
