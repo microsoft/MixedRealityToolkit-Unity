@@ -5,18 +5,23 @@ using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine;
+using NumericsVector3 = System.Numerics.Vector3;
+using NumericsQuaternion = System.Numerics.Quaternion;
+using UnityEngine.XR.WSA;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.WorldAnchors;
+using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     /// <summary>
     /// A marker detection based implementation of <see cref="ISpatialCoordinateService"/>.
     /// </summary>
-    public class MarkerDetectorCoordinateService : SpatialCoordinateServiceBase<int>
+    public class MarkerDetectorCoordinateService : SpatialCoordinateServiceBase<int>, ISpatialCoordinatePersistenceStore<int>
     {
-        private class SpatialCoordinate : SpatialCoordinateBase<int>
+        private class SpatialCoordinate : TransformSpatialCoordinate<int>
         {
             private Marker marker;
 
@@ -33,30 +38,37 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     if (marker != value)
                     {
                         marker = value;
+                        gameObject.transform.position = marker.Position;
+                        gameObject.transform.rotation = marker.Rotation;
                     }
                 }
             }
 
-            public override LocatedState State => marker == null ? LocatedState.Resolved : LocatedState.Tracking;
+            internal GameObject GameObject => gameObject;
 
-            public SpatialCoordinate(int id)
-                : base(id) { }
+            public override LocatedState State => marker == null ? base.State : LocatedState.Tracking;
 
-            public SpatialCoordinate(Marker marker)
-                : base(marker?.Id ?? throw new ArgumentNullException(nameof(marker)))
+            public SpatialCoordinate(ISpatialCoordinatePersistenceStore<int> persistenceStore, int id)
+                : base(persistenceStore, id)
+            {
+            }
+
+            public SpatialCoordinate(ISpatialCoordinatePersistenceStore<int> persistenceStore, Marker marker)
+                : this(persistenceStore, marker?.Id ?? throw new ArgumentNullException(nameof(marker)))
             {
                 Marker = marker;
             }
 
-            public override Vector3 CoordinateToWorldSpace(Vector3 vector) => vector - marker.Position.AsNumericsVector();
+            protected override void OnManagedDispose()
+            {
+                base.OnManagedDispose();
 
-            public override Quaternion CoordinateToWorldSpace(Quaternion quaternion) => UnityEngine.Quaternion.Inverse(marker.Rotation).AsNumericsQuaternion() * quaternion;
-
-            public override Vector3 WorldToCoordinateSpace(Vector3 vector) => vector + marker.Position.AsNumericsVector();
-
-            public override Quaternion WorldToCoordinateSpace(Quaternion quaternion) => marker.Rotation.AsNumericsQuaternion() * quaternion;
+                GameObject.Destroy(gameObject);
+            }
         }
 
+        private static readonly string persistedCoordinateSetKey = $"{nameof(MarkerDetectorCoordinateService)}_PersistedCoordinates";
+        private readonly HashSet<int> persistedCoordinates = new HashSet<int>();
         private readonly IMarkerDetector markerDetector;
         private readonly bool debugLogging;
 
@@ -107,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 else
                 {
                     DebugLog("New coordinate");
-                    newCoordinates.Add(new SpatialCoordinate(pair.Value));
+                    newCoordinates.Add(new SpatialCoordinate(this, pair.Value));
                 }
             }
 
@@ -139,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return;
             }
 
-            var coordinate = new SpatialCoordinate(idsToLocate[0]);
+            var coordinate = new SpatialCoordinate(this, idsToLocate[0]);
             coordinate.Marker = new Marker(coordinate.Id, UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity);
             DebugLog("Created artificial coordinate at origin for debugging in the editor");
             await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken).IgnoreCancellation();
@@ -192,6 +204,64 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 DebugLog("Stopped detection");
             }
 #endif
+        }
+
+        private string GetUniquePersistenceIdentifier(int spatialCoordinateId)
+        {
+            return $"{nameof(MarkerDetectorCoordinateService)}_{spatialCoordinateId}";
+        }
+
+        public bool IsPersisted(int spatialCoordinateId)
+        {
+            return persistedCoordinates.Contains(spatialCoordinateId);
+        }
+
+        public void RestorePersistedCoordinates()
+        {
+            LoadPersistedCoordinateSet();
+
+            foreach (int spatialCoordinateId in persistedCoordinates)
+            {
+                SpatialCoordinate coordinate = new SpatialCoordinate(this, spatialCoordinateId);
+                WorldAnchorManager.Instance.AttachAnchor(coordinate.GameObject, GetUniquePersistenceIdentifier(spatialCoordinateId));
+                OnNewCoordinate(spatialCoordinateId, coordinate);
+            }
+        }
+
+        public void AddPersistedTransform(GameObject gameObject, int spatialCoordinateId)
+        {
+            persistedCoordinates.Add(spatialCoordinateId);
+            string anchorName = GetUniquePersistenceIdentifier(spatialCoordinateId);
+            WorldAnchorManager.Instance.AttachAnchor(gameObject, anchorName);
+
+            SavePersistedCoordinateSet();
+        }
+
+        public void RemovePersistedTransform(GameObject gameObject, int spatialCoordinateId)
+        {
+            persistedCoordinates.Remove(spatialCoordinateId);
+            WorldAnchorManager.Instance.RemoveAnchor(gameObject);
+
+            SavePersistedCoordinateSet();
+        }
+
+        private void SavePersistedCoordinateSet()
+        {
+            PlayerPrefs.SetString(persistedCoordinateSetKey, string.Join(",", persistedCoordinates.Select(i => i.ToString())));
+            PlayerPrefs.Save();
+        }
+
+        private void LoadPersistedCoordinateSet()
+        {
+            persistedCoordinates.Clear();
+            string serializedSet = PlayerPrefs.GetString(persistedCoordinateSetKey, string.Empty);
+            foreach (string value in serializedSet.Split(','))
+            {
+                if (int.TryParse(value, out int spatialCoordinateId))
+                {
+                    persistedCoordinates.Add(spatialCoordinateId);
+                }
+            }
         }
     }
 }

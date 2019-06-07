@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
     /// <summary>
     /// This service is used to discover, track and create coordinates.
     /// </summary>
-    public interface ISpatialCoordinateService : IDisposable
+    public interface ISpatialCoordinateService<TKey> : IDisposable
     {
         /// <summary>
         /// Triggered when a new coordinate is discovered or created with this service.
@@ -38,10 +38,10 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         /// <summary>
         /// A key based lookup for a known coordinate.
         /// </summary>
-        /// <param name="id">The identifier of the coordinate to look up.</param>
+        /// <param name="key">The identifier of the coordinate to look up.</param>
         /// <param name="spatialCoordinate">The out parameter that will be filled with found coordinate, or null otherwise.</param>
         /// <returns>Returns true if coordinate was found (known locally), false otherwise.</returns>
-        bool TryGetKnownCoordinate(string id, out ISpatialCoordinate spatialCoordinate);
+        bool TryGetKnownCoordinate(TKey key, out ISpatialCoordinate spatialCoordinate);
 
         /// <summary>
         /// Begins search for coordinates, optionally priortizing a set of ids.
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> to be used for cancellation (stopping) of the discovery task.</param>
         /// <param name="coordinateIds">The optional set to prioritize discovery of ids to.</param>
         /// <returns>The set of coordinates discovered during this session.</returns>
-        Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, params string[] idsToLocate);
+        Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, params TKey[] idsToLocate);
 
         /// <summary>
         /// Attempts to create a new coordinate with this service.

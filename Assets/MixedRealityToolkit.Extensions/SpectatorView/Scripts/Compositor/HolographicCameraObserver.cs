@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private CompositionManager compositionManager = null;
 
         [SerializeField]
-        private LocatableDeviceObserver appDeviceObserver = null;
+        private DeviceInfoObserver appDeviceObserver = null;
 
         [SerializeField]
         [Tooltip("The port that the " + nameof(HolographicCamera.HolographicCameraBroadcaster) + " listens for connections on.")]
@@ -39,6 +39,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             RegisterCommandHandler(CalibrationDataCommand, HandleCalibrationDataCommand);
         }
 
+        private void Start()
+        {
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.RegisterNetworkManager(this);
+            }
+            else
+            {
+                Debug.LogError("Attempted to register HolographicCameraObserver with the SpatialCoordinateSystemManager but no SpatialCoordinateSystemManager is initialized");
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.UnregisterNetworkManager(this);
+            }
+        }
+
         protected override void OnConnected(SocketEndpoint endpoint)
         {
             base.OnConnected(endpoint);
@@ -48,10 +70,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 
         private void Update()
         {
-            if (appDeviceObserver != null && sharedSpatialCoordinateProxy != null)
+            if (appDeviceObserver != null &&
+                appDeviceObserver.ConnectedEndpoint != null &&
+                sharedSpatialCoordinateProxy != null &&
+                SpatialCoordinateSystemManager.IsInitialized &&
+                SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(appDeviceObserver.ConnectedEndpoint, out SpatialCoordinateSystemParticipant participant))
             {
-                sharedSpatialCoordinateProxy.transform.position = appDeviceObserver.SharedSpatialCoordinateWorldPosition;
-                sharedSpatialCoordinateProxy.transform.rotation = appDeviceObserver.SharedSpatialCoordinateWorldRotation;
+                sharedSpatialCoordinateProxy.transform.position = participant.PeerSpatialCoordinateWorldPosition;
+                sharedSpatialCoordinateProxy.transform.rotation = participant.PeerSpatialCoordinateWorldRotation;
             }
         }
 
@@ -76,10 +102,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
                 {
                     sharedSpatialCoordinateProxy = new GameObject("App HMD Shared Spatial Coordinate");
                     sharedSpatialCoordinateProxy.transform.SetParent(transform, worldPositionStays: true);
-                    if (appDeviceObserver != null)
+                    if (appDeviceObserver != null &&
+                        appDeviceObserver.ConnectedEndpoint != null &&
+                        SpatialCoordinateSystemManager.IsInitialized &&
+                        SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(appDeviceObserver.ConnectedEndpoint, out SpatialCoordinateSystemParticipant participant))
                     {
-                        sharedSpatialCoordinateProxy.transform.position = appDeviceObserver.SharedSpatialCoordinateWorldPosition;
-                        sharedSpatialCoordinateProxy.transform.rotation = appDeviceObserver.SharedSpatialCoordinateWorldRotation;
+                        sharedSpatialCoordinateProxy.transform.position = participant.PeerSpatialCoordinateWorldPosition;
+                        sharedSpatialCoordinateProxy.transform.rotation = participant.PeerSpatialCoordinateWorldRotation;
                     }
                 }
                 compositionManager.EnableHolographicCamera(sharedSpatialCoordinateProxy.transform, new CalibrationData(calibration.Intrinsics, calibration.Extrinsics));

@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor
 {
     [Description("Compositor Preview")]
-    public class FullScreenCompositorWindow : CompositorWindowBase<FullScreenCompositorWindow>
+    internal class FullScreenCompositorWindow : CompositorWindowBase<FullScreenCompositorWindow>
     {
         public int TextureRenderMode { get; set; }
 

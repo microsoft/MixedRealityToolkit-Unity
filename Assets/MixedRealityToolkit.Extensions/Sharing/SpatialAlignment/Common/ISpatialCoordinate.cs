@@ -3,6 +3,7 @@
 
 using System;
 using System.Numerics;
+using System.Threading.Tasks;
 
 namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 {
@@ -48,11 +49,6 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         /// </summary>
         event Action StateChanged;
 
-        /// <summary>
-        /// Gets the Id representing this coordinate.
-        /// </summary>
-        string Id { get; }
-
         // TODO agree with Jared
         //Vector3 Accuracy { get; }
 
@@ -84,5 +80,28 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         /// For example, applying this transform to Quaternion.identity would return the quaternion of the coordinate in the local application's world space.
         /// </summary>
         Quaternion CoordinateToWorldSpace(Quaternion quaternion);
+    }
+
+    public interface ISpatialCoordinatePersistenceStore<TKey>
+    {
+        bool IsPersisted(TKey spatialCoordinateId);
+
+        void AddPersistedTransform(UnityEngine.GameObject gameObject, TKey spatialCoordinateId);
+
+        void RemovePersistedTransform(UnityEngine.GameObject gameObject, TKey spatialCoordinateId);
+    }
+
+    public interface IPersistableSpatialCoordinate : ISpatialCoordinate
+    {
+        bool IsPersisted { get; }
+
+        void PersistCoordinate();
+
+        void DepersistCoordinate();
+    }
+
+    public interface ISpatialCoordinate<TIdentifier> : ISpatialCoordinate
+    {
+        TIdentifier Id { get; }
     }
 }

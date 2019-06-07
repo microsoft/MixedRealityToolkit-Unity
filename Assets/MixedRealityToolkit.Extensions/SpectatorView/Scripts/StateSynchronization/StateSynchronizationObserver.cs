@@ -66,6 +66,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             RegisterCommandHandler(PerfCommand, HandlePerfCommand);
         }
 
+        private void Start()
+        {
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.RegisterNetworkManager(this);
+            }
+            else
+            {
+                Debug.LogError("Attempted to register StateSynchronizationObserver with the SpatialCoordinateSystemManager but no SpatialCoordinateSystemManager is initialized");
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.UnregisterNetworkManager(this);
+            }
+        }
+
         protected void Update()
         {
             CheckAndSendHeartbeat();

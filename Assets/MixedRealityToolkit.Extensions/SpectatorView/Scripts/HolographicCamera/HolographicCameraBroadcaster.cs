@@ -25,5 +25,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 
             connectionManager.StartListening(listeningPort);
         }
+
+        private void Start()
+        {
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.RegisterNetworkManager(this);
+            }
+            else
+            {
+                Debug.LogError("Attempted to register HolographicCameraBroadcaster with the SpatialCoordinateSystemManager but no SpatialCoordinateSystemManager is initialized");
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.UnregisterNetworkManager(this);
+            }
+        }
     }
 }

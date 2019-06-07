@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         /// <param name="localPosition">Position at which the coordinate should be created.</param>
         /// <param name="localRotation">Orientation the coordinate should be created with.</param>
         /// <returns>The coordinate if the coordinate was succesfully created, otherwise null.</returns>
-        public static Task<ISpatialCoordinate> TryCreateCoordinateAsync(this ISpatialCoordinateService spatialCoordinateService, UVector3 vector, UQuaternion quaternion, CancellationToken cancellationToken)
+        public static Task<ISpatialCoordinate> TryCreateCoordinateAsync<TKey>(this ISpatialCoordinateService<TKey> spatialCoordinateService, UVector3 vector, UQuaternion quaternion, CancellationToken cancellationToken)
         {
             return spatialCoordinateService.TryCreateCoordinateAsync(vector.AsNumericsVector(), quaternion.AsNumericsQuaternion(), cancellationToken);
         }

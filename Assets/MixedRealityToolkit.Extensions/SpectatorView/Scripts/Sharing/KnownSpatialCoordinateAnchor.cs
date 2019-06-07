@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
     /// Represents an object that can detect an ArUco marker and persist and restore a WorldAnchor
     /// to persist the location of that marker across sessions.
     /// </summary>
-    public class ArUcoMarkerAnchor : MonoBehaviour
+    public class KnownSpatialCoordinateAnchor : MonoBehaviour
     {
         [SerializeField]
         private GameObject networkManagerGameObject = null;
@@ -59,10 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
         private void Awake()
         {
             networkManager = networkManagerGameObject.GetComponent<INetworkManager>();
-            networkManager.RegisterCommandHandler(LocatableDeviceObserver.CreateSharedSpatialCoordinateCommand, HandleCreateSharedSpatialCoordinateCommand);
-
-            markerDetector = GetComponent<IMarkerDetector>();
-            markerDetector.MarkersUpdated += MarkerDetector_MarkersUpdated;
+            networkManager.RegisterCommandHandler(DeviceInfoObserver.CreateSharedSpatialCoordinateCommand, HandleCreateSharedSpatialCoordinateCommand);
         }
 
         private void Start()
@@ -92,9 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 
         private void OnDestroy()
         {
-            networkManager.UnregisterCommandHandler(LocatableDeviceObserver.CreateSharedSpatialCoordinateCommand, HandleCreateSharedSpatialCoordinateCommand);
-            markerDetector.MarkersUpdated -= MarkerDetector_MarkersUpdated;
-
+            networkManager.UnregisterCommandHandler(DeviceInfoObserver.CreateSharedSpatialCoordinateCommand, HandleCreateSharedSpatialCoordinateCommand);
         }
 #endif
     }

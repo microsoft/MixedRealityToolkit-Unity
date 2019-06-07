@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
     /// Helper base class for <see cref="ISpatialCoordinateService"/> implementations.
     /// </summary>
     /// <typeparam name="TKey">They key for the <see cref="ISpatialCoordinate"/>.</typeparam>
-    public abstract class SpatialCoordinateServiceBase<TKey> : DisposableBase, ISpatialCoordinateService
+    public abstract class SpatialCoordinateServiceBase<TKey> : DisposableBase, ISpatialCoordinateService<TKey>
     {
         /// <inheritdoc />
         public event Action<ISpatialCoordinate> CoordinatedDiscovered;
@@ -66,13 +66,8 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         }
 
         /// <inheritdoc />
-        public bool TryGetKnownCoordinate(string id, out ISpatialCoordinate spatialCoordinate)
+        public bool TryGetKnownCoordinate(TKey key, out ISpatialCoordinate spatialCoordinate)
         {
-            if (!TryParse(id, out TKey key))
-            {
-                throw new ArgumentException($"Id {id} is not recognized by this coordinate service.");
-            }
-
             return knownCoordinates.TryGetValue(key, out spatialCoordinate);
         }
 
@@ -82,15 +77,6 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         protected void OnNewCoordinate(TKey id, ISpatialCoordinate spatialCoordinate)
         {
             ThrowIfDisposed();
-
-            lock (discoveryLockObject)
-            {
-                if (!isTracking)
-                {
-                    UnityEngine.Debug.LogWarning("New coordinate discovered, but spatial coordinate service was not tracking");
-                    return;
-                }
-            }
 
             if (knownCoordinates.TryAdd(id, spatialCoordinate))
             {
@@ -138,26 +124,13 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         }
 
         /// <inheritdoc />
-        public async Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate = null)
+        public async Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, TKey[] idsToLocate = null)
         {
             if (!SupportsDiscovery)
             {
                 return false;
             }
-
-            TKey[] ids = null;
-            if (idsToLocate != null && idsToLocate.Length > 0)
-            {
-                ids = new TKey[idsToLocate.Length];
-                for (int i = 0; i < idsToLocate.Length; i++)
-                {
-                    if (!TryParse(idsToLocate[i], out ids[i]))
-                    {
-                        throw new ArgumentException($"Id: {idsToLocate[i]} isn't valid for this spatial coordinate service.");
-                    }
-                }
-            }
-
+            
             lock (discoveryLockObject)
             {
                 ThrowIfDisposed();
@@ -174,7 +147,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             {
                 using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(disposedCTS.Token, cancellationToken))
                 {
-                    await OnDiscoverCoordinatesAsync(cts.Token, ids).IgnoreCancellation();
+                    await OnDiscoverCoordinatesAsync(cts.Token, idsToLocate).IgnoreCancellation();
                 }
 
                 return true;

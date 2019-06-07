@@ -49,10 +49,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             base.OnDestroy();
 
             UnregisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
+
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.UnregisterNetworkManager(this);
+            }
         }
 
         protected void Start()
         {
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.RegisterNetworkManager(this);
+            }
+            else
+            {
+                Debug.LogError("Attempted to register StateSynchronizationBroadcaster with the SpatialCoordinateSystemManager but no SpatialCoordinateSystemManager is initialized");
+            }
+
             SetupNetworkConnectionManager();
         }
 
