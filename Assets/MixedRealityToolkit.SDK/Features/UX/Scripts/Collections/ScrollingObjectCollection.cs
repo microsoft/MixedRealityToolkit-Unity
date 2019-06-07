@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -368,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private readonly float maxX = 0.0f;
 
         //Minimum amount the scroller can travel (horizontally)
-        private  float minX => NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count, Columns) + ModCheck(NodeList.Count, Columns) - ViewableArea) * CellWidth) : 0.0f;
+        private float minX => NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count, Columns) + ModCheck(NodeList.Count, Columns) - ViewableArea) * CellWidth) : 0.0f;
 
         //item index for items that should be visible
         private int numItemsPrevView
@@ -643,6 +644,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 if (!ContainsNode(child) && (child.gameObject.activeSelf || !IgnoreInactiveTransforms))
                 {
                     NodeList.Add(new ObjectCollectionNode { Name = child.name, Transform = child, GameObject = child.gameObject, Colliders = child.GetComponentsInChildren<Collider>() });
+                }
+            }
+
+            //Check for Pressable buttons and set passthrough mode
+            //eventually we should be adding Passthrough to the IMixedRealityTouchHandler
+            foreach (ObjectCollectionNode node in NodeList)
+            {
+
+                PressableButton pb = node.GameObject.GetComponentInChildren<PressableButton>();
+                if (pb != null)
+                {
+                    pb.PassThroughMode = true;
                 }
             }
 
@@ -1252,7 +1265,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         {
                             case VelocityState.Calculating:
 
+                                if (scrollDirection == ScrollDirectionType.UpAndDown)
+                                {
+                                    workingScrollerPos.y = initialScrollerPos.y + avgVelocity;
+                                }
+                                else
+                                {
+                                    workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
+                                }
+
+                                velocityState = VelocityState.Resolving;
+
+                                // clean up our position for next frame
+                                initialScrollerPos = workingScrollerPos;
                                 break;
+
                             case VelocityState.Resolving:
 
                                 if (scrollDirection == ScrollDirectionType.UpAndDown)
@@ -1277,10 +1304,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                             avgVelocity = 0.0f;
 
                                             ListMomentumEnded?.Invoke();
-
-                                            // clean up our position for next frame
-                                            initialScrollerPos = workingScrollerPos;
                                         }
+
+                                        workingScrollerPos.y = initialScrollerPos.y + avgVelocity;
                                     }
                                 }
                                 else
@@ -1294,7 +1320,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                     }
                                     else
                                     {
-                                        workingScrollerPos = SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+
+                                        avgVelocity *= velocityFalloff;
 
                                         if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
                                         {
@@ -1304,39 +1331,79 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                             velocityState = VelocityState.None;
 
                                             ListMomentumEnded?.Invoke();
-
-                                            // clean up our position for next frame
-                                            initialScrollerPos = workingScrollerPos;
                                         }
+
+                                        workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
+
                                     }
                                 }
+
+                                // clean up our position for next frame
+                                initialScrollerPos = workingScrollerPos;
+
                                 break;
+
                             case VelocityState.Bouncing:
 
+                                bool smooth = false;
+                                if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                                {
+                                    smooth = true;
+                                }
+                                if (scrollDirection == ScrollDirectionType.UpAndDown
+                                    && (scrollContainer.transform.localPosition.y - minY > -0.00001
+                                    && scrollContainer.transform.localPosition.y - maxY < 0.00001f))
+                                {
+                                    velocityState = VelocityState.None;
+
+                                    ListMomentumEnded?.Invoke();
+
+                                    // clean up our position for next frame
+                                    initialScrollerPos = workingScrollerPos;
+                                }
+                                else if (scrollDirection == ScrollDirectionType.LeftAndRight
+                                         && (scrollContainer.transform.localPosition.x + minX > -0.00001
+                                         && scrollContainer.transform.localPosition.x - maxX < 0.00001f))
+                                {
+                                    velocityState = VelocityState.None;
+
+                                    ListMomentumEnded?.Invoke();
+
+                                    // clean up our position for next frame
+                                    initialScrollerPos = workingScrollerPos;
+                                }
+                                else
+                                {
+                                    smooth = true;
+                                }
+
+                                if (smooth)
+                                {
+                                    //Debug.Log("bounce calc");
+                                    Vector3 clampedDest = new Vector3(Mathf.Clamp(scrollContainer.transform.localPosition.x, minX, maxX), Mathf.Clamp(scrollContainer.transform.localPosition.y, minY, maxY), 0.0f);
+                                    workingScrollerPos.y = SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).y;
+                                    workingScrollerPos.x = SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).x;
+                                }
                                 break;
-                            case VelocityState.None:
-                            default:
-                                break;
+                                /*
+
+                                //Standard Velocity with drag
+                                switch (scrollDirection)
+                                {
+                                    case ScrollDirectionType.UpAndDown:
+                                    default:
+                                        workingScrollerPos.y = initialScrollerPos.y + avgVelocity;
+                                        break;
+
+                                    case ScrollDirectionType.LeftAndRight:
+                                        workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
+                                        break;
+                                }
+
+                                // clean up our position for next frame
+                                initialScrollerPos = workingScrollerPos;
+                            }*/
                         }
-
-
-
-
-                        //Standard Velocity with drag
-                        switch (scrollDirection)
-                        {
-                            case ScrollDirectionType.UpAndDown:
-                            default:
-                                workingScrollerPos.y = initialScrollerPos.y + avgVelocity;
-                                break;
-
-                            case ScrollDirectionType.LeftAndRight:
-                                workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
-                                break;
-                        }
-
-                        // clean up our position for next frame
-                        initialScrollerPos = workingScrollerPos;
                     }
                     break;
             }
@@ -1840,7 +1907,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
                 workingScrollerPos.y = (FirstItemInView + (numberOfRowsToMove * Columns)) * CellHeight;
-                
+
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
 
@@ -1850,7 +1917,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             else
             {
                 workingScrollerPos.x = (FirstItemInView + (numberOfRowsToMove * Columns)) * CellWidth;
-                
+
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
 
@@ -2222,8 +2289,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (TryGetPokePointer(eventData.InputSource.Pointers, out currentPointer))
             {
-                //create the offset for our thesholdCalculation -- grab the first item in the list
-                //TryGetObjectAlignedBoundsSize(NodeList[FirstItemInView].Transform, collectionForward, out thresholdOffset);
 
                 //Let everyone know the scroller has been engaged
                 TouchStarted?.Invoke();
@@ -2233,30 +2298,33 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 if (focusedObject != currentPointer.Result.CurrentPointerTarget || focusedObject == null)
                 {
+                    HandTrackingInputEventData newTouchData = eventData;
+                    newTouchData.Sender = this;
+
                     //We don't know if this is a scroll or not so we're going to pass the event along to the child
-                    //IScrollingChildObject scrollChild = focusedObject.GetComponentInChildren<IScrollingChildObject>();
-
-                    //if (scrollChild != null)
-                    //{
-                    //scrollChild.OnTouchStarted(eventData);
-                    //}
+                    IMixedRealityTouchHandler scrollChild = currentPointer.Result.CurrentPointerTarget.GetComponentInChildren<IMixedRealityTouchHandler>();
+                    if (scrollChild != null)
+                    {
+                        scrollChild.OnTouchStarted(newTouchData);
+                    }
                 }
 
-                focusedObject = currentPointer.Result.CurrentPointerTarget;
+            }
 
-                if (!isTouched && !isEngaged)
-                {
-                    currentHand = eventData.Controller.ControllerHandedness;
+            focusedObject = currentPointer.Result.CurrentPointerTarget;
 
-                    initialHandPos = UpdateFingerPosition(TrackedHandJoint.IndexTip, eventData.Controller.ControllerHandedness);
-                    initialPressTime = Time.time;
+            if (!isTouched && !isEngaged)
+            {
+                currentHand = eventData.Controller.ControllerHandedness;
 
-                    initialScrollerPos = scrollContainer.transform.localPosition;
+                initialHandPos = UpdateFingerPosition(TrackedHandJoint.IndexTip, eventData.Controller.ControllerHandedness);
+                initialPressTime = Time.time;
 
-                    isTouched = true;
-                    isEngaged = true;
-                    isDragging = false;
-                }
+                initialScrollerPos = scrollContainer.transform.localPosition;
+
+                isTouched = true;
+                isEngaged = true;
+                isDragging = false;
             }
         }
 
@@ -2275,30 +2343,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 if (!isDragging & p == currentPointer)
                 {
                     //We don't know if this is a scroll or not so we're going to pass the event along to the child
+                    IMixedRealityTouchHandler scrollChild;
 
-                    IScrollingChildObject scrollChild = currentPointer.Result.CurrentPointerTarget.GetComponentInChildren<IScrollingChildObject>();
+                    HandTrackingInputEventData newTouchData = eventData;
+                    newTouchData.Sender = this;
 
                     if (focusedObject != p.Result.CurrentPointerTarget)
                     {
+                        scrollChild = currentPointer.Result.CurrentPointerTarget.GetComponentInChildren<IMixedRealityTouchHandler>();
+
                         //the finger moved enough we have a mismatch in our focused object, we need to make sure we call touch started first
                         //and update our focusedObject as well
 
                         if (scrollChild != null)
                         {
-                            //scrollChild.OnTouchStarted(eventData);
+                            scrollChild.OnTouchStarted(newTouchData);
                         }
 
                         focusedObject = currentPointer.Result.CurrentPointerTarget;
                     }
+                    scrollChild = focusedObject.GetComponentInChildren<IMixedRealityTouchHandler>();
 
                     //now call OnTouchUpdated
                     if (scrollChild != null)
                     {
-                        scrollChild.OnTouchUpdated(eventData);
+                        scrollChild.OnTouchUpdated(newTouchData);
                     }
                 }
             }
-
         }
 
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { /* */ }

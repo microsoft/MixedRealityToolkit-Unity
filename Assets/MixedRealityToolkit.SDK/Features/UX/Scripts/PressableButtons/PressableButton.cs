@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [RequireComponent(typeof(BoxCollider))]
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
-        const string InitialMarkerTransformName = "Initial Marker";
+        private const string InitialMarkerTransformName = "Initial Marker";
 
         [SerializeField]
         [Tooltip("The object that is being pushed.")]
@@ -54,6 +54,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
         private bool enforceFrontPush = true;
+
+        /// <summary>
+        /// Enables indirect manipulation of buttons by sending the touch events to parent objects, for example by <see cref="ScrollingObjectCollection"/>
+        /// </summary>
+        /// <remarks>Reinvokes the touch events to send upward</remarks>
+        public bool PassThroughMode { get; set; }
 
         public enum SpaceMode
         {
@@ -106,10 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         ///</summary>
         public bool IsTouching
         {
-            get
-            {
-                return isTouching;
-            }
+            get => isTouching;
 
             private set
             {
@@ -144,37 +147,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                var nearInteractionTouchable = GetComponent<NearInteractionTouchable>();
+                NearInteractionTouchable nearInteractionTouchable = GetComponent<NearInteractionTouchable>();
                 if (nearInteractionTouchable != null)
                 {
                     return -1.0f * nearInteractionTouchable.Forward;
                 }
-                
+
                 return transform.forward;
             }
         }
 
-        private Transform PushSpaceSourceTransform
-        {
-            get { return movingButtonVisuals != null ? movingButtonVisuals.transform : transform; }
-        }
+        private Transform PushSpaceSourceTransform => movingButtonVisuals != null ? movingButtonVisuals.transform : transform;
 
-        private float WorldToLocalScale
-        {
-            get
-            {
-                return transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
-            }
-        }
+        private float WorldToLocalScale => transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
 
-        private float LocalToWorldScale
-        {
-            get
-            {
-                return 1.0f / WorldToLocalScale;
-            }
-        }
-        
+        private float LocalToWorldScale => 1.0f / WorldToLocalScale;
+
         /// <summary>
         /// Initial offset from moving visuals to button
         /// </summary>
@@ -203,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            currentPushDistance = startPushDistance;    
+            currentPushDistance = startPushDistance;
         }
 
         private void Start()
@@ -216,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             initialOffsetMovingVisuals = PushSpaceSourceTransform.localPosition;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             // clear touch points in case we get disabled and can't receive the touch end event anymore
             touchPoints.Clear();
@@ -261,8 +249,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region IMixedRealityTouchHandler implementation
 
-        void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
+        public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
+            if (PassThroughMode && eventData.Sender == null)
+            {
+                //start the bubble one step above this object to guarantee it goes upwards
+                UnityEngine.EventSystems.ExecuteEvents.ExecuteHierarchy(transform.parent.gameObject, eventData, delegate (IMixedRealityTouchHandler handler, UnityEngine.EventSystems.BaseEventData baseData)
+                {
+                    HandTrackingInputEventData casted = UnityEngine.EventSystems.ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(baseData);
+                    handler.OnTouchStarted(casted);
+                });
+                return;
+            }
+
             if (touchPoints.ContainsKey(eventData.Controller))
             {
                 return;
@@ -286,13 +285,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             IsTouching = true;
 
             // Pulse each proximity light on pointer cursors' interacting with this button.
-            foreach (var pointer in eventData.InputSource.Pointers)
+            foreach (IMixedRealityPointer pointer in eventData.InputSource.Pointers)
             {
                 ProximityLight[] proximityLights = pointer.BaseCursor?.GameObjectReference?.GetComponentsInChildren<ProximityLight>();
 
                 if (proximityLights != null)
                 {
-                    foreach (var proximityLight in proximityLights)
+                    foreach (ProximityLight proximityLight in proximityLights)
                     {
                         proximityLight.Pulse();
                     }
@@ -302,8 +301,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             eventData.Use();
         }
 
-        void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
+        public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
+            if (PassThroughMode && eventData.Sender == null)
+            {
+                //start the bubble one step above this object to guarantee it goes upwards
+                UnityEngine.EventSystems.ExecuteEvents.ExecuteHierarchy(transform.parent.gameObject, eventData, delegate (IMixedRealityTouchHandler handler, UnityEngine.EventSystems.BaseEventData baseData)
+                {
+                    HandTrackingInputEventData casted = UnityEngine.EventSystems.ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(baseData);
+                    handler.OnTouchUpdated(casted);
+                });
+                return;
+            }
+
             if (touchPoints.ContainsKey(eventData.Controller))
             {
                 touchPoints[eventData.Controller] = eventData.InputData;
@@ -312,8 +322,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
+        public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            if (PassThroughMode && eventData.Sender == null)
+            {
+                //start the bubble one step above this object to guarantee it goes upwards
+                UnityEngine.EventSystems.ExecuteEvents.ExecuteHierarchy(transform.parent.gameObject, eventData, delegate (IMixedRealityTouchHandler handler, UnityEngine.EventSystems.BaseEventData baseData)
+                {
+                    HandTrackingInputEventData casted = UnityEngine.EventSystems.ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(baseData);
+                    handler.OnTouchCompleted(casted);
+                });
+                return;
+            }
+
             if (touchPoints.ContainsKey(eventData.Controller))
             {
                 touchPoints.Remove(eventData.Controller);
@@ -370,7 +391,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             float farthestDistance = startPushDistance;
 
-            foreach (var touchEntry in touchPoints)
+            foreach (KeyValuePair<IMixedRealityController, Vector3> touchEntry in touchPoints)
             {
                 float testDistance = GetDistanceAlongPushDirection(touchEntry.Value);
                 farthestDistance = Mathf.Max(testDistance, farthestDistance);
