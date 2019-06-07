@@ -295,6 +295,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set => collectionForward = value;
         }
 
+
+        /// <summary>
+        /// Multiplier to add more bounce to the overscroll of a list 
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Multiplier to add more bounce to the overscroll of a list")]
+        private float bounceMultiplier;
+
+        public float BounceMultiplier
+        {
+            get => bounceMultiplier;
+            set => bounceMultiplier = value;
+        }
+
         /// <summary>
         /// Event that is fired on the target object when the scrollingCollection deems event as a press.
         /// </summary>
@@ -798,6 +812,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         #region Monobehavior Implementation
 
+        private void OnEnable()
+        {
+            if (useOnPreRender)
+            {
+                if (clippingObject == null || clippingBox == null)
+                {
+                    UpdateCollection();
+                }
+
+                clippingBox.UseOnPreRender = true;
+
+                //Subscribe to the preRender callback on the main camera so we can intercept it and make sure we catch
+                //any dynamically created children in our list
+                cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
+                cameraMethods.OnCameraPreRender += OnCameraPreRender;
+            }
+        }
+
         private void Start()
         {
             if (setUpAtRuntime)
@@ -961,24 +993,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             HideItems();
         }
 
-        private void OnEnable()
-        {
-            if (useOnPreRender)
-            {
-                if (clippingObject == null || clippingBox == null)
-                {
-                    UpdateCollection();
-                }
-
-                clippingBox.UseOnPreRender = true;
-
-                //Subscribe to the preRender callback on the main camera so we can intercept it and make sure we catch
-                //any dynamically created children in our list
-                cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
-                cameraMethods.OnCameraPreRender += OnCameraPreRender;
-            }
-        }
-
         private void OnDisable()
         {
             if (useOnPreRender && cameraMethods != null)
@@ -1124,8 +1138,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                             if (scrollDirection == ScrollDirectionType.UpAndDown)
                             {
-                                if (scrollContainer.transform.localPosition.y > maxY + thresholdOffset
-                                    || scrollContainer.transform.localPosition.y < minY - thresholdOffset) // TODO: ADD A MULTIPLIER TO BOUNCE FACTOR
+                                if (scrollContainer.transform.localPosition.y > maxY + (thresholdOffset * bounceMultiplier)
+                                    || scrollContainer.transform.localPosition.y < minY - (thresholdOffset * bounceMultiplier))
                                 {
                                     velocityState = VelocityState.Bouncing;
                                     velocitySnapshot = 0.0f;
@@ -1151,8 +1165,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                             }
                             else
                             {
-                                if (scrollContainer.transform.localPosition.x > maxX + thresholdOffset
-                                    || scrollContainer.transform.localPosition.x < minX - thresholdOffset) // TODO: ADD A MULTIPLIER TO BOUNCE FACTOR
+                                if (scrollContainer.transform.localPosition.x > maxX + (thresholdOffset * bounceMultiplier)
+                                    || scrollContainer.transform.localPosition.x < minX - (thresholdOffset * bounceMultiplier))
                                 {
                                     velocityState = VelocityState.Bouncing;
                                     velocitySnapshot = 0.0f;
@@ -1234,7 +1248,79 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                     if (Mathf.Abs(avgVelocity) > Mathf.Epsilon)
                     {
-                        avgVelocity *= velocityFalloff;
+                        switch (velocityState)
+                        {
+                            case VelocityState.Calculating:
+
+                                break;
+                            case VelocityState.Resolving:
+
+                                if (scrollDirection == ScrollDirectionType.UpAndDown)
+                                {
+                                    if (scrollContainer.transform.localPosition.y > maxY + (thresholdOffset * bounceMultiplier)
+                                        || scrollContainer.transform.localPosition.y < minY - (thresholdOffset * bounceMultiplier))
+                                    {
+                                        velocityState = VelocityState.Bouncing;
+                                        avgVelocity = 0.0f;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        avgVelocity *= velocityFalloff;
+
+                                        if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                                        {
+                                            //Ensure we've actually snapped the position to prevent an extreme in-between state
+                                            workingScrollerPos.y = ((int)(scrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
+
+                                            velocityState = VelocityState.None;
+                                            avgVelocity = 0.0f;
+
+                                            ListMomentumEnded?.Invoke();
+
+                                            // clean up our position for next frame
+                                            initialScrollerPos = workingScrollerPos;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (scrollContainer.transform.localPosition.x > maxX + (thresholdOffset * bounceMultiplier)
+                                        || scrollContainer.transform.localPosition.x < minX - (thresholdOffset * bounceMultiplier))
+                                    {
+                                        velocityState = VelocityState.Bouncing;
+                                        avgVelocity = 0.0f;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        workingScrollerPos = SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+
+                                        if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                                        {
+                                            //Ensure we've actually snapped the position to prevent an extreme in-between state
+                                            workingScrollerPos.y = ((int)(scrollContainer.transform.localPosition.x / CellWidth)) * CellWidth;
+
+                                            velocityState = VelocityState.None;
+
+                                            ListMomentumEnded?.Invoke();
+
+                                            // clean up our position for next frame
+                                            initialScrollerPos = workingScrollerPos;
+                                        }
+                                    }
+                                }
+                                break;
+                            case VelocityState.Bouncing:
+
+                                break;
+                            case VelocityState.None:
+                            default:
+                                break;
+                        }
+
+
+
 
                         //Standard Velocity with drag
                         switch (scrollDirection)

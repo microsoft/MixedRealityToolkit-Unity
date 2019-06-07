@@ -50,6 +50,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         //Serialized properties purely for inspector visualization
         private SerializedProperty pressPlane;
 
+        private Shader MRTKstd = Shader.Find("Mixed Reality Toolkit / Standard");
+
+
         private void OnEnable()
         {
             sorting = serializedObject.FindProperty("sortType");
@@ -102,7 +105,23 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.PropertyField(cellWidth);
                 EditorGUILayout.PropertyField(cellHeight);
                 EditorGUILayout.PropertyField(columns);
+                EditorGUILayout.PropertyField(viewableArea);
                 EditorGUILayout.Space();
+                EditorGUILayout.PropertyField(scrollDirection);
+                EditorGUILayout.PropertyField(collectionForward);
+                EditorGUILayout.Space();
+                EditorGUILayout.PropertyField(setUpAtRuntime);
+                EditorGUILayout.PropertyField(useCameraPreRender);
+                EditorGUILayout.Space();
+
+            }
+
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("Update Collection"))
+            {
+                scrollContainer.UpdateCollection();
+                EditorUtility.SetDirty(scrollContainer);
             }
 
             EditorGUILayout.Space();
@@ -111,16 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.LabelField("Scrolling Properties", EditorStyles.boldLabel);
 
             using (new EditorGUI.IndentLevelScope())
-            {
-
-                EditorGUILayout.PropertyField(scrollDirection);
-                EditorGUILayout.PropertyField(collectionForward);
-
-                EditorGUILayout.PropertyField(viewableArea);
-                EditorGUILayout.PropertyField(setUpAtRuntime);
-                EditorGUILayout.PropertyField(useCameraPreRender);
-                EditorGUILayout.Space();
-
+            {                
                 EditorGUILayout.PropertyField(dragTimeThreshold);
                 EditorGUILayout.PropertyField(handDeltaMagThreshold);
                 EditorGUILayout.Space();
@@ -131,7 +141,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                 EditorGUILayout.PropertyField(animationCurve);
                 EditorGUILayout.PropertyField(animationLength);
+            }
 
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("Velocity Properties", EditorStyles.boldLabel);
+            using (new EditorGUI.IndentLevelScope())
+            {
+                EditorGUILayout.PropertyField(velocityType);
+                EditorGUILayout.PropertyField(velocityMultiplier);
+                EditorGUILayout.PropertyField(velocityFalloff);
             }
 
             EditorGUILayout.Space();
@@ -148,24 +167,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     EditorGUILayout.PropertyField(untouchEvent);
                     EditorGUILayout.PropertyField(momentumEvent);
                 }
-            }
-
-            EditorGUILayout.Space();
-
-            if (GUILayout.Button("Update Collection"))
-            {
-                scrollContainer.UpdateCollection();
-                EditorUtility.SetDirty(scrollContainer);
-            }
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.LabelField("Velocity Properties", EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
-            {
-                EditorGUILayout.PropertyField(velocityType);
-                EditorGUILayout.PropertyField(velocityMultiplier);
-                EditorGUILayout.PropertyField(velocityFalloff);
             }
 
             EditorGUILayout.Space();
@@ -231,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (Event.current.type == EventType.Repaint)
             {
-                Color arrowColor = Color.green;
+                Color arrowColor = Color.cyan;
                 Vector3 center;
                 if (scrollContainer.ClippingObject != null)
                 {
@@ -271,10 +272,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 for (int i = 0; i < scrollContainer.CollectionNodes.Count; i++)
                 {
                     ObjectCollectionNode node = scrollContainer.CollectionNodes[i];
-                    if(node.Transform == null)
+
+                    if(node.Transform == null) { continue; }
+
+                    if (!CheckForStandardShader(node.GameObject.GetComponentsInChildren<Renderer>()))
                     {
-                        continue;
+                        Debug.LogWarning(node.GameObject.name + " has a renderer that is not using " + MRTKstd + ". This will result in unexpected results with ScrollingObjectCollection");
                     }
+
                     Vector3 cp = node.Transform.position;
                     cp.z = center.z;
                     if(scrollContainer.IsItemVisible(i))
@@ -284,6 +289,19 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
             }
         }
+
+        private bool CheckForStandardShader(Renderer[] rends)
+        {
+            foreach (Renderer rend in rends)
+            {
+                if(rend.material.shader != MRTKstd)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
 
     }
 }
