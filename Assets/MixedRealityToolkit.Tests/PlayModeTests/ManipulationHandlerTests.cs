@@ -75,11 +75,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(1, hoverEnterCount, $"ManipulationHandler did not receive hover enter event, count is {hoverEnterCount}");
 
             testObject.transform.Translate(Vector3.up);
+
+            yield return null;
+            // In some cases Input system will step before the new transform is applied to an object, thus postponing focus exit event for one frame.
             yield return null;
             Assert.AreEqual(1, hoverExitCount, "ManipulationHandler did not receive hover exit event");
 
             testObject.transform.Translate(5 * Vector3.up);
+
             yield return null;
+            yield return null;
+
             Assert.IsTrue(hoverExitCount == 1, "ManipulationHandler did not receive hover exit event");
 
             GameObject.Destroy(testObject);
