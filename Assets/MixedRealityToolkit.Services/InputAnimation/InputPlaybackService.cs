@@ -41,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private IInputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
 
         private InputAnimation animation = null;
+        /// <inheritdoc />
         public InputAnimation Animation
         {
             get { return animation; }
@@ -51,12 +52,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Duration of the played animation.
+        /// </summary>
         public float Duration => (animation != null ? animation.Duration : 0.0f);
 
         private bool isPlaying = false;
+        /// <inheritdoc />
         public bool IsPlaying => isPlaying;
 
         private float localTime = 0.0f;
+        /// <inheritdoc />
         public float LocalTime
         {
             get { return localTime; }
@@ -67,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public void Play()
         {
             if (animation != null)
@@ -75,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public void Stop()
         {
             SetPlaying(false);
@@ -83,6 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Evaluate();
         }
 
+        /// <inheritdoc />
         public void Pause()
         {
             SetPlaying(false);
@@ -115,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// Evaluate the animation and update the simulation service to apply input.
         private void Evaluate()
         {
             if (animation == null)

@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Tools for recording input animation.
+    /// Tools for recording and playing back input animation in the Unity editor.
     /// </summary>
     public class InputRecordingWindow : EditorWindow
     {
@@ -57,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// Icon textures
         private Texture2D iconPlay = null;
         private Texture2D iconPause = null;
         private Texture2D iconRecord = null;

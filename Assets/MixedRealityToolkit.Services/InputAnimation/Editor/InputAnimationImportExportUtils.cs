@@ -20,6 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
+        /// <summary>
+        /// Serialize an AnimationClip as binary input animation data.
+        /// </summary>
         public static void AnimationClipToStream(AnimationClip clip, Stream stream)
         {
             var writer = new BinaryWriter(stream);
@@ -34,6 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             WriteMarkerList(clip, writer);
         }
 
+        /// <summary>
+        /// Deserialize binary input animation data into an AnimationClip.
+        /// </summary>
         public static void AnimationClipFromStream(AnimationClip clip, Stream stream)
         {
             var reader = new BinaryReader(stream);
@@ -50,6 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static string[] jointNames = Enum.GetNames(typeof(TrackedHandJoint));
 
+        /// Serialize all animation curves for hand joints.
+        /// Handedness is encoded in the propertyName string.
         private static void WriteJointCurves(AnimationClip clip, BinaryWriter writer, string propertyName)
         {
             for (int i = 0; i < jointCount; ++i)
@@ -58,6 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// Deserialize all animation curves for hand joints.
+        /// Handedness is encoded in the propertyName string.
         private static void ReadJointCurves(AnimationClip clip, BinaryReader reader, string propertyName)
         {
             for (int i = 0; i < jointCount; ++i)
@@ -66,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// Serialize all animation curves of a MixedRealityPose.
         private static void WritePoseCurves(AnimationClip clip, BinaryWriter writer, string propertyName)
         {
             WriteFloatCurve(clip, writer, propertyName + ".position.x");
@@ -78,6 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             WriteFloatCurve(clip, writer, propertyName + ".rotation.w");
         }
 
+        /// Deserialize all animation curves of a MixedRealityPose.
         private static void ReadPoseCurves(AnimationClip clip, BinaryReader reader, string propertyName)
         {
             ReadFloatCurve(clip, reader, propertyName + ".position.x");
@@ -91,16 +103,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         private static string bindingPath = "";
+        // InputAnimationTarget serves as a binding type for AnimationClip,
+        // with concrete serializable fields for each of the input properties.
         private static Type bindingType = typeof(InputAnimationTarget);
 
+        /// Find a float curve in the AnimationClip for the given binding and serialize it.
         private static void WriteFloatCurve(AnimationClip clip, BinaryWriter writer, string propertyName)
         {
             var binding = EditorCurveBinding.FloatCurve(bindingPath, bindingType, propertyName);
             AnimationCurve curve = AnimationUtility.GetEditorCurve(clip, binding);
 
+            // Curve may not exist in the animation clip, use a fallback
             InputAnimationSerializationUtils.WriteFloatCurve(writer, curve ?? new AnimationCurve());
         }
 
+        /// Deserialize a float curve and insert it in the AnimationClip with the given binding.
         private static void ReadFloatCurve(AnimationClip clip, BinaryReader reader, string propertyName)
         {
             var curve = new AnimationCurve();
@@ -110,14 +127,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             AnimationUtility.SetEditorCurve(clip, binding, curve);
         }
 
+        /// Find a bool curve in the AnimationClip for the given binding and serialize it.
         private static void WriteBoolCurve(AnimationClip clip, BinaryWriter writer, string propertyName)
         {
             var binding = EditorCurveBinding.DiscreteCurve(bindingPath, bindingType, propertyName);
             AnimationCurve curve = AnimationUtility.GetEditorCurve(clip, binding);
 
+            // Curve may not exist in the animation clip, use a fallback
             InputAnimationSerializationUtils.WriteBoolCurve(writer, curve ?? new AnimationCurve());
         }
 
+        /// Deserialize a bool curve and insert it in the AnimationClip with the given binding.
         private static void ReadBoolCurve(AnimationClip clip, BinaryReader reader, string propertyName)
         {
             var curve = new AnimationCurve();
@@ -127,6 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             AnimationUtility.SetEditorCurve(clip, binding, curve);
         }
 
+        /// Serialize animation events as markers.
         private static void WriteMarkerList(AnimationClip clip, BinaryWriter writer)
         {
             AnimationEvent[] events = AnimationUtility.GetAnimationEvents(clip);
@@ -138,6 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// Deserialize markers into animation events.
         private static void ReadMarkerList(AnimationClip clip, BinaryReader reader)
         {
             int count = reader.ReadInt32();

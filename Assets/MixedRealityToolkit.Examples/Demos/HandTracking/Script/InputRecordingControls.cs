@@ -8,6 +8,10 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    /// <summary>
+    /// Utility class to make input recording service accessible through game objects.
+    /// Hook up buttons to the public functions to start and stop recording input.
+    /// </summary>
     public class InputRecordingControls : MonoBehaviour
     {
         private IMixedRealityInputRecordingService recordingService = null;
@@ -24,7 +28,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         private bool wasRecording;
+        /// <summary>
+        /// Event raised when input recording is started.
+        /// </summary>
         public UnityEvent OnRecordingStarted = new UnityEvent();
+        /// <summary>
+        /// Event raised when input recording is stopped.
+        /// </summary>
         public UnityEvent OnRecordingStopped = new UnityEvent();
 
         private async void Start()

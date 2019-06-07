@@ -10,18 +10,62 @@ using System.IO;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class InputAnimationJointPosePair
+    /// <summary>
+    /// Utility class to give input animation clips a valid target.
+    /// </summary>
+    /// <remarks>
+    /// InputAnimationTarget serves as a binding type for AnimationClip,
+    /// with concrete serializable fields for each of the input properties.
+    /// The serializable fields are converted into actual input after AnimationClip has been evaluated.
+    /// </remarks>
+    [Serializable]
+    public class InputAnimationTarget : MonoBehaviour
     {
-        public TrackedHandJoint joint;
-        public MixedRealityPose pose;
+        [SerializeField]
+        [HideInInspector]
+        protected InputAnimationHandTarget leftHand = new InputAnimationHandTarget();
+        [SerializeField]
+        [HideInInspector]
+        protected InputAnimationHandTarget rightHand = new InputAnimationHandTarget();
 
-        public InputAnimationJointPosePair(TrackedHandJoint joint, MixedRealityPose pose)
+        [SerializeField]
+        [HideInInspector]
+        protected MixedRealityPose cameraPose = MixedRealityPose.ZeroIdentity;
+
+        private IInputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
+        private IInputSimulationService inputSimService = null;
+
+        void Update()
         {
-            this.joint = joint;
-            this.pose = pose;
+            CameraCache.Main.transform.SetPositionAndRotation(cameraPose.Position, cameraPose.Rotation);
+
+            EvaluateHandData(InputSimService.HandDataLeft, Handedness.Left);
+            EvaluateHandData(InputSimService.HandDataRight, Handedness.Right);
+        }
+
+        private void EvaluateHandData(SimulatedHandData handData, Handedness handedness)
+        {
+            InputAnimationHandTarget target = (handedness == Handedness.Left ? leftHand : rightHand);
+
+            InputSimService.HandDataLeft.Update(target.isTracked, target.isPinching,
+                (MixedRealityPose[] joints) =>
+                {
+                    foreach (var pair in target)
+                    {
+                        pair.pose.Rotation.Normalize();
+                        joints[(int)pair.joint] = pair.pose;
+                    }
+                });
         }
     }
 
+    /// <summary>
+    /// Animation target for a single hand.
+    /// </summary>
+    /// <remarks>
+    /// Unity animation does not support arrays, so each joint pose has to be stored as a separate field.
+    /// For ease of use this class is iterable and will yield all the joint poses.
+    /// </remarks>
     [Serializable]
     public struct InputAnimationHandTarget : IEnumerable<InputAnimationJointPosePair>
     {
@@ -29,8 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public bool isTracked;
         public bool isPinching;
-
-        // Note: Unity animation does not support arrays, have to store each joint pose as a field
 
         public MixedRealityPose jointNone;
         public MixedRealityPose jointWrist;
@@ -97,44 +139,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
     }
 
-    [Serializable]
-    public class InputAnimationTarget : MonoBehaviour
+    /// <summary>
+    /// Utility struct for iterating over all joint poses in InputAnimationTarget.
+    /// </summary>
+    public struct InputAnimationJointPosePair
     {
-        [SerializeField]
-        [HideInInspector]
-        protected InputAnimationHandTarget leftHand = new InputAnimationHandTarget();
-        [SerializeField]
-        [HideInInspector]
-        protected InputAnimationHandTarget rightHand = new InputAnimationHandTarget();
+        public TrackedHandJoint joint;
+        public MixedRealityPose pose;
 
-        [SerializeField]
-        [HideInInspector]
-        protected MixedRealityPose cameraPose = MixedRealityPose.ZeroIdentity;
-
-        private IInputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
-        private IInputSimulationService inputSimService = null;
-
-        void Update()
+        public InputAnimationJointPosePair(TrackedHandJoint joint, MixedRealityPose pose)
         {
-            CameraCache.Main.transform.SetPositionAndRotation(cameraPose.Position, cameraPose.Rotation);
-
-            EvaluateHandData(InputSimService.HandDataLeft, Handedness.Left);
-            EvaluateHandData(InputSimService.HandDataRight, Handedness.Right);
-        }
-
-        private void EvaluateHandData(SimulatedHandData handData, Handedness handedness)
-        {
-            InputAnimationHandTarget target = (handedness == Handedness.Left ? leftHand : rightHand);
-
-            InputSimService.HandDataLeft.Update(target.isTracked, target.isPinching,
-                (MixedRealityPose[] joints) =>
-                {
-                    foreach (var pair in target)
-                    {
-                        pair.pose.Rotation.Normalize();
-                        joints[(int)pair.joint] = pair.pose;
-                    }
-                });
+            this.joint = joint;
+            this.pose = pose;
         }
     }
 }

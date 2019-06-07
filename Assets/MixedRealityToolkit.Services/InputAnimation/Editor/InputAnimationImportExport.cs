@@ -13,8 +13,12 @@ using System.Text.RegularExpressions;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public static class InputAnimationMenu
+    /// <summary>
+    /// Menu functions for importing and exporting input animation data as Unity assets.
+    /// </summary>
+    public static class InputAnimationImportExportMenu
     {
+        /// Import binary input animation data as a Unity AnimationClip for editing.
         private static void ImportInputAnimation(string filepath, string outputDirectory)
         {
             if (filepath.Length == 0)
@@ -62,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             ImportInputAnimation(GetAssetFilePath(), GetOutputAssetDirectory());
         }
 
+        /// Export a Unity AnimationClip to binary input animation data.
         private static void ExportInputAnimation(AnimationClip clip, string outputDirectory)
         {
             string filepath = AssetDatabase.GetAssetPath(clip);
