@@ -245,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var binding = EditorCurveBinding.FloatCurve(bindingPath, bindingType, propertyName);
             AnimationCurve curve = AnimationUtility.GetEditorCurve(clip, binding);
 
-            WriteFloatCurve(writer, curve);
+            WriteFloatCurve(writer, curve ?? new AnimationCurve());
         }
 
         private static void ReadFloatCurve(AnimationClip clip, BinaryReader reader, string propertyName)
@@ -262,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var binding = EditorCurveBinding.DiscreteCurve(bindingPath, bindingType, propertyName);
             AnimationCurve curve = AnimationUtility.GetEditorCurve(clip, binding);
 
-            WriteBoolCurve(writer, curve);
+            WriteBoolCurve(writer, curve ?? new AnimationCurve());
         }
 
         private static void ReadBoolCurve(AnimationClip clip, BinaryReader reader, string propertyName)
