@@ -71,9 +71,9 @@ The [hand interaction examples scene](README_HandInteractionExamples.md) is a gr
 
 ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
 
-If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials" refers to TextMeshPro plugin, which some of the MRTK examples use for improved text rendering.
+If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials" refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See [Text in Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity) for more detailed information)
 
-4. Close the TMPPro dialog. After this you need to reload the scene, so close and re-open your scene.
+4. Close the TMP dialog. After this you need to reload the scene. You can do this by opening other example scene and open HandInteractionExamples scene again.
 
 5. Press the play button.
 
