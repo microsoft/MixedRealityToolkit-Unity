@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
     /// <summary>
     /// This represents a spatial coordinate that can then be used to convert position and rotation to and from this coordinate space.
     /// </summary>
-    public interface ISpatialCoordinate
+    public interface ISpatialCoordinate : IDisposable
     {
         /// <summary>
         /// Occurs when the value of the <see cref="State"/> property has changed.
@@ -80,24 +80,6 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         /// For example, applying this transform to Quaternion.identity would return the quaternion of the coordinate in the local application's world space.
         /// </summary>
         Quaternion CoordinateToWorldSpace(Quaternion quaternion);
-    }
-
-    public interface ISpatialCoordinatePersistenceStore<TKey>
-    {
-        bool IsPersisted(TKey spatialCoordinateId);
-
-        void AddPersistedTransform(UnityEngine.GameObject gameObject, TKey spatialCoordinateId);
-
-        void RemovePersistedTransform(UnityEngine.GameObject gameObject, TKey spatialCoordinateId);
-    }
-
-    public interface IPersistableSpatialCoordinate : ISpatialCoordinate
-    {
-        bool IsPersisted { get; }
-
-        void PersistCoordinate();
-
-        void DepersistCoordinate();
     }
 
     public interface ISpatialCoordinate<TIdentifier> : ISpatialCoordinate

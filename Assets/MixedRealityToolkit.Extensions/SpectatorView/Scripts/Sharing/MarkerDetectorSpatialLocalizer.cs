@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -25,10 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private MonoBehaviour MarkerDetector = null;
         private IMarkerDetector markerDetector = null;
 
-        private MarkerDetectorCoordinateService spatialCoordinateService;
-
-        protected override ISpatialCoordinateService<int> SpatialCoordinateService => spatialCoordinateService;
-
         public override Guid SpatialLocalizerID => ID;
 
 #if UNITY_EDITOR
@@ -46,20 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 Debug.LogWarning("Marker detector not appropriately set for MarkerDetectorSpatialLocalizer");
             }
-
-            spatialCoordinateService = new MarkerDetectorCoordinateService(markerDetector, debugLogging);
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-
-            spatialCoordinateService.RestorePersistedCoordinates();
-        }
-
-        public override bool TryGetKnownCoordinate(MarkerDetectorLocalizationSettings settings, out ISpatialCoordinate coordinate)
-        {
-            return SpatialCoordinateService.TryGetKnownCoordinate(settings.MarkerID, out coordinate);
         }
 
         public override bool TryDeserializeSettings(BinaryReader reader, out MarkerDetectorLocalizationSettings settings)
@@ -70,6 +53,52 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public override ISpatialLocalizationSession CreateLocalizationSession(MarkerDetectorLocalizationSettings settings)
         {
             return new LocalizationSession(this, settings);
+        }
+
+        private class SpatialCoordinate : TransformSpatialCoordinate<int>
+        {
+            private Marker marker;
+
+            public Marker Marker
+            {
+                get => marker;
+                set
+                {
+                    if (value != null && value.Id != Id)
+                    {
+                        throw new InvalidOperationException("Setting a marker with the wrong id.");
+                    }
+
+                    if (marker != value)
+                    {
+                        marker = value;
+                        gameObject.transform.position = marker.Position;
+                        gameObject.transform.rotation = marker.Rotation;
+                    }
+                }
+            }
+
+            internal GameObject GameObject => gameObject;
+
+            public override LocatedState State => marker == null ? base.State : LocatedState.Tracking;
+
+            public SpatialCoordinate(int id)
+                : base(id)
+            {
+            }
+
+            public SpatialCoordinate(Marker marker)
+                : this(marker?.Id ?? throw new ArgumentNullException(nameof(marker)))
+            {
+                Marker = marker;
+            }
+
+            protected override void OnManagedDispose()
+            {
+                base.OnManagedDispose();
+
+                GameObject.Destroy(gameObject);
+            }
         }
 
         private class LocalizationSession : SpatialLocalizationSession<MarkerDetectorLocalizationSettings>
@@ -87,47 +116,34 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 localizer.DebugLog("Getting host coordinate");
                 localizer.markerDetector.SetMarkerSize(Settings.MarkerSize);
 
-                if (localizer.TryGetKnownCoordinate(Settings, out ISpatialCoordinate coordinate))
+                TaskCompletionSource<ISpatialCoordinate> coordinateTCS = new TaskCompletionSource<ISpatialCoordinate>();
+                void markerDiscovered(Dictionary<int, Marker> markers)
                 {
-                    if (coordinate is IPersistableSpatialCoordinate persistableCoordinte)
+                    if (markers.TryGetValue(Settings.MarkerID, out Marker marker))
                     {
-                        persistableCoordinte.DepersistCoordinate();
+                        localizer.DebugLog("Coordinate found");
+                        coordinateTCS.SetResult(new SpatialCoordinate(marker));
                     }
                 }
 
-                using (CancellationTokenSource cts = new CancellationTokenSource())
+                localizer.markerDetector.MarkersUpdated += markerDiscovered;
+
+                try
                 {
-                    TaskCompletionSource<ISpatialCoordinate> coordinateTCS = new TaskCompletionSource<ISpatialCoordinate>();
-                    void coordinateDiscovered(ISpatialCoordinate coord)
-                    {
-                        localizer.DebugLog("Coordinate found");
+                    localizer.DebugLog("Starting to look for coordinates");
+                    localizer.markerDetector.StartDetecting();
 
-                        if (Settings.ShouldPersistCoordinate && coord is IPersistableSpatialCoordinate persistableCoordinate)
-                        {
-                            persistableCoordinate.PersistCoordinate();
-                        }
+                    localizer.DebugLog("Awaiting found coordiante");
+                    // Don't necessarily need to await here
+                    return await coordinateTCS.Task;
+                }
+                finally
+                {
+                    localizer.DebugLog("Stopped looking for coordinates");
+                    localizer.markerDetector.StopDetecting();
 
-                        coordinateTCS.SetResult(coord);
-                        cts.Cancel();
-                    }
-
-                    localizer.SpatialCoordinateService.CoordinatedDiscovered += coordinateDiscovered;
-                    try
-                    {
-                        localizer.DebugLog("Starting to look for coordinates");
-                        await localizer.SpatialCoordinateService.TryDiscoverCoordinatesAsync(cts.Token, Settings.MarkerID);
-                        localizer.DebugLog("Stopped looking for coordinates");
-
-
-                        localizer.DebugLog("Awaiting found coordiante");
-                        // Don't necessarily need to await here
-                        return await coordinateTCS.Task;
-                    }
-                    finally
-                    {
-                        localizer.DebugLog("Unsubscribing from coordinate discovered");
-                        localizer.SpatialCoordinateService.CoordinatedDiscovered -= coordinateDiscovered;
-                    }
+                    localizer.DebugLog("Unsubscribing from coordinate discovered");
+                    localizer.markerDetector.MarkersUpdated -= markerDiscovered;
                 }
             }
         }

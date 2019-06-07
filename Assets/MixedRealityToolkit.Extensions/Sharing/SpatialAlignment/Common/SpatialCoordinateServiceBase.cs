@@ -1,170 +1,170 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿//// Copyright (c) Microsoft Corporation. All rights reserved.
+//// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Threading;
-using System.Threading.Tasks;
+//using Microsoft.MixedReality.Toolkit.Utilities;
+//using System;
+//using System.Collections.Concurrent;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Numerics;
+//using System.Threading;
+//using System.Threading.Tasks;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
-{
-    /// <summary>
-    /// Helper base class for <see cref="ISpatialCoordinateService"/> implementations.
-    /// </summary>
-    /// <typeparam name="TKey">They key for the <see cref="ISpatialCoordinate"/>.</typeparam>
-    public abstract class SpatialCoordinateServiceBase<TKey> : DisposableBase, ISpatialCoordinateService<TKey>
-    {
-        /// <inheritdoc />
-        public event Action<ISpatialCoordinate> CoordinatedDiscovered;
+//namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
+//{
+//    /// <summary>
+//    /// Helper base class for <see cref="ISpatialCoordinateService"/> implementations.
+//    /// </summary>
+//    /// <typeparam name="TKey">They key for the <see cref="ISpatialCoordinate"/>.</typeparam>
+//    public abstract class SpatialCoordinateServiceBase<TKey> : DisposableBase, ISpatialCoordinateService<TKey>
+//    {
+//        /// <inheritdoc />
+//        public event Action<ISpatialCoordinate> CoordinatedDiscovered;
 
-        /// <inheritdoc />
-        public event Action<ISpatialCoordinate> CoordinateRemoved;
+//        /// <inheritdoc />
+//        public event Action<ISpatialCoordinate> CoordinateRemoved;
 
-        private readonly object discoveryLockObject = new object();
-        protected readonly CancellationTokenSource disposedCTS = new CancellationTokenSource();
+//        private readonly object discoveryLockObject = new object();
+//        protected readonly CancellationTokenSource disposedCTS = new CancellationTokenSource();
 
-        private bool isTracking;
+//        private bool isTracking;
 
-        protected readonly ConcurrentDictionary<TKey, ISpatialCoordinate> knownCoordinates = new ConcurrentDictionary<TKey, ISpatialCoordinate>();
+//        protected readonly ConcurrentDictionary<TKey, ISpatialCoordinate> knownCoordinates = new ConcurrentDictionary<TKey, ISpatialCoordinate>();
 
-        /// <inheritdoc />
-        public bool IsTracking
-        {
-            get
-            {
-                ThrowIfDisposed();
-                return isTracking;
-            }
-        }
+//        /// <inheritdoc />
+//        public bool IsTracking
+//        {
+//            get
+//            {
+//                ThrowIfDisposed();
+//                return isTracking;
+//            }
+//        }
 
-        protected virtual bool SupportsDiscovery => true;
+//        protected virtual bool SupportsDiscovery => true;
 
-        /// <inheritdoc />
-        public IEnumerable<ISpatialCoordinate> KnownCoordinates
-        {
-            get
-            {
-                ThrowIfDisposed();
+//        /// <inheritdoc />
+//        public IEnumerable<ISpatialCoordinate> KnownCoordinates
+//        {
+//            get
+//            {
+//                ThrowIfDisposed();
 
-                return knownCoordinates.Values.Cast<ISpatialCoordinate>();
-            }
-        }
+//                return knownCoordinates.Values.Cast<ISpatialCoordinate>();
+//            }
+//        }
 
-        protected override void OnManagedDispose()
-        {
-            base.OnManagedDispose();
+//        protected override void OnManagedDispose()
+//        {
+//            base.OnManagedDispose();
 
-            // Notify of dispose to any existing operations
-            disposedCTS.Cancel();
-            disposedCTS.Dispose();
+//            // Notify of dispose to any existing operations
+//            disposedCTS.Cancel();
+//            disposedCTS.Dispose();
 
-            knownCoordinates.Clear();
-        }
+//            knownCoordinates.Clear();
+//        }
 
-        /// <inheritdoc />
-        public bool TryGetKnownCoordinate(TKey key, out ISpatialCoordinate spatialCoordinate)
-        {
-            return knownCoordinates.TryGetValue(key, out spatialCoordinate);
-        }
+//        /// <inheritdoc />
+//        public bool TryGetKnownCoordinate(TKey key, out ISpatialCoordinate spatialCoordinate)
+//        {
+//            return knownCoordinates.TryGetValue(key, out spatialCoordinate);
+//        }
 
-        /// <summary>
-        /// Adds a coordinate to be tracked by this service.
-        /// </summary>
-        protected void OnNewCoordinate(TKey id, ISpatialCoordinate spatialCoordinate)
-        {
-            ThrowIfDisposed();
+//        /// <summary>
+//        /// Adds a coordinate to be tracked by this service.
+//        /// </summary>
+//        protected void OnNewCoordinate(TKey id, ISpatialCoordinate spatialCoordinate)
+//        {
+//            ThrowIfDisposed();
 
-            if (knownCoordinates.TryAdd(id, spatialCoordinate))
-            {
-                CoordinatedDiscovered?.Invoke(spatialCoordinate);
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning($"Unexpected behavior, coordinate {id} was rediscovered.");
-            }
-        }
+//            if (knownCoordinates.TryAdd(id, spatialCoordinate))
+//            {
+//                CoordinatedDiscovered?.Invoke(spatialCoordinate);
+//            }
+//            else
+//            {
+//                UnityEngine.Debug.LogWarning($"Unexpected behavior, coordinate {id} was rediscovered.");
+//            }
+//        }
 
-        /// <summary>
-        /// Removes a tracked coordinate from this service.
-        /// </summary>
-        /// <param name="id">The ide of the coordinate to remove.</param>
-        /// <remarks>Will throw if coordinate was not tracked by this service, checking is possible throuhg <see cref="knownCoordinates"/> field.</remarks>
-        protected void OnRemoveCoordinate(TKey id)
-        {
-            ThrowIfDisposed();
+//        /// <summary>
+//        /// Removes a tracked coordinate from this service.
+//        /// </summary>
+//        /// <param name="id">The ide of the coordinate to remove.</param>
+//        /// <remarks>Will throw if coordinate was not tracked by this service, checking is possible throuhg <see cref="knownCoordinates"/> field.</remarks>
+//        protected void OnRemoveCoordinate(TKey id)
+//        {
+//            ThrowIfDisposed();
 
-            if (knownCoordinates.TryRemove(id, out ISpatialCoordinate coordinate))
-            {
-                CoordinateRemoved?.Invoke(coordinate);
-            }
-            else
-            {
-                throw new InvalidOperationException($"Coordinate with id '{id}' was not previously registered.");
-            }
-        }
+//            if (knownCoordinates.TryRemove(id, out ISpatialCoordinate coordinate))
+//            {
+//                CoordinateRemoved?.Invoke(coordinate);
+//            }
+//            else
+//            {
+//                throw new InvalidOperationException($"Coordinate with id '{id}' was not previously registered.");
+//            }
+//        }
 
-        /// <inheritdoc />
-        public virtual Task<ISpatialCoordinate> TryCreateCoordinateAsync(Vector3 worldPosition, Quaternion worldRotation, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
+//        /// <inheritdoc />
+//        public virtual Task<ISpatialCoordinate> TryCreateCoordinateAsync(Vector3 worldPosition, Quaternion worldRotation, CancellationToken cancellationToken)
+//        {
+//            ThrowIfDisposed();
 
-            return Task.FromResult<ISpatialCoordinate>(null);
-        }
+//            return Task.FromResult<ISpatialCoordinate>(null);
+//        }
 
-        /// <inheritdoc />
-        public virtual Task<bool> TryDeleteCoordinateAsync(string id, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
+//        /// <inheritdoc />
+//        public virtual Task<bool> TryDeleteCoordinateAsync(string id, CancellationToken cancellationToken)
+//        {
+//            ThrowIfDisposed();
 
-            return Task.FromResult(false);
-        }
+//            return Task.FromResult(false);
+//        }
 
-        /// <inheritdoc />
-        public async Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, TKey[] idsToLocate = null)
-        {
-            if (!SupportsDiscovery)
-            {
-                return false;
-            }
+//        /// <inheritdoc />
+//        public async Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, TKey[] idsToLocate = null)
+//        {
+//            if (!SupportsDiscovery)
+//            {
+//                return false;
+//            }
             
-            lock (discoveryLockObject)
-            {
-                ThrowIfDisposed();
+//            lock (discoveryLockObject)
+//            {
+//                ThrowIfDisposed();
 
-                if (isTracking)
-                {
-                    return false;
-                }
+//                if (isTracking)
+//                {
+//                    return false;
+//                }
 
-                isTracking = true;
-            }
+//                isTracking = true;
+//            }
 
-            try
-            {
-                using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(disposedCTS.Token, cancellationToken))
-                {
-                    await OnDiscoverCoordinatesAsync(cts.Token, idsToLocate).IgnoreCancellation();
-                }
+//            try
+//            {
+//                using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(disposedCTS.Token, cancellationToken))
+//                {
+//                    await OnDiscoverCoordinatesAsync(cts.Token, idsToLocate).IgnoreCancellation();
+//                }
 
-                return true;
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.LogWarning($"Exception thrown when trying to discover coordinate: {e.ToString()}");
-                isTracking = false;
-                throw e;
-            }
-        }
+//                return true;
+//            }
+//            catch (Exception e)
+//            {
+//                UnityEngine.Debug.LogWarning($"Exception thrown when trying to discover coordinate: {e.ToString()}");
+//                isTracking = false;
+//                throw e;
+//            }
+//        }
 
-        protected abstract bool TryParse(string id, out TKey result);
+//        protected abstract bool TryParse(string id, out TKey result);
 
-        /// <summary>
-        /// Implement this method for the logic begin and end tracking (when <see cref="CancellationToken"/> is cancelled).
-        /// </summary>
-        protected abstract Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, TKey[] idsToLocate = null);
-    }
-}
+//        /// <summary>
+//        /// Implement this method for the logic begin and end tracking (when <see cref="CancellationToken"/> is cancelled).
+//        /// </summary>
+//        protected abstract Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, TKey[] idsToLocate = null);
+//    }
+//}

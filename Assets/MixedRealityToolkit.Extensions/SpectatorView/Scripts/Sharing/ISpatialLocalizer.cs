@@ -16,7 +16,5 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         bool TryDeserializeSettings(BinaryReader reader, out ISpatialLocalizationSettings settings);
 
         ISpatialLocalizationSession CreateLocalizationSession(ISpatialLocalizationSettings settings);
-
-        bool TryGetKnownCoordinate(ISpatialLocalizationSettings settings, out ISpatialCoordinate coordinate);
     }
 }

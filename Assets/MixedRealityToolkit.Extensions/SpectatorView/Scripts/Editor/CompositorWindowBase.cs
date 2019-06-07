@@ -166,16 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
                 EditorGUILayout.Space();
 
-                if (GUILayout.Button(new GUIContent("Attach To Persisted Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
-                {
-                    SpatialCoordinateSystemManager.Instance.InitializeRemoteSpatialCoordinate(deviceInfo.ConnectedEndpoint, MarkerDetectorSpatialLocalizer.ID, new MarkerDetectorLocalizationSettings
-                    {
-                        MarkerID = 0,
-                        MarkerSize = 0.1f,
-                        ShouldPersistCoordinate = true
-                    });
-                }
-
                 if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
                 {
                     SpatialCoordinateSystemManager.Instance.InitiateRemoteLocalization(deviceInfo.ConnectedEndpoint, MarkerDetectorSpatialLocalizer.ID, new MarkerDetectorLocalizationSettings

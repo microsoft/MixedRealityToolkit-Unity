@@ -20,10 +20,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     internal class SpatialCoordinateSystemParticipant : MonoBehaviour
     {
         byte[] previousCoordinateStatusMessage = null;
+        private ISpatialCoordinate coordinate;
 
         public SocketEndpoint SocketEndpoint { get; set; }
 
-        public ISpatialCoordinate Coordinate { get; set; }
+        public ISpatialCoordinate Coordinate
+        {
+            get => coordinate;
+            set
+            {
+                if (coordinate != value)
+                {
+                    if (coordinate != null)
+                    {
+                        coordinate.Dispose();
+                    }
+                    coordinate = value;
+                }
+            }
+        }
 
         public bool IsLocatingSpatialCoordinate { get; set; }
 
@@ -63,6 +78,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (SocketEndpoint != null && SocketEndpoint.IsConnected)
             {
                 SendCoordinateStateMessage();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (Coordinate != null)
+            {
+                Coordinate.Dispose();
             }
         }
 

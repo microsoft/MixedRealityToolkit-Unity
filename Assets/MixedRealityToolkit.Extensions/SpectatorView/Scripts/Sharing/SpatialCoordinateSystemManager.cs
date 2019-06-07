@@ -38,7 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         internal const string CoordinateStateMessageHeader = "COORDSTATE";
         private const string LocalizeCommand = "LOCALIZE";
-        private const string InitializeSpatialCoordinateCommand = "ATTACH_COORD";
         private readonly Dictionary<Guid, ISpatialLocalizer> localizers = new Dictionary<Guid, ISpatialLocalizer>();
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
@@ -83,19 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             UnregisterEvents(networkManager);
-        }
-
-        public void InitializeRemoteSpatialCoordinate(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            using (BinaryWriter message = new BinaryWriter(stream))
-            {
-                message.Write(InitializeSpatialCoordinateCommand);
-                message.Write(spatialLocalizerID);
-                settings.Serialize(message);
-
-                socketEndpoint.Send(stream.ToArray());
-            }
         }
 
         public void InitiateRemoteLocalization(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
@@ -178,34 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             participant.PeerSpatialCoordinateWorldRotation = reader.ReadQuaternion();
         }
 
-        private void OnInitializeSpatialCoordinate(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
-        {
-            Guid spatialLocalizerID = reader.ReadGuid();
-
-            if (!localizers.TryGetValue(spatialLocalizerID, out ISpatialLocalizer localizer))
-            {
-                Debug.LogError($"Request to begin localization with localizer {spatialLocalizerID} but no localizer with that ID was registered");
-                return;
-            }
-
-            if (!localizer.TryDeserializeSettings(reader, out ISpatialLocalizationSettings settings))
-            {
-                Debug.LogError($"Failed to deserialize settings for localizer {spatialLocalizerID}");
-                return;
-            }
-
-            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
-            {
-                Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
-                return;
-            }
-
-            if (localizer.TryGetKnownCoordinate(settings, out ISpatialCoordinate coordinate))
-            {
-                participant.Coordinate = coordinate;
-            }
-        }
-
         private async void OnLocalizeMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             if (currentLocalizationSession != null)
@@ -253,7 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             networkManager.Connected += OnConnected;
             networkManager.Disconnected += OnDisconnected;
             networkManager.RegisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
-            networkManager.RegisterCommandHandler(InitializeSpatialCoordinateCommand, OnInitializeSpatialCoordinate);
             networkManager.RegisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
         }
 
@@ -262,9 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             networkManager.Connected -= OnConnected;
             networkManager.Disconnected -= OnDisconnected;
             networkManager.UnregisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
-            networkManager.UnregisterCommandHandler(InitializeSpatialCoordinateCommand, OnInitializeSpatialCoordinate);
             networkManager.UnregisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
-
         }
 
         private void CleanUpParticipants()
