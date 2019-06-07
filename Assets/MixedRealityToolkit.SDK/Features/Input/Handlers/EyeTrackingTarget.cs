@@ -27,21 +27,84 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private float dwellTimeInSec = 0.8f;
 
-        [Tooltip("Event is triggered when the user starts to look at the target.")]        
-        public UnityEvent OnLookAtStart = null;
+        [SerializeField]
+        [Tooltip("Event is triggered when the user starts to look at the target.")]
+        [FormerlySerializedAs("OnLookAtStart")]
+        private UnityEvent onLookAtStart = null;
 
+        /// <summary>
+        /// Event is triggered when the user starts to look at the target.
+        /// </summary>
+        public UnityEvent OnLookAtStart
+        {
+            get { return onLookAtStart; }
+            set { onLookAtStart = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Event is triggered when the user continues to look at the target.")]
-        public UnityEvent WhileLookingAtTarget = null;
+        [FormerlySerializedAs("WhileLookingAtTarget")]
+        private UnityEvent whileLookingAtTarget = null;
 
+        /// <summary>
+        /// Event is triggered when the user continues to look at the target.
+        /// </summary>
+        public UnityEvent WhileLookingAtTarget
+        {
+            get { return whileLookingAtTarget; }
+            set { whileLookingAtTarget = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Event to be triggered when the user is looking away from the target.")]
-        public UnityEvent OnLookAway = null;
+        [FormerlySerializedAs("OnLookAway")]
+        private UnityEvent onLookAway = null;
 
-        [Tooltip("Event to be triggered when the target has been looked at for a given predefined duration.")]
-        public UnityEvent OnDwell = null;
+        /// <summary>
+        /// Event to be triggered when the user is looking away from the target.
+        /// </summary>
+        public UnityEvent OnLookAway
+        {
+            get { return onLookAway; }
+            set { onLookAway = value; }
+        }
 
-        [Tooltip("Event to be triggered when the looked at target is selected.")]
-        public UnityEvent OnSelected = null;
+        [SerializeField]
+        [Tooltip("Event is triggered when the target has been looked at for a given predefined duration (dwellTimeInSec).")]
+        [FormerlySerializedAs("OnDwell")]
+        private UnityEvent onDwell = null;
+
+        /// <summary>
+        /// Event is triggered when the target has been looked at for a given predefined duration (dwellTimeInSec).
+        /// </summary>
+        public UnityEvent OnDwell
+        {
+            get { return onDwell; }
+            set { onDwell = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Event is triggered when the looked at target is selected.")]
+        [FormerlySerializedAs("OnSelected")]
+        private UnityEvent onSelected = null;
+
+        /// <summary>
+        /// Event is triggered when the looked at target is selected.
+        /// </summary>
+        public UnityEvent OnSelected
+        {
+            get { return onSelected; }
+        }
         
+        [SerializeField]
+        [Tooltip("If true, the eye cursor (if enabled) will snap to the center of this object.")]
+        private bool eyeCursorSnapToTargetCenter = false;
+
+        /// <summary>
+        /// If true, the eye cursor (if enabled) will snap to the center of this object.
+        /// </summary>
+        public bool EyeCursorSnapToTargetCenter { get; set; }
+
         /// <summary>
         /// Returns true if the user looks at the target or more specifically when the eye gaze ray intersects 
         /// with the target's bounding box.
@@ -49,36 +112,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool IsLookedAt { get; private set; }
 
         /// <summary>
-        /// If true, the eye cursor (if enabled) will snap to the center of this object. 
-        /// </summary>
-        public bool eyeCursorSnapToTargetCenter = false;
-
-        private bool isDwelledOn = false;
-
-        /// <summary>
         /// Returns true if the user has been looking at the target for a certain amount of time specified by dwellTimeInSec.
         /// </summary>
-        public bool IsDwelledOn
-        {
-            get { return isDwelledOn; }
-        }
-
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
+        public bool IsDwelledOn { get; private set; } = false;
         
         private DateTime lookAtStartTime;
 
@@ -192,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             WhileLookingAtTarget.Invoke();
 
-            if ((!isDwelledOn) && (DateTime.UtcNow - lookAtStartTime).TotalSeconds > dwellTimeInSec)
+            if ((!IsDwelledOn) && (DateTime.UtcNow - lookAtStartTime).TotalSeconds > dwellTimeInSec)
             {
                 OnEyeFocusDwell();
             }
@@ -200,13 +236,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected void OnEyeFocusDwell()
         {
-            isDwelledOn = true;
+            IsDwelledOn = true;
             OnDwell.Invoke();
         }
 
         protected void OnEyeFocusStop()
         {
-            isDwelledOn = false;
+            IsDwelledOn = false;
             IsLookedAt = false;
             OnLookAway.Invoke();            
         }

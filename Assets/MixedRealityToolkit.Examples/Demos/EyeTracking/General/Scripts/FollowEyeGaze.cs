@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             if (lookedAtEyeTarget != null)
             {
                 // Show the object at the center of the currently looked at target.
-                if (lookedAtEyeTarget.eyeCursorSnapToTargetCenter)
+                if (lookedAtEyeTarget.EyeCursorSnapToTargetCenter)
                 {
                     Ray rayToCenter = new Ray(CameraCache.Main.transform.position, lookedAtEyeTarget.transform.position - CameraCache.Main.transform.position);
                     RaycastHit hitInfo;
