@@ -134,6 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float runningAverageSmoothing = 0.0f;
         private const float percentToDecimal = 0.01f;
         private Material currentMaterial;
+        private int proximityLightCenterColorOverrideID;
         private List<Vector2> unTransformedUVs = new List<Vector2>();
         private Dictionary<uint, HandPanData> handDataMap = new Dictionary<uint, HandPanData>();
         private List<IMixedRealityHandPanHandler> handlerInterfaces = new List<IMixedRealityHandPanHandler>();
@@ -270,6 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             //get material
             currentMaterial = this.gameObject.GetComponent<Renderer>().material;
+            proximityLightCenterColorOverrideID = Shader.PropertyToID("_ProximityLightCenterColorOverride");
 
             //get event targets
             foreach (GameObject gameObject in panEventReceivers)
@@ -445,6 +447,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 rightPoint.SetActive(affordancesVisible);
             }
 
+            if (currentMaterial != null)
+            {
+                currentMaterial.SetColor(proximityLightCenterColorOverrideID, active ? new Color(0.5f, 0.5f, 0.5f, 0.0f) : new Color(0.0f, 0.0f, 0.0f, 0.0f));
+            }
         }
         private Vector3 GetContactForHand(Handedness hand)
         {

@@ -717,7 +717,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (PropertyEnabled(enableProximityLightColorOverride))
                 {
-                    materialEditor.ShaderProperty(proximityLightCenterColorOverride, Styles.enableProximityLightColorOverride, 4);
+                    materialEditor.ShaderProperty(proximityLightCenterColorOverride, Styles.proximityLightCenterColorOverride, 4);
                     materialEditor.ShaderProperty(proximityLightMiddleColorOverride, Styles.proximityLightMiddleColorOverride, 4);
                     materialEditor.ShaderProperty(proximityLightOuterColorOverride, Styles.proximityLightOuterColorOverride, 4);
                 }
