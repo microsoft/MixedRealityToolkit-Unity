@@ -789,6 +789,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             //Apply our new values
             clippingBox.transform.localPosition = viewableCenter;
+
+            //add our objects to the clippingBox queue
+            AddAllItemsToClippingObject();
         }
 
         #endregion
@@ -920,17 +923,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
                 else if (isDragging)
                 {
-                    //we're currently dragging
-                    /*
-                                        //if there isn't much hand delta lets reset the velocity
-                                        if (handDelta.sqrMagnitude < 0.01)
-                                        {
-                                            //kill the velocity if its a drag and there is minimal movement
-                                            avgVelocity = 0.0f;
-                                            scrollVelocity = 0.0f;
-                                        }
-                                        */
-
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
                         //Lock X, clamp Y
@@ -1026,6 +1018,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -1073,7 +1066,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     {
                         case VelocityState.Calculating:
 
-                            //float numSteps = (Mathf.Log(0.00001f)  - Mathf.Log(Mathf.Abs(avgVelocity))) / Mathf.Log(velocityFalloff);
+                            // The logarithmic formula to get the number of steps from "average velocity" with drag to "zero" -> can't figure out how to get the proper distance though.
+                            // Saving for later, use IterateFalloff() for now...
+                            //float numSteps = (Mathf.Log(0.00001f) - Mathf.Log(Mathf.Abs(avgVelocity))) / Mathf.Log(velocityFalloff);
 
                             int numSteps;
                             float newPosAfterVelocity;
@@ -1094,12 +1089,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                     newPosAfterVelocity = initialScrollerPos.y + velocitySnapshot;
                                 }
 
-                                float pos = Mathf.Round(newPosAfterVelocity / CellHeight);
-                                float step = StepMultiplier((int)pos, Columns);
-
-                                Debug.LogFormat("Navigating to list item index {0}.", step);
-
-                                velocityDestinationPos.y = step * CellHeight;
+                                velocityDestinationPos.y = ((int)(newPosAfterVelocity / CellHeight)) * CellHeight;
 
                                 velocityState = VelocityState.Resolving;
                             }
@@ -1120,12 +1110,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                     newPosAfterVelocity = initialScrollerPos.x + velocitySnapshot;
                                 }
 
-                                float pos = Mathf.Round(newPosAfterVelocity / CellWidth);
-                                float step = StepMultiplier((int)pos, Columns);
-
-                                Debug.LogFormat("Navigating to list item index {0}.", step);
-
-                                velocityDestinationPos.x = step * CellWidth;
+                                velocityDestinationPos.x = ((int)(newPosAfterVelocity / CellWidth)) * CellWidth;
 
                                 velocityState = VelocityState.Resolving;
                             }
@@ -1139,7 +1124,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                             if (scrollDirection == ScrollDirectionType.UpAndDown)
                             {
-                                if (scrollContainer.transform.localPosition.y > maxY + Mathf.Abs(velocitySnapshot * velocityFalloff) || scrollContainer.transform.localPosition.y < minY - Mathf.Abs(velocitySnapshot * velocityFalloff))
+                                if (scrollContainer.transform.localPosition.y > maxY + Mathf.Abs(velocitySnapshot * velocityFalloff)
+                                    || scrollContainer.transform.localPosition.y < minY - Mathf.Abs(velocitySnapshot * velocityFalloff))
                                 {
                                     velocityState = VelocityState.Bouncing;
                                     velocitySnapshot = 0.0f;
@@ -1152,12 +1138,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                     if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
                                     {
                                         //Ensure we've actually snapped the position to prevent an extreme in-between state
-                                        workingScrollerPos.y = StepMultiplier((int)Mathf.Round(scrollContainer.transform.localPosition.y / CellHeight), Columns) * CellHeight;
+                                        workingScrollerPos.y = ((int)(scrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
 
                                         velocityState = VelocityState.None;
 
                                         ListMomentumEnded?.Invoke();
-                                        Debug.Log("Done!");
 
                                         // clean up our position for next frame
                                         initialScrollerPos = workingScrollerPos;
@@ -1166,7 +1151,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                             }
                             else
                             {
-                                if (scrollContainer.transform.localPosition.x > maxX + Mathf.Abs(velocitySnapshot * velocityFalloff) || scrollContainer.transform.localPosition.x < minX - Mathf.Abs(velocitySnapshot * velocityFalloff))
+                                if (scrollContainer.transform.localPosition.x < maxX + Mathf.Abs(velocitySnapshot * velocityFalloff)
+                                    || scrollContainer.transform.localPosition.x > minX - Mathf.Abs(velocitySnapshot * velocityFalloff))
                                 {
                                     velocityState = VelocityState.Bouncing;
                                     velocitySnapshot = 0.0f;
@@ -1179,7 +1165,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                     if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
                                     {
                                         //Ensure we've actually snapped the position to prevent an extreme in-between state
-                                        workingScrollerPos.y = StepMultiplier((int)Mathf.Round(scrollContainer.transform.localPosition.x / CellWidth), Columns) * CellWidth;
+                                        workingScrollerPos.y = ((int)(scrollContainer.transform.localPosition.x / CellWidth)) * CellWidth;
 
                                         velocityState = VelocityState.None;
 
@@ -1198,7 +1184,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                             {
                                 smooth = true;
                             }
-                            if (scrollDirection == ScrollDirectionType.UpAndDown && (scrollContainer.transform.localPosition.y - minY > -0.00001 && scrollContainer.transform.localPosition.y - maxY < 0.00001f))
+                            if (scrollDirection == ScrollDirectionType.UpAndDown
+                                && (scrollContainer.transform.localPosition.y - minY > -0.00001
+                                && scrollContainer.transform.localPosition.y - maxY < 0.00001f))
                             {
                                 velocityState = VelocityState.None;
 
@@ -1207,7 +1195,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                 // clean up our position for next frame
                                 initialScrollerPos = workingScrollerPos;
                             }
-                            else if (scrollDirection == ScrollDirectionType.LeftAndRight && (scrollContainer.transform.localPosition.x - minX > -0.00001 && scrollContainer.transform.localPosition.x - maxX < 0.00001f))
+                            else if (scrollDirection == ScrollDirectionType.LeftAndRight
+                                     && (scrollContainer.transform.localPosition.x + minX > -0.00001
+                                     && scrollContainer.transform.localPosition.x - maxX < 0.00001f))
                             {
                                 velocityState = VelocityState.None;
 
@@ -1512,8 +1502,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             //Stash the values from numItems to cut down on redundant calculations
             int prevItems = numItemsPrevView;
             int postItems = numItemsPostView;
-
-            Debug.Log(prevItems + " is previous items, " + postItems + "is post items");
 
             int listLength = NodeList.Count;
             int col = Columns;

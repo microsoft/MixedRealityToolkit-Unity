@@ -227,6 +227,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             ScrollingObjectCollection scrollContainer = (ScrollingObjectCollection)target;
 
+            if (scrollContainer.ClippingObject == null) { return; }
+
             if (Event.current.type == EventType.Repaint)
             {
                 Color arrowColor = Color.green;
@@ -248,7 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     center.z = pressPlane.vector3Value.z;
                 }
 
-
                 UnityEditor.Handles.color = arrowColor;
 
                 float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
@@ -262,14 +263,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 points[1] = center - rightDelta + upDelta;
                 points[2] = center - rightDelta - upDelta;
                 points[3] = center + rightDelta - upDelta;
+
                 UnityEditor.Handles.DrawSolidRectangleWithOutline(points, Color.clear, arrowColor);
                 UnityEditor.Handles.Label(center + new Vector3(-0.003f, 0.003f, 0.0f), new GUIContent("touch plane", "The plane which the finger will need to cross in order for the touch to be calculated as a scroll"));
-
 
                 //Display the item number on the list items
                 for (int i = 0; i < scrollContainer.CollectionNodes.Count; i++)
                 {
                     ObjectCollectionNode node = scrollContainer.CollectionNodes[i];
+                    if(node.Transform == null)
+                    {
+                        continue;
+                    }
                     Vector3 cp = node.Transform.position;
                     cp.z = center.z;
                     if(scrollContainer.IsItemVisible(i))
