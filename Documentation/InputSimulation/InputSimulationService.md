@@ -7,6 +7,9 @@ The Input Simulation Service emulates the behaviour of devices and platforms tha
 
 Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.
 
+  | __Warning__: This does not work when using Unity's XR Holographic Emulation -> Emulation Mode = "Simulate in Editor". Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = "None"|
+  | --- |
+
 ## Enabling the Input Simulation Service
 
 Input simulation is enabled by default in MRTK.
@@ -89,6 +92,19 @@ Once the manipulation key is released the hands will disappear after a short _Ha
 </a>
 
 Hands can be moved further or closer to the camera using the _mouse wheel_.
+By default the hand will move somewhat slowly in response to mouse scroll,
+and this can be made faster by changing the *Hand Depth Multiplier* to a
+larger number.
+
+The initial distance from the camera that the hand appears at is controlled by
+*Default Hand Distance.*
+
+By default, the simulated hand joints will be perfectly still. Note that on devices there
+will always be some amount of jitter/noise due to the underlying hand tracking.
+You can see this on the device when you have hand mesh or joints enabled (and
+see how it has slightly jitter even if you have your hand perfectly still). It's possible
+to simulate jitter by changing *Hand Jitter Amount* to a positive value (for example, 0.1
+as is shown in the image above).
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png" title="Full Hand Mesh" width="80%" class="center" />
