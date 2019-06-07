@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
-    public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem
+    public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem, IMixedRealityDataProviderAccess
     {
         public MixedRealitySpatialAwarenessSystem(
             IMixedRealityServiceRegistrar registrar,
