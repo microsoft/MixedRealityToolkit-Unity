@@ -12,6 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public abstract class BaseInputEventData : BaseEventData
     {
         /// <summary>
+        /// The sender of the event
+        /// </summary>
+        /// <remarks>null by default</remarks>
+        public object Sender { get; set; }
+
+        /// <summary>
         /// The UTC time at which the event occurred.
         /// </summary>
         public DateTime EventTime { get; private set; }
@@ -45,6 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected void BaseInitialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction)
         {
             Reset();
+            Sender = null;
             EventTime = DateTime.UtcNow;
             InputSource = inputSource;
             MixedRealityInputAction = inputAction;
