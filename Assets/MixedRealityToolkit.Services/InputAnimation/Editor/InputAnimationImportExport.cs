@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     using (FileStream fs = new FileStream(filepath, FileMode.Open))
                     {
                         clip = new AnimationClip();
-                        InputAnimationSerializationUtils.AnimationClipFromStream(clip, fs);
+                        InputAnimationImportExportUtils.AnimationClipFromStream(clip, fs);
                     }
 
                     if (clip)
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     using (FileStream fs = new FileStream(outputPath, FileMode.Create))
                     {
-                        InputAnimationSerializationUtils.AnimationClipToStream(clip, fs);
+                        InputAnimationImportExportUtils.AnimationClipToStream(clip, fs);
                     }
                 }
                 catch (IOException ex)
