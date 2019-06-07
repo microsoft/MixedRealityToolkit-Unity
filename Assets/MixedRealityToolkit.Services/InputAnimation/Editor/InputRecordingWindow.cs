@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private IInputSimulationService simService = null;
         private IInputSimulationService SimService => simService ?? (simService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
 
-        public enum RecordingMode
+        public enum ToolMode
         {
             /// <summary>
             /// Record input animation and store in the asset.
@@ -47,8 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Playback,
         }
 
-        private RecordingMode mode = RecordingMode.Recording;
-        public RecordingMode Mode
+        private ToolMode mode = ToolMode.Recording;
+        public ToolMode Mode
         {
             get { return mode; }
             private set
@@ -81,14 +81,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             LoadIcons();
 
             string[] modeStrings = { "Record", "Playback" };
-            Mode = (RecordingMode)GUILayout.SelectionGrid((int)Mode, modeStrings, modeStrings.Length);
+            Mode = (ToolMode)GUILayout.SelectionGrid((int)Mode, modeStrings, modeStrings.Length);
 
             switch (mode)
             {
-                case RecordingMode.Recording:
+                case ToolMode.Recording:
                     DrawRecordingGUI();
                     break;
-                case RecordingMode.Playback:
+                case ToolMode.Playback:
                     DrawPlaybackGUI();
                     break;
             }
