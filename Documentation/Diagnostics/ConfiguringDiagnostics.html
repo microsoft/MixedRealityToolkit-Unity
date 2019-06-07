@@ -94,6 +94,15 @@
 <blockquote>
 <p>When disabled, all configured diagnostic options will be hidden.</p>
 </blockquote>
+<h4 id="programmatically-controlling-the-diagnostics-system">Programmatically controlling the Diagnostics System</h4>
+<p>It's also possible to toggle the visibility of the diagnostics system and the profiler at runtime.
+For example, the code below will hide the diagnostics system and profiler.</p>
+<pre><code class="lang-C#">if (MixedRealityServiceRegistry.TryGetService&lt;IMixedRealityDiagnosticsSystem&gt;(out var service))
+{
+    service.ShowDiagnostics = false;
+    service.ShowProfiler = false;
+}
+</code></pre>
 <h2 id="profiler-settings">Profiler Settings</h2>
 <p><img src="../Images/Diagnostics/DiagnosticsProfilerSettings.png" alt="Diagnostics Profiler Settings"></p>
 <h3 id="show-profiler">Show Profiler</h3>
