@@ -16,8 +16,13 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class PressableButtonTests
+    public class PressableButtonTests : IPrebuildSetup
     {
+        public void Setup()
+        {
+            PlayModeTestUtilities.EnsureTextMeshProEssentials();
+        }
+
         #region Utilities
         private GameObject InstantiateSceneAndDefaultPressableButton()
         {
