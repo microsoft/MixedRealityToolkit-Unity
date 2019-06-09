@@ -118,6 +118,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("BoxColliderToUse")]
         private BoxCollider boundsOverride = null;
+        public BoxCollider BoundsOverride
+        {
+            get { return boundsOverride; }
+            set 
+            {
+                if (boundsOverride != value)
+                {
+                    boundsOverride = value;
+                    CreateRig();
+                }
+            }
+        }
 
         [Header("Behavior")]
         [SerializeField]
