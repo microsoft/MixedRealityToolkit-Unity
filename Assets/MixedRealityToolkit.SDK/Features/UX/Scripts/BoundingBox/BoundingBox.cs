@@ -613,8 +613,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private BoundsCalculationMethod boundsMethod;
 
-
-
         private List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
         private List<Transform> links;
         private List<Transform> corners;
@@ -655,7 +653,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 diagonalDir;
 
         private HandleType currentHandleType;
-        private Vector3 lastBounds;
+
+        Bounds prevBounds = new Bounds();
 
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
@@ -800,6 +799,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 UpdateRigHandles();
                 Target.transform.hasChanged = false;
             }
+            else if (HasBoundsOverrideChanged())
+            {
+                UpdateBounds();
+                UpdateRigHandles();
+            }
+        }
+        private bool HasBoundsOverrideChanged()
+        {
+            if (boundsOverride == null)
+            {
+                return false;
+            }
+            Bounds curBounds = boundsOverride.bounds;
+            bool result = curBounds != prevBounds;
+            prevBounds = curBounds;
+            return result;
         }
         #endregion MonoBehaviour Methods
 
