@@ -642,7 +642,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "vwaBQfGde/ugqI2qaJZTfA=="
+          "hash": "Dt/EJjNQpKQuBMeirpF6rg=="
         }
       },
       "is_incremental": false,
@@ -3357,6 +3357,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Profiles/input_profile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Profiles/input_profile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemBuildSettings.png",
       "output": {
         "resource": {
@@ -4145,6 +4156,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Profiles/Profiles.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Profiles/Profiles.html",
+          "hash": "anFw47skKtPtEPONb0fkmA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/README_AppBar.md",
       "output": {
         ".html": {
@@ -4449,7 +4472,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "r2GYhh3HEJ7ti1nUUKkiWA=="
+          "hash": "pJrBP6vp4yH9M+laiwAsgQ=="
         }
       },
       "is_incremental": false,
@@ -15823,10 +15846,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 940,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 97,
+          "total_file_count": 98,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -15834,12 +15863,6 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 940,
           "skipped_file_count": 0
         }
       }

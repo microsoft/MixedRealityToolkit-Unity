@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Profiles | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Profiles | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="profiles">Profiles</h1>
+
+<p>One of the main ways that the MRTK is configured is through the many profiles available
+in the foundation package. The main MixedRealityToolkit object has a profile, which is
+essentially a ScriptableObject which may contain references to other ScriptableObjects,
+each of which are designed to configure the behavior of their corresponding sub-systems.</p>
+<p>For example, the Input system's behavior is governed by its input profile. An example
+of such a profile is <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityInputSystemProfile.asset">here</a>. In order to edit this, it's usually recommended
+to use the in-editor inspector:</p>
+<p><img src="../Images/Profiles/input_profile.png" alt="MRTK"></p>
+<blockquote>
+<p><strong>Note:</strong> While it is intended that profiles can be swapped out at runtime, this currently
+doesn't work - <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289">see this issue</a></p>
+</blockquote>
+<h2 id="default-profile">Default Profile</h2>
+<p>The MRTK provides a set of default profiles which cover most platforms and scenarios that
+the MRTK supports - for example, when you select the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset">DefaultMixedRealityToolkitConfigurationProfile</a>
+you will be able to try our scenarios on VR (OpenVR, WMR) and HoloLens (1 and 2). Note that because
+this is a general use profile, it's not optimized for any particular use case - if you want to have
+more performant/specific settings that are better on other platforms, please check out the other
+profiles below, which are slightly tweaked to be better on their respective platforms.</p>
+<h2 id="hololens-2-profile">HoloLens 2 Profile</h2>
+<p>The MRTK also provides a default profile that is optimized for deployment and testing on
+the HoloLens 2: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2ConfigurationProfile.asset">DefaultHoloLens2ConfigurationProfile</a>.
+When prompted to choose a profile for the MixedRealityToolkit object, use this profile instead
+of the default selected profile.</p>
+<p>The key differences between the HoloLens2 profile and the Default Profile are:</p>
+<ul>
+<li>Boundary System has been disabled (there are no boundaries in AR)</li>
+<li>Teleport System has been disabled (primarily a VR concept)</li>
+<li>Spatial Awareness System has been disabled (spatial meshes won't render, but this can be turned back
+on by following the <a href="../SpatialAwareness/SpatialAwarenessGettingStarted.html">instructions here</a>)</li>
+<li>The eye tracking provider and settings have been enabled</li>
+<li>Eye simulation has been enabled by default</li>
+<li>Hand mesh visualization is disabled (there is a performance overhead associated with using hand meshes)</li>
+<li>Camera profile settings are set to match such that the editor quality and player quality are the same.</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Profiles/Profiles.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
