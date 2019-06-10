@@ -51,8 +51,12 @@ The current animation time can also be controlled directly with the [LocalTime](
 
 # Editor tools for recording and playing input animation
 
-# Demo utility component
+>TODO: added in separate PR
 
 # Conversion to and from AnimationClip
 
+>TODO: added in separate PR
+
 # Writing tests using input animation
+
+>TODO
