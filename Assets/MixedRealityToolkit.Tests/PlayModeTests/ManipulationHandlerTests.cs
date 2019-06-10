@@ -71,25 +71,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.OnHoverEntered.AddListener((eventData) => hoverEnterCount++);
             manipHandler.OnHoverExited.AddListener((eventData) => hoverExitCount++);
 
+            yield return new WaitForFixedUpdate();
             yield return null;
+
             Assert.AreEqual(1, hoverEnterCount, $"ManipulationHandler did not receive hover enter event, count is {hoverEnterCount}");
 
             testObject.transform.Translate(Vector3.up);
 
+            // First yield for physics. Second for normal frame step.
+            // Without first one, second might happen before translation is applied.
+            // Without second one services will not be stepped.
+            yield return new WaitForFixedUpdate();
             yield return null;
-            // In some cases Input system will step before the new transform is applied to an object, thus postponing focus exit event for one frame.
-            yield return null;
+
             Assert.AreEqual(1, hoverExitCount, "ManipulationHandler did not receive hover exit event");
 
             testObject.transform.Translate(5 * Vector3.up);
 
-            yield return null;
+            yield return new WaitForFixedUpdate();
             yield return null;
 
-            Assert.IsTrue(hoverExitCount == 1, "ManipulationHandler did not receive hover exit event");
+            Assert.IsTrue(hoverExitCount == 1, "ManipulationHandler received the second hover event");
 
             GameObject.Destroy(testObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
+
+            // Wait for a frame to give Unity a chance to actually destroy the object
             yield return null;
         }
 
