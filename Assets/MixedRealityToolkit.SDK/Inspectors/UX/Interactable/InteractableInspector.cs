@@ -197,7 +197,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 EditorGUI.EndProperty();
             }
-
             
             // show requires gaze because voice command has a value
             if (!string.IsNullOrEmpty(voiceCommands.stringValue))
@@ -738,6 +737,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         
         /// <summary>
         /// Get the index of the speech keyword array item based on its name, pop-up field helper
+        /// Skips the first item in the array (internal added value to turn feature off)
+        /// and returns a 0 if no match is found
         /// </summary>
         /// <param name="option"></param>
         /// <param name="options"></param>

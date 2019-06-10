@@ -458,7 +458,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             lastState = StateManager.CurrentState();
-            
+
             if (requiresFocusValueCheck != RequiresFocus || isGlobalValueCheck != IsGlobal)
             {
                 requiresFocusValueCheck = RequiresFocus;
@@ -822,7 +822,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void OnFocusChanged(FocusEventData eventData) {}
+        public void OnFocusChanged(FocusEventData eventData) { }
 
         #endregion MixedRealityFocusChangedHandlers
 
@@ -1041,7 +1041,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             int focusingPokePointerCount = 0;
             for (int i = 0; i < focusingPointers.Count; i++)
             {
-                if(focusingPointers[i].InputSourceParent.SourceId == data.SourceId)
+                if (focusingPointers[i].InputSourceParent.SourceId == data.SourceId)
                 {
                     focusingPointerCount++;
                     if (focusingPointers[i] is PokePointer)
@@ -1274,7 +1274,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             eventData.Use();
         }
 
-        public void OnTouchUpdated(HandTrackingInputEventData eventData){}
+        public void OnTouchUpdated(HandTrackingInputEventData eventData) { }
         #endregion TouchHandlers
 
         #region InputHandlers
@@ -1354,7 +1354,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SetVisited(true);
             }
         }
-        
+
         private void OnInputChangedHelper<T>(InputEventData<T> eventData, Vector3 inputPosition, float gestureDeadzoneThreshold)
         {
             if (!CanInteract())
