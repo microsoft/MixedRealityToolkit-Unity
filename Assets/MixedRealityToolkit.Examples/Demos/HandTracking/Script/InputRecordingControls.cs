@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void OnExportRecordedInput()
         {
-            RecordingService.ExportRecordedInput();
+            RecordingService.SaveInputAnimation();
         }
     }
 }
