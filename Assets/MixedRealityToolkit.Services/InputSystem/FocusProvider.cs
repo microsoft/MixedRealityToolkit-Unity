@@ -16,12 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
-    public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider
+    public class FocusProvider : BaseCoreSystem, IMixedRealityFocusProvider
     {
         public FocusProvider(
             IMixedRealityServiceRegistrar registrar,
-            IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile profile) : base(registrar, inputSystem, null, DefaultPriority, profile)
+            MixedRealityInputSystemProfile profile) : base(registrar, profile)
         { }
 
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
@@ -75,9 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
 
-                if ((Service != null) &&
-                    (profile != null) &&
-                    profile.PointerProfile != null)
+                if (profile != null && profile.PointerProfile != null)
                 {
                     return profile.PointerProfile.PointingExtent;
                 }
@@ -97,9 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
 
-                    if ((Service != null) &&
-                        (profile != null) &&
-                        profile.PointerProfile != null)
+                    if (profile != null && profile.PointerProfile != null)
                     {
                         return focusLayerMasks = profile.PointerProfile.PointingRaycastLayerMasks;
                     }
@@ -127,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (Service == null)
+                if (InputSystem == null)
                 {
                     Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
                     return false;
@@ -582,11 +577,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 UnityEngine.Object.Destroy(uiRaycastCameraTargetTexture);
             }
+            uiRaycastCameraTargetTexture = null;
 
             if (uiRaycastCamera != null)
             {
                 UnityEngine.Object.Destroy(uiRaycastCamera.gameObject);
             }
+            uiRaycastCamera = null;
         }
 
         /// <inheritdoc />
@@ -1204,7 +1201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
                     // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.SourceId == ((IMixedRealityInputSystem)Service).GazeProvider?.GazeInputSource.SourceId)
+                    if (eventData.InputSource.SourceId == InputSystem.GazeProvider?.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;
