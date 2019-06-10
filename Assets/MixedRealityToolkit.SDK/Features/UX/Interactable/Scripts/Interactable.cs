@@ -341,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// Look for speech commands in the MRTK Speech Command profile
-        /// Adds a "-None" value at index zero so the developer can turn the feature off.
+        /// Adds a blank value at index zero so the developer can turn the feature off.
         /// </summary>
         /// <param name="keywords"></param>
         /// <returns></returns>
@@ -367,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 keys.Add(commands[i].Keyword);
             }
 
-            keys.Insert(0, "-None");
+            keys.Insert(0, "-No Selection-");
             keywords = keys.ToArray();
             return true;
         }
