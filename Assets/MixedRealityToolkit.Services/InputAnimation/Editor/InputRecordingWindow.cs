@@ -284,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 string filename = Path.GetFileName(outputPath);
                 string directory = Path.GetDirectoryName(outputPath);
 
-                string result = RecordingService.ExportRecordedInput(filename, directory);
+                string result = RecordingService.SaveInputAnimation(filename, directory);
 
                 if (loadAfterExport)
                 {
@@ -295,22 +295,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void LoadAnimation(string filepath)
         {
-            if (filepath.Length > 0)
+            if (PlaybackService.LoadInputAnimation(filepath))
             {
-                try
-                {
-                    using (FileStream fs = new FileStream(filepath, FileMode.Open))
-                    {
-                        animation = new InputAnimation();
-                        animation.FromStream(fs);
-                        loadedFilePath = filepath;
-                    }
-                }
-                catch (IOException ex)
-                {
-                    Debug.LogError(ex.Message);
-                    loadedFilePath = "";
-                }
+                loadedFilePath = filepath;
+            }
+            else
+            {
+                loadedFilePath = "";
             }
         }
 
