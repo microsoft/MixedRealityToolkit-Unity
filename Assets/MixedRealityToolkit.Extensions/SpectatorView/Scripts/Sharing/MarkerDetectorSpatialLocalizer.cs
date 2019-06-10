@@ -92,13 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 Marker = marker;
             }
-
-            protected override void OnManagedDispose()
-            {
-                base.OnManagedDispose();
-
-                GameObject.Destroy(gameObject);
-            }
         }
 
         private class LocalizationSession : SpatialLocalizationSession<MarkerDetectorLocalizationSettings>

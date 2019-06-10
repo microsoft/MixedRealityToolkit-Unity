@@ -12,6 +12,7 @@ using System.Globalization;
 using System;
 using System.IO;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor;
+using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 
 #if !UNITY_EDITOR && UNITY_WSA
 using Windows.Perception;
@@ -27,11 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
     [RequireComponent(typeof(TCPConnectionManager))]
     public class CameraPoseProvider : MonoBehaviour
     {
-        [SerializeField]
-        private Transform originTransform = null;
-
         private TCPConnectionManager tcpConnectionManager;
         private Stopwatch timestampStopwatch;
+        private SpatialCoordinateSystemParticipant sharedCoordinateParticipant;
+        private SocketEndpoint currentConnection;
 
 #if !UNITY_EDITOR && UNITY_WSA
         private Calendar timeConversionCalendar;
@@ -50,9 +50,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 
         private void Update()
         {
-            if (!tcpConnectionManager.HasConnections)
+            if (currentConnection == null || !currentConnection.IsConnected)
             {
                 return;
+            }
+
+            if (sharedCoordinateParticipant == null)
+            {
+                SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(currentConnection, out sharedCoordinateParticipant);
             }
 
             // Get an adjusted position and rotation based on the historical pose for the current time.
@@ -67,8 +72,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
                 float timestamp = (float)timestampStopwatch.Elapsed.TotalSeconds;
 
                 // Translate the camera pose into an anchor-relative pose.
-                cameraPosition = originTransform.InverseTransformPoint(cameraPosition);
-                cameraRotation = Quaternion.Inverse(originTransform.rotation) * cameraRotation;
+                if (sharedCoordinateParticipant != null && sharedCoordinateParticipant.Coordinate != null)
+                {
+                    cameraPosition = sharedCoordinateParticipant.Coordinate.WorldToCoordinateSpace(cameraPosition);
+                    cameraRotation = sharedCoordinateParticipant.Coordinate.WorldToCoordinateSpace(cameraRotation);
+                }
 
                 SendCameraPose(timestamp, cameraPosition, cameraRotation);
             }
@@ -78,6 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
         {
             // Restart the timeline at 0 each time we reconnect to the HoloLens
             timestampStopwatch = Stopwatch.StartNew();
+            sharedCoordinateParticipant = null;
+            currentConnection = endpoint;
         }
 
         private void SendCameraPose(float timestamp, Vector3 cameraPosition, Quaternion cameraRotation)

@@ -62,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     spatialCoordinateSystemParticipant != null &&
                     spatialCoordinateSystemParticipant.PeerDeviceHasTracking &&
                     spatialCoordinateSystemParticipant.PeerSpatialCoordinateIsLocated &&
+                    !spatialCoordinateSystemParticipant.PeerIsLocatingSpatialCoordinate &&
                     !deviceInfo.IsTrackingStalled &&
                     (!showCalibrationStatus || (compositionManager != null &&
                     compositionManager.IsCalibrationDataLoaded)))
@@ -172,7 +173,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     {
                         MarkerID = 0,
                         MarkerSize = 0.1f,
-                        ShouldPersistCoordinate = true
                     });
                 }
 

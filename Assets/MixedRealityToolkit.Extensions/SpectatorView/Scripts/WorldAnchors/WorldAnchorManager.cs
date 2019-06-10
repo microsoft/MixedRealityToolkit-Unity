@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.W
                 new AnchorAttachmentInfo
                 {
                     GameObjectToAnchor = gameObjectToUnanchor,
-                    AnchorName = string.Empty,
+                    AnchorName = gameObjectToUnanchor.name,
                     Operation = AnchorOperation.Delete
                 });
 #endif
@@ -216,16 +216,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.W
                     }
 
                     GameObject gameObjectToUnanchor = anchorAttachmentInfo.GameObjectToAnchor;
-                    var anchor = gameObjectToUnanchor.GetComponent<WorldAnchor>();
+                    WorldAnchor anchor = null;
+                    if (gameObjectToUnanchor != null)
+                    {
+                        anchor = gameObjectToUnanchor.GetComponent<WorldAnchor>();
+                    }
 
+                    AnchorStore.Delete(anchorAttachmentInfo.AnchorName);
                     if (anchor != null)
                     {
-                        AnchorStore.Delete(anchor.name);
                         DestroyImmediate(anchor);
-                    }
-                    else
-                    {
-                        Debug.LogError("Cannot get anchor while deleting");
                     }
 
                     break;

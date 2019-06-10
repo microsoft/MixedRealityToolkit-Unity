@@ -38,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         internal const string CoordinateStateMessageHeader = "COORDSTATE";
         private const string LocalizeCommand = "LOCALIZE";
+        private const string RestorePersistentSharedCoordinateCommand = "INITSHAREDCOORD";
         private readonly Dictionary<Guid, ISpatialLocalizer> localizers = new Dictionary<Guid, ISpatialLocalizer>();
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
@@ -82,6 +83,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             UnregisterEvents(networkManager);
+        }
+
+        public void RestorePersistentSharedCoordinate(SocketEndpoint socketEndpoint, string sharedCoordinateName)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter message = new BinaryWriter(stream))
+            {
+                message.Write(RestorePersistentSharedCoordinateCommand);
+                message.Write(sharedCoordinateName);
+
+                socketEndpoint.Send(stream.ToArray());
+            }
         }
 
         public void InitiateRemoteLocalization(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
@@ -138,6 +151,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             SpatialCoordinateSystemParticipant participant = participantGameObject.AddComponent<SpatialCoordinateSystemParticipant>();
             participant.SocketEndpoint = endpoint;
             participants[endpoint] = participant;
+
+            if (showDebugVisuals)
+            {
+                var debugVisualInstance = Instantiate(debugVisual, participant.transform);
+                debugVisualInstance.transform.localPosition = Vector3.zero;
+                debugVisualInstance.transform.localRotation = Quaternion.identity;
+                debugVisualInstance.transform.localScale = Vector3.one * debugVisualScale;
+            }
         }
 
         private void OnDisconnected(SocketEndpoint endpoint)
@@ -162,6 +183,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             participant.PeerIsLocatingSpatialCoordinate = reader.ReadBoolean();
             participant.PeerSpatialCoordinateWorldPosition = reader.ReadVector3();
             participant.PeerSpatialCoordinateWorldRotation = reader.ReadQuaternion();
+        }
+
+        private void OnRestorePersistentSharedCoordinateReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
+            {
+                Debug.LogError($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
+                return;
+            }
+
+            string coordinateId = reader.ReadString();
+            participant.PersistentCoordinateId = coordinateId;
+            participant.Coordinate = new WorldAnchorSpatialCoordinate(coordinateId);
         }
 
         private async void OnLocalizeMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
@@ -199,8 +233,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             using (currentLocalizationSession = localizer.CreateLocalizationSession(settings))
             {
+                if (participant.Coordinate is WorldAnchorSpatialCoordinate worldAnchorSpatialCoordinate)
+                {
+                    worldAnchorSpatialCoordinate.RemoveAnchor();
+                }
+
                 participant.IsLocatingSpatialCoordinate = true;
-                participant.Coordinate = await currentLocalizationSession.LocalizeAsync(CancellationToken.None);
+                var coordinate = await currentLocalizationSession.LocalizeAsync(CancellationToken.None);
+                if (participant.PersistentCoordinateId != null)
+                {
+                    participant.Coordinate = new WorldAnchorSpatialCoordinate(participant.PersistentCoordinateId, coordinate.CoordinateToWorldSpace(Vector3.zero), coordinate.CoordinateToWorldSpace(Quaternion.identity));
+                }
+                else
+                {
+                    participant.Coordinate = coordinate;
+                }
                 participant.IsLocatingSpatialCoordinate = false;
             }
             currentLocalizationSession = null;
@@ -211,6 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             networkManager.Connected += OnConnected;
             networkManager.Disconnected += OnDisconnected;
             networkManager.RegisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
+            networkManager.RegisterCommandHandler(RestorePersistentSharedCoordinateCommand, OnRestorePersistentSharedCoordinateReceived);
             networkManager.RegisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
         }
 
@@ -219,6 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             networkManager.Connected -= OnConnected;
             networkManager.Disconnected -= OnDisconnected;
             networkManager.UnregisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
+            networkManager.UnregisterCommandHandler(RestorePersistentSharedCoordinateCommand, OnRestorePersistentSharedCoordinateReceived);
             networkManager.UnregisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
         }
 
@@ -226,7 +275,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             foreach(var participant in participants)
             {
-                Destroy(participant.Value.gameObject);
+                if (participant.Value != null)
+                {
+                    Destroy(participant.Value.gameObject);
+                }
             }
 
             participants.Clear();

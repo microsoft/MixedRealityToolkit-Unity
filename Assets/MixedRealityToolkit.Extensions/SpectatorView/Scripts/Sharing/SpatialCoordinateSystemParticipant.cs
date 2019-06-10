@@ -67,6 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         public Quaternion PeerSpatialCoordinateWorldRotation { get; internal set; }
 
+        public string PersistentCoordinateId { get; internal set; }
+
         private void Update()
         {
             if (Coordinate != null && Coordinate.State == LocatedState.Tracking)

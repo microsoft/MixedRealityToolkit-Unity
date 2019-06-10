@@ -30,9 +30,16 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 
         public TransformSpatialCoordinate(TKey id)
         {
-            gameObject = new GameObject($"Marker Detector Spatial Anchor - {id}");
+            gameObject = new GameObject($"TransformSpatialCoordinate - {id}");
 
             Id = id;
+        }
+
+        protected override void OnManagedDispose()
+        {
+            GameObject.Destroy(gameObject);
+
+            base.OnManagedDispose();
         }
 
         protected void OnStateChanged() => StateChanged?.Invoke();
