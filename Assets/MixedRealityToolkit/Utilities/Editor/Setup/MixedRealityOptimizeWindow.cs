@@ -336,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 BuildSection("Single Pass Instanced Rendering", "https://docs.unity3d.com/Manual/SinglePassStereoRendering.html", () =>
                 {
-                    EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity render pipline to more efficiently render your scene and optimize CPU & GPU work. This path requires shaders though to be written to support instancing which is automatic in all Unity & MRTK shaders. Click the \"Learn More\" button to learn how to update your custom shaders to support instancing.", EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity render pipeline to more efficiently render your scene and optimize CPU & GPU work. This path requires shaders though to be written to support instancing which is automatic in all Unity & MRTK shaders. Click the \"Learn More\" button to learn how to update your custom shaders to support instancing.", EditorStyles.wordWrappedLabel);
 
                     EditorGUILayout.BeginHorizontal();
                         singlePassInstanced = EditorGUILayout.ToggleLeft("Set Single Pass Instanced Rendering", singlePassInstanced);
@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 BuildSection("Depth Buffer Sharing", null, () =>
                 {
                     EditorGUILayout.LabelField("This option shares the application's depth buffer with the running platform which allows the platform to more accurately stabilize holograms and content.", EditorStyles.wordWrappedLabel);
-                    EditorGUILayout.LabelField("Note: Depth buffer sharing & format is a platform dependant feature.", EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.LabelField("Note: Depth buffer sharing & format is a platform dependent feature.", EditorStyles.wordWrappedLabel);
                     enableDepthBufferSharing = EditorGUILayout.ToggleLeft("Enable Depth Buffer Sharing", enableDepthBufferSharing);
 
                     /*

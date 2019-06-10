@@ -45,6 +45,7 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
 * [Teleporting settings](#teleportation)
 * [Spatial awareness settings](#spatialawareness)
 * [Diagnostics settings](#diagnostic)
+* [Scene system settings](#scenesystem)
 * [Additional services settings](#services)
 * [Input actions settings](#inputactions)
 * [Input actions rules](#inputactionrules)
@@ -170,6 +171,15 @@ The diagnostics profile provides several simple systems to monitor whilst the pr
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit configuration screen.
+
+---
+<a name="scenesystem"/>
+
+## Scene system settings
+
+The MRTK provides this optional service to help you manage complex additive scene loading / unloading. To decide if the Scene System would be a good fit for your project, read the [Scene System Getting Started Guide.](SceneSystem/SceneSystemGettingStarted.md)
+
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png)
 
 ---
 <a name="services"/>

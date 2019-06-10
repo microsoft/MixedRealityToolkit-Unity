@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     public class GltfNode : GltfChildOfRootProperty
     {
         /// <summary>
-        /// If true, extracts transform, rotation, scale values from the Matrix4x4. Otherwise uses the Transform, Rotate, Scale directly as specified by by the node.
+        /// If true, extracts transform, rotation, scale values from the Matrix4x4. Otherwise uses the Transform, Rotate, Scale directly as specified by the node.
         /// </summary>
         public bool useTRS;
 

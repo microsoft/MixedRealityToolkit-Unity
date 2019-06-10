@@ -220,6 +220,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             return null;
         }
+
+        public static void ResetGesturePoses()
+        {
+            handPoses.Clear();
+        }
         #endif
 
         /// Utility class to serialize hand pose as a dictionary with full joint names

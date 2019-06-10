@@ -315,7 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         // Update is called once per frame
         protected virtual void Update()
         {
-            //# Let's make sure that the correct gameobject is targeted and update the pan and zoom parameters.
+            //# Let's make sure that the correct GameObject is targeted and update the pan and zoom parameters.
             if (UpdateCursorPosInHitBox())
             {
                 //# Dynamically increase hit box size once user looks at this target

@@ -78,6 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
         {
             var profile = target as BaseMixedRealityProfile;
             return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
                    profile == MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile;
         }
     }

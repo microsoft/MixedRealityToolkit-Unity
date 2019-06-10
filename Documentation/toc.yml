@@ -17,6 +17,8 @@
       items:
       - name: Mixed Reality Toolkit Componentization
         href: Packaging/MRTK_Modularization.md
+    - name: Profiles
+      href: Profiles/Profiles.md
     - name: Input
       href: Input/Overview.md
       items:

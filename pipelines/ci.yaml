@@ -12,7 +12,9 @@ jobs:
     demands:
     - Unity2018.3.7f1
     - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
   steps:
   - template: templates/common.yml
   - template: templates/package.yml
+  - template: templates/publishpackages.yml
   - template: templates/end.yml
