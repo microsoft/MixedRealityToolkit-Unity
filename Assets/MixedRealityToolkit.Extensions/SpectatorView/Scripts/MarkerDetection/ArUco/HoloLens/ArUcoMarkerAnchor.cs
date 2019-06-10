@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
     /// Represents an object that can detect an ArUco marker and persist and restore a WorldAnchor
     /// to persist the location of that marker across sessions.
     /// </summary>
-    public class ArUcoMarkerAnchor : MonoBehaviour, ICommandHandler
+    public class ArUcoMarkerAnchor : MonoBehaviour
     {
         [SerializeField]
         private GameObject networkManagerGameObject = null;
@@ -42,39 +42,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             }
         }
 
-        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleCreateSharedSpatialCoordinateCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            switch (command)
+            float markerDistance = reader.ReadSingle();
+
+            if (!isDetectingMarker)
             {
-                case LocatableDeviceObserver.CreateSharedSpatialCoordinateCommand:
-                    {
-                        float markerDistance = reader.ReadSingle();
+                isDetectingMarker = true;
+                WorldAnchorManager.Instance.RemoveAnchor(gameObject);
 
-                        if (!isDetectingMarker)
-                        {
-                            isDetectingMarker = true;
-                            WorldAnchorManager.Instance.RemoveAnchor(gameObject);
-
-                            markerDetector.SetMarkerSize(markerDistance);
-                            markerDetector.StartDetecting();
-                        }
-                    }
-                    break;
+                markerDetector.SetMarkerSize(markerDistance);
+                markerDetector.StartDetecting();
             }
-        }
-
-        public void OnConnected(SocketEndpoint endpoint)
-        {
-        }
-
-        public void OnDisconnected(SocketEndpoint endpoint)
-        {
         }
 
         private void Awake()
         {
             networkManager = networkManagerGameObject.GetComponent<INetworkManager>();
-            networkManager.RegisterCommandHandler(LocatableDeviceObserver.CreateSharedSpatialCoordinateCommand, this);
+            networkManager.RegisterCommandHandler(LocatableDeviceObserver.CreateSharedSpatialCoordinateCommand, HandleCreateSharedSpatialCoordinateCommand);
 
             markerDetector = GetComponent<IMarkerDetector>();
             markerDetector.MarkersUpdated += MarkerDetector_MarkersUpdated;
@@ -107,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 
         private void OnDestroy()
         {
-            networkManager.UnregisterCommandHandler(LocatableDeviceObserver.CreateSharedSpatialCoordinateCommand, this);
+            networkManager.UnregisterCommandHandler(LocatableDeviceObserver.CreateSharedSpatialCoordinateCommand, HandleCreateSharedSpatialCoordinateCommand);
             markerDetector.MarkersUpdated -= MarkerDetector_MarkersUpdated;
 
         }

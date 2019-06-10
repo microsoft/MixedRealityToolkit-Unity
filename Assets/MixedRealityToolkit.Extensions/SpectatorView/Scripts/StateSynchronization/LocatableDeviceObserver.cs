@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
@@ -6,9 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    public class LocatableDeviceObserver : MonoBehaviour, ICommandHandler
+    public class LocatableDeviceObserver : MonoBehaviour
     {
-        private const float trackingStalledReceiveDelay = 1.0f;
+        private static readonly TimeSpan trackingStalledReceiveDelay = TimeSpan.FromSeconds(1.0);
 
         public const string CreateSharedSpatialCoordinateCommand = "CreateSharedSpatialCoordinate";
         public const string DeviceInfoCommand = "DeviceInfo";
@@ -16,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public const float arUcoMarkerSizeInMeters = 0.1f;
 
         private INetworkManager networkManager;
-        private float lastReceivedPoseTime = -1;
         private string deviceName;
         private string deviceIPAddress;
         private bool hasTracking;
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <summary>
         /// Gets whether or not the receipt of new poses from the device has stalled for an unexpectedly-large time.
         /// </summary>
-        public bool IsTrackingStalled => networkManager.IsConnected && (Time.time - lastReceivedPoseTime) > trackingStalledReceiveDelay;
+        public bool IsTrackingStalled => networkManager.IsConnected && networkManager.TimeSinceLastUpdate > trackingStalledReceiveDelay;
 
         /// <summary>
         /// Gets the position of the shared spatial coordinate in the device's world space.
@@ -95,53 +95,33 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private void Awake()
         {
             networkManager = GetComponent<INetworkManager>();
-            networkManager.RegisterCommandHandler(DeviceInfoCommand, this);
-            networkManager.RegisterCommandHandler(StatusCommand, this);
-            networkManager.RegisterCommandHandler(StateSynchronizationObserver.CameraCommand, this);
+            networkManager.RegisterCommandHandler(DeviceInfoCommand, HandleDeviceInfoCommand);
+            networkManager.RegisterCommandHandler(StatusCommand, HandleStatusCommand);
         }
+        
 
-        public void OnConnected(SocketEndpoint endpoint)
+        private void OnDestroy()
         {
-            lastReceivedPoseTime = Time.time;
-        }
-
-        public void OnDisconnected(SocketEndpoint endpoint)
-        {
-        }
-
-        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
-        {
-            switch (command)
+            if (networkManager != null)
             {
-                case DeviceInfoCommand:
-                    {
-                        deviceName = reader.ReadString();
-                        deviceIPAddress = reader.ReadString();
-                    }
-                    break;
-                case StatusCommand:
-                    {
-                        hasTracking = reader.ReadBoolean();
-                        isSharedSpatialCoordinateLocated = reader.ReadBoolean();
-                        isLocatingSharedSpatialCoordinate = reader.ReadBoolean();
-                        sharedSpatialCoordinateWorldPosition = reader.ReadVector3();
-                        sharedSpatialCoordinateWorldRotation = reader.ReadQuaternion();
-                    }
-                    break;
-                case StateSynchronizationObserver.CameraCommand:
-                    {
-                        NotifyTrackingUpdated();
-                    }
-                    break;
+                networkManager.UnregisterCommandHandler(DeviceInfoCommand, HandleDeviceInfoCommand);
+                networkManager.UnregisterCommandHandler(StatusCommand, HandleStatusCommand);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void NotifyTrackingUpdated()
+        private void HandleDeviceInfoCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            lastReceivedPoseTime = Time.time;
+            deviceName = reader.ReadString();
+            deviceIPAddress = reader.ReadString();
+        }
+
+        private void HandleStatusCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            hasTracking = reader.ReadBoolean();
+            isSharedSpatialCoordinateLocated = reader.ReadBoolean();
+            isLocatingSharedSpatialCoordinate = reader.ReadBoolean();
+            sharedSpatialCoordinateWorldPosition = reader.ReadVector3();
+            sharedSpatialCoordinateWorldRotation = reader.ReadQuaternion();
         }
     }
 }

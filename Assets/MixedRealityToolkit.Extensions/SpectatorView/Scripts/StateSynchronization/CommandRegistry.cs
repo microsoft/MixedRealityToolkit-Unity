@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,77 +13,51 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         ICommandRegistry where TService : Singleton<TService>
     {
         private readonly object lockObject = new object();
-        private Dictionary<string, HashSet<ICommandHandler>> commandHandlers = new Dictionary<string, HashSet<ICommandHandler>>();
+        private Dictionary<string, CommandHandler> commandHandlers = new Dictionary<string, CommandHandler>();
+
+        public event ConnectedEventHandler Connected;
+        public event DisconnectedEventHandler Disconnected;
 
         protected void NotifyConnected(SocketEndpoint socketEndpoint)
         {
-            foreach (ICommandHandler commandHandler in GetCommandHandlerListForEnumeration())
-            {
-                commandHandler.OnConnected(socketEndpoint);
-            }
+            Connected?.Invoke(socketEndpoint);
         }
 
         protected void NotifyDisconnected(SocketEndpoint socketEndpoint)
         {
-            foreach (ICommandHandler commandHandler in GetCommandHandlerListForEnumeration())
-            {
-                commandHandler.OnDisconnected(socketEndpoint);
-            }
+            Disconnected?.Invoke(socketEndpoint);
         }
 
         protected void NotifyCommand(SocketEndpoint socketEndpoint, string command, BinaryReader message, int remainingDataSize)
         {
-            List<ICommandHandler> commandHandlerList = null;
             lock (lockObject)
             {
-                HashSet<ICommandHandler> commandHandlerSet;
-                if (commandHandlers.TryGetValue(command, out commandHandlerSet))
+                CommandHandler commandHandler = null;
+                if (commandHandlers.TryGetValue(command, out commandHandler))
                 {
-                    commandHandlerList = new List<ICommandHandler>(commandHandlerSet);
-                }
-            }
-
-            if (commandHandlerList != null)
-            {
-                foreach (ICommandHandler commandHandler in commandHandlerList)
-                {
-                    commandHandler.HandleCommand(socketEndpoint, command, message, remainingDataSize);
+                    commandHandler(socketEndpoint, command, message, remainingDataSize);
                 }
             }
         }
 
-        private HashSet<ICommandHandler> GetCommandHandlerListForEnumeration()
+        public void RegisterCommandHandler(string command, CommandHandler handler)
         {
             lock (lockObject)
             {
-                return new HashSet<ICommandHandler>(commandHandlers.Values.SelectMany(s => s));
+                if (commandHandlers.ContainsKey(command))
+                {
+                    throw new NotSupportedException($"CommandRegistry has an existing command handler for command {command}");
+                }
+
+                commandHandlers[command] = handler;
             }
         }
 
-        public void RegisterCommandHandler(string command, ICommandHandler handler)
+        public void UnregisterCommandHandler(string command, CommandHandler handler)
         {
             lock (lockObject)
             {
-                HashSet<ICommandHandler> set;
-                if (!commandHandlers.TryGetValue(command, out set))
-                {
-                    commandHandlers[command] = set = new HashSet<ICommandHandler>();
-                }
-
-                set.Add(handler);
-            }
-        }
-
-        public void UnregisterCommandHandler(string command, ICommandHandler handler)
-        {
-            lock (lockObject)
-            {
-                HashSet<ICommandHandler> commandHandlerSet;
-
-                if (commandHandlers.TryGetValue(command, out commandHandlerSet))
-                {
-                    commandHandlerSet.Remove(handler);
-                }
+                commandHandlers.Remove(command);
             }
         }
     }
