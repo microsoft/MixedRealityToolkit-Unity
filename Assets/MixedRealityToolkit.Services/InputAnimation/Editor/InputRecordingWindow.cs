@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     RecordingService.StopRecording();
 
-                    ExportAnimation(true);
+                    SaveAnimation(true);
                 }
             }
 
@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void ExportAnimation(bool loadAfterExport)
+        private void SaveAnimation(bool loadAfterExport)
         {
             string outputPath;
             if (loadedFilePath.Length > 0)
@@ -285,6 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 string directory = Path.GetDirectoryName(outputPath);
 
                 string result = RecordingService.SaveInputAnimation(filename, directory);
+                RecordingService.DiscardRecordedInput();
 
                 if (loadAfterExport)
                 {
