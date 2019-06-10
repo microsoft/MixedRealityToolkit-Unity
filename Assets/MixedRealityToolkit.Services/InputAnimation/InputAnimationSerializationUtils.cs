@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Serialize an animation curve with tangents as binary data.
         /// </summary>
-        public static void WriteFloatCurve(BinaryWriter writer, AnimationCurve curve)
+        public static void WriteFloatCurve(BinaryWriter writer, AnimationCurve curve, float startTime)
         {
             writer.Write((int)curve.preWrapMode);
             writer.Write((int)curve.postWrapMode);
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             for (int i = 0; i < curve.length; ++i)
             {
                 var keyframe = curve.keys[i];
-                writer.Write(keyframe.time);
+                writer.Write(keyframe.time - startTime);
                 writer.Write(keyframe.value);
                 writer.Write(keyframe.inTangent);
                 writer.Write(keyframe.outTangent);
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Serialize an animation curve as binary data, ignoring tangents.
         /// </summary>
-        public static void WriteBoolCurve(BinaryWriter writer, AnimationCurve curve)
+        public static void WriteBoolCurve(BinaryWriter writer, AnimationCurve curve, float startTime)
         {
             writer.Write((int)curve.preWrapMode);
             writer.Write((int)curve.postWrapMode);
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             for (int i = 0; i < curve.length; ++i)
             {
                 var keyframe = curve.keys[i];
-                writer.Write(keyframe.time);
+                writer.Write(keyframe.time - startTime);
                 writer.Write(keyframe.value);
             }
         }
@@ -110,11 +110,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Serialize an array of animation curves with tangents as binary data.
         /// </summary>
-        public static void WriteFloatCurveArray(BinaryWriter writer, AnimationCurve[] curves)
+        public static void WriteFloatCurveArray(BinaryWriter writer, AnimationCurve[] curves, float startTime)
         {
             foreach (AnimationCurve curve in curves)
             {
-                InputAnimationSerializationUtils.WriteFloatCurve(writer, curve);
+                InputAnimationSerializationUtils.WriteFloatCurve(writer, curve, startTime);
             }
         }
 
@@ -132,11 +132,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Serialize an array of animation curves as binary data, ignoring tangents.
         /// </summary>
-        public static void WriteBoolCurveArray(BinaryWriter writer, AnimationCurve[] curves)
+        public static void WriteBoolCurveArray(BinaryWriter writer, AnimationCurve[] curves, float startTime)
         {
             foreach (AnimationCurve curve in curves)
             {
-                InputAnimationSerializationUtils.WriteBoolCurve(writer, curve);
+                InputAnimationSerializationUtils.WriteBoolCurve(writer, curve, startTime);
             }
         }
 
@@ -154,12 +154,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Serialize a list of markers.
         /// </summary>
-        public static void WriteMarkerList(BinaryWriter writer, List<InputAnimationMarker> markers)
+        public static void WriteMarkerList(BinaryWriter writer, List<InputAnimationMarker> markers, float startTime)
         {
             writer.Write(markers.Count);
             foreach (var marker in markers)
             {
-                writer.Write(marker.time);
+                writer.Write(marker.time - startTime);
                 writer.Write(marker.name);
             }
         }
