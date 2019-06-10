@@ -1,4 +1,5 @@
 ﻿using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     public abstract class NetworkManager<TService> : CommandRegistry<TService>, INetworkManager where TService : Singleton<TService>
     {
+        private float lastReceivedUpdate;
+
         [SerializeField]
         protected TCPConnectionManager connectionManager = null;
 
@@ -21,6 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         /// <inheritdoc />
         public bool IsConnecting => connectionManager != null && connectionManager.IsConnecting && !connectionManager.HasConnections;
+
+        /// <inheritdoc />
+        public TimeSpan TimeSinceLastUpdate => TimeSpan.FromSeconds(Time.time - lastReceivedUpdate);
 
         /// <summary>
         /// Gets the port used to connect to the remote device.
@@ -96,6 +102,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         protected void OnReceive(IncomingMessage data)
         {
+            lastReceivedUpdate = Time.time;
+
             using (MemoryStream stream = new MemoryStream(data.Data))
             using (BinaryReader reader = new BinaryReader(stream))
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
@@ -8,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     public class LocatableDeviceObserver : MonoBehaviour
     {
-        private const float trackingStalledReceiveDelay = 1.0f;
+        private static readonly TimeSpan trackingStalledReceiveDelay = TimeSpan.FromSeconds(1.0);
 
         public const string CreateSharedSpatialCoordinateCommand = "CreateSharedSpatialCoordinate";
         public const string DeviceInfoCommand = "DeviceInfo";
@@ -16,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public const float arUcoMarkerSizeInMeters = 0.1f;
 
         private INetworkManager networkManager;
-        private float lastReceivedPoseTime = -1;
         private string deviceName;
         private string deviceIPAddress;
         private bool hasTracking;
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <summary>
         /// Gets whether or not the receipt of new poses from the device has stalled for an unexpectedly-large time.
         /// </summary>
-        public bool IsTrackingStalled => networkManager.IsConnected && (Time.time - lastReceivedPoseTime) > trackingStalledReceiveDelay;
+        public bool IsTrackingStalled => networkManager.IsConnected && networkManager.TimeSinceLastUpdate > trackingStalledReceiveDelay;
 
         /// <summary>
         /// Gets the position of the shared spatial coordinate in the device's world space.
@@ -95,26 +95,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private void Awake()
         {
             networkManager = GetComponent<INetworkManager>();
-            networkManager.Connected += OnConnected;
             networkManager.RegisterCommandHandler(DeviceInfoCommand, HandleDeviceInfoCommand);
             networkManager.RegisterCommandHandler(StatusCommand, HandleStatusCommand);
-            networkManager.RegisterCommandHandler(StateSynchronizationObserver.CameraCommand, HandleCameraCommand);
         }
+        
 
         private void OnDestroy()
         {
             if (networkManager != null)
             {
-                networkManager.Connected -= OnConnected;
                 networkManager.UnregisterCommandHandler(DeviceInfoCommand, HandleDeviceInfoCommand);
                 networkManager.UnregisterCommandHandler(StatusCommand, HandleStatusCommand);
-                networkManager.UnregisterCommandHandler(StateSynchronizationObserver.CameraCommand, HandleCameraCommand);
             }
-        }
-
-        private void OnConnected(SocketEndpoint endpoint)
-        {
-            lastReceivedPoseTime = Time.time;
         }
 
         private void HandleDeviceInfoCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
@@ -130,11 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             isLocatingSharedSpatialCoordinate = reader.ReadBoolean();
             sharedSpatialCoordinateWorldPosition = reader.ReadVector3();
             sharedSpatialCoordinateWorldRotation = reader.ReadQuaternion();
-        }
-
-        private void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
-        {
-            lastReceivedPoseTime = Time.time;
         }
     }
 }
