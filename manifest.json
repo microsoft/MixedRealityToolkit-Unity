@@ -8731,7 +8731,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationService.html",
-          "hash": "piQBAntRMtyhAItICzBWRQ=="
+          "hash": "RApntZb3xL4H9zX9zTv72A=="
         }
       },
       "is_incremental": false,
@@ -9931,7 +9931,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityPlayspace.html",
-          "hash": "6J9VJ2/QIKtU6SXtlLp8+g=="
+          "hash": "NKgghd+/fEGy2HA/7PMZyQ=="
         }
       },
       "is_incremental": false,
@@ -10003,7 +10003,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html",
-          "hash": "ekMrvpcvacHEzLZkJ1m19A=="
+          "hash": "h4gbF5IYhvCwnq+9qLWjQA=="
         }
       },
       "is_incremental": false,
@@ -11167,7 +11167,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.FocusProviderTests.html",
-          "hash": "ID8Psx2kyAhBYtIfWBSvCw=="
+          "hash": "NaLzdMGRc8wVJzAfDXTltw=="
         }
       },
       "is_incremental": false,
@@ -11227,7 +11227,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.html",
-          "hash": "xBBIs7a+bPZE4AjRhvdvBg=="
+          "hash": "BdBiXxTy72GkvnCot/AtJA=="
         }
       },
       "is_incremental": false,
@@ -11251,7 +11251,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.html",
-          "hash": "Yycnf2Y49dcKEcUGbynLyg=="
+          "hash": "+tSDggVk4NaylJQkTImhdg=="
         }
       },
       "is_incremental": false,
@@ -11263,7 +11263,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html",
-          "hash": "Gtho6KLi2NrdVfJIMfiHDw=="
+          "hash": "A7F2d8HqaZkWEIzhIyWrZg=="
         }
       },
       "is_incremental": false,
