@@ -166,8 +166,8 @@ Material:
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
     - _ProximityLightCenterColorOverride: {r: 0, g: 0, b: 0, a: 0}
-    - _ProximityLightMiddleColorOverride: {r: 0.5019608, g: 0.5019608, b: 0.5019608,
+    - _ProximityLightMiddleColorOverride: {r: 0.39215687, g: 0.39215687, b: 0.39215687,
         a: 0.5}
-    - _ProximityLightOuterColorOverride: {r: 0.5019608, g: 0.5019608, b: 0.5019608,
+    - _ProximityLightOuterColorOverride: {r: 0.39215687, g: 0.39215687, b: 0.39215687,
         a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
