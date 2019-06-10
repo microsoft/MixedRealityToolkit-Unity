@@ -88,6 +88,8 @@
     items:
     - name: In-Editor Input Simulation
       href: InputSimulation/InputSimulationService.md
+    - name: Input Animation Recording
+      href: InputSimulation/InputAnimationRecording.md
     - name: Diagnostics System
       href: Diagnostics/DiagnosticsSystemGettingStarted.md
       items:

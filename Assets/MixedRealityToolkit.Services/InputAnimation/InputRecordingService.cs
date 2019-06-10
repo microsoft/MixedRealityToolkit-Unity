@@ -215,13 +215,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public string ExportRecordedInput(string directory = null)
+        public string SaveInputAnimation(string directory = null)
         {
-            return ExportRecordedInput(GenerateOutputFilename(), directory);
+            return SaveInputAnimation(GenerateOutputFilename(), directory);
         }
 
         /// <inheritdoc />
-        public string ExportRecordedInput(string filename, string directory = null)
+        public string SaveInputAnimation(string filename, string directory = null)
         {
             if (IsEnabled)
             {

@@ -45,22 +45,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void DiscardRecordedInput();
 
         /// <summary>
-        /// Export recorded input animation to a file.
+        /// Save recorded input animation to a file.
         /// </summary>
         /// <param name="directory">Directory in which to create the file. If null the persistent data path of the app is used.</param>
         /// <returns>File path where input has been recorded.</returns>
         /// <remarks>
         /// Filename is determined automatically.
         /// </remarks>
-        string ExportRecordedInput(string directory = null);
+        string SaveInputAnimation(string directory = null);
 
         /// <summary>
-        /// Export recorded input animation to a file.
+        /// Save recorded input animation to a file.
         /// </summary>
         /// <param name="filename">Name of the file to create.</param>
         /// <param name="directory">Directory in which to create the file. If null the persistent data path of the app is used.</param>
         /// <returns>File path where input has been recorded.</returns>
-        string ExportRecordedInput(string filename, string directory = null);
+        string SaveInputAnimation(string filename, string directory = null);
 
         /// <summary>
         /// Generate a file name for export.

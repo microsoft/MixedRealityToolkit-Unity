@@ -530,10 +530,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Find an index i in the sorted events list, such that events[i].time <= time < events[i+1].time.
+        /// Find an index i in the sorted events list, such that events[i].time &lt;= time &lt; events[i+1].time.
         /// </summary>
         /// <returns>
-        /// 0 <= i < eventCount if a full interval could be found.
+        /// 0 &lt;= i &lt; eventCount if a full interval could be found.
         /// -1 if time is less than the first event time.
         /// eventCount-1 if time is greater than the last event time.
         /// </returns>
