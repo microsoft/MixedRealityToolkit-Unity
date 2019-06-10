@@ -149,6 +149,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        public static void ShutdownMixedRealityToolkit()
+        {
+            MixedRealityToolkit.SetInstanceInactive(MixedRealityToolkit.Instance);
+            MixedRealityPlayspace.Destroy();
+        }
+
         private static T GetDefaultMixedRealityProfile<T>() where T : BaseMixedRealityProfile
         {
 #if UNITY_EDITOR

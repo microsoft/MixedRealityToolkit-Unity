@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit
     [DisallowMultipleComponent]
     public class MixedRealityToolkit : MonoBehaviour, IMixedRealityServiceRegistrar
     {
-        #region Mixed Reality Toolkit Profile configuration
+#region Mixed Reality Toolkit Profile configuration
 
         private const string ActiveInstanceGameObjectName = "MixedRealityToolkit";
 
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 return activeInstance == this;
             }
-        }
+        } 
 
         private bool HasProfileAndIsInitialized => activeProfile != null && IsInitialized;
 
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit
 
 #endregion Mixed Reality runtime service registry
 
-        #region IMixedRealityServiceRegistrar implementation
+#region IMixedRealityServiceRegistrar implementation
 
         /// <inheritdoc />
         public bool RegisterService<T>(T serviceInstance) where T : IMixedRealityService
@@ -338,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit
             throw new NotImplementedException();
         }
 
-        #endregion IMixedRealityServiceRegistrar implementation
+#endregion IMixedRealityServiceRegistrar implementation
 
         /// <summary>
         /// Once all services are registered and properties updated, the Mixed Reality Toolkit will initialize all active services.
@@ -386,8 +386,8 @@ namespace Microsoft.MixedReality.Toolkit
                     Debug.LogError("Failed to start the Input System!");
                 }
 
-                args = new object[] { this, InputSystem, ActiveProfile.InputSystemProfile };
-                if (!RegisterDataProvider<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType, args: args))
+                args = new object[] { this, ActiveProfile.InputSystemProfile };
+                if (!RegisterService<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType, args: args))
                 {
                     Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
                     return;
@@ -788,7 +788,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        private static void SetInstanceInactive(MixedRealityToolkit toolkitInstance)
+        public static void SetInstanceInactive(MixedRealityToolkit toolkitInstance)
         {
             if (toolkitInstance == null)
             {   // Don't do anything.
@@ -798,6 +798,11 @@ namespace Microsoft.MixedReality.Toolkit
             if (toolkitInstance == activeInstance)
             {   // If this was the active instance, un-register the active instance
                 // Break down all services
+                if (Application.isPlaying)
+                {
+                    toolkitInstance.DisableAllServices();
+                }
+
                 toolkitInstance.DestroyAllServices();
                 toolkitInstance.ClearCoreSystemCache();
                 // If this was the active instance, unregister the active instance
@@ -1468,6 +1473,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static bool logSceneSystem = true;
 
-        #endregion Core System Accessors
+#endregion Core System Accessors
     }
 }

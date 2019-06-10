@@ -235,8 +235,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
             catch (System.Exception ex)
             {
-                Debug.LogError($"Failed to start dictation recognizer. Are microphone permissions granted? Exception: {ex}");
+                Debug.LogWarning($"Failed to start dictation recognizer. Are microphone permissions granted? Exception: {ex}");
                 Disable();
+                dictationRecognizer = null;
             }
         }
 
@@ -245,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-            if (!Application.isPlaying || inputSystem == null) { return; }
+            if (!Application.isPlaying || inputSystem == null || dictationRecognizer == null) { return; }
 
             if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
