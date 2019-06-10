@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,10 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             lock (lockObject)
             {
-                CommandHandler commandHandlerList = null;
-                if (commandHandlers.TryGetValue(command, out commandHandlerList))
+                CommandHandler commandHandler = null;
+                if (commandHandlers.TryGetValue(command, out commandHandler))
                 {
-                    commandHandlerList(socketEndpoint, command, message, remainingDataSize);
+                    commandHandler(socketEndpoint, command, message, remainingDataSize);
                 }
             }
         }
@@ -43,15 +44,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             lock (lockObject)
             {
-                CommandHandler commandList;
-                if (!commandHandlers.TryGetValue(command, out commandList))
+                if (commandHandlers.ContainsKey(command))
                 {
-                    commandHandlers[command] = handler;
+                    throw new NotSupportedException($"CommandRegistry has an existing command handler for command {command}");
                 }
-                else
-                {
-                    commandHandlers[command] = commandList + handler;
-                }
+
+                commandHandlers[command] = handler;
             }
         }
 
@@ -59,20 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             lock (lockObject)
             {
-                CommandHandler commandList;
-
-                if (commandHandlers.TryGetValue(command, out commandList))
-                {
-                    commandList -= handler;
-                    if (commandList == null)
-                    {
-                        commandHandlers.Remove(command);
-                    }
-                    else
-                    {
-                        commandHandlers[command] = commandList;
-                    }
-                }
+                commandHandlers.Remove(command);
             }
         }
     }
