@@ -72,8 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (useBufferTimeLimit && !value)
                 {
-                    // Reset start time when making buffer unlimited
-                    ResetStartTime();
+                    // Start at buffer limit when making buffer unlimited
+                    unlimitedRecordingStartTime = StartTime;
                 }
 
                 useBufferTimeLimit = value;
@@ -101,13 +101,38 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private InputAnimation recordingBuffer = null;
 
-        // Start time of recording if buffer is unlimited
-        private float unlimitedRecordingStartTime;
-        public float StartTime => useBufferTimeLimit ? Time.time - recordingBufferTimeLimit : unlimitedRecordingStartTime;
+        // Start time of recording if buffer is unlimited.
+        // Nullable to determine when time needs to be reset.
+        private float? unlimitedRecordingStartTime = null;
+        public float StartTime
+        {
+            get
+            {
+                if (unlimitedRecordingStartTime.HasValue)
+                {
+                    if (useBufferTimeLimit)
+                    {
+                        return Mathf.Max(unlimitedRecordingStartTime.Value, Time.time - recordingBufferTimeLimit);
+                    }
+                    else
+                    {
+                        return unlimitedRecordingStartTime.Value;
+                    }
+                }
+                return Time.time;
+            }
+        }
 
         private void ResetStartTime()
         {
-            unlimitedRecordingStartTime = Time.time - recordingBufferTimeLimit;
+            if (IsRecording)
+            {
+                unlimitedRecordingStartTime = Time.time;
+            }
+            else
+            {
+                unlimitedRecordingStartTime = null;
+            }
         }
 
         /// <inheritdoc />
@@ -115,7 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             IsEnabled = true;
             recordingBuffer = new InputAnimation();
-            ResetStartTime();
         }
 
         /// <inheritdoc />
@@ -123,6 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             IsEnabled = false;
             recordingBuffer = null;
+            ResetStartTime();
         }
 
         /// <inheritdoc />
@@ -132,6 +157,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (UseBufferTimeLimit)
             {
                 PruneBuffer();
+            }
+            if (!unlimitedRecordingStartTime.HasValue)
+            {
+                unlimitedRecordingStartTime = Time.time;
             }
         }
 
