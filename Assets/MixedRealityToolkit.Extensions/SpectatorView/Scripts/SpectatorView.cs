@@ -54,35 +54,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private StateSynchronizationObserver stateSynchronizationObserver = null;
 
-        /// <summary>
-        /// Content to enable in the broadcaster application
-        /// </summary>
-        [Tooltip("Content to enable in the broadcaster application")]
-        [SerializeField]
-        private GameObjectHierarchyBroadcaster broadcastedContent = null;
-
-        /// <summary>
-        /// Parent of the main camera, spatial coordinate system transforms will be applied to this game object.
-        /// </summary>
-        [Tooltip("Parent of the main camera, spatial coordinate system transforms will be applied to this game object.")]
-        [SerializeField]
-        public GameObject parentOfMainCamera = null;
-
         private void Awake()
         {
             Debug.Log($"SpectatorView is running as: {Role.ToString()}. Expected User IPAddress: {userIpAddress}");
 
             if (stateSynchronizationSceneManager == null ||
                 stateSynchronizationBroadcaster == null ||
-                stateSynchronizationObserver == null ||
-                (broadcastedContent == null && Role == Role.User) ||
-                parentOfMainCamera == null)
+                stateSynchronizationObserver == null)
             {
                 Debug.LogError("StateSynchronization scene isn't configured correctly");
                 return;
             }
-
-            SpatialCoordinateSystemManager.Instance.transformedGameObject = parentOfMainCamera;
 
             switch (Role)
             {
@@ -101,7 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void RunStateSynchronizationAsBroadcaster()
         {
-            broadcastedContent.gameObject.SetActive(true);
             stateSynchronizationBroadcaster.gameObject.SetActive(true);
             stateSynchronizationObserver.gameObject.SetActive(false);
 
@@ -111,12 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void RunStateSynchronizationAsObserver()
         {
-            // All content in the observer scene should be dynamically setup/created, so we hide scene content here
-            if (broadcastedContent != null)
-            {
-                broadcastedContent.gameObject.SetActive(false);
-            }
-
             stateSynchronizationBroadcaster.gameObject.SetActive(false);
             stateSynchronizationObserver.gameObject.SetActive(true);
 

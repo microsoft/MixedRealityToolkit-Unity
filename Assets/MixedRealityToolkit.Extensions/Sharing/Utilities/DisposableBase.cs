@@ -48,7 +48,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             IsDisposed = true;
 
-            insideDisposeFunction.Value = true;
+            // If the finalizer is running, don't access the insideDisposeFunction, as it will
+            // also be finalizing.
+            if (isDisposing)
+            {
+                insideDisposeFunction = null;
+            }
+            else
+            {
+                insideDisposeFunction.Value = true;
+            }
 
             try
             {
@@ -61,12 +70,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             finally
             {
-                insideDisposeFunction.Value = false;
+                if (insideDisposeFunction != null)
+                {
+                    insideDisposeFunction.Value = false;
+                }
             }
         }
 
         /// <summary>
-        /// Override this method to dispsoe of managed objects.
+        /// Override this method to dispose of managed objects.
         /// </summary>
         protected virtual void OnManagedDispose() { }
 
@@ -80,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         protected void ThrowIfDisposed()
         {
-            if (!insideDisposeFunction.Value && IsDisposed)
+            if (insideDisposeFunction == null || (!insideDisposeFunction.Value && IsDisposed))
             {
                 throw new ObjectDisposedException(ObjectName);
             }
