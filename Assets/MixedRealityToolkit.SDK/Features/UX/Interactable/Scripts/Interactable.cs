@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     // TODO: Make sure all shader values are batched by theme
 
     [System.Serializable]
-
     public class Interactable :
         MonoBehaviour,
         IMixedRealityFocusChangedHandler,
@@ -337,6 +336,39 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 descriptionsArray[i] = actions[i].Description;
             }
 
+            return true;
+        }
+
+        /// <summary>
+        /// Look for speech commands in the MRTK Speech Command profile
+        /// Adds a "-None" value at index zero so the developer can turn the feature off.
+        /// </summary>
+        /// <param name="keywords"></param>
+        /// <returns></returns>
+        public static bool TryGetSpeechKeywords(out string[] keywords)
+        {
+            if (!MixedRealityToolkit.ConfirmInitialized() || !MixedRealityToolkit.Instance.HasActiveProfile)
+            {
+                keywords = null;
+                return false;
+            }
+
+            SpeechCommands[] commands = InputSystem.InputSystemProfile.SpeechCommandsProfile?.SpeechCommands;
+
+            if (commands == null || commands.Length < 1)
+            {
+                keywords = null;
+                return false;
+            }
+
+            List<string> keys = new List<string>();
+            for (var i = 0; i < commands.Length; i++)
+            {
+                keys.Add(commands[i].Keyword);
+            }
+
+            keys.Insert(0, "-None");
+            keywords = keys.ToArray();
             return true;
         }
 
@@ -988,16 +1020,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MixedRealityInputAction[] actions = InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
             index = Mathf.Clamp(index, 0, actions.Length - 1);
             return actions[index];
-        }
-
-        /// <summary>
-        /// Returns a list of speech commands from the speech commands profile.
-        /// </summary>
-        /// <returns></returns>
-        public static SpeechCommands[] GetSpeechCommands()
-        {
-            SpeechCommands[] speechCommands = InputSystem.InputSystemProfile.SpeechCommandsProfile?.SpeechCommands;
-            return speechCommands;
         }
 
         /// <summary>

@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </remarks>
         public sealed override void OnInspectorGUI()
         {
-            if ((actionOptions == null && !Interactable.TryGetInputActions(out actionOptions)) || (speechKeywords == null && !TryGetSpeechKeywords(out speechKeywords)))
+            if ((actionOptions == null && !Interactable.TryGetInputActions(out actionOptions)) || (speechKeywords == null && !Interactable.TryGetSpeechKeywords(out speechKeywords)))
             {
                 EditorGUILayout.HelpBox("Mixed Reality Toolkit is missing, configure it by invoking the 'Mixed Reality Toolkit > Add to Scene and Configure...' menu", MessageType.Error);
             }
@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 //look for items in the sppech commands list that match the voiceCommands string
                 // this string should be empty if we are not listening to speech commands
                 // will return zero if empty, to match the inserted off value.
-                int currentIndex = KeywordLookup(voiceCommands.stringValue, speechKeywords);
+                int currentIndex = SpeechKeywordLookup(voiceCommands.stringValue, speechKeywords);
 
                 position = EditorGUILayout.GetControlRect();
                 GUIContent label = new GUIContent("Speech Command", "speech keyword to trigger Interactable");
@@ -707,34 +707,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Events
 
         #region PopupUtilities
-
-        /// <summary>
-        /// Look for speech commands in the MRTK Speech Command profile
-        /// Adds a "-None" value at index zero so the developer can turn the feature off.
-        /// </summary>
-        /// <param name="keywords"></param>
-        /// <returns></returns>
-        protected bool TryGetSpeechKeywords(out string[] keywords)
-        {
-            SpeechCommands[] commands = Interactable.GetSpeechCommands();
-
-            if (commands == null || commands.Length < 1)
-            {
-                keywords = null;
-                return false;
-            }
-
-            List<string> keys = new List<string>();
-            for (var i = 0; i < commands.Length; i++)
-            {
-                keys.Add(commands[i].Keyword);
-            }
-
-            keys.Insert(0, "-None");
-            keywords = keys.ToArray();
-            return true;
-        }
-        
         /// <summary>
         /// Get the index of the speech keyword array item based on its name, pop-up field helper
         /// Skips the first item in the array (internal added value to turn feature off)
@@ -743,7 +715,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="option"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected int KeywordLookup(string option, string[] options)
+        protected int SpeechKeywordLookup(string option, string[] options)
         {
             // starting on 1 to skip the "-None" or off value
             for (int i = 1; i < options.Length; i++)
