@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public string GetShaderPropertyName()
         {
-            if (ShaderOptions.Count > PropId)
+            if (ShaderOptionNames.Count > PropId)
             {
                 return ShaderOptionNames[PropId];
             }
