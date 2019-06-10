@@ -90,6 +90,9 @@
       href: InputSimulation/InputSimulationService.md
     - name: Input Animation Recording
       href: InputSimulation/InputAnimationRecording.md
+      items:
+      - name: Input Animation File Format Specification
+        href: InputSimulation/InputAnimationFileFormat.md
     - name: Diagnostics System
       href: Diagnostics/DiagnosticsSystemGettingStarted.md
       items:
