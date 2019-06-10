@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -164,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             EditorGUI.indentLevel = indentOnSectionStart;
             SerializedProperty voiceCommands = serializedObject.FindProperty("VoiceCommand");
 
+            // check speech commands profile for a list of commands
             if (speechKeywords == null)
             {
                 GUI.enabled = false;
@@ -172,6 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
+                //look for items in the sppech commands list that match the voiceCommands string
+                // this string should be empty if we are not listening to speech commands
+                // will return zero if empty, to match the inserted off value.
                 int currentIndex = KeywordLookup(voiceCommands.stringValue, speechKeywords);
 
                 position = EditorGUILayout.GetControlRect();
@@ -706,34 +711,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// Look for speech commands in the MRTK Speech Command profile
+        /// Adds a "-None" value at index zero so the developer can turn the feature off.
         /// </summary>
         /// <param name="keywords"></param>
         /// <returns></returns>
         protected bool TryGetSpeechKeywords(out string[] keywords)
         {
-            List<string> keys = new List<string>();
-            
-            if (MixedRealityToolkit.Instance && (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile != null ||
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length > 0))
-            {
-                int keywordCount = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length;
+            SpeechCommands[] commands = Interactable.GetSpeechCommands();
 
-                for (var i = 0; i < keywordCount; i++)
-                {
-                    keys.Add(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword);
-                }
-
-                keys.Insert(0, "None");
-                keywords = keys.ToArray();
-
-                return true;
-            }
-            else
+            if (commands == null || commands.Length < 1)
             {
                 keywords = null;
                 return false;
             }
+
+            List<string> keys = new List<string>();
+            for (var i = 0; i < commands.Length; i++)
+            {
+                keys.Add(commands[i].Keyword);
+            }
+
+            keys.Insert(0, "-None");
+            keywords = keys.ToArray();
+            return true;
         }
         
         /// <summary>
@@ -744,7 +744,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <returns></returns>
         protected int KeywordLookup(string option, string[] options)
         {
-            // starting on 1 to skip the "None" value
+            // starting on 1 to skip the "-None" or off value
             for (int i = 1; i < options.Length; i++)
             {
                 if (options[i] == option)

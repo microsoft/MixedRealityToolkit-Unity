@@ -991,6 +991,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        /// Returns a list of speech commands from the speech commands profile.
+        /// </summary>
+        /// <returns></returns>
+        public static SpeechCommands[] GetSpeechCommands()
+        {
+            SpeechCommands[] speechCommands = InputSystem.InputSystemProfile.SpeechCommandsProfile?.SpeechCommands;
+            return speechCommands;
+        }
+
+        /// <summary>
         /// Get the themes based on the current dimesionIndex
         /// </summary>
         protected void FilterThemesByDimensions()
