@@ -70,6 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return useBufferTimeLimit; }
             set
             {
+                if (useBufferTimeLimit && !value)
+                {
+                    // Reset start time when making buffer unlimited
+                    ResetStartTime();
+                }
+
                 useBufferTimeLimit = value;
                 if (useBufferTimeLimit)
                 {
@@ -95,11 +101,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private InputAnimation recordingBuffer = null;
 
+        // Start time of recording if buffer is unlimited
+        private float unlimitedRecordingStartTime;
+        public float StartTime => useBufferTimeLimit ? Time.time - recordingBufferTimeLimit : unlimitedRecordingStartTime;
+
+        private void ResetStartTime()
+        {
+            unlimitedRecordingStartTime = Time.time - recordingBufferTimeLimit;
+        }
+
         /// <inheritdoc />
         public override void Enable()
         {
             IsEnabled = true;
             recordingBuffer = new InputAnimation();
+            ResetStartTime();
         }
 
         /// <inheritdoc />
@@ -148,6 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (IsEnabled)
             {
                 recordingBuffer.Clear();
+                ResetStartTime();
             }
         }
 
@@ -231,7 +248,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     using (Stream fileStream = File.Open(path, FileMode.Create))
                     {
-                        recordingBuffer.ToStream(fileStream);
+                        PruneBuffer();
+                        recordingBuffer.ToStream(fileStream, StartTime);
                         Debug.Log($"Recorded input animation exported to {path}");
                     }
                     return path;
@@ -264,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Discard keyframes before the cutoff time.
         private void PruneBuffer()
         {
-            recordingBuffer.CutoffBeforeTime(Time.time - RecordingBufferTimeLimit);
+            recordingBuffer.CutoffBeforeTime(StartTime);
         }
     }
 }
