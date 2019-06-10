@@ -28,9 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestGazeCursorArticulated()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
             RenderSettings.skybox = null;
 
             IMixedRealityInputSystem inputSystem;
@@ -62,6 +59,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             inputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
             yield return null;
             Assert.IsTrue(inputSystem.GazeProvider.GazePointer.IsInteractionEnabled, "Gaze cursor should be visible after select command");
+        }
+
+        [SetUp]
+        public void SetupMrtk()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+            TestUtilities.InitializePlayspace();
+        }
+
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
         }
     }
 }

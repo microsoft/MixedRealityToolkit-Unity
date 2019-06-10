@@ -582,11 +582,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 UnityEngine.Object.Destroy(uiRaycastCameraTargetTexture);
             }
+            uiRaycastCameraTargetTexture = null;
 
             if (uiRaycastCamera != null)
             {
                 UnityEngine.Object.Destroy(uiRaycastCamera.gameObject);
             }
+            uiRaycastCamera = null;
         }
 
         /// <inheritdoc />
