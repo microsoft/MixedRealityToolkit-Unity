@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -248,37 +248,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4607159678781596, guid: d5e0e8cc740eb134789fd1f6bb5bb80a,
     type: 3}
   m_PrefabInstance: {fileID: 1582242360}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &178554820 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1234542489422424, guid: 0ceaaf28e492a284fbf57901d04075ad,
-    type: 3}
-  m_PrefabInstance: {fileID: 1663320975}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &178554821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 178554820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localForward: {x: 0, y: 0, z: -1}
-  localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: 0, y: 0.03, z: 0}
-  eventsToReceive: 1
-  touchableSurface: 100
-  bounds: {x: 0.03, y: 0.06}
-  touchableCollider: {fileID: 178554822}
---- !u!135 &178554822 stripped
-SphereCollider:
-  m_CorrespondingSourceObject: {fileID: 135491218135748292, guid: 0ceaaf28e492a284fbf57901d04075ad,
-    type: 3}
-  m_PrefabInstance: {fileID: 1663320975}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &190671259
 PrefabInstance:
@@ -498,11 +467,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 561651893}
     m_Modifications:
-    - target: {fileID: 1098841493691872912, guid: 51cc6641d88b49d46bd38572540efe6c,
-        type: 3}
-      propertyPath: eventsToReceive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c,
         type: 3}
       propertyPath: Events.Array.size
@@ -1335,49 +1299,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29a6f5316e0868e47adff5eee8945193, type: 3}
---- !u!1 &573678600
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 573678602}
-  - component: {fileID: 573678601}
-  m_Layer: 0
-  m_Name: AsyncCoroutineRunner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &573678601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 573678600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e6ecbbf0b5840b09d7b4ee7f0a62b7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &573678602
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 573678600}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &635986447
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1506,37 +1427,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &667308057 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1128101275641750, guid: d12fcfca48d5bea4885b7957a82235f8,
-    type: 3}
-  m_PrefabInstance: {fileID: 635986447}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &667308059 stripped
-CapsuleCollider:
-  m_CorrespondingSourceObject: {fileID: 136734857329372230, guid: d12fcfca48d5bea4885b7957a82235f8,
-    type: 3}
-  m_PrefabInstance: {fileID: 635986447}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &667308060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 667308057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localForward: {x: 0, y: 0, z: -1}
-  localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: 0, y: 1.27, z: -0.01}
-  eventsToReceive: 1
-  touchableSurface: 100
-  bounds: {x: 2.87, y: 3.28}
-  touchableCollider: {fileID: 667308059}
 --- !u!1 &716469222
 GameObject:
   m_ObjectHideFlags: 0
@@ -2420,37 +2310,6 @@ MonoBehaviour:
   rows: 3
   cellWidth: 0.07
   cellHeight: 0.07
---- !u!1 &1193043582 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1439781781207532, guid: 29a6f5316e0868e47adff5eee8945193,
-    type: 3}
-  m_PrefabInstance: {fileID: 569537905}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1193043584 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 65437868389245264, guid: 29a6f5316e0868e47adff5eee8945193,
-    type: 3}
-  m_PrefabInstance: {fileID: 569537905}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1193043585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1193043582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localForward: {x: 0, y: 1, z: 0}
-  localUp: {x: 0, y: 0, z: 1}
-  localCenter: {x: 0, y: 0.45, z: 0}
-  eventsToReceive: 1
-  touchableSurface: 100
-  bounds: {x: 1.31, y: 1.26}
-  touchableCollider: {fileID: 1193043584}
 --- !u!1 &1287734562 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1018326128813824, guid: 0ceaaf28e492a284fbf57901d04075ad,
@@ -3148,11 +3007,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 1181576808188907290, guid: d5e0e8cc740eb134789fd1f6bb5bb80a,
-        type: 3}
-      propertyPath: eventsToReceive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5e0e8cc740eb134789fd1f6bb5bb80a, type: 3}
 --- !u!1 &1590642584
@@ -3329,13 +3183,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  touchableCollider: {fileID: 1590642586}
+  distBack: 0.25
+  debounceThreshold: 0.01
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.06}
-  eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 0.12, y: 0.12}
-  touchableCollider: {fileID: 1590642586}
 --- !u!114 &1590642589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4098,6 +3954,11 @@ PrefabInstance:
       value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: InputActionId
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b1ffbebacd36694ebea9fb6d437c68f, type: 3}
 --- !u!4 &1672550136 stripped
@@ -4546,37 +4407,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2121412493 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1705988989258782, guid: 50eb8d97f29f335409ec2df393ed6cc5,
-    type: 3}
-  m_PrefabInstance: {fileID: 1324622404}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2121412494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121412493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localForward: {x: 0, y: 0, z: -1}
-  localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: 0, y: 0, z: -1.06}
-  eventsToReceive: 1
-  touchableSurface: 100
-  bounds: {x: 2.13, y: 2.25}
-  touchableCollider: {fileID: 2121412495}
---- !u!135 &2121412495 stripped
-SphereCollider:
-  m_CorrespondingSourceObject: {fileID: 135097812019856892, guid: 50eb8d97f29f335409ec2df393ed6cc5,
-    type: 3}
-  m_PrefabInstance: {fileID: 1324622404}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2124803459
 GameObject:
   m_ObjectHideFlags: 0
