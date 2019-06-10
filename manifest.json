@@ -642,7 +642,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "Dt/EJjNQpKQuBMeirpF6rg=="
+          "hash": "RSNyncL50PSfL4RDbLXkxw=="
         }
       },
       "is_incremental": false,
@@ -15839,16 +15839,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 940,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 98,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 940,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
