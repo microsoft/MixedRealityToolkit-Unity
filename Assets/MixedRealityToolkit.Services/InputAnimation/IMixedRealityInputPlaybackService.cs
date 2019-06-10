@@ -40,5 +40,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Pause playback and keep the current local time.
         /// </summary>
         void Pause();
+
+        /// <summary>
+        /// Try to load input animation data from the given file.
+        /// </summary>
+        /// <returns>
+        /// True if loading input animation from the file succeeded.
+        /// </returns>
+        bool LoadInputAnimation(string filepath);
     }
 }

@@ -160,5 +160,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 });
         }
+
+        /// <inheritdoc />
+        public bool LoadInputAnimation(string filepath)
+        {
+            if (filepath.Length > 0)
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(filepath, FileMode.Open))
+                    {
+                        animation = new InputAnimation();
+                        animation.FromStream(fs);
+
+                        Evaluate();
+
+                        return true;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    Debug.LogError(ex.Message);
+                    animation = null;
+                }
+            }
+            return false;
+        }
     }
 }
