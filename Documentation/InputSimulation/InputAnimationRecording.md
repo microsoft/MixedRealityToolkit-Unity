@@ -24,11 +24,11 @@ Two input system services are provided to record and play back input respectivel
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_RecordingDiagram.png" title="Recording input animation" width="80%" class="center" />
 </a>
 
-To start recording input call the [StartRecording](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_StartRecording) function. [StopRecording](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_StopRecording) will pause recording (but not discard the data recorded so far, use [DiscardRecordedInput](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_DiscardRecordedInput) to do this if needed).
+To start recording input call the [StartRecording](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.StartRecording) function. [StopRecording](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.StopRecording) will pause recording (but not discard the data recorded so far, use [DiscardRecordedInput](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.DiscardRecordedInput) to do this if needed).
 
-By default the size of the recording buffer is limited to 30 seconds. This allows the recording service to keep recording in the background without accumulating too much data, and then save the last 30 seconds when required. The time interval can be changed using the [RecordingBufferTimeLimit](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_RecordingBufferTimeLimit) property, or recording can be unlimited using the [UseBufferTimeLimit](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_UseBufferTimeLimit) option.
+By default the size of the recording buffer is limited to 30 seconds. This allows the recording service to keep recording in the background without accumulating too much data, and then save the last 30 seconds when required. The time interval can be changed using the [RecordingBufferTimeLimit](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.RecordingBufferTimeLimit) property, or recording can be unlimited using the [UseBufferTimeLimit](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.UseBufferTimeLimit) option.
 
-The data in the recording buffer can be saved in a binary file using the [SaveInputAnimation](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_SaveInputAnimation_System_String_) function.
+The data in the recording buffer can be saved in a binary file using the [SaveInputAnimation](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.SaveInputAnimation*) function.
 
 For details on the binary file format see [Input Animation File Format Specification](InputAnimationFileFormat.md).
 
@@ -40,14 +40,14 @@ For details on the binary file format see [Input Animation File Format Specifica
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_PlaybackDiagram.png" title="Playing back input animation" width="80%" class="center" />
 </a>
 
-To start playing back input animation it should be loaded from a file using the [LoadInputAnimation](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputPlaybackService_LoadInputAnimation_System_String_) function.
+To start playing back input animation it should be loaded from a file using the [LoadInputAnimation](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.LoadInputAnimation*) function.
 
-Call [Play](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputPlaybackService_Play), [Pause](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputPlaybackService_Play), or [Stop](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputPlaybackService_Stop) to control the animation playback.
+Call [Play](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.Play), [Pause](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.Play), or [Stop](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.Stop) to control the animation playback.
 
-The current animation time can also be controlled directly with the [LocalTime](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputPlaybackService_LocalTime) property.
+The current animation time can also be controlled directly with the [LocalTime](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.LocalTime) property.
 
 > [!WARNING]
-> Looping or resetting input animation or setting [LocalTime](http://localhost:8080/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputPlaybackService_LocalTime) directly by scrubbing the timeline may yield unexpected results when manipulating the scene! Only the input movements are recorded, any additional changes such as moving objects or flipping switches will not be reset. Make sure to reload the scene if irreversible changes have been made.
+> Looping or resetting input animation or setting [LocalTime](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.LocalTime) directly by scrubbing the timeline may yield unexpected results when manipulating the scene! Only the input movements are recorded, any additional changes such as moving objects or flipping switches will not be reset. Make sure to reload the scene if irreversible changes have been made.
 
 # Editor tools for recording and playing input animation
 
