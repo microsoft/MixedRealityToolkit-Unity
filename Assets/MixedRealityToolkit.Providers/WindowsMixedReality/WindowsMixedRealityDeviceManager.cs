@@ -348,7 +348,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (gestureRecognizer == null)
             {
-                gestureRecognizer = new GestureRecognizer();
+                try
+                {
+                    gestureRecognizer = new GestureRecognizer();
+                }
+                catch (UnityException ex)
+                {
+                    Debug.LogWarning($"Failed to create gesture recognizer. OS version might not support it. Exception: {ex}");
+                    gestureRecognizer = null;
+                    return;
+                }
             }
 
             gestureRecognizer.HoldStarted += GestureRecognizer_HoldStarted;
@@ -379,7 +388,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (navigationGestureRecognizer == null)
             {
-                navigationGestureRecognizer = new GestureRecognizer();
+                try
+                {
+                    navigationGestureRecognizer = new GestureRecognizer();
+                }
+                catch (UnityException ex)
+                {
+                    Debug.LogWarning($"Failed to create gesture recognizer. OS version might not support it. Exception: {ex}");
+                    navigationGestureRecognizer = null;
+                    return;
+                }
             }
 
             navigationGestureRecognizer.NavigationStarted += NavigationGestureRecognizer_NavigationStarted;
