@@ -393,6 +393,7 @@ namespace Microsoft.MixedReality.Toolkit
                     return;
                 }
 
+                args = new object[] { this, InputSystem, ActiveProfile.InputSystemProfile };
                 if (!RegisterDataProvider<IMixedRealityRaycastProvider>(ActiveProfile.InputSystemProfile.RaycastProviderType, args: args))
                 {
                     Debug.LogError("Failed to register the raycast provider! The input system will not function without it.");
