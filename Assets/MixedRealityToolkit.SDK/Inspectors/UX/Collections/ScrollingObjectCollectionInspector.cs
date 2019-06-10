@@ -50,11 +50,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         //Serialized properties purely for inspector visualization
         private SerializedProperty pressPlane;
 
-        private Shader MRTKstd = Shader.Find("Mixed Reality Toolkit / Standard");
+        private Shader MRTKstd;
 
 
         private void OnEnable()
         {
+            MRTKstd = Shader.Find("Mixed Reality Toolkit / Standard");
+
             sorting = serializedObject.FindProperty("sortType");
             cellHeight = serializedObject.FindProperty("cellHeight");
             cellWidth = serializedObject.FindProperty("cellWidth");
@@ -294,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             foreach (Renderer rend in rends)
             {
-                if(rend.material.shader != MRTKstd)
+                if(rend.sharedMaterial.shader != MRTKstd)
                 {
                     return false;
                 }

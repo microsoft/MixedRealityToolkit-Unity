@@ -91,6 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected bool forceUpdate = false;
 
         // basic button states
+        /// <summary>
+        /// Enables indirect manipulation of buttons by sending the touch events to parent objects, for example by <see cref="ScrollingObjectCollection"/>
+        /// </summary>
+        /// <remarks>Reinvokes the touch events to send upward</remarks>
+        public bool PassThroughMode { get; set; }
         public bool HasFocus { get; private set; }
         public bool HasPress { get; private set; }
         public bool IsDisabled { get; private set; }
@@ -1084,6 +1089,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
+            if (PassThroughMode && eventData.Sender == null)
+            {
+                //start the bubble one step above this object to guarantee it goes upwards
+                UnityEngine.EventSystems.ExecuteEvents.ExecuteHierarchy(transform.parent.gameObject, eventData, delegate (IMixedRealityTouchHandler handler, UnityEngine.EventSystems.BaseEventData baseData)
+                {
+                    HandTrackingInputEventData casted = UnityEngine.EventSystems.ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(baseData);
+                    handler.OnTouchStarted(casted);
+                });
+                return;
+            }
+
             SetPress(true);
             SetPhysicalTouch(true);
             eventData.Use();
@@ -1091,12 +1107,35 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            if (PassThroughMode && eventData.Sender == null)
+            {
+                //start the bubble one step above this object to guarantee it goes upwards
+                UnityEngine.EventSystems.ExecuteEvents.ExecuteHierarchy(transform.parent.gameObject, eventData, delegate (IMixedRealityTouchHandler handler, UnityEngine.EventSystems.BaseEventData baseData)
+                {
+                    HandTrackingInputEventData casted = UnityEngine.EventSystems.ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(baseData);
+                    handler.OnTouchCompleted(casted);
+                });
+                return;
+            }
+
             SetPress(false);
             SetPhysicalTouch(false);
             eventData.Use();
         }
 
-        void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData){}
+        void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
+        {
+            if (PassThroughMode && eventData.Sender == null)
+            {
+                //start the bubble one step above this object to guarantee it goes upwards
+                UnityEngine.EventSystems.ExecuteEvents.ExecuteHierarchy(transform.parent.gameObject, eventData, delegate (IMixedRealityTouchHandler handler, UnityEngine.EventSystems.BaseEventData baseData)
+                {
+                    HandTrackingInputEventData casted = UnityEngine.EventSystems.ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(baseData);
+                    handler.OnTouchUpdated(casted);
+                });
+                return;
+            }
+        }
 
         #endregion NearInteractionHandlers
     }

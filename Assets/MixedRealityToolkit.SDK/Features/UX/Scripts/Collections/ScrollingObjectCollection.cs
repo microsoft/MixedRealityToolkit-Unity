@@ -647,15 +647,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
             }
 
-            //Check for Pressable buttons and set passthrough mode
-            //eventually we should be adding Passthrough to the IMixedRealityTouchHandler
+            //Check for Pressable buttons and Interactables, then set passthrough mode
+            //eventually we should be adding Passthrough to the IMixedRealityTouchHandler (maybe even all Input events)
             foreach (ObjectCollectionNode node in NodeList)
             {
-
                 PressableButton pb = node.GameObject.GetComponentInChildren<PressableButton>();
                 if (pb != null)
                 {
                     pb.PassThroughMode = true;
+                }
+
+                Interactable ixble = node.GameObject.GetComponentInChildren<Interactable>();
+                if (ixble != null)
+                {
+                    ixble.PassThroughMode = true;
                 }
             }
 
