@@ -84,6 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public void OnSaveRecordedInput()
         {
             RecordingService.SaveInputAnimation();
+            RecordingService.DiscardRecordedInput();
         }
     }
 }
