@@ -4603,7 +4603,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseCoreSystem.html",
-          "hash": "a8/hJ3HmzMPzYsYOh5u6MA=="
+          "hash": "rMZdDcYI+12w4xPitNsnpg=="
         }
       },
       "is_incremental": false,
@@ -4615,7 +4615,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseDataProvider.html",
-          "hash": "nUC4W2gL4GJlItskJtsX4Q=="
+          "hash": "VAiMljvzvEb1IB5s80nojQ=="
         }
       },
       "is_incremental": false,
@@ -7831,7 +7831,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.FocusProvider.html",
-          "hash": "e9tX0RVlVLxwDH6NdZyMow=="
+          "hash": "Ngf0d8VpHuGNh/h42PGlRw=="
         }
       },
       "is_incremental": false,
@@ -8227,7 +8227,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.html",
-          "hash": "0YBOiFAIwYBQ1jCANSPW9A=="
+          "hash": "b22xXMBJ0qjHBwoR6qfPzw=="
         }
       },
       "is_incremental": false,
