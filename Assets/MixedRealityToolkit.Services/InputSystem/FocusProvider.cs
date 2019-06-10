@@ -788,7 +788,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     LayerMask[] prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
 
                     // Perform raycast to determine focused object
-                    var raycastProvider = ((IMixedRealityInputSystem)Service).RaycastProvider;
+                    var raycastProvider = InputSystem.RaycastProvider;
                     hitResult3d.Clear();
                     QueryScene(pointer.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d);
                     PointerHitResult hit = hitResult3d;
