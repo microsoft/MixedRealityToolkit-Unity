@@ -100,11 +100,7 @@
     - name: Extension Service Creation Wizard
       href: Utilities/ExtensionServiceCreationWizard.md
   - name: Experimental Features
-    items:
-    - name: QR Tracking
-      href: TODO.md
-    - name: Spatial Audio
-      href: TODO.md
+    href: ExperimentalFeatures.md
   - name: Advanced topics
     items:
     - name: Shared Experiences
