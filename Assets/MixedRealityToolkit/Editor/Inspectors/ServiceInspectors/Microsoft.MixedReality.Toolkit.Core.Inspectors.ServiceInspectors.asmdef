@@ -3,12 +3,12 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor",
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem",
         "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
         "Microsoft.MixedReality.Toolkit.Services.TeleportSystem",
-        "Microsoft.MixedReality.Toolkit.Services.SceneSystem",
-        "Microsoft.MixedReality.Toolkit.Core.Inspectors"
+        "Microsoft.MixedReality.Toolkit.Services.SceneSystem"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
