@@ -6511,10 +6511,10 @@ MonoBehaviour:
     type: 3}
   scaleHandleSlatePrefab: {fileID: 1134031327877807717, guid: c45e552a6d92491468c421c35c5dd63d,
     type: 3}
-  scaleHandleSize: 0.03
+  scaleHandleSize: 0.18
   cornerHandleColliderScale: 0.02
   rotationHandlePrefab: {fileID: 100000, guid: 57c53da2552a8114ab6d68e0cd31b1eb, type: 3}
-  rotationHandleDiameter: 0.035
+  rotationHandleDiameter: 2
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
