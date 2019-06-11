@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Core.Inspectors.ServiceInspectors",
+    "name": "Microsoft.MixedReality.Toolkit.Editor.ServiceInspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor",
