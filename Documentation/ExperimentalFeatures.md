@@ -5,7 +5,7 @@ Some features the MRTK team works on appear to have a lot of initial value even 
 
 ### What to expect from an experimental feature
 If a component is marked experimental you can expect the following:
-- You can expect an example scene demonstrating usage, located under `MixedRealityToolkit.Examples\Experimental` subfolder
+- An example scene demonstrating usage, located under `MixedRealityToolkit.Examples\Experimental` subfolder
 - Experimental features may not have docs.
 - They probably don't have tests.
 - Experimental features are subject to change. 
