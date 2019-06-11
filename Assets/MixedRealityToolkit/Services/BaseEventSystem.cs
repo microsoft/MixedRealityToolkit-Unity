@@ -83,14 +83,14 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
             Debug.Assert(typeof(T).IsInterface);
-            TraverseEventSystemHandlerHierarchy<T>((T)handler, RegisterHandler);
+            TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
         }
 
         /// <inheritdoc />
         public virtual void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
             Debug.Assert(typeof(T).IsInterface);
-            TraverseEventSystemHandlerHierarchy<T>((T)handler, UnregisterHandler);
+            TraverseEventSystemHandlerHierarchy<T>(handler, UnregisterHandler);
         }
 
         /// <inheritdoc />
