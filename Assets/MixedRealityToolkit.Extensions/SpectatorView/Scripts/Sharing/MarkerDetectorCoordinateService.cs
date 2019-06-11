@@ -33,6 +33,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     if (marker != value)
                     {
                         marker = value;
+
+                        if (marker != null)
+                        {
+                            SetCoordinateWorldTransform(marker.Position, marker.Rotation);
+                        }
+                        else
+                        {
+                            SetCoordinateWorldTransform(Vector3.zero, Quaternion.identity);
+                        }
                     }
                 }
             }
@@ -47,14 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 Marker = marker;
             }
-
-            protected override Vector3 CoordinateToWorldSpace(Vector3 vector) => Quaternion.Inverse(marker.Rotation) * vector - marker.Position;
-
-            protected override Quaternion CoordinateToWorldSpace(Quaternion quaternion) => Quaternion.Inverse(marker.Rotation) * quaternion;
-
-            protected override Vector3 WorldToCoordinateSpace(Vector3 vector) => marker.Rotation * vector + marker.Position;
-
-            protected override Quaternion WorldToCoordinateSpace(Quaternion quaternion) => marker.Rotation * quaternion;
         }
 
         private readonly IMarkerDetector markerDetector;
