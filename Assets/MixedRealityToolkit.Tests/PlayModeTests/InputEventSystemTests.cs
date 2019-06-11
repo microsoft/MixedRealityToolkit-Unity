@@ -5,6 +5,7 @@
 // Unity doesn't include the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
+using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
@@ -35,6 +36,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
             inputSystem.GazeProvider.Enabled = false;
 
+            var diagnosticsVoiceControls = Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
+            foreach (var diagnosticsComponent in diagnosticsVoiceControls)
+            {
+                diagnosticsComponent.enabled = false;
+            }
+
             // Let objects be destroyed
             yield return null;
 
@@ -42,6 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(inputSystem.EventHandlersByType.Count == 0);
 
             yield return null;
+        }
+
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
         }
 
         /// <summary>
@@ -196,19 +209,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // and a handler listening to all events.
             inputSystem.RaisePointerClicked(inputSystem.GazeProvider.GazePointer, MixedRealityInputAction.None, 1);
 
-            Assert.IsTrue(objectBasedListener.pointerClickedCount == 1);
+            Assert.AreEqual(objectBasedListener.pointerClickedCount, 1);
             Assert.Zero(objectBasedListener.pointerDownCount);
             Assert.Zero(objectBasedListener.pointerUpCount);
             Assert.Zero(objectBasedListener.pointerDraggedCount);
             Assert.Zero(objectBasedListener.speechCount);
 
-            Assert.IsTrue(handlerBasedListener.pointerClickedCount == 1);
+            Assert.AreEqual(handlerBasedListener.pointerClickedCount, 1);
             Assert.Zero(handlerBasedListener.pointerDownCount);
             Assert.Zero(handlerBasedListener.pointerUpCount);
             Assert.Zero(handlerBasedListener.pointerDraggedCount);
             Assert.Zero(handlerBasedListener.speechCount);
 
-            Assert.IsTrue(handlerBasedListener1.pointerClickedCount == 1);
+            Assert.AreEqual(handlerBasedListener1.pointerClickedCount, 1);
             Assert.Zero(handlerBasedListener1.pointerDownCount);
             Assert.Zero(handlerBasedListener1.pointerUpCount);
             Assert.Zero(handlerBasedListener1.pointerDraggedCount);

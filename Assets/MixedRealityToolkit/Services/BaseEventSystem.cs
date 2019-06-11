@@ -83,14 +83,14 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
             Debug.Assert(typeof(T).IsInterface);
-            TraverseComponentHandlerHierarchy<T>((T)handler, RegisterHandler);
+            TraverseEventSystemHandlerHierarchy<T>((T)handler, RegisterHandler);
         }
 
         /// <inheritdoc />
         public virtual void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
             Debug.Assert(typeof(T).IsInterface);
-            TraverseComponentHandlerHierarchy<T>((T)handler, UnregisterHandler);
+            TraverseEventSystemHandlerHierarchy<T>((T)handler, UnregisterHandler);
         }
 
         /// <inheritdoc />
@@ -186,6 +186,21 @@ namespace Microsoft.MixedReality.Toolkit
         #endregion Registration helpers
 
         #region Utilities
+
+        private void TraverseEventSystemHandlerHierarchy<T>(IEventSystemHandler handler, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
+        {
+            var handlerType = typeof(T);
+
+            func(handlerType, handler);
+
+            foreach (var iface in handlerType.GetInterfaces())
+            {
+                if (!iface.Equals(eventSystemHandlerType))
+                {
+                    func(iface, handler);
+                }
+            }
+        }
 
         private void TraverseComponentHandlerHierarchy<T>(T component, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
         {
