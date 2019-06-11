@@ -5643,6 +5643,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityTextMeshProShaderGUI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityTextMeshProShaderGUI.html",
+          "hash": "mC30TXL4OLWxAVE+Rcx0ew=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitConfigurationProfileInspector.yml",
       "output": {
         ".html": {
@@ -5660,6 +5672,30 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitInspector.html",
           "hash": "CihPyBT7JljN/fh0jLVxQQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitShaderGUIUtilities.Styles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitShaderGUIUtilities.Styles.html",
+          "hash": "QxCzuhqISFSVj+PUFfvoiA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitShaderGUIUtilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitShaderGUIUtilities.html",
+          "hash": "AEUFY0j5e46K3lmDvxLZBQ=="
         }
       },
       "is_incremental": false,
@@ -5899,7 +5935,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.html",
-          "hash": "Ni6Mo8olyU6tVAEYB7eUOQ=="
+          "hash": "LoiKnZrSoQljjpKdZtnmdA=="
         }
       },
       "is_incremental": false,
@@ -15799,7 +15835,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "DRF+7fWF62DSrQgE63Tsew=="
+          "hash": "czY2tnsZQ7oyYSrkHipwkw=="
         }
       },
       "is_incremental": false,
@@ -15858,16 +15894,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 940,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 99,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 943,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
