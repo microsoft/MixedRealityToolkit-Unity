@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private GameObject transformWithOffset;
 
-        private IMixedRealityHandJointService HandJointService => handJointService ?? (handJointService = MixedRealityToolkit.Instance.GetService<IMixedRealityHandJointService>());
+        private IMixedRealityHandJointService HandJointService => handJointService ?? (handJointService = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>());
         private IMixedRealityHandJointService handJointService = null;
 
         #region MonoBehaviour Implementation

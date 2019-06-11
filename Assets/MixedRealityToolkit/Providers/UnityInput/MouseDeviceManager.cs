@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1), // All platforms supported by Unity
         "Unity Mouse Device Manager")]  
-    public class MouseDeviceManager : BaseInputDeviceManager
+    public class MouseDeviceManager : BaseInputDeviceManager, IMixedRealityMouseDeviceManager
     {
         /// <summary>
         /// Constructor.
@@ -37,18 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <summary>
         /// Return the service profile and ensure that the type is correct
         /// </summary>
-        public MixedRealityMouseInputProfile MouseInputProfile
-        {
-            get
-            {
-                var profile = ConfigurationProfile as MixedRealityMouseInputProfile;
-                if (!profile)
-                {
-                    Debug.LogError("Profile for Mouse Input Service must be a MixedRealityMouseInputProfile");
-                }
-                return profile;
-            }
-        }
+        public MixedRealityMouseInputProfile MouseInputProfile => ConfigurationProfile as MixedRealityMouseInputProfile;
 
         /// <inheritdoc />
         public override void Enable()

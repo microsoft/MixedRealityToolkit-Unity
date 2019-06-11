@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     }
                 });
 
-                RenderFoldout(ref showSpeechCommandsProperties, "Speech Commands", () =>
+                RenderFoldout(ref showSpeechCommandsProperties, "Speech", () =>
                 {
                     using (new EditorGUI.IndentLevelScope())
                     {
@@ -174,6 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             var profile = target as BaseMixedRealityProfile;
             return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
                    profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
         }
 

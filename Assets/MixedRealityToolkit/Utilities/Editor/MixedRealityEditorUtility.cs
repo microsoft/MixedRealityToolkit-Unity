@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         public static readonly Texture2D LogoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath("StandardAssets/Textures/MRTK_Logo_White.png"), typeof(Texture2D));
 
-        private static readonly Texture HelpIcon = EditorGUIUtility.IconContent("_Help").image;
+        public static readonly Texture HelpIcon = EditorGUIUtility.IconContent("_Help").image;
 
         /// <summary>
         /// Render the Mixed Reality Toolkit Logo.

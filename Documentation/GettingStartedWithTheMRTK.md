@@ -8,8 +8,8 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 
 To get started with the Mixed Reality Toolkit you will need:
 
-* [Visual Studio 2017](http://dev.windows.com/downloads)
-* [Unity 2018.3.x](https://unity3d.com/get-unity/download/archive)
+* [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/)
+* [Unity 2018.4.x](https://unity3d.com/get-unity/download/archive)
 
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
 
@@ -17,6 +17,11 @@ To get started with the Mixed Reality Toolkit you will need:
 * You don't need this to simulate in Unity Editor or run in VR, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
 
 
+# MR Learning Base Module Tutortial 
+If you are new to MRTK, or MR development, we recommend you check out the [MR Learning Base Module](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2.
+
+
+# Add MRTK to your Unity Project
 ## Get the latest MRTK Unity packages
 1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
 2. Under Assets, download both `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` and `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
@@ -34,7 +39,7 @@ For instance, if you want to create a HoloLens application, switch to Universal 
 - Click on the **Switch Platform** button
 
 ## Import MRTK packages into your Unity project
-1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.
+1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. 
 
 2. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
 
