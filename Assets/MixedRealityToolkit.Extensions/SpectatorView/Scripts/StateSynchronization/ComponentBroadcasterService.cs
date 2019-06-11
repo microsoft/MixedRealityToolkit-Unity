@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <param name="changeType">type of changed that occurred for the specified component</param>
         public void WriteHeader(BinaryWriter message, IComponentBroadcaster component, ComponentBroadcasterChangeType changeType = ComponentBroadcasterChangeType.Updated)
         {
-            StateSynchronizationSceneManager.Instance.WriteHeader(message);
+            StateSynchronizationSceneManager.Instance.WriteSynchronizeCommandHeader(message);
             message.Write(GetID().Value);
             message.Write(component.TransformBroadcaster.Id);
             message.Write((byte)changeType);
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <param name="changeType">type of changed that occurred for the specified component</param>
         public void WriteHeader(BinaryWriter message, TransformObserver TransformObserver, ComponentBroadcasterChangeType changeType = ComponentBroadcasterChangeType.Updated)
         {
-            StateSynchronizationSceneManager.Instance.WriteHeader(message);
+            StateSynchronizationSceneManager.Instance.WriteSynchronizeCommandHeader(message);
             message.Write(GetID().Value);
             message.Write(TransformObserver.Id);
             message.Write((byte)changeType);
