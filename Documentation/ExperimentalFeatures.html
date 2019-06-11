@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Experimental Features | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Experimental Features | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="experimental-features">Experimental Features</h1>
+
+<p>Some features the MRTK team works on appear to have a lot of initial value even if we haven’t fully fleshed out the details. For these types of features, we want the community to get a chance to see them early. Because they are early in the cycle, we label them as experimental to indicate that they are still evolving, and subject to change over time.</p>
+<p><strong>Experimental UI/UX features are new as of the upcoming MRTK RC2 release.</strong> You will see these features published under <code>MixedRealityToolkit.SDK\Experimental</code> and <code>MixedRealityToolkit.Examples\Experimental</code> folders. These features are in mrtk_development as of commit <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/commit/8e7aba9157687421c437b694beb6760c3270d765">8e7aba9</a> and will be in the RC2 release.</p>
+<h3 id="what-to-expect-from-an-experimental-feature">What to expect from an experimental feature</h3>
+<p>If a component is marked experimental you can expect the following:</p>
+<ul>
+<li>An example scene demonstrating usage, located under <code>MixedRealityToolkit.Examples\Experimental</code> subfolder</li>
+<li>Experimental features may not have docs.</li>
+<li>They probably don't have tests.</li>
+<li>Experimental features are subject to change.</li>
+</ul>
+<h1 id="how-to-contribute-an-experimental-feature">How to contribute an Experimental feature</h1>
+<h3 id="experimental-code-should-live-in-a-separate-folder">Experimental code should live in a separate folder</h3>
+<p>Make sure to mirror the same folder structure of MRTK. <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532">You can use the following PR as an example</a>.</p>
+<p>In that PR the experimental code went into:
+<code>MRTK.SDK/Experimental/Features/Utilities/Solvers/HandConstraintPalmUp.cs</code></p>
+<p>The example scene went into:
+<code>MRTK.Examples/Experimental/HandTracking/Scenes/HandBasedMenuExample.unity</code></p>
+<blockquote>
+<p>We considered not having a single Experimental root folder and instead putting Experimental under say <code>MRTK.Examples/HandTracking/Scenes/Experimental/HandBasedMenuExample.unity</code>. We decided to go with folders at the base to make the experimental features easier to discover.</p>
+</blockquote>
+<h3 id="experimental-code-should-be-in-a-special-namespace">Experimental Code should be in a special namespace</h3>
+<p>Ensure that the experimental code lives in an experimental namespace that matches the non-experimental location. For example,
+if your component is part of solvers at <code>Microsoft.MixedReality.Toolkit.Utilities.Solvers</code>, its namespace should be <code>Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers</code>.</p>
+<p>See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532">this PR</a> for an example.</p>
+<h3 id="graduating-experimental-code-into-mrtk-code">Graduating experimental code into MRTK code</h3>
+<p>If a feature ends up seeing quite a lot of use, then we should graduate it into core MRTK code. To do this, the feature should have tests, documentation, and an example scene.</p>
+<p>When you are ready to graduate the feature MRTK, create an issue to check in your PR against. The PR should include all the things needed to make this a core feature: tests, documentation, and an example scene showing usage.</p>
+<p>Also, don’t forget to update the namespaces to remove the “Experimental” subspace.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/ExperimentalFeatures.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
