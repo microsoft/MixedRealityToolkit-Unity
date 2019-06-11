@@ -98,10 +98,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
         protected void Update()
         {
             if (_recordingService != null &&
-                _previewButton != null)
+                _recordButton != null &&
+                _recordButton.gameObject != null &&
+                _previewButton != null &&
+                _previewButton.gameObject != null)
             {
                 bool showPreviewButton = _recordingService.IsRecordingAvailable() && _recordButton.gameObject.activeSelf;
-                _previewButton.gameObject?.SetActive(showPreviewButton);
+                _previewButton.gameObject.SetActive(showPreviewButton);
             }
 
             if (state == RecordingState.Initializing)
