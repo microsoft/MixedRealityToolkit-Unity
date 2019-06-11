@@ -17,6 +17,7 @@ using Microsoft.MixedReality.Toolkit.CameraSystem;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
+using UnityEditor;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit
@@ -128,11 +129,10 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        #endregion Mixed Reality Toolkit Profile configuration
+#endregion Mixed Reality Toolkit Profile configuration
 
-        #region Mixed Reality runtime service registry
+#region Mixed Reality runtime service registry
 
-        private static HashSet<MixedRealityToolkit> toolkitInstances = new HashSet<MixedRealityToolkit>();
         private static readonly Dictionary<Type, IMixedRealityService> activeSystems = new Dictionary<Type, IMixedRealityService>();
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit
 #if !UNITY_EDITOR
             if (!Application.platform.IsPlatformSupported(supportedPlatforms))
 #else
-            if (!UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
+            if (!EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
 #endif
             {
                 return false;
@@ -574,8 +574,11 @@ namespace Microsoft.MixedReality.Toolkit
                 //
                 // To avoid returning null in this case, make sure to search the scene for MRTK.
                 // We do this only when in editor to avoid any performance cost at runtime.
-                var mrtks = FindObjectsOfType<MixedRealityToolkit>();
-                for (int i = 0; i < mrtks.Length; i++)
+                List<MixedRealityToolkit> mrtks = new List<MixedRealityToolkit>(FindObjectsOfType<MixedRealityToolkit>());
+                // Sort the list by instance ID so we get deterministic results when selecting our next active instance
+                mrtks.Sort(delegate (MixedRealityToolkit i1, MixedRealityToolkit i2) { return i1.GetInstanceID().CompareTo(i2.GetInstanceID()); });
+
+                for (int i = 0; i < mrtks.Count; i++)
                 {
                     RegisterInstance(mrtks[i]);
                 }
@@ -599,38 +602,6 @@ namespace Microsoft.MixedReality.Toolkit
             newInstanceBeingInitialized = true;
 
             gameObject.SetActive(true);
-
-            Application.quitting += () =>
-            {
-                isApplicationQuitting = true;
-            };
-
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.playModeStateChanged += playModeState =>
-            {
-                if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode ||
-                    playModeState == UnityEditor.PlayModeStateChange.EnteredEditMode)
-                {
-                    isApplicationQuitting = false;
-                }
-
-                if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode && activeProfile == null)
-                {
-                    Debug.Log("Stopping playmode");
-                    UnityEditor.EditorApplication.isPlaying = false;
-                    UnityEditor.Selection.activeObject = Instance;
-                    UnityEditor.EditorGUIUtility.PingObject(Instance);
-                }
-            };
-
-            UnityEditor.EditorApplication.hierarchyChanged += () =>
-            {
-                if (activeInstance != null)
-                {
-                    Debug.Assert(activeInstance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
-                }
-            };
-#endif // UNITY_EDITOR
 
             if (HasActiveProfile)
             {
@@ -709,19 +680,31 @@ namespace Microsoft.MixedReality.Toolkit
             UnregisterInstance(this);
         }
 
-        #endregion MonoBehaviour Implementation
+#endregion MonoBehaviour Implementation
 
-        #region Instance Registration
+#region Instance Registration
+        
+        private static List<MixedRealityToolkit> toolkitInstances = new List<MixedRealityToolkit>();
 
         public static void SetActiveInstance(MixedRealityToolkit toolkitInstance)
         {
+            if (MixedRealityToolkit.isApplicationQuitting)
+            {   // Don't register instances while application is quitting
+                return;
+            }
+
+            if (toolkitInstance == activeInstance)
+            {   // Don't do anything
+                return;
+            }
+
             // Disable the old instance
             SetInstanceInactive(activeInstance);
             // Immediately register the new instance
-            RegisterInstance(toolkitInstance);
+            RegisterInstance(toolkitInstance, true);
         }
 
-        private static void RegisterInstance(MixedRealityToolkit toolkitInstance)
+        private static void RegisterInstance(MixedRealityToolkit toolkitInstance, bool setAsActiveInstance = false)
         {
             if (MixedRealityToolkit.isApplicationQuitting)
             {   // Don't register instances while application is quitting
@@ -730,33 +713,30 @@ namespace Microsoft.MixedReality.Toolkit
 
             internalShutdown = false;
 
-            if (activeInstance == null)
-            {   // If we don't have an instance, set it here
-                // Set the instance to active
-                activeInstance = toolkitInstance;
-                toolkitInstances.Add(toolkitInstance);
-                toolkitInstance.name = ActiveInstanceGameObjectName;
-                toolkitInstance.InitializeInstance();
-                return;
-            }
-
-            if (!toolkitInstances.Add(toolkitInstance))
+            if (!toolkitInstances.Contains(toolkitInstance))
             {   // If we're already registered, no need to proceed
-                return;
+                // Add to list
+                toolkitInstances.Add(toolkitInstance);
+                // Sort the list by instance ID so we get deterministic results when selecting our next active instance
+                toolkitInstances.Sort(delegate (MixedRealityToolkit i1, MixedRealityToolkit i2) { return i1.GetInstanceID().CompareTo(i2.GetInstanceID()); });
             }
 
-            // If we do, then it's not this instance, so deactivate this instance
-            toolkitInstance.name = InactiveInstanceGameObjectName;
-            // Move to the bottom of the hierarchy so it stays out of the way
-            toolkitInstance.transform.SetSiblingIndex(int.MaxValue);
+            if (activeInstance == null)
+            {   // If we don't have an active instance
+                // Choose the first instance in our list
+                activeInstance = setAsActiveInstance ? toolkitInstance : toolkitInstances[0];
+                activeInstance.InitializeInstance();
+            }
         }
 
         private static void UnregisterInstance(MixedRealityToolkit toolkitInstance)
         {
-            // We are shutting this instance down.
+            // We are shutting an instance down.
             internalShutdown = true;
 
             toolkitInstances.Remove(toolkitInstance);
+            // Sort the list by instance ID so we get deterministic results when selecting our next active instance
+            toolkitInstances.Sort(delegate (MixedRealityToolkit i1, MixedRealityToolkit i2) { return i1.GetInstanceID().CompareTo(i2.GetInstanceID()); });
 
             if (MixedRealityToolkit.activeInstance == toolkitInstance)
             {   // If this is the active instance, we need to break it down
@@ -769,14 +749,14 @@ namespace Microsoft.MixedReality.Toolkit
                     return;
                 }
 
-                foreach (MixedRealityToolkit instance in toolkitInstances)
-                {
-                    if (instance == null)
+                for (int i = 0; i < toolkitInstances.Count; i++)
+                { 
+                    if (toolkitInstances[i] == null)
                     {   // This may have been a mass-deletion - be wary of soon-to-be-unregistered instances
                         continue;
                     }
                     // Select the first available instance and register it immediately
-                    RegisterInstance(instance);
+                    RegisterInstance(toolkitInstances[i]);
                     break;
                 }
             }
@@ -802,15 +782,13 @@ namespace Microsoft.MixedReality.Toolkit
                 // If this was the active instance, unregister the active instance
                 MixedRealityToolkit.activeInstance = null;
             }
-
-            toolkitInstance.name = InactiveInstanceGameObjectName;
         }
 
-        #endregion Instance Registration
+#endregion Instance Registration
 
-        #region Service Container Management
+#region Service Container Management
 
-        #region Registration
+#region Registration
         // NOTE: This method intentionally does not add to the registry. This is actually mostly a helper function for RegisterServiceInternal<T>.
         private bool RegisterServiceInternal(Type interfaceType, IMixedRealityService serviceInstance)
         {
@@ -1466,6 +1444,105 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static bool logSceneSystem = true;
 
-#endregion Core System Accessors
+        #endregion Core System Accessors
+
+#region Application Event Listeners
+        /// <summary>
+        /// Registers once on startup and sets isApplicationQuitting to true when quit event is detected.
+        /// </summary>
+        [RuntimeInitializeOnLoadMethod]
+        private static void RegisterRuntimePlayModeListener()
+        {
+            Application.quitting += () =>
+            {
+                isApplicationQuitting = true;
+            };
+        }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Static class whose constructor is called once on startup. Listens for editor events.
+        /// Removes the need for invidual instances to listen for events.
+        /// </summary>
+        [InitializeOnLoad]
+        private static class EditorEventListener
+        {
+            static EditorEventListener()
+            {
+                // Detect when we enter edit mode so we can reset isApplicationQuitting
+                EditorApplication.playModeStateChanged += playModeState =>
+                {
+                    switch (playModeState)
+                    {
+                        case PlayModeStateChange.EnteredEditMode:
+                            isApplicationQuitting = false;
+                            break;
+
+                        case PlayModeStateChange.ExitingEditMode:
+                            isApplicationQuitting = false;
+                            // Do a profile check
+                            if (activeInstance != null && activeInstance.activeProfile == null)
+                            {   // If we have an active instance, and its profile is null,
+                                // Stop play mode and alert the user that we don't have a profile
+                                Debug.LogWarning("Can't enter play mode - MixedRealityToolkit doesn't have a profile.");
+                                EditorApplication.isPlaying = false;
+                                Selection.activeObject = Instance;
+                                EditorGUIUtility.PingObject(Instance);
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                };
+
+                EditorApplication.hierarchyChanged += () =>
+                {
+                    // These checks are only necessary in edit mode
+                    if (!Application.isPlaying)
+                    {
+                        // Clean the toolkit instances heirarchy in case instances were deleted.
+                        for (int i = toolkitInstances.Count - 1; i >= 0; i--)
+                        {
+                            if (toolkitInstances[i] == null)
+                            {   // If it has been destroyed, remove it
+                                toolkitInstances.RemoveAt(i);
+                            }
+                        }
+
+                        // If the active instance is null, it may not have been set, or it may have been deleted.
+                        if (activeInstance == null)
+                        {   // Do a search for a new active instance
+                            MixedRealityToolkit instanceCheck = Instance;
+                        }
+                    }
+
+                    for (int i = toolkitInstances.Count - 1; i >= 0; i--)
+                    {  // Make sure it's not parented under anything
+                        Debug.Assert(toolkitInstances[i].transform.parent == null, "MixedRealityToolkit instances should not be parented under any other GameObject.");
+                        // Name instances so it's clear when it's the active instance
+                        toolkitInstances[i].name = toolkitInstances[i].IsActiveInstance ? MixedRealityToolkit.ActiveInstanceGameObjectName : MixedRealityToolkit.InactiveInstanceGameObjectName;
+                    }
+                };
+            }
+        }
+
+        /// <summary>
+        /// Used to register newly created instances in edit mode.
+        /// Initially handled by using ExecuteAlways, but this attribute causes the instance to be destroyed as we enter play mode, which is disruptive to services.
+        /// </summary>
+        private void OnValidate()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {   // This check is only necessary in edit mode
+                return;
+            }
+
+            RegisterInstance(this);
+        }
+
+#endif // UNITY_EDITOR
+
+#endregion
     }
 }
