@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -11,7 +12,7 @@ using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class HandInteractionPanZoom : BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityInputHandler, IMixedRealitySourceStateHandler
+    public class HandInteractionPanZoom : BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
     {
         /// <summary>
         /// Internal data stored for each hand or pointer.
@@ -30,8 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public Vector2 touchingInitialUV = Vector2.zero;
             public Vector2 touchingUVOffset = Vector2.zero;
             public Vector2 touchingUVTotalOffset = Vector2.zero;
+            public Vector3 initialProjectedOffset = Vector3.zero;
             public IMixedRealityInputSource touchingSource = null;
             public IMixedRealityController currentController = null;
+            public IMixedRealityPointer currentPointer = null;
         }
 
         #region Serialized Fields
@@ -81,10 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Each object listed must have a script that implements the IHandPanHandler interface or it will not receive events")]
         private GameObject[] panEventReceivers = null;
 
-        [Header("Geometry")]
+        [Header("Visual affordance")]
         [SerializeField]
-        [Tooltip("If affordace geometry is desired to emphasize the touch points(leftPoint and rightPoint) and the center point between them (reticle), assign them here.")]
-        private GameObject reticle = null;
+        [Tooltip("If affordance geometry is desired to emphasize the touch points(leftPoint and rightPoint) and the center point between them (reticle), assign them here.")]
+        [FormerlySerializedAs("reticle")]
+        private GameObject centerPoint = null;
         [SerializeField]
         private GameObject leftPoint = null;
         [SerializeField]
@@ -97,6 +101,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return currentScale; }
         }
+
+        [Header("Events")]
+        public UnityEvent PanStarted;
+        public UnityEvent PanStopped;
+
         #endregion Serialized Fields
 
 
@@ -155,11 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (touchActive)
                 {
-                    if (affordancesVisible == false)
-                    {
-                        SetAffordancesActive(true);
-                    }
-
                     foreach (uint key in handDataMap.Keys)
                     {
                         if (true == UpdateHandTouchingPoint(key))
@@ -181,9 +185,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (affordancesVisible)
                 {
-                    if (reticle != null)
+                    if (centerPoint != null)
                     {
-                        reticle.transform.position = GetContactCenter();
+                        centerPoint.transform.position = GetContactCenter();
                     }
                     if (leftPoint != null)
                     {
@@ -200,6 +204,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 
         #region Private Methods
+        private bool TryGetMRControllerRayPoint(HandPanData data, out Vector3 rayPoint)
+        {
+           
+            if (data.currentPointer != null && data.currentController != null && data.currentController.IsPositionAvailable)
+            {
+                rayPoint = data.touchingInitialPt + (SnapFingerToQuad(data.currentPointer.Position) - data.initialProjectedOffset);
+                return true;
+            }
+          
+            rayPoint = Vector3.zero;
+            return false;
+        }
+
         private bool UpdateHandTouchingPoint(uint sourceId)
         {
             Vector3 tryHandPoint = Vector3.zero;
@@ -207,6 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (handDataMap.ContainsKey(sourceId) == true)
             {
                 HandPanData data = handDataMap[sourceId];
+
                 if (data.IsActive == true)
                 {
                     if (data.IsSourceNear == true)
@@ -217,6 +235,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         tryGetSucceeded = TryGetHandPositionFromController(data.currentController, TrackedHandJoint.Palm, out tryHandPoint);
                     }
+                    if (!tryGetSucceeded)
+                    {
+                        tryGetSucceeded = TryGetMRControllerRayPoint(data, out tryHandPoint);
+                    }
+
                     if (tryGetSucceeded == true)
                     {
                         tryHandPoint = SnapFingerToQuad(tryHandPoint);
@@ -233,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
         private bool TryGetHandRayPoint(IMixedRealityController controller, out Vector3 handRayPoint)
         {
-            if (controller != null &&
+           if (controller != null &&
                 controller.InputSource != null &&
                 controller.InputSource.Pointers != null &&
                 controller.InputSource.Pointers.Length > 0 &&
@@ -425,9 +448,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void SetAffordancesActive(bool active)
         {
             affordancesVisible = active;
-            if (reticle != null)
+            if (centerPoint != null)
             {
-                reticle.SetActive(affordancesVisible);
+                centerPoint.SetActive(affordancesVisible);
             }
             if (leftPoint != null)
             {
@@ -437,7 +460,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 rightPoint.SetActive(affordancesVisible);
             }
-
         }
         private Vector3 GetContactForHand(Handedness hand)
         {
@@ -586,13 +608,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return Vector3.ProjectOnPlane(pointToSnap - planePoint, planeNormal) + planePoint;
         }
-        private void SetHandDataFromController(IMixedRealityController controller, bool isNear)
+
+
+        private void SetHandDataFromController(IMixedRealityController controller, IMixedRealityPointer pointer, bool isNear)
         {
             HandPanData data = new HandPanData();
             data.IsSourceNear = isNear;
             data.IsActive = true;
             data.touchingSource = controller.InputSource;
             data.currentController = controller;
+            data.currentPointer = pointer;
+
             if (isNear == true)
             {
                 if (TryGetHandPositionFromController(data.currentController, TrackedHandJoint.IndexTip, out Vector3 touchPosition) == true)
@@ -602,7 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     data.touchingPoint = data.touchingInitialPt;
                 }
             }
-            else
+            else//is far
             {
                 if (TryGetHandRayPoint(controller, out Vector3 handRayPt) == true)
                 {
@@ -614,6 +640,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         data.touchingRayOffset = handRayPt - SnapFingerToQuad(touchPosition);
                     }
                 }
+            }
+
+            //store value in case of MRController
+            if (data.currentPointer != null)
+            {
+                Vector3 pt = data.currentPointer.Position;
+                data.initialProjectedOffset = SnapFingerToQuad(pt);
             }
 
             data.touchingQuadCoord = GetUVFromPoint(data.touchingPoint);
@@ -639,25 +672,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 previousContactRatio = 1.0f;
             }
 
+            SetAffordancesActive(isNear);
+
             StartTouch(data.touchingSource.SourceId);
         }
         private bool TryGetHandPositionFromController(IMixedRealityController controller, TrackedHandJoint joint, out Vector3 position)
         {
-            if (controller != null && controller.Visualizer is IMixedRealityHandVisualizer)
+            if (controller != null &&
+                HandJointUtils.TryGetJointPose(joint, controller.ControllerHandedness, out MixedRealityPose pose))
             {
-                if ((controller.Visualizer as IMixedRealityHandVisualizer).TryGetJointTransform(joint, out Transform palm) == true)
-                {
-                    position = palm.position;
-                    return true;
-                }
-            }
-            else if (controller != null)
-            {
-                if (true == HandJointUtils.TryGetJointPose(joint, controller.ControllerHandedness, out MixedRealityPose pose))
-                {
-                    position = pose.Position;
-                    return true;
-                }
+                position = pose.Position;
+                return true;
             }
 
             position = Vector3.zero;
@@ -688,6 +713,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             UpdateTouchUVOffset(sourceId);
             FirePanStarted(sourceId);
+            PanStarted?.Invoke();
         }
         private void EndTouch(uint sourceId)
         {
@@ -695,6 +721,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 handDataMap.Remove(sourceId);
                 FirePanEnded(0);
+                PanStopped?.Invoke();
             }
         }
         private void EndAllTouches()
@@ -773,7 +800,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
             EndTouch(eventData.SourceId);
-            SetHandDataFromController(eventData.Controller, true);
+            SetHandDataFromController(eventData.Controller, null, true);
             eventData.Use();
         }
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
@@ -789,29 +816,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The Input Event handlers receive Hand Ray events.
         /// </summary>
-        public void OnInputDown(InputEventData eventData)
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
+            SetAffordancesActive(false);
             EndTouch(eventData.SourceId);
-            SetHandDataFromController(eventData.InputSource.Pointers[0].Controller, false);
+            SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer,  false);
             eventData.Use();
         }
-        public void OnInputUp(InputEventData eventData)
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             EndTouch(eventData.SourceId);
             eventData.Use();
-        }
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
-        public void OnInputPressed(InputEventData<float> eventData) { }
+        }    
         #endregion IMixedRealityInputHandler Methods
 
-
         #region IMixedRealitySourceStateHandler Methods
-        public void OnSourceDetected(SourceStateEventData eventData) { }
         public void OnSourceLost(SourceStateEventData eventData)
         {
             EndTouch(eventData.SourceId);
             eventData.Use();
         }
         #endregion IMixedRealitySourceStateHandler Methods
+
+        #region Unused Methods
+        public void OnSourceDetected(SourceStateEventData eventData) { }   
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
+        #endregion Unused Methods
     }
 }

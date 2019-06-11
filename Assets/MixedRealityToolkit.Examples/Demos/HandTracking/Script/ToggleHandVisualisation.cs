@@ -11,9 +11,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public bool isHandMeshVisible = false;
         public bool isHandJointVisible = false;
 
+        private IMixedRealityInputSystem inputSystem = null;
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         void updateHandVisibility()
         {
-            MixedRealityHandTrackingProfile handTrackingProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile;
+            MixedRealityHandTrackingProfile handTrackingProfile = InputSystem?.InputSystemProfile?.HandTrackingProfile;
             if (handTrackingProfile != null)
             { 
                 handTrackingProfile.EnableHandMeshVisualization = isHandMeshVisible;

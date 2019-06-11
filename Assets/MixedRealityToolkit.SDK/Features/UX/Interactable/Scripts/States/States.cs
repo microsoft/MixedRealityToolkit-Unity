@@ -23,12 +23,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private static readonly List<Type> candidateStateTypes = new List<Type>() { typeof(InteractableStates) };
 
+        public static States GetDefaultInteractableStates()
+        {
+            States result = CreateInstance<States>();
+
+            InteractableStates allInteractableStates = new InteractableStates();
+
+            result.StateType = Type.GetType(typeof(InteractableStates).AssemblyQualifiedName);
+            result.StateOptions = InteractableTypeFinder.Find(candidateStateTypes, TypeRestriction.AllowBase);
+            result.StateList = allInteractableStates.GetDefaultStates();
+            result.DefaultIndex = 0;
+            return result;
+        }
+
         //!!! finish making states work, they should initiate the type and run the logic during play mode.
         private void OnEnable()
         {
             SetupStateOptions();
         }
-        
+
         public State[] GetStates()
         {
             return StateList.ToArray();
@@ -50,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 stateListCopy.Add(state);
             }
             stateLogic.ImportStates(stateListCopy);
-            
+
             return stateLogic;
         }
 

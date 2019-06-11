@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             Color baseColor = MyDrawTexture.GetPixel((int)currPnt.x, (int)currPnt.y);
             float normalizedInterest = Mathf.Clamp(baseColor.a + delta, 0, 1);
             
-            // Get color from  given heatmap ramp
+            // Get color from given heatmap ramp
             if (HeatmapLookUpTable != null)
             {
                 col = HeatmapLookUpTable.GetPixel((int)(normalizedInterest * (HeatmapLookUpTable.width-1)), 0);

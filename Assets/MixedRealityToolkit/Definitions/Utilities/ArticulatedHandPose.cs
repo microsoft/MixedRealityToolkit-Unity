@@ -199,20 +199,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public static void LoadGesturePoses()
         {
-            string basePath = "Assets/MixedRealityToolkit.Services/InputSimulation/ArticulatedHandPoses/";
-            LoadGesturePose(GestureId.Flat, basePath + "ArticulatedHandPose_Flat.json");
-            LoadGesturePose(GestureId.Open, basePath + "ArticulatedHandPose_Open.json");
-            LoadGesturePose(GestureId.Pinch, basePath + "ArticulatedHandPose_Pinch.json");
-            LoadGesturePose(GestureId.PinchSteadyWrist, basePath + "ArticulatedHandPose_PinchSteadyWrist.json");
-            LoadGesturePose(GestureId.Poke, basePath + "ArticulatedHandPose_Poke.json");
-            LoadGesturePose(GestureId.Grab, basePath + "ArticulatedHandPose_Grab.json");
-            LoadGesturePose(GestureId.ThumbsUp, basePath + "ArticulatedHandPose_ThumbsUp.json");
-            LoadGesturePose(GestureId.Victory, basePath + "ArticulatedHandPose_Victory.json");
+            string[] gestureNames = Enum.GetNames(typeof(GestureId));
+            string basePath = Path.Combine("InputSimulation", "ArticulatedHandPoses");
+            for (int i = 0; i < gestureNames.Length; ++i)
+            {
+                string relPath = Path.Combine(basePath, String.Format("ArticulatedHandPose_{0}.json", gestureNames[i]));
+                string absPath = MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Services, relPath);
+                LoadGesturePose((GestureId)i, absPath);
+            }
         }
 
         private static ArticulatedHandPose LoadGesturePose(GestureId gesture, string filePath)
         {
-            if (filePath.Length > 0)
+            if (!string.IsNullOrEmpty(filePath))
             {
                 var pose = new ArticulatedHandPose();
                 pose.FromJson(File.ReadAllText(filePath));
@@ -220,6 +219,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return pose;
             }
             return null;
+        }
+
+        public static void ResetGesturePoses()
+        {
+            handPoses.Clear();
         }
         #endif
 

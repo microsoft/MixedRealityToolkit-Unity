@@ -10,6 +10,11 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     public interface IMixedRealityDiagnosticsSystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {
         /// <summary>
+        /// Typed representation of the ConfigurationProfile property.
+        /// </summary>
+        MixedRealityDiagnosticsProfile DiagnosticsSystemProfile { get; }
+
+        /// <summary>
         /// Enable / disable diagnostic display.
         /// </summary>
         /// <remarks>
@@ -22,6 +27,16 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// Enable / disable the profiler display.
         /// </summary>
         bool ShowProfiler { get; set; }
+
+        /// <summary>
+        /// Show or hide the frame info (per frame stats).
+        /// </summary>
+        bool ShowFrameInfo { get; set; }
+
+        /// <summary>
+        /// Show or hide the memory stats (used, peak, and limit).
+        /// </summary>
+        bool ShowMemoryStats { get; set; }
 
         /// <summary>
         /// The amount of time, in seconds, to collect frames for frame rate calculation.

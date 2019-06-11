@@ -3,7 +3,7 @@
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the the required assemblies (i.e. the ones below).
+// Unity doesn't include the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
 using Microsoft.MixedReality.Toolkit.UI;
@@ -28,9 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestGazeCursorArticulated()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
-            TestUtilities.InitializePlayspace();
-
             RenderSettings.skybox = null;
 
             IMixedRealityInputSystem inputSystem;
@@ -43,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // raise hand up -- gaze cursor should no longer be visible
             // disable user input
-            InputSimulationService inputSimulationService = MixedRealityToolkit.Instance.GetService<InputSimulationService>();
+            InputSimulationService inputSimulationService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<InputSimulationService>();
             Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
 
             inputSimulationService.UserInputEnabled = false;
@@ -62,6 +59,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             inputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
             yield return null;
             Assert.IsTrue(inputSystem.GazeProvider.GazePointer.IsInteractionEnabled, "Gaze cursor should be visible after select command");
+        }
+
+        [SetUp]
+        public void SetupMrtk()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+            TestUtilities.InitializePlayspace();
+        }
+
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
         }
     }
 }

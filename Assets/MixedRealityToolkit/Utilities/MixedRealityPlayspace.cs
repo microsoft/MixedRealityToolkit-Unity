@@ -22,6 +22,16 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static Transform mixedRealityPlayspace;
 
+        public static void Destroy()
+        {
+            // Playspace makes main camera dependent on it (see Transform initialization),
+            // so here it needs to restore camera's initial position. 
+            // Without second parameter camera will not move to its original position.
+            CameraCache.Main.transform.SetParent(null, false);
+            UnityEngine.Object.Destroy(mixedRealityPlayspace.gameObject);
+            mixedRealityPlayspace = null;
+        }
+
         /// <summary>
         /// The transform of the playspace.
         /// </summary>
@@ -48,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit
                     {
                         // Since the scene is set up with a different camera parent, its likely
                         // that there's an expectation that that parent is going to be used for
-                        // something else. We print a warning to call out the fact that we're 
+                        // something else. We print a warning to call out the fact that we're
                         // co-opting this object for use with teleporting and such, since that
                         // might cause conflicts with the parent's intended purpose.
                         Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {Name}. The existing parent will be renamed and used instead.");
@@ -63,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit
                 // otherwise reality-locked things like playspace boundaries won't be aligned properly.
                 // For now, we'll just assume that when the playspace is first initialized, the
                 // tracked space origin overlaps with the world space origin. If a platform ever does
-                // something else (i.e, placing the lower left hand corner of the tracked space at world 
+                // something else (i.e, placing the lower left hand corner of the tracked space at world
                 // space 0,0,0), we should compensate for that here.
                 return mixedRealityPlayspace;
             }
@@ -88,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Adds a child object to the playspace's heirarchy.
+        /// Adds a child object to the playspace's hierarchy.
         /// </summary>
         /// <param name="transform">The child object's transform.</param>
         public static void AddChild(Transform transform)
@@ -155,11 +165,11 @@ namespace Microsoft.MixedReality.Toolkit
         {
             transformation?.Invoke(Transform);
         }
-        
+
         #region Multi-scene management
 
         private static bool subscribedToEvents = false;
-        
+
 #if UNITY_EDITOR
         private static bool subscribedToEditorEvents = false;
 

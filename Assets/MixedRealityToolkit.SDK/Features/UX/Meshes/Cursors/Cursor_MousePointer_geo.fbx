@@ -1,0 +1,657 @@
+; FBX 7.3.0 project file
+; Copyright (C) 1997-2010 Autodesk Inc. and/or its licensors.
+; All rights reserved.
+; ----------------------------------------------------
+
+FBXHeaderExtension:  {
+	FBXHeaderVersion: 1003
+	FBXVersion: 7300
+	CreationTimeStamp:  {
+		Version: 1000
+		Year: 2016
+		Month: 9
+		Day: 8
+		Hour: 12
+		Minute: 45
+		Second: 19
+		Millisecond: 466
+	}
+	Creator: "FBX SDK/FBX Plugins version 2016.0"
+	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
+		Type: "UserData"
+		Version: 100
+		MetaData:  {
+			Version: 100
+			Title: ""
+			Subject: ""
+			Author: ""
+			Keywords: ""
+			Revision: ""
+			Comment: ""
+		}
+		Properties70:  {
+			P: "DocumentUrl", "KString", "Url", "", "C:\Users\dasierra\Desktop\Cursor\models\shl_csrPointer_geo.fbx"
+			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\dasierra\Desktop\Cursor\models\shl_csrPointer_geo.fbx"
+			P: "Original", "Compound", "", ""
+			P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
+			P: "Original|ApplicationName", "KString", "", "", "Maya"
+			P: "Original|ApplicationVersion", "KString", "", "", "2016"
+			P: "Original|DateTime_GMT", "DateTime", "", "", "08/09/2016 19:45:19.465"
+			P: "Original|FileName", "KString", "", "", "C:/Users/dasierra/Desktop/Cursor/models/shl_csrPointer_geo.fbx"
+			P: "LastSaved", "Compound", "", ""
+			P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
+			P: "LastSaved|ApplicationName", "KString", "", "", "Maya"
+			P: "LastSaved|ApplicationVersion", "KString", "", "", "2016"
+			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "08/09/2016 19:45:19.465"
+		}
+	}
+}
+GlobalSettings:  {
+	Version: 1000
+	Properties70:  {
+		P: "UpAxis", "int", "Integer", "",1
+		P: "UpAxisSign", "int", "Integer", "",1
+		P: "FrontAxis", "int", "Integer", "",2
+		P: "FrontAxisSign", "int", "Integer", "",1
+		P: "CoordAxis", "int", "Integer", "",0
+		P: "CoordAxisSign", "int", "Integer", "",1
+		P: "OriginalUpAxis", "int", "Integer", "",1
+		P: "OriginalUpAxisSign", "int", "Integer", "",1
+		P: "UnitScaleFactor", "double", "Number", "",1
+		P: "OriginalUnitScaleFactor", "double", "Number", "",1
+		P: "AmbientColor", "ColorRGB", "Color", "",0,0,0
+		P: "DefaultCamera", "KString", "", "", "Producer Perspective"
+		P: "TimeMode", "enum", "", "",6
+		P: "TimeProtocol", "enum", "", "",2
+		P: "SnapOnFrameMode", "enum", "", "",0
+		P: "TimeSpanStart", "KTime", "Time", "",1539538600
+		P: "TimeSpanStop", "KTime", "Time", "",392582343000
+		P: "CustomFrameRate", "double", "Number", "",-1
+		P: "TimeMarker", "Compound", "", ""
+		P: "CurrentTimeMarker", "int", "Integer", "",-1
+	}
+}
+
+; Documents Description
+;------------------------------------------------------------------
+
+Documents:  {
+	Count: 1
+	Document: 2450899729056, "", "Scene" {
+		Properties70:  {
+			P: "SourceObject", "object", "", ""
+			P: "ActiveAnimStackName", "KString", "", "", "Take 001"
+		}
+		RootNode: 0
+	}
+}
+
+; Document References
+;------------------------------------------------------------------
+
+References:  {
+}
+
+; Object definitions
+;------------------------------------------------------------------
+
+Definitions:  {
+	Version: 100
+	Count: 15
+	ObjectType: "GlobalSettings" {
+		Count: 1
+	}
+	ObjectType: "AnimationStack" {
+		Count: 1
+		PropertyTemplate: "FbxAnimStack" {
+			Properties70:  {
+				P: "Description", "KString", "", "", ""
+				P: "LocalStart", "KTime", "Time", "",0
+				P: "LocalStop", "KTime", "Time", "",0
+				P: "ReferenceStart", "KTime", "Time", "",0
+				P: "ReferenceStop", "KTime", "Time", "",0
+			}
+		}
+	}
+	ObjectType: "AnimationLayer" {
+		Count: 1
+		PropertyTemplate: "FbxAnimLayer" {
+			Properties70:  {
+				P: "Weight", "Number", "", "A",100
+				P: "Mute", "bool", "", "",0
+				P: "Solo", "bool", "", "",0
+				P: "Lock", "bool", "", "",0
+				P: "Color", "ColorRGB", "Color", "",0.8,0.8,0.8
+				P: "BlendMode", "enum", "", "",0
+				P: "RotationAccumulationMode", "enum", "", "",0
+				P: "ScaleAccumulationMode", "enum", "", "",0
+				P: "BlendModeBypass", "ULongLong", "", "",0
+			}
+		}
+	}
+	ObjectType: "Geometry" {
+		Count: 1
+		PropertyTemplate: "FbxMesh" {
+			Properties70:  {
+				P: "Color", "ColorRGB", "Color", "",0.8,0.8,0.8
+				P: "BBoxMin", "Vector3D", "Vector", "",0,0,0
+				P: "BBoxMax", "Vector3D", "Vector", "",0,0,0
+				P: "Primary Visibility", "bool", "", "",1
+				P: "Casts Shadows", "bool", "", "",1
+				P: "Receive Shadows", "bool", "", "",1
+			}
+		}
+	}
+	ObjectType: "Material" {
+		Count: 1
+		PropertyTemplate: "FbxSurfaceMaterial" {
+			Properties70:  {
+				P: "ShadingModel", "KString", "", "", "Unknown"
+				P: "MultiLayer", "bool", "", "",0
+			}
+		}
+	}
+	ObjectType: "Implementation" {
+		Count: 1
+		PropertyTemplate: "FbxImplementation" {
+			Properties70:  {
+				P: "ShaderLanguage", "KString", "", "", "MentalRaySL"
+				P: "ShaderLanguageVersion", "KString", "", "", ""
+				P: "RenderAPI", "KString", "", "", "MentalRay"
+				P: "RenderAPIVersion", "KString", "", "", ""
+				P: "RootBindingName", "KString", "", "", ""
+				P: "Constants", "Compound", "", ""
+			}
+		}
+	}
+	ObjectType: "BindingTable" {
+		Count: 1
+		PropertyTemplate: "FbxBindingTable" {
+			Properties70:  {
+				P: "TargetName", "KString", "", "", ""
+				P: "TargetType", "KString", "", "", ""
+				P: "CodeAbsoluteURL", "KString", "XRefUrl", "", ""
+				P: "CodeRelativeURL", "KString", "XRefUrl", "", ""
+				P: "CodeTAG", "KString", "", "", "shader"
+				P: "DescAbsoluteURL", "KString", "XRefUrl", "", ""
+				P: "DescRelativeURL", "KString", "XRefUrl", "", ""
+				P: "DescTAG", "KString", "", "", "shader"
+			}
+		}
+	}
+	ObjectType: "Texture" {
+		Count: 2
+		PropertyTemplate: "FbxFileTexture" {
+			Properties70:  {
+				P: "TextureTypeUse", "enum", "", "",0
+				P: "Texture alpha", "Number", "", "A",1
+				P: "CurrentMappingType", "enum", "", "",0
+				P: "WrapModeU", "enum", "", "",0
+				P: "WrapModeV", "enum", "", "",0
+				P: "UVSwap", "bool", "", "",0
+				P: "PremultiplyAlpha", "bool", "", "",1
+				P: "Translation", "Vector", "", "A",0,0,0
+				P: "Rotation", "Vector", "", "A",0,0,0
+				P: "Scaling", "Vector", "", "A",1,1,1
+				P: "TextureRotationPivot", "Vector3D", "Vector", "",0,0,0
+				P: "TextureScalingPivot", "Vector3D", "Vector", "",0,0,0
+				P: "CurrentTextureBlendMode", "enum", "", "",1
+				P: "UVSet", "KString", "", "", "default"
+				P: "UseMaterial", "bool", "", "",0
+				P: "UseMipMap", "bool", "", "",0
+			}
+		}
+	}
+	ObjectType: "Model" {
+		Count: 1
+		PropertyTemplate: "FbxNode" {
+			Properties70:  {
+				P: "QuaternionInterpolate", "enum", "", "",0
+				P: "RotationOffset", "Vector3D", "Vector", "",0,0,0
+				P: "RotationPivot", "Vector3D", "Vector", "",0,0,0
+				P: "ScalingOffset", "Vector3D", "Vector", "",0,0,0
+				P: "ScalingPivot", "Vector3D", "Vector", "",0,0,0
+				P: "TranslationActive", "bool", "", "",0
+				P: "TranslationMin", "Vector3D", "Vector", "",0,0,0
+				P: "TranslationMax", "Vector3D", "Vector", "",0,0,0
+				P: "TranslationMinX", "bool", "", "",0
+				P: "TranslationMinY", "bool", "", "",0
+				P: "TranslationMinZ", "bool", "", "",0
+				P: "TranslationMaxX", "bool", "", "",0
+				P: "TranslationMaxY", "bool", "", "",0
+				P: "TranslationMaxZ", "bool", "", "",0
+				P: "RotationOrder", "enum", "", "",0
+				P: "RotationSpaceForLimitOnly", "bool", "", "",0
+				P: "RotationStiffnessX", "double", "Number", "",0
+				P: "RotationStiffnessY", "double", "Number", "",0
+				P: "RotationStiffnessZ", "double", "Number", "",0
+				P: "AxisLen", "double", "Number", "",10
+				P: "PreRotation", "Vector3D", "Vector", "",0,0,0
+				P: "PostRotation", "Vector3D", "Vector", "",0,0,0
+				P: "RotationActive", "bool", "", "",0
+				P: "RotationMin", "Vector3D", "Vector", "",0,0,0
+				P: "RotationMax", "Vector3D", "Vector", "",0,0,0
+				P: "RotationMinX", "bool", "", "",0
+				P: "RotationMinY", "bool", "", "",0
+				P: "RotationMinZ", "bool", "", "",0
+				P: "RotationMaxX", "bool", "", "",0
+				P: "RotationMaxY", "bool", "", "",0
+				P: "RotationMaxZ", "bool", "", "",0
+				P: "InheritType", "enum", "", "",0
+				P: "ScalingActive", "bool", "", "",0
+				P: "ScalingMin", "Vector3D", "Vector", "",0,0,0
+				P: "ScalingMax", "Vector3D", "Vector", "",1,1,1
+				P: "ScalingMinX", "bool", "", "",0
+				P: "ScalingMinY", "bool", "", "",0
+				P: "ScalingMinZ", "bool", "", "",0
+				P: "ScalingMaxX", "bool", "", "",0
+				P: "ScalingMaxY", "bool", "", "",0
+				P: "ScalingMaxZ", "bool", "", "",0
+				P: "GeometricTranslation", "Vector3D", "Vector", "",0,0,0
+				P: "GeometricRotation", "Vector3D", "Vector", "",0,0,0
+				P: "GeometricScaling", "Vector3D", "Vector", "",1,1,1
+				P: "MinDampRangeX", "double", "Number", "",0
+				P: "MinDampRangeY", "double", "Number", "",0
+				P: "MinDampRangeZ", "double", "Number", "",0
+				P: "MaxDampRangeX", "double", "Number", "",0
+				P: "MaxDampRangeY", "double", "Number", "",0
+				P: "MaxDampRangeZ", "double", "Number", "",0
+				P: "MinDampStrengthX", "double", "Number", "",0
+				P: "MinDampStrengthY", "double", "Number", "",0
+				P: "MinDampStrengthZ", "double", "Number", "",0
+				P: "MaxDampStrengthX", "double", "Number", "",0
+				P: "MaxDampStrengthY", "double", "Number", "",0
+				P: "MaxDampStrengthZ", "double", "Number", "",0
+				P: "PreferedAngleX", "double", "Number", "",0
+				P: "PreferedAngleY", "double", "Number", "",0
+				P: "PreferedAngleZ", "double", "Number", "",0
+				P: "LookAtProperty", "object", "", ""
+				P: "UpVectorProperty", "object", "", ""
+				P: "Show", "bool", "", "",1
+				P: "NegativePercentShapeSupport", "bool", "", "",1
+				P: "DefaultAttributeIndex", "int", "Integer", "",-1
+				P: "Freeze", "bool", "", "",0
+				P: "LODBox", "bool", "", "",0
+				P: "Lcl Translation", "Lcl Translation", "", "A",0,0,0
+				P: "Lcl Rotation", "Lcl Rotation", "", "A",0,0,0
+				P: "Lcl Scaling", "Lcl Scaling", "", "A",1,1,1
+				P: "Visibility", "Visibility", "", "A",1
+				P: "Visibility Inheritance", "Visibility Inheritance", "", "",1
+			}
+		}
+	}
+	ObjectType: "Container" {
+		Count: 2
+		PropertyTemplate: "FbxContainer" {
+			Properties70:  {
+				P: "templateName", "KString", "", "", ""
+				P: "templatePath", "KString", "", "", ""
+				P: "templateVersion", "KString", "", "", ""
+				P: "viewName", "KString", "", "", ""
+			}
+		}
+	}
+	ObjectType: "Video" {
+		Count: 3
+		PropertyTemplate: "FbxVideo" {
+			Properties70:  {
+				P: "ImageSequence", "bool", "", "",0
+				P: "ImageSequenceOffset", "int", "Integer", "",0
+				P: "FrameRate", "double", "Number", "",0
+				P: "LastFrame", "int", "Integer", "",0
+				P: "Width", "int", "Integer", "",0
+				P: "Height", "int", "Integer", "",0
+				P: "Path", "KString", "XRefUrl", "", ""
+				P: "StartFrame", "int", "Integer", "",0
+				P: "StopFrame", "int", "Integer", "",0
+				P: "PlaySpeed", "double", "Number", "",0
+				P: "Offset", "KTime", "Time", "",0
+				P: "InterlaceMode", "enum", "", "",0
+				P: "FreeRunning", "bool", "", "",0
+				P: "Loop", "bool", "", "",0
+				P: "AccessMode", "enum", "", "",0
+			}
+		}
+	}
+}
+
+; Object properties
+;------------------------------------------------------------------
+
+Objects:  {
+	Geometry: 2450701965840, "Geometry::", "Mesh" {
+		Vertices: *12 {
+			a: 1.25331282615662,-1.86103570461273,0,-0.067808598279953,-1.86103570461273,0,-0.067808598279953,0.0457773506641388,0,1.25331282615662,0.0457773506641388,0
+		} 
+		PolygonVertexIndex: *4 {
+			a: 2,1,0,-4
+		} 
+		Edges: *4 {
+			a: 1,0,2,3
+		} 
+		GeometryVersion: 124
+		LayerElementNormal: 0 {
+			Version: 101
+			Name: ""
+			MappingInformationType: "ByVertice"
+			ReferenceInformationType: "Direct"
+			Normals: *12 {
+				a: 0,0,0.999999940395355,0,0,0.999999940395355,0,0,0.999999940395355,0,0,0.999999940395355
+			} 
+		}
+		LayerElementUV: 0 {
+			Version: 101
+			Name: "map1"
+			MappingInformationType: "ByPolygonVertex"
+			ReferenceInformationType: "IndexToDirect"
+			UV: *8 {
+				a: 0.809003710746765,0.0223051309585571,0.157322824001312,0.0223051309585571,0.157322824001312,0.962895095348358,0.809003710746765,0.962895095348358
+			} 
+			UVIndex: *4 {
+				a: 2,1,0,3
+			} 
+		}
+		LayerElementMaterial: 0 {
+			Version: 101
+			Name: ""
+			MappingInformationType: "AllSame"
+			ReferenceInformationType: "IndexToDirect"
+			Materials: *1 {
+				a: 0
+			} 
+		}
+		Layer: 0 {
+			Version: 100
+			LayerElement:  {
+				Type: "LayerElementNormal"
+				TypedIndex: 0
+			}
+			LayerElement:  {
+				Type: "LayerElementMaterial"
+				TypedIndex: 0
+			}
+			LayerElement:  {
+				Type: "LayerElementUV"
+				TypedIndex: 0
+			}
+		}
+	}
+	Model: 2450707864912, "Model::shl_csrPointer_geo", "Mesh" {
+		Version: 232
+		Properties70:  {
+			P: "RotationActive", "bool", "", "",1
+			P: "InheritType", "enum", "", "",1
+			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
+			P: "DefaultAttributeIndex", "int", "Integer", "",0
+			P: "currentUVSet", "KString", "", "U", "map1"
+		}
+		Shading: T
+		Culling: "CullingOff"
+	}
+	Material: 2486538784848, "Material::pasted__dx11Shader80", "" {
+		Version: 102
+		ShadingModel: "unknown"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Maya", "Compound", "", ""
+			P: "Maya|TypeId", "int", "Integer", "",528468
+			P: "Maya|bSwatch", "bool", "", "",0
+			P: "Maya|light1Enable", "bool", "", "",0
+			P: "Maya|light0Enable", "bool", "", "",0
+			P: "Maya|light0Type", "enum", "", "",2
+			P: "Maya|light2Enable", "bool", "", "",0
+			P: "Maya|light1Type", "enum", "", "",2
+			P: "Maya|light0Pos", "matrix4x4", "Matrix Transformation", "",1,0,0,100,0,1,0,100,0,0,1,100,0,0,0,1
+			P: "Maya|light1Pos", "matrix4x4", "Matrix Transformation", "",1,0,0,100,0,1,0,100,0,0,1,100,0,0,0,1
+			P: "Maya|light2Type", "enum", "", "",2
+			P: "Maya|light3Enable", "bool", "", "",0
+			P: "Maya|light0Scale", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|light3Type", "enum", "", "",2
+			P: "Maya|light1Scale", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|light4Enable", "bool", "", "",0
+			P: "Maya|light2Pos", "matrix4x4", "Matrix Transformation", "",1,0,0,100,0,1,0,100,0,0,1,100,0,0,0,1
+			P: "Maya|light0Color", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|light3Pos", "matrix4x4", "Matrix Transformation", "",1,0,0,100,0,1,0,100,0,0,1,100,0,0,0,1
+			P: "Maya|light0Intensity", "float", "", "",1
+			P: "Maya|light2Scale", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|light1Color", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|light4Type", "enum", "", "",2
+			P: "Maya|light3Scale", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|light0Dir", "matrix4x4", "Matrix Transformation", "",1,0,-100,0,0,1,-100,0,0,0,-100,0,0,0,0,1
+			P: "Maya|light2Color", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|light1Intensity", "float", "", "",1
+			P: "Maya|light4Pos", "matrix4x4", "Matrix Transformation", "",1,0,0,100,0,1,0,100,0,0,1,100,0,0,0,1
+			P: "Maya|light3Color", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|light2Intensity", "float", "", "",1
+			P: "Maya|light0ConeAngle", "float", "", "",0.46
+			P: "Maya|light1Dir", "matrix4x4", "Matrix Transformation", "",1,0,-100,0,0,1,-100,0,0,0,-100,0,0,0,0,1
+			P: "Maya|light4Scale", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|light3Intensity", "float", "", "",1
+			P: "Maya|light2Dir", "matrix4x4", "Matrix Transformation", "",1,0,-100,0,0,1,-100,0,0,0,-100,0,0,0,0,1
+			P: "Maya|light1ConeAngle", "float", "", "",0.46
+			P: "Maya|light4Color", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|light0FallOff", "float", "", "",0.7
+			P: "Maya|light2ConeAngle", "float", "", "",0.46
+			P: "Maya|light0AttenScale", "float", "", "",0
+			P: "Maya|light1FallOff", "float", "", "",0.7
+			P: "Maya|light3Dir", "matrix4x4", "Matrix Transformation", "",1,0,-100,0,0,1,-100,0,0,0,-100,0,0,0,0,1
+			P: "Maya|light4Intensity", "float", "", "",1
+			P: "Maya|light1AttenScale", "float", "", "",0
+			P: "Maya|light2FallOff", "float", "", "",0.7
+			P: "Maya|light3ConeAngle", "float", "", "",0.46
+			P: "Maya|light0ShadowOn", "bool", "", "",1
+			P: "Maya|light4Dir", "matrix4x4", "Matrix Transformation", "",1,0,-100,0,0,1,-100,0,0,0,-100,0,0,0,0,1
+			P: "Maya|light2AttenScale", "float", "", "",0
+			P: "Maya|light1ShadowOn", "bool", "", "",1
+			P: "Maya|light3FallOff", "float", "", "",0.7
+			P: "Maya|light4ConeAngle", "float", "", "",0.46
+			P: "Maya|light2ShadowOn", "bool", "", "",1
+			P: "Maya|light3AttenScale", "float", "", "",0
+			P: "Maya|light4FallOff", "float", "", "",0.7
+			P: "Maya|light3ShadowOn", "bool", "", "",1
+			P: "Maya|light4AttenScale", "float", "", "",0
+			P: "Maya|light4ShadowOn", "bool", "", "",1
+			P: "Maya|cAlbedo", "Vector3D", "Vector", "",0.658731997013092,0.658731997013092,0.658731997013092
+			P: "Maya|bEnableAlbedoMap", "bool", "", "",1
+			P: "Maya|txAlbedo", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|bEnableVertexColor", "bool", "", "",0
+			P: "Maya|bEnableAlpha", "bool", "", "",1
+			P: "Maya|bEnableMrcAlpha", "bool", "", "",0
+			P: "Maya|fAlphaScale", "float", "", "",1
+			P: "Maya|txAlpha", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|cEmissive", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|vUVOffset", "Vector2D", "Vector2", "",0,0
+			P: "Maya|vUVScale", "Vector2D", "Vector2", "",1,1
+			P: "Maya|bEnableBackFaceCull", "bool", "", "",1
+		}
+	}
+	Video: 2486351181648, "Video::pasted__file591", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "T:/PlatformNext/Analog/Design/Assets/Maya/shell_charlie/sourceimages/Cursor/Mouse/NormalCursor.png"
+		}
+		UseMipMap: 0
+		Filename: "T:/PlatformNext/Analog/Design/Assets/Maya/shell_charlie/sourceimages/Cursor/Mouse/NormalCursor.png"
+		RelativeFilename: "T:\PlatformNext\Analog\Design\Assets\Maya\shell_charlie\sourceimages\Cursor\Mouse\NormalCursor.png"
+	}
+	Video: 2486351206448, "Video::pasted__file592", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "T:/PlatformNext/Analog/Design/Assets/Maya/shell_charlie/sourceimages/Cursor/Mouse/NormalCursor.png"
+		}
+		UseMipMap: 0
+		Filename: "T:/PlatformNext/Analog/Design/Assets/Maya/shell_charlie/sourceimages/Cursor/Mouse/NormalCursor.png"
+		RelativeFilename: "T:\PlatformNext\Analog\Design\Assets\Maya\shell_charlie\sourceimages\Cursor\Mouse\NormalCursor.png"
+	}
+	Video: 2486351210848, "Video::root 16", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "T:/PlatformNext/Analog/Design/Code/BExport/MayaHLSL/EmissiveMaterial.fx"
+		}
+		UseMipMap: 0
+		Filename: "T:/PlatformNext/Analog/Design/Code/BExport/MayaHLSL/EmissiveMaterial.fx"
+		RelativeFilename: "T:\PlatformNext\Analog\Design\Code\BExport\MayaHLSL\EmissiveMaterial.fx"
+	}
+	Texture: 2486581320752, "Texture::pasted__file591", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::pasted__file591"
+		Properties70:  {
+			P: "UseMaterial", "bool", "", "",1
+		}
+		Media: "Video::pasted__file591"
+		FileName: "T:/PlatformNext/Analog/Design/Assets/Maya/shell_charlie/sourceimages/Cursor/Mouse/NormalCursor.png"
+		RelativeFilename: "T:\PlatformNext\Analog\Design\Assets\Maya\shell_charlie\sourceimages\Cursor\Mouse\NormalCursor.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Texture: 2486581321232, "Texture::pasted__file592", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::pasted__file592"
+		Properties70:  {
+			P: "UseMaterial", "bool", "", "",1
+		}
+		Media: "Video::pasted__file592"
+		FileName: "T:/PlatformNext/Analog/Design/Assets/Maya/shell_charlie/sourceimages/Cursor/Mouse/NormalCursor.png"
+		RelativeFilename: "T:\PlatformNext\Analog\Design\Assets\Maya\shell_charlie\sourceimages\Cursor\Mouse\NormalCursor.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Implementation: 2450526545136, "Implementation::pasted__dx11Shader80_Implementation", "" {
+		Version: 100
+		Properties70:  {
+			P: "ShaderLanguage", "KString", "", "", "HLSL"
+			P: "ShaderLanguageVersion", "KString", "", "", "5.0"
+			P: "RenderAPI", "KString", "", "", "DirectX"
+			P: "RenderAPIVersion", "KString", "", "", "11.0"
+			P: "RootBindingName", "KString", "", "", "root"
+		}
+	}
+	BindingTable: 2450526226096, "BindingTable::root 16", "" {
+		Version: 100
+		Properties70:  {
+			P: "TargetName", "KString", "", "", "root"
+			P: "TargetType", "KString", "", "", "shader"
+			P: "DescAbsoluteURL", "KString", "XRefUrl", "", "T:/PlatformNext/Analog/Design/Code/BExport/MayaHLSL/EmissiveMaterial.fx"
+			P: "DescTAG", "KString", "", "", "Emissive_Over"
+		}
+		Entry: "Maya|light3Scale", "FbxPropertyEntry", "light3Scale", "FbxSemanticEntry"
+		Entry: "Maya|light1Pos", "FbxPropertyEntry", "light1Pos", "FbxSemanticEntry"
+		Entry: "Maya|fAlphaScale", "FbxPropertyEntry", "fAlphaScale", "FbxSemanticEntry"
+		Entry: "Maya|light2ConeAngle", "FbxPropertyEntry", "light2ConeAngle", "FbxSemanticEntry"
+		Entry: "Maya|light0Pos", "FbxPropertyEntry", "light0Pos", "FbxSemanticEntry"
+		Entry: "Maya|light2FallOff", "FbxPropertyEntry", "light2FallOff", "FbxSemanticEntry"
+		Entry: "Maya|light1Dir", "FbxPropertyEntry", "light1Dir", "FbxSemanticEntry"
+		Entry: "Maya|light1Intensity", "FbxPropertyEntry", "light1Intensity", "FbxSemanticEntry"
+		Entry: "Maya|light2Type", "FbxPropertyEntry", "light2Type", "FbxSemanticEntry"
+		Entry: "Maya|light3ConeAngle", "FbxPropertyEntry", "light3ConeAngle", "FbxSemanticEntry"
+		Entry: "Maya|light0AttenScale", "FbxPropertyEntry", "light0AttenScale", "FbxSemanticEntry"
+		Entry: "Maya|light1Color", "FbxPropertyEntry", "light1Color", "FbxSemanticEntry"
+		Entry: "Maya|vUVScale", "FbxPropertyEntry", "vUVScale", "FbxSemanticEntry"
+		Entry: "Maya|txAlbedo", "FbxPropertyEntry", "txAlbedo", "FbxSemanticEntry"
+		Entry: "Maya|light0ShadowOn", "FbxPropertyEntry", "light0ShadowOn", "FbxSemanticEntry"
+		Entry: "Maya|light1Scale", "FbxPropertyEntry", "light1Scale", "FbxSemanticEntry"
+		Entry: "Maya|light1Type", "FbxPropertyEntry", "light1Type", "FbxSemanticEntry"
+		Entry: "Maya|bEnableVertexColor", "FbxPropertyEntry", "bEnableVertexColor", "FbxSemanticEntry"
+		Entry: "Maya|light3Dir", "FbxPropertyEntry", "light3Dir", "FbxSemanticEntry"
+		Entry: "Maya|light2Color", "FbxPropertyEntry", "light2Color", "FbxSemanticEntry"
+		Entry: "Maya|light1FallOff", "FbxPropertyEntry", "light1FallOff", "FbxSemanticEntry"
+		Entry: "Maya|light0Type", "FbxPropertyEntry", "light0Type", "FbxSemanticEntry"
+		Entry: "Maya|light4Intensity", "FbxPropertyEntry", "light4Intensity", "FbxSemanticEntry"
+		Entry: "Maya|light4Pos", "FbxPropertyEntry", "light4Pos", "FbxSemanticEntry"
+		Entry: "Maya|light0Scale", "FbxPropertyEntry", "light0Scale", "FbxSemanticEntry"
+		Entry: "Maya|light2Dir", "FbxPropertyEntry", "light2Dir", "FbxSemanticEntry"
+		Entry: "Maya|light3ShadowOn", "FbxPropertyEntry", "light3ShadowOn", "FbxSemanticEntry"
+		Entry: "Maya|light2ShadowOn", "FbxPropertyEntry", "light2ShadowOn", "FbxSemanticEntry"
+		Entry: "Maya|light1AttenScale", "FbxPropertyEntry", "light1AttenScale", "FbxSemanticEntry"
+		Entry: "Maya|light4Enable", "FbxPropertyEntry", "light4Enable", "FbxSemanticEntry"
+		Entry: "Maya|light0Enable", "FbxPropertyEntry", "light0Enable", "FbxSemanticEntry"
+		Entry: "Maya|txAlpha", "FbxPropertyEntry", "txAlpha", "FbxSemanticEntry"
+		Entry: "Maya|bEnableBackFaceCull", "FbxPropertyEntry", "bEnableBackFaceCull", "FbxSemanticEntry"
+		Entry: "Maya|cAlbedo", "FbxPropertyEntry", "cAlbedo", "FbxSemanticEntry"
+		Entry: "Maya|light4Dir", "FbxPropertyEntry", "light4Dir", "FbxSemanticEntry"
+		Entry: "Maya|light4Type", "FbxPropertyEntry", "light4Type", "FbxSemanticEntry"
+		Entry: "Maya|light3Pos", "FbxPropertyEntry", "light3Pos", "FbxSemanticEntry"
+		Entry: "Maya|light4ShadowOn", "FbxPropertyEntry", "light4ShadowOn", "FbxSemanticEntry"
+		Entry: "Maya|light0Dir", "FbxPropertyEntry", "light0Dir", "FbxSemanticEntry"
+		Entry: "Maya|light2AttenScale", "FbxPropertyEntry", "light2AttenScale", "FbxSemanticEntry"
+		Entry: "Maya|light3Enable", "FbxPropertyEntry", "light3Enable", "FbxSemanticEntry"
+		Entry: "Maya|bSwatch", "FbxPropertyEntry", "bSwatch", "FbxSemanticEntry"
+		Entry: "Maya|light1Enable", "FbxPropertyEntry", "light1Enable", "FbxSemanticEntry"
+		Entry: "Maya|light3FallOff", "FbxPropertyEntry", "light3FallOff", "FbxSemanticEntry"
+		Entry: "Maya|light2Intensity", "FbxPropertyEntry", "light2Intensity", "FbxSemanticEntry"
+		Entry: "Maya|light2Pos", "FbxPropertyEntry", "light2Pos", "FbxSemanticEntry"
+		Entry: "Maya|bEnableMrcAlpha", "FbxPropertyEntry", "bEnableMrcAlpha", "FbxSemanticEntry"
+		Entry: "Maya|light4Color", "FbxPropertyEntry", "light4Color", "FbxSemanticEntry"
+		Entry: "Maya|light1ConeAngle", "FbxPropertyEntry", "light1ConeAngle", "FbxSemanticEntry"
+		Entry: "Maya|light0Intensity", "FbxPropertyEntry", "light0Intensity", "FbxSemanticEntry"
+		Entry: "Maya|light3Intensity", "FbxPropertyEntry", "light3Intensity", "FbxSemanticEntry"
+		Entry: "Maya|light2Enable", "FbxPropertyEntry", "light2Enable", "FbxSemanticEntry"
+		Entry: "Maya|cEmissive", "FbxPropertyEntry", "cEmissive", "FbxSemanticEntry"
+		Entry: "Maya|vUVOffset", "FbxPropertyEntry", "vUVOffset", "FbxSemanticEntry"
+		Entry: "Maya|bEnableAlbedoMap", "FbxPropertyEntry", "bEnableAlbedoMap", "FbxSemanticEntry"
+		Entry: "Maya|light0FallOff", "FbxPropertyEntry", "light0FallOff", "FbxSemanticEntry"
+		Entry: "Maya|light0ConeAngle", "FbxPropertyEntry", "light0ConeAngle", "FbxSemanticEntry"
+		Entry: "Maya|light2Scale", "FbxPropertyEntry", "light2Scale", "FbxSemanticEntry"
+		Entry: "Maya|light4ConeAngle", "FbxPropertyEntry", "light4ConeAngle", "FbxSemanticEntry"
+		Entry: "Maya|light4Scale", "FbxPropertyEntry", "light4Scale", "FbxSemanticEntry"
+		Entry: "Maya|bEnableAlpha", "FbxPropertyEntry", "bEnableAlpha", "FbxSemanticEntry"
+		Entry: "Maya|light1ShadowOn", "FbxPropertyEntry", "light1ShadowOn", "FbxSemanticEntry"
+		Entry: "Maya|light4FallOff", "FbxPropertyEntry", "light4FallOff", "FbxSemanticEntry"
+		Entry: "Maya|light3AttenScale", "FbxPropertyEntry", "light3AttenScale", "FbxSemanticEntry"
+		Entry: "Maya|light0Color", "FbxPropertyEntry", "light0Color", "FbxSemanticEntry"
+		Entry: "Maya|light3Type", "FbxPropertyEntry", "light3Type", "FbxSemanticEntry"
+		Entry: "Maya|light4AttenScale", "FbxPropertyEntry", "light4AttenScale", "FbxSemanticEntry"
+		Entry: "Maya|light3Color", "FbxPropertyEntry", "light3Color", "FbxSemanticEntry"
+	}
+	Container: 2450701602592, "Container::BExport_StateExport", "Container" {
+		Version: 100
+	}
+	Container: 2450701599888, "Container::BExport_StateExport1", "Container" {
+		Version: 100
+	}
+}
+
+; Object connections
+;------------------------------------------------------------------
+
+Connections:  {
+	
+	;Model::shl_csrPointer_geo, Model::RootNode
+	C: "OO",2450707864912,0
+	
+	;AnimLayer::BaseLayer, AnimStack::Take 001
+	C: "OO",2450453935088,2450701596144
+	
+	;Texture::pasted__file591, Material::pasted__dx11Shader80
+	C: "OP",2486581320752,2486538784848, "Maya|txAlbedo"
+	
+	;Texture::pasted__file592, Material::pasted__dx11Shader80
+	C: "OP",2486581321232,2486538784848, "Maya|txAlpha"
+	
+	;Material::pasted__dx11Shader80, Implementation::pasted__dx11Shader80_Implementation
+	C: "OO",2486538784848,2450526545136
+	
+	;BindingTable::root 16, Implementation::pasted__dx11Shader80_Implementation
+	C: "OO",2450526226096,2450526545136
+	
+	;Video::root 16, BindingTable::root 16
+	C: "OP",2486351210848,2450526226096, "DescAbsoluteURL"
+	
+	;Video::pasted__file591, Texture::pasted__file591
+	C: "OO",2486351181648,2486581320752
+	
+	;Video::pasted__file592, Texture::pasted__file592
+	C: "OO",2486351206448,2486581321232
+	
+	;Geometry::, Model::shl_csrPointer_geo
+	C: "OO",2450701965840,2450707864912
+	
+	;Material::pasted__dx11Shader80, Model::shl_csrPointer_geo
+	C: "OO",2486538784848,2450707864912
+}

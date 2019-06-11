@@ -3,7 +3,7 @@
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the the required assemblies (i.e. the ones below).
+// Unity doesn't include the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
 using Microsoft.MixedReality.Toolkit.UI;
@@ -26,11 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator Test01_ManipulationHandlerInstantiate()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
-            TestUtilities.InitializePlayspace();
-
-            RenderSettings.skybox = null;
-
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
 
@@ -44,6 +39,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        [SetUp]
+        public void SetupMrtk()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+            TestUtilities.InitializePlayspace();
+        }
+
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
         /// <summary>
         /// Test creating ManipulationHandler and receiving hover enter/exit events
         /// from gaze provider.
@@ -52,8 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator Test02_ManipulationHandlerGazeHover()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
-            TestUtilities.InitializePlayspace();
 
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
@@ -65,19 +71,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.OnHoverEntered.AddListener((eventData) => hoverEnterCount++);
             manipHandler.OnHoverExited.AddListener((eventData) => hoverExitCount++);
 
+            yield return new WaitForFixedUpdate();
             yield return null;
+
             Assert.AreEqual(1, hoverEnterCount, $"ManipulationHandler did not receive hover enter event, count is {hoverEnterCount}");
 
             testObject.transform.Translate(Vector3.up);
+
+            // First yield for physics. Second for normal frame step.
+            // Without first one, second might happen before translation is applied.
+            // Without second one services will not be stepped.
+            yield return new WaitForFixedUpdate();
             yield return null;
+
             Assert.AreEqual(1, hoverExitCount, "ManipulationHandler did not receive hover exit event");
 
             testObject.transform.Translate(5 * Vector3.up);
+
+            yield return new WaitForFixedUpdate();
             yield return null;
-            Assert.IsTrue(hoverExitCount == 1, "ManipulationHandler did not receive hover exit event");
+
+            Assert.IsTrue(hoverExitCount == 1, "ManipulationHandler received the second hover event");
 
             GameObject.Destroy(testObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
+
+            // Wait for a frame to give Unity a chance to actually destroy the object
             yield return null;
         }
 

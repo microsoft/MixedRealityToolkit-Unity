@@ -16,12 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
-    public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider
+    public class FocusProvider : BaseCoreSystem, IMixedRealityFocusProvider
     {
         public FocusProvider(
             IMixedRealityServiceRegistrar registrar,
-            IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile profile) : base(registrar, inputSystem, null, DefaultPriority, profile)
+            MixedRealityInputSystemProfile profile) : base(registrar, profile)
         { }
 
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
@@ -75,9 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
 
-                if ((Service != null) &&
-                    (profile != null) &&
-                    profile.PointerProfile != null)
+                if (profile != null && profile.PointerProfile != null)
                 {
                     return profile.PointerProfile.PointingExtent;
                 }
@@ -97,9 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
 
-                    if ((Service != null) &&
-                        (profile != null) &&
-                        profile.PointerProfile != null)
+                    if (profile != null && profile.PointerProfile != null)
                     {
                         return focusLayerMasks = profile.PointerProfile.PointingRaycastLayerMasks;
                     }
@@ -127,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (Service == null)
+                if (InputSystem == null)
                 {
                     Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
                     return false;
@@ -582,11 +577,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 UnityEngine.Object.Destroy(uiRaycastCameraTargetTexture);
             }
+            uiRaycastCameraTargetTexture = null;
 
             if (uiRaycastCamera != null)
             {
                 UnityEngine.Object.Destroy(uiRaycastCamera.gameObject);
             }
+            uiRaycastCamera = null;
         }
 
         /// <inheritdoc />
@@ -615,9 +612,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             IMixedRealityPointerMediator mediator = null;
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
+            if (InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
             {
-                mediator = Activator.CreateInstance(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
+                mediator = Activator.CreateInstance(InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
             }
 
             if (mediator != null)
@@ -857,6 +854,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
             NumFarPointersActive = 0;
             NumNearPointersActive = 0;
+            int numFarPointersWithoutCursorActive = 0;
 
             foreach (var pointerData in pointers)
             {
@@ -867,7 +865,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         NumNearPointersActive++;
                     }
                 }
-                else if (pointerData.Pointer.BaseCursor != null
+                else if (
+                    // pointerData.Pointer.BaseCursor == null means this is a GGV Pointer
+                    pointerData.Pointer.BaseCursor != null
                     && !(pointerData.Pointer == gazePointer)
                     && pointerData.Pointer.IsInteractionEnabled)
                 {
@@ -875,10 +875,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // hand input or the gamepad, we want to show the cursor still.
                     NumFarPointersActive++;
                 }
+                else if (pointerData.Pointer.BaseCursor == null
+                    && pointerData.Pointer.IsInteractionEnabled)
+                {
+                    numFarPointersWithoutCursorActive++;
+                }
             }
             if (gazePointer != null)
             {
-                gazePointerStateMachine.UpdateState(NumNearPointersActive, NumFarPointersActive);
+                gazePointerStateMachine.UpdateState(
+                    NumNearPointersActive,
+                    NumFarPointersActive,
+                    numFarPointersWithoutCursorActive,
+                    InputSystem.EyeGazeProvider.IsEyeGazeValid);
 
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
                 gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;
@@ -1192,7 +1201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
                     // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.SourceId == ((IMixedRealityInputSystem)Service).GazeProvider?.GazeInputSource.SourceId)
+                    if (eventData.InputSource.SourceId == InputSystem.GazeProvider?.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;

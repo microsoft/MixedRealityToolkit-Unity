@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -23,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public ScaleOffsetColorTheme()
         {
-            Types = new Type[] { typeof(Transform), typeof(TextMesh), typeof(TextMesh), typeof(Renderer) };
+            Types = new Type[] { typeof(Transform), typeof(TextMesh), typeof(TextMesh), typeof(TextMeshPro), typeof(TextMeshProUGUI), typeof(Renderer) };
             Name = "Default: Scale, Offset, Color";
             ThemeProperties = new List<InteractableThemeProperty>();
             ThemeProperties.Add(

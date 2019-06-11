@@ -22,17 +22,16 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 |---|---|---|
 | `mrtk_development` |[![CI Status](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_apis/build/status/public/mrtk_CI?branchName=mrtk_development)](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/latest?definitionId=15)|[![Docs Status](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_apis/build/status/public/mrtk_docs)](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/latest?definitionId=7)
 
- # Required Software
- | [![Windows SDK 18362+](Documentation/Images/MRTK170802_Short_17.png)](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk) [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk)| [![Unity](Documentation/Images/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 2018.3.x](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2017](Documentation/Images/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2017](http://dev.windows.com/downloads)| [![Simulator (optional)](Documentation/Images/MRTK170802_Short_20.png)](https://go.microsoft.com/fwlink/?linkid=852626) [Simulator (optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
+# Required Software
+
+ | [![Windows SDK 18362+](Documentation/Images/MRTK170802_Short_17.png)](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk) [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk)| [![Unity](Documentation/Images/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 2018.4.x](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2017](Documentation/Images/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2017](http://dev.windows.com/downloads)| [![Simulator (optional)](Documentation/Images/MRTK170802_Short_20.png)](https://go.microsoft.com/fwlink/?linkid=852626) [Simulator (optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
 | :--- | :--- | :--- | :--- |
-| To develop apps for Windows Mixed Reality headsets, you need the Windows 10 Fall Creators Update | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
+| To build apps with MRTK v2, you need the Windows 10 May 2019 Update SDK. <br> To run apps for Windows Mixed Reality immersive headsets, you need the Windows 10 Fall Creators Update. | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
 # Feature Areas
 | ![](Documentation/Images/MRTK_Icon_InputSystem.png) Input System<br/>&nbsp;  | ![](Documentation/Images/MRTK_Icon_HandTracking.png) Hand Tracking (HoloLens 2) | ![](Documentation/Images/MRTK_Icon_EyeTracking.png) Eye Tracking (HoloLens 2) | ![](Documentation/Images/MRTK_Icon_VoiceCommand.png) Voice Commanding | ![](Documentation/Images/MRTK_Icon_GazeSelect.png) Gaze + Select (HoloLens) | ![](Documentation/Images/MRTK_Icon_Teleportation.png) Teleportation<br/>&nbsp; |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | ![](Documentation/Images/MRTK_Icon_UIControls.png) UI Controls<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_Solver.png) Solver and Interactions | ![](Documentation/Images/MRTK_Icon_ControllerVisualization.png) Controller Visualization | ![](Documentation/Images/MRTK_Icon_SpatialUnderstanding.png) Spatial Understanding | ![](Documentation/Images/MRTK_Icon_Diagnostics.png) Diagnostic Tool<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_StandardShader.png) MRTK Standard Shader |
-
-
 
 # Getting Started with MRTK 
 Please check out the [Getting Started Guide](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)

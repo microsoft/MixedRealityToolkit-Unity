@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected virtual void OnEnable()
         {
-            if (MixedRealityToolkit.IsInitialized && InputSystem != null && !lateInitialize)
+            if (InputSystem != null && !lateInitialize)
             {
                 InputSystem.Register(gameObject);
             }

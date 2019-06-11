@@ -25,17 +25,15 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// </summary>
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
         /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
-        /// <param name="inputSystemProfile">The input system configuration profile.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsDictationInputProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile inputSystemProfile,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <inheritdoc />
         public bool IsListening { get; private set; } = false;
@@ -237,8 +235,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
             catch (System.Exception ex)
             {
-                Debug.LogError($"Failed to start dictation recognizer. Are microphone permissions granted? Exception: {ex}");
+                Debug.LogWarning($"Failed to start dictation recognizer. Are microphone permissions granted? Exception: {ex}");
                 Disable();
+                dictationRecognizer = null;
             }
         }
 
@@ -247,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-            if (!Application.isPlaying || inputSystem == null) { return; }
+            if (!Application.isPlaying || inputSystem == null || dictationRecognizer == null) { return; }
 
             if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
@@ -290,8 +289,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.InternetClient, false);
             }
 #endif // UNITY_EDITOR
+        }
 
-            if (Application.isPlaying)
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
             {
                 dictationRecognizer?.Dispose();
             }

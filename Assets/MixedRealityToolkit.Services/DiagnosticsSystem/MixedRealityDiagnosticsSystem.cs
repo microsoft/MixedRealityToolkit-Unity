@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private void CreateVisualizations()
         {
             diagnosticVisualizationParent = new GameObject("Diagnostics");
+            diagnosticVisualizationParent.AddComponent<DiagnosticsSystemVoiceControls>();
             MixedRealityPlayspace.AddChild(diagnosticVisualizationParent.transform);
             diagnosticVisualizationParent.SetActive(ShowDiagnostics);
 
@@ -35,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             visualProfiler = diagnosticVisualizationParent.AddComponent<MixedRealityToolkitVisualProfiler>();
             visualProfiler.WindowParent = diagnosticVisualizationParent.transform;
             visualProfiler.IsVisible = ShowProfiler;
+            visualProfiler.FrameInfoVisible = ShowFrameInfo;
+            visualProfiler.MemoryStatsVisible = ShowMemoryStats;
             visualProfiler.FrameSampleRate = FrameSampleRate;
             visualProfiler.WindowAnchor = WindowAnchor;
             visualProfiler.WindowOffset = WindowOffset;
@@ -59,6 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             // Apply profile settings
             ShowDiagnostics = profile.ShowDiagnostics;
             ShowProfiler = profile.ShowProfiler;
+            ShowFrameInfo = profile.ShowFrameInfo;
+            ShowMemoryStats = profile.ShowMemoryStats;
             FrameSampleRate = profile.FrameSampleRate;
             WindowAnchor = profile.WindowAnchor;
             WindowOffset = profile.WindowOffset;
@@ -91,6 +96,21 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         #region IMixedRealityDiagnosticsSystem
 
+        private MixedRealityDiagnosticsProfile diagnosticsSystemProfile = null;
+
+        /// <inheritdoc/>
+        public MixedRealityDiagnosticsProfile DiagnosticsSystemProfile
+        {
+            get
+            {
+                if (diagnosticsSystemProfile == null)
+                {
+                    diagnosticsSystemProfile = ConfigurationProfile as MixedRealityDiagnosticsProfile;
+                }
+                return diagnosticsSystemProfile;
+            }
+        }
+
         private bool showDiagnostics;
 
         /// <inheritdoc />
@@ -104,9 +124,11 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 {
                     showDiagnostics = value;
 
-                    if (diagnosticVisualizationParent != null)
+                    // The voice commands are handled by the diagnosticVisualizationParent GameObject, we cannot disable the parent 
+                    // or we lose the ability to re-show the visualizations. Instead, disable each visualization as appropriate.
+                    if (ShowProfiler)
                     {
-                        diagnosticVisualizationParent.SetActive(value);
+                        visualProfiler.IsVisible = value;
                     }
                 }
             }
@@ -127,9 +149,55 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 if (value != showProfiler)
                 {
                     showProfiler = value;
-                    if (visualProfiler != null)
+                    if ((visualProfiler != null) && ShowDiagnostics)
                     {
                         visualProfiler.IsVisible = value;
+                    }
+                }
+            }
+        }
+
+        private bool showFrameInfo;
+
+        /// <inheritdoc />
+        public bool ShowFrameInfo
+        {
+            get
+            {
+                return showFrameInfo;
+            }
+
+            set
+            {
+                if (value != showFrameInfo)
+                {
+                    showFrameInfo = value;
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.FrameInfoVisible = value;
+                    }
+                }
+            }
+        }
+
+        private bool showMemoryStats;
+
+        /// <inheritdoc />
+        public bool ShowMemoryStats
+        {
+            get
+            {
+                return showMemoryStats;
+            }
+
+            set
+            {
+                if (value != showMemoryStats)
+                {
+                    showMemoryStats = value;
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.MemoryStatsVisible = value;
                     }
                 }
             }

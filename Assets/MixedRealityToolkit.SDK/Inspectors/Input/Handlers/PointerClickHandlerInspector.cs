@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
@@ -26,13 +27,35 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             base.OnInspectorGUI();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
+            bool enabled = CheckMixedRealityToolkit();
+            if (enabled)
+            {
+                if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+                {
+                    EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Warning);
+                }
+
+                if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null 
+                    || MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
+                {
+                    EditorGUILayout.HelpBox("No Input System or Input Actions Profile Found, be sure to specify a profile in the Input System's configuration profile.", MessageType.Error);
+                    enabled = false;
+                }
+            }
 
             serializedObject.Update();
+
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = enabled;
+
             EditorGUILayout.PropertyField(pointerUpProperty, true);
             EditorGUILayout.PropertyField(pointerDownProperty, true);
             EditorGUILayout.PropertyField(pointerClickedProperty, true);
+
+            GUI.enabled = wasGUIEnabled;
+
             serializedObject.ApplyModifiedProperties();
+
         }
     }
 }

@@ -1,15 +1,17 @@
 # MRTK Standard Shader
-![](../Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg)
+
+![Standard shader examples](../Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg)
 
 MRTK Standard shading system utilizes a single, flexible shader that can achieve visuals similar to Unity's Standard Shader, implement [Fluent Design System](https://www.microsoft.com/design/fluent/) principles, and remain performant on mixed reality devices.
 
 ## Example Scenes
+
 You can find the shader material examples in the **MaterialGallery** scene under:
-[MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes) All materials in this scene are using the MRTK/Standard shader.
+[MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes) All materials in this scene are using the MRTK/Standard shader.
 
 ![materialgallery](../Documentation/Images/MRTKStandardShader/MRTK_MaterialGallery.jpg)
 
-You can find a comparison scene to compare and test the MRTK/Standard shader against the Unity/Standard shader example in the **StandardMaterialComparison** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
+You can find a comparison scene to compare and test the MRTK/Standard shader against the Unity/Standard shader example in the **StandardMaterialComparison** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
 
 ![comparison](../Documentation/Images/MRTKStandardShader/MRTK_StandardMaterialComparison.gif)
 
@@ -17,7 +19,7 @@ You can find a comparison scene to compare and test the MRTK/Standard shader aga
 
 The MRTK/Standard shading system is an "uber shader" that uses [Unity's shader program variant feature](https://docs.unity3d.com/Manual/SL-MultipleProgramVariants.html) to auto-generate optimal shader code based on material properties. When a user selects material properties in the material inspector they only incur performance cost for features they have enabled.
 
-A custom material inspector exists for the MRTK/Standard shader called **MixedRealityStandardShaderGUI.cs** under: [MixedRealityToolkit/Inspectors/](MixedRealityToolkit/Inspectors/) The inspector automatically enables/disables shader features based on user selection and aides in setting up render state. For more information about each feature please hover over each property in the Unity Editor for a tooltip.
+A custom material inspector exists for the MRTK/Standard shader called **MixedRealityStandardShaderGUI.cs**. The inspector automatically enables/disables shader features based on user selection and aides in setting up render state. For more information about each feature please hover over each property in the Unity Editor for a tooltip.
 
 ![materialinspector](../Documentation/Images/MRTKStandardShader/MRTK_MaterialInspector.jpg)
 
@@ -26,21 +28,24 @@ A custom material inspector exists for the MRTK/Standard shader called **MixedRe
 The MRTK/Standard uses a simple approximation for lighting. Because this shader does not calculate for physical correctness and energy conservation, it renders quickly and efficient. Blinn-Phong is the primary lighting technique which is blended with Fresnel and image based lighting to approximate physically based lighting. The shader supports the following lighting techniques:
 
 ### Directional Light
+
 The shader will respect the direction, color, and intensity of the first Unity Directional Light in the scene (if enabled). Dynamic point lights, spot lights, or any other Unity light will not be considered in real time lighting.
 
 ### Spherical Harmonics
+
 The shader will use Light Probes to approximate lights in the scene using [Spherical Harmonics](https://docs.unity3d.com/Manual/LightProbes-TechnicalInformation.html) if enabled. Spherical harmonics calculations are performed per vertex to reduce calculation cost.
 
 ### Lightmapping
+
 For static lighting the shader will respect lightmaps built by Unity's [Lightmapping system](https://docs.unity3d.com/Manual/Lightmapping.html) simply mark the renderer as static (or lightmap static) to use lightmaps.
 
 ### Hover Light
 
-A Hover Light is a Fluent Design System paradigm that mimics a "point light" hovering near the surface of an object. Often used for far away cursor lighting the application can control the properties of a Hover Light via the **HoverLight.cs** behavior under: [MixedRealityToolkit/Utilities/](MixedRealityToolkit/Utilities/) Up to 3 Hover Lights are supported at a time.
+A Hover Light is a Fluent Design System paradigm that mimics a "point light" hovering near the surface of an object. Often used for far away cursor lighting the application can control the properties of a Hover Light via the [**HoverLight.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.HoverLight). Up to 3 Hover Lights are supported at a time.
 
 ### Proximity Light
 
-A Proximity Light is a Fluent Design System paradigm that mimics a "gradient inverse point light" hovering near the surface of an object. Often used for near cursor lighting the application can control the properties of a Proximity Light via the **ProximityLight.cs** behavior under: [MixedRealityToolkit/Utilities/](MixedRealityToolkit/Utilities/) Up to 2 Proximity Lights are supported at a time.
+A Proximity Light is a Fluent Design System paradigm that mimics a "gradient inverse point light" hovering near the surface of an object. Often used for near cursor lighting the application can control the properties of a Proximity Light via the [**ProximityLight.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight). Up to 2 Proximity Lights are supported at a time.
 
 ## Lightweight Scriptable Render Pipeline Support
 
@@ -50,7 +55,7 @@ To perform the MRTK upgrade select: **Mixed Reality Toolkit -> Utilities -> Upgr
 
 ![lwrpupgrade](../Documentation/Images/MRTKStandardShader/MRTK_LWRPUpgrade.jpg)
 
-After the upgrade occurs the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occured please check the console for: **Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Lightweight Render Pipeline.**
+After the upgrade occurs the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occurred please check the console for: **Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Lightweight Render Pipeline.**
 
 ## Texture Combiner
 
@@ -80,7 +85,7 @@ Performant plane, sphere, and box shape clipping with the ability to specify whi
 
 ![primitiveclipping](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif)
 
-**ClippingPlane.cs**, **ClippingSphere.cs**, and **ClippingBox.cs** behaviors under: [MixedRealityToolkit/Utilities/](MixedRealityToolkit/Utilities/) can be used to easily control clipping primitive properties.
+[**ClippingPlane.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane), [**ClippingSphere.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere), and [**ClippingBox.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingBox) can be used to easily control clipping primitive properties.
 
 ![primitiveclippinggizmos](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClippingGizmos.gif)
 

@@ -28,6 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Last,
         }
 
+        /// <summary>
+        /// Creates a new scene with sceneName and saves to path.
+        /// </summary>
+        /// <param name="sceneName"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static SceneInfo CreateAndSaveScene(string sceneName, string path = null)
         {
             SceneInfo sceneInfo = default(SceneInfo);
@@ -218,6 +224,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
+        /// Finds the scene if loaded.
+        /// </summary>
+        /// <param name="sceneInfo"></param>
+        /// <param name="editorScene"></param>
+        /// <returns>True if scene is loaded</returns>
+        public static bool GetSceneIfLoaded(SceneInfo sceneInfo, out Scene editorScene)
+        {
+            editorScene = default(Scene);
+            editorScene = EditorSceneManager.GetSceneByName(sceneInfo.Name);
+            return editorScene.IsValid() && editorScene.isLoaded;
+        }
+
+        /// <summary>
         /// Returns all root GameObjects in all open scenes.
         /// </summary>
         /// <returns></returns>
@@ -242,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         /// <param name="sceneInfo"></param>
         /// <returns></returns>
-        public static bool UnloadScene(SceneInfo sceneInfo)
+        public static bool UnloadScene(SceneInfo sceneInfo, bool removeFromHeirarchy)
         {
             Scene editorScene = default(Scene);
 
@@ -251,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 editorScene = EditorSceneManager.GetSceneByName(sceneInfo.Name);
                 if (editorScene.isLoaded)
                 {
-                    EditorSceneManager.CloseScene(editorScene, false);
+                    EditorSceneManager.CloseScene(editorScene, removeFromHeirarchy);
                 }
             }
             catch (InvalidOperationException)
@@ -333,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             // Set the active scene to the lighting scene
             SetActiveScene(lightingScene);
             // If we can't get the source settings for some reason, abort
-            if (!GetLightmapAndRenderSettings(out sourceLightmapSettings, out sourceRenderSettings))
+            if (!GetLightingAndRenderSettings(out sourceLightmapSettings, out sourceRenderSettings))
             {
                 return;
             }
@@ -346,10 +365,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 SerializedObject targetLightmapSettings;
                 SerializedObject targetRenderSettings;
 
-                if (GetLightmapAndRenderSettings(out targetLightmapSettings, out targetRenderSettings))
+                if (GetLightingAndRenderSettings(out targetLightmapSettings, out targetRenderSettings))
                 {
-                    madeChanges |= SerializedObjectUtils.CopySerializedObject(sourceLightmapSettings, targetLightmapSettings);
-                    madeChanges |= SerializedObjectUtils.CopySerializedObject(sourceRenderSettings, targetRenderSettings);
+                    string[] propsToIgnore = new string[] { "m_IndirectSpecularColor" };
+
+                    madeChanges |= SerializedObjectUtils.CopySerializedObject(sourceLightmapSettings, targetLightmapSettings, propsToIgnore);
+                    madeChanges |= SerializedObjectUtils.CopySerializedObject(sourceRenderSettings, targetRenderSettings, propsToIgnore);
                 }
             }
 
@@ -361,12 +382,67 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
+        /// Goes through a scene's objects and checks for components that aren't found in permittedComponentTypes
+        /// If any are found, they're added to the violations list.
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="permittedComponentTypes"></param>
+        /// <param name="destroyIfFound"></param>
+        public static bool EnforceSceneComponents(Scene scene, IEnumerable<Type> permittedComponentTypes, List<Component> violations)
+        {
+            if (!scene.IsValid() || !scene.isLoaded)
+            {
+                return false;
+            }
+
+            int typesEvaluated = 0;
+            bool foundAtLeastOneViolation = false;
+
+            try
+            {
+                foreach (GameObject rootGameObject in scene.GetRootGameObjects())
+                {
+                    foreach (Component component in rootGameObject.GetComponentsInChildren<Component>())
+                    {
+                        bool componentIsPermitted = false;
+                        foreach (Type type in permittedComponentTypes)
+                        {
+                            if (type.IsAssignableFrom(component.GetType()))
+                            {
+                                componentIsPermitted = true;
+                                break;
+                            }
+                            typesEvaluated++;
+                        }
+
+                        if (!componentIsPermitted)
+                        {
+                            foundAtLeastOneViolation = true;
+                            violations.Add(component);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // This can go wrong if GetRootSceneObjects fails.
+            }
+
+            if (typesEvaluated == 0)
+            {
+                Debug.LogError("Permitted component types must include at least one type.");
+            }
+
+            return foundAtLeastOneViolation;
+        }
+
+        /// <summary>
         /// Gets serialized objects for lightmap and render settings from active scene.
         /// </summary>
         /// <param name="lightmapSettings"></param>
         /// <param name="renderSettings"></param>
         /// <returns></returns>
-        public static bool GetLightmapAndRenderSettings(out SerializedObject lightmapSettings, out SerializedObject renderSettings)
+        public static bool GetLightingAndRenderSettings(out SerializedObject lightmapSettings, out SerializedObject renderSettings)
         {
             lightmapSettings = null;
             renderSettings = null;

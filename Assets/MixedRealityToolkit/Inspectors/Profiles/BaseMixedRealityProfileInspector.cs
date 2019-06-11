@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -49,23 +47,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (property.objectReferenceValue != null)
             {
-                UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
+                bool showReadOnlyProfile = SessionState.GetBool(property.name + ".ReadOnlyProfile", false);
 
-                // If this is a default MRTK configuration profile, ask it to render as a sub-profile
-                if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
+                EditorGUI.indentLevel++;
+                RenderFoldout(ref showReadOnlyProfile, property.displayName, () =>
                 {
-                    BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
-                    configProfile.RenderAsSubProfile = true;
-                }
-
-                EditorGUILayout.BeginHorizontal();
-                    EditorGUI.indentLevel++;
-                    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                    using (new EditorGUI.IndentLevelScope())
+                    {
+                        UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
+                        // If this is a default MRTK configuration profile, ask it to render as a sub-profile
+                        if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
+                        {
+                            BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
+                            configProfile.RenderAsSubProfile = true;
+                        }
                         subProfileEditor.OnInspectorGUI();
-                        EditorGUILayout.Space();
-                    EditorGUILayout.EndVertical();
-                    EditorGUI.indentLevel--;
-                EditorGUILayout.EndHorizontal();
+                    }
+                });
+                EditorGUI.indentLevel--;
+
+                SessionState.SetBool(property.name + ".ReadOnlyProfile", showReadOnlyProfile);
             }
         }
 
@@ -77,9 +78,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="renderProfileInBox">if true, render box around profile content, if false, don't</param>
         /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
-        protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, bool renderProfileInBox = false, Type serviceType = null)
+        protected static bool RenderProfile(SerializedProperty property, Type profileType, bool showAddButton = true, bool renderProfileInBox = false, Type serviceType = null)
         {
-            return RenderProfileInternal(property, showAddButton, renderProfileInBox, serviceType);
+            return RenderProfileInternal(property, profileType, showAddButton, renderProfileInBox, serviceType);
         }
 
         /// <summary>
@@ -90,11 +91,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="renderProfileInBox">if true, render box around profile content, if false, don't</param>
         /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
-        private static bool RenderProfileInternal(SerializedProperty property, bool showAddButton, bool renderProfileInBox, Type serviceType = null)
+        private static bool RenderProfileInternal(SerializedProperty property, Type profileType,
+            bool showAddButton, bool renderProfileInBox, Type serviceType = null)
         {
             var profile = property.serializedObject.targetObject as BaseMixedRealityProfile;
             bool changed = false;
             var oldObject = property.objectReferenceValue;
+
+            if (profileType != null && !profileType.IsSubclassOf(typeof(BaseMixedRealityProfile)) && profileType != typeof(BaseMixedRealityProfile))
+            {  
+                // If they've drag-and-dropped a non-profile scriptable object, set it to null.
+                profileType = null;
+            }
 
             // If we're constraining this to a service type, check whether the profile is valid
             // If it isn't, issue a warning.
@@ -107,7 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // Find the profile type so we can limit the available object field options
-            Type profileType = null;
             if (serviceType != null)
             {
                 // If GetProfileTypesForService has a count greater than one, then it won't be possible to use

@@ -92,10 +92,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            MixedRealityHandTrackingProfile handTrackingProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile;
+            MixedRealityHandTrackingProfile handTrackingProfile = InputSystem?.InputSystemProfile.HandTrackingProfile;
             if (handTrackingProfile != null && !handTrackingProfile.EnableHandJointVisualization)
             {
-                // clear existing joint gameobjects / meshes
+                // clear existing joint GameObjects / meshes
                 foreach (var joint in joints)
                 {
                     Destroy(joint.Value.gameObject);
@@ -115,14 +115,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    GameObject prefab = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile.JointPrefab;
-                    if (handJoint == TrackedHandJoint.Palm)
+                    GameObject prefab;
+                    if (handJoint == TrackedHandJoint.None)
                     {
-                        prefab = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile.PalmJointPrefab;
+                        // No visible mesh for the "None" joint
+                        prefab = null;
+                    }
+                    else if (handJoint == TrackedHandJoint.Palm)
+                    {
+                        prefab = InputSystem.InputSystemProfile.HandTrackingProfile.PalmJointPrefab;
                     }
                     else if (handJoint == TrackedHandJoint.IndexTip)
                     {
-                        prefab = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile.FingerTipPrefab;
+                        prefab = InputSystem.InputSystemProfile.HandTrackingProfile.FingerTipPrefab;
+                    }
+                    else
+                    {
+                        prefab = InputSystem.InputSystemProfile.HandTrackingProfile.JointPrefab;
                     }
 
                     GameObject jointObject;
@@ -153,12 +162,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             if (handMeshFilter == null &&
-                MixedRealityToolkit.Instance.HasActiveProfile &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile.HandMeshPrefab != null)
+                InputSystem?.InputSystemProfile?.HandTrackingProfile?.HandMeshPrefab != null)
             {
-                handMeshFilter = Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile.HandMeshPrefab).GetComponent<MeshFilter>();
+                handMeshFilter = Instantiate(InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab).GetComponent<MeshFilter>();
             }
 
             if (handMeshFilter != null)
