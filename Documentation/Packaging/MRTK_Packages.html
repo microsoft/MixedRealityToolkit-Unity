@@ -82,14 +82,13 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="mixed-reality-toolkit-packages">Mixed Reality Toolkit Packages</h1>
 
-<p>The Mixed Reality Toolkit (MRTK) is a collection of packages that enable cross platform Mixed Reality application development by providing support for Mixed Reality hardware and platforms in a componentized manner.</p>
-<p>There are three categories of MRTK packages:</p>
+<p>The Mixed Reality Toolkit (MRTK) is a collection of packages that enable cross platform Mixed Reality application development by providing support for Mixed Reality hardware and platforms.</p>
+<p>The MRTK currently has two packages:</p>
 <ul>
-<li><a href="#foundation-packages">Foundation</a></li>
-<li><a href="#extension-packages">Extension</a></li>
-<li><a href="#experimental-packages">Experimental</a></li>
+<li><a href="#foundation-package">Foundation</a></li>
+<li><a href="#examples-package">Examples</a></li>
 </ul>
-<h2 id="foundation-packages">Foundation Packages</h2>
+<h2 id="foundation-package">Foundation Package</h2>
 <p>The Mixed Reality Toolkit Foundation is the set of packages that enable your application to leverage common functionality across Mixed Reality Platforms. These packages are released and supported by Microsoft from source code in the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release">mrtk_release</a> branch on GitHub.</p>
 <p><img src="../Images/Packaging/MRTKFoundation.png" alt="MRTK Foundation Packages"></p>
 <p>The MRTK Foundation is comprised of:</p>
@@ -170,20 +169,14 @@
 <li>Standard Assets</li>
 <li>more</li>
 </ul>
-<h2 id="extension-packages">Extension Packages</h2>
-<p>MRTK Extension packages are a collection of packages written by Microsoft and the Community that extend and enhance the functionality of the Mixed Reality Toolkit. Extension authors will state any required dependencies, mark the package as compatible with the Mixed Reality Toolkit and provide licensing and support statements.</p>
-<p>Extension packages may provide new features and new platform support. Over time, extensions may, with the assistance and approval of the authors, be migrated into the MRTK Foundation at which time they will be released and supported by Microsoft.</p>
-<p><img src="../Images/Packaging/MRTKExtensions.png" alt="MRTK Extension Package"></p>
-<h2 id="experimental-packages">Experimental Packages</h2>
-<p>Experimental packages provide the ability to flight prototype features, pre-releases and exciting new ideas. The goal of most experimental packages is to try something new and to gauge customer interest. Many, though not all, experimental packages will be re-released as extensions once the prototyping and testing phase completes.</p>
-<p><img src="../Images/Packaging/MRTKExperimental.png" alt="MRTK Experimental Packages"></p>
-<h2 id="conclusion">Conclusion</h2>
-<p>The Mixed Reality Toolkit packages and package management system are designed to enable a clean and simple method for you to additively build features into your experiences without requiring unnecessary components to be included into the project.</p>
-<h2 id="see-also">See also</h2>
-<ul>
-<li><a href="../DownloadingTheMRTK.html">Downloading MRTK</a></li>
-<li><a href="../GettingStartedWithTheMRTK.html">Getting Started</a></li>
-</ul>
+<h2 id="examples-package">Examples Package</h2>
+<p>The examples package contains demos, sample scripts, and sample scenes that exercise functionality in the foundation package.</p>
+<p>For example, this package contains the HandInteractionExample scene (pictured below) which contains sample objects
+that respond to various types of hand input (articulated and non-articulated).</p>
+<p><img src="../Images/MRTK_Examples.png" alt="HandInteractionExample scene"></p>
+<p>This package also contains eye tracking demos, which are <a href="../EyeTracking/EyeTracking_ExamplesOverview.html">documented here</a></p>
+<p>More generally, any new feature in the MRTK should contain a corresponding example in the examples package, roughly following
+the same folder structure and location.</p>
 </article>
           </div>
           

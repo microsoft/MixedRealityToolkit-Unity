@@ -84,35 +84,6 @@
 
 <p>One of the great new features of Mixed Reality Toolkit v2 is improved componentization. Wherever possible,
 individual components are isolated from all but the core layer of the foundation.</p>
-<p>The following sections describe the status of the componentization work for each major milestone:</p>
-<ul>
-<li><a href="#release-candidate-1-status">Release Candidate 1</a></li>
-<li><a href="#release-candidate-2-plan">Release Candidate 2</a></li>
-<li><a href="#official-release-plan">Official Release</a></li>
-</ul>
-<h2 id="release-candidate-1-status">Release Candidate 1 Status</h2>
-<p>With the RC1 release of MRTK v2, the majority of the componentization work has been completed.</p>
-<ul>
-<li><a href="#minimized-dependencies">Minimized dependencies</a> between features</li>
-<li><a href="#component-communication">Component communication</a> is performed through interfaces</li>
-</ul>
-<p>Scenarios that are not yet fully supported include:</p>
-<ul>
-<li><p>Built-in package discovery and importing</p>
-<blockquote>
-<p>Release Candidate 2 is planned to include support for discovering and importing MRTK foundational
-packages and extensions via NuGet.</p>
-</blockquote>
-</li>
-<li><p>Application architecture flexibility</p>
-<blockquote>
-<p>Release Candidate 1 contains partial support for utilizing MRTK system services in isolation. It is
-expected that full support will be available in RC2.</p>
-</blockquote>
-</li>
-</ul>
-<p>Developers who desire to reduce the MRTK footprint in their applications, guidance for <a href="#manual-componentization">manual componentization</a>
-is provided.</p>
 <h3 id="minimized-dependencies">Minimized Dependencies</h3>
 <p>MRTK v2 was intentionally developed to be modular and to minimize dependencies between system services
 (ex: spatial awareness).</p>
@@ -126,28 +97,15 @@ between them. The same is true for SDK features (ex: User Interface components).
 services, data providers and application code. These interfaces are defined in and all communication is routed
 through the Mixed Reality Toolkit core component.</p>
 <p><img src="../Images/Packaging/AccessingViaInterfaces.png" alt="Using the spatial awareness system via interfaces"></p>
-<h3 id="manual-componentization">Manual Componentization</h3>
-<p>While automatic support for importing specific MRTK components is not available in RC1, developers can manually
-opt-out of specific functionality.</p>
-<p>There are two workflows that developers can use to manually componentize MRTK v2:</p>
-<ul>
-<li><a href="#uncheck-features">Uncheck features</a> during package import</li>
-<li><a href="#delete-feature-folders">Delete feature folders</a></li>
-</ul>
-<blockquote>
-<p>If a feature is mistakenly omitted or deleted, the package can be re-imported to add the desired functionality.</p>
-</blockquote>
-<h4 id="uncheck-features">Uncheck Features</h4>
-<p>When importing the Microsoft.MixedReality.Toolkit.Unity.Foundation-v2.0.0-RC1.unity package, developers have the
-ability to limit which package contents get added to the project.</p>
-<p>For projects where the required features and/or platforms are well known, unnecessary system services, providers
-and features can be left unchecked to minimize the MRTK footprint.</p>
-<blockquote>
-<p>NOTE: MRTK v2 <strong><em>requires</em></strong> the contents of the Assets\MixedRealityToolkit folder.</p>
-</blockquote>
-<h4 id="delete-feature-folders">Delete Feature Folders</h4>
-<p>After importing the Microsoft.MixedReality.Toolkit.Unity.Foundation-v2.0.0-RC1.unity package, the MRTK footprint can
-be reduced by deleting unneeded folders from:</p>
+<h3 id="minimizing-mrtk-import-footprint">Minimizing MRTK import footprint</h3>
+<p>At this moment, the MRTK is imported as a single foundation package (ignoring for a moment the existence of
+the examples package, which is a completely optional package). It is possible to make this footprint smaller
+by manually cutting down on the files imported, though this is a highly manual process which doesn't have
+a well-defined guide.</p>
+<p>It is possible to uncheck arbitrary items during the import of the Foundation package. However, it's not
+recommended to do this at an early stage in development as it might break functionality. After having
+figured out the final feature set of an app, pruning unneeded providers and services can be done on the
+following folders:</p>
 <ul>
 <li>MixedRealityToolkit.Services</li>
 <li>MixedRealityToolkit.Providers</li>
@@ -156,29 +114,9 @@ be reduced by deleting unneeded folders from:</p>
 <blockquote>
 <p>NOTE: MRTK v2 <strong><em>requires</em></strong> the contents of the Assets\MixedRealityToolkit folder.</p>
 </blockquote>
-<h2 id="release-candidate-2-plan">Release Candidate 2 Plan</h2>
-<p>In addition to the <a href="#release-candidate-1-status">RC1</a> functionality, the RC2 release will include support for:</p>
-<ul>
-<li>Package management tools</li>
-<li>Application architecture flexibility</li>
-</ul>
-<h3 id="package-management">Package Management</h3>
-<p>MRTK v2 RC2 is planned to contain support for discovering and importing service, provider, feature and extension
-packages via NuGet.</p>
-<blockquote>
-<p>There is planned to be a Mixed Reality Toolkit menu option, in the Editor, to display user interface that allows
-for filtering based on:</p>
-</blockquote>
-<blockquote>
-<ul>
-<li>Component category (Foundation, Extension, Experimental)</li>
-<li>Company (ex: Microsoft)</li>
-<li>Feature type tags (ex: Audio)</li>
-<li>Number of downloads</li>
-</ul>
-</blockquote>
+<h2 id="upcoming-features">Upcoming features</h2>
 <h3 id="application-architecture">Application Architecture</h3>
-<p>RC2 will have support to enable applications to be built with a variety of architectures, including:</p>
+<p>The MRTK will have support to enable applications to be built with a variety of architectures, including:</p>
 <ul>
 <li><a href="#mixedrealitytoolkit-service-locator">MixedRealityToolkit service locator</a></li>
 <li><a href="#individual-service-components">Individual services</a></li>
@@ -190,7 +128,7 @@ for filtering based on:</p>
 performance. The architectures described here are not expected to be suitable for every application.</p>
 </blockquote>
 <h4 id="mixedrealitytoolkit-service-locator">MixedRealityToolkit Service Locator</h4>
-<p>RC1 enables (and automatically configures) application scenes to use the default <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> service locator
+<p>The MRTK enables (and automatically configures) application scenes to use the default <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> service locator
 component. This component includes support for configuring MRTK systems and data providers via configuration inspectors
 and manages component lifespans and core behaviors (ex: when to update).</p>
 <p>All systems are represented in the core configuration inspector, regardless of whether or not they are present or
@@ -211,25 +149,13 @@ and instance property which application code could use to directly access serivc
 <p>Some developers have requested the ability to create a custom service locator component. Custom service locators would
 implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a> interface and manage the lifecycle and core behaviors of active services.</p>
 <h4 id="hybrid-architecture">Hybrid Architecture</h4>
-<p>RC2 is planned to support a hybrid architecture in which developers can combine the previous approaches as needed or
+<p>The MRTK will support a hybrid architecture in which developers can combine the previous approaches as needed or
 desired. For example, a developer could start with the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> service locator and add a self-registering
 service.</p>
 <blockquote>
 <p>When opting for a hybrid architecture, it is important to be mindful of any duplication of work (ex: acquiring
 controller data from multiple components).</p>
 </blockquote>
-<h2 id="official-release-plan">Official Release Plan</h2>
-<p>For the official release of MRTK v2, the componentization work will be complete. The expectation is that developers will be
-empowered to:</p>
-<ol>
-<li>Import the MRTK Core foundation package</li>
-<li>Use the built-in package management tools to discover and import individual components</li>
-<li>Select the desired application architecture</li>
-</ol>
-<h2 id="see-also">See Also</h2>
-<ul>
-<li><a href="MRTK_Packages.html">MRTK Packages</a></li>
-</ul>
 </article>
           </div>
           
