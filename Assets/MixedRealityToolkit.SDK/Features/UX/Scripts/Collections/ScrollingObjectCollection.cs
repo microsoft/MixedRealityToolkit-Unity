@@ -895,7 +895,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     //Catch an intentional finger in scroller to stop momentum, this isn't a drag its definitely a stop
                     if (absAxisHandDelta > (handDeltaMagThreshold * 0.1f) || TimeTest(initialPressTime, Time.time, dragTimeThreshold))
                     {
-
                         scrollVelocity = 0.0f;
                         avgVelocity = 0.0f;
 
@@ -912,13 +911,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 finalOffset = (AxisOrientationToTransformDirection(collectionForward) * -1.0f) * thresholdOffset;
                 thresholdPoint = transform.position - finalOffset;
 
-                Debug.Log("thresholdPoint: " + thresholdPoint.ToString("F5") + ", " + finalOffset.ToString("F5"));
-
                 //Make sure we're actually (near) touched and not a pointer event, do a dot product check
                 if (isTouched && DetectScrollRelease((AxisOrientationToTransformDirection(collectionForward) * 1), thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection))
                 {
                     //We're on the other side of the original touch position. This is a release.
-
                     if (!isDragging)
                     {
                         //Its a click release
@@ -1262,7 +1258,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 case VelocityType.FalloffPerFrame:
                 default:
-                    velocityState = VelocityState.None;
 
                     if (Mathf.Abs(avgVelocity) > Mathf.Epsilon)
                     {
@@ -1300,7 +1295,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                     {
                                         avgVelocity *= velocityFalloff;
 
-                                        if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                                        if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) > 0.00001f)
                                         {
                                             //Ensure we've actually snapped the position to prevent an extreme in-between state
                                             workingScrollerPos.y = ((int)(scrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
@@ -1937,7 +1932,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-
         /// <summary>
         /// Moves scroller to an absolute position where <param name"indexOfItem"/> is in the first column of the viewable area
         /// </summary>
@@ -2313,7 +2307,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         scrollChild.OnTouchStarted(newTouchData);
                     }
                 }
-
             }
 
             focusedObject = currentPointer.Result.CurrentPointerTarget;
