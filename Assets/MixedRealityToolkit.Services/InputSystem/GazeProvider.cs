@@ -530,7 +530,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool IsEyeTrackingAvailable => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
 
         /// <summary>
-        /// Boolean to check whether the user went through the eye tracking calibration.
+        /// Boolean to check whether the user went through the eye tracking calibration. 
+        /// Initially the parameter will return null until it has received valid information from the eye tracking system.
         /// </summary>
         public bool? IsEyeCalibrationValid => isEyeCalibrated;
         #endregion Utilities
