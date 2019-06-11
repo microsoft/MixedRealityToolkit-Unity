@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
-        SupportedPlatforms.WindowsEditor,
+        SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
         "Input Simulation Service",
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]
@@ -63,6 +63,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void Initialize()
         {
             ArticulatedHandPose.LoadGesturePoses();
+        }
+
+        public override void Destroy()
+        {
+            ArticulatedHandPose.ResetGesturePoses();
         }
 
         /// <inheritdoc />
