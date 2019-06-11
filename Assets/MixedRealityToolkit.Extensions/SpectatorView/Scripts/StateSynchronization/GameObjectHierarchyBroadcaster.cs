@@ -6,6 +6,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
+    /// <summary>
+    /// Indicates to the StateSynchronizationBroadcaster that the GameObject
+    /// this is attached to and all of its descendants should be broadcast
+    /// to connected StateSynchronizationObservers.
+    /// </summary>
     public class GameObjectHierarchyBroadcaster : MonoBehaviour
     {
         private TransformBroadcaster TransformBroadcaster;

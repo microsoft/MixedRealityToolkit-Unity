@@ -15,6 +15,10 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
+    /// <summary>
+    /// Service that registers ComponentBroadcasterDefinitions used to create ComponentBroadcasters for components
+    /// and to manage both broadcasting and observing components.
+    /// </summary>
     public class StateSynchronizationSceneManager : Singleton<StateSynchronizationSceneManager>
     {
         private const int FrameVotesUntilChangingFrameSkipCount = 10;
@@ -39,24 +43,30 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private readonly List<SocketEndpoint> continuedConnections = new List<SocketEndpoint>();
 
         private List<IComponentBroadcaster> broadcasterComponents = new List<IComponentBroadcaster>();
-        public IReadOnlyList<IComponentBroadcaster> BroadcasterComponents
+        internal IReadOnlyList<IComponentBroadcaster> BroadcasterComponents
         {
             get { return broadcasterComponents; }
         }
 
         private List<ComponentBroadcasterDefinition> componentBroadcasterDefinitions = new List<ComponentBroadcasterDefinition>();
-        public IReadOnlyList<ComponentBroadcasterDefinition> ComponentBroadcasterDefinitions
+        internal IReadOnlyList<ComponentBroadcasterDefinition> ComponentBroadcasterDefinitions
         {
             get { return componentBroadcasterDefinitions; }
         }
 
+        /// <summary>
+        /// Registers an IComponentBroadcasterService along with a ComponentBroadcasterDefinition. This service and definition
+        /// control how a particular type of Component is both broadcast and observed.
+        /// </summary>
+        /// <param name="service">The service which controls broadcasting and observing component changes.</param>
+        /// <param name="componentDefinition">The definition controlling when a component should be broadcast.</param>
         public void RegisterService(IComponentBroadcasterService service, ComponentBroadcasterDefinition componentDefinition)
         {
             componentBroadcasterDefinitions.Add(componentDefinition);
             componentBroadcasterServices.Add(service.GetID(), service);
         }
 
-        public Transform RootTransform
+        internal Transform RootTransform
         {
             get { return transform; }
         }
@@ -84,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public short GetNewTransformId()
+        internal short GetNewTransformId()
         {
             short startId = nextLocallyUniqueId;
             while (nextLocallyUniqueId == TransformBroadcaster.NullTransformId || objectMirrors.ContainsKey(nextLocallyUniqueId))
@@ -100,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return nextLocallyUniqueId;
         }
 
-        public void AddComponentBroadcaster(IComponentBroadcaster ComponentBroadcaster)
+        internal void AddComponentBroadcaster(IComponentBroadcaster ComponentBroadcaster)
         {
             broadcasterComponents.Add(ComponentBroadcaster);
         }
@@ -126,12 +136,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             removedConnections.Add(endpoint);
         }
 
-        public void MarkSceneDirty()
+        internal void MarkSceneDirty()
         {
             shouldClearScene = true;
         }
 
-        public void ClearScene()
+        private void ClearScene()
         {
             int numChildren = transform.childCount;
             while (numChildren > 0)
@@ -144,12 +154,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             broadcasterComponents.Clear();
         }
 
-        public void WriteHeader(BinaryWriter message)
+        /// <summary>
+        /// Writes the header for a ComponentBroadcaster's synchronize command, used
+        /// to send a component's state change from the broadcaster to the observer.
+        /// </summary>
+        /// <param name="message">The message in which to write the header.</param>
+        public void WriteSynchronizeCommandHeader(BinaryWriter message)
         {
             message.Write(StateSynchronizationObserver.SyncCommand);
             message.Write(Time.time);
         }
 
+        /// <summary>
+        /// Sends a message to a collection of SocketEndpoints.
+        /// </summary>
+        /// <param name="endpoints">The endpoints to send the message to.</param>
+        /// <param name="message">The message to send.</param>
         public void Send(IEnumerable<SocketEndpoint> endpoints, byte[] message)
         {
             if (StateSynchronizationBroadcaster.IsInitialized && StateSynchronizationBroadcaster.Instance.HasConnections)
@@ -166,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
-                WriteHeader(message);
+                WriteSynchronizeCommandHeader(message);
 
                 message.Write(SynchronizedSceneChangeTypeGlobalShaderProperty.Value);
                 message.Write(changedProperties.Count);
@@ -196,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         static readonly ShortID SynchronizedSceneChangeTypeGlobalShaderProperty = new ShortID("SHA");
 
-        public void ReceiveMessage(SocketEndpoint sendingEndpoint, BinaryReader reader)
+        internal void ReceiveMessage(SocketEndpoint sendingEndpoint, BinaryReader reader)
         {
             ShortID typeID = reader.ReadShortID();
 
@@ -246,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public void LerpReceiveMessage(BinaryReader reader, float lerpVal)
+        internal void LerpReceiveMessage(BinaryReader reader, float lerpVal)
         {
             ShortID typeID = reader.ReadShortID();
 
@@ -266,14 +286,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public GameObject FindGameObjectWithId(short id)
+        internal GameObject FindGameObjectWithId(short id)
         {
             GameObject objectMirror;
             objectMirrors.TryGetValue(id, out objectMirror);
             return objectMirror;
         }
 
-        public GameObject GetOrCreateMirror(short id)
+        internal GameObject GetOrCreateMirror(short id)
         {
             GameObject objectMirror;
             if (!objectMirrors.TryGetValue(id, out objectMirror))
@@ -287,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return objectMirror;
         }
 
-        public void AssignMirror(GameObject objectMirror, short id)
+        internal void AssignMirror(GameObject objectMirror, short id)
         {
             GameObject existingMirror;
             if (objectMirrors.TryGetValue(id, out existingMirror))
@@ -301,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public void DestroyMirror(short id)
+        internal void DestroyMirror(short id)
         {
             GameObject destroyedObject;
             if (objectMirrors.TryGetValue(id, out destroyedObject))
@@ -311,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public void RemoveMirror(short id)
+        internal void RemoveMirror(short id)
         {
             objectMirrors.Remove(id);
         }
