@@ -32,14 +32,8 @@ namespace Microsoft.MixedReality.Toolkit
     {
 #region Mixed Reality Toolkit Profile configuration
 
-        private const string ActiveInstanceGameObjectName = "MixedRealityToolkit";
-
-        private const string InactiveInstanceGameObjectName = "MixedRealityToolkit (Inactive)";
-
         private static bool isInitializing = false;
-
         private static bool isApplicationQuitting = false;
-
         private static bool internalShutdown = false;
 
         /// <summary>
@@ -643,9 +637,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void OnEnable()
         {
-            RegisterInstance(this);
-
-            if (IsActiveInstance && Application.isPlaying)
+            if (IsActiveInstance)
             {
                 EnableAllServices();
             }
@@ -653,7 +645,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void Update()
         {
-            if (IsActiveInstance && Application.isPlaying)
+            if (IsActiveInstance)
             {
                 UpdateAllServices();
             }
@@ -661,7 +653,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void LateUpdate()
         {
-            if (IsActiveInstance && Application.isPlaying)
+            if (IsActiveInstance)
             {
                 LateUpdateAllServices();
             }
@@ -669,7 +661,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void OnDisable()
         {
-            if (IsActiveInstance && Application.isPlaying)
+            if (IsActiveInstance)
             {
                 DisableAllServices();
             }
@@ -684,6 +676,8 @@ namespace Microsoft.MixedReality.Toolkit
 
 #region Instance Registration
         
+        private const string activeInstanceGameObjectName = "MixedRealityToolkit";
+        private const string inactiveInstanceGameObjectName = "MixedRealityToolkit (Inactive)";
         private static List<MixedRealityToolkit> toolkitInstances = new List<MixedRealityToolkit>();
 
         public static void SetActiveInstance(MixedRealityToolkit toolkitInstance)
@@ -826,7 +820,7 @@ namespace Microsoft.MixedReality.Toolkit
             if (!isInitializing)
             {
                 serviceInstance.Initialize();
-                serviceInstance.Enable();
+                //serviceInstance.Enable();
             }
 
             return true;
@@ -1521,7 +1515,7 @@ namespace Microsoft.MixedReality.Toolkit
                     {  // Make sure it's not parented under anything
                         Debug.Assert(toolkitInstances[i].transform.parent == null, "MixedRealityToolkit instances should not be parented under any other GameObject.");
                         // Name instances so it's clear when it's the active instance
-                        toolkitInstances[i].name = toolkitInstances[i].IsActiveInstance ? MixedRealityToolkit.ActiveInstanceGameObjectName : MixedRealityToolkit.InactiveInstanceGameObjectName;
+                        toolkitInstances[i].name = toolkitInstances[i].IsActiveInstance ? MixedRealityToolkit.activeInstanceGameObjectName : MixedRealityToolkit.inactiveInstanceGameObjectName;
                     }
                 };
             }
