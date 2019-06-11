@@ -32,11 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
 
-        public ref readonly Dictionary<uint, IMixedRealityPointerMediator> PointerMediators
+        public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators
         {
             get
             {
-                return ref pointerMediators;
+                return pointerMediators;
             }
         }
 
