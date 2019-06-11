@@ -38,7 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 }
                 else
                 {
-                    InputSystem.RegisterAllHandlers(this);
+                    InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
+                    InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
                 }
             }
         }
@@ -65,7 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 }
                 else
                 {
-                    InputSystem.UnregisterAllHandlers(this);
+                    InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+                    InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
                 }
             }
         }

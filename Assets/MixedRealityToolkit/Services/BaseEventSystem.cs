@@ -11,6 +11,16 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// Base Event System that can be inherited from to give other system features event capabilities.
     /// </summary>
+    /// <remarks>
+    /// Event handler interfaces may derive from each other. Some events will be raised using a base handler class, and are supposed to trigger on
+    /// all derived handler classes too. Example of that is IMixedRealityBaseInputHandler hierarchy.
+    /// To support that current implementation registers multiple dictionary entries per handler, one for each level of event handler hierarchy.
+    /// Alternative would be to register just one type (the one used for RegisterHandler call) and 
+    /// then determine which handlers to call dynamically in 'HandleEvent'.
+    /// Implementation was chosen based on performance of 'HandleEvent'. Without determining type it is about 2+ times faster.
+    /// There are possible ways to bypass that, but this will make implementation of old API and classes 
+    /// that derive from Input System unnecessarily more complicated.
+    /// </remarks>
     public abstract class BaseEventSystem : BaseService, IMixedRealityEventSystem
     {
         private static int eventExecutionDepth = 0;
@@ -73,14 +83,14 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
             Debug.Assert(typeof(T).IsInterface);
-            TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
+            TraverseComponentHandlerHierarchy<T>((T)handler, RegisterHandler);
         }
 
         /// <inheritdoc />
         public virtual void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
             Debug.Assert(typeof(T).IsInterface);
-            TraverseEventSystemHandlerHierarchy<T>(handler, UnregisterHandler);
+            TraverseComponentHandlerHierarchy<T>((T)handler, UnregisterHandler);
         }
 
         /// <inheritdoc />
@@ -176,21 +186,6 @@ namespace Microsoft.MixedReality.Toolkit
         #endregion Registration helpers
 
         #region Utilities
-
-        private void TraverseEventSystemHandlerHierarchy<T>(IEventSystemHandler handler, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
-        {
-            var handlerType = typeof(T);
-
-            func(handlerType, handler);
-
-            foreach (var iface in handlerType.GetInterfaces())
-            {
-                if (!iface.Equals(eventSystemHandlerType))
-                {
-                    func(iface, handler);
-                }
-            }
-        }
 
         private void TraverseComponentHandlerHierarchy<T>(T component, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
         {
