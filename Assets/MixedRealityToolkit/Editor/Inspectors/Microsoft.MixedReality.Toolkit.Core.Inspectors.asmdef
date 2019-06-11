@@ -3,7 +3,6 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor",
-        "Microsoft.MixedReality.Toolkit.Core.Build",
         "Unity.TextMeshPro.Editor",
         "Unity.TextMeshPro"
     ],
