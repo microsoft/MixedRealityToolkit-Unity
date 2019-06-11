@@ -5,9 +5,9 @@ using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class MarkerDetectorCoordinateService : SpatialCoordinateServiceBase<int>
     {
-        private class SpatialCoordinate : SpatialCoordinateBase<int>
+        private class SpatialCoordinate : SpatialCoordinateUnityBase<int>
         {
             private Marker marker;
 
@@ -48,13 +48,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 Marker = marker;
             }
 
-            public override Vector3 CoordinateToWorldSpace(Vector3 vector) => vector - marker.Position.AsNumericsVector();
+            protected override Vector3 CoordinateToWorldSpace(Vector3 vector) => Quaternion.Inverse(marker.Rotation) * vector - marker.Position;
 
-            public override Quaternion CoordinateToWorldSpace(Quaternion quaternion) => UnityEngine.Quaternion.Inverse(marker.Rotation).AsNumericsQuaternion() * quaternion;
+            protected override Quaternion CoordinateToWorldSpace(Quaternion quaternion) => Quaternion.Inverse(marker.Rotation) * quaternion;
 
-            public override Vector3 WorldToCoordinateSpace(Vector3 vector) => vector + marker.Position.AsNumericsVector();
+            protected override Vector3 WorldToCoordinateSpace(Vector3 vector) => marker.Rotation * vector + marker.Position;
 
-            public override Quaternion WorldToCoordinateSpace(Quaternion quaternion) => marker.Rotation.AsNumericsQuaternion() * quaternion;
+            protected override Quaternion WorldToCoordinateSpace(Quaternion quaternion) => marker.Rotation * quaternion;
         }
 
         private readonly IMarkerDetector markerDetector;

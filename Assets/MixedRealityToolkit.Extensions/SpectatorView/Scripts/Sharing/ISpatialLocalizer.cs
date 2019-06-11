@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     public interface ISpatialLocalizer
     {
-        Guid SpatialLocalizerID { get; }
+        Guid SpatialLocalizerId { get; }
 
         bool TryDeserializeSettings(BinaryReader reader, out ISpatialLocalizationSettings settings);
 

@@ -46,20 +46,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public void RegisterSpatialLocalizer(ISpatialLocalizer localizer)
         {
-            if (localizers.ContainsKey(localizer.SpatialLocalizerID))
+            if (localizers.ContainsKey(localizer.SpatialLocalizerId))
             {
-                Debug.LogError($"Cannot register multiple SpatialLocalizers with the same ID {localizer.SpatialLocalizerID}");
+                Debug.LogError($"Cannot register multiple SpatialLocalizers with the same ID {localizer.SpatialLocalizerId}");
                 return;
             }
 
-            localizers.Add(localizer.SpatialLocalizerID, localizer);
+            localizers.Add(localizer.SpatialLocalizerId, localizer);
         }
 
         public void UnregisterSpatialLocalizer(ISpatialLocalizer localizer)
         {
-            if (!localizers.Remove(localizer.SpatialLocalizerID))
+            if (!localizers.Remove(localizer.SpatialLocalizerId))
             {
-                Debug.LogError($"Attempted to unregister SpatialLocalizer with ID {localizer.SpatialLocalizerID} that was not registered.");
+                Debug.LogError($"Attempted to unregister SpatialLocalizer with ID {localizer.SpatialLocalizerId} that was not registered.");
             }
         }
 
