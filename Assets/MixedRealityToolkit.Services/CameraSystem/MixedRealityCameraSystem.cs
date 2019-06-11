@@ -107,6 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsOpaqueDisplay;
             CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneOpaqueDisplay;
+            CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneOpaqueDisplay;
             CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorOpaqueDisplay;
             QualitySettings.SetQualityLevel(CameraProfile.OpaqueQualityLevel, false);
         }
@@ -119,6 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
             CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
             CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
+            CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
             QualitySettings.SetQualityLevel(CameraProfile.HoloLensQualityLevel, false);
         }
 
