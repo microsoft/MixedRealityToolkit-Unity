@@ -1,10 +1,14 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Utilities.Gltf",
+    "name": "Microsoft.MixedReality.Toolkit.Gltf.Editor",
     "references": [
-        "Microsoft.MixedReality.Toolkit"
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Editor",
+        "Microsoft.MixedReality.Toolkit.Gltf"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
