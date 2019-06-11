@@ -2,13 +2,12 @@
     "name": "Microsoft.MixedReality.Toolkit.Tests",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions"
+        "Microsoft.MixedReality.Toolkit.Editor"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
     ],
-    "includePlatforms": [
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

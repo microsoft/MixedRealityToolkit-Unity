@@ -2,9 +2,7 @@
     "name": "MixedRealityToolkit.Core.Inspectors.ServiceInspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions",
-        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor",
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
+        "Microsoft.MixedReality.Toolkit.Editor",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem",
         "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
