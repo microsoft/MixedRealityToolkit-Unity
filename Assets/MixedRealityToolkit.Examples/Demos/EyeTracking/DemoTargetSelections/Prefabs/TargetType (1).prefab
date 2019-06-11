@@ -231,7 +231,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.016019935, g: 0.6792453, b: 0.109286, a: 0.23529412}
+      maxColor: {r: 0.47058824, g: 0.078431375, b: 0.2784314, a: 0.23529412}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4648,7 +4648,7 @@ ParticleSystem:
 --- !u!199 &594713291
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -4769,7 +4769,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b6c720bff1e1e4347be4bccbb42e6be4, type: 2}
+  - {fileID: 2100000, guid: 59c116cb7d669b7489d194995fc673b0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4825,14 +4825,13 @@ MonoBehaviour:
   - id: 15
     description: DestroyTarget
     axisConstraint: 0
-  eyeCursorSnapToTargetCenter: 0
   dwellTimeInSec: 1
-  OnLookAtStart:
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1296537311}
@@ -4848,32 +4847,22 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnLookAway:
+  onLookAway:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  onDwell:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onSelected:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1296537312}
-        m_MethodName: TargetSelected
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 1
 --- !u!114 &1296537312
 MonoBehaviour:
   m_ObjectHideFlags: 0
