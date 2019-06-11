@@ -16,13 +16,13 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// List of event listeners that are registered to this Event System.
         /// </summary>
-        [Obsolete("EventListeners is replaced by HandlerEventListeners and will be removed in a future release.")]
+        [Obsolete("EventListeners is replaced by EventHandlersByType and will be removed in a future release.")]
         List<GameObject> EventListeners { get; }
 
         /// <summary>
         /// List of event handlers that are registered to this Event System.
         /// </summary>
-        Dictionary<Type, HashSet<IEventSystemHandler>> HandlerEventListeners { get; }
+        Dictionary<Type, HashSet<IEventSystemHandler>> EventHandlersByType { get; }
 
         /// <summary>
         /// The main function for handling and forwarding all events to their intended recipients.
@@ -51,38 +51,26 @@ namespace Microsoft.MixedReality.Toolkit
 
         /// <summary>
         /// Registers an event Handler of a given type to listen for its events from this Event System.
+        /// If a component implements several IEventSystemHandler interfaces and listens to global events from several
+        /// of them, it needs to call 'RegisterHandler' multiple times for each interface.
         /// </summary>
         /// <remarks>
-        /// Should be called with explicit template type like RegisterHandler<ISpeechEventHandler>(this)
+        /// Should be called with explicit template type like RegisterHandler<ISpeechEventHandler>(this).
+        /// Method should only be called with interfaces as a template parameter.
         /// </remarks>
         /// <param name="handler">Handler to add to <see cref="HandlerEventListeners"/>.</param>
         void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler;
 
         /// <summary>
-        /// Registers all event handlers, implemented by a given component in this Event System.
-        /// </summary>
-        /// <remarks>
-        /// Should be called without explicit template type like RegisterAllHandlers(this)
-        /// </remarks>
-        /// <param name="handler">Handler to add to <see cref="HandlerEventListeners"/>.</param>
-        void RegisterAllHandlers<T>(T component) where T : IEventSystemHandler;
-
-        /// <summary>
         /// Unregisters an event Handler of a given type from listening for its events from this Event System.
+        /// If a component implements several IEventSystemHandler interfaces and listens to global events from several
+        /// of them, it needs to call 'UnregisterHandler' multiple times for each interface.
         /// </summary>
         /// <remarks>
         /// Should be called with explicit template type like UnregisterHandler<ISpeechEventHandler>(this)
+        /// Method should only be called with interfaces as a template parameter.
         /// </remarks>
         /// <param name="handler">Handler to remove from <see cref="HandlerEventListeners"/>.</param>
         void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler;
-
-        /// <summary>
-        /// Unregisters all event handlers, implemented by a given component in this Event System.
-        /// </summary>
-        /// <remarks>
-        /// Should be called without explicit template type like UnregisterAllHandlers(this)
-        /// </remarks>
-        /// <param name="handler">Handler to add to <see cref="HandlerEventListeners"/>.</param>
-        void UnregisterAllHandlers<T>(T component) where T : IEventSystemHandler;
     }
 }

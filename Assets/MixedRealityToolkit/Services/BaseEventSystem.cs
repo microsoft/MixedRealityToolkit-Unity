@@ -16,8 +16,13 @@ namespace Microsoft.MixedReality.Toolkit
         private static int eventExecutionDepth = 0;
         private readonly Type eventSystemHandlerType = typeof(IEventSystemHandler);
 
-        private List<(Type, IEventSystemHandler)> handlersToAdd = new List<(Type, IEventSystemHandler)>();
-        private List<(Type, IEventSystemHandler)> handlersToRemove = new List<(Type, IEventSystemHandler)>();
+        private enum Action
+        {
+            Add,
+            Remove
+        }
+
+        private List<(Action, Type, IEventSystemHandler)> postponedActions = new List<(Action, Type, IEventSystemHandler)>();
 
         #region IMixedRealityEventSystem Implementation
 
@@ -25,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit
         public List<GameObject> EventListeners { get; } = new List<GameObject>();
 
         /// <inheritdoc />
-        public Dictionary<Type, HashSet<IEventSystemHandler>> HandlerEventListeners { get; } = new Dictionary<Type, HashSet<IEventSystemHandler>>();
+        public Dictionary<Type, HashSet<IEventSystemHandler>> EventHandlersByType { get; } = new Dictionary<Type, HashSet<IEventSystemHandler>>();
 
         /// <inheritdoc />
         public virtual void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
@@ -33,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit
             Debug.Assert(!eventData.used);
 
             HashSet<IEventSystemHandler> handlers;
-            if (!HandlerEventListeners.TryGetValue(typeof(T), out handlers))
+            if (!EventHandlersByType.TryGetValue(typeof(T), out handlers))
             {
                 return;
             }
@@ -48,16 +53,18 @@ namespace Microsoft.MixedReality.Toolkit
 
             eventExecutionDepth--;
 
-            if(eventExecutionDepth == 0 && (handlersToRemove.Count > 0 || handlersToAdd.Count > 0))
+            if(eventExecutionDepth == 0 && postponedActions.Count > 0)
             {
-                foreach(var handler in handlersToRemove)
+                foreach(var handler in postponedActions)
                 {
-                    RemoveHandlerFromMap(handler.Item1, handler.Item2);
-                }
-
-                foreach (var handler in handlersToAdd)
-                {
-                    AddHandlerToMap(handler.Item1, handler.Item2);
+                    if (handler.Item1 == Action.Add)
+                    {
+                        AddHandlerToMap(handler.Item2, handler.Item3);
+                    }
+                    else if(handler.Item1 == Action.Remove)
+                    {
+                        RemoveHandlerFromMap(handler.Item2, handler.Item3);
+                    }
                 }
             }
         }
@@ -65,30 +72,21 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
+            Debug.Assert(typeof(T).IsInterface);
             TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
-        }
-
-        /// <inheritdoc />
-        public virtual void RegisterAllHandlers<T>(T component) where T : IEventSystemHandler
-        {
-            TraverseComponentHandlerHierarchy<T>(component, RegisterHandler);
         }
 
         /// <inheritdoc />
         public virtual void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
+            Debug.Assert(typeof(T).IsInterface);
             TraverseEventSystemHandlerHierarchy<T>(handler, UnregisterHandler);
-        }
-
-        /// <inheritdoc />
-        public virtual void UnregisterAllHandlers<T>(T component) where T : IEventSystemHandler
-        {
-            TraverseComponentHandlerHierarchy<T>(component, UnregisterHandler);
         }
 
         /// <inheritdoc />
         public virtual void Register(GameObject listener)
         {
+            // For backward compatibility
             if (!EventListeners.Contains(listener))
             {
                 EventListeners.Add(listener);
@@ -100,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void Unregister(GameObject listener)
         {
+            // For backward compatibility
             if (EventListeners.Contains(listener))
             {
                 EventListeners.Remove(listener);
@@ -120,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
-                handlersToRemove.Add((handlerType, handler));
+                postponedActions.Add((Action.Remove, handlerType, handler));
             }
         }
 
@@ -132,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
-                handlersToAdd.Add((handlerType, handler));
+                postponedActions.Add((Action.Add, handlerType, handler));
             }
         }
 
@@ -140,10 +139,10 @@ namespace Microsoft.MixedReality.Toolkit
         {
             HashSet<IEventSystemHandler> handlers;
 
-            if (!HandlerEventListeners.TryGetValue(handlerType, out handlers))
+            if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
                 handlers = new HashSet<IEventSystemHandler> { handler };
-                HandlerEventListeners.Add(handlerType, handlers);
+                EventHandlersByType.Add(handlerType, handlers);
                 return;
             }
 
@@ -158,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             HashSet<IEventSystemHandler> handlers;
 
-            if (!HandlerEventListeners.TryGetValue(handlerType, out handlers))
+            if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
                 return;
             }
@@ -169,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                 if (handlers.Count == 0)
                 {
-                    HandlerEventListeners.Remove(handlerType);
+                    EventHandlersByType.Remove(handlerType);
                 }
             }
         }

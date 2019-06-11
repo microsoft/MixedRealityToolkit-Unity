@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Check that input system is clean
-            Assert.IsTrue(inputSystem.HandlerEventListeners.Count == 0);
+            Assert.IsTrue(inputSystem.EventHandlersByType.Count == 0);
 
             yield return null;
         }
@@ -66,27 +66,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(inputSystem.EventListeners.Count == 1);
             Assert.Contains(objectBasedListener.gameObject, inputSystem.EventListeners);
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners.Count == 3);
-            Assert.Contains(typeof(IMixedRealityPointerHandler), inputSystem.HandlerEventListeners.Keys);
-            Assert.Contains(typeof(IMixedRealitySpeechHandler), inputSystem.HandlerEventListeners.Keys);
-            Assert.Contains(typeof(IMixedRealityBaseInputHandler), inputSystem.HandlerEventListeners.Keys);
+            Assert.IsTrue(inputSystem.EventHandlersByType.Count == 3);
+            Assert.Contains(typeof(IMixedRealityPointerHandler), inputSystem.EventHandlersByType.Keys);
+            Assert.Contains(typeof(IMixedRealitySpeechHandler), inputSystem.EventHandlersByType.Keys);
+            Assert.Contains(typeof(IMixedRealityBaseInputHandler), inputSystem.EventHandlersByType.Keys);
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityPointerHandler)].Count == 2);
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityPointerHandler)].Contains(objectBasedListener));
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityPointerHandler)].Contains(handlerBasedListener));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityPointerHandler)].Count == 2);
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityPointerHandler)].Contains(objectBasedListener));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityPointerHandler)].Contains(handlerBasedListener));
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealitySpeechHandler)].Count == 2);
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealitySpeechHandler)].Contains(objectBasedListener));
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealitySpeechHandler)].Contains(handlerBasedListener));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Count == 2);
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Contains(objectBasedListener));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Contains(handlerBasedListener));
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityBaseInputHandler)].Count == 2);
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityBaseInputHandler)].Contains(objectBasedListener));
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityBaseInputHandler)].Contains(handlerBasedListener));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Count == 2);
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Contains(objectBasedListener));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Contains(handlerBasedListener));
 
             objectBasedListener.enabled = false;
 
             // This is odd result from disabling just one component, but it's a behavior of old API.
-            Assert.IsTrue(inputSystem.HandlerEventListeners.Count == 0);
+            Assert.IsTrue(inputSystem.EventHandlersByType.Count == 0);
 
             ///
             // Reset registration of handler-based listener and check that it registers itself after that, even though its handlers 
@@ -94,18 +94,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handlerBasedListener.enabled = false;
             handlerBasedListener.enabled = true;
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners.Count == 2);
-            Assert.Contains(typeof(IMixedRealitySpeechHandler), inputSystem.HandlerEventListeners.Keys);
-            Assert.Contains(typeof(IMixedRealityBaseInputHandler), inputSystem.HandlerEventListeners.Keys);
+            Assert.IsTrue(inputSystem.EventHandlersByType.Count == 2);
+            Assert.Contains(typeof(IMixedRealitySpeechHandler), inputSystem.EventHandlersByType.Keys);
+            Assert.Contains(typeof(IMixedRealityBaseInputHandler), inputSystem.EventHandlersByType.Keys);
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealitySpeechHandler)].Count == 1);
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealitySpeechHandler)].Contains(handlerBasedListener));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Count == 1);
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Contains(handlerBasedListener));
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityBaseInputHandler)].Count == 1);
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityBaseInputHandler)].Contains(handlerBasedListener));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Count == 1);
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Contains(handlerBasedListener));
 
             handlerBasedListener.enabled = false;
-            Assert.IsTrue(inputSystem.HandlerEventListeners.Count == 0);
+            Assert.IsTrue(inputSystem.EventHandlersByType.Count == 0);
 
             Object.Destroy(object1);
             yield return null;
@@ -132,34 +132,34 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // No event listener registration in this test
             Assert.IsTrue(inputSystem.EventListeners.Count == 0);
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners.Count == 3);
-            Assert.Contains(typeof(IMixedRealityPointerHandler), inputSystem.HandlerEventListeners.Keys);
-            Assert.Contains(typeof(IMixedRealitySpeechHandler), inputSystem.HandlerEventListeners.Keys);
-            Assert.Contains(typeof(IMixedRealityBaseInputHandler), inputSystem.HandlerEventListeners.Keys);
+            Assert.IsTrue(inputSystem.EventHandlersByType.Count == 3);
+            Assert.Contains(typeof(IMixedRealityPointerHandler), inputSystem.EventHandlersByType.Keys);
+            Assert.Contains(typeof(IMixedRealitySpeechHandler), inputSystem.EventHandlersByType.Keys);
+            Assert.Contains(typeof(IMixedRealityBaseInputHandler), inputSystem.EventHandlersByType.Keys);
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityPointerHandler)].Count == 1);
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityPointerHandler)].Contains(handlerBasedListener1));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityPointerHandler)].Count == 1);
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityPointerHandler)].Contains(handlerBasedListener1));
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealitySpeechHandler)].Count == 2);
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealitySpeechHandler)].Contains(handlerBasedListener1));
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealitySpeechHandler)].Contains(handlerBasedListener2));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Count == 2);
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Contains(handlerBasedListener1));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Contains(handlerBasedListener2));
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityBaseInputHandler)].Count == 2);
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityBaseInputHandler)].Contains(handlerBasedListener1));
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityBaseInputHandler)].Contains(handlerBasedListener2));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Count == 2);
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Contains(handlerBasedListener1));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Contains(handlerBasedListener2));
 
             // Disabling one component doesn't influence another one.
             handlerBasedListener1.enabled = false;
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners.Count == 2);
-            Assert.Contains(typeof(IMixedRealitySpeechHandler), inputSystem.HandlerEventListeners.Keys);
-            Assert.Contains(typeof(IMixedRealityBaseInputHandler), inputSystem.HandlerEventListeners.Keys);
+            Assert.IsTrue(inputSystem.EventHandlersByType.Count == 2);
+            Assert.Contains(typeof(IMixedRealitySpeechHandler), inputSystem.EventHandlersByType.Keys);
+            Assert.Contains(typeof(IMixedRealityBaseInputHandler), inputSystem.EventHandlersByType.Keys);
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealitySpeechHandler)].Count == 1);
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealitySpeechHandler)].Contains(handlerBasedListener2));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Count == 1);
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Contains(handlerBasedListener2));
 
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityBaseInputHandler)].Count == 1);
-            Assert.IsTrue(inputSystem.HandlerEventListeners[typeof(IMixedRealityBaseInputHandler)].Contains(handlerBasedListener2));
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Count == 1);
+            Assert.IsTrue(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Contains(handlerBasedListener2));
 
             ///
             Object.Destroy(object1);
