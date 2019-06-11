@@ -5,7 +5,7 @@ The Mixed Reality Toolkit (MRTK) is a collection of packages that enable cross p
 The MRTK currently has two packages:
 
 - [Foundation](#foundation-package)
-- [Examples](#example-package)
+- [Examples](#examples-package)
 
 ## Foundation Package
 
@@ -133,7 +133,7 @@ The examples package contains demos, sample scripts, and sample scenes that exer
 For example, this package contains the HandInteractionExample scene (pictured below) which contains sample objects
 that respond to various types of hand input (articulated and non-articulated).
 
-![HandInteractionExample scene](../Documentation/Images/MRTK_Examples.png)
+![HandInteractionExample scene](../Images/MRTK_Examples.png)
 
 This package also contains eye tracking demos, which are [documented here](../EyeTracking/EyeTracking_ExamplesOverview.md)
 

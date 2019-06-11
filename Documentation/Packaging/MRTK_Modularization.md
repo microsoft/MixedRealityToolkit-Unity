@@ -28,10 +28,10 @@ the examples package, which is a completely optional package). It is possible to
 by manually cutting down on the files imported, though this is a highly manual process which doesn't have
 a well-defined guide.
 
-It is possible to, during the import of the Foundation package, uncheck arbitrary items, though obviously this
-could break arbitrary things. As such, it's not recommended that you do this at the beginning, and only when
-you're at a point where you feel you have a good baseline for final features, you can then try to prune
-unneeded providers and services from the following folders:
+It is possible to uncheck arbitrary items during the import of the Foundation package. However, it's not
+recommended to do this at an early stage in development as it might break functionality. After having
+figured out the final feature set of an app, pruning unneeded providers and services can be done on the
+following folders:
 
 - MixedRealityToolkit.Services
 - MixedRealityToolkit.Providers
