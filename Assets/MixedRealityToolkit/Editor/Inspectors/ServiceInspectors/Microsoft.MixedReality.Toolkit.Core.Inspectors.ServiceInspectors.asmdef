@@ -1,5 +1,5 @@
 {
-    "name": "MixedRealityToolkit.Core.Inspectors.ServiceInspectors",
+    "name": "Microsoft.MixedReality.Toolkit.Core.Inspectors.ServiceInspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor",
@@ -7,7 +7,7 @@
         "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem",
         "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
         "Microsoft.MixedReality.Toolkit.Services.TeleportSystem",
-        "MixedRealityToolkit.Services.SceneSystem",
+        "Microsoft.MixedReality.Toolkit.Services.SceneSystem",
         "Microsoft.MixedReality.Toolkit.Core.Inspectors"
     ],
     "optionalUnityReferences": [],
