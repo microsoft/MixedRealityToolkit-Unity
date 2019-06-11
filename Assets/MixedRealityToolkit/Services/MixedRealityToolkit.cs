@@ -1306,6 +1306,11 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static bool logCameraSystem = true;
 
+        /// <summary>
+        /// Returns true if the MixedRealityToolkit exists and has an active profile that has Camera system enabled.
+        /// </summary>
+        public static bool IsCameraSystemEnabled => IsInitialized && Instance.HasActiveProfile && Instance.ActiveProfile.IsCameraSystemEnabled && Instance.IsSystemRegistered<IMixedRealityCameraSystem>();
+
         private static IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
         /// <summary>

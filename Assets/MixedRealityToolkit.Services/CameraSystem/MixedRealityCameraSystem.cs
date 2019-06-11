@@ -63,14 +63,26 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 return cameraProfile;
             }
         }
+        
+        /// <inheritdoc/>
+        public Camera Main
+        {
+            get
+            {
+                return FindOrCreateMainCamera();
+            }
+        }
 
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
+        private static Camera cachedCamera;
 
         /// <inheritdoc />
-        public override void Initialize()
+        public override void Enable()
         {
             cameraOpaqueLastFrame = IsOpaque;
+
+            FindOrCreateMainCamera();
 
             if (IsOpaque)
             {
@@ -105,10 +117,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// </summary>
         private void ApplySettingsForOpaqueDisplay()
         {
-            CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsOpaqueDisplay;
-            CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneOpaqueDisplay;
-            CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneOpaqueDisplay;
-            CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorOpaqueDisplay;
+            Main.clearFlags = CameraProfile.CameraClearFlagsOpaqueDisplay;
+            Main.nearClipPlane = CameraProfile.NearClipPlaneOpaqueDisplay;
+            Main.farClipPlane = CameraProfile.FarClipPlaneOpaqueDisplay;
+            Main.backgroundColor = CameraProfile.BackgroundColorOpaqueDisplay;
             QualitySettings.SetQualityLevel(CameraProfile.OpaqueQualityLevel, false);
         }
 
@@ -117,11 +129,36 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// </summary>
         private void ApplySettingsForTransparentDisplay()
         {
-            CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
-            CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
-            CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
-            CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
+            Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
+            Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
+            Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
+            Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
             QualitySettings.SetQualityLevel(CameraProfile.HoloLensQualityLevel, false);
+        }
+
+        private Camera FindOrCreateMainCamera()
+        {
+            if (cachedCamera != null)
+            {   // Ensure that the camera is parented under the mixed reality playspace
+                cachedCamera.transform.SetParent(MixedRealityPlayspace.Transform);
+                return cachedCamera;
+            }
+
+            // If the cached camera is null, search for main
+            var mainCamera = Camera.main;
+
+            if (mainCamera == null)
+            {   // If no main camera was found, create it now
+                Debug.LogWarning("No main camera found. The Mixed Reality Toolkit requires at least one camera in the scene. One will be generated now.");
+                mainCamera = new GameObject("Main Camera", typeof(Camera)) { tag = "MainCamera" }.GetComponent<Camera>();
+            }
+
+            // Cache the main camera
+            cachedCamera = mainCamera;
+            // Ensure that the camera is parented under the mixed reality playspace
+            cachedCamera.transform.SetParent(MixedRealityPlayspace.Transform);
+
+            return cachedCamera;
         }
 
         /// <inheritdoc />

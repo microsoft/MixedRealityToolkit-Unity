@@ -1,25 +1,37 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// The purpose of this class is to provide a cached reference to the main camera. Calling Camera.main
-    /// executes a FindByTag on the scene, which will get worse and worse with more tagged objects.
+    /// The purpose of this class is to provide a cached reference to the main camera.
+    /// If the camera system is enabled, the camera cache will return a reference to that system's camera.
+    /// Otherwise a default camera will be created.
     /// </summary>
     public static class CameraCache
     {
         private static Camera cachedCamera;
+        private static IMixedRealityCameraSystem cameraSystem;
 
         /// <summary>
-        /// Returns a cached reference to the main camera and uses Camera.main if it hasn't been cached yet.
+        /// Returns a cached reference to the main camera. Uses the camera system's main camera, if available. Otherwise finds or creates a main camera.
         /// </summary>
         public static Camera Main
         {
             get
             {
+                if (MixedRealityToolkit.IsCameraSystemEnabled)
+                {
+                    if (cameraSystem == null)
+                    {
+                        cameraSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityCameraSystem>();
+                    }
+                    return cameraSystem.Main;
+                }
+
                 if (cachedCamera != null)
                 {
                     if (cachedCamera.gameObject.activeInHierarchy)
