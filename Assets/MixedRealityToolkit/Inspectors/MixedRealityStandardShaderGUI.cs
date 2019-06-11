@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent destinationBlend = new GUIContent("Destination Blend", "Blend Mode of Existing Color");
             public static GUIContent blendOperation = new GUIContent("Blend Operation", "Operation for Blending New Color With Existing Color");
             public static GUIContent depthTest = new GUIContent("Depth Test", "How Should Depth Testing Be Performed.");
-            public static GUIContent depthWrite = new GUIContent("Depth Write", "Controls Whether Pixels From This Object Are Written to the Depth Buffer");
+            public static GUIContent depthWrite = new GUIContent("Depth Write", "Controls Whether Pixels From This Material Are Written to the Depth Buffer");
             public static GUIContent depthOffsetFactor = new GUIContent("Depth Offset Factor", "Scales the Maximum Z Slope, with Respect to X or Y of the Polygon");
             public static GUIContent depthOffsetUnits = new GUIContent("Depth Offset Units", "Scales the Minimum Resolvable Depth Buffer Value");
             public static GUIContent colorWriteMask = new GUIContent("Color Write Mask", "Color Channel Writing Mask");
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent cullMode = new GUIContent("Cull Mode", "Triangle Culling Mode");
             public static GUIContent renderQueueOverride = new GUIContent("Render Queue Override", "Manually Override the Render Queue");
             public static GUIContent albedo = new GUIContent("Albedo", "Albedo (RGB) and Transparency (Alpha)");
-            public static GUIContent albedoAssignedAtRuntime = new GUIContent("Albedo Assigned at Runtime", "As an optimization albedo operations are disabled when no albedo texture is specified. If a albedo texture will be specified at runtime enable this option.");
+            public static GUIContent albedoAssignedAtRuntime = new GUIContent("Assigned at Runtime", "As an optimization albedo operations are disabled when no albedo texture is specified. If a albedo texture will be specified at runtime enable this option.");
             public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Threshold for Alpha Cutoff");
             public static GUIContent metallic = new GUIContent("Metallic", "Metallic Value");
             public static GUIContent smoothness = new GUIContent("Smoothness", "Smoothness Value");
@@ -493,6 +493,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUI.indentLevel -= 2;
             }
 
+            if (!PropertyEnabled(depthWrite))
+            {
+                if (MixedRealityToolkitShaderGUIUtilities.DisplayDepthWriteWarning(materialEditor))
+                {
+                    renderingMode.floatValue = (float)RenderingMode.Custom;
+                    depthWrite.floatValue = (float)DepthWrite.On;
+                }
+            }
+
             materialEditor.ShaderProperty(cullMode, Styles.cullMode);
         }
 
@@ -501,6 +510,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUILayout.Label(Styles.primaryMapsTitle, EditorStyles.boldLabel);
 
             materialEditor.TexturePropertySingleLine(Styles.albedo, albedoMap, albedoColor);
+
+            if (albedoMap.textureValue == null)
+            {
+                materialEditor.ShaderProperty(albedoAssignedAtRuntime, Styles.albedoAssignedAtRuntime, 2);
+            }
+
             materialEditor.ShaderProperty(enableChannelMap, Styles.enableChannelMap);
 
             if (PropertyEnabled(enableChannelMap))
@@ -517,7 +532,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 albedoAlphaMode.floatValue = EditorGUILayout.Popup(albedoAlphaMode.displayName, (int)albedoAlphaMode.floatValue, Styles.albedoAlphaModeNames);
 
-                if ((RenderingMode)renderingMode.floatValue == RenderingMode.TransparentCutout)
+                if ((RenderingMode)renderingMode.floatValue == RenderingMode.TransparentCutout || 
+                    (RenderingMode)renderingMode.floatValue == RenderingMode.Custom)
                 {
                     materialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoff.text);
                 }
@@ -784,11 +800,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!GUI.enabled && !material.enableInstancing)
             {
                 material.enableInstancing = true;
-            }
-
-            if (albedoMap.textureValue == null)
-            {
-                materialEditor.ShaderProperty(albedoAssignedAtRuntime, Styles.albedoAssignedAtRuntime);
             }
 
             materialEditor.EnableInstancingField();
