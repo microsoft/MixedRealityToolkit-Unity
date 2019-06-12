@@ -41,6 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestValidPath("MixedRealityToolkit", MixedRealityToolkitModuleType.Core);
             TestValidPath("MixedRealityToolkit.SDK", MixedRealityToolkitModuleType.SDK);
 
+            // Test that all modules can be found and internal module map is complete.
+            // Check that MixedRealityToolkitFiles.moduleNameMap has all entries if this fails!
             var modules = Enum.GetValues(typeof(MixedRealityToolkitModuleType));
             var moduleNames = Enum.GetNames(typeof(MixedRealityToolkitModuleType));
             for (int i = 0; i < modules.Length; ++i)
@@ -84,6 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestValidPath("Microsoft.MixedReality.Toolkit.1.23-45/MRTK", MixedRealityToolkitModuleType.Core);
             TestValidPath("Microsoft.MixedReality.Toolkit.SDK.1.23-45/MRTK", MixedRealityToolkitModuleType.SDK);
 
+            // Test that all modules can be found and internal module map is complete.
+            // Check that MixedRealityToolkitFiles.moduleNameMap has all entries if this fails!
             var modules = Enum.GetValues(typeof(MixedRealityToolkitModuleType));
             var moduleNames = Enum.GetNames(typeof(MixedRealityToolkitModuleType));
             for (int i = 0; i < modules.Length; ++i)
