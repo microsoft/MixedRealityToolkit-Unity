@@ -44,13 +44,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 foreach (string asset in importedAssets.Concat(movedAssets))
                 {
                     string folder = asset.Replace("Assets", Application.dataPath);
-                    RegisterModuleFolder(folder);
+                    TryRegisterModuleFolder(folder);
                 }
 
                 foreach (string asset in deletedAssets.Concat(movedFromAssetPaths))
                 {
                     string folder = asset.Replace("Assets", Application.dataPath);
-                    UnregisterModuleFolder(folder);
+                    TryUnregisterModuleFolder(folder);
                 }
             }
         }
@@ -95,11 +95,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             foreach (string folder in Directory.EnumerateDirectories(rootPath))
             {
-                RegisterModuleFolder(folder);
+                TryRegisterModuleFolder(folder);
             }
         }
 
-        private static void RegisterModuleFolder(string folder)
+        private static bool TryRegisterModuleFolder(string folder)
         {
             string normalizedFolder = NormalizeSeparators(folder);
             if (FindMatchingModule(normalizedFolder, out MixedRealityToolkitModuleType module))
@@ -110,12 +110,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     mrtkFolders.Add(module, modFolders);
                 }
                 modFolders.Add(normalizedFolder);
+                return true;
             }
+
+            return false;
         }
 
-        private static void UnregisterModuleFolder(string folder)
+        private static bool TryUnregisterModuleFolder(string folder)
         {
             string normalizedFolder = NormalizeSeparators(folder);
+            bool found = false;
             foreach (var modFolders in mrtkFolders)
             {
                 if (modFolders.Value.Remove(normalizedFolder))
@@ -124,8 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         mrtkFolders.Remove(modFolders.Key);
                     }
+                    found = true;
                 }
             }
+
+            return found;
         }
 
         private static string NormalizeSeparators(string path) => path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
