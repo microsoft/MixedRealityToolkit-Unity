@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         }
 
         /// <inheritdoc />
-        public override uint Priority { get => 0; } // Because the main camera is used by so many other services, it should be initialized and udpated first
+        public override uint Priority { get => 0; } // Because the main camera is used by many other services, it should be initialized first
 
         /// <inheritdoc />
         public uint SourceId { get; } = 0;
@@ -73,7 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             get
             {
-                FindOrCreateMainCamera();
+                if (main == null)
+                {
+                    FindOrCreateMainCamera();
+                }
                 return main;
             }
         }
@@ -82,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         private bool cameraOpaqueLastFrame = false;
         private static Camera main;
 
+        /// <inheritdoc />
         public override void Initialize()
         {
             FindOrCreateMainCamera();
@@ -94,6 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc />
         public override void Enable()
         {
+            // Ensure that the camera is parented under the mixed reality playspace
+            main.transform.SetParent(MixedRealityPlayspace.Transform);
+
             cameraOpaqueLastFrame = IsOpaque;
 
             if (IsOpaque)
@@ -148,14 +155,11 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             QualitySettings.SetQualityLevel(CameraProfile.HoloLensQualityLevel, false);
         }
 
+        /// <summary>
+        /// Finds or creates the main camera.
+        /// </summary>
         private void FindOrCreateMainCamera()
         {
-            if (main != null)
-            {   // Ensure that the camera is parented under the mixed reality playspace
-                main.transform.SetParent(MixedRealityPlayspace.Transform);
-                return;
-            }
-
             // If the cached camera is null, search for main
             main = Camera.main;
 

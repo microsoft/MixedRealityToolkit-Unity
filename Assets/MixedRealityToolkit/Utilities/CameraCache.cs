@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     return MixedRealityToolkit.CameraSystem.Main;
                 }
 
-                // Otherwise, reutrn a default camera
+                // Otherwise, return a default camera
                 return FindOrCreateDefaultMainCamera();
             }
         }

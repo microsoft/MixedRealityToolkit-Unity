@@ -665,6 +665,11 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
+            if (toolkitInstance == null)
+            {   // Don't register a null instance
+                return;
+            }
+
             internalShutdown = false;
 
             if (!toolkitInstances.Contains(toolkitInstance))
