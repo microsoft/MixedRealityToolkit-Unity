@@ -1,5 +1,5 @@
 {
-    "name": "MixedRealityToolkit.Services.CameraSystem",
+    "name": "Microsoft.MixedReality.Toolkit.Services.CameraSystem",
     "references": [
         "Microsoft.MixedReality.Toolkit"
     ],

@@ -6,11 +6,11 @@
         "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
         "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
-        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
-        "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem",
         "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
-        "Microsoft.MixedReality.Toolkit.Services.TeleportSystem",
-        "MixedRealityToolkit.Services.SceneSystem"
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Microsoft.MixedReality.Toolkit.Services.SceneSystem",
+        "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem",
+        "Microsoft.MixedReality.Toolkit.Services.TeleportSystem"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
