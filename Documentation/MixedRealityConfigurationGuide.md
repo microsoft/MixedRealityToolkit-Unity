@@ -177,7 +177,7 @@ The diagnostics profile provides several simple systems to monitor whilst the pr
 
 ## Scene system settings
 
-The MRTK provides this optional service to help you manage complex additive scene loading / unloading. To decide if the Scene System would be a good fit for your project, read the [Scene System Getting Started Guide.](/SceneSystem/SceneSystemGettingStarted.md)
+The MRTK provides this optional service to help you manage complex additive scene loading / unloading. To decide if the Scene System would be a good fit for your project, read the [Scene System Getting Started Guide.](SceneSystem/SceneSystemGettingStarted.md)
 
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png)
 
