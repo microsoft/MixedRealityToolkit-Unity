@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             get
             {
-                if (main == null)
+                if (main == null || !main.isActiveAndEnabled)
                 {
                     FindOrCreateMainCamera();
                 }
@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             // If the cached camera is null, search for main
             main = Camera.main;
 
-            if (main == null)
+            if (main == null || !main.isActiveAndEnabled)
             {   // If no main camera was found, create it now
                 Debug.LogWarning("No main camera found. The Mixed Reality Toolkit requires at least one camera in the scene. One will be generated now.");
                 main = new GameObject("Main Camera", typeof(Camera)) { tag = "MainCamera" }.GetComponent<Camera>();
