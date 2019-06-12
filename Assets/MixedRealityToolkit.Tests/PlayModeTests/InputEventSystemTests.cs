@@ -279,7 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.Zero(objectBasedListener.pointerDraggedCount, "Pointer dragged event is received by old API handler.");
             Assert.AreEqual(objectBasedListener.speechCount, 1,  "Speech event is not received by old API handler.");
 
-            // Wrong behavior, preserved for backward compatibility
             Assert.Zero(handlerBasedListener.pointerClickedCount, "Pointer clicked event is received by new API handler.");
             Assert.Zero(handlerBasedListener.pointerDownCount,    "Pointer down event is received by new  API handler.");
             Assert.Zero(handlerBasedListener.pointerUpCount,      "Pointer up event is received by new API handler.");
