@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); //Guid, FileName
 
-        // This is the knonw Unity-defined script fileId
+        // This is the known Unity-defined script fileId
         private const string ScriptFileIdConstant = "11500000";
 
         [MenuItem("Assets/Retarget To DLL")]
@@ -109,8 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             return dllGuids;
         }
 
-        /// <param name="remapDictionary">Script file guid references to final editor dll guid and fileID.</param>
-        /// <param name="dllGuids">Dll name to Dll file guid mapping.</param>
+        /// <param name="remapDictionary">Script file guid references to final editor DLL guid and fileID.</param>
+        /// <param name="dllGuids">DLL name to DLL file guid mapping.</param>
         private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary, Dictionary<string, string> dllGuids)
         {
             if (Directory.Exists(outputDirectory))
@@ -312,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     {
                         if (!asmDefMappings.TryGetValue($"{dll.name}.dll", out string newDllGuid))
                         {
-                            throw new InvalidOperationException($"No guid based on .asmdef was generated for dll '{dll.name}'.");
+                            throw new InvalidOperationException($"No guid based on .asmdef was generated for DLL '{dll.name}'.");
                         }
 
                         File.Copy(Path.Combine(tmpDirPath, $"{dll.name}.dll"), Path.Combine(outputDirectory, $"{dll.name}.dll"));
@@ -361,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 DirectoryInfo directory = new DirectoryInfo(Application.dataPath.Replace("Assets", sourceToOutputPair.Key));
                 if (!directory.Exists)
                 {
-                    throw new InvalidDataException($"The required platform intermediary build directory {sourceToOutputPair.Key} does not exist. Was the build succesful?");
+                    throw new InvalidDataException($"The required platform intermediary build directory {sourceToOutputPair.Key} does not exist. Was the build successful?");
                 }
 
                 string pluginPath = Path.Combine(outputPath, sourceToOutputPair.Value);

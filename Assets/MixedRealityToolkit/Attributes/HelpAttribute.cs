@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// A PropertyAttribute for showing a collapsable Help section.
+    /// A PropertyAttribute for showing a collapsible Help section.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field|AttributeTargets.Property, AllowMultiple = false)]
     public class HelpAttribute : PropertyAttribute

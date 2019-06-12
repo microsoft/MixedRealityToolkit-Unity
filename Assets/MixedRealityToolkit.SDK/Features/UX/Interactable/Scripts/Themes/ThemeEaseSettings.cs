@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Ease settings and cunctionality for themes
+    /// Ease settings and functionality for themes
     /// </summary>
     
     [System.Serializable]

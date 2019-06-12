@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the the required assemblies (i.e. the ones below).
+// Unity doesn't include the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
 using Microsoft.MixedReality.Toolkit.Input;
@@ -29,12 +29,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.InitializePlayspace();
 
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            // This should not throw an excetion
+            // This should not throw an exception
             var interactable = cube.AddComponent<Interactable>();
 
             // clean up
             GameObject.Destroy(cube);
             yield return null;
+        }
+
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
         }
     }
 }

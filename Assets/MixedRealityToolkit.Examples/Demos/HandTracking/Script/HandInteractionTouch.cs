@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-            OnTouchCompleted.Invoke(new TouchEventData { });
+            OnTouchCompleted.Invoke(eventData);
 
             if (debugMessage != null)
             {
@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            OnTouchStarted.Invoke(new TouchEventData { });
+            OnTouchStarted.Invoke(eventData);
 
             if (debugMessage != null)
             {
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            OnTouchUpdated.Invoke(new TouchEventData { });
+            OnTouchUpdated.Invoke(eventData);
 
             if (debugMessage2 != null)
             {

@@ -348,7 +348,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (gestureRecognizer == null)
             {
-                gestureRecognizer = new GestureRecognizer();
+                try
+                {
+                    gestureRecognizer = new GestureRecognizer();
+                }
+                catch (UnityException ex)
+                {
+                    Debug.LogWarning($"Failed to create gesture recognizer. OS version might not support it. Exception: {ex}");
+                    gestureRecognizer = null;
+                    return;
+                }
             }
 
             gestureRecognizer.HoldStarted += GestureRecognizer_HoldStarted;
@@ -379,7 +388,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (navigationGestureRecognizer == null)
             {
-                navigationGestureRecognizer = new GestureRecognizer();
+                try
+                {
+                    navigationGestureRecognizer = new GestureRecognizer();
+                }
+                catch (UnityException ex)
+                {
+                    Debug.LogWarning($"Failed to create gesture recognizer. OS version might not support it. Exception: {ex}");
+                    navigationGestureRecognizer = null;
+                    return;
+                }
             }
 
             navigationGestureRecognizer.NavigationStarted += NavigationGestureRecognizer_NavigationStarted;
@@ -428,12 +446,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSource">Source State provided by the SDK</param>
         /// <param name="addController">Should the Source be added as a controller if it isn't found?</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private WindowsMixedRealityController GetController(InteractionSource interactionSource, bool addController = true)
+        private BaseWindowsMixedRealitySource GetController(InteractionSource interactionSource, bool addController = true)
         {
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSource.id))
             {
-                var controller = activeControllers[interactionSource.id] as WindowsMixedRealityController;
+                var controller = activeControllers[interactionSource.id] as BaseWindowsMixedRealitySource;
                 Debug.Assert(controller != null);
                 return controller;
             }
@@ -488,7 +506,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             string nameModifier = controllingHand == Handedness.None ? interactionSource.kind.ToString() : controllingHand.ToString();
             var inputSource = inputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers, inputSourceType);
 
-            WindowsMixedRealityController detectedController;
+            BaseWindowsMixedRealitySource detectedController;
             if (interactionSource.kind == InteractionSourceKind.Hand)
             {
                 if (interactionSource.supportsPointing)

@@ -1250,7 +1250,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         localScale = localScale == 0.0f ? 0.0001f : localScale;
                         sphereCollider.radius = 0.04f / localScale;
                     }
-                    else if(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
+                    else if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
                     {
                         Debug.Assert(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box);
                         BoxCollider collider = ball.AddComponent<BoxCollider>();

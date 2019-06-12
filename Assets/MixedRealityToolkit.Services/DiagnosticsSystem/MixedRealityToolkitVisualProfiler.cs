@@ -504,7 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 windowVerticalRotationInverse = Quaternion.Inverse(windowVerticalRotation);
             }
 
-            // Build the window boackground.
+            // Build the window background.
             {
                 background = CreateQuad("Background", window).transform;
                 InitializeRenderer(background.gameObject, backgroundMaterial, colorID, baseColor);

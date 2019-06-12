@@ -12,6 +12,7 @@ jobs:
     demands:
     - Unity2018.3.7f1  # variable expansion not allowed here
     - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
   steps:
   - template: templates/common.yml
   - task: PublishBuildArtifacts@1
@@ -36,5 +37,7 @@ jobs:
     parameters:
       ConfigName: "MRTKSignConfig.xml"
   - template: templates/package.yml
+  - template: templates/tasks/signing.yml
     parameters:
-      Sign: true
+      ConfigName: "MRTKNuGetSignConfig.xml"
+  - template: templates/publishpackages.yml
