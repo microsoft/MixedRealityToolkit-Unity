@@ -15,7 +15,7 @@ In case, you wonder what that entails, we will start with a quick overview of ho
 
 ## Setting up the MRTK eye tracking samples
 
-### 1. Load EyeTrackingDemo-00-RootScene.unity:
+### 1. Load EyeTrackingDemo-00-RootScene.unity
 The *EyeTrackingDemo-00-RootScene* is the base (_root_) scene that has all the core MRTK components included.
 This is the scene that you need to load first and from which you will run the eye tracking demos. 
 It comes with a graphical scene menu that allows you to easily switch between the different eye tracking samples which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
