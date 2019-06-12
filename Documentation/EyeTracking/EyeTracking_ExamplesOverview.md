@@ -31,7 +31,7 @@ By default this is _EyeTrackingDemo-02-TargetSelection_.
 ### 2. Adding scenes to the Build menu
 To load additive scenes, you must add these scenes to your Build Settings menu first. 
 After you've loaded the EyeTrackingDemo-00-RootScene and before hitting _play_ in your Unity Editor, you need to add the following scenes to your Build Settings:
-![Build Settings scene menu for eye tracking samples](../Images/EyeTracking/mrtk_et_buildsettings.jpg)
+![Build Settings scene menu for eye tracking samples](../Images/EyeTracking/mrtk_et_build_settings.jpg)
 
 ### 3. Play the eye tracking samples in the Unity Editor
 You've added the eye tracking sample scenes to the Build Settings and have loaded the _EyeTrackingDemo-00-RootScene_?
