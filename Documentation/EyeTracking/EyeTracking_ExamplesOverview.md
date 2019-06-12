@@ -51,13 +51,18 @@ You should notice a small semitransparent circle at the center of your Game view
 This acts as an indicator of your _simulated eye gaze_.
 You can move it by pressing down the _right mouse button_ and move the mouse.
 When the cursor is hovering over the gems, you will notice that the cursor will snap to the center of the currently looked at gem. 
-This is a great way to test your simulated eye gaze input.
-Please beware though that our eyes move very rapidly and that the mouse movement is not the best supplement to simulated this behavior. 
-The gem rotates as long as being looked at and you can destroy it by pressing _Enter_.
+This is a great way to test if events are triggered as expected when _"looking"_ at a target. 
+Please beware though that the _simulated eye gaze_ via mouse control is a rather poor supplement to our rapid and unintentional eye movements. 
+It's great for testing the basic functionality before iterating on the design by deploying it to the HoloLens 2 device though.
+Coming back to our sample scene: The gem rotates as long as being looked at and can be destroyed by "looking" at it and ...
+- Pressing _Enter_ (which simulates saying "select")
+- Actually saying _"select"_ into your microphone
+- While pressing _Space_ to show the simulated hand input, click the left mouse button to perform an airtap
+
 We describe in more detail why and how you can achieve these interactions in our [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md) tutorial.
 
 When moving the cursor up to the top menu bar, you will notice that the currently hovered item will highlight subtly. 
-You can select the currently highlighted item by pressing _Enter_. 
+You can select the currently highlighted item by using one of the above described commit methods (e.g., pressing _Enter_).
 This way you can switch between the different eye tracking sample scenes.
 
 ### 4. How to test specific sub scenes
@@ -66,6 +71,8 @@ No problem!
 - Load the _root_ scene
 - Disable the _'OnLoadStartScene'_ script
 - _Drag and drop_ one of the eye tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view.
+
+![Example for additive scene](../Images/EyeTracking/mrtk_et_additivescene.jpg)
 
 
 ## Overview of the eye tracking demo samples
