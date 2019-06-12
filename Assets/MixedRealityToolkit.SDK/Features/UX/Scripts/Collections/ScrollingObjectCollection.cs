@@ -45,10 +45,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Number of items visible in scroller 
+        /// Number of lines visible in scroller. orthagonal to <see cref="tiers"/>
         /// </summary>
         [SerializeField]
-        [Tooltip("Number of items visible in scroller")]
+        [Tooltip("Number of lines visible in scroller, orthagonal to tiers")]
         private int viewableArea = 4;
 
         public int ViewableArea
@@ -86,19 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Snaps the items in the list to be entirely visible
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Snaps the items in the list to be entirely visible")]
-        private bool snapListItems = false;
-
-        public bool SnapListItems
-        {
-            get => snapListItems;
-            set => snapListItems = value;
-        }
-
-        /// <summary>
         /// The direction in which content should scroll 
         /// </summary>
         [SerializeField]
@@ -112,11 +99,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Toggles whether the <see cref="ScrollingObjectCollection"/> will use the Camera <see cref="Camera.onPreRender"/> event.
+        /// Toggles whether the <see cref="ScrollingObjectCollection"/> will use the Camera <see cref="Camera.onPreRender"/> event to hide items in the list.
         /// </summary>
         /// <remarks>This is especially helpful if you're trying to scroll dynamically created objects that may be added to the list after <see cref"MonoBehaviour.LateUpdate()"/> such as <see cref"MonoBehaviour.OnWillRender()"/></remarks>
         [SerializeField]
-        [Tooltip("Toggles whether the scrollingObjectCollection will use the Camera OnPreRender event")]
+        [Tooltip("Toggles whether the scrollingObjectCollection will use the Camera OnPreRender event to hide items in the list")]
         private bool useOnPreRender;
 
         public bool UseOnPreRender
@@ -185,55 +172,51 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Animation curve for pagination 
+        /// Animation curve used to interpolate the pagination and movement methods
         /// </summary>
         [SerializeField]
         [Tooltip("Animation curve for pagination")]
         private AnimationCurve paginationCurve = new AnimationCurve(
                                                                     new Keyframe(0, 0),
                                                                     new Keyframe(1, 1));
-
         public AnimationCurve PaginationCurve
         {
             get => paginationCurve;
             set => paginationCurve = value;
         }
 
-        //TODO: use a baked falloffcurve for VelocityFalloffPerItem
-        //private AnimationCurve falloffCurve = new AnimationCurve( new Keyframe(0.0f, 0.0f, 677.5f, 677.5f, 0.0f, .16f), new Keyframe(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
-
         /// <summary>
-        /// Animation length 
+        /// The amount of time the <see cref="PaginationCurve"/> will take to evaulaute
         /// </summary>
         [SerializeField]
-        [Tooltip("Animation length")]
+        [Tooltip("The amount of time the PaginationCurve will take to evaulaute")]
         private float animationLength = 0.25f;
 
         public float AnimationLength
         {
-            get => animationLength;
+            get => (animationLength < 0) ? 0 : animationLength;
             set => animationLength = value;
         }
 
         /// <summary>
-        /// Number of columns, depending on the scrollDirection, columns can effectively be rows
+        /// Number of columns or rows in respect to <see cref="ViewableArea"/> and <see cref="ScrollDirection"/>
         /// </summary>
-        [Tooltip("Number of columns, depending on the scrollDirection, columns can effectively be rows")]
+        [Tooltip("Number of columns or rows in respect to ViewableArea and ScrollDirection")]
         [SerializeField]
         [Range(1, 500)]
-        private int columns = 3;
+        private int tiers = 2;
 
-        public int Columns
+        public int Tiers
         {
-            get => (columns > 0) ? columns : 1;
-            set => columns = value;
+            get => (tiers > 0) ? tiers : 1;
+            set => tiers = value;
         }
 
         /// <summary>
-        /// Multiplier to fix any mismatch in scale calculation of the occlusion objects 
+        /// Manual offset adjust the scale calculation of the <see cref="ClippingBox"/>
         /// </summary>
         [SerializeField]
-        [Tooltip("Multiplier to fix any mismatch in scale calculation of the occlusion objects")]
+        [Tooltip("Manual offset adjust the scale calculation of the ClippingBox")]
         private Vector3 occlusionScalePadding = new Vector3(0.0f, 0.0f, 0.001f);
 
         public Vector3 OcclusionScalePadding
@@ -243,10 +226,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Multiplier to fix any mismatch in position calculation of the occlusion objects 
+        /// Manual offset adjust the position calculation of the <see cref="ClippingBox"/>
         /// </summary>
         [SerializeField]
-        [Tooltip("Multiplier to fix any mismatch in position calculation of the occlusion objects")]
+        [Tooltip("Manual offset adjust the position calculation of the ClippingBox")]
         private Vector3 occlusionPositionPadding = Vector3.zero;
 
         public Vector3 OcclusionPositionPadding
@@ -261,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [Tooltip("Width of cell per object")]
         [SerializeField]
         [Range(0.00001f, 100.0f)]
-        private float cellWidth = 0.5f;
+        private float cellWidth = 0.25f;
 
         public float CellWidth
         {
@@ -275,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [Tooltip("Height of cell per object")]
         [SerializeField]
         [Range(0.00001f, 100.0f)]
-        private float cellHeight = 0.5f;
+        private float cellHeight = 0.25f;
 
         public float CellHeight
         {
@@ -284,10 +267,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Forward vector 
+        /// Forward vector for calculating the press plane of the <see cref="ScrollingObjectCollection"/>.
         /// </summary>
+        /// <remarks>
+        /// When using <see cref="PressableButton"/> or <see cref="NearInteractionTouchable"/> ensure this matches <see cref="NearInteractionTouchable.LocalForward"/>.
+        /// </remarks>
         [SerializeField]
-        [Tooltip("Forward vector")]
+        [Tooltip("Forward vector for calculating the press plane of the ScrollingObjectCollection")]
         private AxisOrientationType collectionForward = AxisOrientationType.NegativeZ;
 
         public AxisOrientationType CollectionForward
@@ -296,13 +282,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set => collectionForward = value;
         }
 
-
         /// <summary>
-        /// Multiplier to add more bounce to the overscroll of a list 
+        /// Multiplier to add more bounce to the overscroll of a list when using <see cref="VelocityType.FalloffPerFrame"/> or <see cref="VelocityType.FalloffPerItem"/>.
         /// </summary>
         [SerializeField]
-        [Tooltip("Multiplier to add more bounce to the overscroll of a list")]
-        private float bounceMultiplier;
+        [Tooltip("Multiplier to add more bounce to the overscroll of a list when using VelocityType.FalloffPerFrame or VelocityType.FalloffPerItem")]
+        private float bounceMultiplier = 0.1f;
 
         public float BounceMultiplier
         {
@@ -311,31 +296,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Event that is fired on the target object when the scrollingCollection deems event as a press.
+        /// Event that is fired on the target object when the ScrollingObjectCollection deems event as a Click.
         /// </summary>
-        [Tooltip("Event that is fired on the target object when the scrollingCollection deems event as a press.")]
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection deems event as a Click.")]
         public UnityEvent ClickEvent = new UnityEvent();
 
         /// <summary>
-        /// Event that is fired on the target object when the scrollingCollection is touched.
+        /// Event that is fired on the target object when the ScrollingObjectCollection is touched.
         /// </summary>
-        [Tooltip("Event that is fired on the target object when the scrollingCollection is touched.")]
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is touched.")]
         public UnityEvent TouchStarted = new UnityEvent();
 
         /// <summary>
-        /// Event that is fired on the target object when the scrollingCollection is no longer touched.
+        /// Event that is fired on the target object when the ScrollingObjectCollection is no longer touched.
         /// </summary>
-        [Tooltip("Event that is fired on the target object when the scrollingCollection is no longer touched.")]
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is no longer touched.")]
         public UnityEvent TouchEnded = new UnityEvent();
 
         /// <summary>
-        /// Event that is fired on the target object when the scrollingCollection is no longer in motion from velocity
+        /// Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity
         /// </summary>
-        [Tooltip("Event that is fired on the target object when the scrollingCollection is no longer in motion from velocity.")]
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity.")]
         public UnityEvent ListMomentumEnded = new UnityEvent();
 
         /// <summary>
-        /// First item in the viewable (visible) area. 
+        /// First item (visible) in the <see cref="ViewableArea"/>. 
         /// </summary>
         public int FirstItemInView
         {
@@ -343,11 +328,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
-                    return (int)(workingScrollerPos.y / CellHeight) - ((int)(workingScrollerPos.y / CellHeight) % Columns);
+                    return (int)(workingScrollerPos.y / CellHeight) - ((int)(workingScrollerPos.y / CellHeight) % Tiers);
                 }
                 else
                 {
-                    return (int)(workingScrollerPos.x / CellWidth) - ((int)(workingScrollerPos.x / CellWidth) % Columns);
+                    return (int)(workingScrollerPos.x / CellWidth) - ((int)(workingScrollerPos.x / CellWidth) % Tiers);
                 }
             }
         }
@@ -357,10 +342,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private CameraEventRouter cameraMethods;
 
         //Half of a cell
-        private Vector2 HalfCell => new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
+        private Vector2 HalfCell;
 
         //Maximum amount the scroller can travel (vertically)
-        private float maxY => NodeList.Count != 0 ? ((StepMultiplier(NodeList.Count, Columns) + ModCheck(NodeList.Count, Columns) - ViewableArea) * CellHeight) : 0.0f;
+        private float maxY => NodeList.Count != 0 ? ((StepMultiplier(NodeList.Count, Tiers) + ModCheck(NodeList.Count, Tiers) - ViewableArea) * CellHeight) : 0.0f;
 
         //Minimum amount the scroller can travel (vertically) - this will always be zero. Here for readability
         private readonly float minY = 0.0f;
@@ -369,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private readonly float maxX = 0.0f;
 
         //Minimum amount the scroller can travel (horizontally)
-        private float minX => NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count, Columns) + ModCheck(NodeList.Count, Columns) - ViewableArea) * CellWidth) : 0.0f;
+        private float minX => NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count, Tiers) + ModCheck(NodeList.Count, Tiers) - ViewableArea) * CellWidth) : 0.0f;
 
         //item index for items that should be visible
         private int numItemsPrevView
@@ -378,11 +363,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
-                    return (int)Mathf.Ceil(scrollContainer.transform.localPosition.y / CellHeight) * Columns;
+                    return (int)Mathf.Ceil(scrollContainer.transform.localPosition.y / CellHeight) * Tiers;
                 }
                 else
                 {
-                    return -((int)Mathf.Ceil(scrollContainer.transform.localPosition.x / CellWidth) * Columns);
+                    return -((int)Mathf.Ceil(scrollContainer.transform.localPosition.x / CellWidth) * Tiers);
                 }
             }
         }
@@ -395,11 +380,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
-                    return ((int)Mathf.Floor((scrollContainer.transform.localPosition.y + occlusionPositionPadding.y) / CellHeight) * Columns) + (ViewableArea * Columns) - 1;
+                    return ((int)Mathf.Floor((scrollContainer.transform.localPosition.y + occlusionPositionPadding.y) / CellHeight) * Tiers) + (ViewableArea * Tiers) - 1;
                 }
                 else
                 {
-                    return ((int)Mathf.Floor((-(scrollContainer.transform.localPosition.x) + occlusionPositionPadding.x) / CellWidth) * Columns) + (ViewableArea * Columns) - 1;
+                    return ((int)Mathf.Floor((-(scrollContainer.transform.localPosition.x) + occlusionPositionPadding.x) / CellWidth) * Tiers) + (ViewableArea * Tiers) - 1;
                 }
 
             }
@@ -414,16 +399,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [SerializeField]
         [HideInInspector]
         private GameObject clippingObject;
+
+        /// <summary>
+        /// The empty <see cref="GameObject"/> containing the <see cref="ScrollingObjectCollection"/>'s <see cref="ClippingBox"/>.
+        /// </summary>
         public GameObject ClippingObject => clippingObject;
 
         //A reference to the ClippingBox on the clippingObject
         [SerializeField]
         [HideInInspector]
-        private ClippingBox clippingBox;
+        private ClippingBox clipBox;
 
-        public ClippingBox ClippingBox => clippingBox;
+        /// <summary>
+        /// The <see cref="ScrollingObjectCollection"/>'s <see cref="ClippingBox"/> that is used for clipping items in and out of the list.
+        /// </summary>
+        public ClippingBox ClipBox => clipBox;
 
-        //The bounds of the clipping object, this is to make helper math easier later, it doesn't mater that its AABB since we're really not using it for bounds operations
+        //The bounds of the clipping object, this is to make helper math easier later, it doesn't matter that its AABB since we're really not using it for bounds operations
         [SerializeField]
         [HideInInspector]
         private Bounds clippingBounds;
@@ -452,11 +444,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         //A list of new child nodes that have new child renderers that need to be removed to the clippingBox
         private List<ObjectCollectionNode> nodesToUnclip = new List<ObjectCollectionNode>();
 
-        #region event variables
+        #region scroll state variables
 
         // The currently tracked finger/pointer objects
         private Transform currentPointerTransform;
+
         private Handedness currentHand;
+
         private IMixedRealityPointer currentPointer;
 
         //The point where the original PointerDown occured
@@ -481,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        #endregion
+        #endregion scroll state variables
 
         #region drag position calculation variables
 
@@ -496,7 +490,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         //Hand position previous frame
         private Vector3 lastHandPos;
-
 
         //the amount for finalOffset to travel
         [SerializeField]
@@ -516,13 +509,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         //Current time at initial press
         private float initialPressTime;
 
-        //Whether a Animation CoRoutine is running / animating the scrollContainer
-        private bool animatingToPosition = false;
+        #endregion drag position calculation variables
 
-        //the Animation CoRoutine
-        private IEnumerator AnimateScroller;
-
-        #endregion
+        #region velocity calculation variables
 
         //simple velocity of the scroller: current - last / timeDelta
         private float scrollVelocity = 0.0f;
@@ -530,7 +519,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         //Filtered weight of scroll velocity
         private float avgVelocity = 0.0f;
 
-        //how much we should filter - yes this is a magic number. It sbeen tuned so lets leave it.
+        //How much we should filter the velocity - yes this is a magic number. Its been tuned so lets leave it.
         private readonly float velocityFilterWeight = 0.97f;
 
         //Simple state enum to handle velocity logic
@@ -548,8 +537,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         //Pre calculated destination with velocity and falloff when using per item snapping
         private Vector3 velocityDestinationPos;
 
-        //velocity container for additive scrolling
+        //velocity container for storing previous filtered velocity
         private float velocitySnapshot;
+
+        #endregion velocity calculation variables
+
+        //Whether a Animation CoRoutine is running / animating the scrollContainer
+        private bool animatingToPosition = false;
+
+        //the Animation CoRoutine
+        private IEnumerator AnimateScroller;
 
         #region ObjectCollection methods
 
@@ -579,14 +576,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             //ClippingBox  component null check - ensure its set up properly
-            if (clippingBox == null)
+            if (clipBox == null)
             {
-                clippingBox = clippingObject.AddComponent<ClippingBox>();
-                clippingBox.ClippingSide = ClippingPrimitive.Side.Outside;
+                clipBox = clippingObject.AddComponent<ClippingBox>();
+                clipBox.ClippingSide = ClippingPrimitive.Side.Outside;
 
                 if (useOnPreRender)
                 {
-                    clippingBox.UseOnPreRender = true;
+                    clipBox.UseOnPreRender = true;
 
                     //Subscribe to the preRender callback on the main camera so we can intercept it and make sure we catch
                     //any dynamically created children in our list
@@ -702,6 +699,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         protected override void LayoutChildren()
         {
+            HalfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
+
             if (NodeList.Count <= 0)
             {
                 Debug.LogWarning(gameObject.name + " ScrollingObjectCollection needs a NodeList greater than zero");
@@ -716,15 +715,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
-                    newPos.x = (ModCheck(i, Columns) != 0) ? (ModCheck(i, Columns) * CellWidth) + HalfCell.x : HalfCell.x;
-                    newPos.y = ((StepMultiplier(i, Columns) * CellHeight) + HalfCell.y) * -1;
+                    newPos.x = (ModCheck(i, Tiers) != 0) ? (ModCheck(i, Tiers) * CellWidth) + HalfCell.x : HalfCell.x;
+                    newPos.y = ((StepMultiplier(i, Tiers) * CellHeight) + HalfCell.y) * -1;
                     newPos.z = 0.0f;
 
                 }
                 else //left or right
                 {
-                    newPos.x = (StepMultiplier(i, Columns) * CellWidth) + HalfCell.x;
-                    newPos.y = ((ModCheck(i, Columns) != 0) ? (ModCheck(i, Columns) * CellHeight) + HalfCell.y : HalfCell.y) * -1;
+                    newPos.x = (StepMultiplier(i, Tiers) * CellWidth) + HalfCell.x;
+                    newPos.y = ((ModCheck(i, Tiers) != 0) ? (ModCheck(i, Tiers) * CellHeight) + HalfCell.y : HalfCell.y) * -1;
                     newPos.z = 0.0f;
                 }
                 node.Transform.localPosition = newPos;
@@ -796,37 +795,36 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                     //apply the viewable area and column/row multiplier
                     //use a dummy bounds of one to get the local scale to match;
-                    clippingBounds.size = new Vector3((clippingBounds.size.x * Columns), (clippingBounds.size.y * ViewableArea), clippingBounds.size.z);
-                    clippingBox.transform.localScale = CalculateScale(new Bounds(Vector3.zero, Vector3.one), clippingBounds, occlusionScalePadding);
+                    clippingBounds.size = new Vector3((clippingBounds.size.x * Tiers), (clippingBounds.size.y * ViewableArea), clippingBounds.size.z);
+                    clipBox.transform.localScale = CalculateScale(new Bounds(Vector3.zero, Vector3.one), clippingBounds, occlusionScalePadding);
 
                     //adjust where the center of the clipping box is
-                    viewableCenter.x = (clippingBox.transform.localScale.x * 0.5f) - (occlusionScalePadding.x * 0.5f) + occlusionPositionPadding.x;
-                    viewableCenter.y = (((clippingBox.transform.localScale.y * 0.5f) - (occlusionScalePadding.y * 0.5f)) * -1) + occlusionPositionPadding.y;
+                    viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (occlusionScalePadding.x * 0.5f) + occlusionPositionPadding.x;
+                    viewableCenter.y = (((clipBox.transform.localScale.y * 0.5f) - (occlusionScalePadding.y * 0.5f)) * -1) + occlusionPositionPadding.y;
                     viewableCenter.z = occlusionPositionPadding.z;
                     break;
 
                 case ScrollDirectionType.LeftAndRight:
 
                     //Same as above for L <-> R
-                    clippingBounds.size = new Vector3(clippingBounds.size.x * ViewableArea, clippingBounds.size.y * Columns, clippingBounds.size.z);
-                    //clippingBounds.size = new Vector3((clippingBounds.size.x * ViewableArea) + HalfCell.x, (clippingBounds.size.y * Rows) - HalfCell.y, clippingBounds.size.z);
-                    clippingBox.transform.localScale = CalculateScale(new Bounds(Vector3.zero, Vector3.one), clippingBounds, OcclusionScalePadding);
+                    clippingBounds.size = new Vector3(clippingBounds.size.x * ViewableArea, clippingBounds.size.y * Tiers, clippingBounds.size.z);
+                    clipBox.transform.localScale = CalculateScale(new Bounds(Vector3.zero, Vector3.one), clippingBounds) + OcclusionScalePadding;
 
                     //Same as above for L <-> R
-                    viewableCenter.x = (clippingBox.transform.localScale.x * 0.5f) - (occlusionScalePadding.x * 0.5f) + occlusionPositionPadding.x;
-                    viewableCenter.y = ((clippingBox.transform.localScale.y * 0.5f) - (occlusionScalePadding.y * 0.5f) + occlusionPositionPadding.y) * -1.0f;
+                    viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (occlusionScalePadding.x * 0.5f) + occlusionPositionPadding.x;
+                    viewableCenter.y = ((clipBox.transform.localScale.y * 0.5f) - (occlusionScalePadding.y * 0.5f) + occlusionPositionPadding.y) * -1.0f;
                     viewableCenter.z = occlusionPositionPadding.z;
                     break;
             }
 
             //Apply our new values
-            clippingBox.transform.localPosition = viewableCenter;
+            clipBox.transform.localPosition = viewableCenter;
 
             //add our objects to the clippingBox queue
             AddAllItemsToClippingObject();
         }
 
-        #endregion
+        #endregion ObjectCollection methods
 
         #region Monobehavior Implementation
 
@@ -834,12 +832,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (useOnPreRender)
             {
-                if (clippingObject == null || clippingBox == null)
+                if (clippingObject == null || clipBox == null)
                 {
                     UpdateCollection();
                 }
 
-                clippingBox.UseOnPreRender = true;
+                clipBox.UseOnPreRender = true;
 
                 //Subscribe to the preRender callback on the main camera so we can intercept it and make sure we catch
                 //any dynamically created children in our list
@@ -855,9 +853,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 UpdateCollection();
             }
 
-            if (useOnPreRender && clippingBox != null)
+            if (useOnPreRender && clipBox != null)
             {
-                clippingBox.UseOnPreRender = true;
+                clipBox.UseOnPreRender = true;
 
                 //Subscribe to the preRender callback on the main camera so we can intercept it and make sure we catch
                 //any dynamically created children in our list
@@ -871,7 +869,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             //early bail, the component isn't set up properly
             if (scrollContainer == null) { return; }
 
-            bool nodeLengthCheck = NodeList.Count > (ViewableArea * Columns);
+            bool nodeLengthCheck = NodeList.Count > (ViewableArea * Tiers);
 
             // Force the position if the total number of items in the list is less than the scrollable area
             if (!nodeLengthCheck)
@@ -1016,14 +1014,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        #endregion
+        #endregion Monobehavior Implementation
 
         #region private methods
 
         /// <summary>
-        /// 
+        /// When <see cref="UseOnPreRender"/>, the <see cref="ScrollingObjectCollection"/> subscribes to the <see cref="CameraEventRouter"/> call back for OnCameraPreRender
         /// </summary>
-        /// <param name="router"></param>
+        /// <param name="router">The active <see cref="CameraEventRouter"/> on the camera.</param>
 
         private void OnCameraPreRender(CameraEventRouter router)
         {
@@ -1048,7 +1046,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Calculates our <see cref="VelocityType"/> falloff
         /// </summary>
         private void HandleVeloctyFalloff()
         {
@@ -1454,7 +1452,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         /// <summary>
         /// The Animation Override to position our scroller based on manual movement <see cref="PageBy(int, bool)"/>, <see cref="MoveTo(int, bool)"/>,
-        /// <see cref="MoveByItems(int, bool)"/>, or <see cref="MoveByRows(int, bool)"/>
+        /// <see cref="MoveByItems(int, bool)"/>, or <see cref="MoveByTiers(int, bool)"/>
         /// </summary>
         /// <param name="initialPos">The start position of the scrollContainer</param>
         /// <param name="finalPos">Where we want the scrollContainer to end up, typically this should be <see cref="workingScrollerPos"/></param>
@@ -1489,7 +1487,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             //update our values so they stick
 
-            workingScrollerPos.y = initialScrollerPos.y = StepMultiplier((int)Mathf.Round(scrollContainer.transform.localPosition.y / CellHeight), Columns) * CellHeight;
+            workingScrollerPos.y = initialScrollerPos.y = StepMultiplier((int)Mathf.Round(scrollContainer.transform.localPosition.y / CellHeight), Tiers) * CellHeight;
 
             animatingToPosition = false;
 
@@ -1538,7 +1536,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
                 for (int i = 0; i < childRends.Length; i++)
                 {
-                    clippingBox.AddRenderer(childRends[i]);
+                    clipBox.AddRenderer(childRends[i]);
                 }
             }
         }
@@ -1552,7 +1550,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
             for (int i = 0; i < childRends.Length; i++)
             {
-                clippingBox.AddRenderer(childRends[i]);
+                clipBox.AddRenderer(childRends[i]);
             }
         }
 
@@ -1567,7 +1565,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
                 for (int i = 0; i < childRends.Length; i++)
                 {
-                    clippingBox.AddRenderer(childRends[i]);
+                    clipBox.AddRenderer(childRends[i]);
                 }
             }
         }
@@ -1583,7 +1581,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
                 for (int i = 0; i < childRends.Length; i++)
                 {
-                    clippingBox.RemoveRenderer(childRends[i]);
+                    clipBox.RemoveRenderer(childRends[i]);
                 }
             }
         }
@@ -1597,7 +1595,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
             for (int i = 0; i < childRends.Length; i++)
             {
-                clippingBox.RemoveRenderer(childRends[i]);
+                clipBox.RemoveRenderer(childRends[i]);
             }
         }
 
@@ -1612,7 +1610,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
                 for (int i = 0; i < childRends.Length; i++)
                 {
-                    clippingBox.RemoveRenderer(childRends[i]);
+                    clipBox.RemoveRenderer(childRends[i]);
                 }
             }
         }
@@ -1646,7 +1644,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// disabled (<see cref="GameObject.SetActive(bool)"/>) and their <see cref="Collider"/> disabled.
         /// </summary>
         /// <remarks>When <see cref="useOnPreRender"/> is set to <see cref="true"/>, <see cref="HideItems"/> will populate a list of <see cref="ObjectCollectionNode"/>
-        /// to be added to the <see cref="ClippingBox"/>.</remarks>
+        /// to be added to the <see cref="ClipBox"/>.</remarks>
         private void HideItems()
         {
             //Early Bail - our list is empty
@@ -1657,7 +1655,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             int postItems = numItemsPostView;
 
             int listLength = NodeList.Count;
-            int col = Columns;
+            int col = Tiers;
 
             for (int i = 0; i < listLength; i++)
             {
@@ -1796,7 +1794,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return Vector3.zero;
         }
 
-        #endregion
+        #endregion private methods
 
         #region public methods
 
@@ -1868,7 +1866,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
-                workingScrollerPos.y = FirstItemInView + (StepMultiplier(numberOfItemsToMove, Columns) * CellHeight);
+                workingScrollerPos.y = FirstItemInView + (StepMultiplier(numberOfItemsToMove, Tiers) * CellHeight);
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
 
@@ -1877,7 +1875,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             else
             {
-                workingScrollerPos.x = FirstItemInView + (StepMultiplier(numberOfItemsToMove, Columns) * CellWidth);
+                workingScrollerPos.x = FirstItemInView + (StepMultiplier(numberOfItemsToMove, Tiers) * CellWidth);
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
 
@@ -1894,11 +1892,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Moves scroller a relative number of rows
+        /// Moves scroller a relative number of lines of items.
         /// </summary>
-        /// <param name="numberOfRowsToMove">number of rows to move by</param>
+        /// <param name="numberOfLinesToMove">number of lines to move by</param>
         /// <param name="animateToPosition">if <see cref="true"/>, scroller will animate to new position</param>
-        public void MoveByRows(int numberOfRowsToMove, bool animateToPosition = true)
+        public void MoveByLines(int numberOfLinesToMove, bool animateToPosition = true)
         {
             StopAllCoroutines();
             animatingToPosition = false;
@@ -1906,7 +1904,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
-                workingScrollerPos.y = (FirstItemInView + (numberOfRowsToMove * Columns)) * CellHeight;
+                workingScrollerPos.y = (FirstItemInView + (numberOfLinesToMove * Tiers)) * CellHeight;
 
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
@@ -1916,7 +1914,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             else
             {
-                workingScrollerPos.x = (FirstItemInView + (numberOfRowsToMove * Columns)) * CellWidth;
+                workingScrollerPos.x = (FirstItemInView + (numberOfLinesToMove * Tiers)) * CellWidth;
 
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
@@ -1945,7 +1943,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
-                workingScrollerPos.y = StepMultiplier(indexOfItem, Columns) * CellHeight;
+                workingScrollerPos.y = StepMultiplier(indexOfItem, Tiers) * CellHeight;
 
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
@@ -1954,7 +1952,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             else
             {
-                workingScrollerPos.x = StepMultiplier(indexOfItem, Columns) * CellWidth;
+                workingScrollerPos.x = StepMultiplier(indexOfItem, Tiers) * CellWidth;
 
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
@@ -2215,6 +2213,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         #endregion
 
+        #region IMixedRealityPointerHandler implementation
+
         ///</inheritdoc>
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
@@ -2282,6 +2282,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             //we ignore this event and calculate click in the Update() loop;
         }
+
+        #endregion IMixedRealityPointerHandler implementation
+
+        #region IMixedRealityTouchHandler implementation
 
         ///</inheritdoc>
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
@@ -2371,6 +2375,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        #endregion IMixedRealityTouchHandler implementation
+
+        #region IMixedRealitySourceStateHandler implementation
+
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { /* */ }
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
@@ -2413,5 +2421,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             //--
         }
+        
+        #endregion IMixedRealitySourceStateHandler implementation
     }
 }

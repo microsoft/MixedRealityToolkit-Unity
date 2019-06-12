@@ -12,18 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private bool animateTransition = true;
         private int amountOfItemsToMoveBy = 0;
-        private int amountOfRowsToMoveTo = 0;
+        private int amountOfLinesToMoveTo = 0;
         private int indexToMoveTo = 0;
 
         private SerializedProperty sorting;
         private SerializedProperty cellHeight;
         private SerializedProperty cellWidth;
-        private SerializedProperty ignoreInactiveTransforms;
 
         private SerializedProperty scrollDirection;
         private SerializedProperty viewableArea;
         private SerializedProperty collectionForward;
-        private SerializedProperty columns;
+        private SerializedProperty tiers;
         private SerializedProperty useCameraPreRender;
 
         private SerializedProperty setUpAtRuntime;
@@ -51,18 +50,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty pressPlane;
 
         private Shader MRTKstd;
-
+        private Shader MRTKtmp;
 
         private void OnEnable()
         {
-            MRTKstd = Shader.Find("Mixed Reality Toolkit / Standard");
-
             sorting = serializedObject.FindProperty("sortType");
             cellHeight = serializedObject.FindProperty("cellHeight");
             cellWidth = serializedObject.FindProperty("cellWidth");
-            ignoreInactiveTransforms = serializedObject.FindProperty("ignoreInactiveTransforms");
 
-            columns = serializedObject.FindProperty("columns");
+            tiers = serializedObject.FindProperty("tiers");
             scrollDirection = serializedObject.FindProperty("scrollDirection");
             collectionForward = serializedObject.FindProperty("collectionForward");
             viewableArea = serializedObject.FindProperty("viewableArea");
@@ -102,11 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(sorting);
-                EditorGUILayout.PropertyField(ignoreInactiveTransforms);
-
                 EditorGUILayout.PropertyField(cellWidth);
                 EditorGUILayout.PropertyField(cellHeight);
-                EditorGUILayout.PropertyField(columns);
+                EditorGUILayout.PropertyField(tiers);
                 EditorGUILayout.PropertyField(viewableArea);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(scrollDirection);
@@ -195,10 +189,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     EditorGUILayout.EndHorizontal();
 
                     EditorGUILayout.BeginHorizontal();
-                    amountOfRowsToMoveTo = EditorGUILayout.IntField(amountOfRowsToMoveTo);
-                    if (GUILayout.Button("Move By Rows"))
+                    amountOfLinesToMoveTo = EditorGUILayout.IntField(amountOfLinesToMoveTo);
+                    if (GUILayout.Button("Move By Tiers"))
                     {
-                        scrollContainer.MoveByRows(amountOfRowsToMoveTo, animateTransition);
+                        scrollContainer.MoveByLines(amountOfLinesToMoveTo, animateTransition);
                     }
                     EditorGUILayout.EndHorizontal();
 
@@ -229,6 +223,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private void OnSceneGUI()
         {
             ScrollingObjectCollection scrollContainer = (ScrollingObjectCollection)target;
+
+            MRTKstd = Shader.Find("Mixed Reality Toolkit/Standard");
+            MRTKtmp = Shader.Find("Mixed Reality Toolkit/TextMeshPro");
 
             if (scrollContainer.ClippingObject == null) { return; }
 
@@ -279,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                     if (!CheckForStandardShader(node.GameObject.GetComponentsInChildren<Renderer>()))
                     {
-                        Debug.LogWarning(node.GameObject.name + " has a renderer that is not using " + MRTKstd + ". This will result in unexpected results with ScrollingObjectCollection");
+                        Debug.LogWarning(node.GameObject.name + " has a renderer that is not using " + MRTKstd.ToString() + ". This will result in unexpected results with ScrollingObjectCollection");
                     }
 
                     Vector3 cp = node.Transform.position;
@@ -296,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             foreach (Renderer rend in rends)
             {
-                if(rend.sharedMaterial.shader != MRTKstd)
+                if(rend.sharedMaterial.shader != MRTKstd && rend.sharedMaterial.shader != MRTKtmp)
                 {
                     return false;
                 }
