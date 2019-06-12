@@ -2,12 +2,11 @@
 
 # Eye-Supported Target Selection
 This page discusses different options for accessing eye gaze data and eye gaze specific events to select targets in MRTK. 
-Eye Tracking allows for fast and effortless target selections using a combination of information about what a user is looking at with additional inputs such as 
-_hand tracking_ and _voice commands_:
-    - Look & Pinch (i.e., hold up your hand in front of you and pinch your thumb and index finger together)
-    - Look & Say _"Select"_ (default voice command)
-    - Look & Say _"Explode"_ or _"Pop"_ (custom voice commands)
-    - Look & Bluetooth button
+Eye tracking allows for fast and effortless target selections using a combination of information about what a user is looking at with additional inputs such as _hand tracking_ and _voice commands_:
+- Look & Pinch (i.e., hold up your hand in front of you and pinch your thumb and index finger together)
+- Look & Say _"Select"_ (default voice command)
+- Look & Say _"Explode"_ or _"Pop"_ (custom voice commands)
+- Look & Bluetooth button
 
 ## Target Selection
 ### Use Generic Focus Handler 
