@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Core
@@ -14,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
     // Tests for the MixedRealityToolkitFiles utility class
     public class TestFixture_02_MixedRealityToolkitFilesTests
     {
+        string[] basePaths = new string[] { "", "C:\\", "C:\\xyz\\", "C:/xyz/" };
+
         [Test]
         public void Test_01_FindMatchingModule()
         {
@@ -95,13 +98,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
         public void TestInvalidPath(string path)
         {
-            Assert.False(MixedRealityToolkitFiles.FindMatchingModule(path, out MixedRealityToolkitModuleType module));
+            foreach (string basePath in basePaths)
+            {
+                string fullPath = Path.Combine(basePath, path);
+                Assert.False(MixedRealityToolkitFiles.FindMatchingModule(fullPath, out MixedRealityToolkitModuleType module));
+            }
         }
 
         public void TestValidPath(string path, MixedRealityToolkitModuleType expectedModule)
         {
-            Assert.True(MixedRealityToolkitFiles.FindMatchingModule(path, out MixedRealityToolkitModuleType module));
-            Assert.AreEqual(module, expectedModule);
+            foreach (string basePath in basePaths)
+            {
+                string fullPath = Path.Combine(basePath, path);
+                Assert.True(MixedRealityToolkitFiles.FindMatchingModule(fullPath, out MixedRealityToolkitModuleType module));
+                Assert.AreEqual(module, expectedModule);
+            }
         }
 
         [TearDown]
