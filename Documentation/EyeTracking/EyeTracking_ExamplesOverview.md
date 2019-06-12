@@ -18,11 +18,14 @@ In case, you wonder what that entails, we will start with a quick overview of ho
 ### 1. Load EyeTrackingDemo-00-RootScene.unity:
 The *EyeTrackingDemo-00-RootScene* is the base (_root_) scene that has all the core MRTK components included.
 This is the scene that you need to load first and from which you will run the eye tracking demos. 
-It will automatically load the first demo scene and comes with a graphical scene menu that allows you to easily switch between the different eye tracking samples which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
+It comes with a graphical scene menu that allows you to easily switch between the different eye tracking samples which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
+
+![Scene menu in eye tracking sample](../Images/EyeTracking/mrtk_et_scenemenu.jpg)
 
 The root scene includes a few core components that will persist across the additively loaded scenes. 
 The _MixedRealityBasicSceneSetup_ includes a script that will automatically load the referenced scene on startup. 
 By default this is _EyeTrackingDemo-02-TargetSelection_.  
+
 ![Example for the OnLoadStartScene script](../Images/EyeTracking/mrtk_et_onloadstartscene.jpg)
 
 ### 2. Adding scenes to the Build menu
@@ -33,10 +36,12 @@ After you've loaded the EyeTrackingDemo-00-RootScene and before hitting _play_ i
 ### 3. Play the eye tracking samples in the Unity Editor
 You've added the eye tracking sample scenes to the Build Settings and have loaded the _EyeTrackingDemo-00-RootScene_?
 Make sure that the _'OnLoad_StartScene'_ script is enabled for this so that the root scene knows which additive scene to load first.
+
 ![Example for the OnLoad_StartScene script](../Images/EyeTracking/mrtk_et_rootscene_onload.png)
 
 Are you excited? You've got this! Let's hit _"Play"_!
 You should see several gems appear and should see the scene menu at the top.
+
 ![Sample screenshot from the ET target select scene](../Images/EyeTracking/mrtk_et_targetselect.png)
 
 You should notice a small semitransparent circle at the center of your Game view. 
