@@ -19,9 +19,10 @@ namespace Microsoft.MixedReality.Toolkit
     [ExecuteAlways]
     public class MixedRealityPlayspace : MonoBehaviour
     {
-        private const string Description = "The Playspace is a transform where Mixed Reality objects are instantiated. It's also where the main camera is typically kept." +
-            "\nIt can be moved, but it should not be parented under another object." +
-            "\nIf multiple Playspace transforms are present across multiple scenes, all but the first loaded will be disabled.";
+        private const string Description = "This is where the Toolkit instantiates objects like cursors, pointers and boundary visualizations." +
+            "\n- Your main camera should be kept here (unless you are using a custom CameraSystem implementation.)" +
+            "\n- This transform can be moved, but it should not be parented under another object." +
+            "\n- If multiple MixedRealityPlayspace transforms are loaded in multiple scenes, all but the first loaded will be disabled and ignored.";
 
         private const string NameEnabled = "MixedRealityPlayspace";
         private const string NameDisabled = "MixedRealityPlayspace (Disabled)";
@@ -30,11 +31,17 @@ namespace Microsoft.MixedReality.Toolkit
 
         public static void Destroy()
         {
-            // Playspace makes main camera dependent on it (see Transform initialization),
-            // so here it needs to restore camera's initial position. 
-            // Without second parameter camera will not move to its original position.
-            CameraCache.Main.transform.SetParent(null, false);
-            UnityEngine.Object.Destroy(mixedRealityPlayspace.gameObject);
+            // This will destroy any main camera parented under this playspace.
+            // The camera cache and/or camera service is expected to survive this destruction.
+            // So don't worry about un-parenting the camera.
+            if (Application.isPlaying)
+            {
+                UnityEngine.Object.Destroy(mixedRealityPlayspace.gameObject);
+            }
+            else
+            {
+                UnityEngine.Object.DestroyImmediate(mixedRealityPlayspace.gameObject);
+            }
             mixedRealityPlayspace = null;
         }
 
