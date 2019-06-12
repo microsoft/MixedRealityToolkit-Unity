@@ -8,15 +8,25 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     public class OpenKeyboard : MonoBehaviour
     {
-        private Keyboard keyboard;
+        private MixedRealityKeyboard keyboard;
         public static string keyboardText = "";
         public TextMesh debugMessage;
 
         public void Start()
         {
-            keyboard = gameObject.AddComponent<Keyboard>();
+            keyboard = gameObject.AddComponent<MixedRealityKeyboard>();
             keyboard.TextChanged.AddListener((eventData) => debugMessage.text = "typing... " + keyboard.Text);
             keyboard.KeyboardHidden.AddListener(() => debugMessage.text = "typed " + keyboard.Text);
+        }
+
+        public void Open()
+        {
+            keyboard.ShowKeyboard();
+        }
+
+        public void Close()
+        {
+            keyboard.HideKeyboard();
         }
     }
 }

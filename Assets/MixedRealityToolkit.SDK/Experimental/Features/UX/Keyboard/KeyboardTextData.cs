@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     public class KeyboardTextData
     {
-        public KeyboardTextData(string oldValue, string newValue, Keyboard keyboard)
+        public KeyboardTextData(string oldValue, string newValue, MixedRealityKeyboard keyboard)
         {
             OldValue = oldValue;
             NewValue = newValue;
@@ -19,6 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         public string OldValue { get; private set; }
         public string NewValue { get; private set; }
-        public Keyboard Keyboard { get; private set; }
+        public MixedRealityKeyboard Keyboard { get; private set; }
     }
 }
