@@ -7,7 +7,7 @@ This document contains some guides for common tasks that programmatically access
 Accessing the meshes that are currently known to the spatial awareness system involves first querying
 for the spatial awareness system, then getting a hold of the IMixedRealitySpatialAwarenessMeshObserver
 (note that the base spatial awareness observer has no notion of meshes), and then enumerating those
-meshes known that observer.
+meshes known to that observer.
 
 Note that the sample below assumes that you have a single spatial mesh observer (which is the default)
 unless you have extended the spatial awareness system.
