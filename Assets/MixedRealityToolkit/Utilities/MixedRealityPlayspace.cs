@@ -49,7 +49,14 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 if (mixedRealityPlayspace != null)
                 {
-                    return mixedRealityPlayspace.transform;
+                    if (mixedRealityPlayspace.isActiveAndEnabled)
+                    {
+                        return mixedRealityPlayspace.transform;
+                    }
+                    else
+                    {
+                        mixedRealityPlayspace = null;
+                    }
                 }
 
                 FindOrCreatePlayspace();
@@ -147,14 +154,20 @@ namespace Microsoft.MixedReality.Toolkit
 
         public static void SetActivePlayspace(MixedRealityPlayspace playspace)
         {
-            if (playspace == mixedRealityPlayspace)
-            {   // Do nothing.
-                return;
-            }
-
             if (playspace == null)
             {
                 Debug.LogError("Cannot set a playspace instance to null.");
+                return;
+            }
+
+            if (!playspace.isActiveAndEnabled)
+            {   // Enable the playspace if it isn't already.
+                playspace.gameObject.SetActive(true);
+                playspace.enabled = true;
+            }
+
+            if (playspace == mixedRealityPlayspace)
+            {   // Do nothing further.
                 return;
             }
 
@@ -167,33 +180,49 @@ namespace Microsoft.MixedReality.Toolkit
             mixedRealityPlayspace.gameObject.SetActive(true);
         }
 
+        public static bool IsActivePlayspace(MixedRealityPlayspace playspace)
+        {
+            return playspace != null && playspace.isActiveAndEnabled && playspace == mixedRealityPlayspace;
+        }
+
         private static void FindOrCreatePlayspace()
         {
-            if (CameraCache.Main.transform.parent == null)
+            // Make sure a camera exists before searching for its parent - don't create a camera unless necessary
+            if (CameraCache.MainExists)
             {
-                // Create a new mixed reality playspace
-                mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
+                if (CameraCache.Main.transform.parent == null)
+                {
+                    // Create a new mixed reality playspace
+                    mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
 
-                if (!MixedRealityToolkit.IsCameraSystemEnabled)
-                {   // If the camera system is enabled, let it handle parenting the camera.
-                    CameraCache.Main.transform.SetParent(mixedRealityPlayspace.transform);
+                    if (!MixedRealityToolkit.IsCameraSystemEnabled)
+                    {   // If the camera system is enabled, let it handle parenting the camera.
+                        CameraCache.Main.transform.SetParent(mixedRealityPlayspace.transform);
+                    }
+                }
+                else
+                {
+                    if (CameraCache.Main.transform.parent.name != NameEnabled)
+                    {
+                        // Since the scene is set up with a different camera parent, its likely
+                        // that there's an expectation that that parent is going to be used for
+                        // something else. We print a warning to call out the fact that we're
+                        // co-opting this object for use with teleporting and such, since that
+                        // might cause conflicts with the parent's intended purpose.
+                        Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {NameEnabled}. The existing parent will be renamed and used instead.");
+                        // If we rename it, we make it clearer that why it's being teleported around at runtime.
+                        CameraCache.Main.transform.parent.name = NameEnabled;
+                    }
+
+                    mixedRealityPlayspace = CameraCache.Main.transform.parent.EnsureComponent<MixedRealityPlayspace>();
                 }
             }
-            else
-            {
-                if (CameraCache.Main.transform.parent.name != NameEnabled)
-                {
-                    // Since the scene is set up with a different camera parent, its likely
-                    // that there's an expectation that that parent is going to be used for
-                    // something else. We print a warning to call out the fact that we're
-                    // co-opting this object for use with teleporting and such, since that
-                    // might cause conflicts with the parent's intended purpose.
-                    Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {NameEnabled}. The existing parent will be renamed and used instead.");
-                    // If we rename it, we make it clearer that why it's being teleported around at runtime.
-                    CameraCache.Main.transform.parent.name = NameEnabled;
+            else if (mixedRealityPlayspace == null)
+            {   // If no camera exists, search for a playspace in loaded objects
+                if (!SearchForAndEnableExistingPlayspace(Application.isPlaying ? RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes() : EditorSceneUtils.GetRootGameObjectsInLoadedScenes()))
+                {   // If none is found, create one
+                    mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
                 }
-
-                mixedRealityPlayspace = CameraCache.Main.transform.parent.EnsureComponent<MixedRealityPlayspace>();
             }
 
             // It's very important that the Playspace align with the tracked space,
@@ -306,15 +335,9 @@ namespace Microsoft.MixedReality.Toolkit
             // Our task is to search for any additional play spaces that may have been loaded, and disable them.
             foreach (GameObject rootGameObject in rootGameObjects)
             {
-                if (rootGameObject.name.Equals(NameEnabled))
+                if (rootGameObject.name.Equals(NameEnabled) || rootGameObject.name.Equals(NameDisabled))
                 {
                     MixedRealityPlayspace playspace = rootGameObject.EnsureComponent<MixedRealityPlayspace>();
-                    if (playspace == mixedRealityPlayspace)
-                    {   // Don't disable our existing playspace
-                        continue;
-                    }
-
-                    playspace.gameObject.SetActive(false);
                 }
 
                 foreach (MixedRealityPlayspace playspace in rootGameObject.GetComponentsInChildren<MixedRealityPlayspace>(true))
@@ -329,27 +352,20 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        private static void SearchForAndEnableExistingPlayspace(IEnumerable<GameObject> rootGameObjects)
+        private static bool SearchForAndEnableExistingPlayspace(IEnumerable<GameObject> rootGameObjects)
         {
             // We haven't created / found a playspace yet.
             // Our task is to see if one exists in the newly loaded scene.
             bool enabledOne = false;
             foreach (GameObject rootGameObject in rootGameObjects)
             {
-                if (rootGameObject.name.Equals(NameEnabled))
+                if (rootGameObject.name.Equals(NameEnabled) || rootGameObject.name.Equals(NameDisabled))
                 {
                     MixedRealityPlayspace playspace = rootGameObject.EnsureComponent<MixedRealityPlayspace>();
-
-                    if (!enabledOne)
-                    {
-                        mixedRealityPlayspace = playspace;
-                        rootGameObject.gameObject.SetActive(true);
-                        enabledOne = true;
-                    }
-                    else
-                    {
-                        rootGameObject.gameObject.SetActive(false);
-                    }
+                    mixedRealityPlayspace = playspace;
+                    mixedRealityPlayspace.gameObject.SetActive(true);
+                    playspace.enabled = true;
+                    enabledOne = true;
                 }
 
                 foreach (MixedRealityPlayspace playspace in rootGameObject.GetComponentsInChildren<MixedRealityPlayspace>())
@@ -363,6 +379,7 @@ namespace Microsoft.MixedReality.Toolkit
                     {
                         mixedRealityPlayspace = playspace;
                         mixedRealityPlayspace.gameObject.SetActive(true);
+                        playspace.enabled = true;
                         enabledOne = true;
                     }
                     else
@@ -371,6 +388,8 @@ namespace Microsoft.MixedReality.Toolkit
                     }
                 }
             }
+
+            return enabledOne;
         }
 
         #endregion

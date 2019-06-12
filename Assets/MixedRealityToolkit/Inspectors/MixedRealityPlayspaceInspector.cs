@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             MixedRealityPlayspace playspace = (MixedRealityPlayspace)target;
 
-            if (playspace.transform != MixedRealityPlayspace.Transform)
+            if (!MixedRealityPlayspace.IsActivePlayspace(playspace))
             {
                 EditorGUILayout.HelpBox("This playspace is inactive. There can only be one active playspace loaded at any time.", MessageType.Warning);
                 EditorGUILayout.BeginHorizontal();

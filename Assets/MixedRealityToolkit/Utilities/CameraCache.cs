@@ -35,6 +35,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
+        /// Returns true if cached camera exists and is enabled.
+        /// </summary>
+        public static bool MainExists
+        {
+            get
+            {
+                if (MixedRealityToolkit.IsCameraSystemEnabled)
+                {   // The camera system is guaranteed to create a camera.
+                    return true;
+                }
+
+                return cachedCamera != null && cachedCamera.isActiveAndEnabled;
+            }
+        }
+
+        /// <summary>
         /// Creates a default main camera if our cached camera is null or disabled.
         /// </summary>
         /// <returns></returns>
