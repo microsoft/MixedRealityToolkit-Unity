@@ -3,8 +3,8 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
-        "Microsoft.MixedReality.Toolkit.Utilities.Gltf"
+        "Microsoft.MixedReality.Toolkit.Utilities.Gltf",
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
