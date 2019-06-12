@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -74,7 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             for (int i = 0; i < transform.childCount; i++)
             {
                 Transform child = transform.GetChild(i);
-
+#if UNITY_EDITOR
+                Undo.RecordObject(child, "ObjectCollection modify transform");
+#endif
                 if (!ContainsNode(child) && (child.gameObject.activeSelf || !IgnoreInactiveTransforms))
                 {
                     NodeList.Add(new ObjectCollectionNode { Name = child.name, Transform = child });

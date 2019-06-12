@@ -12,31 +12,32 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1), // All platforms supported by Unity
         "Unity Mouse Device Manager")]  
-    public class MouseDeviceManager : BaseInputDeviceManager
+    public class MouseDeviceManager : BaseInputDeviceManager, IMixedRealityMouseDeviceManager
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
         /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
-        /// <param name="inputSystemProfile">The input system configuration profile.</param>
-        /// <param name="playspace">The <see href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</see> of the playspace object.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public MouseDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile inputSystemProfile,
-            Transform playspace,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <summary>
         /// Current Mouse Controller.
         /// </summary>
         public MouseController Controller { get; private set; }
+
+        /// <summary>
+        /// Return the service profile and ensure that the type is correct
+        /// </summary>
+        public MixedRealityMouseInputProfile MouseInputProfile => ConfigurationProfile as MixedRealityMouseInputProfile;
 
         /// <inheritdoc />
         public override void Enable()
@@ -44,6 +45,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             if (!UInput.mousePresent)
             {
                 Disable();
+                return;
+            }
+
+            if (Controller != null)
+            {
+                // device manager has already been set up
                 return;
             }
 
@@ -111,7 +118,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             if (Controller != null)
             {
                 inputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
+                Controller = null;
             }
         }
+
     }
 }

@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void Test01_CreateMixedRealityInputSystem()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene();
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Create a Input System Profiles
             var inputSystemProfile = ScriptableObject.CreateInstance<MixedRealityInputSystemProfile>();
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = inputSystemProfile;
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile, MixedRealityToolkit.Instance.MixedRealityPlayspace));
+            MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile));
 
             // Tests
             Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveSystems);
@@ -41,10 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void Test02_TestGetMixedRealityInputSystem()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Retrieve Input System
-            var inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
+            IMixedRealityInputSystem inputSystem = null;
+            MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
 
             // Tests
             Assert.IsNotNull(inputSystem);
@@ -53,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void Test03_TestMixedRealityInputSystemDoesNotExist()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene();
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Check for Input System
             var inputSystemExists = MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>();
@@ -66,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void Test04_TestMixedRealityInputSystemExists()
         {
-            TestUtilities.InitializeMixedRealityToolkitScene(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Check for Input System
             var inputSystemExists = MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>();
@@ -78,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [TearDown]
         public void CleanupMixedRealityToolkitTests()
         {
-            TestUtilities.CleanupScene();
+            TestUtilities.CreateScenes();
         }
     }
 }

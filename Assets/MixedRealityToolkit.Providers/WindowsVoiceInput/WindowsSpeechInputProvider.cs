@@ -3,10 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using System;
-using UnityEngine;
 using UnityEngine.Windows.Speech;
 using UInput = UnityEngine.Input;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
@@ -17,23 +17,23 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
         "Windows Speech Input")]
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Speech.html")]
     public class WindowsSpeechInputProvider : BaseInputDeviceManager, IMixedRealitySpeechSystem
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsSpeechInputProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile inputSystemProfile,
-            Transform playspace,
             string name = null, 
             uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
@@ -50,14 +50,37 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// </summary>
         public RecognitionConfidenceLevel RecognitionConfidenceLevel { get; set; }
 
+        /// <inheritdoc />
+        public bool IsRecognitionActive =>
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        private KeywordRecognizer keywordRecognizer;
+            keywordRecognizer?.IsRunning ??
+#endif
+            false;
 
         /// <inheritdoc />
-        public bool IsRecognitionActive
+        public void StartRecognition()
         {
-            get { return keywordRecognizer != null && keywordRecognizer.IsRunning; }
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+            if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
+            {
+                keywordRecognizer.Start();
+            }
+#endif
         }
+
+        /// <inheritdoc />
+        public void StopRecognition()
+        {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+            if (keywordRecognizer != null && keywordRecognizer.IsRunning)
+            {
+                keywordRecognizer.Stop();
+            }
+#endif
+        }
+
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        private KeywordRecognizer keywordRecognizer;
 
 #if UNITY_EDITOR
         /// <inheritdoc />
@@ -74,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         public override void Enable()
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
-            
+
             if (InputSystemProfile == null) { return; }
 
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
@@ -134,7 +157,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             {
                 StopRecognition();
                 keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
-                keywordRecognizer.Dispose();
             }
         }
 
@@ -150,20 +172,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 #endif // UNITY_EDITOR
 
         /// <inheritdoc />
-        public void StartRecognition()
+        protected override void Dispose(bool disposing)
         {
-            if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
+            if (disposing)
             {
-                keywordRecognizer.Start();
-            }
-        }
-
-        /// <inheritdoc />
-        public void StopRecognition()
-        {
-            if (keywordRecognizer != null && keywordRecognizer.IsRunning)
-            {
-                keywordRecognizer.Stop();
+                keywordRecognizer?.Dispose();
             }
         }
 

@@ -9,19 +9,13 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// <summary>
     /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html")]
     public class MixedRealityDiagnosticsSystem : BaseCoreSystem, IMixedRealityDiagnosticsSystem
     {
         public MixedRealityDiagnosticsSystem(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealityDiagnosticsProfile profile,
-            Transform playspace) : base(registrar, profile)
-        {
-            if (playspace == null)
-            {
-                Debug.LogError("The MixedRealityDiagnosticSystem object requires a valid playspace Transform.");
-            }
-            Playspace = playspace;
-        }
+            MixedRealityDiagnosticsProfile profile) : base(registrar, profile)
+        { }
 
         /// <summary>
         /// The parent object under which all visualization game objects will be placed.
@@ -34,13 +28,15 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private void CreateVisualizations()
         {
             diagnosticVisualizationParent = new GameObject("Diagnostics");
-            diagnosticVisualizationParent.transform.parent = Playspace.transform;
+            MixedRealityPlayspace.AddChild(diagnosticVisualizationParent.transform);
             diagnosticVisualizationParent.SetActive(ShowDiagnostics);
 
             // visual profiler settings
             visualProfiler = diagnosticVisualizationParent.AddComponent<MixedRealityToolkitVisualProfiler>();
             visualProfiler.WindowParent = diagnosticVisualizationParent.transform;
             visualProfiler.IsVisible = ShowProfiler;
+            visualProfiler.FrameInfoVisible = ShowFrameInfo;
+            visualProfiler.MemoryStatsVisible = ShowMemoryStats;
             visualProfiler.FrameSampleRate = FrameSampleRate;
             visualProfiler.WindowAnchor = WindowAnchor;
             visualProfiler.WindowOffset = WindowOffset;
@@ -65,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             // Apply profile settings
             ShowDiagnostics = profile.ShowDiagnostics;
             ShowProfiler = profile.ShowProfiler;
+            ShowFrameInfo = profile.ShowFrameInfo;
+            ShowMemoryStats = profile.ShowMemoryStats;
             FrameSampleRate = profile.FrameSampleRate;
             WindowAnchor = profile.WindowAnchor;
             WindowOffset = profile.WindowOffset;
@@ -96,15 +94,25 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         #endregion IMixedRealityService
 
         #region IMixedRealityDiagnosticsSystem
-        /// <summary>
-        /// The transform of the playspace scene object. We use this transform to parent
-        /// diagnostic visualizations that teleport with the user and to perform calculations
-        /// to ensure proper alignment with the world.
-        /// </summary>
-        private Transform Playspace = null;
+
+        private MixedRealityDiagnosticsProfile diagnosticsSystemProfile = null;
+
+        /// <inheritdoc/>
+        public MixedRealityDiagnosticsProfile DiagnosticsSystemProfile
+        {
+            get
+            {
+                if (diagnosticsSystemProfile == null)
+                {
+                    diagnosticsSystemProfile = ConfigurationProfile as MixedRealityDiagnosticsProfile;
+                }
+                return diagnosticsSystemProfile;
+            }
+        }
 
         private bool showDiagnostics;
 
+        /// <inheritdoc />
         public bool ShowDiagnostics
         {
             get { return showDiagnostics; }
@@ -141,6 +149,52 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     if (visualProfiler != null)
                     {
                         visualProfiler.IsVisible = value;
+                    }
+                }
+            }
+        }
+
+        private bool showFrameInfo;
+
+        /// <inheritdoc />
+        public bool ShowFrameInfo
+        {
+            get
+            {
+                return showFrameInfo;
+            }
+
+            set
+            {
+                if (value != showFrameInfo)
+                {
+                    showFrameInfo = value;
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.FrameInfoVisible = value;
+                    }
+                }
+            }
+        }
+
+        private bool showMemoryStats;
+
+        /// <inheritdoc />
+        public bool ShowMemoryStats
+        {
+            get
+            {
+                return showMemoryStats;
+            }
+
+            set
+            {
+                if (value != showMemoryStats)
+                {
+                    showMemoryStats = value;
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.MemoryStatsVisible = value;
                     }
                 }
             }

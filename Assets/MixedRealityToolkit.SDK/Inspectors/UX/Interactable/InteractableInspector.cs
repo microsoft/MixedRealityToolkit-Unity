@@ -75,29 +75,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public virtual void RenderCustomInspector()
         {
-            // TODO: extend the preference array to handle multiple themes open and scroll values!!!
-            // TODO: add  messaging!!!
-            // TODO: handle dimensions
-            // TODO: add profiles
-            // TODO: add themes
-            // TODO: handle/display properties from themes
-
-            // TODO: !!!!! need to make sure we refresh the shader list when the target changes
-
-            // TODO: !!!!! finish incorporating States
-            // TODO: add the default states by default
-            // TODO: let flow into rest of themes and events.
-            // TODO: events should target the state logic they support.
-
-            // FIX: when deleting a theme property, the value resets or the item that's deleted is wrong
-
-            //base.DrawDefaultInspector();
-
             serializedObject.Update();
 
             EditorGUILayout.Space();
             InspectorUIUtility.DrawTitle("Interactable");
-            //EditorGUILayout.LabelField(new GUIContent("Interactable Settings"));
 
             EditorGUILayout.BeginVertical("Box");
 
@@ -153,6 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (states.objectReferenceValue == null)
             {
                 InspectorUIUtility.DrawError("Please assign a States object!");
+                EditorGUILayout.EndVertical();
                 serializedObject.ApplyModifiedProperties();
                 return;
             }
@@ -177,11 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     actionId.intValue = newActionId;
                 }
             }
-
-            //selected.enumValueIndex = (int)(MixedRealityInputAction)EditorGUILayout.EnumPopup(new GUIContent("Input Action", "Input source for this Interactable, Default: Select"), (MixedRealityInputAction)selected.enumValueIndex);
-
-            // TODO: should IsGlobal only show up on specific press types and indent?
-            // TODO: should we show handedness on certain press types?
+            
             SerializedProperty isGlobal = serializedObject.FindProperty("IsGlobal");
             isGlobal.boolValue = EditorGUILayout.Toggle(new GUIContent("Is Global", "Like a modal, does not require focus"), isGlobal.boolValue);
 
@@ -296,8 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             themes.InsertArrayElementAtIndex(themes.arraySize);
                             SerializedProperty theme = themes.GetArrayElementAtIndex(themes.arraySize - 1);
-
-                            // TODO: make sure there is only one or make unique
+                            
                             string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme");
                             if (themeLocations.Length > 0)
                             {
@@ -318,10 +295,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     for (int t = 0; t < themes.arraySize; t++)
                     {
                         SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
+                        EditorGUI.indentLevel = indentOnSectionStart + 2;
                         EditorGUILayout.PropertyField(themeItem, new GUIContent("Theme", "Theme properties for interaction feedback"));
-
-                        // TODO: we need the theme and target in order to figure out what properties to expose in the list
-                        // TODO: or do we show them all and show alerts when a theme property is not compatible
+                        
                         if (themeItem.objectReferenceValue != null && gameObject.objectReferenceValue)
                         {
                             if (themeItem.objectReferenceValue.name == "DefaultTheme")
@@ -338,11 +314,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                             SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
                             hadDefault.boolValue = true;
-                            EditorGUI.indentLevel = indentOnSectionStart + 2;
+                            EditorGUI.indentLevel = indentOnSectionStart + 3;
 
                             string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
                             bool showSettings = EditorPrefs.GetBool(prefKey);
-
+                            
                             InspectorUIUtility.ListSettings settings = listSettings[i];
                             bool show = InspectorUIUtility.DrawSectionStart(themeItem.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 3, showSettings, FontStyle.Normal, false);
 

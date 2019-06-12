@@ -14,6 +14,17 @@
     <tags>Unity MixedReality</tags>
     <dependencies>
       <dependency id="Microsoft.MixedReality.Toolkit" version="$version$" />
+      <dependency id="Microsoft.MixedReality.Toolkit.Services" version="$version$" />
+	  <dependency id="Microsoft.MixedReality.Toolkit.Providers" version="$version$" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+
+    <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
+    <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.SDK.targets" />
+
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.Inspectors.dll*" target="Plugins\" />
+  </files>
 </package>

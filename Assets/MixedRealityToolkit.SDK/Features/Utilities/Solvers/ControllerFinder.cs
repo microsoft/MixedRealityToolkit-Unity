@@ -37,6 +37,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         protected Transform ControllerTransform;
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         #region MonoBehaviour Implementation
 
         protected virtual void OnEnable()
@@ -81,13 +98,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             // Look if the controller was already loaded. This could happen if the
             // GameObject was instantiated at runtime and the model loaded event has already fired.
-            if (MixedRealityToolkit.InputSystem == null)
+            if (InputSystem == null)
             {
                 // The InputSystem could not be found.
                 return;
             }
 
-            foreach (IMixedRealityController controller in MixedRealityToolkit.InputSystem.DetectedControllers)
+            foreach (IMixedRealityController controller in InputSystem.DetectedControllers)
             {
                 if (controller.ControllerHandedness == handedness)
                 {

@@ -37,13 +37,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Vector3 JitterOffset = Vector3.zero;
 
         [SerializeField]
-        private SimulatedHandPose.GestureId gesture = SimulatedHandPose.GestureId.None;
-        public SimulatedHandPose.GestureId Gesture
+        private ArticulatedHandPose.GestureId gesture = ArticulatedHandPose.GestureId.None;
+        public ArticulatedHandPose.GestureId Gesture
         {
             get { return gesture; }
             set
             {
-                if (value != SimulatedHandPose.GestureId.None && value != gesture)
+                if (value != ArticulatedHandPose.GestureId.None && value != gesture)
                 {
                     gesture = value;
                     gestureBlending = 0.0f;
@@ -61,12 +61,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 gestureBlending = Mathf.Clamp(value, gestureBlending, 1.0f);
 
                 // Pinch is a special gesture that triggers the Select and TriggerPress input actions
-                IsPinching = (gesture == SimulatedHandPose.GestureId.Pinch && gestureBlending > 0.9f);
+                IsPinching = (gesture == ArticulatedHandPose.GestureId.Pinch && gestureBlending > 0.9f);
             }
         }
 
         private float poseBlending = 0.0f;
-        private SimulatedHandPose pose = new SimulatedHandPose();
+        private ArticulatedHandPose pose = new ArticulatedHandPose();
 
         public SimulatedHandState(Handedness _handedness)
         {
@@ -108,25 +108,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             gestureBlending = 1.0f;
 
-            SimulatedHandPose gesturePose = SimulatedHandPose.GetGesturePose(gesture);
+            ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
             if (gesturePose != null)
             {
                 pose.Copy(gesturePose);
             }
         }
 
-        internal void FillCurrentFrame(Vector3[] jointsOut)
+        internal void FillCurrentFrame(MixedRealityPose[] jointsOut)
         {
-            SimulatedHandPose gesturePose = SimulatedHandPose.GetGesturePose(gesture);
+            ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
             if (gesturePose != null)
             {
-                pose.TransitionTo(gesturePose, poseBlending, gestureBlending);
+                if (gestureBlending > poseBlending)
+                {
+                    float range = Mathf.Clamp01(1.0f - poseBlending);
+                    float lerpFactor = range > 0.0f ? (gestureBlending - poseBlending) / range : 1.0f;
+                    pose.InterpolateOffsets(pose, gesturePose, lerpFactor);
+                }
             }
             poseBlending = gestureBlending;
 
             Quaternion rotation = Quaternion.Euler(HandRotateEulerAngles);
             Vector3 position = CameraCache.Main.ScreenToWorldPoint(ScreenPosition + JitterOffset);
-            pose.ComputeJointPositions(handedness, rotation, position, jointsOut);
+            pose.ComputeJointPoses(handedness, rotation, position, jointsOut);
         }
     }
 
@@ -237,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 isSimulatingRight = false;
             }
-
+       
             Vector3 mouseDelta = (lastMousePosition.HasValue ? UnityEngine.Input.mousePosition - lastMousePosition.Value : Vector3.zero);
             mouseDelta.z += UnityEngine.Input.GetAxis("Mouse ScrollWheel") * profile.HandDepthMultiplier;
             float rotationDelta = profile.HandRotationSpeed * Time.deltaTime;
@@ -286,7 +291,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Vector3 mouseDelta,
             Vector3 rotationDeltaEulerAngles)
         {
-            if (!state.IsTracked && isSimulating)
+            bool enableTracking = isAlwaysVisible || isSimulating;
+            if (!state.IsTracked && enableTracking)
             {
                 // Start at current mouse position
                 Vector3 mousePos = UnityEngine.Input.mousePosition;
@@ -314,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // TODO: DateTime.UtcNow can be quite imprecise, better use Stopwatch.GetTimestamp
             // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
             DateTime currentTime = DateTime.UtcNow;
-            if (isAlwaysVisible || isSimulating)
+            if (enableTracking)
             {
                 state.IsTracked = true;
                 lastSimulatedTimestamp = currentTime.Ticks;
@@ -329,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private SimulatedHandPose.GestureId SelectGesture()
+        private ArticulatedHandPose.GestureId SelectGesture()
         {
             if (UnityEngine.Input.GetMouseButton(0))
             {
@@ -349,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private SimulatedHandPose.GestureId ToggleGesture(SimulatedHandPose.GestureId gesture)
+        private ArticulatedHandPose.GestureId ToggleGesture(ArticulatedHandPose.GestureId gesture)
         {
             if (UnityEngine.Input.GetMouseButtonDown(0))
             {
@@ -366,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             else
             {
                 // 'None' will not change the gesture
-                return SimulatedHandPose.GestureId.None;
+                return ArticulatedHandPose.GestureId.None;
             }
         }
     }

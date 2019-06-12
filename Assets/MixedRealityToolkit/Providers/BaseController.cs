@@ -33,6 +33,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Enabled = true;
         }
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         /// <summary>
         /// The default interactions for this controller.
         /// </summary>
@@ -234,10 +251,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // If we've got a controller model prefab, then create it and place it in the scene.
-            var playspace = GetPlayspace();
-            var controllerObject = (playspace != null) ?
-            UnityEngine.Object.Instantiate(controllerModel, playspace) :
-            UnityEngine.Object.Instantiate(controllerModel);
+            GameObject controllerObject = UnityEngine.Object.Instantiate(controllerModel);
+            MixedRealityPlayspace.AddChild(controllerObject.transform);
 
             return TryAddControllerModelToSceneHierarchy(controllerObject);
         }
@@ -247,15 +262,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (controllerObject != null)
             {
                 controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
-                var playspace = GetPlayspace();
-                if (playspace != null)
-                {
-                    controllerObject.transform.parent = playspace.transform;
-                }
-                else
-                {
-                    Debug.LogWarning("Playspace was not found. No parent transform was applied to the controller object");
-                }
 
                 Visualizer = controllerObject.GetComponent<IMixedRealityControllerVisualizer>();
 
@@ -275,21 +281,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #region MRTK instance helpers
-        protected Transform GetPlayspace()
-        {
-            if (MixedRealityToolkit.Instance != null)
-                return MixedRealityToolkit.Instance.MixedRealityPlayspace;
-
-            return null;
-        }
-
         protected MixedRealityControllerVisualizationProfile GetControllerVisualizationProfile()
         {
-            if (MixedRealityToolkit.Instance != null &&
-                MixedRealityToolkit.Instance.ActiveProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null)
+            if (InputSystem?.InputSystemProfile != null)
             {
-                return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile;
+                return InputSystem.InputSystemProfile.ControllerVisualizationProfile;
             }
 
             return null;
@@ -297,11 +293,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected bool IsControllerMappingEnabled()
         {
-            if (MixedRealityToolkit.Instance != null &&
-                MixedRealityToolkit.Instance.ActiveProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null)
+            if (InputSystem?.InputSystemProfile != null)
             {
-                return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled;
+                return InputSystem.InputSystemProfile.IsControllerMappingEnabled;
             }
 
             return false;
@@ -309,12 +303,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected MixedRealityControllerMapping[] GetControllerMappings()
         {
-            if (MixedRealityToolkit.Instance != null &&
-                MixedRealityToolkit.Instance.ActiveProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile != null)
+            if (InputSystem?.InputSystemProfile?.ControllerMappingProfile != null)
             {
-                return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
+                return InputSystem.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
             }
 
             return null;

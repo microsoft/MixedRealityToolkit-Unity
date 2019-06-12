@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,11 +35,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         uint GenerateNewSourceId();
 
         /// <summary>
+        /// Typed representation of the ConfigurationProfile property.
+        /// </summary>
+        MixedRealitySpatialAwarenessSystemProfile SpatialAwarenessSystemProfile { get; }
+
+        /// <summary>
         /// Gets the collection of registered <see cref="IMixedRealitySpatialAwarenessObserver"/> data providers.
         /// </summary>
         /// <returns>
         /// Read only copy of the list of registered observers.
         /// </returns>
+        [Obsolete("GetObservers will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProviders.")]
         IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers();
 
         /// <summary>
@@ -48,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <returns>
         /// Readonly copy of the list of registered observers that implement the specified type.
         /// </returns>
+        [Obsolete("GetObservers<T> will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProviders<T>.")]
         IReadOnlyList<T> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
@@ -60,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <remarks>
         /// If more than one observer is registered under the specified name, the first will be returned.
         /// </remarks>
+        [Obsolete("GetObserver will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProvider.")]
         IMixedRealitySpatialAwarenessObserver GetObserver(string name);
 
         /// <summary>
@@ -73,7 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <remarks>
         /// If more than one observer is registered under the specified name, the first will be returned.
         /// </remarks>
-        T GetObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver;
+        [Obsolete("GetObserver<T> will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProvider<T>.")]
+        T GetObserver<T>(string name = null) where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
         /// Starts / restarts all spatial observers of the specified type.
@@ -133,7 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
         void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject);
-        //        void RaiseObservedObjectUpdated<T>(IMixedRealitySpatialAwarenessObserver observer, int meshId, T observedObject);
 
         /// <summary>
         /// <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>'s should call this method to indicate an existing mesh has been removed.

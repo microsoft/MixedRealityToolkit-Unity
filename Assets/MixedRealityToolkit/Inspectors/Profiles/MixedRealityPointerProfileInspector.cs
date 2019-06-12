@@ -15,16 +15,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     {
         private static readonly GUIContent ControllerTypeContent = new GUIContent("Controller Type", "The type of Controller this pointer will attach itself to at runtime.");
 
-        private static bool showPointerProperties = true;
+        private const string ProfileTitle = "Pointer Settings";
+        private const string ProfileDescription = "Pointers attach themselves onto controllers as they are initialized.";
+
         private SerializedProperty pointingExtent;
         private SerializedProperty pointingRaycastLayerMasks;
         private static bool showPointerOptionProperties = true;
         private SerializedProperty pointerOptions;
         private ReorderableList pointerOptionList;
-        private static bool showPointerDebugProperties = true;
         private SerializedProperty debugDrawPointingRays;
         private SerializedProperty debugDrawPointingRayColors;
-        private static bool showGazeProperties = true;
         private SerializedProperty gazeCursorPrefab;
         private SerializedProperty gazeProviderType;
         private SerializedProperty showCursorWithEyeGaze;
@@ -35,11 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
 
             pointingExtent = serializedObject.FindProperty("pointingExtent");
             pointingRaycastLayerMasks = serializedObject.FindProperty("pointingRaycastLayerMasks");
@@ -63,31 +58,29 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
+
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                return;
-            }
+                serializedObject.Update();
+                currentlySelectedPointerOption = -1;
 
-            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
-            {
-                return;
-            }
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Gaze Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(gazeCursorPrefab);
+                    EditorGUILayout.PropertyField(gazeProviderType);
+                    EditorGUILayout.Space();
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Pointer Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Pointers attach themselves onto controllers as they are initialized.", MessageType.Info);
-            EditorGUILayout.Space();
+                    if (MixedRealityEditorUtility.RenderIndentedButton("Customize Gaze Provider Settings"))
+                    {
+                        Selection.activeObject = CameraCache.Main.gameObject;
+                    }
+                }
 
-            CheckProfileLock(target);
-            serializedObject.Update();
-            currentlySelectedPointerOption = -1;
-
-            EditorGUILayout.Space();
-            showPointerProperties = EditorGUILayout.Foldout(showPointerProperties, "Pointer Settings", true);
-            if (showPointerProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Pointer Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(pointingExtent);
                     EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
@@ -102,41 +95,25 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             pointerOptionList.DoLayoutList();
                         }
                     }
-
-                    EditorGUILayout.Space();
-                    showPointerDebugProperties = EditorGUILayout.Foldout(showPointerDebugProperties, "Debug Settings", true);
-                    if (showPointerDebugProperties)
-                    {
-                        using (new EditorGUI.IndentLevelScope())
-                        {
-                            EditorGUILayout.PropertyField(debugDrawPointingRays);
-                            EditorGUILayout.PropertyField(debugDrawPointingRayColors, true);
-                        }
-                    }
                 }
-            }
 
-            EditorGUILayout.Space();
-            showGazeProperties = EditorGUILayout.Foldout(showGazeProperties, "Gaze Settings", true);
-            if (showGazeProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Debug Settings", EditorStyles.boldLabel);
                 {
-                    EditorGUILayout.HelpBox("The gaze provider uses the default settings above, but further customization of the gaze can be done on the Gaze Provider.", MessageType.Info);
-
-                    EditorGUILayout.Space();
-                    EditorGUILayout.PropertyField(gazeCursorPrefab);
-                    EditorGUILayout.PropertyField(gazeProviderType);
-
-                    EditorGUILayout.Space();
-                    if (GUILayout.Button("Customize Gaze Provider Settings"))
-                    {
-                        Selection.activeObject = CameraCache.Main.gameObject;
-                    }
+                    EditorGUILayout.PropertyField(debugDrawPointingRays);
+                    EditorGUILayout.PropertyField(debugDrawPointingRayColors, true);
                 }
+
+                serializedObject.ApplyModifiedProperties();
             }
-            
-            serializedObject.ApplyModifiedProperties();
+        }
+
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile;
         }
 
         private void DrawPointerOptionElement(Rect rect, int index, bool isActive, bool isFocused)

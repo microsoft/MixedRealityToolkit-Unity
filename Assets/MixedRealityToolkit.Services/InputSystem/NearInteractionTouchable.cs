@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -102,18 +103,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         protected Vector3 localForward = Vector3.forward;
 
+        public Vector3 LocalForward { get => localForward; }
+
         /// <summary>
         /// Local space forward direction
         /// </summary>
         [SerializeField]
         protected Vector3 localUp = Vector3.up;
 
+        public Vector3 LocalUp { get => localUp; }
+
         /// <summary>
         /// Local space object center
         /// </summary>
         [SerializeField]
         protected Vector3 localCenter = Vector3.zero;
-
 
         [SerializeField]
         private TouchableEventType eventsToReceive = TouchableEventType.Touch;
@@ -127,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The type of surface to calculate the touch point on.")]
         private TouchableSurface touchableSurface = TouchableSurface.BoxCollider;
 
-        protected Vector3 LocalRight => Vector3.Cross(localUp, localForward);
+        public Vector3 LocalRight => Vector3.Cross(localUp, localForward);
 
         public Vector3 Forward => transform.TransformDirection(localForward);
 
@@ -209,24 +213,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Vector3 localPoint = transform.InverseTransformPoint(samplePoint) - localCenter;
 
-            // Get point on plane
-            Plane plane = new Plane(localForward, Vector3.zero);
-            Vector3 pointOnPlane = plane.ClosestPointOnPlane(localPoint);
+            // Get surface coordinates
+            Vector3 planeSpacePoint = new Vector3(
+                Vector3.Dot(localPoint, LocalRight),
+                Vector3.Dot(localPoint, localUp),
+                Vector3.Dot(localPoint, localForward));
 
-            // Get plane coordinates
-            Vector2 planeSpacePoint = new Vector2(
-                Vector3.Dot(pointOnPlane, LocalRight),
-                Vector3.Dot(pointOnPlane, localUp));
+            // touchables currently can only be touched within the bounds of the rectangle.
+            // We return infinity to ensure that any point outside the bounds does not get touched.
+            if (planeSpacePoint.x < -bounds.x / 2 ||
+                planeSpacePoint.x > bounds.x / 2 ||
+                planeSpacePoint.y < -bounds.y / 2 ||
+                planeSpacePoint.y > bounds.y / 2)
+            {
+                return float.PositiveInfinity;
+            }
 
-            // Clamp to bounds
-            planeSpacePoint = new Vector2(
-                Mathf.Clamp(planeSpacePoint.x, -bounds.x / 2, bounds.x / 2),
-                Mathf.Clamp(planeSpacePoint.y, -bounds.y / 2, bounds.y / 2));
+            // Scale back to 3D space
+            planeSpacePoint = transform.TransformSize(planeSpacePoint);
 
-            // Convert back to 3D space
-            Vector3 clampedPoint = transform.TransformPoint((LocalRight * planeSpacePoint.x) + (localUp * planeSpacePoint.y) + localCenter);
-
-            return (samplePoint - clampedPoint).magnitude;
+            return Math.Abs(planeSpacePoint.z);
         }
 
     }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.EditModeTests")]
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
@@ -38,16 +40,17 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [SerializeField]
-        [Tooltip("Enable the Camera Profile on Startup.")]
-        private bool enableCameraProfile = false;
+        [FormerlySerializedAs("enableCameraProfile")]
+        [Tooltip("Enable the Camera System on Startup.")]
+        private bool enableCameraSystem = false;
 
         /// <summary>
         /// Enable and configure the Camera Profile for the Mixed Reality Toolkit
         /// </summary>
-        public bool IsCameraProfileEnabled
+        public bool IsCameraSystemEnabled
         {
-            get { return CameraProfile != null && enableCameraProfile; }
-            internal set { enableCameraProfile = value; }
+            get { return CameraProfile != null && cameraSystemType != null && cameraSystemType.Type != null && enableCameraSystem; }
+            internal set { enableCameraSystem = value; }
         }
 
         [SerializeField]
@@ -63,6 +66,20 @@ namespace Microsoft.MixedReality.Toolkit
             get { return cameraProfile; }
             internal set { cameraProfile = value; }
         }
+
+        /// <summary>
+        /// Camera System class to instantiate at runtime.
+        /// </summary>
+        public SystemType CameraSystemType
+        {
+            get { return cameraSystemType; }
+            internal set { cameraSystemType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Camera System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityCameraSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType cameraSystemType;
 
         [SerializeField]
         [Tooltip("Enable the Input System on Startup.")]
@@ -190,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit
         private SystemType spatialAwarenessSystemType;
 
         /// <summary>
-        /// Spatial Awarenss System class to instantiate at runtime.
+        /// Spatial Awareness System class to instantiate at runtime.
         /// </summary>
         public SystemType SpatialAwarenessSystemSystemType
         {
@@ -259,6 +276,14 @@ namespace Microsoft.MixedReality.Toolkit
         /// All the additional non-required systems, features, and managers registered with the Mixed Reality Toolkit.
         /// </summary>
         public MixedRealityRegisteredServiceProvidersProfile RegisteredServiceProvidersProfile => registeredServiceProvidersProfile;
+
+        public bool UseServiceInspectors
+        {
+            get { return useServiceInspectors; }
+        }
+        [SerializeField]
+        [Tooltip("If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.")]
+        private bool useServiceInspectors = false;
 
         #endregion Mixed Reality Toolkit configurable properties
     }

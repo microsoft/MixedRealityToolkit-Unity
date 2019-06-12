@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
@@ -19,11 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableHandMeshVisualization;
         private SerializedProperty enableHandJointVisualization;
 
+        private const string ProfileTitle = "Hand Tracking Settings";
+        private const string ProfileDescription = "Use this for platform-specific hand tracking settings.";
+
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false)) { return; }
 
             jointPrefab = serializedObject.FindProperty("jointPrefab");
             fingertipPrefab = serializedObject.FindProperty("fingertipPrefab");
@@ -35,32 +35,31 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
 
-            if (GUILayout.Button("Back to Input Profile"))
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                serializedObject.Update();
+
+                EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
+                EditorGUILayout.PropertyField(jointPrefab);
+                EditorGUILayout.PropertyField(palmPrefab);
+                EditorGUILayout.PropertyField(fingertipPrefab);
+                EditorGUILayout.PropertyField(handMeshPrefab);
+                EditorGUILayout.PropertyField(enableHandMeshVisualization);
+                EditorGUILayout.PropertyField(enableHandJointVisualization);
+
+                serializedObject.ApplyModifiedProperties();
             }
-            EditorGUILayout.Space();
+        }
 
-            EditorGUILayout.LabelField("Hand tracking settings", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Use this for platform-specific hand tracking settings.", MessageType.Info);
-            CheckProfileLock(target);
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
-
-            serializedObject.Update();
-
-            GUILayout.Space(12f);
-            EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(jointPrefab);
-            EditorGUILayout.PropertyField(palmPrefab);
-            EditorGUILayout.PropertyField(fingertipPrefab);
-            EditorGUILayout.PropertyField(handMeshPrefab);
-            EditorGUILayout.PropertyField(enableHandMeshVisualization);
-            EditorGUILayout.PropertyField(enableHandJointVisualization);
-
-            serializedObject.ApplyModifiedProperties();
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized &&
+                   MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                   profile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile;
         }
     }
 }

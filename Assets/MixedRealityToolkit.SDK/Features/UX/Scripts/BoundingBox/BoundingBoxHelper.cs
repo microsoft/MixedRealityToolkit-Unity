@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// This function returns the four couners of a face of a bounding cube specified by index.
+        /// This function returns the four corners of a face of a bounding cube specified by index.
         /// </summary>
         /// <param name="index">the index of the face of the bounding cube. 0-5</param>
         /// <returns>an array of 4 vectors</returns>

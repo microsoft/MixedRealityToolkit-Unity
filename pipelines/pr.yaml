@@ -1,0 +1,17 @@
+# Build for PR validation.
+
+variables:
+  UnityVersion: Unity2018.3.7f1
+  MRTKVersion: 2.0.0
+
+jobs:
+- job: PRValidation
+  timeoutInMinutes: 90
+  pool:
+    name: On-Prem Unity
+    demands:
+    - Unity2018.3.7f1
+    - COG-UnityCache-WUS2-01
+  steps:
+  - template: templates/common.yml
+  - template: templates/end.yml

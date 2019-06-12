@@ -10,7 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// <summary>
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
-    public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem, IMixedRealityDataProviderAccess
     {
         public MixedRealitySpatialAwarenessSystem(
             IMixedRealityServiceRegistrar registrar,
@@ -136,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
         /// <summary>
-        ///  The collection of registered spatial awareness observers.
+        /// The collection of registered spatial awareness observers.
         /// </summary>
         private List<IMixedRealitySpatialAwarenessObserver> observers = new List<IMixedRealitySpatialAwarenessObserver>();
 
@@ -174,14 +175,42 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             return nextSourceId++;
         }
 
+        private MixedRealitySpatialAwarenessSystemProfile spatialAwarenessSystemProfile = null;
+
+        /// <inheritdoc/>
+        public MixedRealitySpatialAwarenessSystemProfile SpatialAwarenessSystemProfile
+        {
+            get
+            {
+                if (spatialAwarenessSystemProfile == null)
+                {
+                    spatialAwarenessSystemProfile = ConfigurationProfile as MixedRealitySpatialAwarenessSystemProfile;
+                }
+                return spatialAwarenessSystemProfile;
+            }
+        }
+
         /// <inheritdoc />
         public IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers()
         {
+            return GetDataProviders() as IReadOnlyList<IMixedRealitySpatialAwarenessObserver>;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<IMixedRealityDataProvider> GetDataProviders()
+        {
             return new List<IMixedRealitySpatialAwarenessObserver>(observers) as IReadOnlyList<IMixedRealitySpatialAwarenessObserver>;
         }
-        
+
         /// <inheritdoc />
         public IReadOnlyList<T> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
+        {
+            return GetDataProviders<T>();
+        }
+
+
+        /// <inheritdoc />
+        public IReadOnlyList<T> GetDataProviders<T>() where T : IMixedRealityDataProvider
         {
             List<T> selected = new List<T>();
 
@@ -199,6 +228,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public IMixedRealitySpatialAwarenessObserver GetObserver(string name)
         {
+            return GetDataProvider(name) as IMixedRealitySpatialAwarenessObserver;
+        }
+
+        /// <inheritdoc />
+        public IMixedRealityDataProvider GetDataProvider(string name)
+        {
             for (int i = 0; i < observers.Count; i++)
             {
                 if (observers[i].Name == name)
@@ -211,13 +246,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         }
 
         /// <inheritdoc />
-        public T GetObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
+        public T GetObserver<T>(string name = null) where T : IMixedRealitySpatialAwarenessObserver
+        {
+            return GetDataProvider<T>(name);
+        }
+
+        /// <inheritdoc />
+        public T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
         {
             for (int i = 0; i < observers.Count; i++)
             {
-                if ((observers[i] is T) && (observers[i].Name == name))
+                if (observers[i] is T)
                 {
-                    return (T)observers[i];
+                    if ((name == null) || (observers[i].Name == name))
+                    {
+                        return (T)observers[i];
+                    }
                 }
             }
 

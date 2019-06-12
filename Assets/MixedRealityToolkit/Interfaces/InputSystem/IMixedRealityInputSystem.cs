@@ -38,6 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         HashSet<IMixedRealityController> DetectedControllers { get; }
 
         /// <summary>
+        /// Typed representation of the ConfigurationProfile property.
+        /// </summary>
+        MixedRealityInputSystemProfile InputSystemProfile { get; }
+
+        /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.
         /// </summary>
         IMixedRealityFocusProvider FocusProvider { get; }
@@ -115,8 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Generates a new unique input source id.<para/>
-        /// <remarks>All Input Sources are required to call this method in their constructor or initialization.</remarks>
         /// </summary>
+        /// <remarks>All Input Sources are required to call this method in their constructor or initialization.</remarks>
         /// <returns>a new unique Id for the input source.</returns>
         uint GenerateNewSourceId();
 
@@ -182,8 +187,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Raise the pre-focus changed event.
-        /// <remarks>This event is useful for doing logic before the focus changed event.</remarks>
         /// </summary>
+        /// <remarks>This event is useful for doing logic before the focus changed event.</remarks>
         /// <param name="pointer">The pointer that the focus change event is raised on.</param>
         /// <param name="oldFocusedObject">The old focused object.</param>
         /// <param name="newFocusedObject">The new focused object.</param>
