@@ -8,33 +8,61 @@ Finally, an example is provided for recording and visualizing the user's visual 
 
 
 ## Overview of MRTK eye tracking samples
+In the following we will go into more detail what each of the different eye tracking sample scenes include.
+The individual samples are set up as _additive scenes_. 
+In case, you wonder what that entails, we will start with a quick overview of how to set up and test the MRTK eye tracking demos.
 
 ### Setting up the MRTK eye tracking samples
 
 The [eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) comes with a number of different Unity scenes that are described in more detail below:
+![List of eye tracking scenes](../Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
 
-- EyeTrackingDemo-00-RootScene.unity:
-This is the main (_root_) scene that has all the core MRTK components included.
-It comes with a graphical scene menu that allows you to easily switch between the different eye tracking scenes which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
-To try out the eye tracking demos in your Unity Player, all you have to do is to load this scene and hit play.
+**1. Load EyeTrackingDemo-00-RootScene.unity**:
+The *EyeTrackingDemo-00-RootScene* is the base (_root_) scene that has all the core MRTK components included.
+This is the scene that you need to load first and from which you will run the eye tracking demos. 
+It will automatically load the first demo scene and comes with a graphical scene menu that allows you to easily switch between the different eye tracking samples which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
+
+The root scene includes a few core components that will persist across the additively loaded scenes. 
+The _MixedRealityBasicSceneSetup_ includes a script that will automatically load the referenced scenes on startup. 
+By default this is _EyeTrackingDemo-02-TargetSelection_. 
+ 
+![Example for the OnLoadStartScene script](../Images/EyeTracking/mrtk_et_onloadstartscene.jpg)
+
+**2. Adding scenes to the Build menu**
+To load additive scenes, you must add these scenes to your Build Settings menu first. 
+After you've loaded the EyeTrackingDemo-00-RootScene and before hitting _play_ in your Unity Editor, you need to add the following scenes to your Build Settings:
+![Build Settings scene menu for eye tracking samples](../Images/EyeTracking/mrtk_et_buildsettings.jpg)
+
+**3. Play the eye tracking samples in the Unity Editor**
+You've added the eye tracking sample scenes to the Build Settings and have loaded the _EyeTrackingDemo-00-RootScene_?
 Make sure that the _'OnLoad_StartScene'_ script is enabled for this so that the root scene knows which additive scene to load first.
-
 ![Example for the OnLoad_StartScene script](../Images/EyeTracking/mrtk_et_rootscene_onload.png)
 
-- Individual eye tracking sample scenes - See [Demo Scenarios](#demo-scenarios) for a description of each:
-  - EyeTrackingDemo-01-BasicSetup.unity
-  - EyeTrackingDemo-02-TargetSelection.unity
-  - EyeTrackingDemo-03-Navigation.unity
-  - EyeTrackingDemo-04-TargetPositioning.unity
-  - EyeTrackingDemo-05-Visualizer.unity
+Are you excited? You've got this! Let's hit _"Play"_!
+You should see several gems appear and should see the scene menu at the top.
+![Sample screenshot from the ET target select scene](../Images/EyeTracking/mrtk_et_targetselect.png)
 
-How to quickly change a scene and test it in the Unity editor:
+You should notice a small semitransparent circle at the center of your Game view. 
+This acts as an indicator of your _simulated eye gaze_.
+You can move it by pressing down the _right mouse button_ and move the mouse.
+When the cursor is hovering over the gems, you will notice that the cursor will snap to the center of the currently looked at gem. 
+This is a great way to test your simulated eye gaze input.
+Please beware though that our eyes move very rapidly and that the mouse movement is not the best supplement to simulated this behavior. 
+The gem rotates as long as being looked at and you can destroy it by pressing _Enter_.
+We describe in more detail why and how you can achieve these interactions in our [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md) tutorial.
+
+When moving the cursor up to the top menu bar, you will notice that the currently hovered item will highlight subtly. 
+You can select the currently highlighted item by pressing _Enter_. 
+This way you can switch between the different eye tracking sample scenes.
+
+**4. How to test specific sub scenes**
+When working on a specific scenario, you may not want to go through the scene menu every time. 
+No problem!
 - Load the _root_ scene
 - Disable the _'OnLoadStartScene'_ script
 - _Drag and drop_ one of the eye tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view.
 
-![Example for the OnLoad_StartScene script](../Images/EyeTracking/mrtk_et_rootscene_onload2.png)
-  
+
 ### Demo Scenarios
 [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md)
 
