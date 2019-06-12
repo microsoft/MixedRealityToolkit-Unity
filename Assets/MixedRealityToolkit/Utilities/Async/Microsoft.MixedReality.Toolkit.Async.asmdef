@@ -1,9 +1,6 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Services.InputSystem",
-    "references": [
-        "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Async"
-    ],
+    "name": "Microsoft.MixedReality.Toolkit.Async",
+    "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],

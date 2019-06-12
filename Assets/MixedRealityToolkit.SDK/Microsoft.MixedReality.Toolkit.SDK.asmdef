@@ -2,6 +2,7 @@
     "name": "Microsoft.MixedReality.Toolkit.SDK",
     "references": [
         "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Unity.TextMeshPro"
