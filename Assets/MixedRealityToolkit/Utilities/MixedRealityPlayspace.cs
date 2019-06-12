@@ -19,11 +19,6 @@ namespace Microsoft.MixedReality.Toolkit
     [ExecuteAlways]
     public partial class MixedRealityPlayspace : MonoBehaviour
     {
-        private const string Description = "This is where the Toolkit instantiates objects like cursors, pointers and boundary visualizations." +
-            "\n- Your main camera should be kept here (unless you are using a custom CameraSystem implementation.)" +
-            "\n- This transform can be moved, but it should not be parented under another object." +
-            "\n- If multiple MixedRealityPlayspace transforms are loaded in multiple scenes, all but the first loaded will be disabled and ignored.";
-
         private const string NameEnabled = "MixedRealityPlayspace";
         private const string NameDisabled = "MixedRealityPlayspace (Inactive)";
 
@@ -150,6 +145,28 @@ namespace Microsoft.MixedReality.Toolkit
             transformation?.Invoke(Transform);
         }
 
+        public static void SetActivePlayspace(MixedRealityPlayspace playspace)
+        {
+            if (playspace == mixedRealityPlayspace)
+            {   // Do nothing.
+                return;
+            }
+
+            if (playspace == null)
+            {
+                Debug.LogError("Cannot set a playspace instance to null.");
+                return;
+            }
+
+            if (mixedRealityPlayspace != null)
+            {
+                mixedRealityPlayspace.gameObject.SetActive(false);
+            }
+
+            mixedRealityPlayspace = playspace;
+            mixedRealityPlayspace.gameObject.SetActive(true);
+        }
+
         private static void FindOrCreatePlayspace()
         {
             if (CameraCache.Main.transform.parent == null)
@@ -249,28 +266,6 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 SearchForAndDisableExtraPlayspaces(scene.GetRootGameObjects());
             }
-        }
-
-        public static void SetActivePlayspace(MixedRealityPlayspace playspace)
-        {
-            if (playspace == mixedRealityPlayspace)
-            {   // Do nothing.
-                return;
-            }
-
-            if (playspace == null)
-            {
-                Debug.LogError("Cannot set a playspace instance to null.");
-                return;
-            }
-
-            if (mixedRealityPlayspace != null)
-            {
-                mixedRealityPlayspace.gameObject.SetActive(false);
-            }
-
-            mixedRealityPlayspace = playspace;
-            mixedRealityPlayspace.gameObject.SetActive(true);
         }
 #endif
 
