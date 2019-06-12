@@ -1,27 +1,27 @@
-# Eye Tracking Examples in MRTK
-This page covers how to get quickly started with using Eye Tracking in MRTK by building on our provided MRTK example package.
-The samples let you experience one of our new magical input capabilities: **Eye Tracking**! 
-The demo include a number of different use cases for seamlessly combining information about what you are looking at with **Voice** and **Hand** input. 
-This enables users to quickly and effortlessly select and move holograms across their view simply by looking at a target and saying _'Select'_ or performing a hand gesture. 
+# Eye tracking examples in MRTK
+This page covers how to get quickly started with using eye tracking in MRTK by building on our provided MRTK example package.
+The samples let you experience one of our new magical input capabilities: **Eye tracking**! 
+The demo includes a number of different use cases ranging from implicit eye-based activations to how to seamlessly combine information about what you are looking at with **voice** and **hand** input. 
+This enables users to quickly and effortlessly select and move holographic content across their view simply by looking at a target and saying _'Select'_ or performing a hand gesture. 
 The demos also include an example for eye-gaze-directed scroll, pan and zoom of text and images on a slate. 
 Finally, an example is provided for recording and visualizing the user's visual attention on a 2D slate.
 
 
-## Overview of MRTK Eye Tracking Samples
+## Overview of MRTK eye tracking samples
 
-### Setting up the MRTK Eye Tracking Samples
+### Setting up the MRTK eye tracking samples
 
-The [Eye Tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) comes with a number of different Unity scenes that are described in more detail below:
+The [eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) comes with a number of different Unity scenes that are described in more detail below:
 
 - EyeTrackingDemo-00-RootScene.unity:
 This is the main (_root_) scene that has all the core MRTK components included.
-It comes with a graphical scene menu that allows you to easily switch between the different Eye Tracking scenes which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
-To try out the Eye Tracking demos in your Unity Player, all you have to do is to load this scene and hit play.
+It comes with a graphical scene menu that allows you to easily switch between the different eye tracking scenes which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
+To try out the eye tracking demos in your Unity Player, all you have to do is to load this scene and hit play.
 Make sure that the _'OnLoad_StartScene'_ script is enabled for this so that the root scene knows which additive scene to load first.
 
 ![Example for the OnLoad_StartScene script](../Images/EyeTracking/mrtk_et_rootscene_onload.png)
 
-- Individual Eye Tracking sample scenes - See [Demo Scenarios](#demo-scenarios) for a description of each:
+- Individual eye tracking sample scenes - See [Demo Scenarios](#demo-scenarios) for a description of each:
   - EyeTrackingDemo-01-BasicSetup.unity
   - EyeTrackingDemo-02-TargetSelection.unity
   - EyeTrackingDemo-03-Navigation.unity
@@ -31,7 +31,7 @@ Make sure that the _'OnLoad_StartScene'_ script is enabled for this so that the 
 How to quickly change a scene and test it in the Unity editor:
 - Load the _root_ scene
 - Disable the _'OnLoadStartScene'_ script
-- _Drag and drop_ one of the Eye Tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view.
+- _Drag and drop_ one of the eye tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view.
 
 ![Example for the OnLoad_StartScene script](../Images/EyeTracking/mrtk_et_rootscene_onload2.png)
   
@@ -75,9 +75,9 @@ For more precisely positioning your hologram, you can use additional input from 
 
 Information about where users look at is an immensely powerful tool to assess usability of a design and to identify problems in efficient work streams. 
 This tutorial discusses different eye tracking visualizations and how they fit different needs. 
-We provide basic examples for logging and loading Eye Tracking data and examples for how to visualize them. 
+We provide basic examples for logging and loading eye tracking data and examples for how to visualize them. 
 
-**Summary**: Two-dimensional attention map (heatmaps) on slates. Recording & replaying Eye Tracking data.
+**Summary**: Two-dimensional attention map (heatmaps) on slates. Recording & replaying eye tracking data.
 
 ---
-[Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
