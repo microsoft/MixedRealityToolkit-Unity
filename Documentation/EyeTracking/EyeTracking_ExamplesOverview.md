@@ -7,7 +7,9 @@ The demos also include an example for eye-gaze-directed scroll, pan and zoom of 
 Finally, an example is provided for recording and visualizing the user's visual attention on a 2D slate.
 
 In the following we will go into more detail what each of the different samples in the [eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) includes:
+
 ![List of eye tracking scenes](../Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
+
 The individual sample scenes will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
 In case, you wonder what that entails, we will start with a quick overview of how to set up and test the MRTK eye tracking demos.
 
