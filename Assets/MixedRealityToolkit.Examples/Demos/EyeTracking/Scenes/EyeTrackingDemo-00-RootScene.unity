@@ -6910,7 +6910,7 @@ MonoBehaviour:
   Dimensions: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  VoiceCommand: 
   RequiresFocus: 1
   Profiles:
   - Target: {fileID: 93553565640916291}
@@ -12338,7 +12338,7 @@ MonoBehaviour:
   Dimensions: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  VoiceCommand: 
   RequiresFocus: 1
   Profiles:
   - Target: {fileID: 24050898187404380}
@@ -13362,7 +13362,7 @@ MonoBehaviour:
   Dimensions: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  VoiceCommand: 
   RequiresFocus: 1
   Profiles:
   - Target: {fileID: 2283218539602596063}
@@ -14062,8 +14062,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ccc66cc8439d047be737bcfdba2662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   Overlay_UseIt: 1
   Overlay_GameObj: {fileID: 1206941308118206135}
   startTransparency: 0
@@ -14912,61 +14910,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 0
   selectAction:
     id: 0
     description: None
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 1
-  OnLookAtStart:
+  voiceSelect:
+  - id: 1
+    description: Select
+    axisConstraint: 2
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 567768482707226785}
-        m_MethodName: Engage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnLookAway:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 567768482707226785}
-        m_MethodName: Disengage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onLookAway:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  onDwell:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 1
 --- !u!4 &4438739616769918184
 Transform:
   m_ObjectHideFlags: 0
@@ -14993,8 +14971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ccc66cc8439d047be737bcfdba2662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   Overlay_UseIt: 1
   Overlay_GameObj: {fileID: 1034750304144829227}
   startTransparency: 0
@@ -15034,8 +15010,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ccc66cc8439d047be737bcfdba2662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   Overlay_UseIt: 1
   Overlay_GameObj: {fileID: 1100294177935430196}
   startTransparency: 0
@@ -20151,61 +20125,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 0
   selectAction:
     id: 0
     description: None
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 1
-  OnLookAtStart:
+  voiceSelect:
+  - id: 1
+    description: Select
+    axisConstraint: 2
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 567768482707226785}
-        m_MethodName: Engage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnLookAway:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 567768482707226785}
-        m_MethodName: Disengage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onLookAway:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  onDwell:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 1
 --- !u!4 &5261928644328183852
 Transform:
   m_ObjectHideFlags: 0
@@ -20232,61 +20186,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 0
   selectAction:
     id: 0
     description: None
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 1
-  OnLookAtStart:
+  voiceSelect:
+  - id: 1
+    description: Select
+    axisConstraint: 2
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 567768482707226785}
-        m_MethodName: Engage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnLookAway:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 567768482707226785}
-        m_MethodName: Disengage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onLookAway:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  onDwell:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 1
 --- !u!1 &5326639788756330384
 GameObject:
   m_ObjectHideFlags: 0
@@ -20350,8 +20284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ccc66cc8439d047be737bcfdba2662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   Overlay_UseIt: 1
   Overlay_GameObj: {fileID: 8924645350298455792}
   startTransparency: 0
@@ -20906,61 +20838,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 0
   selectAction:
     id: 0
     description: None
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 1
-  OnLookAtStart:
+  voiceSelect:
+  - id: 1
+    description: Select
+    axisConstraint: 2
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 567768482707226785}
-        m_MethodName: Engage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnLookAway:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 567768482707226785}
-        m_MethodName: Disengage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onLookAway:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  onDwell:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 1
 --- !u!1 &6273452675219474956
 GameObject:
   m_ObjectHideFlags: 0
@@ -27150,7 +27062,7 @@ MonoBehaviour:
   Dimensions: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  VoiceCommand: 
   RequiresFocus: 1
   Profiles:
   - Target: {fileID: 8415750213202434200}
