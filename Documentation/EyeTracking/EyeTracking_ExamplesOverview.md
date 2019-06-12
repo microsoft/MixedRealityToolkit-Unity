@@ -1,5 +1,5 @@
 # Eye tracking examples in MRTK
-This page covers how to get quickly started with using eye tracking in MRTK by building on our provided MRTK example package.
+This page covers how to get quickly started with using eye tracking in MRTK by building on our provided [MRTK eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking).
 The samples let you experience one of our new magical input capabilities: **Eye tracking**! 
 The demo includes a number of different use cases ranging from implicit eye-based activations to how to seamlessly combine information about what you are looking at with **voice** and **hand** input. 
 This enables users to quickly and effortlessly select and move holographic content across their view simply by looking at a target and saying _'Select'_ or performing a hand gesture. 
@@ -30,15 +30,14 @@ By default this is _EyeTrackingDemo-02-TargetSelection_.
 
 
 ### 2. Adding scenes to the Build menu
-To load additive scenes, you must add these scenes to your Build Settings menu first. 
-After you've loaded the EyeTrackingDemo-00-RootScene and before hitting _play_ in your Unity Editor, you need to add the following scenes to your Build Settings:
+To load additive scenes during runtime, you must add these scenes to your _Build Settings -> Scenes in Build_ menu first.
+It is important the the root scene is shown as the first scene in the list:
 
 ![Build Settings scene menu for eye tracking samples](../Images/EyeTracking/mrtk_et_build_settings.jpg)
 
 
 ### 3. Play the eye tracking samples in the Unity Editor
-You've added the eye tracking scenes to the Build Settings and have loaded the _EyeTrackingDemo-00-RootScene_?
-One last thing you may want to check: Is the _'OnLoad_StartScene'_ script enabled? This is to let the root scene know which additive scene to load first.
+After adding the eye tracking scenes to the Build Settings and loading the _EyeTrackingDemo-00-RootScene_, there is one last thing you may want to check: Is the _'OnLoadStartScene'_ script that is attached to the _MixedRealityBasicSceneSetup_ GameObject enabled? This is to let the root scene know which demo scene to load first.
 
 ![Example for the OnLoad_StartScene script](../Images/EyeTracking/mrtk_et_rootscene_onload.png)
 
@@ -53,15 +52,15 @@ You can move it by pressing down the _right mouse button_ and move the mouse.
 When the cursor is hovering over the gems, you will notice that the cursor will snap to the center of the currently looked at gem. 
 This is a great way to test if events are triggered as expected when _"looking"_ at a target. 
 Please beware though that the _simulated eye gaze_ via mouse control is a rather poor supplement to our rapid and unintentional eye movements. 
-It's great for testing the basic functionality before iterating on the design by deploying it to the HoloLens 2 device though.
+It's great for testing the basic functionality though before iterating on the design by deploying it to the HoloLens 2 device.
 Coming back to our sample scene: The gem rotates as long as being looked at and can be destroyed by "looking" at it and ...
 - Pressing _Enter_ (which simulates saying "select")
 - Actually saying _"select"_ into your microphone
-- While pressing _Space_ to show the simulated hand input, click the left mouse button to perform an airtap
+- While pressing _Space_ to show the simulated hand input, click the left mouse button to perform a simulated pinch
 
-We describe in more detail why and how you can achieve these interactions in our [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md) tutorial.
+We describe in more detail how you can achieve these interactions in our [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md) tutorial.
 
-When moving the cursor up to the top menu bar, you will notice that the currently hovered item will highlight subtly. 
+When moving the cursor up to the top menu bar in the scene, you will notice that the currently hovered item will highlight subtly. 
 You can select the currently highlighted item by using one of the above described commit methods (e.g., pressing _Enter_).
 This way you can switch between the different eye tracking sample scenes.
 
@@ -106,7 +105,7 @@ The idea is simple: Benefit from your eyes for fast target selection and positio
 Simply look at a hologram and say _'put this'_, look over where you want to place it and say _'there!'_. 
 For more precisely positioning your hologram, you can use additional input from your hands, voice or controllers. 
 
-**Summary**: Positioning holograms using Eyes, Voice and Hand input (*drag-and-drop*). Eye-supported sliders using Eyes+Hands. 
+**Summary**: Positioning holograms using eyes, voice and hand input (*drag-and-drop*). Eye-supported sliders using eyes + hands. 
 
 <br>
 
