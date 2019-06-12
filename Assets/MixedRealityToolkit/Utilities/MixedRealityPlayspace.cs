@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// A class encapsulating the Mixed Reality playspace.
     /// </summary>
     [ExecuteAlways]
-    public class MixedRealityPlayspace : MonoBehaviour
+    public partial class MixedRealityPlayspace : MonoBehaviour
     {
         private const string Description = "This is where the Toolkit instantiates objects like cursors, pointers and boundary visualizations." +
             "\n- Your main camera should be kept here (unless you are using a custom CameraSystem implementation.)" +
@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit
             "\n- If multiple MixedRealityPlayspace transforms are loaded in multiple scenes, all but the first loaded will be disabled and ignored.";
 
         private const string NameEnabled = "MixedRealityPlayspace";
-        private const string NameDisabled = "MixedRealityPlayspace (Disabled)";
+        private const string NameDisabled = "MixedRealityPlayspace (Inactive)";
 
         private static MixedRealityPlayspace mixedRealityPlayspace;
 
@@ -251,13 +251,26 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        [CustomEditor(typeof(MixedRealityPlayspace))]
-        public class MixedRealityPlayspaceInspector : UnityEditor.Editor
+        public static void SetActivePlayspace(MixedRealityPlayspace playspace)
         {
-            public override void OnInspectorGUI()
-            {
-                EditorGUILayout.HelpBox(Description, MessageType.Info);
+            if (playspace == mixedRealityPlayspace)
+            {   // Do nothing.
+                return;
             }
+
+            if (playspace == null)
+            {
+                Debug.LogError("Cannot set a playspace instance to null.");
+                return;
+            }
+
+            if (mixedRealityPlayspace != null)
+            {
+                mixedRealityPlayspace.gameObject.SetActive(false);
+            }
+
+            mixedRealityPlayspace = playspace;
+            mixedRealityPlayspace.gameObject.SetActive(true);
         }
 #endif
 
@@ -298,6 +311,17 @@ namespace Microsoft.MixedReality.Toolkit
             // Our task is to search for any additional play spaces that may have been loaded, and disable them.
             foreach (GameObject rootGameObject in rootGameObjects)
             {
+                if (rootGameObject.name.Equals(NameEnabled))
+                {
+                    MixedRealityPlayspace playspace = rootGameObject.EnsureComponent<MixedRealityPlayspace>();
+                    if (playspace == mixedRealityPlayspace)
+                    {   // Don't disable our existing playspace
+                        continue;
+                    }
+
+                    playspace.gameObject.SetActive(false);
+                }
+
                 foreach (MixedRealityPlayspace playspace in rootGameObject.GetComponentsInChildren<MixedRealityPlayspace>(true))
                 {
                     if (playspace == mixedRealityPlayspace)
@@ -317,8 +341,29 @@ namespace Microsoft.MixedReality.Toolkit
             bool enabledOne = false;
             foreach (GameObject rootGameObject in rootGameObjects)
             {
+                if (rootGameObject.name.Equals(NameEnabled))
+                {
+                    MixedRealityPlayspace playspace = rootGameObject.EnsureComponent<MixedRealityPlayspace>();
+
+                    if (!enabledOne)
+                    {
+                        mixedRealityPlayspace = playspace;
+                        rootGameObject.gameObject.SetActive(true);
+                        enabledOne = true;
+                    }
+                    else
+                    {
+                        rootGameObject.gameObject.SetActive(false);
+                    }
+                }
+
                 foreach (MixedRealityPlayspace playspace in rootGameObject.GetComponentsInChildren<MixedRealityPlayspace>())
                 {
+                    if (playspace == mixedRealityPlayspace)
+                    {   // Don't disable a newly created playspace
+                        continue;
+                    }
+
                     if (!enabledOne)
                     {
                         mixedRealityPlayspace = playspace;

@@ -672,6 +672,11 @@ namespace Microsoft.MixedReality.Toolkit
 
             internalShutdown = false;
 
+            for (int i = toolkitInstances.Count - 1; i >= 0; i--)
+            {   // Clean the toolkit instances in case any have been deleted recently
+                if (toolkitInstances[i] == null) { toolkitInstances.RemoveAt(i); }
+            }
+
             if (!toolkitInstances.Contains(toolkitInstance))
             {   // If we're already registered, no need to proceed
                 // Add to list

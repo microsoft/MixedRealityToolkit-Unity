@@ -90,17 +90,17 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             FindOrCreateMainCamera();
 
+            // Ensure that the camera is parented under the mixed reality playspace
+            main.transform.SetParent(MixedRealityPlayspace.Transform);
+
             // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
             // We'll enforce that here, then tracking can update it to the appropriate position later.
-            Main.transform.position = Vector3.zero;
+            main.transform.position = Vector3.zero;
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
-            // Ensure that the camera is parented under the mixed reality playspace
-            main.transform.SetParent(MixedRealityPlayspace.Transform);
-
             cameraOpaqueLastFrame = IsOpaque;
 
             if (IsOpaque)
@@ -168,9 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 Debug.LogWarning("No main camera found. The Mixed Reality Toolkit requires at least one camera in the scene. One will be generated now.");
                 main = new GameObject("Main Camera", typeof(Camera)) { tag = "MainCamera" }.GetComponent<Camera>();
             }
-
-            // Ensure that the camera is parented under the mixed reality playspace
-            main.transform.SetParent(MixedRealityPlayspace.Transform);
         }
 
         /// <inheritdoc />
