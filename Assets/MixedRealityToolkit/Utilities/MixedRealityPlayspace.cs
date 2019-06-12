@@ -22,6 +22,16 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static Transform mixedRealityPlayspace;
 
+        public static void Destroy()
+        {
+            // Playspace makes main camera dependent on it (see Transform initialization),
+            // so here it needs to restore camera's initial position. 
+            // Without second parameter camera will not move to its original position.
+            CameraCache.Main.transform.SetParent(null, false);
+            UnityEngine.Object.Destroy(mixedRealityPlayspace.gameObject);
+            mixedRealityPlayspace = null;
+        }
+
         /// <summary>
         /// The transform of the playspace.
         /// </summary>
