@@ -83,11 +83,6 @@ This feature enables rapid development and testing without requiring the build a
 to do final acceptance testing using a built and deployed version of the application, running on the target 
 hardware and platform.
 
-### Hiding the spatial mesh
-
-In order to hide the spatial mesh (assuming the default profile is in use, or the steps in [Enable Spatial Awareness](#enable-spatial-awareness))
-were taken), follow step #2 in [Enable Spatial Awareness](#enable-spatial-awareness) but uncheck the "Enable" checkbox.
-
 ## See Also
 
 - [Spatial Awareness API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness)
