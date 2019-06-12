@@ -16,12 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
-    public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider
+    public class FocusProvider : BaseCoreSystem, IMixedRealityFocusProvider
     {
         public FocusProvider(
             IMixedRealityServiceRegistrar registrar,
-            IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile profile) : base(registrar, inputSystem, null, DefaultPriority, profile)
+            MixedRealityInputSystemProfile profile) : base(registrar, profile)
         { }
 
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
@@ -31,6 +30,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
+
+        public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators
+        {
+            get
+            {
+                return pointerMediators;
+            }
+        }
 
         /// <summary>
         /// Number of IMixedRealityNearPointers that are active (IsInteractionEnabled == true).
@@ -42,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// are active (IsInteractionEnabled == true), excluding the gaze cursor
         /// </summary>
         public int NumFarPointersActive { get; private set; }
-        
+
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
@@ -75,9 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
 
-                if ((Service != null) &&
-                    (profile != null) &&
-                    profile.PointerProfile != null)
+                if (profile != null && profile.PointerProfile != null)
                 {
                     return profile.PointerProfile.PointingExtent;
                 }
@@ -97,9 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
 
-                    if ((Service != null) &&
-                        (profile != null) &&
-                        profile.PointerProfile != null)
+                    if (profile != null && profile.PointerProfile != null)
                     {
                         return focusLayerMasks = profile.PointerProfile.PointingRaycastLayerMasks;
                     }
@@ -127,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (Service == null)
+                if (InputSystem == null)
                 {
                     Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
                     return false;
@@ -850,7 +853,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return (hit1.hitObject != null) ? hit1 : hit2;
         }
-        
+
         /// <summary>
         /// Disable inactive pointers to unclutter the way for active ones.
         /// </summary>
@@ -1206,7 +1209,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
                     // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.SourceId == ((IMixedRealityInputSystem)Service).GazeProvider?.GazeInputSource.SourceId)
+                    if (eventData.InputSource.SourceId == InputSystem.GazeProvider?.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;

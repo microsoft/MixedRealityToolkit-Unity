@@ -7,10 +7,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     /// <summary>
-    /// The associated GameObject will rotate when being looked at based on a given direction.
+    /// The associated GameObject will rotate when RotateTarget() is called based on a given direction and speed.
     /// </summary>
-    [RequireComponent(typeof(EyeTrackingTarget))]
-    public class OnLookAtRotate : BaseEyeFocusHandler
+    public class RotateWithConstSpeedDir : MonoBehaviour
     {
         #region Serialized variables
 
@@ -24,16 +23,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         #endregion
 
-        protected override void OnEyeFocusStay()
-        {
-            // Update target rotation
-            RotateHitTarget();
-        }
-
         /// <summary>
         /// Rotate game object based on specified rotation speed and Euler angles.
         /// </summary>
-        private void RotateHitTarget()
+        public void RotateTarget()
         {
             transform.eulerAngles = transform.eulerAngles + RotateByEulerAngles * speed;
         }
