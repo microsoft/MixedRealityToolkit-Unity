@@ -1,12 +1,14 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf",
+    "name": "Microsoft.MixedReality.Toolkit.Demos.InspectorFields.Inspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Async",
-        "Microsoft.MixedReality.Toolkit.Gltf"
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
+        "Microsoft.MixedReality.Toolkit.Demos.InspectorFields"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

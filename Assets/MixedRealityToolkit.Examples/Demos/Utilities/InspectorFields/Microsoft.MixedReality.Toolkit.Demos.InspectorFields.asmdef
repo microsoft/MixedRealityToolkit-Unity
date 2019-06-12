@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Examples.Demos.Utilities.InspectorFields",
+    "name": "Microsoft.MixedReality.Toolkit.Demos.InspectorFields",
     "references": [
         "Microsoft.MixedReality.Toolkit"
     ],
