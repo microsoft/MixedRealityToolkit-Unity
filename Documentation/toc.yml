@@ -79,6 +79,8 @@
       items:
       - name: Configuring the Spatial Awareness Mesh Observer
         href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
+      - name: Usage Guide
+        href: SpatialAwareness/UsageGuide.md
     - name: Boundary System
       href: Boundary/BoundarySystemGettingStarted.md
       items:
