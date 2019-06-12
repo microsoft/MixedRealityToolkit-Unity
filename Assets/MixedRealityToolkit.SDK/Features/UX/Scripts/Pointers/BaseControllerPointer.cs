@@ -88,7 +88,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (cursorInstance != null)
             {
                 cursorInstance.name = $"{Handedness}_{name}_Cursor";
+
+                BaseCursor oldC = BaseCursor as BaseCursor;
+                if (oldC != null && enabled)
+                {
+                    oldC.VisibleSourcesCount--;
+                }
+
                 BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
+
+                BaseCursor newC = BaseCursor as BaseCursor;
+                if (newC != null && enabled)
+                {
+                    newC.VisibleSourcesCount++;
+                }
 
                 if (BaseCursor != null)
                 {
@@ -123,6 +136,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     renderer.enabled = false;
                 }
             }
+
+            SetCursor();
+
+            BaseCursor c = BaseCursor as BaseCursor;
+            if (c != null)
+            {
+                c.VisibleSourcesCount++;
+            }
         }
 
         protected override async void Start()
@@ -143,8 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Destroy(gameObject);
                 return;
             }
-
-            SetCursor();
         }
 
         protected override void OnDisable()
@@ -160,6 +179,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsSelectPressed = false;
             HasSelectPressedOnce = false;
             BaseCursor?.SetVisibility(false);
+
+            BaseCursor c = BaseCursor as BaseCursor;
+            if (c != null)
+            {
+                c.VisibleSourcesCount--;
+            }
         }
 
         #endregion  MonoBehaviour Implementation
