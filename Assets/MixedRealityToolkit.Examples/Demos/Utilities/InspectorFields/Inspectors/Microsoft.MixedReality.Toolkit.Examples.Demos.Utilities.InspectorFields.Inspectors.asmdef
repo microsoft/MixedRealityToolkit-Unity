@@ -1,9 +1,9 @@
 {
-    "name": "MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields.Inspectors",
+    "name": "Microsoft.MixedReality.Toolkit.Examples.Demos.Utilities.InspectorFields.Inspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
-        "MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields"
+        "Microsoft.MixedReality.Toolkit.Examples.Demos.Utilities.InspectorFields"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
