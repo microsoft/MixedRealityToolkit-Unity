@@ -6,7 +6,7 @@ This enables users to quickly and effortlessly select and move holographic conte
 The demos also include an example for eye-gaze-directed scroll, pan and zoom of text and images on a slate. 
 Finally, an example is provided for recording and visualizing the user's visual attention on a 2D slate.
 
-In the following we will go into more detail what each of the different samples in the [eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) includes:
+In the following, we'll go into more detail what each of the different samples in the [eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) includes:
 
 ![List of eye tracking scenes](../Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
 
@@ -37,12 +37,12 @@ After you've loaded the EyeTrackingDemo-00-RootScene and before hitting _play_ i
 
 
 ### 3. Play the eye tracking samples in the Unity Editor
-You've added the eye tracking sample scenes to the Build Settings and have loaded the _EyeTrackingDemo-00-RootScene_?
-Make sure that the _'OnLoad_StartScene'_ script is enabled for this so that the root scene knows which additive scene to load first.
+You've added the eye tracking scenes to the Build Settings and have loaded the _EyeTrackingDemo-00-RootScene_?
+One last thing you may want to check: Is the _'OnLoad_StartScene'_ script enabled? This is to let the root scene know which additive scene to load first.
 
 ![Example for the OnLoad_StartScene script](../Images/EyeTracking/mrtk_et_rootscene_onload.png)
 
-Are you excited? You've got this! Let's hit _"Play"_!
+Let's roll! Hit _"Play"_!
 You should see several gems appear and should see the scene menu at the top.
 
 ![Sample screenshot from the ET target select scene](../Images/EyeTracking/mrtk_et_targetselect.png)
