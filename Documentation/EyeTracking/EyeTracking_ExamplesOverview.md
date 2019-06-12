@@ -6,14 +6,12 @@ This enables users to quickly and effortlessly select and move holographic conte
 The demos also include an example for eye-gaze-directed scroll, pan and zoom of text and images on a slate. 
 Finally, an example is provided for recording and visualizing the user's visual attention on a 2D slate.
 
-In the following we will go into more detail what each of the different eye tracking sample scenes include.
-The individual samples are set up as _additive scenes_. 
+In the following we will go into more detail what each of the different samples in the [eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) includes:
+![List of eye tracking scenes](../Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
+The individual sample scenes will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
 In case, you wonder what that entails, we will start with a quick overview of how to set up and test the MRTK eye tracking demos.
 
 ## Setting up the MRTK eye tracking samples
-
-The [eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) comes with a number of different Unity scenes that are described in more detail below:
-![List of eye tracking scenes](../Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
 
 ### 1. Load EyeTrackingDemo-00-RootScene.unity:
 The *EyeTrackingDemo-00-RootScene* is the base (_root_) scene that has all the core MRTK components included.
@@ -21,9 +19,8 @@ This is the scene that you need to load first and from which you will run the ey
 It will automatically load the first demo scene and comes with a graphical scene menu that allows you to easily switch between the different eye tracking samples which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
 
 The root scene includes a few core components that will persist across the additively loaded scenes. 
-The _MixedRealityBasicSceneSetup_ includes a script that will automatically load the referenced scenes on startup. 
-By default this is _EyeTrackingDemo-02-TargetSelection_. 
- 
+The _MixedRealityBasicSceneSetup_ includes a script that will automatically load the referenced scene on startup. 
+By default this is _EyeTrackingDemo-02-TargetSelection_.  
 ![Example for the OnLoadStartScene script](../Images/EyeTracking/mrtk_et_onloadstartscene.jpg)
 
 ### 2. Adding scenes to the Build menu
