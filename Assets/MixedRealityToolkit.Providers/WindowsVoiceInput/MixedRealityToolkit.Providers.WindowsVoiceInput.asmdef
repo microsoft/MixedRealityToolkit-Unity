@@ -2,7 +2,7 @@
     "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"
+        "Microsoft.MixedReality.Toolkit.Async"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

@@ -1,10 +1,9 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Examples",
+    "name": "Microsoft.MixedReality.Toolkit",
     "references": [
-        "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
-        "Microsoft.MixedReality.Toolkit.SDK",
-        "Microsoft.MixedReality.Toolkit.Services.InputSystem"
+        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
