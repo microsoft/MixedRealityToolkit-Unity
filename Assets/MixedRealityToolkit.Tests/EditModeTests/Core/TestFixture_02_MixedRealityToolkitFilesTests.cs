@@ -120,13 +120,5 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         {
             TestUtilities.TearDownScenes();
         }
-
-        private void WaitUntilFoldersAvailable()
-        {
-            while (!MixedRealityToolkitFiles.AreFoldersAvailable)
-            {
-                Task.Delay(25);
-            }
-        }
     }
 }
