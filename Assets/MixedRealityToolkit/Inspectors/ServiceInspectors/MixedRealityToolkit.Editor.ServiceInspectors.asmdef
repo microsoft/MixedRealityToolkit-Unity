@@ -3,7 +3,7 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
-        "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions",
+        "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
         "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
