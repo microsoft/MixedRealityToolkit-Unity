@@ -44,32 +44,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 foreach (string asset in importedAssets.Concat(movedAssets))
                 {
                     string folder = asset.Replace("Assets", Application.dataPath);
-                    string normalizedFolder = NormalizeSeparators(folder);
-                    if (FindMatchingModule(normalizedFolder, out MixedRealityToolkitModuleType module))
-                    {
-                        if (!mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
-                        {
-                            modFolders = new HashSet<string>();
-                            mrtkFolders.Add(module, modFolders);
-                        }
-                        modFolders.Add(normalizedFolder);
-                    }
+                    RegisterModuleFolder(folder);
                 }
 
                 foreach (string asset in deletedAssets.Concat(movedFromAssetPaths))
                 {
                     string folder = asset.Replace("Assets", Application.dataPath);
-                    folder = NormalizeSeparators(folder);
-                    foreach (var modFolders in mrtkFolders)
-                    {
-                        if (modFolders.Value.Remove(folder))
-                        {
-                            if (modFolders.Value.Count == 0)
-                            {
-                                mrtkFolders.Remove(modFolders.Key);
-                            }
-                        }
-                    }
+                    UnregisterModuleFolder(folder);
                 }
             }
         }
@@ -114,15 +95,35 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             foreach (string folder in Directory.EnumerateDirectories(rootPath))
             {
-                string normalizedFolder = NormalizeSeparators(folder);
-                if (FindMatchingModule(normalizedFolder, out MixedRealityToolkitModuleType module))
+                RegisterModuleFolder(folder);
+            }
+        }
+
+        private static void RegisterModuleFolder(string folder)
+        {
+            string normalizedFolder = NormalizeSeparators(folder);
+            if (FindMatchingModule(normalizedFolder, out MixedRealityToolkitModuleType module))
+            {
+                if (!mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
                 {
-                    if (!mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
+                    modFolders = new HashSet<string>();
+                    mrtkFolders.Add(module, modFolders);
+                }
+                modFolders.Add(normalizedFolder);
+            }
+        }
+
+        private static void UnregisterModuleFolder(string folder)
+        {
+            string normalizedFolder = NormalizeSeparators(folder);
+            foreach (var modFolders in mrtkFolders)
+            {
+                if (modFolders.Value.Remove(normalizedFolder))
+                {
+                    if (modFolders.Value.Count == 0)
                     {
-                        modFolders = new HashSet<string>();
-                        mrtkFolders.Add(module, modFolders);
+                        mrtkFolders.Remove(modFolders.Key);
                     }
-                    modFolders.Add(normalizedFolder);
                 }
             }
         }
