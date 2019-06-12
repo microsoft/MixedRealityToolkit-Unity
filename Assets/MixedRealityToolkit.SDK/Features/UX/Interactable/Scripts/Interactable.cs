@@ -1078,7 +1078,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             eventData.Use();
         }
 
-        Public void OnTouchUpdated(HandTrackingInputEventData eventData)
+        public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
             if (PassThroughMode && eventData.Sender == null)
             {
