@@ -144,6 +144,32 @@
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeCalibrationValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeCalibrationValid*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeCalibrationValid" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeCalibrationValid">IsEyeCalibrationValid</h4>
+  <div class="markdown level1 summary"><p>Whether the user is eye calibrated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool? IsEyeCalibrationValid { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeGazeValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeGazeValid*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeGazeValid" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeGazeValid">IsEyeGazeValid</h4>
   <div class="markdown level1 summary"><p>Whether eye gaze is valid. It may be invalid due to timeout or lack of tracking hardware or permissions.</p>
@@ -269,6 +295,41 @@ gaze when eye-based tracking is not available.</p>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_UpdateEyeGaze_Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeDataProvider_Ray_System_DateTime__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This method is to be called by implementations of the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider.html">IMixedRealityEyeGazeDataProvider</a> interface, not by application code.</p>
 </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_UpdateEyeTrackingStatus_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.UpdateEyeTrackingStatus*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_UpdateEyeTrackingStatus_Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeDataProvider_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.UpdateEyeTrackingStatus(Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider,System.Boolean)">UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Tells the eye gaze provider about the eye tracking status (e.g., whether the user is calibrated);</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool userIsEyeCalibrated)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider.html">IMixedRealityEyeGazeDataProvider</a></td>
+        <td><span class="parametername">provider</span></td>
+        <td><p>The provider raising the event.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">userIsEyeCalibrated</span></td>
+        <td><p>Boolean whether the user is eye calibrated or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

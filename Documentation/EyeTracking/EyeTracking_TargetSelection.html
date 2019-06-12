@@ -152,21 +152,16 @@ The <em>IMixedRealityPointerHandler</em> interface requires implementing the fol
 <p>Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus if it is eye gaze.
 Similar to the <em>FocusHandler</em>, the <em>BaseEyeFocusHandler</em> is specific Eye Tracking.</p>
 <p>Here is an example from <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity">EyeTrackingDemo-02-TargetSelection.unity</a>.
-Having the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotate.html">OnLookAtRotate.cs</a> attached, a GameObject will rotate while being looked at.</p>
-<pre><code class="lang-csharp">    public class OnLookAtRotate : BaseEyeFocusHandler
+Having the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.RotateWithConstSpeedDir.html">RotateWithConstSpeedDir.cs</a>
+attached, a GameObject will rotate while being looked at.</p>
+<pre><code class="lang-csharp">    public class RotateWithConstSpeedDir : MonoBehavior
     {
-        ... 
-
-        protected override void OnEyeFocusStay()
-        {
-            // Update target rotation
-            RotateHitTarget();
-        }
+        ...
 
         /// &lt;summary&gt;
         /// Rotate game object based on specified rotation speed and Euler angles.
         /// &lt;/summary&gt;
-        private void RotateHitTarget()
+        public void RotateTarget()
         {
             transform.eulerAngles = transform.eulerAngles + RotateByEulerAngles * speed;
         }

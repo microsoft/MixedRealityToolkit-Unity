@@ -630,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_TargetSelection.html",
-          "hash": "NxlyUjsFZC+BBt19RzF5gg=="
+          "hash": "wLKNqTuwMN2vW1twI4riTg=="
         }
       },
       "is_incremental": false,
@@ -3721,6 +3721,83 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions01.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions01.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions02.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions02.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions03.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions03.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions04.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions04.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions05.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions05.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions06.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions06.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions07.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/TextPrefab/TextPrefabInstructions07.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Tooltip/MRTK_Tooltip_Main.png",
       "output": {
         "resource": {
@@ -4337,6 +4414,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/README_TextPrefab.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_TextPrefab.html",
+          "hash": "8RMtYaQM9ZJRT4iE4zGSJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/README_Tooltip.md",
       "output": {
         ".html": {
@@ -4433,6 +4522,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/SpatialAwareness/UsageGuide.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SpatialAwareness/UsageGuide.html",
+          "hash": "CmaTSvyrevFy0nnYy+OVDg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/TODO.md",
       "output": {
         ".html": {
@@ -4461,7 +4562,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "nsK3iyPSm29PB/H+cG05cg=="
+          "hash": "MfN/EaQ2EefC0NIdfbJm0g=="
         }
       },
       "is_incremental": false,
@@ -4473,7 +4574,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "AVMRxZdq/IBODMTUqam/rg=="
+          "hash": "BQLHH53kL+4ZiTdpj6ezsw=="
         }
       },
       "is_incremental": false,
@@ -6104,7 +6205,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.DrawOnTexture.html",
-          "hash": "RHZjQHTD56PL5VXy6VJ01A=="
+          "hash": "m24muM93P/ZzHJl2qhFvZQ=="
         }
       },
       "is_incremental": false,
@@ -6117,6 +6218,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.DwellSelection.html",
           "hash": "Ew/U4+7u8bm20cUTYIwB5w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeCalibrationChecker.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeCalibrationChecker.html",
+          "hash": "ql5vpJqIEVqeJMfnRSEPfg=="
         }
       },
       "is_incremental": false,
@@ -6412,18 +6525,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotate.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotate.html",
-          "hash": "zWzmvDzj63iMNFalv3GoBQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotateByEyeGaze.yml",
       "output": {
         ".html": {
@@ -6537,6 +6638,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PlacementSurfaces.html",
           "hash": "k9MQ9mds1BY6eq0qI7avvQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.RotateWithConstSpeedDir.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.RotateWithConstSpeedDir.html",
+          "hash": "r6SsvGhiW+3d75jWT2iyYQ=="
         }
       },
       "is_incremental": false,
@@ -6668,7 +6781,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting.OnLookAtShowHoverFeedback.html",
-          "hash": "OcyOGbf2Uzvti/8mK8i2cA=="
+          "hash": "jF5IUtJsa3v8MVSmoCvsJg=="
         }
       },
       "is_incremental": false,
@@ -6740,7 +6853,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.html",
-          "hash": "2Bxx/WBj/QV4Jjgf4+Sviw=="
+          "hash": "9v0b+7SnSEXrWTUPIRBnyA=="
         }
       },
       "is_incremental": false,
@@ -7376,7 +7489,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseEyeFocusHandler.html",
-          "hash": "78wTeypENhVxB5dftcMlOg=="
+          "hash": "4oPdJv8NI6jZruJWj3bUGQ=="
         }
       },
       "is_incremental": false,
@@ -7820,7 +7933,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html",
-          "hash": "erywHyxj0b6otoCZSbw5Uw=="
+          "hash": "xsWFucFhWdkUDZYB6qQ/Zw=="
         }
       },
       "is_incremental": false,
@@ -7892,7 +8005,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.GazeProvider.html",
-          "hash": "W8A+MwMYyD1q3OSZo2W5Cg=="
+          "hash": "LlzCjqWKpQconwpuvsV3wQ=="
         }
       },
       "is_incremental": false,
@@ -8204,7 +8317,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html",
-          "hash": "deYeyrbUT6MOsilsWqcShw=="
+          "hash": "BQcFgLBSpdcjwGa1kvG9SA=="
         }
       },
       "is_incremental": false,
@@ -8780,7 +8893,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html",
-          "hash": "XmuoxDqXMQRrreW7QDCDwQ=="
+          "hash": "/mGB80idLSbkRjwMh4hBLg=="
         }
       },
       "is_incremental": false,
@@ -9800,7 +9913,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "+wxo7J+SwfQ2dQWKX3yZjQ=="
+          "hash": "8TdcqES21TAOFRkhUiRL8Q=="
         }
       },
       "is_incremental": false,
@@ -10808,7 +10921,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.html",
-          "hash": "9o+jLjdMgJ83keOpbyGCfw=="
+          "hash": "8BiGL9scJkn6ITivjG4q7Q=="
         }
       },
       "is_incremental": false,
@@ -15812,7 +15925,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "czY2tnsZQ7oyYSrkHipwkw=="
+          "hash": "hobcmx9ktDAZ1LviJ0Kv4A=="
         }
       },
       "is_incremental": false,
@@ -15874,7 +15987,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 98,
+          "total_file_count": 100,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -15887,7 +16000,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 943,
+          "total_file_count": 944,
           "skipped_file_count": 0
         }
       }
