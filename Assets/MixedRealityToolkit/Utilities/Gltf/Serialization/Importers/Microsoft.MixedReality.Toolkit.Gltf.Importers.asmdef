@@ -1,9 +1,9 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Utilities.Gltf.Importers",
+    "name": "Microsoft.MixedReality.Toolkit.Gltf.Importers",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
-        "Microsoft.MixedReality.Toolkit.Utilities.Gltf",
+        "Microsoft.MixedReality.Toolkit.Gltf",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
     "optionalUnityReferences": [],

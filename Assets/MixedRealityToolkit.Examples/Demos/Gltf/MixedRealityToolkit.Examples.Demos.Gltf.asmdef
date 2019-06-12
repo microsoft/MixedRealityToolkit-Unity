@@ -3,7 +3,7 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
-        "Microsoft.MixedReality.Toolkit.Utilities.Gltf"
+        "Microsoft.MixedReality.Toolkit.Gltf"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
