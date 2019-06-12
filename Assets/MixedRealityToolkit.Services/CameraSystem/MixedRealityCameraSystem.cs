@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
@@ -44,6 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         }
 
         /// <inheritdoc />
+        public override uint Priority { get => 0; } // Because the main camera is used by so many other services, it should be initialized and udpated first
+
+        /// <inheritdoc />
         public uint SourceId { get; } = 0;
 
         /// <inheritdoc />
@@ -69,20 +73,28 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             get
             {
-                return FindOrCreateMainCamera();
+                FindOrCreateMainCamera();
+                return main;
             }
         }
 
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
-        private static Camera cachedCamera;
+        private static Camera main;
+
+        public override void Initialize()
+        {
+            FindOrCreateMainCamera();
+
+            // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
+            // We'll enforce that here, then tracking can update it to the appropriate position later.
+            Main.transform.position = Vector3.zero;
+        }
 
         /// <inheritdoc />
         public override void Enable()
         {
             cameraOpaqueLastFrame = IsOpaque;
-
-            FindOrCreateMainCamera();
 
             if (IsOpaque)
             {
@@ -136,29 +148,25 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             QualitySettings.SetQualityLevel(CameraProfile.HoloLensQualityLevel, false);
         }
 
-        private Camera FindOrCreateMainCamera()
+        private void FindOrCreateMainCamera()
         {
-            if (cachedCamera != null)
+            if (main != null)
             {   // Ensure that the camera is parented under the mixed reality playspace
-                cachedCamera.transform.SetParent(MixedRealityPlayspace.Transform);
-                return cachedCamera;
+                main.transform.SetParent(MixedRealityPlayspace.Transform);
+                return;
             }
 
             // If the cached camera is null, search for main
-            var mainCamera = Camera.main;
+            main = Camera.main;
 
-            if (mainCamera == null)
+            if (main == null)
             {   // If no main camera was found, create it now
                 Debug.LogWarning("No main camera found. The Mixed Reality Toolkit requires at least one camera in the scene. One will be generated now.");
-                mainCamera = new GameObject("Main Camera", typeof(Camera)) { tag = "MainCamera" }.GetComponent<Camera>();
+                main = new GameObject("Main Camera", typeof(Camera)) { tag = "MainCamera" }.GetComponent<Camera>();
             }
 
-            // Cache the main camera
-            cachedCamera = mainCamera;
             // Ensure that the camera is parented under the mixed reality playspace
-            cachedCamera.transform.SetParent(MixedRealityPlayspace.Transform);
-
-            return cachedCamera;
+            main.transform.SetParent(MixedRealityPlayspace.Transform);
         }
 
         /// <inheritdoc />
@@ -175,3 +183,4 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         }
     }
 }
+ 

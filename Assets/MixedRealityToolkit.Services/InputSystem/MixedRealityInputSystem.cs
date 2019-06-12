@@ -122,6 +122,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 CameraCache.Main.transform.position = Vector3.zero;
                 CameraCache.Main.transform.rotation = Quaternion.identity;
 
+                // Ensure there's an event system attached to the main camera.
+                bool addedComponents = false;
+                if (!Application.isPlaying)
+                {
+                    var eventSystems = GameObject.FindObjectsOfType<EventSystem>();
+
+                    if (eventSystems.Length == 0)
+                    {
+                        CameraCache.Main.gameObject.EnsureComponent<EventSystem>();
+                        addedComponents = true;
+                    }
+                    else
+                    {
+                        bool raiseWarning;
+
+                        if (eventSystems.Length == 1)
+                        {
+                            raiseWarning = eventSystems[0].gameObject != CameraCache.Main.gameObject;
+                        }
+                        else
+                        {
+                            raiseWarning = true;
+                        }
+
+                        if (raiseWarning)
+                        {
+                            Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Toolkit requires only one, and must be found on the main camera.");
+                        }
+                    }
+                }
+
+                if (!addedComponents)
+                {
+                    CameraCache.Main.gameObject.EnsureComponent<EventSystem>();
+                }
+
+                // Ensure there's an input module attached to the main camera.
                 var inputModules = UnityEngine.Object.FindObjectsOfType<BaseInputModule>();
 
                 if (inputModules.Length == 0)

@@ -501,47 +501,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void EnsureMixedRealityRequirements()
         {
-            // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
-            // We'll enforce that here, then tracking can update it to the appropriate position later.
-            CameraCache.Main.transform.position = Vector3.zero;
-
-            // This will create the playspace
-            Transform playspace = MixedRealityPlayspace.Transform;
-
-            bool addedComponents = false;
-            if (!Application.isPlaying)
-            {
-                var eventSystems = FindObjectsOfType<EventSystem>();
-
-                if (eventSystems.Length == 0)
-                {
-                    CameraCache.Main.gameObject.EnsureComponent<EventSystem>();
-                    addedComponents = true;
-                }
-                else
-                {
-                    bool raiseWarning;
-
-                    if (eventSystems.Length == 1)
-                    {
-                        raiseWarning = eventSystems[0].gameObject != CameraCache.Main.gameObject;
-                    }
-                    else
-                    {
-                        raiseWarning = true;
-                    }
-
-                    if (raiseWarning)
-                    {
-                        Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Toolkit requires only one, and must be found on the main camera.");
-                    }
-                }
-            }
-
-            if (!addedComponents)
-            {
-                CameraCache.Main.gameObject.EnsureComponent<EventSystem>();
-            }
+            // Currently empty.
         }
 
 #region MonoBehaviour Implementation
