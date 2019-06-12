@@ -96,13 +96,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             foreach (string folder in Directory.EnumerateDirectories(rootPath))
             {
                 TryRegisterModuleFolder(folder);
+
+                // NuGet packages may contain MRTK subfolders, have to include the subfolder level to catch these.
+                // This alternate path is used if above isn't found. This is to work around long paths issue with NuGetForUnity
+                // https://github.com/GlitchEnzo/NuGetForUnity/issues/246
+                foreach (string subfolder in Directory.EnumerateDirectories(folder))
+                {
+                    TryRegisterModuleFolder(subfolder);
+                }
             }
         }
 
         private static bool TryRegisterModuleFolder(string folder)
         {
+            return TryRegisterModuleFolder(folder, out MixedRealityToolkitModuleType module);
+        }
+
+        private static bool TryRegisterModuleFolder(string folder, out MixedRealityToolkitModuleType module)
+        {
             string normalizedFolder = NormalizeSeparators(folder);
-            if (FindMatchingModule(normalizedFolder, out MixedRealityToolkitModuleType module))
+            if (FindMatchingModule(normalizedFolder, out module))
             {
                 if (!mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
                 {
