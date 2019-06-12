@@ -36,13 +36,14 @@ If the user has his/her hands _not busy_, it would be instinctual to simply touc
 However, if the user has his/her hands busy, holding the holographic tools in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and simply looking at a check box and say "check it!".
 
 
-## Use the Generic Focus Handler
+## Use generic focus and pointer handlers
 If eye tracking is set up correctly (see [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)), enabling users to select 
 holograms using their eyes is the same as for any other focus input (e.g., head gaze or hand ray).
 This provides the great advantage of a flexible way to interact with your holograms by defining the main focus type in your MRTK Input Pointer Profile depending on your user's needs, while leaving your code untouched.
+This allows for switching between head or eye gaze without changing a line of code or replace hand rays with eye targeting for far interactions.
 
-For example, this would enable to switch between head or eye gaze without changing a line of code. 
-To detect when a hologram is focused at, use the _'IMixedRealityFocusHandler'_ interface that provides you with two interface members: _OnFocusEnter_ and _OnFocusExit_.
+### Focusing a hologram
+To detect when a hologram is focused, use the _'IMixedRealityFocusHandler'_ interface that provides you with two interface members: _OnFocusEnter_ and _OnFocusExit_.
 
 Here is a simple example from [ColorTap.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ColorTap) to change a hologram's color when being looked at.
 
@@ -62,14 +63,16 @@ Here is a simple example from [ColorTap.cs](xref:Microsoft.MixedReality.Toolkit.
     }
 ```
 
-### Selecting a Focused Hologram 
-To select focused holograms, use input event listeners to confirm a selection. 
+### Selecting a focused hologram 
+To select focused holograms, use PointerHandler to listener for input event to confirm a selection. 
 For example, adding the _IMixedRealityPointerHandler_ will make them react to simple pointer input. 
 The _IMixedRealityPointerHandler_ interface requires implementing the following three interface members: 
 _OnPointerUp_, _OnPointerDown_, and _OnPointerClicked_.
 
-The _MixedRealityInputAction_ is a configurable list of actions that you want to distinguish in your app and can be edited in the 
-_MRTK Configuration Profile_ -> _Input System Profile_ -> _Input Actions Profile_. 
+In the example below, we change the color of a hologram by looking at it and pinching or saying "select".
+Which action is required to trigger the event is defined by ```eventData.MixedRealityInputAction == selectAction``` whereby we can set the type of ```selectAction``` in the Unity Editor - by default it's the "Select" action.
+The types of available ![MixedRealityInputActions](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/InputActions.html) can be configured in the MRTK Profiler via
+_MRTK Configuration Profile_ -> _Input_ -> _Input Actions_. 
 
 ```csharp 
    public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
@@ -100,25 +103,43 @@ _MRTK Configuration Profile_ -> _Input System Profile_ -> _Input Actions Profile
 ```
 
 ### Use Eye-Gaze-Specific _BaseEyeFocusHandler_
-Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus if it is eye gaze.
-Similar to the _FocusHandler_, the _BaseEyeFocusHandler_ is specific Eye Tracking.
+Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus input if it is _eye gaze_ and it is currently the primary input pointer.
+For this purpose, you would use the _BaseEyeFocusHandler_ which is specific to eye tracking and which derives from 
+the _FocusHandler_.
+As mentioned before, it will only trigger if eye gaze targeting is currently the primary pointer input (i.e., no hand ray is active).
 
-Here is an example from [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
+
+Here is an example from [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
 ).
-Having the [RotateWithConstSpeedDir.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.RotateWithConstSpeedDir)
+In this demo, there are two 3D holograms that start will turn depending on which part of the object is looked at: 
+If the user looks at the left side of the hologram, then that part will slowly move towards the front facing the user.
+If the right side is looked at, then that part will slowly move to the front. 
+This is a behavior that you may not want to have active at all times and also something that you may not want to accidentally trigger by a hand ray or head gaze. 
+Having the [OnLookAtRotateByEyeGaze.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotateByEyeGaze)
 attached, a GameObject will rotate while being looked at.
 
 ```csharp
-    public class RotateWithConstSpeedDir : MonoBehavior
+    public class OnLookAtRotateByEyeGaze : BaseEyeFocusHandler
     {
         ...
-
-        /// <summary>
-        /// Rotate game object based on specified rotation speed and Euler angles.
-        /// </summary>
-        public void RotateTarget()
+        
+        protected override void OnEyeFocusStay()
         {
-            transform.eulerAngles = transform.eulerAngles + RotateByEulerAngles * speed;
+            // Update target rotation
+            RotateHitTarget();
+        }
+        
+        ...
+        
+        ///
+        /// This function computes the rotation of the target to move the currently looked at aspect slowly to the front. 
+        ///
+        private void RotateHitTarget()
+        {
+            // Example for querying the hit position of the eye gaze ray using EyeGazeProvider
+            Vector3 TargetToHit = (this.gameObject.transform.position - InputSystem.EyeGazeProvider.HitPosition).normalized;
+                       
+            ...
         }
     }
 ```
