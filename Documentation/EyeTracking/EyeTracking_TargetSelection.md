@@ -9,8 +9,36 @@ Eye tracking allows for fast and effortless target selections using a combinatio
 - Look & Bluetooth button
 
 ## Target Selection
-### Use Generic Focus Handler 
-If Eye Tracking is set up correctly (see [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)), enabling users to select 
+To select holographic content using eye gaze, there are several options:
+
+**1. Use the primary focus pointer:** 
+This can be understood as your primary cursor. 
+Please note that based on the current design head or eye gaze is suppressed as a cursor input if hand rays are used.
+
+For example: 
+A user wants to select a distant holographic button.
+As a developer, you want to provide a flexible solution that allows the user to achieve this tasks in various conditions:
+- Walk up to the button and poke it
+- Look at it from a distance and say "select"
+- Target the button using a hand ray and performing a pinch
+In this case, the most flexible solution is to use the primary focus handler as it will notify you whenever the currently prioritized primary focus pointer triggers an event. 
+Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view.
+
+This is why in our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see [**Eye-Supported Positioning**](EyeTracking_Positioning.md).
+
+**2. Use both eye focus and hand rays at the same time:** 
+There might be instances where you want to be more specific which type of focus pointers can trigger certain events and allow for simultaneously using multiple far interaction techniques. 
+
+For example:
+In your app, a user can use far hand rays to manipulate some holographic mechanical setup.
+As part of that scenario, you want to support a mechanic that grabs some holographic tools to repair an engine. 
+While doing so, the user has to go through a number of instructions and record his progress by marking off some check boxes.
+If the user has his/her hands _not busy_, it would be instinctual to simply touch the check box or select it using a hand ray. 
+However, if the user has his/her hands busy, holding the holographic tools in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and simply looking at a check box and say "check it!".
+
+
+### Use Generic Focus Handler
+If eye tracking is set up correctly (see [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)), enabling users to select 
 holograms using their eyes is the same as for any other focus input (e.g., head gaze or hand ray).
 This provides the great advantage of a flexible way to interact with your holograms by defining the main focus type in your MRTK Input Pointer Profile depending 
 on your user's needs, while leaving your code untouched.
