@@ -2,7 +2,7 @@
     "name": "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Core.Inspectors",
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation"
     ],

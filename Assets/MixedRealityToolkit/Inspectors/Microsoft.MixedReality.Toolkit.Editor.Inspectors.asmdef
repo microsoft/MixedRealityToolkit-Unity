@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Core.Inspectors",
+    "name": "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",

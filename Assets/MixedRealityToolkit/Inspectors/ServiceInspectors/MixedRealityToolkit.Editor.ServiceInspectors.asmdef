@@ -1,16 +1,16 @@
 {
-    "name": "MixedRealityToolkit.Core.Inspectors.ServiceInspectors",
+    "name": "MixedRealityToolkit.Editor.ServiceInspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions",
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem",
         "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
         "Microsoft.MixedReality.Toolkit.Services.TeleportSystem",
-        "MixedRealityToolkit.Services.SceneSystem",
-        "Microsoft.MixedReality.Toolkit.Core.Inspectors"
+        "MixedRealityToolkit.Services.SceneSystem"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
