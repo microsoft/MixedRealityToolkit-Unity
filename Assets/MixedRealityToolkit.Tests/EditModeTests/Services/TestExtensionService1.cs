@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
             uint priority,
             BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
 
-    public bool IsEnabled { get; private set; }
+        public bool IsEnabled { get; private set; }
 
         public override void Enable()
         {

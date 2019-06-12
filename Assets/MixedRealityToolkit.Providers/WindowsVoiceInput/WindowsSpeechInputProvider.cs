@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 }
                 catch (UnityException ex)
                 {
-                    Debug.LogError($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
+                    Debug.LogWarning($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
                     keywordRecognizer = null;
                     return;
                 }
@@ -157,7 +157,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             {
                 StopRecognition();
                 keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
+
+                keywordRecognizer.Dispose();
             }
+
+            keywordRecognizer = null;
         }
 
 #if UNITY_EDITOR
