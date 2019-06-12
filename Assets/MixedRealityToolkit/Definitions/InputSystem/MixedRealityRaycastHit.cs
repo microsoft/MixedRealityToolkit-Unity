@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -30,7 +31,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             textureCoord = hitInfo.textureCoord;
             textureCoord2 = hitInfo.textureCoord2;
             transform = hitInfo.transform;
-            lightmapCoord = hitInfo.lightmapCoord;
+
+            try
+            {
+                lightmapCoord = hitInfo.lightmapCoord;
+            }
+            catch (Exception)
+            {
+                // Accessing lightmap coord appears to throw a NullReferenceException in some cases, probably when lightmaps are not used.
+                // Catch this, and just leave as default value.
+                lightmapCoord = Vector2.zero;
+            }
         }
     }
 }
