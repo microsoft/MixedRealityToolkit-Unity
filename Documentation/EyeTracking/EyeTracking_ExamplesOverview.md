@@ -6,18 +6,16 @@ This enables users to quickly and effortlessly select and move holographic conte
 The demos also include an example for eye-gaze-directed scroll, pan and zoom of text and images on a slate. 
 Finally, an example is provided for recording and visualizing the user's visual attention on a 2D slate.
 
-
-## Overview of MRTK eye tracking samples
 In the following we will go into more detail what each of the different eye tracking sample scenes include.
 The individual samples are set up as _additive scenes_. 
 In case, you wonder what that entails, we will start with a quick overview of how to set up and test the MRTK eye tracking demos.
 
-### Setting up the MRTK eye tracking samples
+## Setting up the MRTK eye tracking samples
 
 The [eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) comes with a number of different Unity scenes that are described in more detail below:
 ![List of eye tracking scenes](../Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
 
-**1. Load EyeTrackingDemo-00-RootScene.unity**:
+### 1. Load EyeTrackingDemo-00-RootScene.unity:
 The *EyeTrackingDemo-00-RootScene* is the base (_root_) scene that has all the core MRTK components included.
 This is the scene that you need to load first and from which you will run the eye tracking demos. 
 It will automatically load the first demo scene and comes with a graphical scene menu that allows you to easily switch between the different eye tracking samples which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
@@ -28,12 +26,12 @@ By default this is _EyeTrackingDemo-02-TargetSelection_.
  
 ![Example for the OnLoadStartScene script](../Images/EyeTracking/mrtk_et_onloadstartscene.jpg)
 
-**2. Adding scenes to the Build menu**
+### 2. Adding scenes to the Build menu
 To load additive scenes, you must add these scenes to your Build Settings menu first. 
 After you've loaded the EyeTrackingDemo-00-RootScene and before hitting _play_ in your Unity Editor, you need to add the following scenes to your Build Settings:
 ![Build Settings scene menu for eye tracking samples](../Images/EyeTracking/mrtk_et_buildsettings.jpg)
 
-**3. Play the eye tracking samples in the Unity Editor**
+### 3. Play the eye tracking samples in the Unity Editor
 You've added the eye tracking sample scenes to the Build Settings and have loaded the _EyeTrackingDemo-00-RootScene_?
 Make sure that the _'OnLoad_StartScene'_ script is enabled for this so that the root scene knows which additive scene to load first.
 ![Example for the OnLoad_StartScene script](../Images/EyeTracking/mrtk_et_rootscene_onload.png)
@@ -55,7 +53,7 @@ When moving the cursor up to the top menu bar, you will notice that the currentl
 You can select the currently highlighted item by pressing _Enter_. 
 This way you can switch between the different eye tracking sample scenes.
 
-**4. How to test specific sub scenes**
+### 4. How to test specific sub scenes
 When working on a specific scenario, you may not want to go through the scene menu every time. 
 No problem!
 - Load the _root_ scene
@@ -63,7 +61,7 @@ No problem!
 - _Drag and drop_ one of the eye tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view.
 
 
-### Demo Scenarios
+## Overview of the eye tracking demo samples
 [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md)
 
 This tutorial showcases the ease of accessing eye gaze data to select targets. 
