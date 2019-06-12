@@ -5,7 +5,8 @@
         "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy",
         "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
-        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+        "Unity.TextMeshPro.Editor"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
