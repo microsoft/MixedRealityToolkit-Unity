@@ -8,7 +8,6 @@ Eye tracking allows for fast and effortless target selections using a combinatio
 - Look & Say _"Explode"_ or _"Pop"_ (custom voice commands)
 - Look & Bluetooth button
 
-## Target Selection
 To select holographic content using eye gaze, there are several options:
 
 **1. Use the primary focus pointer:** 
@@ -37,17 +36,15 @@ If the user has his/her hands _not busy_, it would be instinctual to simply touc
 However, if the user has his/her hands busy, holding the holographic tools in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and simply looking at a check box and say "check it!".
 
 
-### Use Generic Focus Handler
+## Use the Generic Focus Handler
 If eye tracking is set up correctly (see [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)), enabling users to select 
 holograms using their eyes is the same as for any other focus input (e.g., head gaze or hand ray).
-This provides the great advantage of a flexible way to interact with your holograms by defining the main focus type in your MRTK Input Pointer Profile depending 
-on your user's needs, while leaving your code untouched.
-For example, this would enable to switch between head or eye gaze without changing a line of code. 
-To detect when a hologram is focused at, use the _'IMixedRealityFocusHandler'_ interface that provides you with two interface members: _OnFocusEnter_ and 
-_OnFocusExit_.
+This provides the great advantage of a flexible way to interact with your holograms by defining the main focus type in your MRTK Input Pointer Profile depending on your user's needs, while leaving your code untouched.
 
-Here is a simple example from [ColorTap.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ColorTap) to change a hologram's 
-color when being looked at.
+For example, this would enable to switch between head or eye gaze without changing a line of code. 
+To detect when a hologram is focused at, use the _'IMixedRealityFocusHandler'_ interface that provides you with two interface members: _OnFocusEnter_ and _OnFocusExit_.
+
+Here is a simple example from [ColorTap.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ColorTap) to change a hologram's color when being looked at.
 
 ```csharp 
     public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler
@@ -65,7 +62,7 @@ color when being looked at.
     }
 ```
 
-#### Selecting a Focused Hologram 
+### Selecting a Focused Hologram 
 To select focused holograms, use input event listeners to confirm a selection. 
 For example, adding the _IMixedRealityPointerHandler_ will make them react to simple pointer input. 
 The _IMixedRealityPointerHandler_ interface requires implementing the following three interface members: 
