@@ -31,6 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
 
+        public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators
+        {
+            get
+            {
+                return pointerMediators;
+            }
+        }
+
         /// <summary>
         /// Number of IMixedRealityNearPointers that are active (IsInteractionEnabled == true).
         /// </summary>
@@ -41,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// are active (IsInteractionEnabled == true), excluding the gaze cursor
         /// </summary>
         public int NumFarPointersActive { get; private set; }
-        
+
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
@@ -845,7 +853,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return (hit1.hitObject != null) ? hit1 : hit2;
         }
-        
+
         /// <summary>
         /// Disable inactive pointers to unclutter the way for active ones.
         /// </summary>

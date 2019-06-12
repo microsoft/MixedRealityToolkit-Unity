@@ -75,31 +75,24 @@ _MRTK Configuration Profile_ -> _Input System Profile_ -> _Input Actions Profile
     }
 ```
 
-
-
 ### Use Eye-Gaze-Specific _BaseEyeFocusHandler_
 Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus if it is eye gaze.
 Similar to the _FocusHandler_, the _BaseEyeFocusHandler_ is specific Eye Tracking.
 
 Here is an example from [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
 ).
-Having the [OnLookAtRotate.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotate) attached, a GameObject will rotate while being looked at. 
+Having the [RotateWithConstSpeedDir.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.RotateWithConstSpeedDir)
+attached, a GameObject will rotate while being looked at.
 
 ```csharp
-    public class OnLookAtRotate : BaseEyeFocusHandler
+    public class RotateWithConstSpeedDir : MonoBehavior
     {
-        ... 
-
-        protected override void OnEyeFocusStay()
-        {
-            // Update target rotation
-            RotateHitTarget();
-        }
+        ...
 
         /// <summary>
         /// Rotate game object based on specified rotation speed and Euler angles.
         /// </summary>
-        private void RotateHitTarget()
+        public void RotateTarget()
         {
             transform.eulerAngles = transform.eulerAngles + RotateByEulerAngles * speed;
         }
