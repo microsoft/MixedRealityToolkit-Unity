@@ -219,36 +219,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { "Tests", MixedRealityToolkitModuleType.Tests }
         };
 
-        private static bool FindMatchingModule(string folder, out MixedRealityToolkitModuleType result)
+        public static bool FindMatchingModule(string path, out MixedRealityToolkitModuleType result)
         {
             // Matches an optional module suffix, e.g. ".Services"
-            const string modulePattern = @"(\.(?<module>\w+))?";
+            const string modulePattern = @"(\.(?<module>[a-zA-Z]+))?";
             // Matches a version string, e.g. "2.0.0-20190611.2"
             const string versionPattern = @"(?<version>[.\-0-9]+)";
             // Matches the naming pattern in the MRTK repository
             // e.g. "MixedRealityToolkit.Services"
-            const string mrtkPattern = @"MixedRealityToolkit" + modulePattern;
+            const string mrtkPattern = @"^MixedRealityToolkit" + modulePattern + @"$";
             // Matches "Microsoft.MixedReality.Toolkit", followed by optional module name, followed by version number
             // e.g.: "Microsoft.MixedReality.Toolkit.Services.2.0.0-20190611.2"
             // This alternate path is used if above isn't found. This is to work around long paths issue with NuGetForUnity
             // https://github.com/GlitchEnzo/NuGetForUnity/issues/246
-            const string nugetParentPattern = @"Microsoft\.MixedReality\.Toolkit" + modulePattern + @"\." + versionPattern;
+            const string nugetParentPattern = @"^Microsoft\.MixedReality\.Toolkit" + modulePattern + @"\." + versionPattern + @"$";
 
-            var dirInfo = new DirectoryInfo(folder);
+            if (path.Length > 0)
+            {
+                var dirInfo = new DirectoryInfo(path);
+                if (TryMatchFolderPattern(dirInfo.Name, mrtkPattern, out result))
+                {
+                    return true;
+                }
+                else if (dirInfo.Name == "MRTK"
+                    && dirInfo.Parent != null
+                    && TryMatchFolderPattern(dirInfo.Parent.Name, nugetParentPattern, out result))
+                {
+                    return true;
+                }
+            }
 
-            if (TryMatchFolderPattern(dirInfo.Name, mrtkPattern, out result))
-            {
-                return true;
-            }
-            else if (TryMatchFolderPattern(dirInfo.Parent.Name, nugetParentPattern, out result))
-            {
-                return true;
-            }
-            else
-            {
-                result = MixedRealityToolkitModuleType.Core;
-                return false;
-            }
+            result = MixedRealityToolkitModuleType.Core;
+            return false;
         }
 
         private static bool TryMatchFolderPattern(string name, string pattern, out MixedRealityToolkitModuleType result)
@@ -259,13 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 var moduleName = folderMatches[0].Groups["module"].Value;
                 if (moduleNameMap.TryGetValue(moduleName, out result))
                 {
-                    Debug.Log($"Found module path for {result}: {name}");
                     return true;
-                }
-                else
-                {
-                    Debug.LogWarning($"Found MRTK folder with unknown module extension \"{moduleName}\"");
-                    return false;
                 }
             }
 
