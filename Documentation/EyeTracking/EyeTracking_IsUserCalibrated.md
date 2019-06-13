@@ -91,4 +91,4 @@ whether it automatically dismisses the notification again once the status change
 ```
 
 ---
-[Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
