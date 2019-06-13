@@ -24,13 +24,13 @@ namespace Microsoft.MixedReality.Toolkit
 
         // Lists for handlers which are added/removed during event dispatching.
         // Lists are processed independently, so 
-        private List<(Action, Type, IEventSystemHandler)> postponedActions = new List<(Action, Type, IEventSystemHandler)>();
-        private List<(Action, GameObject)> postponedObjectActions = new List<(Action, GameObject)>();
+        private List<Tuple<Action, Type, IEventSystemHandler>> postponedActions = new List<Tuple<Action, Type, IEventSystemHandler>>();
+        private List<Tuple<Action, GameObject>> postponedObjectActions = new List<Tuple<Action, GameObject>>();
 
         /// <inheritdoc />
         public Dictionary<Type, HashSet<IEventSystemHandler>> EventHandlersByType { get; } = new Dictionary<Type, HashSet<IEventSystemHandler>>();
 
-        #region IMixedRealityEventSystem Implementation
+    #region IMixedRealityEventSystem Implementation
 
         /// <inheritdoc />
         public List<GameObject> EventListeners { get; } = new List<GameObject>();
@@ -103,14 +103,24 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
-            Debug.Assert(typeof(T).IsInterface);
+            #if WINDOWS_UWP && !ENABLE_IL2CPP
+                Debug.Assert(typeof(T).IsInterface());
+            #else
+                Debug.Assert(typeof(T).IsInterface);
+            #endif
+
             TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
         }
 
         /// <inheritdoc />
         public virtual void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
-            Debug.Assert(typeof(T).IsInterface);
+            #if WINDOWS_UWP && !ENABLE_IL2CPP
+                Debug.Assert(typeof(T).IsInterface());
+            #else
+                Debug.Assert(typeof(T).IsInterface);
+            #endif
+
             TraverseEventSystemHandlerHierarchy<T>(handler, UnregisterHandler);
         }
 
@@ -129,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
-                postponedObjectActions.Add((Action.Add, listener));
+                postponedObjectActions.Add(Tuple.Create(Action.Add, listener));
             }
         }
 
@@ -145,13 +155,13 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
-                postponedObjectActions.Add((Action.Remove, listener));
+                postponedObjectActions.Add(Tuple.Create(Action.Remove, listener));
             }
         }
 
-        #endregion IMixedRealityEventSystem Implementation
+    #endregion IMixedRealityEventSystem Implementation
 
-        #region Registration helpers
+    #region Registration helpers
 
         private void UnregisterHandler(Type handlerType, IEventSystemHandler handler)
         {
@@ -161,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
-                postponedActions.Add((Action.Remove, handlerType, handler));
+                postponedActions.Add(Tuple.Create(Action.Remove, handlerType, handler));
             }
         }
 
@@ -173,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
-                postponedActions.Add((Action.Add, handlerType, handler));
+                postponedActions.Add(Tuple.Create(Action.Add, handlerType, handler));
             }
         }
 
@@ -215,9 +225,9 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        #endregion Registration helpers
+    #endregion Registration helpers
 
-        #region Utilities
+    #region Utilities
 
         /// <summary>
         /// Utility function for registering parent interfaces of a given handler.
@@ -248,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        #endregion Utilities
+    #endregion Utilities
         // Example Event Pattern #############################################################
 
         //public void RaiseGenericEvent(IEventSource eventSource)
