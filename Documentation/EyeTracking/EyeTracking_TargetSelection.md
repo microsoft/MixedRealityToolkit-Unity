@@ -71,7 +71,7 @@ _OnPointerUp_, _OnPointerDown_, and _OnPointerClicked_.
 
 In the example below, we change the color of a hologram by looking at it and pinching or saying "select".
 Which action is required to trigger the event is defined by ```eventData.MixedRealityInputAction == selectAction``` whereby we can set the type of ```selectAction``` in the Unity Editor - by default it's the "Select" action.
-The types of available ![MixedRealityInputActions](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/InputActions.html) can be configured in the MRTK Profiler via
+The types of available [MixedRealityInputActions](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/InputActions.html) can be configured in the MRTK Profiler via
 _MRTK Configuration Profile_ -> _Input_ -> _Input Actions_. 
 
 ```csharp 
@@ -132,7 +132,8 @@ attached, a GameObject will rotate while being looked at.
         ...
         
         ///
-        /// This function computes the rotation of the target to move the currently looked at aspect slowly to the front. 
+        /// This function computes the rotation of the target to move the currently 
+        /// looked at aspect slowly to the front. 
         ///
         private void RotateHitTarget()
         {
@@ -169,16 +170,59 @@ The _BaseEyeFocusHandler_ provides more than only _OnEyeFocusStay_. Here is an o
 ```
 
 
-### Use Eye-Gaze-Specific EyeTrackingTarget 
-While handling focus events in code is great, another way is to handle this from within the Unity Editor.
-For this purpose, you can simply attach the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script to a 
-GameObject.
+## Eye-Gaze-Specific EyeTrackingTarget 
+Finally, we provide you with a solution that let's you treat eye-based input completely independent from other focus pointers via the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script. 
 
-This has two advantages: 
-1. You can make sure that the hologram is only reacting to the user's eye gaze.
-2. Several Unity events have already been set up to make it fast and convenient to handle and reuse existing behaviors.
+This has three advantages: 
+- You can make sure that the hologram is only reacting to the user's eye gaze.
+- This is independent from the currently active primary input. Hence, hence you can process multiple inputs at once.
+- Several Unity events have already been set up to make it fast and convenient to handle and reuse existing behaviors from within the Unity Editor or via code. 
 
-#### Example: Attentive Notifications
+Disadvantages:
+- No elegant degradation: It only supports eye targeting. If eye tracking is not working, you require some additional fallback.
+
+Similar to the _BaseFocusHandler_, the _EyeTrackingTarget_ comes ready with several eye-gaze-specific Unity events that you can conveniently listen to either via the Unity Editor (see example below) or by using AddListener in code.
+
+Here are a few examples:
+### Example: Holographic gem rotates slowly on look at
+As a first example, let's create a subtle hover feedback: While a user is looking at a holographic gem, itw ill slowly rotate in a constant direction and at a constant speed (in contrast to the rotation example from above). 
+
+1. Create a generic script that includes a public function to rotate the GameObject it is attached to - see for example _RotateWithConstSpeedDir.cs_ where we can tweak the rotation direction and speed in the Unity Editor. 
+```csharp 
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+{
+    /// <summary>
+    /// The associated GameObject will rotate when RotateTarget() is called based on a given direction and speed.
+    /// </summary>
+    public class RotateWithConstSpeedDir : MonoBehaviour
+    {
+        [Tooltip("Euler angles by which the object should be rotated by.")]
+        [SerializeField]
+        private Vector3 RotateByEulerAngles = Vector3.zero;
+
+        [Tooltip("Rotation speed factor.")]
+        [SerializeField]
+        private float speed = 1f;
+
+        /// <summary>
+        /// Rotate game object based on specified rotation speed and Euler angles.
+        /// </summary>
+        public void RotateTarget()
+        {
+            transform.eulerAngles = transform.eulerAngles + RotateByEulerAngles * speed;
+        }
+    }
+}
+```
+
+2. Add the _EyeTrackingTarget_ script to your target GameObject and reference the _RotateTarget()_ function in the UnityEvent trigger as shown the screenshot below:
+
+![EyeTrackingTarget sample](../Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg)
+
+
+### Attentive Notifications
 For example, in [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity), 
 you can find an example for _'smart attentive notifications'_ that react to your eye gaze. 
 These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility.
@@ -212,7 +256,7 @@ Otherwise this can quickly feel extremely overwhelming.
 
 <img src="../../Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg" width="750" alt="MRTK">
 
-#### Example: Multimodal Gaze-Supported Target Selection
+### Example: Multimodal Gaze-Supported Target Selection
 One event provided by the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget), yet not used by the 
 _'Attentive Notifications'_ is the _OnSelected()_ event. 
 Using the _EyeTrackingTarget_, you can specify what triggers the selection which will invoke the _OnSelected()_ event. 
