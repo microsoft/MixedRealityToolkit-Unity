@@ -417,9 +417,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             UnregisterGestureEvents();
             gestureRecognizer?.Dispose();
+            gestureRecognizer = null;
 
             UnregisterNavigationEvents();
             navigationGestureRecognizer?.Dispose();
+            navigationGestureRecognizer = null;
 
             InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
