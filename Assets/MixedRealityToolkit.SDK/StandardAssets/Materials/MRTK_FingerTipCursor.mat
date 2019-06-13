@@ -34,5 +34,5 @@ Material:
     - _Start_Fall_Fade_: 0.05
     - _Thickness_: 1
     m_Colors:
-    - _Base_Color_: {r: 0.6, g: 0.6, b: 0.6, a: 0.698}
+    - _Base_Color_: {r: 1, g: 1, b: 1, a: 0.698}
     - _Edge_Color_: {r: 0.188235, g: 0.188235, b: 0.188235, a: 0.502}
