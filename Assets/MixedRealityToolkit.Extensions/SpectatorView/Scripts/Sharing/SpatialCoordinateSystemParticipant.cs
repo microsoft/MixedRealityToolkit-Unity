@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     internal class SpatialCoordinateSystemParticipant : DisposableBase
     {
         private readonly GameObject debugVisualPrefab;
+        private readonly float debugVisualScale;
         private byte[] previousCoordinateStatusMessage = null;
         private ISpatialCoordinate coordinate;
         private GameObject debugVisual;
@@ -28,9 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public SocketEndpoint SocketEndpoint { get; }
 
-        public SpatialCoordinateSystemParticipant(SocketEndpoint endpoint, GameObject debugVisualPrefab)
+        public SpatialCoordinateSystemParticipant(SocketEndpoint endpoint, GameObject debugVisualPrefab, float debugVisualScale)
         {
             this.debugVisualPrefab = debugVisualPrefab;
+            this.debugVisualScale = debugVisualScale;
             SocketEndpoint = endpoint;
         }
 
@@ -63,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     if (debugVisual == null)
                     {
                         debugVisual = GameObject.Instantiate(debugVisualPrefab);
+                        debugVisual.transform.localScale = Vector3.one * debugVisualScale;
                         debugCoordinateLocalizer = debugVisual.AddComponent<SpatialCoordinateLocalizer>();
                         debugCoordinateLocalizer.Coordinate = Coordinate;
                     }

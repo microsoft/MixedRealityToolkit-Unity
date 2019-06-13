@@ -76,12 +76,11 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
                         return;
                     }
 
-                    if (debugLogging)
-                    {
-                        var position = spatialCoordinate.CoordinateToWorldSpace(CoordinateRelativePosition);
-                        var rotation = spatialCoordinate.CoordinateToWorldSpace(CoordinateRelativeRotation);
-                        DebugLog($"SpatialCoordindate updated for SpatialCoordinateLocalizer {targetRoot.name}, Coordinate id: {spatialCoordinate.Id}, Coordinate state: {spatialCoordinate.State.ToString()}, Coordinate Space Position: {position.ToString("G4")}, Coordinate Space Rotation {rotation.ToString("G4")}");
-                    }
+                    var position = spatialCoordinate.CoordinateToWorldSpace(CoordinateRelativePosition);
+                    var rotation = spatialCoordinate.CoordinateToWorldSpace(CoordinateRelativeRotation);
+                    targetRoot.transform.position = position;
+                    targetRoot.transform.rotation = rotation;
+                    DebugLog($"SpatialCoordindate updated for SpatialCoordinateLocalizer {targetRoot.name}, Coordinate id: {spatialCoordinate.Id}, Coordinate state: {spatialCoordinate.State.ToString()}, Coordinate Space Position: {position.ToString("G4")}, Coordinate Space Rotation {rotation.ToString("G4")}");
 
                     if (showDebugVisuals)
                     {
@@ -92,8 +91,6 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
                                 debugGameObject = Instantiate(debugVisual);
                             }
 
-                            var position = spatialCoordinate.CoordinateToWorldSpace(CoordinateRelativePosition);
-                            var rotation = spatialCoordinate.CoordinateToWorldSpace(CoordinateRelativeRotation);
                             debugGameObject.transform.parent = targetRoot.transform;
                             debugGameObject.transform.position = position;
                             debugGameObject.transform.rotation = rotation;
