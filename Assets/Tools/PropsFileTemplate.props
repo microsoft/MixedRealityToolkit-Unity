@@ -1,0 +1,37 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>7.1</LangVersion> <!--This is current version MRTK uses-->
+    <RelativeBuildFolder><!--OUTPUT_PATH_TOKEN--></RelativeBuildFolder>
+    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\bin</OutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)</BaseIntermediateOutputPath>
+	<UnityBasePath><!--UNITY_EDITOR_INSTALLATION_PATH--></UnityBasePath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Editor'">
+    <DefineConstants>$(DefineConstants);UNITY_EDITOR</DefineConstants>
+    <UnityLibrariesFolder>$(UnityBasePath)Data\Managed</UnityLibrariesFolder>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)'=='UWP'">
+    <DefineConstants>$(DefineConstants);UNITY_UWP;UNITY_WSA</DefineConstants>
+    <UnityLibrariesFolder>$(UnityBasePath)Data\PlaybackEngines\MetroSupport\Managed\UAP\Unprocessed</UnityLibrariesFolder>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)'=='Standalone'">
+    <DefineConstants>$(DefineConstants);UNITY_STANDALONE</DefineConstants>
+    <UnityLibrariesFolder>$(UnityBasePath)Data\PlaybackEngines\windowsstandalonesupport\Managed</UnityLibrariesFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="$(UnityLibrariesFolder)\UnityEngine.dll"/>
+	<Reference Include="$(UnityBasePath)Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Standalone'">
+    <Reference Include="$(UnityBasePath)Data\UnityExtensions\Unity\GUISystem\Standalone\UnityEngine.UI.dll"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Editor'">
+    <Reference Include="$(UnityLibrariesFolder)\UnityEditor.dll"/>
+  </ItemGroup>
+</Project>
