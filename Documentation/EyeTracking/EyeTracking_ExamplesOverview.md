@@ -5,8 +5,7 @@ The demo includes a number of different use cases ranging from implicit eye-base
 This enables users to quickly and effortlessly select and move holographic content across their view simply by looking at a target and saying _'Select'_ or performing a hand gesture. 
 The demos also include an example for eye-gaze-directed scroll, pan and zoom of text and images on a slate. 
 Finally, an example is provided for recording and visualizing the user's visual attention on a 2D slate.
-
-In the following, we'll go into more detail what each of the different samples in the [eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) includes:
+In the following, we will go into more detail what each of the different samples in the [MRTK eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) includes:
 
 ![List of eye tracking scenes](../Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
 
@@ -22,8 +21,8 @@ It comes with a graphical scene menu that allows you to easily switch between th
 
 ![Scene menu in eye tracking sample](../Images/EyeTracking/mrtk_et_scenemenu.jpg)
 
-The root scene includes a few core components that will persist across the additively loaded scenes. 
-The _MixedRealityBasicSceneSetup_ includes a script that will automatically load the referenced scene on startup. 
+The root scene includes a few core components that will persist across the additively loaded scenes, such as the MRTK configured profiles and scene camera. 
+The _MixedRealityBasicSceneSetup_ (see screenshot below) includes a script that will automatically load the referenced scene on startup. 
 By default this is _EyeTrackingDemo-02-TargetSelection_.  
 
 ![Example for the OnLoadStartScene script](../Images/EyeTracking/mrtk_et_onloadstartscene.jpg)
@@ -31,7 +30,7 @@ By default this is _EyeTrackingDemo-02-TargetSelection_.
 
 ### 2. Adding scenes to the Build menu
 To load additive scenes during runtime, you must add these scenes to your _Build Settings -> Scenes in Build_ menu first.
-It is important the the root scene is shown as the first scene in the list:
+It is important that the root scene is shown as the first scene in the list:
 
 ![Build Settings scene menu for eye tracking samples](../Images/EyeTracking/mrtk_et_build_settings.jpg)
 
@@ -46,14 +45,14 @@ You should see several gems appear and should see the scene menu at the top.
 
 ![Sample screenshot from the ET target select scene](../Images/EyeTracking/mrtk_et_targetselect.png)
 
-You should notice a small semitransparent circle at the center of your Game view. 
-This acts as an indicator of your _simulated eye gaze_.
-You can move it by pressing down the _right mouse button_ and move the mouse.
-When the cursor is hovering over the gems, you will notice that the cursor will snap to the center of the currently looked at gem. 
+You should notice a small semitransparent circle at the center of your game view. 
+This acts as an indicator (cursor) of your _simulated eye gaze_: 
+Simply press down the _right mouse button_ and move the mouse to change its position. 
+When the cursor is hovering over the gems, you will notice that it will snap to the center of the currently looked at gem. 
 This is a great way to test if events are triggered as expected when _"looking"_ at a target. 
-Please beware though that the _simulated eye gaze_ via mouse control is a rather poor supplement to our rapid and unintentional eye movements. 
-It's great for testing the basic functionality though before iterating on the design by deploying it to the HoloLens 2 device.
-Coming back to our sample scene: The gem rotates as long as being looked at and can be destroyed by "looking" at it and ...
+Please beware that the _simulated eye gaze_ via mouse control is a rather poor supplement to our rapid and unintentional eye movements. 
+It is great for testing the basic functionality though before iterating on the design by deploying it to the HoloLens 2 device.
+Coming back to our eye tracking sample scene: The gem rotates as long as being looked at and can be destroyed by "looking" at it and ...
 - Pressing _Enter_ (which simulates saying "select")
 - Actually saying _"select"_ into your microphone
 - While pressing _Space_ to show the simulated hand input, click the left mouse button to perform a simulated pinch
@@ -65,16 +64,24 @@ You can select the currently highlighted item by using one of the above describe
 This way you can switch between the different eye tracking sample scenes.
 
 ### 4. How to test specific sub scenes
-When working on a specific scenario, you may not want to go through the scene menu every time. 
-No problem!
-- Load the _root_ scene
-- Disable the _'OnLoadStartScene'_ script
-- _Drag and drop_ one of the eye tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view.
+When working on a specific scenario, you may not want to go through the scene menu every time.
+Instead you may want to be able to start out directly from the scene that you are currently working on when pressing the _Play_ button. 
+No problem! Here is what you can do:
+1. Load the _root_ scene
+2. In the _root_ scene, disable the _'OnLoadStartScene'_ script 
+3. _Drag and drop_ one of the eye tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view as shown in the screenshot below. 
+4. Press _Play_
+
+Please note that loading the sub scene like this is not persistent: 
+This means that if you deploy your app to the HoloLens 2 device, it will only load the root scene (assuming it appears at the top of your Build Settings). 
+Also, when you share your project with others the sub scenes are not automatically loaded. 
 
 ![Example for additive scene](../Images/EyeTracking/mrtk_et_additivescene.jpg)
 
 
 ## Overview of the eye tracking demo samples
+Now that you know how to get the [MRTK eye tracking example scenes](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) to work, let us give you an overview of what the individual scenes are about. 
+
 [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md)
 
 This tutorial showcases the ease of accessing eye gaze data to select targets. 
