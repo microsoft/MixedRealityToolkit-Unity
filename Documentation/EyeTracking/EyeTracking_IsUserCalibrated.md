@@ -36,9 +36,7 @@ Once the notification is dismissed, it will slowly decrease its size and fade ou
 		- The app gets restarted
 		- A valid user has been detected and then a new uncalibrated user has put the device on
 
-- For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a ```bool editorTestUserIsCalibrated``` flag.
-For example, when the app is running in the Unity Editor you can test, whether the notification automatically pops up once the calibration status changes from true to false and
-whether it automatically dismisses the notification again once the status changes from false to true.
+	- For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a ```bool editorTestUserIsCalibrated``` flag. For example, when the app is running in the Unity Editor you can test, whether the notification automatically pops up once the calibration status changes from true to false and whether it automatically dismisses the notification again once the status changes from false to true.
 
 
 
