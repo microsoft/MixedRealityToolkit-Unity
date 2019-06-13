@@ -1,4 +1,4 @@
-# Accessing Eye Tracking Data in your Unity Script
+# Accessing eye tracking data in your Unity script
 
 The following assumes that you followed the steps for setting up Eye Tracking in your MRTK scene (see [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)).
 
