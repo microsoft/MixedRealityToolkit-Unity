@@ -1,12 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.SceneSystem;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
@@ -25,6 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// For scene load events, use the Scene System.
         /// </summary>
         Action OnTransitionCompleted { get; set; }
+
+        /// <summary>
+        /// Whether to use a fade color during transitions.
+        /// </summary>
+        bool UseFadeColor { get; set; }
 
         /// <summary>
         /// The color to use when fading out.
@@ -63,6 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <param name="progressIndicator">If null, default progress indicator prefab will be used (or none if default is disabled in profile)</param>
         /// <returns></returns>
         Task DoSceneTransition(IEnumerable<Task> sceneOperations, IProgressIndicator progressIndicator = null);
+
+        /// <summary>
+        /// Fades out, enables progress indicator, executes scene op 1, executes scene op 2, disables progress indicator, fades back in
+        /// </summary>
+        /// <param name="sceneOp1"></param>
+        /// <param name="sceneOp2"></param>
+        /// <param name="progressIndicator"></param>
+        /// <returns></returns>
+        Task DoSceneTransition(Task sceneOp1, Task sceneOp2, IProgressIndicator progressIndicator = null);
 
         /// <summary>
         /// Fades out, enables progress indicator, execute scene operation, disables progress indicator, fades back in

@@ -3,7 +3,6 @@
 
 using System.Threading.Tasks;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -13,6 +12,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone|SupportedPlatforms.MacStandalone|SupportedPlatforms.LinuxStandalone|SupportedPlatforms.WindowsUniversal)]
     public class SceneTransitionService : BaseExtensionService, ISceneTransitionService, IMixedRealityExtensionService
     {
+        public SceneTransitionService(IMixedRealityServiceRegistrar registrar, string name, uint priority, BaseMixedRealityProfile profile) : base(registrar, name, priority, profile)
+        {
+            sceneTransitionServiceProfile = (SceneTransitionServiceProfile)profile;
+        }
+
+        /// <inheritdoc />
+        public bool UseFadeColor { get; set; }
+
         /// <inheritdoc />
         public Color FadeColor { get; set; }
 
@@ -43,16 +50,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         private ICameraFader cameraFader;
         private List<Camera> customFadeTargetCameras = new List<Camera>();
 
-        public SceneTransitionService(IMixedRealityServiceRegistrar registrar,  string name,  uint priority,  BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) 
-		{
-            sceneTransitionServiceProfile = (SceneTransitionServiceProfile)profile;
-        }
-
         #region public methods
 
         /// <inheritdoc />
         public override void Initialize()
         {
+            UseFadeColor = sceneTransitionServiceProfile.UseFadeColor;
             FadeColor = sceneTransitionServiceProfile.FadeColor;
             FadeInTime = sceneTransitionServiceProfile.FadeInTime;
             FadeOutTime = sceneTransitionServiceProfile.FadeOutTime;
@@ -86,6 +89,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         }
 
         /// <inheritdoc />
+        public async Task DoSceneTransition(Task sceneOp1, Task sceneOp2, IProgressIndicator progressIndicator = null)
+        {
+            await DoSceneTransition(new Task[] { sceneOp1, sceneOp2 }, progressIndicator);
+        }
+
+        /// <inheritdoc />
         public async Task DoSceneTransition(IEnumerable<Task> sceneOperations, IProgressIndicator progressIndicator = null)
         {
             if (TransitionInProgress)
@@ -105,10 +114,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 progressIndicator = defaultProgressIndicator;
             }
 
-            if (sceneTransitionServiceProfile.UseFadeColor)
+            if (UseFadeColor)
             {
-                List<Camera> targetCameras = GatherFadeTargetCameras();
-                await cameraFader.FadeOutAsync(FadeOutTime, FadeColor, targetCameras);
+                await FadeOut();
+            }
+
+            if (progressIndicator != null)
+            {
+                await progressIndicator.OpenAsync();
             }
 
             #endregion
@@ -130,11 +143,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 await progressIndicator.CloseAsync();
             }
 
-            // If we used the camera fader to fade out, fade back in
-            if (cameraFader.State != CameraFaderState.Clear)
+
+            if (UseFadeColor)
             {
-                // Wait for camera to fade out
-                await cameraFader.FadeInAsync(FadeInTime);
+                await FadeIn();
             }
 
             TransitionInProgress = false;
@@ -410,29 +422,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 cameraFader.OnDestroy();
                 cameraFader = null;
             }
-        }
-
-        private bool FindScene(string sceneName, out Scene scene, out int sceneIndex)
-        {
-            scene = default(Scene);
-            sceneIndex = -1;
-            // This is the only method to get all scenes (including unloaded)
-            List<Scene> allScenesInProject = new List<Scene>();
-            for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
-            {
-                // This absurdity is necessary due to a long-standing Unity bug
-                // https://issuetracker.unity3d.com/issues/scenemanager-dot-getscenebybuildindex-dot-name-returns-an-empty-string-if-scene-is-not-loaded
-
-                string pathToScene = SceneUtility.GetScenePathByBuildIndex(i);
-                string checkSceneName = System.IO.Path.GetFileNameWithoutExtension(pathToScene);
-                if (checkSceneName == sceneName)
-                {
-                    scene = SceneManager.GetSceneByBuildIndex(i);
-                    sceneIndex = i;
-                    return true;
-                }
-            }
-            return false;
         }
 
         #endregion
