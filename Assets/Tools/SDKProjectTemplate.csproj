@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="COMMON_PROPS_FILE_PATH" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Editor;Standalone;UWP</Configurations>
+	<BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)\$(MSBuildProjectName)\obj</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);*.asmdef;*.asmdef.meta;<!--FOLDER_EXCLUDE_TOKEN--></DefaultItemExcludes>
+  </PropertyGroup>
+</Project>

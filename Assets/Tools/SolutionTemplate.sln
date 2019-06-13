@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.539
+MinimumVisualStudioVersion = 10.0.40219.1
+#Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityAgnostic.Common", ".src\UnityAgnostic.Common\UnityAgnostic.Common.csproj", "{C8FDEFD7-034E-451D-BF66-04079EF4A454}"
+#PROJECT_ENTRIES_TOKEN
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Editor|Any CPU = Editor|Any CPU
+		UWP|Any CPU = UWP|Any CPU
+		Standalone|Any CPU = Standalone|Any CPU
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89752EEF-6413-4D53-BA9D-DCA0707F134E}
+	EndGlobalSection
+EndGlobal
