@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Check that input system is clean
-            Assert.AreEqual(inputSystem.EventHandlersByType.Count, 0, "Input event system handler registry is not empty in the beginning of the test.");
+            Assert.AreEqual(((BaseEventSystem)inputSystem).EventHandlersByType.Count, 0, "Input event system handler registry is not empty in the beginning of the test.");
 
             yield return null;
         }
@@ -64,8 +64,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             yield return SetupMrtkWithoutCursors();
 
-            IMixedRealityInputSystem inputSystem = null;
-            MixedRealityServiceRegistry.TryGetService(out inputSystem);
+            IMixedRealityInputSystem iInputSystem = null;
+            MixedRealityServiceRegistry.TryGetService(out iInputSystem);
+
+            BaseEventSystem inputSystem = (BaseEventSystem)iInputSystem;
 
             var object1 = new GameObject("Object");
 
@@ -79,33 +81,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(inputSystem.EventListeners.Count, 1, "Event listener for old event system API hasn't been registered");
             Assert.Contains(objectBasedListener.gameObject, inputSystem.EventListeners, "Wrong event listener registered for old event system API.");
 
-            Assert.AreEqual(inputSystem.EventHandlersByType.Count, 3, "Input event system doesn't contain expected event handler types.");
-            CollectionAssert.Contains(inputSystem.EventHandlersByType.Keys, typeof(IMixedRealityPointerHandler), "Input event system doesn't contain IMixedRealityPointerHandler entry.");
+            Assert.AreEqual(inputSystem.EventHandlersByType.Count, 2, "Input event system doesn't contain expected event handler types.");
             CollectionAssert.Contains(inputSystem.EventHandlersByType.Keys, typeof(IMixedRealitySpeechHandler), "Input event system doesn't contain IMixedRealitySpeechHandler entry.");
             CollectionAssert.Contains(inputSystem.EventHandlersByType.Keys, typeof(IMixedRealityBaseInputHandler), "Input event system doesn't contain IMixedRealityBaseInputHandler entry.");
 
-            Assert.AreEqual(inputSystem.EventHandlersByType[typeof(IMixedRealityPointerHandler)].Count, 2, "Input event system doesn't contain expected IMixedRealityPointerHandler handlers.");
-            CollectionAssert.Contains(inputSystem.EventHandlersByType[typeof(IMixedRealityPointerHandler)], objectBasedListener, "Input event system doesn't contain IMixedRealityPointerHandler for old API handler.");
-            CollectionAssert.Contains(inputSystem.EventHandlersByType[typeof(IMixedRealityPointerHandler)], handlerBasedListener, "Input event system doesn't contain IMixedRealityPointerHandler for new API handler.");
-
-            Assert.AreEqual(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Count, 2, "Input event system doesn't contain expected IMixedRealitySpeechHandler handlers.");
-            CollectionAssert.Contains(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)], objectBasedListener, "Input event system doesn't contain IMixedRealitySpeechHandler for old API handler.");
+            Assert.AreEqual(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)].Count, 1, "Input event system doesn't contain expected IMixedRealitySpeechHandler handlers.");
             CollectionAssert.Contains(inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)], handlerBasedListener, "Input event system doesn't contain IMixedRealitySpeechHandler for new API handler.");
 
-            Assert.AreEqual(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Count, 2, "Input event system doesn't contain expected IMixedRealityBaseInputHandler handlers.");
-            CollectionAssert.Contains(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)], objectBasedListener, "Input event system doesn't contain IMixedRealityBaseInputHandler for old API handler.");
+            Assert.AreEqual(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)].Count, 1, "Input event system doesn't contain expected IMixedRealityBaseInputHandler handlers.");
             CollectionAssert.Contains(inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)], handlerBasedListener, "Input event system doesn't contain IMixedRealityBaseInputHandler for new API handler.");
 
             objectBasedListener.enabled = false;
 
-            // This is odd result from disabling just one component, but it's a behavior of old API.
-            Assert.AreEqual(inputSystem.EventHandlersByType.Count, 0, "Input event system contains unexpected event handlers.");
-
-            ///
-            // Reset registration of handler-based listener and check that it registers itself after that, even though its handlers 
-            // have been removed without its intervention.
-            handlerBasedListener.enabled = false;
-            handlerBasedListener.enabled = true;
+            // Make sure that disabling global listener doesn't remove the new API one.
+            Assert.AreEqual(inputSystem.EventHandlersByType.Count, 2, "Input event system contains unexpected event handlers.");
 
             Assert.AreEqual(inputSystem.EventHandlersByType.Count, 2, "Input event system doesn't contain expected event handler types.");
             CollectionAssert.Contains(inputSystem.EventHandlersByType.Keys, typeof(IMixedRealitySpeechHandler), "Input event system doesn't contain IMixedRealitySpeechHandler entry.");
@@ -131,8 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             yield return SetupMrtkWithoutCursors();
 
-            IMixedRealityInputSystem inputSystem = null;
-            MixedRealityServiceRegistry.TryGetService(out inputSystem);
+            IMixedRealityInputSystem iInputSystem = null;
+            MixedRealityServiceRegistry.TryGetService(out iInputSystem);
+
+            BaseEventSystem inputSystem = (BaseEventSystem)iInputSystem;
 
             var object1 = new GameObject("Object");
 

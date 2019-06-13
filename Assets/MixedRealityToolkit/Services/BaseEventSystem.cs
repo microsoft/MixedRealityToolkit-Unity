@@ -11,16 +11,6 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// Base Event System that can be inherited from to give other system features event capabilities.
     /// </summary>
-    /// <remarks>
-    /// Event handler interfaces may derive from each other. Some events will be raised using a base handler class, and are supposed to trigger on
-    /// all derived handler classes too. Example of that is IMixedRealityBaseInputHandler hierarchy.
-    /// To support that current implementation registers multiple dictionary entries per handler, one for each level of event handler hierarchy.
-    /// Alternative would be to register just one type (the one used for RegisterHandler call) and 
-    /// then determine which handlers to call dynamically in 'HandleEvent'.
-    /// Implementation was chosen based on performance of 'HandleEvent'. Without determining type it is about 2+ times faster.
-    /// There are possible ways to bypass that, but this will make implementation of old API and classes 
-    /// that derive from Input System unnecessarily more complicated.
-    /// </remarks>
     public abstract class BaseEventSystem : BaseService, IMixedRealityEventSystem
     {
         private static int eventExecutionDepth = 0;
@@ -32,7 +22,13 @@ namespace Microsoft.MixedReality.Toolkit
             Remove
         }
 
+        // Lists for handlers which are added/removed during event dispatching.
+        // Lists are processed independently, so 
         private List<(Action, Type, IEventSystemHandler)> postponedActions = new List<(Action, Type, IEventSystemHandler)>();
+        private List<(Action, GameObject)> postponedObjectActions = new List<(Action, GameObject)>();
+
+        /// <inheritdoc />
+        public Dictionary<Type, HashSet<IEventSystemHandler>> EventHandlersByType { get; } = new Dictionary<Type, HashSet<IEventSystemHandler>>();
 
         #region IMixedRealityEventSystem Implementation
 
@@ -40,25 +36,37 @@ namespace Microsoft.MixedReality.Toolkit
         public List<GameObject> EventListeners { get; } = new List<GameObject>();
 
         /// <inheritdoc />
-        public Dictionary<Type, HashSet<IEventSystemHandler>> EventHandlersByType { get; } = new Dictionary<Type, HashSet<IEventSystemHandler>>();
-
-        /// <inheritdoc />
         public virtual void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
             Debug.Assert(!eventData.used);
 
-            HashSet<IEventSystemHandler> handlers;
-            if (!EventHandlersByType.TryGetValue(typeof(T), out handlers))
-            {
-                return;
-            }
-
             eventExecutionDepth++;
 
-            foreach (IEventSystemHandler handler in handlers)
+            // First handle events via old API part, via GameObjects.
+            // This sends event to every component of matching type on this object, 
+            // INCLUDING the ones that don't expect it.
+            for (int i = EventListeners.Count - 1; i >= 0; i--)
             {
-                Debug.Assert(handler is T);
-                eventHandler.Invoke((T)handler, eventData);
+                ExecuteEvents.Execute(EventListeners[i], eventData, eventHandler);
+            }
+
+            // Send events to all handlers registered via RegisterHandler API.
+            HashSet<IEventSystemHandler> handlers;
+            if (EventHandlersByType.TryGetValue(typeof(T), out handlers))
+            {
+                foreach (IEventSystemHandler handler in handlers)
+                {
+                    // If handler is a unity component, need to make sure, that it didn't receive an event
+                    // when we were sending it to Game objects above.
+                    // Do that by checking if its parent is registered in EventListeners.
+                    var componentHandler = handler as Component;
+                    if (componentHandler && EventListeners.Contains(componentHandler.gameObject))
+                    {
+                        continue;
+                    }
+
+                    eventHandler.Invoke((T)handler, eventData);
+                }
             }
 
             eventExecutionDepth--;
@@ -74,6 +82,19 @@ namespace Microsoft.MixedReality.Toolkit
                     else if(handler.Item1 == Action.Remove)
                     {
                         RemoveHandlerFromMap(handler.Item2, handler.Item3);
+                    }
+                }
+
+                foreach(var obj in postponedObjectActions)
+                {
+                    if(obj.Item1 == Action.Add)
+                    {
+                        // Can call it here, because guaranteed that eventExecutionDepth is 0
+                        Register(obj.Item2);
+                    }
+                    else if (obj.Item1 == Action.Remove)
+                    {
+                        Unregister(obj.Item2);
                     }
                 }
             }
@@ -96,25 +117,36 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void Register(GameObject listener)
         {
-            // For backward compatibility
-            if (!EventListeners.Contains(listener))
+            // Because components on an object can change during its lifetime, we can't enumerate all handlers on an object 
+            // at this point in time and register them via the new API.
+            // This forces us to store an object and use ExecuteEvents traversal at time of handling events.
+            if (eventExecutionDepth == 0)
             {
-                EventListeners.Add(listener);
+                if (!EventListeners.Contains(listener))
+                {
+                    EventListeners.Add(listener);
+                }
             }
-            
-            TraverseEventSystemHandlerComponents(listener, RegisterHandler);
+            else
+            {
+                postponedObjectActions.Add((Action.Add, listener));
+            }
         }
 
         /// <inheritdoc />
         public virtual void Unregister(GameObject listener)
         {
-            // For backward compatibility
-            if (EventListeners.Contains(listener))
+            if (eventExecutionDepth == 0)
             {
-                EventListeners.Remove(listener);
+                if (EventListeners.Contains(listener))
+                {
+                    EventListeners.Remove(listener);
+                }
             }
-
-            TraverseEventSystemHandlerComponents(listener, UnregisterHandler);
+            else
+            {
+                postponedObjectActions.Add((Action.Remove, listener));
+            }
         }
 
         #endregion IMixedRealityEventSystem Implementation
@@ -187,10 +219,24 @@ namespace Microsoft.MixedReality.Toolkit
 
         #region Utilities
 
+        /// <summary>
+        /// Utility function for registering parent interfaces of a given handler.
+        /// </summary>
+        /// <remarks>
+        /// Event handler interfaces may derive from each other. Some events will be raised using a base handler class, and are supposed to trigger on
+        /// all derived handler classes too. Example of that is IMixedRealityBaseInputHandler hierarchy.
+        /// To support that current implementation registers multiple dictionary entries per handler, one for each level of event handler hierarchy.
+        /// Alternative would be to register just one root type and 
+        /// then determine which handlers to call dynamically in 'HandleEvent'.
+        /// Implementation was chosen based on performance of 'HandleEvent'. Without determining type it is about 2+ times faster.
+        /// There are possible ways to bypass that, but this will make implementation of classes 
+        /// that derive from Input System unnecessarily more complicated.
+        /// </remarks>
         private void TraverseEventSystemHandlerHierarchy<T>(IEventSystemHandler handler, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
         {
             var handlerType = typeof(T);
 
+            // Need to call on handlerType first, because GetInterfaces below will only return parent types.
             func(handlerType, handler);
 
             foreach (var iface in handlerType.GetInterfaces())
@@ -199,28 +245,6 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     func(iface, handler);
                 }
-            }
-        }
-
-        private void TraverseComponentHandlerHierarchy<T>(T component, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
-        {
-            foreach (var iface in component.GetType().GetInterfaces())
-            {
-                if (eventSystemHandlerType.IsAssignableFrom(iface) && !eventSystemHandlerType.Equals(iface))
-                {
-                    func(iface, component);
-                }
-            }
-        }
-
-        private void TraverseEventSystemHandlerComponents(GameObject obj, Action<Type, IEventSystemHandler> func)
-        {
-            foreach (var component in obj.GetComponents<IEventSystemHandler>())
-            {
-                // Call a function on every interface which inherits from IEventSystemHandler, of every component.
-                // This will register all event handlers, which could potentially be called by UnityEngine.EventSystems.ExecuteEvents.Execute.
-                // which was previously used to handle events.
-                TraverseComponentHandlerHierarchy(component, func);
             }
         }
 

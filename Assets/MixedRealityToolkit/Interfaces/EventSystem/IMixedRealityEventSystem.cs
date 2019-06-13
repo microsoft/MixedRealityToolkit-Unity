@@ -22,11 +22,6 @@ namespace Microsoft.MixedReality.Toolkit
         List<GameObject> EventListeners { get; }
 
         /// <summary>
-        /// List of event handlers that are registered to this Event System.
-        /// </summary>
-        Dictionary<Type, HashSet<IEventSystemHandler>> EventHandlersByType { get; }
-
-        /// <summary>
         /// The main function for handling and forwarding all events to their intended recipients.
         /// </summary>
         /// <remarks>See: https://docs.unity3d.com/Manual/MessagingSystem.html </remarks>
@@ -56,25 +51,27 @@ namespace Microsoft.MixedReality.Toolkit
         void Unregister(GameObject listener);
 
         /// <summary>
-        /// Registers an event Handler of a given type to listen for its events from this Event System.
-        /// If a component implements several IEventSystemHandler interfaces and listens to global events from several
-        /// of them, it needs to call 'RegisterHandler' multiple times for each interface.
+        /// Registers the given handler as a global listener for all events handled via the T interface.
+        /// T must be an interface type, not a class type, derived from IEventSystemHandler.
         /// </summary>
         /// <remarks>
-        /// Should be called with explicit template type like RegisterHandler<ISpeechEventHandler>(this).
-        /// Method should only be called with interfaces as a template parameter.
+        /// If you want to register a single C# object as global handler for several event handling interfaces,
+        /// you must call this function for each interface type. E.g. 
+        /// RegisterHandler<ISpeechEventHandler>(this);
+        /// RegisterHandler<IPointerEventHandler>(this);
         /// </remarks>
         /// <param name="handler">Handler to add to <see cref="HandlerEventListeners"/>.</param>
         void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler;
 
         /// <summary>
-        /// Unregisters an event Handler of a given type from listening for its events from this Event System.
-        /// If a component implements several IEventSystemHandler interfaces and listens to global events from several
-        /// of them, it needs to call 'UnregisterHandler' multiple times for each interface.
+        /// Unregisters the given handler as a global listener for all events handled via the T interface.
+        /// T must be an interface type, not a class type, derived from IEventSystemHandler.
         /// </summary>
         /// <remarks>
-        /// Should be called with explicit template type like UnregisterHandler<ISpeechEventHandler>(this)
-        /// Method should only be called with interfaces as a template parameter.
+        /// If a single C# object listens to global input events for several event handling interfaces,
+        /// you must call this function for each interface type. E.g. 
+        /// UnregisterHandler<ISpeechEventHandler>(this);
+        /// UnregisterHandler<IPointerEventHandler>(this);
         /// </remarks>
         /// <param name="handler">Handler to remove from <see cref="HandlerEventListeners"/>.</param>
         void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler;
