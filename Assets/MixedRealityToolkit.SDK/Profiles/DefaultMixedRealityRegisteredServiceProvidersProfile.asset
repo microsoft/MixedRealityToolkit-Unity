@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: eebbca41bb0b40d298ef201735d08616, type: 3}
   m_Name: DefaultMixedRealityRegisteredServiceProvidersProfile
   m_EditorClassIdentifier: 
@@ -20,5 +21,5 @@ MonoBehaviour:
     componentName: Scene Transition Service
     priority: 10
     runtimePlatform: 15
-    configurationProfile: {fileID: 11400000, guid: 60243911f6e19f646af14fd779668687,
+    configurationProfile: {fileID: 11400000, guid: 45c20fade71a3ec418860b757ff5a5ce,
       type: 2}
