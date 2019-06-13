@@ -537,6 +537,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Check to draw a tether point from the handles to the hand when manipulating.")]
         private bool drawTetherWhenManipulating = true;
+        public bool DrawTetherWhenManipulating
+        {
+            get { return drawTetherWhenManipulating; }
+            set { drawTetherWhenManipulating = value; }
+        }
 
         [Header("Proximity")]
         [SerializeField]
@@ -561,7 +566,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Range(0.001f, 0.01f)]
         private float handleCloseProximity = 0.0015f;
         [SerializeField]
-        private float farScale = 0.0f;
+        private float farScale = 0.01f;
         public float FarScale
         {
             get
@@ -622,12 +627,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 handlesIgnoreCollider = value;
             }
         }
-        public bool DrawTetherWhenManipulating
-        {
-            get { return drawTetherWhenManipulating; }
-            set { drawTetherWhenManipulating = value; }
-        }
-
 
         [Header("Debug")]
         [Tooltip("Debug only. Component used to display debug messages")]
@@ -894,6 +893,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 mediumScale = 1.5f;
                 farScale = 1.0f;
             }
+            farScale = Mathf.Max(farScale, 0.01f);
+
             CreateRig();
             CaptureInitialState();
 
@@ -1936,13 +1937,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (collider && collider is BoxCollider)
             {
                 newLocalScale = Mathf.Abs(newLocalScale);
-                newLocalScale = newLocalScale == 0.0f ? 0.0001f : newLocalScale;
+                newLocalScale = newLocalScale == 0.0f ? 0.01f : newLocalScale;
                 (collider as BoxCollider).size = new Vector3(0.02f / newLocalScale, 0.02f / newLocalScale, 0.02f / newLocalScale);
             }
             else if (collider && collider is SphereCollider)
             {
                 newLocalScale = Mathf.Abs(newLocalScale);
-                newLocalScale = newLocalScale == 0.0f ? 0.0001f : newLocalScale;
+                newLocalScale = newLocalScale == 0.0f ? 0.01f : newLocalScale;
                 (collider as SphereCollider).radius = 0.02f / newLocalScale;
             }
         }
