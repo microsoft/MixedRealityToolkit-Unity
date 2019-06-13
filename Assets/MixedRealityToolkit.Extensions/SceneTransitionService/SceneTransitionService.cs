@@ -83,19 +83,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         #region ISceneTransitionService implementation
 
         /// <inheritdoc />
-        public async Task DoSceneTransition(Task sceneOperation, IProgressIndicator progressIndicator = null)
+        public async Task DoSceneTransition(Func<Task> sceneOperation, IProgressIndicator progressIndicator = null)
         {
-            await DoSceneTransition(new Task[] { sceneOperation }, progressIndicator);
+            await DoSceneTransition(new Func<Task>[] { sceneOperation }, progressIndicator);
         }
 
         /// <inheritdoc />
-        public async Task DoSceneTransition(Task sceneOp1, Task sceneOp2, IProgressIndicator progressIndicator = null)
+        public async Task DoSceneTransition(Func<Task> sceneOp1, Func<Task> sceneOp2, IProgressIndicator progressIndicator = null)
         {
-            await DoSceneTransition(new Task[] { sceneOp1, sceneOp2 }, progressIndicator);
+            await DoSceneTransition(new Func<Task>[] { sceneOp1, sceneOp2 }, progressIndicator);
         }
 
         /// <inheritdoc />
-        public async Task DoSceneTransition(IEnumerable<Task> sceneOperations, IProgressIndicator progressIndicator = null)
+        public async Task DoSceneTransition(IEnumerable<Func<Task>> sceneOperations, IProgressIndicator progressIndicator = null)
         {
             if (TransitionInProgress)
             {
@@ -128,9 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
             #region Task execution
 
-            foreach (Task sceneOperation in sceneOperations)
+            // Make sure we're on the main thread
+
+            foreach (Func<Task> sceneOperation in sceneOperations)
             {
-                await Task.Run(() => sceneOperation);
+                await sceneOperation();
             }
 
             #endregion

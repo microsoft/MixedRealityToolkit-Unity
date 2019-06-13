@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <param name="sceneOperations">A set of tasks from the Scene System.</param>
         /// <param name="progressIndicator">If null, default progress indicator prefab will be used (or none if default is disabled in profile)</param>
         /// <returns></returns>
-        Task DoSceneTransition(IEnumerable<Task> sceneOperations, IProgressIndicator progressIndicator = null);
+        Task DoSceneTransition(IEnumerable<Func<Task>> sceneOperations, IProgressIndicator progressIndicator = null);
 
         /// <summary>
         /// Fades out, enables progress indicator, executes scene op 1, executes scene op 2, disables progress indicator, fades back in
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <param name="sceneOp2"></param>
         /// <param name="progressIndicator"></param>
         /// <returns></returns>
-        Task DoSceneTransition(Task sceneOp1, Task sceneOp2, IProgressIndicator progressIndicator = null);
+        Task DoSceneTransition(Func<Task> sceneOp1, Func<Task> sceneOp2, IProgressIndicator progressIndicator = null);
 
         /// <summary>
         /// Fades out, enables progress indicator, execute scene operation, disables progress indicator, fades back in
@@ -82,10 +82,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <param name="sceneOperations">A set of tasks from the Scene System.</param>
         /// <param name="progressIndicator">If null, default progress indicator prefab will be used (or none if default is disabled in profile)</param>
         /// <returns></returns>
-        Task DoSceneTransition(Task sceneOperation, IProgressIndicator progressIndicator = null);
+        Task DoSceneTransition(Func<Task> sceneOperation, IProgressIndicator progressIndicator = null);
 
         /// <summary>
-        /// If FadeTargets is set to custom, you will need to provide a custom set of cameras for fading using this function PRIOR to calling TransitionToScene.
+        /// If FadeTargets is set to custom, you will need to provide a custom set of cameras for fading using this function PRIOR to calling DoSceneTransition.
         /// </summary>
         /// <param name="customFadeTargetCameras"></param>
         void SetCustomFadeTargetCameras(IEnumerable<Camera> customFadeTargetCameras);
