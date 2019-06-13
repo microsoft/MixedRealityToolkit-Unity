@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -11,9 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     public class ScrollingObjectCollectionInspector : UnityEditor.Editor
     {
         private bool animateTransition = true;
-        private int amountOfItemsToMoveBy = 0;
-        private int amountOfLinesToMoveTo = 0;
-        private int indexToMoveTo = 0;
+        private int amountOfItemsToMoveBy = 1;
+        private int amountOfLinesToMoveTo = 1;
+        private int indexToMoveTo = 1;
 
         private SerializedProperty sorting;
         private SerializedProperty cellHeight;
@@ -180,11 +181,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     EditorGUILayout.BeginHorizontal();
                     if (GUILayout.Button("Page Up"))
                     {
-                        scrollContainer.PageBy(1);
+                        scrollContainer.PageBy(1, animateTransition);
                     }
                     if (GUILayout.Button("Page Down"))
                     {
-                        scrollContainer.PageBy(-1);
+                        scrollContainer.PageBy(-1, animateTransition);
                     }
                     EditorGUILayout.EndHorizontal();
 
