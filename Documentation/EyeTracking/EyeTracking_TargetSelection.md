@@ -332,15 +332,15 @@ public class HitBehaviorDestroyOnSelect : MonoBehaviour
     
     ...
  
- ///
- /// This is called once the EyeTrackingTarget detected a selection. 
- ///
- public void TargetSelected()
-        {
-            // Play some animation
-            // Play some audio effect
-            // Handle destroying the target appropriately
-        }   
+    ///
+    /// This is called once the EyeTrackingTarget detected a selection. 
+    ///
+    public void TargetSelected()
+    {
+        // Play some animation
+        // Play some audio effect
+        // Handle destroying the target appropriately
+    }   
 }
 ```
 <br>
