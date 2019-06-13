@@ -9,6 +9,11 @@ While the *MixedRealityToolkit.InputSystem.EyeGazeProvider* provides several hel
 - **UseEyeTracking**: 
 True if eye tracking hardware is available and the user has given permission to use eye tracking in the app. 
 
+- **IsEyeCalibrationValid**: 
+Indicates whether the user's eye tracking calibration is valid or not.
+It returns 'null', if the value has not yet received data from the eye tracking system.
+It may be invalid, because the user skipped the eye tracking calibration.
+
 - **IsEyeGazeValid**: 
 Indicates whether the current eye tracking data is valid. 
 It may be invalid due to exceeded timeout (should be robust to the user blinking though) or lack of tracking hardware or permissions.
