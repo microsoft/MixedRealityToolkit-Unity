@@ -38,7 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         internal const string CoordinateStateMessageHeader = "COORDSTATE";
         private const string LocalizeCommand = "LOCALIZE";
-        private const string RestorePersistentSharedCoordinateCommand = "INITSHAREDCOORD";
         private readonly Dictionary<Guid, ISpatialLocalizer> localizers = new Dictionary<Guid, ISpatialLocalizer>();
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
@@ -83,18 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             UnregisterEvents(networkManager);
-        }
-
-        public void RestorePersistentSharedCoordinate(SocketEndpoint socketEndpoint, string sharedCoordinateName)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            using (BinaryWriter message = new BinaryWriter(stream))
-            {
-                message.Write(RestorePersistentSharedCoordinateCommand);
-                message.Write(sharedCoordinateName);
-
-                socketEndpoint.Send(stream.ToArray());
-            }
         }
 
         public void InitiateRemoteLocalization(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
@@ -184,19 +171,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             participant.PeerSpatialCoordinateWorldRotation = reader.ReadQuaternion();
         }
 
-        private void OnRestorePersistentSharedCoordinateReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
-        {
-            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
-            {
-                Debug.LogError($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
-                return;
-            }
-
-            string coordinateId = reader.ReadString();
-            //participant.PersistentCoordinateId = coordinateId;
-            //participant.Coordinate = new WorldAnchorSpatialCoordinate(coordinateId);
-        }
-
         private async void OnLocalizeMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             if (currentLocalizationSession != null)
@@ -228,26 +202,39 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             await RunLocalizationSessionAsync(localizer, settings, participant);
         }
 
+        private void OnParticipantDataReceived(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            if (!TryGetSpatialCoordinateSystemParticipant(endpoint, out SpatialCoordinateSystemParticipant participant))
+            {
+                Debug.LogError("Received participant localization data for a missing participant");
+                return;
+            }
+
+            if (participant.CurrentLocalizationSession == null)
+            {
+                Debug.LogError("Received participant localization data for a participant that is not currently running a localization session");
+                return;
+            }
+
+            participant.CurrentLocalizationSession.OnDataReceived(reader);
+        }
+
         private async Task RunLocalizationSessionAsync(ISpatialLocalizer localizer, ISpatialLocalizationSettings settings, SpatialCoordinateSystemParticipant participant)
         {
-            using (currentLocalizationSession = localizer.CreateLocalizationSession(settings))
+            using (currentLocalizationSession = localizer.CreateLocalizationSession(participant, settings))
             {
-                //if (participant.Coordinate is WorldAnchorSpatialCoordinate worldAnchorSpatialCoordinate)
-                //{
-                //    worldAnchorSpatialCoordinate.RemoveAnchor();
-                //}
+                participant.CurrentLocalizationSession = currentLocalizationSession;
 
-                participant.IsLocatingSpatialCoordinate = true;
-                var coordinate = await currentLocalizationSession.LocalizeAsync(CancellationToken.None);
-                //if (participant.PersistentCoordinateId != null)
-                //{
-                //    participant.Coordinate = new WorldAnchorSpatialCoordinate(participant.PersistentCoordinateId, coordinate.CoordinateToWorldSpace(Vector3.zero), coordinate.CoordinateToWorldSpace(Quaternion.identity));
-                //}
-                //else
-                //{
+                try
+                {
+                    var coordinate = await currentLocalizationSession.LocalizeAsync(CancellationToken.None);
+
                     participant.Coordinate = coordinate;
-                //}
-                participant.IsLocatingSpatialCoordinate = false;
+                }
+                finally
+                {
+                    participant.CurrentLocalizationSession = null;
+                }
             }
             currentLocalizationSession = null;
         }
@@ -257,8 +244,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             networkManager.Connected += OnConnected;
             networkManager.Disconnected += OnDisconnected;
             networkManager.RegisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
-            networkManager.RegisterCommandHandler(RestorePersistentSharedCoordinateCommand, OnRestorePersistentSharedCoordinateReceived);
             networkManager.RegisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
+            networkManager.RegisterCommandHandler(SpatialCoordinateSystemParticipant.LocalizationDataExchangeCommand, OnParticipantDataReceived);
         }
 
         private void UnregisterEvents(INetworkManager networkManager)
@@ -266,8 +253,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             networkManager.Connected -= OnConnected;
             networkManager.Disconnected -= OnDisconnected;
             networkManager.UnregisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
-            networkManager.UnregisterCommandHandler(RestorePersistentSharedCoordinateCommand, OnRestorePersistentSharedCoordinateReceived);
             networkManager.UnregisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
+            networkManager.UnregisterCommandHandler(SpatialCoordinateSystemParticipant.LocalizationDataExchangeCommand, OnParticipantDataReceived);
         }
 
         private void CleanUpParticipants()

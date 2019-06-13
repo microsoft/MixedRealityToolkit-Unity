@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
             return TryDiscoverCoordinatesAsync(cancellationToken, ids);
         }
 
-        public async Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, TKey[] ids = null)
+        public async Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, params TKey[] ids)
         {
             if (!SupportsDiscovery)
             {

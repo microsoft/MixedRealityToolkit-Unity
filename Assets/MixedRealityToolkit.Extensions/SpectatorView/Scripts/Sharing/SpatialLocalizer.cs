@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public abstract bool TryDeserializeSettings(BinaryReader reader, out TSpatialLocalizationSettings settings);
 
-        public abstract ISpatialLocalizationSession CreateLocalizationSession(TSpatialLocalizationSettings settings);
+        public abstract ISpatialLocalizationSession CreateLocalizationSession(IPeerConnection peerConnection, TSpatialLocalizationSettings settings);
 
         bool ISpatialLocalizer.TryDeserializeSettings(BinaryReader reader, out ISpatialLocalizationSettings settings)
         {
@@ -81,11 +81,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        ISpatialLocalizationSession ISpatialLocalizer.CreateLocalizationSession(ISpatialLocalizationSettings settings)
+        ISpatialLocalizationSession ISpatialLocalizer.CreateLocalizationSession(IPeerConnection peerConnection, ISpatialLocalizationSettings settings)
         {
             if (settings is TSpatialLocalizationSettings specificSettings)
             {
-                return CreateLocalizationSession(specificSettings);
+                return CreateLocalizationSession(peerConnection, specificSettings);
             }
             else
             {

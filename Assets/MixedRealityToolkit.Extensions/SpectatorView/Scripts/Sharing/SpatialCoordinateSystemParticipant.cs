@@ -17,8 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// The SpectatorView helper class for managing a participant in the spatial coordinate system
     /// </summary>
-    internal class SpatialCoordinateSystemParticipant : DisposableBase
+    internal class SpatialCoordinateSystemParticipant : DisposableBase, IPeerConnection
     {
+        internal const string LocalizationDataExchangeCommand = "LocalizationDataExchange";
         private readonly GameObject debugVisualPrefab;
         private readonly float debugVisualScale;
         private byte[] previousCoordinateStatusMessage = null;
@@ -75,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public bool IsLocatingSpatialCoordinate { get; set; }
+        public bool IsLocatingSpatialCoordinate => CurrentLocalizationSession != null;
 
         /// <summary>
         /// Gets the last-reported tracking status of the peer device.
@@ -102,7 +103,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         public Quaternion PeerSpatialCoordinateWorldRotation { get; internal set; }
 
-        public string PersistentCoordinateId { get; internal set; }
+        /// <summary>
+        /// Gets the currently-running localization session for this participant;
+        /// </summary>
+        public ISpatialLocalizationSession CurrentLocalizationSession { get; internal set; }
 
         public void CheckForStateChanges()
         {
@@ -149,6 +153,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     previousCoordinateStatusMessage = newCoordinateStatusMessage;
                     SocketEndpoint.Send(newCoordinateStatusMessage);
                 }
+            }
+        }
+
+        public void SendData(Action<BinaryWriter> writeCallback)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                writer.Write(LocalizationDataExchangeCommand);
+                writeCallback(writer);
+
+                SocketEndpoint.Send(stream.ToArray());
             }
         }
     }

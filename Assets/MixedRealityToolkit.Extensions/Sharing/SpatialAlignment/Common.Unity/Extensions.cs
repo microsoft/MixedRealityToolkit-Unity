@@ -188,6 +188,19 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         }
 
         /// <summary>
+        /// The task will be awaited until the cancellation token is triggered. (await task unless cancelled).
+        /// </summary>
+        /// <remarks>This is different from cancelling the task. The use case is to enable a calling method 
+        /// bow out of the await that it can't cancel, but doesn't require completion/cancellation in order to cancel it's own execution.</remarks>
+        /// <param name="task">The task to await.</param>
+        /// <param name="cancellationToken">The cancellation token to stop awaiting.</param>
+        /// <returns>The task that can be awaited unless the cancellation token is triggered.</returns>
+        public static Task<T> Unless<T>(this Task<T> task, CancellationToken cancellationToken)
+        {
+            return Task.WhenAny(task, cancellationToken.AsTask()) is Task<T> result ? result : Task.FromResult<T>(default(T));
+        }
+
+        /// <summary>
         /// Helper class to enable await on <see cref="SynchronizationContext"/>. 
         /// This is useful if you want to switch execution flow of an async function to a different thread, like Unity game thread for example.
         /// </summary>

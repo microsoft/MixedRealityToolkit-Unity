@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return MarkerDetectorLocalizationSettings.TryDeserialize(reader, out settings);
         }
 
-        public override ISpatialLocalizationSession CreateLocalizationSession(MarkerDetectorLocalizationSettings settings)
+        public override ISpatialLocalizationSession CreateLocalizationSession(IPeerConnection peerConnection, MarkerDetectorLocalizationSettings settings)
         {
             return new LocalizationSession(this, settings);
         }
@@ -82,6 +82,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
 
                 return spatialCoordinate;
+            }
+
+            public void OnDataReceived(BinaryReader reader)
+            {
             }
 
             protected override void OnManagedDispose()

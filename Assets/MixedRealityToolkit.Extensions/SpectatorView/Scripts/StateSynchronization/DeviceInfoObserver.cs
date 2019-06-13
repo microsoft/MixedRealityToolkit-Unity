@@ -67,8 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private void OnConnected(SocketEndpoint endpoint)
         {
             connectedEndpoint = endpoint;
-
-            SpatialCoordinateSystemManager.Instance.RestorePersistentSharedCoordinate(endpoint, "WorldManager_CompositorRoot");
         }
 
         private void OnDisconnected(SocketEndpoint endpoint)

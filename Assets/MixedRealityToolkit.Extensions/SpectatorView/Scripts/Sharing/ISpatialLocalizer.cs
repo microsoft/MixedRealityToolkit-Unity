@@ -1,4 +1,5 @@
 ﻿using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,12 +10,17 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
+    public interface IPeerConnection
+    {
+        void SendData(Action<BinaryWriter> writeCallback);
+    }
+
     public interface ISpatialLocalizer
     {
         Guid SpatialLocalizerId { get; }
 
         bool TryDeserializeSettings(BinaryReader reader, out ISpatialLocalizationSettings settings);
 
-        ISpatialLocalizationSession CreateLocalizationSession(ISpatialLocalizationSettings settings);
+        ISpatialLocalizationSession CreateLocalizationSession(IPeerConnection peerConnection, ISpatialLocalizationSettings settings);
     }
 }
