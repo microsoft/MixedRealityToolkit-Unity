@@ -38,18 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         {
                             SetCoordinateWorldTransform(marker.Position, marker.Rotation);
                         }
-                        else
-                        {
-                            SetCoordinateWorldTransform(Vector3.zero, Quaternion.identity);
-                        }
                     }
                 }
             }
 
             public override LocatedState State => marker == null ? LocatedState.Resolved : LocatedState.Tracking;
-
-            public SpatialCoordinate(int id)
-                : base(id) { }
 
             public SpatialCoordinate(Marker marker)
                 : base(marker?.Id ?? throw new ArgumentNullException(nameof(marker)))
@@ -140,8 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return;
             }
 
-            var coordinate = new SpatialCoordinate(idsToLocate[0]);
-            coordinate.Marker = new Marker(coordinate.Id, UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity);
+            var coordinate = new SpatialCoordinate(new Marker(idsToLocate[0], UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity));
             DebugLog("Created artificial coordinate at origin for debugging in the editor");
             await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken).IgnoreCancellation();
             OnNewCoordinate(coordinate.Id, coordinate);

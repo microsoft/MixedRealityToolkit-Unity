@@ -15,7 +15,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor
 {
     [Description("Compositor")]
-    public class CompositorWindow : CompositorWindowBase<CompositorWindow>
+    internal class CompositorWindow : CompositorWindowBase<CompositorWindow>
     {
         private const float maxFrameOffset = 0.2f;
         private const float statisticsUpdateCooldownTimeSeconds = 0.1f;
@@ -81,15 +81,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
         {
             EditorGUILayout.BeginHorizontal();
             {
-                LocatableDeviceObserver stateSynchronizationDevice = null;
+                DeviceInfoObserver stateSynchronizationDevice = null;
                 if (StateSynchronizationObserver.IsInitialized)
                 {
-                    stateSynchronizationDevice = StateSynchronizationObserver.Instance.GetComponent<LocatableDeviceObserver>();
+                    stateSynchronizationDevice = StateSynchronizationObserver.Instance.GetComponent<DeviceInfoObserver>();
                 }
-                LocatableDeviceObserver holographicCameraDevice = GetHolographicCameraDevice();
+                DeviceInfoObserver holographicCameraDevice = GetHolographicCameraDevice();
 
-                HolographicCameraNetworkConnectionGUI(AppDeviceTypeLabel, stateSynchronizationDevice, showCalibrationStatus: false, ref appIPAddress);
-                HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, holographicCameraDevice, showCalibrationStatus: true, ref holographicCameraIPAddress);
+                HolographicCameraNetworkConnectionGUI(AppDeviceTypeLabel, stateSynchronizationDevice, GetSpatialCoordinateSystemParticipant(stateSynchronizationDevice), showCalibrationStatus: false, ref appIPAddress);
+                HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, holographicCameraDevice, GetSpatialCoordinateSystemParticipant(holographicCameraDevice), showCalibrationStatus: true, ref holographicCameraIPAddress);
             }
             EditorGUILayout.EndHorizontal();
         }

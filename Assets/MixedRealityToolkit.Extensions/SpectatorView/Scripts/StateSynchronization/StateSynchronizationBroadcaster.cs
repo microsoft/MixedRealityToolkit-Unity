@@ -51,8 +51,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             UnregisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
         }
 
-        protected void Start()
+        protected override void Start()
         {
+            base.Start();
+
             SetupNetworkConnectionManager();
         }
 

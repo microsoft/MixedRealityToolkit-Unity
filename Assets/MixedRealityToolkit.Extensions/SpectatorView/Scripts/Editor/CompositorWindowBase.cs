@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor
 {
-    public class CompositorWindowBase<TWindow> : EditorWindowBase<TWindow> where TWindow : EditorWindowBase<TWindow>
+    internal class CompositorWindowBase<TWindow> : EditorWindowBase<TWindow> where TWindow : EditorWindowBase<TWindow>
     {
         protected const string HolographicCameraDeviceTypeLabel = "Holographic Camera";
         protected const string AppDeviceTypeLabel = "App";
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             aspect = ((float)renderFrameWidth) / renderFrameHeight;
         }
 
-        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, LocatableDeviceObserver locatableDevice, bool showCalibrationStatus, ref string ipAddressField)
+        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, DeviceInfoObserver deviceInfo, SpatialCoordinateSystemParticipant spatialCoordinateSystemParticipant, bool showCalibrationStatus, ref string ipAddressField)
         {
             GUIStyle boldLabelStyle = new GUIStyle(GUI.skin.label);
             boldLabelStyle.fontStyle = FontStyle.Bold;
@@ -56,12 +56,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             EditorGUILayout.BeginVertical("Box");
             {
                 Color titleColor;
-                if (locatableDevice != null &&
-                    locatableDevice.NetworkManager != null &&
-                    locatableDevice.NetworkManager.IsConnected &&
-                    locatableDevice.HasTracking &&
-                    locatableDevice.IsSharedSpatialCoordinateLocated &&
-                    !locatableDevice.IsTrackingStalled &&
+                if (deviceInfo != null &&
+                    deviceInfo.NetworkManager != null &&
+                    deviceInfo.NetworkManager.IsConnected &&
+                    spatialCoordinateSystemParticipant != null &&
+                    spatialCoordinateSystemParticipant.PeerDeviceHasTracking &&
+                    spatialCoordinateSystemParticipant.PeerSpatialCoordinateIsLocated &&
+                    !spatialCoordinateSystemParticipant.PeerIsLocatingSpatialCoordinate &&
+                    !deviceInfo.IsTrackingStalled &&
                     (!showCalibrationStatus || (compositionManager != null &&
                     compositionManager.IsCalibrationDataLoaded)))
                 {
@@ -73,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                 }
                 RenderTitle(deviceTypeLabel, titleColor);
 
-                if (locatableDevice != null && locatableDevice.NetworkManager != null && locatableDevice.NetworkManager.IsConnected)
+                if (deviceInfo != null && deviceInfo.NetworkManager != null && deviceInfo.NetworkManager.IsConnected)
                 {
                     GUILayout.BeginHorizontal();
                     {
@@ -81,18 +83,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
                         if (GUILayout.Button(new GUIContent("Disconnect", "Disconnects the network connection to the holographic camera."), GUILayout.Width(connectAndDisconnectButtonWidth)))
                         {
-                            locatableDevice.NetworkManager.Disconnect();
+                            deviceInfo.NetworkManager.Disconnect();
                         }
                     }
                     GUILayout.EndHorizontal();
 
-                    if (locatableDevice.NetworkManager.ConnectedIPAddress == locatableDevice.DeviceIPAddress)
+                    if (deviceInfo.NetworkManager.ConnectedIPAddress == deviceInfo.DeviceIPAddress)
                     {
-                        GUILayout.Label($"Connected to {locatableDevice.DeviceName} ({locatableDevice.DeviceIPAddress})");
+                        GUILayout.Label($"Connected to {deviceInfo.DeviceName} ({deviceInfo.DeviceIPAddress})");
                     }
                     else
                     {
-                        GUILayout.Label($"Connected to {locatableDevice.DeviceName} ({locatableDevice.NetworkManager.ConnectedIPAddress} -> {locatableDevice.DeviceIPAddress})");
+                        GUILayout.Label($"Connected to {deviceInfo.DeviceName} ({deviceInfo.NetworkManager.ConnectedIPAddress} -> {deviceInfo.DeviceIPAddress})");
                     }
 
                     EditorGUILayout.Space();
@@ -102,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     GUILayout.BeginHorizontal();
                     {
                         ipAddressField = EditorGUILayout.TextField(ipAddressField);
-                        ConnectButtonGUI(ipAddressField, locatableDevice);
+                        ConnectButtonGUI(ipAddressField, deviceInfo);
                     }
                     GUILayout.EndHorizontal();
 
@@ -110,25 +112,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
                     EditorGUILayout.Space();
                 }
 
-                GUI.enabled = locatableDevice != null && locatableDevice.NetworkManager != null && locatableDevice.NetworkManager.IsConnected;
+                GUI.enabled = deviceInfo != null && deviceInfo.NetworkManager != null && deviceInfo.NetworkManager.IsConnected && spatialCoordinateSystemParticipant != null;
                 string sharedSpatialCoordinateStatusMessage;
-                if (locatableDevice == null || locatableDevice.NetworkManager == null || !locatableDevice.NetworkManager.IsConnected)
+                if (deviceInfo == null || deviceInfo.NetworkManager == null || !deviceInfo.NetworkManager.IsConnected || spatialCoordinateSystemParticipant == null)
                 {
                     sharedSpatialCoordinateStatusMessage = notConnectedMessage;
                 }
-                else if (!locatableDevice.HasTracking)
+                else if (!spatialCoordinateSystemParticipant.PeerDeviceHasTracking)
                 {
                     sharedSpatialCoordinateStatusMessage = trackingLostStatusMessage;
                 }
-                else if (locatableDevice.IsTrackingStalled)
+                else if (deviceInfo.IsTrackingStalled)
                 {
                     sharedSpatialCoordinateStatusMessage = trackingStalledStatusMessage;
                 }
-                else if (locatableDevice.IsLocatingSharedSpatialCoordinate)
+                else if (spatialCoordinateSystemParticipant.PeerIsLocatingSpatialCoordinate)
                 {
                     sharedSpatialCoordinateStatusMessage = locatingSharedSpatialCoordinate;
                 }
-                else if (!locatableDevice.IsSharedSpatialCoordinateLocated)
+                else if (!spatialCoordinateSystemParticipant.PeerSpatialCoordinateIsLocated)
                 {
                     sharedSpatialCoordinateStatusMessage = notLocatedSharedSpatialCoordinate;
                 }
@@ -167,7 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
                 if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
                 {
-                    locatableDevice.SendLocateSharedSpatialCoordinateCommand();
+                    SpatialCoordinateSystemManager.Instance.InitiateRemoteLocalization(deviceInfo.ConnectedEndpoint, MarkerDetectorSpatialLocalizer.Id, new MarkerDetectorLocalizationSettings
+                    {
+                        MarkerID = 0,
+                        MarkerSize = 0.1f,
+                    });
                 }
 
                 GUI.enabled = true;
@@ -222,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             }
         }
 
-        protected void ConnectButtonGUI(string targetIpString, LocatableDeviceObserver remoteDevice)
+        protected void ConnectButtonGUI(string targetIpString, DeviceInfoObserver remoteDevice)
         {
             string tooltip = string.Empty;
             IPAddress targetIp;
@@ -317,12 +323,32 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             return cachedHolographicCameraObserver;
         }
 
-        protected LocatableDeviceObserver GetHolographicCameraDevice()
+        protected DeviceInfoObserver GetHolographicCameraDevice()
         {
             HolographicCameraObserver observer = GetHolographicCameraObserver();
             if (observer != null)
             {
-                return observer.GetComponent<LocatableDeviceObserver>();
+                return observer.GetComponent<DeviceInfoObserver>();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        protected SpatialCoordinateSystemParticipant GetSpatialCoordinateSystemParticipant(DeviceInfoObserver device)
+        {
+            if (device != null && device.ConnectedEndpoint != null && SpatialCoordinateSystemManager.IsInitialized)
+            {
+                if (SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(device.ConnectedEndpoint, out SpatialCoordinateSystemParticipant participant))
+                {
+                    return participant;
+                }
+                else
+                {
+                    Debug.LogError("Expected to be able to find participant for an endpoint");
+                    return null;
+                }
             }
             else
             {

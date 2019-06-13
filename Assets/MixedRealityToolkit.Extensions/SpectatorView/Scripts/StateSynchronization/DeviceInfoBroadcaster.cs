@@ -18,17 +18,12 @@ using Windows.Networking.Connectivity;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.HolographicCamera
 {
-    public class LocatableDeviceBroadcaster : MonoBehaviour
+    public class DeviceInfoBroadcaster : MonoBehaviour
     {
         [SerializeField]
         private TCPConnectionManager connectionManager = null;
 
-        [SerializeField]
-        private ArUcoMarkerAnchor originAnchor = null;
-
 #if UNITY_WSA
-        private byte[] previousStatusMessage = null;
-
         private void Awake()
         {
             connectionManager.OnConnected += TcpConnectionManager_OnConnected;
@@ -41,37 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 
         private void TcpConnectionManager_OnConnected(SocketEndpoint obj)
         {
-            // Reset the cached status message each time we reconnect
-            // so that new state is sent out to the new connection.
-            previousStatusMessage = null;
-
             SendDeviceInfo();
-        }
-
-        private void Update()
-        {
-            if (!connectionManager.HasConnections)
-            {
-                return;
-            }
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            using (BinaryWriter message = new BinaryWriter(memoryStream))
-            {
-                message.Write(LocatableDeviceObserver.StatusCommand);
-                message.Write(WorldManager.state == PositionalLocatorState.Active);
-                message.Write(originAnchor.IsAnchorLocated);
-                message.Write(originAnchor.IsDetectingMarker);
-                message.Write(originAnchor.transform.position);
-                message.Write(originAnchor.transform.rotation);
-
-                byte[] newMessage = memoryStream.ToArray();
-                if (previousStatusMessage == null || !newMessage.SequenceEqual<byte>(previousStatusMessage))
-                {
-                    connectionManager.Broadcast(newMessage);
-                    previousStatusMessage = newMessage;
-                }
-            }
         }
 
         private void SendDeviceInfo()
@@ -79,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
-                message.Write(LocatableDeviceObserver.DeviceInfoCommand);
+                message.Write(DeviceInfoObserver.DeviceInfoCommand);
                 message.Write(GetMachineName());
                 message.Write(GetIPAddress());
 

@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
     }
 
     [Description("Calibration Test")]
-    public class CalibrationTestWindow : CompositorWindowBase<CalibrationTestWindow>
+    internal class CalibrationTestWindow : CompositorWindowBase<CalibrationTestWindow>
     {
         private Vector2 scrollPosition;
 
@@ -150,7 +150,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
 
                         EditorGUILayout.BeginVertical("Box", GUILayout.MinHeight(250.0f));
                         {
-                            HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, GetHolographicCameraDevice(), showCalibrationStatus: true, ref holographicCameraIPAddress);
+                            var cameraDevice = GetHolographicCameraDevice();
+                            HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, cameraDevice, GetSpatialCoordinateSystemParticipant(cameraDevice), showCalibrationStatus: true, ref holographicCameraIPAddress);
 
                             GUILayout.FlexibleSpace();
 
@@ -482,7 +483,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.E
             compositionManager.EnableHolographicCamera(networkManager.transform, calibrationDataForPlayback);
 
             testCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            testCube.transform.localScale = Vector3.one * LocatableDeviceObserver.arUcoMarkerSizeInMeters;
+            testCube.transform.localScale = Vector3.one * DeviceInfoObserver.arUcoMarkerSizeInMeters;
             testCube.transform.localPosition = new Vector3(0.0f, 0.0f, 0.05f);
         }
 

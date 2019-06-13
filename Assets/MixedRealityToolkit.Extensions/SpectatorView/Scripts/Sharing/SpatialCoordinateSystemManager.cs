@@ -137,6 +137,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             CleanUpParticipants();
         }
 
+        private void Update()
+        {
+            foreach (var participant in participants.Values)
+            {
+                participant.CheckForStateChanges();
+            }
+        }
+
         private void OnConnected(SocketEndpoint endpoint)
         {
             if (participants.ContainsKey(endpoint))
@@ -147,25 +155,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             DebugLog($"Creating new SpatialCoordinateSystemParticipant, IPAddress: {endpoint.Address}, DebugLogging: {debugLogging}");
 
-            GameObject participantGameObject = new GameObject($"Spatial Coordinate - {endpoint.Address}");
-            SpatialCoordinateSystemParticipant participant = participantGameObject.AddComponent<SpatialCoordinateSystemParticipant>();
-            participant.SocketEndpoint = endpoint;
+            SpatialCoordinateSystemParticipant participant = new SpatialCoordinateSystemParticipant(endpoint, debugVisual);
             participants[endpoint] = participant;
-
-            if (showDebugVisuals)
-            {
-                var debugVisualInstance = Instantiate(debugVisual, participant.transform);
-                debugVisualInstance.transform.localPosition = Vector3.zero;
-                debugVisualInstance.transform.localRotation = Quaternion.identity;
-                debugVisualInstance.transform.localScale = Vector3.one * debugVisualScale;
-            }
+            participant.ShowDebugVisuals = showDebugVisuals;
         }
 
         private void OnDisconnected(SocketEndpoint endpoint)
         {
             if (participants.TryGetValue(endpoint, out var participant))
             {
-                Destroy(participant.gameObject);
+                participant.Dispose();
                 participants.Remove(endpoint);
             }
         }
@@ -277,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 if (participant.Value != null)
                 {
-                    Destroy(participant.Value.gameObject);
+                    participant.Value.Dispose();
                 }
             }
 

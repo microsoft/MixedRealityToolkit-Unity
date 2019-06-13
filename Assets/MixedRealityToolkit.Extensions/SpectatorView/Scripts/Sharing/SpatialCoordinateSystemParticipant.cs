@@ -17,12 +17,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// The SpectatorView helper class for managing a participant in the spatial coordinate system
     /// </summary>
-    internal class SpatialCoordinateSystemParticipant : MonoBehaviour
+    internal class SpatialCoordinateSystemParticipant : DisposableBase
     {
-        byte[] previousCoordinateStatusMessage = null;
+        private readonly GameObject debugVisualPrefab;
+        private byte[] previousCoordinateStatusMessage = null;
         private ISpatialCoordinate coordinate;
+        private GameObject debugVisual;
+        private SpatialCoordinateLocalizer debugCoordinateLocalizer;
+        private bool showDebugVisuals;
 
-        public SocketEndpoint SocketEndpoint { get; set; }
+        public SocketEndpoint SocketEndpoint { get; }
+
+        public SpatialCoordinateSystemParticipant(SocketEndpoint endpoint, GameObject debugVisualPrefab)
+        {
+            this.debugVisualPrefab = debugVisualPrefab;
+            SocketEndpoint = endpoint;
+        }
 
         public ISpatialCoordinate Coordinate
         {
@@ -32,6 +42,32 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 if (coordinate != value)
                 {
                     coordinate = value;
+
+                    if (debugCoordinateLocalizer != null)
+                    {
+                        debugCoordinateLocalizer.Coordinate = coordinate;
+                    }
+                }
+            }
+        }
+
+        public bool ShowDebugVisuals
+        {
+            get { return showDebugVisuals; }
+            set
+            {
+                if (showDebugVisuals != value)
+                {
+                    showDebugVisuals = value;
+
+                    if (debugVisual == null)
+                    {
+                        debugVisual = GameObject.Instantiate(debugVisualPrefab);
+                        debugCoordinateLocalizer = debugVisual.AddComponent<SpatialCoordinateLocalizer>();
+                        debugCoordinateLocalizer.Coordinate = Coordinate;
+                    }
+
+                    debugVisual.SetActive(showDebugVisuals);
                 }
             }
         }
@@ -65,17 +101,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public string PersistentCoordinateId { get; internal set; }
 
-        private void Update()
+        public void CheckForStateChanges()
         {
-            if (Coordinate != null && Coordinate.State == LocatedState.Tracking)
-            {
-                this.transform.position = Coordinate.CoordinateToWorldSpace(Vector3.zero);
-                this.transform.rotation = Coordinate.CoordinateToWorldSpace(Quaternion.identity);
-            }
-
             if (SocketEndpoint != null && SocketEndpoint.IsConnected)
             {
                 SendCoordinateStateMessage();
+            }
+        }
+
+        protected override void OnManagedDispose()
+        {
+            base.OnManagedDispose();
+
+            if (debugVisual != null)
+            {
+                GameObject.Destroy(debugVisual);
             }
         }
 
@@ -86,10 +126,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 message.Write(SpatialCoordinateSystemManager.CoordinateStateMessageHeader);
                 message.Write(WorldManager.state == PositionalLocatorState.Active);
-                message.Write(Coordinate != null && Coordinate.State == LocatedState.Tracking);
+                message.Write(Coordinate != null && (Coordinate.State == LocatedState.Tracking || Coordinate.State == LocatedState.Resolved));
                 message.Write(IsLocatingSpatialCoordinate);
-                message.Write(transform.position);
-                message.Write(transform.rotation);
+
+                Vector3 position = Vector3.zero;
+                Quaternion rotation = Quaternion.identity;
+                if (Coordinate != null)
+                {
+                    position = Coordinate.CoordinateToWorldSpace(Vector3.zero);
+                    rotation = Coordinate.CoordinateToWorldSpace(Quaternion.identity);
+                }
+
+                message.Write(position);
+                message.Write(rotation);
 
                 byte[] newCoordinateStatusMessage = stream.ToArray();
                 if (previousCoordinateStatusMessage == null || !previousCoordinateStatusMessage.SequenceEqual(newCoordinateStatusMessage))
