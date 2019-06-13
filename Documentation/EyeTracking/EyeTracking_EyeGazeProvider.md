@@ -17,6 +17,7 @@ It may be invalid, because the user skipped the eye tracking calibration.
 - **IsEyeGazeValid**: 
 Indicates whether the current eye tracking data is valid. 
 It may be invalid due to exceeded timeout (should be robust to the user blinking though) or lack of tracking hardware or permissions.
+Check out our [Missing eye calibration notification sample](EyeTracking_IsUserCalibrated.md) to see an example for how to detect whether a user is eye calibrated and show a notification.
 
 - **GazeOrigin**: 
 Origin of the gaze ray. 
