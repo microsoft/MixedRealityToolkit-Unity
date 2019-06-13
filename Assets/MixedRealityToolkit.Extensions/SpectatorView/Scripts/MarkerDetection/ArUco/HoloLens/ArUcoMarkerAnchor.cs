@@ -114,17 +114,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
 #else
         public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            throw new System.NotImplementedException();
+            throw new System.PlatformNotSupportedException();
         }
 
         public void OnConnected(SocketEndpoint endpoint)
         {
-            throw new System.NotImplementedException();
+            throw new System.PlatformNotSupportedException();
         }
 
         public void OnDisconnected(SocketEndpoint endpoint)
         {
-            throw new System.NotImplementedException();
+            throw new System.PlatformNotSupportedException();
         }
 #endif
     }

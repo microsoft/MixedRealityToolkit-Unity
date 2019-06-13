@@ -411,7 +411,7 @@ MonoBehaviour:
   stateSynchronizationObserver: {fileID: 5528765751305678288}
   parentOfMainCamera: {fileID: 0}
   enableMobileRecordingService: 1
-  mobileRecordingServiceVisualPrefab: {fileID: 4515958443709241368, guid: 0597567e7e0629940a5ef22625039706,
+  mobileRecordingServiceVisualPrefab: {fileID: 3991847289853751625, guid: 9771d3a665ea3184f9c3731093a51da4,
     type: 3}
 --- !u!1 &5528765751079408163
 GameObject:
