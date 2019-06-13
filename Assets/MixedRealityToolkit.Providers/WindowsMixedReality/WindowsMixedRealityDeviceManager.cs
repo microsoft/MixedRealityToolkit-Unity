@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Cache of the states captured from the Unity InteractionManager for UWP
         /// </summary>
-        InteractionSourceState[] interactionmanagerStates = new InteractionSourceState[MaxInteractionSourceStates];
+        InteractionSourceState[] interactionManagerStates = new InteractionSourceState[MaxInteractionSourceStates];
 
         /// <summary>
         /// The number of states captured most recently
@@ -299,20 +299,17 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             UpdateInteractionManagerReading();
 
-            // Avoids a Unity Editor bug detecting a controller from the previous run during the first frame
-#if !UNITY_EDITOR
-            // NOTE: We update the source state data, in case an app wants to query it on source detected.
+            //NOTE: We update the source state data, in case an app wants to query it on source detected.
             for (var i = 0; i < numInteractionManagerStates; i++)
             {
-                var controller = GetController(interactionmanagerStates[i].source);
+                var controller = GetController(interactionManagerStates[i].source);
 
                 if (controller != null)
                 {
-                    controller.UpdateController(interactionmanagerStates[i]);
+                    controller.UpdateController(interactionManagerStates[i]);
                     inputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                 }
             }
-#endif
 
             if ((inputSystem != null) &&
                 InputSystemProfile.GesturesProfile != null &&
@@ -333,15 +330,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 // SourceDetected gets raised when a new controller is detected and, if previously present, 
                 // when OnEnable is called. Do not create a new controller here.
-                var controller = GetController(interactionmanagerStates[i].source, false);
+                var controller = GetController(interactionManagerStates[i].source, false);
 
                 if (controller != null)
                 {
-                    controller.UpdateController(interactionmanagerStates[i]);
+                    controller.UpdateController(interactionManagerStates[i]);
                 }
             }
 
-            LastInteractionManagerStateReading = interactionmanagerStates;
+            LastInteractionManagerStateReading = interactionManagerStates;
         }
 
         private void RegisterGestureEvents()
@@ -589,15 +586,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="args">SDK source detected event arguments</param>
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
-
-            // Avoids a Unity Editor bug detecting a controller from the previous run during the first frame
-#if UNITY_EDITOR
-            if (Time.frameCount <= 1)
-            {
-                return;
-            }
-#endif
-
             bool raiseSourceDetected = !activeControllers.ContainsKey(args.state.source.id);
 
             var controller = GetController(args.state.source);
@@ -787,20 +775,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             int newSourceStateCount = InteractionManager.numSourceStates;
             // If there isn't enough space in the cache to hold the results, we should grow it so that it can, but also
             // grow it in a way that is unlikely to require re-allocations each time.
-            if (newSourceStateCount > interactionmanagerStates.Length)
+            if (newSourceStateCount > interactionManagerStates.Length)
             {
-                interactionmanagerStates = new InteractionSourceState[newSourceStateCount * InteractionManagerStatesGrowthFactor];
+                interactionManagerStates = new InteractionSourceState[newSourceStateCount * InteractionManagerStatesGrowthFactor];
             }
 
             // Note that InteractionManager.GetCurrentReading throws when invoked when the number of
             // source states is zero. In that case, we want to just update the number of read states to be zero.
             if (newSourceStateCount == 0)
             {
-                numInteractionManagerStates = 0;
+                // clean up existing controllers that didn't trigger the InteractionSourceLost event.
+                // this can happen eg. when unity is registering cached controllers from a previous play session in the editor.
+                // those actually don't exist in the current session and therefor won't receive the InteractionSourceLost once  
+                // Unity's InteractionManager catches up
+                for (int i = 0; i < numInteractionManagerStates; ++i)
+                {
+                    RemoveController(interactionManagerStates[i].source);
+                }
+
+                numInteractionManagerStates = newSourceStateCount;
             }
             else
             {
-                numInteractionManagerStates = InteractionManager.GetCurrentReading(interactionmanagerStates);
+                numInteractionManagerStates = InteractionManager.GetCurrentReading(interactionManagerStates);
             }
         }
 
