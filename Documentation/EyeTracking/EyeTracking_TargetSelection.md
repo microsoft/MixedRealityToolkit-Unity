@@ -170,24 +170,33 @@ The _BaseEyeFocusHandler_ provides more than only _OnEyeFocusStay_. Here is an o
 ```
 
 
-## Eye-Gaze-Specific EyeTrackingTarget 
+## Eye-gaze-specific EyeTrackingTarget 
 Finally, we provide you with a solution that let's you treat eye-based input completely independent from other focus pointers via the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script. 
 
-This has three advantages: 
+This has three _advantages_: 
 - You can make sure that the hologram is only reacting to the user's eye gaze.
 - This is independent from the currently active primary input. Hence, hence you can process multiple inputs at once.
 - Several Unity events have already been set up to make it fast and convenient to handle and reuse existing behaviors from within the Unity Editor or via code. 
 
-Disadvantages:
+_Disadvantages:_
 - No elegant degradation: It only supports eye targeting. If eye tracking is not working, you require some additional fallback.
 
-Similar to the _BaseFocusHandler_, the _EyeTrackingTarget_ comes ready with several eye-gaze-specific Unity events that you can conveniently listen to either via the Unity Editor (see example below) or by using AddListener in code.
+Similar to the _BaseFocusHandler_, the _EyeTrackingTarget_ comes ready with several eye-gaze-specific Unity events that you can conveniently listen to either via the Unity Editor (see example below) or by using AddListener in code:
+- OnLookAtStart()
+- WhileLookingAtTarget()
+- OnLookAway()
+- OnDwell()
+- OnSelected(): You can define voice and generic select actions that will trigger this event. See Example #3 below. 
+In the following, we walk you through a few examples for how to use _EyeTrackingTarget_.
 
-Here are a few examples:
-### Example: Holographic gem rotates slowly on look at
-As a first example, let's create a subtle hover feedback: While a user is looking at a holographic gem, itw ill slowly rotate in a constant direction and at a constant speed (in contrast to the rotation example from above). 
 
-1. Create a generic script that includes a public function to rotate the GameObject it is attached to - see for example _RotateWithConstSpeedDir.cs_ where we can tweak the rotation direction and speed in the Unity Editor. 
+---
+### Example #1: Holographic gem rotates slowly when looking at it
+As a first example, let's create a subtle hover feedback: While a user is looking at a holographic gem, it will slowly rotate in a constant direction and at a constant speed (in contrast to the rotation example from above). 
+
+1. Create a generic script that includes a public function to rotate the GameObject it is attached to. 
+Below is an example from _RotateWithConstSpeedDir.cs_ where we can tweak the rotation direction and speed from the Unity Editor. 
+
 ```csharp 
 using UnityEngine;
 
@@ -222,7 +231,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 ![EyeTrackingTarget sample](../Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg)
 
 
-### Attentive Notifications
+
+---
+### Example #2: Eye-based smart notifications
 For example, in [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity), 
 you can find an example for _'smart attentive notifications'_ that react to your eye gaze. 
 These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility.
@@ -256,7 +267,10 @@ Otherwise this can quickly feel extremely overwhelming.
 
 <img src="../../Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg" width="750" alt="MRTK">
 
-### Example: Multimodal Gaze-Supported Target Selection
+
+
+
+### Example #3: Multimodal eye-gaze-supported target selection
 One event provided by the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget), yet not used by the 
 _'Attentive Notifications'_ is the _OnSelected()_ event. 
 Using the _EyeTrackingTarget_, you can specify what triggers the selection which will invoke the _OnSelected()_ event. 
