@@ -1,17 +1,16 @@
 # Accessing eye tracking data in your Unity script
 
-The following assumes that you followed the steps for setting up Eye Tracking in your MRTK scene (see [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)).
-
-To access Eye Tracking data in your MonoBehaviour scripts is easy! Simply use *MixedRealityToolkit.InputSystem.EyeGazeProvider*.
+The following assumes that you followed the steps for setting up eye tracking in your MRTK scene (see [Basic MRTK setup to use eye tracking](EyeTracking_BasicSetup.md)).
+To access eye tracking data in your MonoBehaviour scripts is easy! Simply use *MixedRealityToolkit.InputSystem.EyeGazeProvider*.
 
 ## MixedRealityToolkit.InputSystem.EyeGazeProvider
-While the *MixedRealityToolkit.InputSystem.EyeGazeProvider* provides several helpful variables, the key ones for Eye Tracking input are the following:
+While the *MixedRealityToolkit.InputSystem.EyeGazeProvider* provides several helpful variables, the key ones for eye tracking input are the following:
 
 - **UseEyeTracking**: 
-True if Eye Tracking hardware is available and the user has given permission to use Eye Tracking in the app. 
+True if eye tracking hardware is available and the user has given permission to use eye tracking in the app. 
 
 - **IsEyeGazeValid**: 
-Indicates whether the current Eye Tracking data is valid. 
+Indicates whether the current eye tracking data is valid. 
 It may be invalid due to exceeded timeout (should be robust to the user blinking though) or lack of tracking hardware or permissions.
 
 - **GazeOrigin**: 
@@ -48,6 +47,5 @@ MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeDirection.normalized * defau
 ```
 
 
-
 ---
-[Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
