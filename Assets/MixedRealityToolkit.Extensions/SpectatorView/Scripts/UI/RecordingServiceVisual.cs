@@ -23,6 +23,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
         }
 
         /// <summary>
+        /// Game object that contains the record and preview buttons
+        /// </summary>
+        [Tooltip("Game object that contains the record and preview buttons")]
+        [SerializeField]
+        protected GameObject _buttonParent;
+
+        /// <summary>
         /// Button that toggles starting/stopping recording
         /// </summary>
         [Tooltip("Button that toggles starting/stopping recording")]
@@ -74,8 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
         private IRecordingService _recordingService;
         private float _recordingStartTime = 0;
         private RecordingState state = RecordingState.Ready;
-        private bool _updateUI = false;
+        private bool _updateRecordingUI = false;
         private bool _readyToRecord = false;
+        private bool _isRecordingAvailable = false;
 
         /// <inheritdoc/>
         public event OverlayVisibilityRequest OverlayVisibilityRequest;
@@ -93,9 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
                 Debug.LogError("Error: Recording service not set for RecordingServiceVisual");
                 return;
             }
-
-            _recordButton.onClick.AddListener(OnRecordClick);
-            _previewButton.onClick.AddListener(OnPreviewClick);
         }
 
         protected void Update()
@@ -103,13 +108,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
             if (_recordingService != null &&
                 _previewButton != null)
             {
-                _previewButton.gameObject?.SetActive(_recordingService.IsRecordingAvailable());
+                bool showPreviewButton = _recordingService.IsRecordingAvailable();
+                _previewButton.gameObject.SetActive(showPreviewButton);
             }
 
             if (state == RecordingState.Initializing)
             {
                 // When initializing, we need to always update the ui based on the countdown timer
-                _updateUI = true;
+                _updateRecordingUI = true;
 
                 if (!_readyToRecord)
                 {
@@ -126,13 +132,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
                 }
             }
 
-            if (_updateUI)
+            if (_updateRecordingUI)
             {
-                UpdateUI();
+                UpdateRecordingUI();
             }
         }
 
-        private void OnRecordClick()
+        public void OnRecordClick()
         {
             Debug.Log("Record button clicked");
 
@@ -157,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
             Debug.Log("Initializing recording");
             _recordingService.Initialize();
             state = RecordingState.Initializing;
-            _updateUI = true;
+            _updateRecordingUI = true;
             _recordingStartTime = Time.time;
             _readyToRecord = false;
         }
@@ -170,11 +176,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
             _recordingService.StopRecording();
             _recordingService.Dispose();
             state = RecordingState.Ready;
-            _updateUI = true;
+            _updateRecordingUI = true;
             _readyToRecord = false;
         }
 
-        private void OnPreviewClick()
+        public void OnPreviewClick()
         {
             Debug.Log("Preview button clicked");
 
@@ -195,9 +201,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
             }
         }
 
-        private void UpdateUI()
+        private void UpdateRecordingUI()
         {
-            _updateUI = false;
+            _updateRecordingUI = false;
 
             if (_startRecordingImage != null)
             {
@@ -237,13 +243,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
                 StopRecording();
             }
 
-            gameObject.SetActive(true);
+            _buttonParent.SetActive(true);
         }
 
         /// <inheritdoc/>
         public void Hide()
         {
-            gameObject.SetActive(false);
+            _buttonParent.SetActive(false);
 
             if (_readyToRecord)
             {

@@ -4,6 +4,8 @@
 using UnityEngine;
 
 using System.Runtime.CompilerServices;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording;
+
 [assembly: InternalsVisibleToAttribute("Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor")]
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
@@ -26,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         public Role Role;
 
+        [Header("Networking")]
         /// <summary>
         /// User ip address
         /// </summary>
@@ -33,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private string userIpAddress = "127.0.0.1";
 
+        [Header("State Synchronization")]
         /// <summary>
         /// StateSynchronizationSceneManager MonoBehaviour
         /// </summary>
@@ -54,19 +58,32 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private StateSynchronizationObserver stateSynchronizationObserver = null;
 
-        /// <summary>
-        /// Content to enable in the broadcaster application
-        /// </summary>
-        [Tooltip("Content to enable in the broadcaster application")]
-        [SerializeField]
-        private GameObjectHierarchyBroadcaster broadcastedContent = null;
-
+        [Header("Spatial Alignment")]
         /// <summary>
         /// Parent of the main camera, spatial coordinate system transforms will be applied to this game object.
         /// </summary>
         [Tooltip("Parent of the main camera, spatial coordinate system transforms will be applied to this game object.")]
         [SerializeField]
         public GameObject parentOfMainCamera = null;
+
+        [Header("Recording")]
+        /// <summary>
+        /// Check to enable the mobile recording service.
+        /// </summary>
+        [Tooltip("Check to enable the mobile recording service.")]
+        [SerializeField]
+        public bool enableMobileRecordingService = true;
+
+        /// <summary>
+        /// Prefab for creating a mobile recording service visual.
+        /// </summary>
+        [Tooltip("Prefab for creating a mobile recording service visual.")]
+        [SerializeField]
+        public GameObject mobileRecordingServiceVisualPrefab = null;
+
+        private GameObject mobileRecordingServiceVisual = null;
+        private IRecordingService recordingService = null;
+        private IRecordingServiceVisual recordingServiceVisual = null;
 
         private void Awake()
         {
@@ -75,7 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (stateSynchronizationSceneManager == null ||
                 stateSynchronizationBroadcaster == null ||
                 stateSynchronizationObserver == null ||
-                (broadcastedContent == null && Role == Role.User) ||
                 parentOfMainCamera == null)
             {
                 Debug.LogError("StateSynchronization scene isn't configured correctly");
@@ -97,11 +113,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     }
                     break;
             }
+
+            SetupRecordingService();
         }
 
         private void RunStateSynchronizationAsBroadcaster()
         {
-            broadcastedContent.gameObject.SetActive(true);
             stateSynchronizationBroadcaster.gameObject.SetActive(true);
             stateSynchronizationObserver.gameObject.SetActive(false);
 
@@ -111,12 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void RunStateSynchronizationAsObserver()
         {
-            // All content in the observer scene should be dynamically setup/created, so we hide scene content here
-            if (broadcastedContent != null)
-            {
-                broadcastedContent.gameObject.SetActive(false);
-            }
-
             stateSynchronizationBroadcaster.gameObject.SetActive(false);
             stateSynchronizationObserver.gameObject.SetActive(true);
 
@@ -125,6 +136,46 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             // Make sure the StateSynchronizationSceneManager is enabled prior to connecting the observer
             stateSynchronizationObserver.ConnectTo(userIpAddress);
+        }
+
+        private void SetupRecordingService()
+        {
+#if UNITY_ANDROID || UNITY_IOS
+            if (enableMobileRecordingService &&
+                mobileRecordingServiceVisualPrefab != null)
+            {
+                mobileRecordingServiceVisual = Instantiate(mobileRecordingServiceVisualPrefab);
+
+                if (!TryCreateRecordingService(out recordingService))
+                {
+                    Debug.LogError("Failed to create a recording service for the current platform.");
+                    return;
+                }
+
+                recordingServiceVisual = mobileRecordingServiceVisual.GetComponentInChildren<IRecordingServiceVisual>();
+                if (recordingServiceVisual == null)
+                {
+                    Debug.LogError("Failed to find an IRecordingServiceVisual in the created mobileRecordingServiceVisualPrefab. Note: It's assumed that the IRecordingServiceVisual is enabled by default in the mobileRecordingServiceVisualPrefab.");
+                    return;
+                }
+
+                recordingServiceVisual.SetRecordingService(recordingService);
+            }
+#endif
+        }
+
+        private bool TryCreateRecordingService(out IRecordingService recordingService)
+        {
+#if UNITY_ANDROID
+            recordingService = new AndroidRecordingService();
+            return true;
+#elif UNITY_IOS
+            recordingService = new iOSRecordingService();
+            return true;
+#else
+            recordingService = null;
+            return false;
+#endif
         }
     }
 }

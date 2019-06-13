@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording
         private readonly string _fileNameExt = ".mp4";
         private bool _initialized = false;
         private bool _recording = false;
+        private bool _isRecordingAvailable = false;
 
         /// <inheritdoc />
         public void Dispose()
@@ -129,16 +130,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording
         /// <inheritdoc />
         public bool IsRecordingAvailable()
         {
+            // With the AndroidRecordingService once a recording has been performed, it's always available.
+            if (_isRecordingAvailable)
+            {
+                return _isRecordingAvailable;
+            }
+
             try
             {
                 using (var screenRecorderActivity = GetScreenRecorderActivity())
                 {
-                    return screenRecorderActivity.Call<bool>("IsRecordingAvailable");
+                    _isRecordingAvailable = screenRecorderActivity.Call<bool>("IsRecordingAvailable");
+                    return _isRecordingAvailable;
                 }
             }
             catch (Exception e)
             {
                 Debug.LogError("Failed to query whether recording was available for AndroidRecordingService: " + e.ToString());
+                _isRecordingAvailable = false;
             }
 
             return false;

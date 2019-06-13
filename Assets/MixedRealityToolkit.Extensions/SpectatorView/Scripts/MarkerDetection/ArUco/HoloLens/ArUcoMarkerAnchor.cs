@@ -96,6 +96,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.H
             markerDetector.MarkersUpdated -= MarkerDetector_MarkersUpdated;
 
         }
+#else
+        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            throw new System.PlatformNotSupportedException();
+        }
+
+        public void OnConnected(SocketEndpoint endpoint)
+        {
+            throw new System.PlatformNotSupportedException();
+        }
+
+        public void OnDisconnected(SocketEndpoint endpoint)
+        {
+            throw new System.PlatformNotSupportedException();
+        }
 #endif
     }
 }
