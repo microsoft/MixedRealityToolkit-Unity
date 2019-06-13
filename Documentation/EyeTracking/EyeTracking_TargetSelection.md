@@ -170,6 +170,7 @@ The _BaseEyeFocusHandler_ provides more than only _OnEyeFocusStay_. Here is an o
 ```
 
 
+
 ## Eye-gaze-specific EyeTrackingTarget 
 Finally, we provide you with a solution that let's you treat eye-based input completely independent from other focus pointers via the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script. 
 
@@ -186,13 +187,53 @@ Similar to the _BaseFocusHandler_, the _EyeTrackingTarget_ comes ready with seve
 - WhileLookingAtTarget()
 - OnLookAway()
 - OnDwell()
-- OnSelected(): You can define voice and generic select actions that will trigger this event. See Example #3 below. 
+- OnSelected()
 In the following, we walk you through a few examples for how to use _EyeTrackingTarget_.
 
 
----
-### Example #1: Holographic gem rotates slowly when looking at it
-As a first example, let's create a subtle hover feedback: While a user is looking at a holographic gem, it will slowly rotate in a constant direction and at a constant speed (in contrast to the rotation example from above). 
+
+### Example #1: Eye-based smart notifications
+In [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity), 
+you can find an example for _'smart attentive notifications'_ that react to your eye gaze. 
+These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility.
+While the user is reading the notification, the information keeps getting displayed crisp and clear. 
+After reading it and looking away from the notification, the notification will automatically be dismissed and fades out.
+To achieve all this, there are a few generic behavior scripts that are not specific to eye tracking at all, such as:
+- [FaceUser.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FaceUser)
+- [ChangeSize.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeSize)
+- [BlendOut.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.BlendOut)
+
+The advantage of this approach is that the same scripts can be reused by various events. 
+For example, a hologram may start facing the user based on a voice commands or after pressing a virtual button. 
+To trigger these events, you can simply reference the methods that should be executed in the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) 
+script that is attached to your GameObject.
+For the example of the _'smart attentive notifications'_, the following happens:
+- **OnLookAtStart()**: The notification starts to...
+    - *FaceUser.Engage:* ... turn toward the user.
+    - *ChangeSize.Engage:* ... increase in size _(up to a specified maximum scale)_.
+    - *BlendOut.Engage:* ... starts to blend in more _(after being at a more subtle idle state)_.  
+
+- **OnDwell()**: Informs the _BlendOut_ script that the notification has been looked at sufficiently.
+
+- **OnLookAway()**: The notification starts to...
+    - *FaceUser.Disengage:* ... turn back to its original orientation.
+    - *ChangeSize.Disengage:* ... decrease back to its original size.
+    - *BlendOut.Disengage:* ... starts to blend out - If _OnDwell()_ was triggered, blend out completely and destroy, otherwise back to its idle state.
+
+**Design consideration:**
+The key to an enjoyable experience here is to carefully tune the speed of any of these behaviors to avoid causing discomfort by reacting to the user’s eye gaze too quickly all the time. 
+Otherwise this can quickly feel extremely overwhelming.
+
+<img src="../../Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg" width="750" alt="MRTK">
+
+
+
+
+
+### Example #2: Holographic gem rotates slowly when looking at it
+Similar to Example #1, we can easily create a hover feedback for our holographic gems in [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity) scene that will slowly rotate in a constant direction and at a constant speed (in contrast to the rotation example from above) when being looked at. 
+All you need is to trigger the rotation of the holographic gem from the _EyeTrackingTarget_'s _WhileLookingAtTarget()_ event. 
+Here are a few more details:
 
 1. Create a generic script that includes a public function to rotate the GameObject it is attached to. 
 Below is an example from _RotateWithConstSpeedDir.cs_ where we can tweak the rotation direction and speed from the Unity Editor. 
@@ -226,84 +267,85 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 }
 ```
 
-2. Add the _EyeTrackingTarget_ script to your target GameObject and reference the _RotateTarget()_ function in the UnityEvent trigger as shown the screenshot below:
+2. Add the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script to your target GameObject and reference the _RotateTarget()_ function in the UnityEvent trigger as shown the screenshot below:
 
 ![EyeTrackingTarget sample](../Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg)
 
 
 
----
-### Example #2: Eye-based smart notifications
-For example, in [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity), 
-you can find an example for _'smart attentive notifications'_ that react to your eye gaze. 
-These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility.
-While the user is reading the notification, the information keeps getting displayed crisp and clear. 
-After reading it and looking away from the notification, the notification will automatically be dismissed and fades out.
-To achieve all this, there are a few generic behavior scripts that are not specific to eye tracking at all such as:
-- [FaceUser.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FaceUser)
-- [ChangeSize.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeSize)
-- [BlendOut.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.BlendOut)
 
-The advantage of this approach is that the same scripts can be reused by various events. 
-For example, a hologram may start facing the user based on a voice commands or after pressing virtual button. 
-To trigger these events, you can simply reference the methods that should be executed in the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) 
-script that is attached to your GameObject.
-For the example of the _'smart attentive notifications'_, the following happens:
-- **OnLookAtStart()**: The notification starts to...
-    - *FaceUser.Engage:* ... turn toward the user.
-    - *ChangeSize.Engage:* ... increase in size _(up to a specified maximum scale)_.
-    - *BlendOut.Engage:* ... starts to blend in more _(after being at a more subtle idle state)_.  
-
-- **OnDwell()**: Informs the _BlendOut_ script that the notification has been looked at sufficiently.
-
-- **OnLookAway()**: The notification starts to...
-    - *FaceUser.Disengage:* ... turn back to its original orientation.
-    - *ChangeSize.Disengage:* ... decrease back to its original size.
-    - *BlendOut.Disengage:* ... starts to blend out - If _OnDwell()_ was triggered, blend out completely and destroy, otherwise back to its idle state.
-
-**Design Consideration:**
-The key to an enjoyable experience here is to carefully tune the speed of any of these behaviors to avoid causing discomfort by reacting to the user’s eye gaze too quickly all the time. 
-Otherwise this can quickly feel extremely overwhelming.
-
-<img src="../../Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg" width="750" alt="MRTK">
-
-
-
-
-### Example #3: Multimodal eye-gaze-supported target selection
-One event provided by the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget), yet not used by the 
-_'Attentive Notifications'_ is the _OnSelected()_ event. 
-Using the _EyeTrackingTarget_, you can specify what triggers the selection which will invoke the _OnSelected()_ event. 
-For example, the screenshot below is from 
-[EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity).
-It shows how the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget)
-is set up for one of the gems that explodes when you select it.
-
-<img src="../../Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget.jpg" width="750" alt="MRTK">
-
-The _OnSelected()_ event triggers the method _'TargetSelected'_ in the 
-[HitBehaviorDestroyOnSelect](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehaviorDestroyOnSelect) 
-script attached to the gem GameObject.
+### Example #3: Pop those gems aka _multimodal eye-gaze-supported target selection_
+In the previous example, we have shown how easy it is to detect whether a target is looked at and how to trigger a reaction to that.
+Next, let's make the gems explode using the _OnSelected()_ event from the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget). 
 The interesting part is _how_ the selection is triggered. 
 The [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget)
 allows for quickly assigning different ways to invoke a selection:
 
-- _Pinch gesture_: Setting the 'Select Action' to 'Select' uses the default hand gesture to trigger the selection. This means that the user can simply raise their hand and pinch their thumb and index finger together to confirm the selection.
+- _Pinch gesture_: Setting the 'Select Action' to 'Select' uses the default hand gesture to trigger the selection. 
+This means that the user can simply raise their hand and pinch their thumb and index finger together to confirm the selection.
 
 - Say _"Select"_: Use the default voice command _"Select"_ for selecting a hologram.
 
 - Say _"Explode"_ or _"Pop"_: To use custom voice commands, you need to follow two steps: 
     1. Set up a custom action such as _"DestroyTarget"_
-        - Navigate to _'Input System Profile'_ -> _'Input Actions Profile'_ 
-        - Add new action
+        - Navigate to _MRTK -> Input -> Input Actions_ 
+        - Click "Add a new action"
 
     2. Set up the voice commands that trigger this action such as _"Explode"_ or _"Pop"_ 
-        - Navigate to _'Input System Profile'_ -> _'Speech Commands Profile'_
-        - Add new speech command and associate the action you just created 
-        - Assign a _'KeyCode'_ to allow for triggering the action via a button press
+        - Navigate to _MRTK -> Input -> Speech_ 
+        - Click "Add a new speech command" 
+            - Associate the action you just created 
+            - Assign a _KeyCode_ to allow for triggering the action via a button press
+ 
+![Voice commands EyeTrackingTarget sample](../Images/EyeTracking/mrtk_et_voicecmdsample.jpg)
+
+
+When a gem is selected it will explode, making a sound and disappear. 
+This is handled by the [HitBehaviorDestroyOnSelect](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehaviorDestroyOnSelect) script. 
+You have two options:
+- In the Unity Editor: 
+You could simply link the script that is attached to each of our gem templates to the OnSelected() Unity event in the Unity Editor.
+
+- In code: 
+If you don't want to drag and drop GameObjects around, you can also simply add a event listener directly to your script.  
+Here's an example from how we did it in the [HitBehaviorDestroyOnSelect](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehaviorDestroyOnSelect) script:
+
+```csharp 
+/// <summary>
+/// Destroys the game object when selected and optionally plays a sound or animation when destroyed.
+/// </summary>
+[RequireComponent(typeof(EyeTrackingTarget))] // This helps to ensure that the EyeTrackingTarget is attached
+public class HitBehaviorDestroyOnSelect : MonoBehaviour
+{
+    ...
+    private EyeTrackingTarget myEyeTrackingTarget = null;
+    
+    private void Start()
+    {
+        myEyeTrackingTarget = this.GetComponent<EyeTrackingTarget>();
+        
+        if (myEyeTrackingTarget != null) 
+        {
+            myEyeTrackingTarget.OnSelected.AddListener(TargetSelected);
+        }
+    }
+    
+    ...
+ 
+ ///
+ /// This is called once the EyeTrackingTarget detected a selection. 
+ ///
+ public void TargetSelected()
+        {
+            // Play some animation
+            // Play some audio effect
+            // Handle destroying the target appropriately
+        }   
+}
+```
 <br>
 
-This should get you started in accessing Eye Tracking data in your MRTK Unity app! 
+This should get you started with accessing eye tracking data in your MRTK Unity app! 
 
 ---
 [Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
