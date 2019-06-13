@@ -7,29 +7,23 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    [Serializable]
+    public class AnimatedCursorStateData : AnimatedCursorData<CursorStateEnum> { }
+
+    [Serializable]
+    public class AnimatedCursorContextData : AnimatedCursorData<CursorContextEnum> { }
+
     /// <summary>
     /// Data struct for cursor state information for the Animated Cursor, which leverages the Unity animation system.
     /// This defines a modification to an Unity animation parameter, based on cursor state.
     /// </summary>
     [Serializable]
-    public struct AnimatedCursorData
+    public class AnimatedCursorData<T>
     {
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="name">Name of the animation state for the cursor.</param>
-        /// <param name="cursorState">The enum state for the cursor's animation.</param>
-        /// <param name="parameter">The linked animation parameter to used for the cursor state.</param>
-        public AnimatedCursorData(string name, CursorStateEnum cursorState, AnimatorParameter parameter)
-        {
-            this.name = name;
-            this.cursorState = cursorState;
-            this.parameter = parameter;
-        }
 
         [SerializeField]
         [Tooltip("The name of this specific cursor state.")]
-        private string name;
+        protected string name;
 
         /// <summary>
         /// The name of this specific cursor state.
@@ -38,16 +32,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The Cursor State for this specific animation.")]
-        private CursorStateEnum cursorState;
+        protected T cursorState;
 
         /// <summary>
         /// The Cursor State for this specific animation.
         /// </summary>
-        public CursorStateEnum CursorState => cursorState;
+        public T CursorState => cursorState;
 
         [SerializeField]
         [Tooltip("Animator parameter definition for this cursor state.")]
-        private AnimatorParameter parameter;
+        protected AnimatorParameter parameter;
 
         /// <summary>
         /// Animator parameter definition for this cursor state.

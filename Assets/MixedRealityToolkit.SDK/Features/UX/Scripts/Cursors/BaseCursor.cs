@@ -30,6 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
+        public CursorContextEnum CursorContext { get; set; } = CursorContextEnum.None;
+
         /// <summary>
         /// Surface distance to place the cursor off of the surface at
         /// </summary>
@@ -456,10 +458,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void UpdateCursorState()
         {
             CursorStateEnum newState = CheckCursorState();
-
             if (CursorState != newState)
             {
                 OnCursorStateChange(newState);
+            }
+
+            CursorContextEnum newContext = CheckCursorContext();
+            if (CursorContext != newContext)
+            {
+                OnCursorContextChange(newContext);
             }
         }
 
@@ -492,12 +499,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
+        /// Virtual function for checking cursor context changes.
+        /// </summary>
+        public virtual CursorContextEnum CheckCursorContext()
+        {
+            // Temp implementation
+            return CursorContextEnum.None;
+        }
+
+        /// <summary>
         /// Change the cursor state to the new state.  Override in cursor implementations.
         /// </summary>
         /// <param name="state"></param>
         public virtual void OnCursorStateChange(CursorStateEnum state)
         {
             CursorState = state;
+        }
+
+        /// <summary>
+        /// Change the cursor context state to the new context.  Override in cursor implementations.
+        /// </summary>
+        /// <param name="context"></param>
+        public virtual void OnCursorContextChange(CursorContextEnum context)
+        {
+            CursorContext = context;
         }
     }
 }

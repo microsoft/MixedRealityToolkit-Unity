@@ -208,6 +208,71 @@ MonoBehaviour:
       defaultFloat: 0
       defaultBool: 0
       name: CursorState
+  cursorContextData:
+  - name: None
+    cursorState: -1
+    parameter:
+      parameterType: 3
+      defaultInt: -1
+      defaultFloat: 0
+      defaultBool: 0
+      name: CursorContext
+  - name: MoveEastWest
+    cursorState: 0
+    parameter:
+      parameterType: 3
+      defaultInt: 0
+      defaultFloat: 0
+      defaultBool: 0
+      name: CursorContext
+  - name: MoveNorthSouth
+    cursorState: 1
+    parameter:
+      parameterType: 3
+      defaultInt: 1
+      defaultFloat: 0
+      defaultBool: 0
+      name: CursorContext
+  - name: MoveNorthwestSoutheast
+    cursorState: 2
+    parameter:
+      parameterType: 3
+      defaultInt: 2
+      defaultFloat: 0
+      defaultBool: 0
+      name: CursorContext
+  - name: MoveNortheastSouthwest
+    cursorState: 3
+    parameter:
+      parameterType: 3
+      defaultInt: 3
+      defaultFloat: 0
+      defaultBool: 0
+      name: CursorContext
+  - name: MoveCross
+    cursorState: 4
+    parameter:
+      parameterType: 3
+      defaultInt: 4
+      defaultFloat: 0
+      defaultBool: 0
+      name: CursorContext
+  - name: RotateEastWest
+    cursorState: 5
+    parameter:
+      parameterType: 3
+      defaultInt: 5
+      defaultFloat: 0
+      defaultBool: 0
+      name: CursorContext
+  - name: RotateNorthSouth
+    cursorState: 6
+    parameter:
+      parameterType: 3
+      defaultInt: 6
+      defaultFloat: 0
+      defaultBool: 0
+      name: CursorContext
   inputEnabledParameter:
     parameterType: 4
     defaultInt: 0
