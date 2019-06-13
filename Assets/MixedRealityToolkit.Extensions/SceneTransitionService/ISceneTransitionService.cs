@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.SceneSystem;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -10,6 +12,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
     public interface ISceneTransitionService : IMixedRealityExtensionService
     {
+        /// <summary>
+        /// Called when transition starts.
+        /// This is called at the beginning of a transition, not at the beginning of a scene load.
+        /// For scene load events, use the Scene System.
+        /// </summary>
+        Action OnTransitionStarted { get; set; }
+
+        /// <summary>
+        /// Called when transition ends.
+        /// This is called at the end of a transition, not at the end of a scene load.
+        /// For scene load events, use the Scene System.
+        /// </summary>
+        Action OnTransitionCompleted { get; set; }
+
         /// <summary>
         /// The color to use when fading out.
         /// </summary>
@@ -36,35 +52,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         bool TransitionInProgress { get; }
 
         /// <summary>
-        /// True when await confirmation was requested in TransitionToScene
-        /// and we're ready to transition out
+        /// From 0-1
         /// </summary>
-        bool AwaitingConfirmation { get; }
+        float TransitionProgress { get; }
 
         /// <summary>
-        /// Activates transition prefabs, fades out to color, loads the scene, sets progress value to scene load progress, fades in from color, then deactivates transition prefabs.
+        /// Fades out, enables progress indicator, execute scene operations in order, disables progress indicator, fades back in
         /// </summary>
-        /// <param name="scenesToLoad"></param>
-        /// <param name="scenesToUnload"></param>
-        /// <param name="awaitConfirmationForTransitionOut"></param>
+        /// <param name="sceneOperations">A set of tasks from the Scene System.</param>
+        /// <param name="progressIndicator">If null, default progress indicator prefab will be used (or none if default is disabled in profile)</param>
         /// <returns></returns>
-        Task TransitionToScene(IEnumerable<string> scenesToLoad, IEnumerable<string> scenesToUnload, bool awaitConfirmationForTransitionOut = false);
+        Task DoSceneTransition(IEnumerable<Task> sceneOperations, IProgressIndicator progressIndicator = null);
 
         /// <summary>
-        /// Activates transition prefabs, fades out to color, loads the scene, sets progress value to scene load progress, fades in from color, then deactivates transition prefabs.
+        /// Fades out, enables progress indicator, execute scene operation, disables progress indicator, fades back in
         /// </summary>
-        /// <param name="scenesToLoad"></param>
-        /// <param name="awaitConfirmationForTransitionOut"></param>
+        /// <param name="sceneOperations">A set of tasks from the Scene System.</param>
+        /// <param name="progressIndicator">If null, default progress indicator prefab will be used (or none if default is disabled in profile)</param>
         /// <returns></returns>
-        Task TransitionToScene(IEnumerable<string> scenesToLoad, bool awaitConfirmationForTransitionOut = false);
-
-        /// <summary>
-        /// Activates transition prefabs, fades out to color, loads the scene, sets progress value to scene load progress, fades in from color, then deactivates transition prefabs.
-        /// </summary>
-        /// <param name="sceneToLoad"></param>
-        /// <param name="awaitConfirmationForTransitionOut"></param>
-        /// <returns></returns>
-        Task TransitionToScene(string sceneToLoad, bool awaitConfirmationForTransitionOut = false);
+        Task DoSceneTransition(Task sceneOperation, IProgressIndicator progressIndicator = null);
 
         /// <summary>
         /// If FadeTargets is set to custom, you will need to provide a custom set of cameras for fading using this function PRIOR to calling TransitionToScene.
@@ -89,13 +95,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         Task FadeIn();
 
         /// <summary>
-        /// Creates a progress indicator and returns its main transform. Can be used independently of scene transitions provided no transition is taking place.
+        /// Instantiates the default progress indicator and returns its main transform. Can be used independently of scene transitions provided no transition is taking place.
         /// </summary>
         /// <returns></returns>
-        Transform ShowProgressIndicator();
+        Transform ShowDefaultProgressIndicator();
 
         /// <summary>
-        /// Hides a progress indicator. Task completes when hide animation is done. Can be used independently of scene transitions provided no transition is taking place.
+        /// Hides the default progress indicator. Task completes when hide animation is done. Can be used independently of scene transitions provided no transition is taking place.
         /// </summary>
         Task HideProgressIndicator();
 

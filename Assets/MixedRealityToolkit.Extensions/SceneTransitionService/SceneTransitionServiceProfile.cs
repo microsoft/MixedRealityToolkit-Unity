@@ -10,8 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     [CreateAssetMenu(fileName = "SceneTransitionServiceProfile", menuName = "MixedRealityToolkit/SceneTransitionService Configuration Profile")]
     public class SceneTransitionServiceProfile : BaseMixedRealityProfile
     {
-        public bool UseProgressIndicator => useProgressIndicator;
-        public GameObject ProgressIndicatorPrefab => progressIndicatorPrefab;
+        public bool UseDefaultProgressIndicator => useDefaultProgressIndicator;
+        public GameObject DefaultProgressIndicatorPrefab => defaultProgressIndicatorPrefab;
         public SystemType CameraFaderType => cameraFaderType;
 
         public bool UseFadeColor => useFadeColor;
@@ -22,11 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
         [Header("Progress Indicator Options")]
         [SerializeField]
-        private bool useProgressIndicator = true;
+        private bool useDefaultProgressIndicator = true;
 
         [SerializeField]
         [Tooltip("The prefab used to show progress. Must include a scipt implementing IProgressIndicator.")]
-        private GameObject progressIndicatorPrefab = null;
+        private GameObject defaultProgressIndicatorPrefab = null;
 
         [Header("Fade Options")]
 

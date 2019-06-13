@@ -13,45 +13,65 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone|SupportedPlatforms.MacStandalone|SupportedPlatforms.LinuxStandalone|SupportedPlatforms.WindowsUniversal)]
     public class SceneTransitionService : BaseExtensionService, ISceneTransitionService, IMixedRealityExtensionService
     {
-        public bool TransitionInProgress { get; private set; }
-        public bool AwaitingConfirmation { get; private set; }
-
+        /// <inheritdoc />
         public Color FadeColor { get; set; }
+
+        /// <inheritdoc />
         public float FadeInTime { get; set; }
+
+        /// <inheritdoc />
         public float FadeOutTime { get; set; }
+
+        /// <inheritdoc />
         public CameraFaderTargets FadeTargets { get; set; }
+
+        /// <inheritdoc />
+        public Action OnTransitionStarted { get; set; }
+
+        /// <inheritdoc />
+        public Action OnTransitionCompleted { get; set; }
+
+        /// <inheritdoc />
+        public bool TransitionInProgress { get; set; }
+
+        /// <inheritdoc />
+        public float TransitionProgress { get; set; }
 
         private SceneTransitionServiceProfile sceneTransitionServiceProfile;
         private GameObject progressIndicatorObject;
-        private IProgressIndicator progressIndicator;
+        private IProgressIndicator defaultProgressIndicator;
         private ICameraFader cameraFader;
         private List<Camera> customFadeTargetCameras = new List<Camera>();
 
         public SceneTransitionService(IMixedRealityServiceRegistrar registrar,  string name,  uint priority,  BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) 
 		{
             sceneTransitionServiceProfile = (SceneTransitionServiceProfile)profile;
+        }
 
+        #region public methods
+
+        /// <inheritdoc />
+        public override void Initialize()
+        {
             FadeColor = sceneTransitionServiceProfile.FadeColor;
             FadeInTime = sceneTransitionServiceProfile.FadeInTime;
             FadeOutTime = sceneTransitionServiceProfile.FadeOutTime;
             FadeTargets = sceneTransitionServiceProfile.FadeTargets;
         }
 
-        #region public methods
-
-        public override void Initialize()
+        /// <inheritdoc />
+        public override void Enable()
         {
-         
+            if (!MixedRealityToolkit.IsSceneSystemEnabled)
+            {
+                Debug.LogError("This extension requires an active IMixedRealitySceneService.");
+            }
         }
-        
-        public override void Update()
-        {
 
-        }
-        
+        /// <inheritdoc />
         public override void Destroy()
         {
-            CleanUpProgressIndicator();
+            CleanUpDefaultProgressIndicator();
             CleanUpCameraFader();
         }
 
@@ -59,174 +79,53 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
         #region ISceneTransitionService implementation
 
-        public Task TransitionToScene(string sceneToLoad, bool awaitConfirmationForTransitionOut = false)
+        /// <inheritdoc />
+        public async Task DoSceneTransition(Task sceneOperation, IProgressIndicator progressIndicator = null)
         {
-            return TransitionToScene(new string[] { sceneToLoad }, new string[] { }, awaitConfirmationForTransitionOut);
+            await DoSceneTransition(new Task[] { sceneOperation }, progressIndicator);
         }
 
-        public Task TransitionToScene(IEnumerable<string> scenesToLoad, bool awaitConfirmationForTransitionOut = false)
-        {
-            return TransitionToScene(scenesToLoad, new string[] { }, awaitConfirmationForTransitionOut);
-        }
-
-        public async Task TransitionToScene(IEnumerable<string> scenesToLoad, IEnumerable<string> scenesToUnload = null, bool awaitConfirmationForTransitionOut = false)
+        /// <inheritdoc />
+        public async Task DoSceneTransition(IEnumerable<Task> sceneOperations, IProgressIndicator progressIndicator = null)
         {
             if (TransitionInProgress)
             {
-                Debug.LogError ("Attempting to transition to scene when transition is already in progress.");
-                return;
+                throw new Exception("Attempting to do a transition while one is already in progress.");
             }
+
+            #region Transition begin
 
             TransitionInProgress = true;
-            AwaitingConfirmation = false;
+            OnTransitionStarted?.Invoke();
 
-            CreateProgressIndicator();
-            CreateCameraFader();
+            if (progressIndicator == null && sceneTransitionServiceProfile.UseDefaultProgressIndicator)
+            {   // If we haven't been given a progress indicator, and we're supposed to use a default
+                // find / create the default progress indicator
+                CreateDefaultProgressIndicator();
+                progressIndicator = defaultProgressIndicator;
+            }
 
             if (sceneTransitionServiceProfile.UseFadeColor)
-            {   // Fade out before proceeding
-                await cameraFader.FadeOutAsync(FadeOutTime, FadeColor, GatherFadeTargetCameras());
-            }
-
-            if (sceneTransitionServiceProfile.UseProgressIndicator)
-            {   // Activate the progress indicator and wait for it to spin up
-                await progressIndicator.OpenAsync();
-            }
-                        
-            // Validate our scenes
-            List<int> validScenesToUnload = new List<int>();
-            List<int> validScenesToLoad = new List<int>();
-
-            foreach (string sceneName in scenesToUnload)
             {
-                // See if scene exists
-                Scene scene;
-                int sceneIndex;
-                if (!FindScene(sceneName, out scene, out sceneIndex))
-                {
-                    Debug.LogError("Can't unload invalid scene " + sceneName);
-                    TransitionInProgress = false;
-                    return;
-                }
-                else
-                {
-                    validScenesToUnload.Add(sceneIndex);
-                }
+                List<Camera> targetCameras = GatherFadeTargetCameras();
+                await cameraFader.FadeOutAsync(FadeOutTime, FadeColor, targetCameras);
             }
 
-            foreach (string sceneName in scenesToLoad)
+            #endregion
+
+            #region Task execution
+
+            foreach (Task sceneOperation in sceneOperations)
             {
-                // See if scene exists
-                Scene scene;
-                int sceneIndex;
-                if (!FindScene(sceneName, out scene, out sceneIndex))
-                {
-                    Debug.LogError("Can't load invalid scene " + sceneName);
-                    TransitionInProgress = false;
-                    return;
-                }
-                else
-                {
-                    validScenesToLoad.Add(sceneIndex);
-                }
+                await Task.Run(() => sceneOperation);
             }
 
-            int totalSceneOps = validScenesToUnload.Count + validScenesToLoad.Count;
-            if (totalSceneOps < 1)
-            {
-                Debug.LogWarning("No valid scenes found to load or unload.");
-            }
+            #endregion
 
-            float totalProgress = 0;
+            #region Transition end
 
-            // Unload our scenes
-            if (validScenesToUnload.Count > 0)
-            {
-                List<AsyncOperation> unloadSceneOps = new List<AsyncOperation>();
-                foreach (int sceneIndex in validScenesToUnload)
-                {
-                    Scene scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
-                    if (!scene.isLoaded)
-                        continue;
-
-                    AsyncOperation sceneOp = SceneManager.UnloadSceneAsync(sceneIndex);
-                    unloadSceneOps.Add(sceneOp);
-                }
-
-                // Now wait for all async operations to complete
-                bool completedAllSceneOps = false;
-                while (!completedAllSceneOps)
-                {
-                    completedAllSceneOps = true;
-
-                    totalProgress = 0;
-                    for (int i = 0; i < unloadSceneOps.Count; i++)
-                    {
-                        totalProgress += unloadSceneOps[i].progress;
-                        completedAllSceneOps &= unloadSceneOps[i].isDone;
-                    }
-                    totalProgress = Mathf.Clamp01(totalProgress / totalSceneOps);
-                    progressIndicator.Progress = totalProgress;
-                    await Task.Yield();
-                }
-            }
-
-            float totalProgressBeforeLoad = totalProgress;
-
-            // Wait a moment for Unity's scenes to finish unloading
-            await Task.Delay(100);
-
-            // Load our scenes
-            if (validScenesToLoad.Count > 0)
-            {
-                List<AsyncOperation> loadSceneOps = new List<AsyncOperation>();
-                foreach (int sceneIndex in validScenesToLoad)
-                {
-                    Scene scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
-                    if (scene.isLoaded)
-                        continue;
-
-                    AsyncOperation sceneOp = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
-                    sceneOp.allowSceneActivation = true;
-                    loadSceneOps.Add(sceneOp);
-                }
-
-                // Now wait for all async operations to complete
-                bool completedAllSceneOps = false;
-                while (!completedAllSceneOps)
-                {
-                    completedAllSceneOps = true;
-
-                    totalProgress = 0;
-                    for (int i = 0; i < loadSceneOps.Count; i++)
-                    {
-                        totalProgress += loadSceneOps[i].progress;
-                        completedAllSceneOps &= loadSceneOps[i].isDone;
-                    }
-                    totalProgress = Mathf.Clamp01(totalProgressBeforeLoad + (totalProgress / totalSceneOps));
-                    progressIndicator.Progress = totalProgress;
-                    await Task.Yield();
-                }
-            }
-
-            // Wait a moment for Unity's scenes to finish loading
-            await Task.Delay(100);
-
-            progressIndicator.Progress = 1;
-
-            // If the user has requested that we wait before exiting the transition
-            // don't proceed until we receive confirmation
-            if (awaitConfirmationForTransitionOut)
-            {
-                AwaitingConfirmation = true;
-                while (AwaitingConfirmation)
-                {
-                    await Task.Yield();
-                }
-            }
-
-            // If we used the progress indicator, close it
-            if (progressIndicator.State != ProgressIndicatorState.Closed)
+            // If we used a progress indicator, close it
+            if (progressIndicator != null)
             {
                 await progressIndicator.CloseAsync();
             }
@@ -238,33 +137,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 await cameraFader.FadeInAsync(FadeInTime);
             }
 
-            // We're done!
             TransitionInProgress = false;
+            OnTransitionCompleted?.Invoke();
+
+            #endregion
         }
 
+        /// <inheritdoc />
         public void SetCustomFadeTargetCameras(IEnumerable<Camera> customFadeTargetCameras)
         {
+            this.customFadeTargetCameras.Clear();
             this.customFadeTargetCameras.AddRange(customFadeTargetCameras);
         }
 
-        public void ProceedWithTransition()
-        {
-            if (!TransitionInProgress)
-            {
-                Debug.LogWarning("No transition in progress. This action will have no effect.");
-            }
-
-            AwaitingConfirmation = false;
-        }
-
+        /// <inheritdoc />
         public async Task FadeOut()
         {
-            if (TransitionInProgress)
-            {
-                Debug.LogWarning("A scene transition is already in progress. This would interrupt that transition. Taking no action.");
-                return;
-            }
-
             CreateCameraFader();
 
             switch (cameraFader.State)
@@ -292,14 +180,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             await cameraFader.FadeOutAsync(FadeInTime, FadeColor, GatherFadeTargetCameras());
         }
 
+        /// <inheritdoc />
         public async Task FadeIn()
         {
-            if (TransitionInProgress)
-            {
-                Debug.LogWarning("A scene transition is already in progress. This would interrupt that transition. Taking no action.");
-                return;
-            }
-
             CreateCameraFader();
 
             switch (cameraFader.State)
@@ -328,17 +211,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             await cameraFader.FadeInAsync(FadeInTime);
         }
 
-        public Transform ShowProgressIndicator()
+        /// <inheritdoc />
+        public Transform ShowDefaultProgressIndicator()
         {
-            if (TransitionInProgress)
-            {
-                Debug.LogWarning("A scene transition is already in progress. This would interrupt that transition. Taking no action.");
-                return null;
-            }
+            CreateDefaultProgressIndicator();
 
-            CreateProgressIndicator();
-
-            switch (progressIndicator.State)
+            switch (defaultProgressIndicator.State)
             {
                 case ProgressIndicatorState.Open:
                 case ProgressIndicatorState.Opening:
@@ -347,19 +225,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
                 case ProgressIndicatorState.Closed:
                     // Open it now - don't await result, we want to return the transform promptly 
-                    progressIndicator.OpenAsync();
+                    defaultProgressIndicator.OpenAsync();
                     break;
 
                 case ProgressIndicatorState.Closing:
                 default:
                     // Open it now - don't await result, we want to return the transform promptly
-                    progressIndicator.OpenAsync();
+                    defaultProgressIndicator.OpenAsync();
                     break;
             }
 
-            return progressIndicator.MainTransform;
+            return defaultProgressIndicator.MainTransform;
         }
 
+        /// <inheritdoc />
         public async Task HideProgressIndicator()
         {
             if (TransitionInProgress)
@@ -368,57 +247,59 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 return;
             }
 
-            if (progressIndicator == null)
+            if (defaultProgressIndicator == null)
             {
                 // No need to do anything.
                 return;
             }
 
-            switch (progressIndicator.State)
+            switch (defaultProgressIndicator.State)
             {
                 case ProgressIndicatorState.Closed:
                     // No need to do anything.
                     return;
 
                 case ProgressIndicatorState.Closing:
-                    while (progressIndicator.State == ProgressIndicatorState.Closing)
+                    while (defaultProgressIndicator.State == ProgressIndicatorState.Closing)
                     {   // Wait for progress indicator to be done closing
                         await Task.Yield();
                     }
                     return;
 
                 case ProgressIndicatorState.Open:
-                    await progressIndicator.CloseAsync();
+                    await defaultProgressIndicator.CloseAsync();
                     return;
 
                 case ProgressIndicatorState.Opening:
-                    while (progressIndicator.State == ProgressIndicatorState.Opening)
+                    while (defaultProgressIndicator.State == ProgressIndicatorState.Opening)
                     {   // Wait for it to be done opening, then close it
                         await Task.Yield();
                     }
-                    await progressIndicator.CloseAsync();
+                    await defaultProgressIndicator.CloseAsync();
                     return;
             }
         }
 
+        /// <inheritdoc />
         public void SetProgressMessage(string message)
         {
-            if (progressIndicator == null)
+            if (defaultProgressIndicator == null)
             {
                 Debug.LogWarning("Progress Indicator has not been launched. Taking no action.");
             }
 
-            progressIndicator.Message = message;
+            defaultProgressIndicator.Message = message;
         }
 
+        /// <inheritdoc />
         public void SetProgressValue(float progress)
         {
-            if (progressIndicator == null)
+            if (defaultProgressIndicator == null)
             {
                 Debug.LogWarning("Progress Indicator has not been launched. Taking no action.");
             }
 
-            progressIndicator.Progress = progress;
+            defaultProgressIndicator.Progress = progress;
         }
 
         #endregion
@@ -471,30 +352,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             return targetCameras;
         }
 
-        private void CreateProgressIndicator()
+        private void CreateDefaultProgressIndicator()
         {
-            if (progressIndicatorObject != null)
+            if (defaultProgressIndicator != null)
+            {
                 return;
+            }
 
-            // Do service initialization here.
-            if (sceneTransitionServiceProfile.ProgressIndicatorPrefab == null)
+            if (sceneTransitionServiceProfile.DefaultProgressIndicatorPrefab == null)
             {
                 throw new Exception("No progress indicator prefab found in profile.");
             }
 
-            progressIndicatorObject = GameObject.Instantiate(sceneTransitionServiceProfile.ProgressIndicatorPrefab);
-            progressIndicator = (IProgressIndicator)progressIndicatorObject.GetComponent(typeof(IProgressIndicator));
+            progressIndicatorObject = GameObject.Instantiate(sceneTransitionServiceProfile.DefaultProgressIndicatorPrefab);
+            defaultProgressIndicator = (IProgressIndicator)progressIndicatorObject.GetComponent(typeof(IProgressIndicator));
 
-            if (progressIndicator == null)
+            if (defaultProgressIndicator == null)
             {
                 throw new Exception("Progress indicator prefab doesn't have a script implementing IProgressIndicator.");
             }
-
-            // Ensure progress indicator doesn't get destroyed
-            progressIndicatorObject.transform.DontDestroyOnLoad();
         }
 
-        private void CleanUpProgressIndicator()
+        private void CleanUpDefaultProgressIndicator()
         {
             if (progressIndicatorObject != null)
             {
@@ -512,7 +391,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         private void CreateCameraFader()
         {
             if (cameraFader != null)
+            {
                 return;
+            }
 
             cameraFader = (ICameraFader)Activator.CreateInstance(sceneTransitionServiceProfile.CameraFaderType.Type);
 
