@@ -23,12 +23,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         // Lists for handlers which are added/removed during event dispatching.
-        // Lists are processed independently, so 
+        // Game objects and handlers are processed independently, so be kept in separate lists.
         private List<Tuple<Action, Type, IEventSystemHandler>> postponedActions = new List<Tuple<Action, Type, IEventSystemHandler>>();
         private List<Tuple<Action, GameObject>> postponedObjectActions = new List<Tuple<Action, GameObject>>();
 
         /// <inheritdoc />
-        public Dictionary<Type, HashSet<IEventSystemHandler>> EventHandlersByType { get; } = new Dictionary<Type, HashSet<IEventSystemHandler>>();
+        public Dictionary<Type, List<IEventSystemHandler>> EventHandlersByType { get; } = new Dictionary<Type, List<IEventSystemHandler>>();
 
     #region IMixedRealityEventSystem Implementation
 
@@ -51,11 +51,12 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // Send events to all handlers registered via RegisterHandler API.
-            HashSet<IEventSystemHandler> handlers;
+            List<IEventSystemHandler> handlers;
             if (EventHandlersByType.TryGetValue(typeof(T), out handlers))
             {
-                foreach (IEventSystemHandler handler in handlers)
+                for (int i = handlers.Count - 1; i >= 0; i--)
                 {
+                    var handler = handlers[i];
                     // If handler is a unity component, need to make sure, that it didn't receive an event
                     // when we were sending it to Game objects above.
                     // Do that by checking if its parent is registered in EventListeners.
@@ -71,23 +72,23 @@ namespace Microsoft.MixedReality.Toolkit
 
             eventExecutionDepth--;
 
-            if(eventExecutionDepth == 0 && postponedActions.Count > 0)
+            if (eventExecutionDepth == 0 && postponedActions.Count > 0)
             {
-                foreach(var handler in postponedActions)
+                foreach (var handler in postponedActions)
                 {
                     if (handler.Item1 == Action.Add)
                     {
                         AddHandlerToMap(handler.Item2, handler.Item3);
                     }
-                    else if(handler.Item1 == Action.Remove)
+                    else if (handler.Item1 == Action.Remove)
                     {
                         RemoveHandlerFromMap(handler.Item2, handler.Item3);
                     }
                 }
 
-                foreach(var obj in postponedObjectActions)
+                foreach (var obj in postponedObjectActions)
                 {
-                    if(obj.Item1 == Action.Add)
+                    if (obj.Item1 == Action.Add)
                     {
                         // Can call it here, because guaranteed that eventExecutionDepth is 0
                         Register(obj.Item2);
@@ -189,11 +190,11 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void AddHandlerToMap(Type handlerType, IEventSystemHandler handler)
         {
-            HashSet<IEventSystemHandler> handlers;
+            List<IEventSystemHandler> handlers;
 
             if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
-                handlers = new HashSet<IEventSystemHandler> { handler };
+                handlers = new List<IEventSystemHandler> { handler };
                 EventHandlersByType.Add(handlerType, handlers);
                 return;
             }
@@ -207,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         private void RemoveHandlerFromMap(Type handlerType, IEventSystemHandler handler)
         {
-            HashSet<IEventSystemHandler> handlers;
+            List<IEventSystemHandler> handlers;
 
             if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
