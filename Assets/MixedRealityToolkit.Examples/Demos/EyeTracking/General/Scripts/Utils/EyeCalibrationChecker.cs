@@ -16,8 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         private bool editorTestUserIsCalibrated = true;
 
-        public UnityEvent OnEyeCalibrationDetected;
-        public UnityEvent OnNoEyeCalibrationDetected;
+        [SerializeField]
+        private UnityEvent OnEyeCalibrationDetected;
+
+        [SerializeField]
+        private UnityEvent OnNoEyeCalibrationDetected;
 
         private bool? prevCalibrationStatus = null;        
         private IMixedRealityInputSystem inputSystem = null;
@@ -40,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         // Update is called once per frame
         void Update()
         {
+            // Get the latest calibration state from the EyeGazeProvider
             bool? calibrationStatus = InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
 
 #if UNITY_EDITOR
@@ -51,10 +55,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 {
                     if (calibrationStatus == false)
                     {
+                        // Invoke event about the calibration status changing from true -> false
                         OnNoEyeCalibrationDetected.Invoke();
                     }
                     else
                     {
+                        // Invoke event about the calibration status changing from false -> true
                         OnEyeCalibrationDetected.Invoke();
                     }
                     prevCalibrationStatus = calibrationStatus;
