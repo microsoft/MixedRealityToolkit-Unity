@@ -191,8 +191,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Reset the RaycastCamera for projecting (used in calculating deltas)
             Debug.Assert(pointer.Rays != null && pointer.Rays.Length > 0);
-            RaycastCamera.transform.position = pointer.Rays[0].Origin;
-            RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+
+            if (pointer.Controller != null && pointer.Controller.IsRotationAvailable)
+            {
+                RaycastCamera.transform.position = pointer.Rays[0].Origin;
+                RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+            }
+            else
+            {
+                // The pointer.Controller does not provide rotation, for example on HoloLens 1 hands.
+                // In this case pointer.Rays[0].Origin will be the head position, but we want the 
+                // hand to do drag operations, not the head.
+                // pointer.Position gives the position of the hand, use that to compute drag deltas.
+                RaycastCamera.transform.position = pointer.Position;
+                RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+            }
+
 
             // Populate eventDataLeft
             pointerData.eventDataLeft.Reset();
