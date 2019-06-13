@@ -1,6 +1,6 @@
 ![MRTK](../Images/EyeTracking/mrtk_et_targetselect.png)
 
-# Eye-Supported Target Selection
+# Eye-supported target selection
 This page discusses different options for accessing eye gaze data and eye gaze specific events to select targets in MRTK. 
 Eye tracking allows for fast and effortless target selections using a combination of information about what a user is looking at with additional inputs such as _hand tracking_ and _voice commands_:
 - Look & Pinch (i.e., hold up your hand in front of you and pinch your thumb and index finger together)
@@ -102,7 +102,7 @@ _MRTK Configuration Profile_ -> _Input_ -> _Input Actions_.
     }
 ```
 
-### Use Eye-Gaze-Specific _BaseEyeFocusHandler_
+### Eye-gaze-specific BaseEyeFocusHandler
 Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus input if it is _eye gaze_ and it is currently the primary input pointer.
 For this purpose, you would use the _BaseEyeFocusHandler_ which is specific to eye tracking and which derives from 
 the _FocusHandler_.
@@ -192,7 +192,7 @@ In the following, we walk you through a few examples for how to use _EyeTracking
 
 
 
-### Example #1: Eye-based smart notifications
+### Example #1: Eye-supported smart notifications
 In [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity), 
 you can find an example for _'smart attentive notifications'_ that react to your eye gaze. 
 These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility.
