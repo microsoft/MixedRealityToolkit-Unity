@@ -8,6 +8,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class SpherePointerVisual : MonoBehaviour
     {
+        public Transform TetherEndPoint => tetherEndPoint;
+
+        public bool TetherVisualsEnabled => tetherVisualsEnabled;
+
         [Tooltip("The pointer these visuals decorate")]
         private SpherePointer pointer;
 
@@ -24,6 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Assumption: Tether line is a child of the visuals!
         [SerializeField]
         private BaseMixedRealityLineDataProvider tetherLine = null;
+
+        private bool tetherVisualsEnabled;
 
         public void OnValidate()
         {
@@ -46,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void Start()
         {
             // put it at root of scene
-            visualsRoot.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            MixedRealityPlayspace.AddChild(visualsRoot.transform);
             visualsRoot.gameObject.name = $"{gameObject.name}_NearTetherVisualsRoot";
         }
 
@@ -76,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void Update()
         {
-            bool tetherVisualsEnabled = false;
+            tetherVisualsEnabled = false;
             if (pointer.IsFocusLocked && pointer.IsTargetPositionLockedOnFocusLock && pointer.Result != null)
             {
                 NearInteractionGrabbable grabbedObject = GetGrabbedObject();
@@ -99,7 +105,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private NearInteractionGrabbable GetGrabbedObject()
         {
-            return pointer.Result?.Details.Object?.GetComponent<NearInteractionGrabbable>();
+            if (pointer.Result?.Details.Object != null)
+            {
+                return pointer.Result.Details.Object.GetComponent<NearInteractionGrabbable>();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

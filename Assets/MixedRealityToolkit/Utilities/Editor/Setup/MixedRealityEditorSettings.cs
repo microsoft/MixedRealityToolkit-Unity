@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
@@ -22,27 +24,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const string IgnoreKey = "_MixedRealityToolkit_Editor_IgnoreSettingsPrompts";
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
 
-        private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
-
+        [Obsolete("Use the 'MixedRealityToolkitFiles' APIs.")]
         public static string MixedRealityToolkit_AbsoluteFolderPath
         {
             get
             {
-                if (string.IsNullOrEmpty(mixedRealityToolkit_RelativeFolderPath))
+                if (MixedRealityToolkitFiles.AreFoldersAvailable)
                 {
-                    if (!FindDirectory(Application.dataPath, "MixedRealityToolkit", out mixedRealityToolkit_RelativeFolderPath))
+#if UNITY_EDITOR
+                    if (MixedRealityToolkitFiles.MRTKDirectories.Count() > 1)
                     {
-                        Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
+                        Debug.LogError($"A deprecated API '{nameof(MixedRealityEditorSettings)}.{nameof(MixedRealityToolkit_AbsoluteFolderPath)}' " +
+                            "is being used, and there are more than one MRTK directory in the project; most likely due to ingestion as NuGet. " +
+                            $"Update to use the '{nameof(MixedRealityToolkitFiles)}' APIs.");
                     }
+#endif
+
+                    return MixedRealityToolkitFiles.MRTKDirectories.First();
                 }
 
-                return mixedRealityToolkit_RelativeFolderPath;
+                Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
+                return null;
             }
         }
 
+        [Obsolete("Use the 'MixedRealityToolkitFiles' APIs.")]
         public static string MixedRealityToolkit_RelativeFolderPath
         {
-            get { return MakePathRelativeToProject(MixedRealityToolkit_AbsoluteFolderPath); }
+            get { return MixedRealityToolkitFiles.GetAssetDatabasePath(MixedRealityToolkit_AbsoluteFolderPath); }
         }
 
         static MixedRealityEditorSettings()
@@ -68,13 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     message += "- Force Text Serialization\n";
                 }
 
-                var il2Cpp = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) == ScriptingImplementation.IL2CPP;
-
-                if (!il2Cpp)
-                {
-                    message += "- Change the Scripting Backend to use IL2CPP\n";
-                }
-
                 var visibleMetaFiles = EditorSettings.externalVersionControl.Equals("Visible Meta Files");
 
                 if (!visibleMetaFiles)
@@ -89,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 message += "\nWould you like to make this change?";
 
-                if (!forceTextSerialization || !il2Cpp || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
+                if (!forceTextSerialization || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
                 {
                     var choice = EditorUtility.DisplayDialogComplex("Apply Mixed Reality Toolkit Default Settings?", message, "Apply", "Ignore", "Later");
 
@@ -98,7 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         case 0:
                             EditorSettings.serializationMode = SerializationMode.ForceText;
                             EditorSettings.externalVersionControl = "Visible Meta Files";
-                            PlayerSettings.SetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup, ScriptingImplementation.IL2CPP);
                             PlayerSettings.virtualRealitySupported = true;
                             refresh = true;
                             break;
@@ -131,8 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         /// <summary>
         /// Returns true the first time it is called within this editor session, and false for all subsequent calls.
-        /// <remarks>A new session is also true if the editor build target group is changed.</remarks>
         /// </summary>
+        /// <remarks>A new session is also true if the editor build target group is changed.</remarks>
         private static bool IsNewSession
         {
             get
@@ -159,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             string absolutePath;
             if (FindDirectory(directoryPathToSearch, directoryName, out absolutePath))
             {
-                path = MakePathRelativeToProject(absolutePath);
+                path = MixedRealityToolkitFiles.GetAssetDatabasePath(absolutePath);
                 return true;
             }
 
@@ -202,22 +203,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return false;
         }
 
-        private static string MakePathRelativeToProject(string absolutePath)
-        {
-            return absolutePath.Replace(
-                Application.dataPath + Path.DirectorySeparatorChar,
-                "Assets" + Path.DirectorySeparatorChar);
-        }
+        [Obsolete("Use MixedRealityToolkitFiles.GetAssetDatabasePath instead.")]
+        internal static string MakePathRelativeToProject(string absolutePath) => MixedRealityToolkitFiles.GetAssetDatabasePath(absolutePath);
 
         private static void SetIconTheme()
         {
-            if (string.IsNullOrEmpty(MixedRealityToolkit_AbsoluteFolderPath))
+            if (!MixedRealityToolkitFiles.AreFoldersAvailable)
             {
                 Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
                 return;
             }
 
-            var icons = Directory.GetFiles(MixedRealityToolkit_AbsoluteFolderPath + "/StandardAssets/Icons");
+            var icons = MixedRealityToolkitFiles.GetFiles("StandardAssets/Icons");
             var icon = new Texture2D(2, 2);
             var iconColor = new Color32(4, 165, 240, 255);
 

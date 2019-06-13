@@ -46,6 +46,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [HideInInspector]
         private LineRenderer lineRenderer = null;
 
+        [Header("Texture Tiling")]
+        [SerializeField]
+        [Tooltip("Tiles the material on the line renderer by world length. Use if you want the texture size to remain constant regardless of a line's length.")]
+        private bool tileMaterialByWorldLength = false;
+        private MaterialPropertyBlock tilingPropertyBlock;
+        private Vector4 tilingPropertyVector = Vector4.one;
+
+        [SerializeField]
+        private float tileMaterialScale = 1f;
+
         private Vector3[] positions;
 
         private void OnEnable()
@@ -125,6 +135,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             // Set positions
             lineRenderer.positionCount = positions.Length;
             lineRenderer.SetPositions(positions);
+
+            // Update texture tiling, if applicable
+            if (tileMaterialByWorldLength)
+            {
+                if (tilingPropertyBlock == null)
+                {
+                    tilingPropertyBlock = new MaterialPropertyBlock();
+                }
+
+                tilingPropertyVector.x = lineDataSource.UnClampedWorldLength * tileMaterialScale;
+                tilingPropertyBlock.SetVector("_MainTex_ST", tilingPropertyVector);
+                lineRenderer.SetPropertyBlock(tilingPropertyBlock);
+            }
+            else
+            {
+                if (tilingPropertyBlock != null)
+                {
+                    tilingPropertyBlock.Clear();
+                    lineRenderer.SetPropertyBlock(tilingPropertyBlock);
+                }
+            }
         }
     }
 }

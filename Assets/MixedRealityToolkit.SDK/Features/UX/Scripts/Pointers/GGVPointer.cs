@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (pointerId == 0)
                 {
-                    pointerId = MixedRealityToolkit.InputSystem.FocusProvider.GenerateNewPointerId();
+                    pointerId = InputSystem.FocusProvider.GenerateNewPointerId();
                 }
 
                 return pointerId;
@@ -162,13 +162,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void OnPostSceneQuery()
         {
-
+            if (isSelectPressed && IsInteractionEnabled)
+            {
+                InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
+            }
         }
 
         public void OnPreSceneQuery()
         {
             Vector3 newGazeOrigin = gazeProvider.GazePointer.Rays[0].Origin;
-            Vector3 endPoint = newGazeOrigin + (gazeProvider.GazePointer.Rays[0].Direction * MixedRealityToolkit.InputSystem.FocusProvider.GlobalPointingExtent);
+            Vector3 endPoint = newGazeOrigin + (gazeProvider.GazePointer.Rays[0].Direction * InputSystem.FocusProvider.GlobalPointingExtent);
             Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
         }
 
@@ -213,8 +216,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             c.IsPointerDown = false;
                         }
-                        MixedRealityToolkit.InputSystem.RaisePointerClicked(this, selectAction, 0, Controller.ControllerHandedness);
-                        MixedRealityToolkit.InputSystem.RaisePointerUp(this, selectAction, Controller.ControllerHandedness);
+                        InputSystem.RaisePointerClicked(this, selectAction, 0, Controller.ControllerHandedness);
+                        InputSystem.RaisePointerUp(this, selectAction, Controller.ControllerHandedness);
                     }
                 }
             }
@@ -236,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             c.IsPointerDown = true;
                         }
-                        MixedRealityToolkit.InputSystem.RaisePointerDown(this, selectAction, Controller.ControllerHandedness);
+                        InputSystem.RaisePointerDown(this, selectAction, Controller.ControllerHandedness);
                     }
                 }
             }
@@ -244,14 +247,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion  IMixedRealityInputHandler Implementation
 
-        protected override void Start()
+        protected override void OnEnable()
         {
-            base.Start();
-            this.gazeProvider = MixedRealityToolkit.InputSystem.GazeProvider as GazeProvider;
+            base.OnEnable();
+            this.gazeProvider = InputSystem.GazeProvider as GazeProvider;
             BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
             if (c != null)
             {
                 c.VisibleSourcesCount++;
+            }
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            if (gazeProvider != null)
+            {
+                BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
+                if (c != null)
+                {
+                    c.VisibleSourcesCount--;
+                }
             }
         }
 
@@ -297,16 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (isSelectPressed)
                 {
                     // Raise OnInputUp if pointer is lost while select is pressed
-                    MixedRealityToolkit.InputSystem.RaisePointerUp(this, selectAction, lastControllerHandedness);
-                }
-
-                if (gazeProvider != null)
-                {
-                    BaseCursor c = gazeProvider.GazePointer as BaseCursor;
-                    if (c != null)
-                    {
-                        c.VisibleSourcesCount--;
-                    }
+                    InputSystem.RaisePointerUp(this, selectAction, lastControllerHandedness);
                 }
                 
                 // Destroy the pointer since nobody else is destroying us

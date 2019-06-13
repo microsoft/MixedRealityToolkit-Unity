@@ -10,40 +10,37 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomEditor(typeof(MixedRealityCameraProfile))]
     public class MixedRealityCameraProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private static bool showGeneralProperties = true;
-        private SerializedProperty isCameraPersistent;
-
-        private static bool showOpaqueProperties = true;
         private SerializedProperty opaqueNearClip;
+        private SerializedProperty opaqueFarClip;
         private SerializedProperty opaqueClearFlags;
         private SerializedProperty opaqueBackgroundColor;
         private SerializedProperty opaqueQualityLevel;
 
-        private static bool showTransparentProperties = true;
         private SerializedProperty transparentNearClip;
+        private SerializedProperty transparentFarClip;
         private SerializedProperty transparentClearFlags;
         private SerializedProperty transparentBackgroundColor;
         private SerializedProperty holoLensQualityLevel;
 
         private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
+        private readonly GUIContent farClipTitle = new GUIContent("Far Clip");
         private readonly GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
+
+        private const string ProfileTitle = "Camera Settings";
+        private const string ProfileDescription = "The Camera Profile helps configure cross platform camera settings.";
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
-            isCameraPersistent = serializedObject.FindProperty("isCameraPersistent");
             opaqueNearClip = serializedObject.FindProperty("nearClipPlaneOpaqueDisplay");
+            opaqueFarClip = serializedObject.FindProperty("farClipPlaneOpaqueDisplay");
             opaqueClearFlags = serializedObject.FindProperty("cameraClearFlagsOpaqueDisplay");
             opaqueBackgroundColor = serializedObject.FindProperty("backgroundColorOpaqueDisplay");
             opaqueQualityLevel = serializedObject.FindProperty("opaqueQualityLevel");
 
             transparentNearClip = serializedObject.FindProperty("nearClipPlaneTransparentDisplay");
+            transparentFarClip = serializedObject.FindProperty("farClipPlaneTransparentDisplay");
             transparentClearFlags = serializedObject.FindProperty("cameraClearFlagsTransparentDisplay");
             transparentBackgroundColor = serializedObject.FindProperty("backgroundColorTransparentDisplay");
             holoLensQualityLevel = serializedObject.FindProperty("holoLensQualityLevel");
@@ -51,42 +48,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
+
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                return;
-            }
+                serializedObject.Update();
 
-            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
-            {
-                return;
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Camera Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("The Camera Profile helps configure cross platform camera settings.", MessageType.Info);
-
-            CheckProfileLock(target);
-
-            serializedObject.Update();
-
-            EditorGUILayout.Space();
-            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
-            if (showGeneralProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(isCameraPersistent);
-                }
-            }
-            
-            EditorGUILayout.Space();
-            showOpaqueProperties = EditorGUILayout.Foldout(showOpaqueProperties, "Opaque Display Settings", true);
-            if (showOpaqueProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Opaque Display Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(opaqueNearClip, nearClipTitle);
+                    EditorGUILayout.PropertyField(opaqueFarClip, farClipTitle);
                     EditorGUILayout.PropertyField(opaqueClearFlags, clearFlagsTitle);
 
                     if ((CameraClearFlags)opaqueClearFlags.intValue == CameraClearFlags.Color)
@@ -96,15 +68,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     opaqueQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", opaqueQualityLevel.intValue, QualitySettings.names);
                 }
-            }
 
-            EditorGUILayout.Space();
-            showTransparentProperties = EditorGUILayout.Foldout(showTransparentProperties, "Transparent Display Settings", true);
-            if (showTransparentProperties)
-            {
-                using (new EditorGUI.IndentLevelScope())
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Transparent Display Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(transparentNearClip, nearClipTitle);
+                    EditorGUILayout.PropertyField(transparentFarClip, farClipTitle);
                     EditorGUILayout.PropertyField(transparentClearFlags, clearFlagsTitle);
 
                     if ((CameraClearFlags)transparentClearFlags.intValue == CameraClearFlags.Color)
@@ -114,9 +83,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     holoLensQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", holoLensQualityLevel.intValue, QualitySettings.names);
                 }
-            }
 
-            serializedObject.ApplyModifiedProperties();
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
+
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.CameraProfile;
         }
     }
 }

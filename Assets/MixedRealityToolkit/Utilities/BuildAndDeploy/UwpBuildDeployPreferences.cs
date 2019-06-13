@@ -3,13 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
     public static class UwpBuildDeployPreferences
     {
-        public const string MIN_SDK_VERSION = "10.0.17134.0";
+        public static Version MIN_SDK_VERSION = new Version("10.0.18362.0");
         private const string EDITOR_PREF_BUILD_CONFIG = "BuildDeployWindow_BuildConfig";
         private const string EDITOR_PREF_FORCE_REBUILD = "BuildDeployWindow_ForceRebuild";
         private const string EDITOR_PREF_CONNECT_INFOS = "BuildDeployWindow_DeviceConnections";

@@ -38,10 +38,15 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         }
 
 
+        /// <summary>
+        /// Computes an exponential coefficient following the given formula: 1 - .5^(dTime/hLife)
+        /// </summary>
         public static float ExpCoefficient(float hLife, float dTime)
         {
             if (hLife == 0)
+            {
                 return 1;
+            }
 
             return 1.0f - Mathf.Pow(0.5f, dTime / hLife);
         }

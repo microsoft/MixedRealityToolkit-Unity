@@ -155,33 +155,33 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <param name="steps"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public static RayStep GetStepByDistance(RayStep[] steps, float distance, ref float traveledDistance)
+        public static RayStep GetStepByDistance(RayStep[] steps, float distance, ref float remainingDistance)
         {
-            Debug.Assert(steps != null);
-            Debug.Assert(steps.Length > 0);
+            Debug.Assert(steps != null && steps.Length > 0);
 
-            float remainingDistance = distance;
-
-            int numSteps = steps.Length;
+            float traveledDistance = 0;
             float stepLength = 0;
+            RayStep currentStep = new RayStep();
 
-            for (int i = 0; i < numSteps; i++)
+
+            foreach (var step in steps)
             {
-                stepLength = steps[i].Length;
+                currentStep = step;
+                stepLength = step.Length;
 
-                if (remainingDistance > stepLength)
+                if (distance > traveledDistance + stepLength)
                 {
-                    remainingDistance -= stepLength;
+                    traveledDistance += stepLength;
                 }
                 else
                 {
-                    traveledDistance = remainingDistance;
-                    return steps[i];
+                    remainingDistance = Mathf.Clamp(distance - traveledDistance, 0f, stepLength);
+                    return currentStep;
                 }
             }
 
-            traveledDistance = remainingDistance;
-            return steps[steps.Length - 1];
+            remainingDistance = 0;
+            return currentStep;
         }
 
         /// <summary>

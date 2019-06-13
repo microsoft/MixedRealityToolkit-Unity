@@ -7,11 +7,14 @@ The Input Simulation Service emulates the behaviour of devices and platforms tha
 
 Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.
 
+  | __Warning__: This does not work when using Unity's XR Holographic Emulation -> Emulation Mode = "Simulate in Editor". Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = "None"|
+  | --- |
+
 ## Enabling the Input Simulation Service
 
 Input simulation is enabled by default in MRTK.
 
-Input simulation is an optional [Mixed Reality service](../../External/Documentation/MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../TODO.md).
+Input simulation is an optional [Mixed Reality service](../MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../TODO.md).
 * __Type__ must be _Microsoft.MixedReality.Toolkit.Input > InputSimulationService_.
 * __Platform(s)__ should always be _Windows Editor_ since the service depends on keyboard and mouse input.
 * __Profile__ has all settings for input simulation.
@@ -19,22 +22,22 @@ Input simulation is an optional [Mixed Reality service](../../External/Documenta
   | __Warning__: Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type _Input Simulation_ or it will not work! |
   | --- |
 
-<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_InputSystemDataProviders.png">
-  <img src="../../External/Documentation/Images/MRTK_InputSimulation_InputSystemDataProviders.png" title="Full Hand Mesh" width="80%" class="center" />
+<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png">
+  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
 Open the linked profile to access settings for input simulation.
 
-<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_InputSimulationProfile.png">
-  <img src="../../External/Documentation/Images/MRTK_InputSimulation_InputSimulationProfile.png" title="Full Hand Mesh" width="80%" class="center" />
+<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png">
+  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
 # Camera Control
 
 Head movement can be emulated by the Input Simulation Service.
 
-<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_CameraControlSettings.png">
-  <img src="../../External/Documentation/Images/MRTK_InputSimulation_CameraControlSettings.png" title="Full Hand Mesh" width="80%" class="center" />
+<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png">
+  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
 ## Rotating the camera
@@ -56,8 +59,8 @@ Press and hold the movement keys (W/A/S/D for forward/left/back/right).
 
 The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabable objects.
 
-<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_HandSimulationMode.png">
-  <img src="../../External/Documentation/Images/MRTK_InputSimulation_HandSimulationMode.png" title="Full Hand Mesh" width="80%" class="center" />
+<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png">
+  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
 The __Hand Simulation Mode__ switches between two distinct input models.
@@ -76,22 +79,35 @@ The __Hand Simulation Mode__ switches between two distinct input models.
 
 ## Controlling hand movement
 
-<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_HandControlSettings.png">
-  <img src="../../External/Documentation/Images/MRTK_InputSimulation_HandControlSettings.png" title="Full Hand Mesh" width="80%" class="center" />
+<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandControlSettings.png">
+  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandControlSettings.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
 Press and hold the _Left/Right Hand Manipulation Key_ (default: Left Shift/Space for left/right respectively) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Mouse movement will move the hand in the view plane.
 
 Once the manipulation key is released the hands will disappear after a short _Hand Hide Timeout_. To toggle hands on permanently, press the _Toggle Left/Right Hand Key_ (default: T/Y for left/right respectively). Press the toggle key again to hide the hands again.
 
-<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_HandPlacementSettings.png">
-  <img src="../../External/Documentation/Images/MRTK_InputSimulation_HandPlacementSettings.png" title="Full Hand Mesh" width="80%" class="center" />
+<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png">
+  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
 Hands can be moved further or closer to the camera using the _mouse wheel_.
+By default the hand will move somewhat slowly in response to mouse scroll,
+and this can be made faster by changing the *Hand Depth Multiplier* to a
+larger number.
 
-<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_HandRotationSettings.png">
-  <img src="../../External/Documentation/Images/MRTK_InputSimulation_HandRotationSettings.png" title="Full Hand Mesh" width="80%" class="center" />
+The initial distance from the camera that the hand appears at is controlled by
+*Default Hand Distance.*
+
+By default, the simulated hand joints will be perfectly still. Note that on devices there
+will always be some amount of jitter/noise due to the underlying hand tracking.
+You can see this on the device when you have hand mesh or joints enabled (and
+see how it has slightly jitter even if you have your hand perfectly still). It's possible
+to simulate jitter by changing *Hand Jitter Amount* to a positive value (for example, 0.1
+as is shown in the image above).
+
+<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png">
+  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
 Hands can be rotated when precise direction is required.
@@ -105,8 +121,8 @@ Hands can be rotated when precise direction is required.
 
 Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.
 
-<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_HandGestureSettings.png">
-  <img src="../../External/Documentation/Images/MRTK_InputSimulation_HandGestureSettings.png" title="Full Hand Mesh" width="80%" class="center" />
+<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandGestureSettings.png">
+  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandGestureSettings.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
 1. First enable hand control using the manipulation keys (Left Shift/Space)
@@ -148,8 +164,8 @@ For manipulating objects with two hands at the same time the persistent hand mod
 
 1. Enable GGV simulation by switching __Hand Simulation Mode__ to _Gestures_ in the [Input Simulation Profile](#enabling-the-input-simulation-service)
 
-<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_SwitchToGGV.png">
-  <img src="../../External/Documentation/Images/MRTK_InputSimulation_SwitchToGGV.png" title="Full Hand Mesh" width="80%" class="center" />
+<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png">
+  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
 2. Rotate the camera to point the gaze cursor at the interactable object (right mouse button)

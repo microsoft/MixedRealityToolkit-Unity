@@ -26,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 case RuntimePlatform.WSAPlayerARM:
                 case RuntimePlatform.WSAPlayerX86:
                 case RuntimePlatform.WSAPlayerX64:
-                case RuntimePlatform.XboxOne:
                     supportedPlatforms |= SupportedPlatforms.WindowsUniversal;
                     break;
                 case RuntimePlatform.OSXPlayer:
@@ -36,6 +35,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 case RuntimePlatform.LinuxPlayer:
                 case RuntimePlatform.LinuxEditor:
                     supportedPlatforms |= SupportedPlatforms.LinuxStandalone;
+                    break;
+                case RuntimePlatform.Android:
+                    supportedPlatforms |= SupportedPlatforms.Android;
+                    break;
+                case RuntimePlatform.IPhonePlayer:
+                    supportedPlatforms |= SupportedPlatforms.IOS;
+                    break;
+                case RuntimePlatform.WebGLPlayer:
+                    supportedPlatforms |= SupportedPlatforms.Web;
+                    break;
+                case RuntimePlatform.Lumin:
+                    supportedPlatforms |= SupportedPlatforms.Lumin;
                     break;
             }
 
@@ -58,11 +69,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             SupportedPlatforms supportedPlatforms = 0;
 
-            if (Application.platform == RuntimePlatform.WindowsEditor)
+            // Editor platforms
+            switch (Application.platform)
             {
-                supportedPlatforms |= SupportedPlatforms.WindowsEditor;
+                case RuntimePlatform.WindowsEditor:
+                    supportedPlatforms |= SupportedPlatforms.WindowsEditor;
+                    break;
+
+                case RuntimePlatform.OSXEditor:
+                    supportedPlatforms |= SupportedPlatforms.MacEditor;
+                    break;
+
+                case RuntimePlatform.LinuxEditor:
+                    supportedPlatforms |= SupportedPlatforms.LinuxEditor;
+                    break;
             }
 
+            // Build target platforms
             switch (editorBuildTarget)
             {
                 case UnityEditor.BuildTarget.StandaloneWindows:
@@ -70,7 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     supportedPlatforms |= SupportedPlatforms.WindowsStandalone;
                     break;
                 case UnityEditor.BuildTarget.WSAPlayer:
-                case UnityEditor.BuildTarget.XboxOne:
                     supportedPlatforms |= SupportedPlatforms.WindowsUniversal;
                     break;
                 case UnityEditor.BuildTarget.StandaloneOSX:
@@ -80,6 +102,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 case UnityEditor.BuildTarget.StandaloneLinux64:
                 case UnityEditor.BuildTarget.StandaloneLinuxUniversal:
                     supportedPlatforms |= SupportedPlatforms.LinuxStandalone;
+                    break;
+                case UnityEditor.BuildTarget.Android:
+                    supportedPlatforms |= SupportedPlatforms.Android;
+                    break;
+                case UnityEditor.BuildTarget.iOS:
+                    supportedPlatforms |= SupportedPlatforms.IOS;
+                    break;
+                case UnityEditor.BuildTarget.WebGL:
+                    supportedPlatforms |= SupportedPlatforms.Web;
+                    break;
+                case UnityEditor.BuildTarget.Lumin:
+                    supportedPlatforms |= SupportedPlatforms.Lumin;
                     break;
             }
 

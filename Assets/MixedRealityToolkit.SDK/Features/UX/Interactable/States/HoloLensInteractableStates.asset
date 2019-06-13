@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -13,27 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StateList:
   - Name: Interactive
-    Index: 0
+    Index: 4
     Bit: 1
     Value: 0
     ActiveIndex: 0
   - Name: Observation
-    Index: 1
+    Index: 6
     Bit: 2
     Value: 0
     ActiveIndex: 1
   - Name: Targeted
-    Index: 2
+    Index: 3
     Bit: 4
     Value: 0
     ActiveIndex: 2
   - Name: ObservationTargeted
-    Index: 7
+    Index: 5
     Bit: 8
     Value: 0
     ActiveIndex: 3
   - Name: Pressed
-    Index: 7
+    Index: 2
     Bit: 16
     Value: 0
     ActiveIndex: 4
@@ -43,8 +44,5 @@ MonoBehaviour:
     Value: 0
     ActiveIndex: 5
   DefaultIndex: 0
-  StateOptions:
-  - InteractableStates
   StateLogicName: InteractableStates
-  AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableStates,
-    Microsoft.MixedReality.Toolkit.SDK
+  AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableStates, Microsoft.MixedReality.Toolkit.SDK

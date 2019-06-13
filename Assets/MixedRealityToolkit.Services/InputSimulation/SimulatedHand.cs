@@ -24,13 +24,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool isTracked = false;
         public bool IsTracked => isTracked;
         [SerializeField]
-        private Vector3[] joints = new Vector3[jointCount];
-        public Vector3[] Joints => joints;
+        private MixedRealityPose[] joints = new MixedRealityPose[jointCount];
+        public MixedRealityPose[] Joints => joints;
         [SerializeField]
         private bool isPinching = false;
         public bool IsPinching => isPinching;
 
-        public delegate void HandJointDataGenerator(Vector3[] jointPositions);
+        public delegate void HandJointDataGenerator(MixedRealityPose[] jointPositions);
+
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
 
         public void Copy(SimulatedHandData other)
         {
@@ -81,8 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
-        protected readonly Quaternion[] jointOrientations = new Quaternion[jointCount];
-        protected readonly Vector3[] jointPositions = new Vector3[jointCount];
         protected readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
 
         /// <summary>
@@ -103,25 +118,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void UpdateState(SimulatedHandData handData)
         {
-            Array.Copy(handData.Joints, jointPositions, jointCount);
-
-            SimulatedHandUtils.CalculateJointRotations(ControllerHandedness, jointPositions, jointOrientations);
-
-            for (int i = 0; i < jointPositions.Length; i++)
+            for (int i = 0; i < jointCount; i++)
             {
                 TrackedHandJoint handJoint = (TrackedHandJoint)i;
 
                 if (!jointPoses.ContainsKey(handJoint))
                 {
-                    jointPoses.Add(handJoint, new MixedRealityPose(jointPositions[i], jointOrientations[i]));
+                    jointPoses.Add(handJoint, handData.Joints[i]);
                 }
                 else
                 {
-                    jointPoses[handJoint] = new MixedRealityPose(jointPositions[i], jointOrientations[i]);
+                    jointPoses[handJoint] = handData.Joints[i];
                 }
             }
 
-            MixedRealityToolkit.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
+            InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
 
             UpdateVelocity();
 

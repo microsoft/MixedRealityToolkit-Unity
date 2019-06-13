@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 {
                     if (routingTarget != null)
                     {
-                        routingTarget.OnPointerClicked(null);
+                        routingTarget.TriggerOnClick();
                     }
                     ResetDwellFeedback();
                 }
@@ -278,6 +278,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
         }
+
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
         {

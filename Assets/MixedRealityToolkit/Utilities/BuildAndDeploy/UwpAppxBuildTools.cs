@@ -86,17 +86,38 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             string storagePath = Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), buildInfo.OutputDirectory));
             string solutionProjectPath = Path.GetFullPath(Path.Combine(storagePath, $@"{PlayerSettings.productName}.sln"));
 
-            // Now do the actual appx build
-            var processResult = await new Process().StartProcessAsync(
-                msBuildPath,
+            // Building the solution requires first restoring NuGet packages - when built through
+            // Visual Studio, VS does this automatically - when building via msbuild like we're doing here,
+            // we have to do that step manually.
+            int exitCode = await Run(msBuildPath, $"\"{solutionProjectPath}\" /t:restore", !Application.isBatchMode, cancellationToken);
+            if (exitCode != 0)
+            {
+                IsBuilding = false;
+                return false;
+            }
+
+            // Now that NuGet packages have been restored, we can run the actual build process.
+            exitCode = await Run(msBuildPath, 
                 $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} /verbosity:m",
                 !Application.isBatchMode,
                 cancellationToken);
+            AssetDatabase.SaveAssets();
+
+            IsBuilding = false;
+            return exitCode == 0;
+        }
+
+        private static async Task<int> Run(string fileName, string args, bool showDebug, CancellationToken cancellationToken)
+        {
+            Debug.Log($"Running command: {fileName} {args}");
+
+            var processResult = await new Process().StartProcessAsync(
+                fileName, args, !Application.isBatchMode, cancellationToken);
 
             switch (processResult.ExitCode)
             {
                 case 0:
-                    Debug.Log("Appx Build Successful!");
+                    Debug.Log($"Command successful");
 
                     if (Application.isBatchMode)
                     {
@@ -110,36 +131,31 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     {
                         if (processResult.ExitCode != 0)
                         {
-                            Debug.LogError($"{PlayerSettings.productName} appx build Failed! (ErrorCode: {processResult.ExitCode})");
+                            Debug.Log($"Command failed, errorCode: {processResult.ExitCode}");
 
                             if (Application.isBatchMode)
                             {
-                                var buildOutput = "Appx Build Output:\n";
+                                var output = "Command output:\n";
 
                                 foreach (var message in processResult.Output)
                                 {
-                                    buildOutput += $"{message}\n";
+                                    output += $"{message}\n";
                                 }
 
-                                buildOutput += "Appx Build Errors:";
+                                output += "Command errors:";
 
                                 foreach (var error in processResult.Errors)
                                 {
-                                    buildOutput += $"{error}\n";
+                                    output += $"{error}\n";
                                 }
 
-                                Debug.LogError(buildOutput);
+                                Debug.LogError(output);
                             }
                         }
-
                         break;
                     }
             }
-
-            AssetDatabase.SaveAssets();
-
-            IsBuilding = false;
-            return processResult.ExitCode == 0;
+            return processResult.ExitCode;
         }
 
         private static async Task<string> FindMsBuildPathAsync()
@@ -260,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (string.IsNullOrWhiteSpace(EditorUserBuildSettings.wsaMinUWPSDK))
             {
-                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_SDK_VERSION;
+                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_SDK_VERSION.ToString();
             }
 
             string minVersion = EditorUserBuildSettings.wsaMinUWPSDK;

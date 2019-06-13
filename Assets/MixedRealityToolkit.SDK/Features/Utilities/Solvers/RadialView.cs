@@ -137,8 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         /// <summary>
         /// The up direction to use for orientation.
-        /// <remarks>Cone may roll with head, or not.</remarks>
         /// </summary>
+        /// <remarks>Cone may roll with head, or not.</remarks>
         private Vector3 UpReference
         {
             get

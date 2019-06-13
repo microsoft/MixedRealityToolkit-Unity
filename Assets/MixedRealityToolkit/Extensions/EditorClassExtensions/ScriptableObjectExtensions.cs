@@ -44,8 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             AssetDatabase.CreateAsset(scriptableObject, assetPathAndName);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            EditorUtility.FocusProjectWindow();
-            Selection.activeObject = scriptableObject;
             EditorGUIUtility.PingObject(scriptableObject);
             return scriptableObject;
         }

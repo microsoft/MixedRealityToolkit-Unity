@@ -4,8 +4,9 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
+using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Hand visualization definition, used to provide access to hand joint objects.
@@ -15,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
         /// <summary>
         /// Get a game object following the hand joint.
         /// </summary>
+        [Obsolete("Use HandJointUtils.TryGetJointPose instead of this")]
         bool TryGetJointTransform(TrackedHandJoint joint, out Transform jointTransform);
     }
 }

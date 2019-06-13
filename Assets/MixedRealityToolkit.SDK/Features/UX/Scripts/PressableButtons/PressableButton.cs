@@ -18,34 +18,70 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
         const string InitialMarkerTransformName = "Initial Marker";
-        
+
         [SerializeField]
         [Tooltip("The object that is being pushed.")]
-        private GameObject movingButtonVisuals = null;
+        protected GameObject movingButtonVisuals = null;
 
         [SerializeField]
         [Header("Press Settings")]
-        [Tooltip("Maximum push distance")]
+        [Tooltip("The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.")]
+        protected float startPushDistance = 0.0f;
+        public float StartPushDistance { get => startPushDistance; set => startPushDistance = value; }
+
+        [SerializeField]
+        [Tooltip("Maximum push distance. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.")]
         private float maxPushDistance = 0.2f;
+        public float MaxPushDistance { get => maxPushDistance; set => maxPushDistance = value; }
 
         [SerializeField]
         [FormerlySerializedAs("minPressDepth")]
-        [Tooltip("Distance the button must be pushed until it is considered pressed.")]
+        [Tooltip("Distance the button must be pushed until it is considered pressed. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.")]
         private float pressDistance = 0.02f;
+        public float PressDistance { get => pressDistance; set => pressDistance = value; }
 
         [SerializeField]
         [FormerlySerializedAs("withdrawActivationAmount")]
         [Tooltip("Withdraw amount needed to transition from Pressed to Released.")]
         private float releaseDistanceDelta = 0.01f;
+        public float ReleaseDistanceDelta { get => releaseDistanceDelta; set => releaseDistanceDelta = value; }
 
         [SerializeField]
-        [Tooltip("Speed of the object movement on release.")]
-        private float returnRate = 25.0f;
+        [Tooltip("Speed for retracting the moving button visuals on release.")]
+        [FormerlySerializedAs("returnRate")]
+        private float returnSpeed = 25.0f;
 
-        [Header("Position markers")]
-        [Tooltip("Used to mark where button movement begins. If null, it will be automatically generated.")]
         [SerializeField]
-        private Transform initialTransform;
+        [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
+        private bool enforceFrontPush = true;
+
+        public enum SpaceMode
+        {
+            World,
+            Local
+        }
+
+        [SerializeField]
+        [HideInInspector]
+        private SpaceMode distanceSpaceMode = SpaceMode.World;
+
+        public SpaceMode DistanceSpaceMode
+        {
+            get => distanceSpaceMode;
+            set
+            {
+                // Convert world to local distances and vice versa whenever we switch the mode
+                if (value != distanceSpaceMode)
+                {
+                    distanceSpaceMode = value;
+                    float scale = (distanceSpaceMode == SpaceMode.Local) ? WorldToLocalScale : LocalToWorldScale;
+                    startPushDistance *= scale;
+                    maxPushDistance *= scale;
+                    pressDistance *= scale;
+                    releaseDistanceDelta *= scale;
+                }
+            }
+        }
 
         [Header("Events")]
         public UnityEvent TouchBegin;
@@ -58,30 +94,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // The maximum distance before the button is reset to its initial position when retracting.
         private const float MaxRetractDistanceBeforeReset = 0.0001f;
 
-        private float currentPushDistance = 0.0f;
+        public float currentPushDistance = 0.0f;
+        public float CurrentPushDistance { get => currentPushDistance; set => currentPushDistance = value; }
 
-        private List<Vector3> touchPoints = new List<Vector3>();
+        private Dictionary<IMixedRealityController, Vector3> touchPoints = new Dictionary<IMixedRealityController, Vector3>();
 
-        [Header("Button State")]
-        [ReadOnly]
-        [SerializeField]
         private bool isTouching = false;
-
-        [ReadOnly]
-        [SerializeField]
-        private bool isPressing = false;
 
         ///<summary>
         /// Represents the state of whether or not a finger is currently touching this button.
         ///</summary>
-        private bool IsTouching
+        public bool IsTouching
         {
             get
             {
                 return isTouching;
             }
 
-            set
+            private set
             {
                 if (value != isTouching)
                 {
@@ -94,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     else
                     {
                         // Abort press.
-                        isPressing = false;
+                        IsPressing = false;
 
                         TouchEnd.Invoke();
                     }
@@ -102,6 +132,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Represents the state of whether the button is currently being pressed.
+        /// </summary>
+        public bool IsPressing { get; private set; }
+
+        /// <summary>
+        /// The press direction of the button as defined by a NearInteractionTouchable.
+        /// </summary>
         private Vector3 WorldSpacePressDirection
         {
             get
@@ -111,66 +149,143 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     return -1.0f * nearInteractionTouchable.Forward;
                 }
+                
+                return transform.forward;
+            }
+        }
 
-                Vector3 localSpacePressDirection = new Vector3(0, 0, 1);
-                return transform.TransformDirection(localSpacePressDirection);
+        private Transform PushSpaceSourceTransform
+        {
+            get { return movingButtonVisuals != null ? movingButtonVisuals.transform : transform; }
+        }
+
+        private float WorldToLocalScale
+        {
+            get
+            {
+                return transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
+            }
+        }
+
+        private float LocalToWorldScale
+        {
+            get
+            {
+                return 1.0f / WorldToLocalScale;
+            }
+        }
+        
+        /// <summary>
+        /// Initial offset from moving visuals to button
+        /// </summary>
+        private Vector3 initialOffsetMovingVisuals = Vector3.zero;
+
+        /// <summary>
+        /// The position from where the button starts to move. 
+        /// </summary>
+        private Vector3 InitialPosition
+        {
+            get
+            {
+                if (Application.isPlaying && movingButtonVisuals) // we're using a cached position in play mode as the moving visuals will be moved during button interaction
+                {
+                    return PushSpaceSourceTransform.parent.position + initialOffsetMovingVisuals;
+                }
+                else
+                {
+                    return PushSpaceSourceTransform.position;
+                }
+
             }
         }
 
         #endregion
 
+        private void OnEnable()
+        {
+            currentPushDistance = startPushDistance;    
+        }
+
         private void Start()
         {
             if (gameObject.layer == 2)
             {
-                Debug.LogWarning("PhysicalButtonMovement will not work if game object layer is set to 'Ignore Raycast'.");
+                Debug.LogWarning("PressableButton will not work if game object layer is set to 'Ignore Raycast'.");
             }
+
+            initialOffsetMovingVisuals = PushSpaceSourceTransform.localPosition;
+        }
+
+        void OnDisable()
+        {
+            // clear touch points in case we get disabled and can't receive the touch end event anymore
+            touchPoints.Clear();
+
+            // make sure button doesn't stay in a pressed state in case we disable the button while pressing it
+            currentPushDistance = startPushDistance;
+            UpdateMovingVisualsPosition();
         }
 
         private void Update()
         {
-            IsTouching = (touchPoints.Count != 0);
-
             if (IsTouching)
             {
-                float previousPushDistance = currentPushDistance;
-                currentPushDistance = GetFarthestPushDistanceAlongButtonAxis();
+                currentPushDistance = GetFarthestDistanceAlongPressDirection();
+
                 UpdateMovingVisualsPosition();
 
                 // Hand Press is only allowed to happen while touching.
-                UpdatePressedState(currentPushDistance, previousPushDistance);
+                UpdatePressedState(currentPushDistance);
             }
-            else if (currentPushDistance > 0.0f)
+            else if (currentPushDistance > startPushDistance)
             {
                 // Retract the button.
-                currentPushDistance = Mathf.Max(0.0f, currentPushDistance - currentPushDistance * returnRate * Time.deltaTime);
+                float retractDistance = currentPushDistance - startPushDistance;
+                retractDistance = retractDistance - retractDistance * returnSpeed * Time.deltaTime;
 
-                if (currentPushDistance < MaxRetractDistanceBeforeReset)
+                // Apply inverse scale of local z-axis. This constant should always have the same value in world units.
+                float localMaxRetractDistanceBeforeReset =
+                    MaxRetractDistanceBeforeReset * WorldSpacePressDirection.magnitude;
+                if (retractDistance < localMaxRetractDistanceBeforeReset)
                 {
-                    currentPushDistance = 0.0f;
+                    currentPushDistance = startPushDistance;
+                }
+                else
+                {
+                    currentPushDistance = startPushDistance + retractDistance;
                 }
 
                 UpdateMovingVisualsPosition();
             }
-
-            touchPoints.Clear();
         }
 
-        #region OnTouch
+        #region IMixedRealityTouchHandler implementation
 
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            touchPoints.Add(eventData.InputData);
-
-            if (initialTransform == null)
+            if (touchPoints.ContainsKey(eventData.Controller))
             {
-                FindOrCreatePathMarkers();
-                // Make sure to initialize currentPushDistance now to correctly handle back-presses in
-                // HandlePressProgress().
-                currentPushDistance = GetFarthestPushDistanceAlongButtonAxis();
+                return;
             }
 
-            // Pulse each proximity light on pointer cursors's interacting with this button.
+            if (enforceFrontPush)
+            {
+                // Back-Press Detection:
+                // Accept touch only if controller pushed from the front.
+                // Extrapolate to get previous position.
+                Vector3 previousPosition = eventData.InputData - eventData.Controller.Velocity * Time.deltaTime;
+                float previousDistance = GetDistanceAlongPushDirection(previousPosition);
+
+                if (previousDistance > startPushDistance)
+                {
+                    return;
+                }
+            }
+
+            touchPoints.Add(eventData.Controller, eventData.InputData);
+            IsTouching = true;
+
+            // Pulse each proximity light on pointer cursors' interacting with this button.
             foreach (var pointer in eventData.InputSource.Pointers)
             {
                 ProximityLight[] proximityLights = pointer.BaseCursor?.GameObjectReference?.GetComponentsInChildren<ProximityLight>();
@@ -189,70 +304,91 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            touchPoints.Add(eventData.InputData);
+            if (touchPoints.ContainsKey(eventData.Controller))
+            {
+                touchPoints[eventData.Controller] = eventData.InputData;
+
+                eventData.Use();
+            }
         }
-        
+
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            if (touchPoints.ContainsKey(eventData.Controller))
+            {
+                touchPoints.Remove(eventData.Controller);
+                IsTouching = (touchPoints.Count > 0);
+                eventData.Use();
+            }
         }
-        
+
         #endregion OnTouch
+
+        #region public transform utils
+
+        /// <summary>
+        /// Returns world space position along the push direction for the given local distance
+        /// </summary>
+        /// <param name="localDistance"></param>
+        /// <returns></returns>
+        /// 
+        public Vector3 GetWorldPositionAlongPushDirection(float localDistance)
+        {
+            float distance = (distanceSpaceMode == SpaceMode.Local) ? localDistance * LocalToWorldScale : localDistance;
+            return InitialPosition + WorldSpacePressDirection.normalized * distance;
+        }
+
+
+        /// <summary>
+        /// Returns the local distance along the push direction for the passed in world position
+        /// </summary>
+        /// <param name="positionWorldSpace"></param>
+        /// <returns></returns>
+        public float GetDistanceAlongPushDirection(Vector3 positionWorldSpace)
+        {
+            Vector3 localPosition = positionWorldSpace - InitialPosition;
+            float distance = Vector3.Dot(localPosition, WorldSpacePressDirection.normalized);
+            return (distanceSpaceMode == SpaceMode.Local) ? distance / LocalToWorldScale : distance;
+        }
+
+        #endregion
 
         #region private Methods
 
-        public void FindOrCreatePathMarkers()
-        {
-            Transform sourcePositionTransform = (movingButtonVisuals != null) ? movingButtonVisuals.transform : transform;
-
-            // First try to search for our markers
-            if (initialTransform == null)
-            {
-                initialTransform = transform.Find(InitialMarkerTransformName);
-            }
-
-            // If we don't find them, create them
-            if (initialTransform == null)
-            {
-                initialTransform = new GameObject(InitialMarkerTransformName).transform;
-                initialTransform.parent = transform;
-                initialTransform.position = sourcePositionTransform.position;
-            }
-        }
-
-        private void UpdateMovingVisualsPosition()
+        protected virtual void UpdateMovingVisualsPosition()
         {
             if (movingButtonVisuals != null)
             {
-                Debug.Assert(initialTransform != null);
-                movingButtonVisuals.transform.position = initialTransform.position + WorldSpacePressDirection * currentPushDistance;
+                // Always move relative to startPushDistance
+                movingButtonVisuals.transform.position = GetWorldPositionAlongPushDirection(currentPushDistance - startPushDistance);
             }
         }
 
-        // This function projects the current touch positions onto the 1D push direction of the button.
+        // This function projects the current touch positions onto the 1D press direction of the button.
         // It will output the farthest pushed distance from the button's initial position.
-        private float GetFarthestPushDistanceAlongButtonAxis()
+        private float GetFarthestDistanceAlongPressDirection()
         {
-            Debug.Assert(initialTransform != null);
+            float farthestDistance = startPushDistance;
 
-            float farthestDistance = 0.0f;
-            foreach (Vector3 p in touchPoints)
+            foreach (var touchEntry in touchPoints)
             {
-                float testDistance = GetProjectedDistance(initialTransform.position, WorldSpacePressDirection, p);
-                farthestDistance = Mathf.Max(farthestDistance, testDistance);
+                float testDistance = GetDistanceAlongPushDirection(touchEntry.Value);
+                farthestDistance = Mathf.Max(testDistance, farthestDistance);
             }
 
-            return Mathf.Clamp(farthestDistance, 0.0f, maxPushDistance);
+            return Mathf.Clamp(farthestDistance, startPushDistance, maxPushDistance);
         }
 
-        private void UpdatePressedState(float pushDistance, float previousPushDistance)
+
+        private void UpdatePressedState(float pushDistance)
         {
             // If we aren't in a press and can't start a simple one.
-            if (!isPressing)
+            if (!IsPressing)
             {
                 // Compare to our previous push depth. Use previous push distance to handle back-presses.
-                if (pushDistance >= pressDistance && previousPushDistance < pressDistance)
+                if (pushDistance >= pressDistance)
                 {
-                    isPressing = true;
+                    IsPressing = true;
                     ButtonPressed.Invoke();
                 }
             }
@@ -260,25 +396,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             else
             {
                 float releaseDistance = pressDistance - releaseDistanceDelta;
-                if (pushDistance <= releaseDistance && previousPushDistance > releaseDistance)
+                if (pushDistance <= releaseDistance)
                 {
-                    isPressing = false;
+                    IsPressing = false;
                     ButtonReleased.Invoke();
                 }
             }
-        }
-
-        private Vector3 ProjectPointToRay(Vector3 rayStart, Vector3 rayDir, Vector3 point, out float distance)
-        {
-            Vector3 localPoint = point - rayStart;
-            distance = Vector3.Dot(localPoint, rayDir);
-            return rayStart + (rayDir * distance);
-        }
-
-        private float GetProjectedDistance(Vector3 rayStart, Vector3 rayDir, Vector3 point)
-        {
-            Vector3 localPoint = point - rayStart;
-            return Vector3.Dot(localPoint, rayDir);
         }
 
         #endregion

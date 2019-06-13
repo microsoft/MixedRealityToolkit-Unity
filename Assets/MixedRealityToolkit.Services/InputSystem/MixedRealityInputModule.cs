@@ -31,6 +31,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         /// <summary>
         /// Mapping from pointer id to event data and click state
         /// </summary>
@@ -58,29 +75,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.ActivateModule();
 
-            if (MixedRealityToolkit.InputSystem != null)
+            if (InputSystem != null)
             {
-                RaycastCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
+                RaycastCamera = InputSystem.FocusProvider.UIRaycastCamera;
 
-                foreach (IMixedRealityInputSource inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+                foreach (IMixedRealityInputSource inputSource in InputSystem.DetectedInputSources)
                 {
                     OnSourceDetected(inputSource);
                 }
 
-                MixedRealityToolkit.InputSystem.Register(gameObject);
+                InputSystem.Register(gameObject);
             }
         }
 
         public override void DeactivateModule()
         {
-            if (MixedRealityToolkit.InputSystem != null)
+            if (InputSystem != null)
             {
-                MixedRealityToolkit.InputSystem.Unregister(gameObject);
+                InputSystem.Unregister(gameObject);
 
-                foreach (IMixedRealityInputSource inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+                foreach (var p in pointerDataToUpdate)
                 {
-                    OnSourceLost(inputSource);
+                    pointerDataToRemove.Add(p.Value);
                 }
+                pointerDataToUpdate.Clear();
 
                 // Process once more to handle pointer removals.
                 Process();
@@ -173,8 +191,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Reset the RaycastCamera for projecting (used in calculating deltas)
             Debug.Assert(pointer.Rays != null && pointer.Rays.Length > 0);
-            RaycastCamera.transform.position = pointer.Rays[0].Origin;
-            RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+
+            if (pointer.Controller != null && pointer.Controller.IsRotationAvailable)
+            {
+                RaycastCamera.transform.position = pointer.Rays[0].Origin;
+                RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+            }
+            else
+            {
+                // The pointer.Controller does not provide rotation, for example on HoloLens 1 hands.
+                // In this case pointer.Rays[0].Origin will be the head position, but we want the 
+                // hand to do drag operations, not the head.
+                // pointer.Position gives the position of the hand, use that to compute drag deltas.
+                RaycastCamera.transform.position = pointer.Position;
+                RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+            }
+
 
             // Populate eventDataLeft
             pointerData.eventDataLeft.Reset();
@@ -252,6 +284,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerDataToUpdate[pointerId].nextPressState = PointerEventData.FramePressState.Pressed;
         }
 
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
         {
         }
@@ -272,20 +306,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var pointer = inputSource.Pointers[i];
                 if (pointer.InputSourceParent == inputSource)
                 {
+                    // This !ContainsKey is only necessary due to inconsistent initialization of
+                    // various input providers and this class's ActivateModule() call.
                     int pointerId = (int)pointer.PointerId;
-                    Debug.Assert(!pointerDataToUpdate.ContainsKey(pointerId));
-                    pointerDataToUpdate.Add(pointerId, new PointerData(pointer, eventSystem));
+                    if (!pointerDataToUpdate.ContainsKey(pointerId))
+                    {
+                        pointerDataToUpdate.Add(pointerId, new PointerData(pointer, eventSystem));
+                    }
                 }
             }
         }
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            OnSourceLost(eventData.InputSource);
-        }
+            var inputSource = eventData.InputSource;
 
-        void OnSourceLost(IMixedRealityInputSource inputSource)
-        {
             for (int i = 0; i < inputSource.Pointers.Length; i++)
             {
                 var pointer = inputSource.Pointers[i];

@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Linq;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
@@ -14,37 +14,34 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private SerializedProperty smoothEyeTracking;
 
+        private const string ProfileTitle = "Eye tracking Settings";
+
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false)) { return; }
-
             smoothEyeTracking = serializedObject.FindProperty("smoothEyeTracking");
         }
 
         public override void OnInspectorGUI()
         {
-            RenderMixedRealityToolkitLogo();
+            RenderProfileHeader(ProfileTitle, string.Empty, target, true, BackProfileType.Input);
 
-            if (GUILayout.Button("Back to Registered Service Providers Profile"))
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile;
+                serializedObject.Update();
+                EditorGUILayout.PropertyField(smoothEyeTracking);
+                serializedObject.ApplyModifiedProperties();
             }
-            EditorGUILayout.Space();
+        }
 
-            EditorGUILayout.LabelField("Eye tracking settings", EditorStyles.boldLabel);
-            CheckProfileLock(target);
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured()) { return; }
-
-            serializedObject.Update();
-
-            GUILayout.Space(12f);
-            EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(smoothEyeTracking);
-
-            serializedObject.ApplyModifiedProperties();
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                MixedRealityToolkit.Instance.HasActiveProfile &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations.Any(s => profile == s.DeviceManagerProfile);
         }
     }
 }

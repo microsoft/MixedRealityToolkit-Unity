@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         public override HandSimulationMode SimulationMode => HandSimulationMode.Gestures;
 
+        private bool initializedFromProfile = false;
         private MixedRealityInputAction holdAction = MixedRealityInputAction.None;
         private MixedRealityInputAction navigationAction = MixedRealityInputAction.None;
         private MixedRealityInputAction manipulationAction = MixedRealityInputAction.None;
@@ -25,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool holdInProgress = false;
         private Vector3 currentRailsUsed = Vector3.one;
         private Vector3 currentPosition = Vector3.zero;
-        private Vector3 lastPosition = Vector3.zero;
         private Vector3 cumulativeDelta = Vector3.zero;
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
@@ -41,14 +41,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public SimulatedGestureHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public SimulatedGestureHand(
+            TrackingState trackingState, 
+            Handedness controllerHandedness, 
+            IMixedRealityInputSource inputSource = null, 
+            MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }
 
-        void Awake()
-        { 
-            var gestureProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.GesturesProfile;
+        /// Lazy-init settings based on profile.
+        /// This cannot happen in the constructor because the profile may not exist yet.
+        private void EnsureProfileSettings()
+        {
+            if (initializedFromProfile)
+            {
+                return;
+            }
+            initializedFromProfile = true;
+
+            var gestureProfile = InputSystem?.InputSystemProfile?.GesturesProfile;
             if (gestureProfile != null)
             {
                 for (int i = 0; i < gestureProfile.Gestures.Length; i++)
@@ -71,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 useRailsNavigation = gestureProfile.UseRailsNavigation;
             }
 
-            var inputSimProfile = MixedRealityToolkit.Instance?.GetService<InputSimulationService>()?.GetInputSimulationProfile();
+            var inputSimProfile = MixedRealityToolkit.Instance?.GetService<IInputSimulationService>()?.InputSimulationProfile;
             if (inputSimProfile != null)
             {
                 holdStartDuration = inputSimProfile.HoldStartDuration;
@@ -96,12 +108,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected override void UpdateInteractions(SimulatedHandData handData)
         {
-            lastPosition = currentPosition;
-            currentPosition = jointPositions[(int)TrackedHandJoint.IndexTip];
+            EnsureProfileSettings();
+
+            Vector3 lastPosition = currentPosition;
+            currentPosition = jointPoses[TrackedHandJoint.IndexTip].Position;
+            cumulativeDelta += currentPosition - lastPosition;
             currentGripPose.Position = currentPosition;
+
             if (lastPosition != currentPosition)
             {
-                MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, currentPosition);
+                InputSystem?.RaiseSourcePositionChanged(InputSource, this, currentPosition);
             }
 
             for (int i = 0; i < Interactions?.Length; i++)
@@ -113,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Interactions[i].PoseData = currentGripPose;
                         if (Interactions[i].Changed)
                         {
-                            MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentGripPose);
+                            InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentGripPose);
                         }
                         break;
                     case DeviceInputType.Select:
@@ -123,14 +139,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             if (Interactions[i].BoolData)
                             {
-                                MixedRealityToolkit.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
 
                                 SelectDownStartTime = Time.time;
                                 cumulativeDelta = Vector3.zero;
                             }
                             else
                             {
-                                MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
 
                                 // Stop gestures
                                 CompleteHoldGesture();
@@ -139,12 +155,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         else if (Interactions[i].BoolData)
                         {
-                            // For convenience of simulating in Unity Editor, make the ray use the index
-                            // finger position instead of knuckle, since the index finger doesn't move when we press.
-                            Vector3 newPosition = jointPositions[(int)TrackedHandJoint.IndexTip];
-                            cumulativeDelta += newPosition - currentPosition;
-                            currentPosition = newPosition;
-
                             if (!manipulationInProgress)
                             {
                                 if (cumulativeDelta.magnitude > manipulationStartThreshold)
@@ -175,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!holdInProgress)
             {
-                MixedRealityToolkit.InputSystem?.RaiseGestureStarted(this, holdAction);
+                InputSystem?.RaiseGestureStarted(this, holdAction);
                 holdInProgress = true;
             }
         }
@@ -184,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (holdInProgress)
             {
-                MixedRealityToolkit.InputSystem?.RaiseGestureCompleted(this, holdAction);
+                InputSystem?.RaiseGestureCompleted(this, holdAction);
                 holdInProgress = false;
             }
         }
@@ -193,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (holdInProgress)
             {
-                MixedRealityToolkit.InputSystem?.RaiseGestureCanceled(this, holdAction);
+                InputSystem?.RaiseGestureCanceled(this, holdAction);
                 holdInProgress = false;
             }
         }
@@ -202,8 +212,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!manipulationInProgress)
             {
-                MixedRealityToolkit.InputSystem?.RaiseGestureStarted(this, manipulationAction);
-                MixedRealityToolkit.InputSystem?.RaiseGestureStarted(this, navigationAction);
+                InputSystem?.RaiseGestureStarted(this, manipulationAction);
+                InputSystem?.RaiseGestureStarted(this, navigationAction);
                 manipulationInProgress = true;
 
                 currentRailsUsed = Vector3.one;
@@ -213,18 +223,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void UpdateManipulationNavigationGesture()
         {
-            MixedRealityToolkit.InputSystem?.RaiseGestureUpdated(this, manipulationAction, cumulativeDelta);
+            InputSystem?.RaiseGestureUpdated(this, manipulationAction, cumulativeDelta);
 
             UpdateNavigationRails();
-            MixedRealityToolkit.InputSystem?.RaiseGestureUpdated(this, navigationAction, navigationDelta);
+            InputSystem?.RaiseGestureUpdated(this, navigationAction, navigationDelta);
         }
 
         private void CompleteManipulationNavigationGesture()
         {
             if (manipulationInProgress)
             {
-                MixedRealityToolkit.InputSystem?.RaiseGestureCompleted(this, manipulationAction, cumulativeDelta);
-                MixedRealityToolkit.InputSystem?.RaiseGestureCompleted(this, navigationAction, navigationDelta);
+                InputSystem?.RaiseGestureCompleted(this, manipulationAction, cumulativeDelta);
+                InputSystem?.RaiseGestureCompleted(this, navigationAction, navigationDelta);
                 manipulationInProgress = false;
             }
         }
@@ -233,8 +243,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (manipulationInProgress)
             {
-                MixedRealityToolkit.InputSystem?.RaiseGestureCanceled(this, manipulationAction);
-                MixedRealityToolkit.InputSystem?.RaiseGestureCanceled(this, navigationAction);
+                InputSystem?.RaiseGestureCanceled(this, manipulationAction);
+                InputSystem?.RaiseGestureCanceled(this, navigationAction);
                 manipulationInProgress = false;
             }
         }

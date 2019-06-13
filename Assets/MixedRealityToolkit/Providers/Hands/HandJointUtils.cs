@@ -8,11 +8,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public static class HandJointUtils
     {
         /// <summary>
-        /// Try to find the first matching hand controller and return the pose of the requested joint for that hand.
+        /// Tries to get the pose of the requested joint for the first controller with the specified handedness.
         /// </summary>
+        /// <param name="joint">The requested joint</param>
+        /// <param name="handedness">The specific hand of interest. This should be either Handedness.Left or Handedness.Right</param>
+        /// <param name="pose">The output pose data</param>
         public static bool TryGetJointPose(TrackedHandJoint joint, Handedness handedness, out MixedRealityPose pose)
         {
-            IMixedRealityHand hand = FindHand(handedness);
+            return TryGetJointPose<IMixedRealityHand>(joint, handedness, out pose);
+        }
+
+        /// <summary>
+        /// Try to find the first matching hand controller of the given type and return the pose of the requested joint for that hand.
+        /// </summary>
+        public static bool TryGetJointPose<T>(TrackedHandJoint joint, Handedness handedness, out MixedRealityPose pose) where T : class, IMixedRealityHand
+        {
+            T hand = FindHand<T>(handedness);
             if (hand != null)
             {
                 return hand.TryGetJoint(joint, out pose);
@@ -25,14 +36,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Find the first detected hand controller with matching handedness.
         /// </summary>
+        /// <remarks>
+        /// The given handedness should be either Handedness.Left or Handedness.Right.
+        /// </remarks>
         public static IMixedRealityHand FindHand(Handedness handedness)
         {
-            foreach (var detectedController in MixedRealityToolkit.InputSystem.DetectedControllers)
+            return FindHand<IMixedRealityHand>(handedness);
+        }
+
+        /// <summary>
+        /// Find the first detected hand controller of the given type with matching handedness.
+        /// </summary>
+        public static T FindHand<T>(Handedness handedness) where T : class, IMixedRealityHand
+        {
+            IMixedRealityInputSystem inputSystem = null;
+            if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem)) { return null; }
+
+            foreach (var detectedController in inputSystem.DetectedControllers)
             {
-                var hand = detectedController as IMixedRealityHand;
+                var hand = detectedController as T;
                 if (hand != null)
                 {
-                    if (detectedController.ControllerHandedness == handedness)
+                    if ((detectedController.ControllerHandedness & handedness) != 0)
                     {
                         return hand;
                     }

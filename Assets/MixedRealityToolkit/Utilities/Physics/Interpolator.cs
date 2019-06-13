@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
@@ -250,8 +250,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
         /// <summary>
         /// Stops the transform in place and terminates any animations.<para/>
-        /// <remarks>Reset() is usually reserved as a MonoBehaviour API call in editor, but is used in this case as a convenience method.</remarks>
         /// </summary>
+        /// <remarks>Reset() is usually reserved as a MonoBehaviour API call in editor, but is used in this case as a convenience method.</remarks>
         public void Reset()
         {
             targetPosition = transform.position;

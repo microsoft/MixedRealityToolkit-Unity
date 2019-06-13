@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UInput = UnityEngine.Input;
+using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
@@ -47,7 +48,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         }
 
         private MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
-        private Vector2 mouseDelta;
+
+        private MixedRealityMouseInputProfile mouseInputProfile = null;
+        private MixedRealityMouseInputProfile MouseInputProfile
+        {
+            get
+            {
+                if (mouseInputProfile == null)
+                {
+                    // Get the profile from the input system's registered mouse device manager.
+                    IMixedRealityMouseDeviceManager mouseManager = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityMouseDeviceManager>();
+                    mouseInputProfile = mouseManager?.MouseInputProfile;
+                }
+                return mouseInputProfile;
+            }
+        }
 
         /// <summary>
         /// Update controller.
@@ -65,47 +80,44 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return;
             }
 
-            if (InputSource.Pointers[0].BaseCursor != null)
-            {
-                controllerPose.Position = InputSource.Pointers[0].BaseCursor.Position;
-                controllerPose.Rotation = InputSource.Pointers[0].BaseCursor.Rotation;
-            }
-
-            mouseDelta.x = -UInput.GetAxis("Mouse Y");
-            mouseDelta.y = UInput.GetAxis("Mouse X");
-            MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, mouseDelta);
-            MixedRealityToolkit.InputSystem?.RaiseSourcePoseChanged(InputSource, this, controllerPose);
-            MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, UInput.mouseScrollDelta);
-
             for (int i = 0; i < Interactions.Length; i++)
             {
+                
+
                 if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
                 {
+                    // add mouse delta as rotation
+                    var mouseDeltaRotation = Vector3.zero;
+                    mouseDeltaRotation.x += -UInput.GetAxis("Mouse Y");
+                    mouseDeltaRotation.y += UInput.GetAxis("Mouse X");
+                    
+                    if (MouseInputProfile != null)
+                    {
+                        mouseDeltaRotation *= MouseInputProfile.MouseSpeed;
+                    }
+
+                    MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
+                    controllerPose.Rotation = Quaternion.Euler(mouseDeltaRotation);
                     Interactions[i].PoseData = controllerPose;
 
                     if (Interactions[i].Changed)
                     {
-                        MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
+                        InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
                     }
+
                 }
+
 
                 if (Interactions[i].InputType == DeviceInputType.PointerPosition)
                 {
+                    Vector2 mouseDelta;
+                    mouseDelta.x = -UInput.GetAxis("Mouse Y");
+                    mouseDelta.y = UInput.GetAxis("Mouse X");
                     Interactions[i].Vector2Data = mouseDelta;
 
                     if (Interactions[i].Changed)
                     {
-                        MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
-                    }
-                }
-
-                if (Interactions[i].InputType == DeviceInputType.Scroll)
-                {
-                    Interactions[i].Vector2Data = UInput.mouseScrollDelta;
-
-                    if (Interactions[i].Changed)
-                    {
-                        MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
+                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
                     }
                 }
 
@@ -122,12 +134,22 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                         // Raise input system Event if it enabled
                         if (Interactions[i].BoolData)
                         {
-                            MixedRealityToolkit.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
                         }
                         else
                         {
-                            MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
                         }
+                    }
+                }
+
+                if (Interactions[i].InputType == DeviceInputType.Scroll)
+                {
+                    Interactions[i].Vector2Data = UInput.mouseScrollDelta;
+
+                    if (Interactions[i].Changed)
+                    {
+                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
                     }
                 }
             }

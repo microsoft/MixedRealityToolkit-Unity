@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Interface to implement for generic gesture input.
     /// </summary>
-    public interface IMixedRealityGestureHandler : IEventSystemHandler
+    public interface IMixedRealityGestureHandler : IMixedRealityBaseInputHandler
     {
         /// <summary>
         /// Gesture Started Event.

@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -54,6 +55,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private IMixedRealityController controller;
 
+        private MixedRealityMouseInputProfile mouseInputProfile = null;
+
+        private MixedRealityMouseInputProfile MouseInputProfile
+        {
+            get
+            {
+                if (mouseInputProfile == null)
+                {
+                    // Get the profile from the input system's registered mouse device manager.
+                    IMixedRealityMouseDeviceManager mouseManager = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityMouseDeviceManager>();
+                    mouseInputProfile = mouseManager?.MouseInputProfile;
+                }
+                return mouseInputProfile;
+            }
+        }
+
+
         /// <inheritdoc />
         public override IMixedRealityController Controller
         {
@@ -75,14 +93,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
+            // screenspace to ray conversion
             transform.position = CameraCache.Main.transform.position;
 
-            Ray ray = new Ray(Position, Rotation * Vector3.forward);
+            Ray ray = new Ray(transform.position, transform.forward);
             Rays[0].CopyRay(ray, PointerExtent);
 
             if (MixedRealityRaycaster.DebugEnabled)
             {
                 Debug.DrawRay(ray.origin, ray.direction * PointerExtent, Color.green);
+            }
+
+            // ray to worldspace conversion
+            gameObject.transform.position = transform.position + transform.forward * DefaultPointerExtent;
+        }
+
+        public override Vector3 Position
+        {       
+            get
+            {
+                return gameObject.transform.position;
             }
         }
 
@@ -105,6 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 isInteractionEnabled = true;
             }
         }
+       
 
         /// <inheritdoc />
         public override void OnSourceLost(SourceStateEventData eventData)
@@ -114,22 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
                 isInteractionEnabled = false;
-            }
-        }
-
-        /// <inheritdoc />
-        public override void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData)
-        {
-            if (Controller == null ||
-                eventData.Controller == null ||
-                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
-            {
-                return;
-            }
-
-            if (UseSourcePoseData)
-            {
-                UpdateMousePosition(eventData.SourceData.x, eventData.SourceData.y);
             }
         }
 
@@ -167,10 +182,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
-                if (!UseSourcePoseData &&
-                    PoseAction == eventData.MixedRealityInputAction)
+                if (PoseAction == eventData.MixedRealityInputAction && !UseSourcePoseData)
                 {
-                    UpdateMousePosition(eventData.InputData.x, eventData.InputData.y);
+                    Vector3 mouseDeltaRotation = Vector3.zero;
+                    mouseDeltaRotation.x += eventData.InputData.x;
+                    mouseDeltaRotation.y += eventData.InputData.y;
+                    if (MouseInputProfile != null)
+                    {
+                        mouseDeltaRotation *= MouseInputProfile.MouseSpeed;
+                    }
+                    UpdateMouseRotation(mouseDeltaRotation);
+                }
+            }
+        }
+
+        public override void OnInputChanged(InputEventData<MixedRealityPose> eventData)
+        {
+            if (eventData.SourceId == Controller?.InputSource.SourceId)
+            {
+                if (UseSourcePoseData)
+                {
+                    UpdateMouseRotation(eventData.InputData.Rotation.eulerAngles);
                 }
             }
         }
@@ -190,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 RayStabilizer = null;
             }
 
-            foreach (var inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+            foreach (var inputSource in InputSystem.DetectedInputSources)
             {
                 if (inputSource.SourceId == Controller.InputSource.SourceId)
                 {
@@ -216,13 +248,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion MonoBehaviour Implementation
 
-        private void UpdateMousePosition(float mouseX, float mouseY)
+        private void UpdateMouseRotation(Vector3 mouseDeltaRotation)
         {
-            if (Mathf.Abs(mouseX) >= movementThresholdToUnHide ||
-                Mathf.Abs(mouseY) >= movementThresholdToUnHide)
-            {
+            if (mouseDeltaRotation.magnitude >= movementThresholdToUnHide)
+            { 
                 if (isDisabled)
                 {
+                    // if cursor was hidden reset to center
                     BaseCursor?.SetVisibility(true);
                     transform.rotation = CameraCache.Main.transform.rotation;
                 }
@@ -235,10 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 timeoutTimer = 0.0f;
             }
 
-            var newRotation = Vector3.zero;
-            newRotation.x += mouseX;
-            newRotation.y += mouseY;
-            transform.Rotate(newRotation, Space.World);
+            transform.Rotate(mouseDeltaRotation, Space.World);
         }
     }
 }
