@@ -4,9 +4,11 @@
 
 If eye tracking is a fundamental part of your app experience, you may wish to ensure that the user's eye calibration is valid.
 The main reason for it to be invalid is that the user chose to skip the eye tracking calibration. 
-Below we added an example that describes:
-- How you can determine in your MRTK app whether a user is eye calibrated
-- Show a notification to instruct the user to go through the calibration
+This page describes:
+- Describes how to detect that a user is eye calibrated
+- Provides a sample for how to trigger a user notification to instruct the user to go through the eye calibration
+	- Automatically dismiss notification if eye calibration becomes valid
+	- Manually dismiss notification if user chooses to continue without calibration
 
 ### How to detect the eye calibration state 
 
@@ -14,16 +16,7 @@ The [MixedRealityToolkit.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvide
 It returns null if no information from the eye tracker is available yet.
 Once data has been received, it will either return true or false to indicate that the user's eye tracking calibration is valid or invalid.
 
-
-### Example for showing a notification
-
-What this tutorial explains:
-- How to detect that a user is calibrated
-- Sample for how to trigger a notification
-- Automatically dismiss notification if eye calibration becomes valid
-- Manually dismiss notification if user chooses to continue without calibration
-
-## Step-by-step
+### Sample eye calibration notification - Step-by-step
 
 1. Open the [MRTK eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking)
 
@@ -99,8 +92,3 @@ whether it automatically dismisses the notification again once the status change
 
 ---
 [Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
-
-
-
-and to pop up a notification.
-The notification can be dismissed
