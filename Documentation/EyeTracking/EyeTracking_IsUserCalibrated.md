@@ -1,3 +1,5 @@
+![Screenshot from eye calibration notification](../Images/EyeTracking/mrtk_et_calibration_notification_example.jpg)
+
 ## To be or not to be eye calibrated
 
 If eye tracking is a fundamental part of your app experience, you may wish to ensure that the user's eye calibration is valid.
@@ -94,9 +96,6 @@ whether it automatically dismisses the notification again once the status change
             }
         }
 ```
-
-![Screenshot from eye calibration notification](../Images/EyeTracking/mrtk_et_calibration_notification_example.jpg)
-
 
 ---
 [Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
