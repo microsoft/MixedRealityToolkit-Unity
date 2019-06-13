@@ -85,6 +85,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
+        /// <summary>
+        /// Directory levels to search for MRTK folders below the root directory.
+        /// </summary>
+        /// <remarks>
+        /// E.g. with level 3 and folders ROOT/A/B/C/D would seach A and B and C, but not D.
+        /// </remarks>
+        public const int DirectorySearchDepth = 3;
+
         static MixedRealityToolkitFiles()
         {
             string path = Application.dataPath;
@@ -93,16 +101,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static void SearchForFoldersAsync(string rootPath)
         {
-            foreach (string folder in Directory.EnumerateDirectories(rootPath))
-            {
-                TryRegisterModuleFolder(folder);
+            Stack<IEnumerator<string>> dirIters = new Stack<IEnumerator<string>>(DirectorySearchDepth);
 
-                // NuGet packages may contain MRTK subfolders, have to include the subfolder level to catch these.
-                // This alternate path is used if above isn't found. This is to work around long paths issue with NuGetForUnity
-                // https://github.com/GlitchEnzo/NuGetForUnity/issues/246
-                foreach (string subfolder in Directory.EnumerateDirectories(folder))
+            dirIters.Push(Directory.EnumerateDirectories(rootPath).GetEnumerator());
+
+            while (dirIters.Count > 0)
+            {
+                IEnumerator<string> iter = dirIters.Peek();
+                if (iter.MoveNext())
                 {
-                    TryRegisterModuleFolder(subfolder);
+                    TryRegisterModuleFolder(iter.Current);
+
+                    if (dirIters.Count < DirectorySearchDepth)
+                    {
+                        dirIters.Push(Directory.EnumerateDirectories(iter.Current).GetEnumerator());
+                    }
+                }
+                else
+                {
+                    dirIters.Pop();
                 }
             }
         }
