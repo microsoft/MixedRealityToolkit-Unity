@@ -37,6 +37,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         private bool DestroyAfterBlendOut = false;
 
+        [Tooltip("Boolean to decide whether to disable the game object once the blend out is complete.")]
+        [SerializeField]
+        private bool DisableAfterBlendOut = false;
+
+        [Tooltip("Boolean to decide whether a dwell is required to disengage.")]
+        [SerializeField]
+        private bool DwellRequired = false;
+
         [Tooltip("Depending on the materials applied to the notification, we need to check specific supported properties for blending.")]
         [SerializeField]
         string[] shaderPropsToCheckForBlending = new string[] { "_Color", "_FaceColor" };
@@ -45,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private GameObject target = null;
         private GameObject objectWithCollider = null;
         private bool fadeOut = false;
-        private bool destroyIt = false;
+        private bool dwellDone = false;
         private bool wasDwelling = false;
         private float normalizedProgress;
 
@@ -85,7 +93,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public void Engage()
         {
-            destroyIt = false;
+            fadeOut = false;
+            wasDwelling = false;
+            dwellDone = false;
+            normalizedProgress = 0;
             ChangeTransparency(LookAtTransparency);
         }
 
@@ -98,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             if (wasDwelling)
             {
-                destroyIt = true;
+                dwellDone = true;
             }
 
             fadeOut = true;
@@ -108,7 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public void DwellSucceeded()
         {
-            Debug.Log("DwellSucceeded ");
             wasDwelling = true;
         }
 
@@ -123,13 +133,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             if (fadeOut)
             {
-                if (DestroyAfterBlendOut && destroyIt)
+                if (!DwellRequired || dwellDone)
                 {
-                    // Fade out and destroy
+                    // Fade out and destroy/disable it if desired
                     if (normalizedProgress <= MinTransparency)
                     {
                         fadeOut = false;
-                        Destroy(target);
+
+                        if (DestroyAfterBlendOut)
+                        {
+                            Destroy(target);
+                        }
+                        else if (DisableAfterBlendOut)
+                        {
+                            target.SetActive(false);
+                        }
                         return;
                     }
                 }

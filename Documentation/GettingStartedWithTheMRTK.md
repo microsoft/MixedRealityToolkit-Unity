@@ -71,9 +71,9 @@ The [hand interaction examples scene](README_HandInteractionExamples.md) is a gr
 
 ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
 
-If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials" refers to TextMeshPro plugin, which some of the MRTK examples use for improved text rendering.
+If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials" refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See [Text in Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity) for more detailed information)
 
-4. Close the TMPPro dialog. After this you need to reload the scene, so close and re-open your scene.
+4. Close the TMP dialog. After this you need to reload the scene. You can do this by opening other example scene and open HandInteractionExamples scene again.
 
 5. Press the play button.
 
@@ -107,7 +107,9 @@ Click "OK".
 
 ![](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
 
-> **NOTE**: Note that the other configuration profiles in this picker are from other scenes in the examples package. If you did not install the examples package, you would not have been prompted to choose a specific profile (as the foundation package only contains a single MixedRealityToolkitConfigurationProfile - the default one). The other profiles are part of their respective example scenes (for example, the HandInteractionAllExampleMixedRealityToolkitConfigurationProfile) is part of the [HandInteractionExamples scene](README_HandInteractionExamples.md).
+> **NOTE**: Note that if you are getting started on the HoloLens 2, you should choose the "DefaultHoloLens2ConfigurationProfile" instead.
+> See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between 
+> DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
 
 You will then see the following in your Scene hierarchy:
 

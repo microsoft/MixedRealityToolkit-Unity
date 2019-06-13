@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
     /// a visual anchor at the target's center. Different fade in and fade out options are also available.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
-    public class OnLookAtShowHoverFeedback : BaseEyeFocusHandler
+    public class OnLookAtShowHoverFeedback : MonoBehaviour
     {
         // Overlay Feedback: Acts as a visual anchor at the target's center to fixate on.
         [Tooltip("If TRUE: Show a visual indicator at the target center when hovered.")]
@@ -79,12 +79,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
         private float normalizedInterest = 0; // Interest between 0 and 1. 0 == Not looked at -> Low interest. 1 == Dwelled -> High interest
         private bool highlightOn = false; // Indicates whether the object is currently highlighted
         private float lastIncreasedInterest = 0; // Remember last value when interest was increased for smooth blend out
+        private EyeTrackingTarget eyeTarget = null;
 
         // Private methods
         private void Start()
         {
             // Init variables
             cursorEnterTime = DateTime.MaxValue;
+            eyeTarget = this.GetComponent<EyeTrackingTarget>();
+            eyeTarget.OnLookAtStart.AddListener(this.OnLookAtStart);
+            eyeTarget.OnLookAway.AddListener(this.OnLookAtStop);
 
             // Store the original colors for later resetting the object to its original state after highlighting
             SaveOriginalColor();
@@ -95,14 +99,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
             }
         }
 
-        protected override void Update()
+        private void Update()
         {
-            base.Update();
-
-            if ((HasFocus) || (normalizedInterest > 0))
+            if ((eyeTarget.IsLookedAt) || (normalizedInterest > 0))
             {
                 // Handle target confidence
-                if (HasFocus)
+                if (eyeTarget.IsLookedAt)
                 {
                     // Increase interest
                     normalizedInterest = NormalizedInterest_Dwell();
@@ -121,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
             }
 
             // Once the user is not pointing at the target anymore, let's free some space and destroy the instance of the visual feedback.
-            if ((!HasFocus) && (normalizedInterest == 0) && (highlightOn))
+            if ((!eyeTarget.IsLookedAt) && (normalizedInterest == 0) && (highlightOn))
             {
                 DestroyLocalFeedback();
             }
@@ -337,18 +339,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
         {
             get
             {
-                return ((!HasFocus) ? 0 : (DateTime.Now - cursorEnterTime).TotalMilliseconds);
+                return ((!eyeTarget.IsLookedAt) ? 0 : (DateTime.Now - cursorEnterTime).TotalMilliseconds);
             }
         }
 
         #region Event handlers
 
-        protected override void OnEyeFocusStop()
+        private void OnLookAtStop()
         {
             cursorLeaveTime = DateTime.Now;
         }
 
-        protected override void OnEyeFocusStart()
+        private void OnLookAtStart()
         {
             // Reset dwell timer if necessary - If the user didn't look away from 
             // the target long enough, it's not considered as "new" entry.

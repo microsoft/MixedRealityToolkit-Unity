@@ -4,28 +4,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TouchHandler : MonoBehaviour, IMixedRealityTouchHandler
+namespace Microsoft.MixedReality.Toolkit.Input
 {
-
-    #region Event handlers
-    public TouchEvent OnTouchStarted = new TouchEvent();
-    public TouchEvent OnTouchCompleted = new TouchEvent();
-    public TouchEvent OnTouchUpdated = new TouchEvent();
-    #endregion
-
-
-    void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
+    public class TouchHandler : MonoBehaviour, IMixedRealityTouchHandler
     {
-        OnTouchCompleted.Invoke(eventData);
-    }
 
-    void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
-    {
-        OnTouchStarted.Invoke(eventData);
-    }
+        #region Event handlers
+        public TouchEvent OnTouchStarted = new TouchEvent();
+        public TouchEvent OnTouchCompleted = new TouchEvent();
+        public TouchEvent OnTouchUpdated = new TouchEvent();
+        #endregion
 
-    void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
-    {
-        OnTouchUpdated.Invoke(eventData);
+
+        void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
+        {
+            OnTouchCompleted.Invoke(eventData);
+        }
+
+        void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
+        {
+            OnTouchStarted.Invoke(eventData);
+        }
+
+        void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
+        {
+            OnTouchUpdated.Invoke(eventData);
+        }
     }
 }
