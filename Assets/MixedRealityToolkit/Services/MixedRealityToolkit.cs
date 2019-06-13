@@ -820,7 +820,6 @@ namespace Microsoft.MixedReality.Toolkit
             if (!isInitializing)
             {
                 serviceInstance.Initialize();
-                //serviceInstance.Enable();
             }
 
             return true;
