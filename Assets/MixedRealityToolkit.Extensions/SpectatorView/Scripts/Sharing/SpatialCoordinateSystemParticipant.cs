@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.XR.WSA;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
@@ -132,7 +131,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             using (BinaryWriter message = new BinaryWriter(stream))
             {
                 message.Write(SpatialCoordinateSystemManager.CoordinateStateMessageHeader);
-                message.Write(WorldManager.state == PositionalLocatorState.Active);
+#if UNITY_WSA
+                bool isTracking = UnityEngine.XR.WSA.WorldManager.state == UnityEngine.XR.WSA.PositionalLocatorState.Active;\
+#else
+                // For Android, this should refer to GoogleARCore.Session.Status == GoogleARCore.SessionStatus.Tracking, but that requires
+                // an eventual dependency between SpectatorView and GoogleARCore. For now, always report that tracking is enabled
+                // for other platforms.
+                bool isTracking = true;
+#endif
+                message.Write(isTracking);
                 message.Write(Coordinate != null && (Coordinate.State == LocatedState.Tracking || Coordinate.State == LocatedState.Resolved));
                 message.Write(IsLocatingSpatialCoordinate);
 
