@@ -36,13 +36,6 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         [Tooltip("Rotation of the anchor used for localization.")]
         private Vector3 anchorRotation = Vector3.zero;
 
-        /// <summary>
-        /// Configuration for the Azure Spatial Anchors service.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Configuration for the Azure Spatial Anchors service.")]
-        private SpatialAnchorsConfiguration configuration = null;
-
         public override bool TryDeserializeSettings(BinaryReader reader, out SpatialAnchorsConfiguration settings)
         {
             return SpatialAnchorsConfiguration.TryDeserialize(reader, out settings);
@@ -59,9 +52,9 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             Debug.LogError("Attempting to use SpatialAnchorLocalizer but ASA is not enabled for this build");
             return null;
 #elif UNITY_WSA && SPATIALALIGNMENT_ASA
-            return new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsUWPCoordinateService(configuration), settings, peerConnection);
+            return new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsUWPCoordinateService(settings), settings, peerConnection);
 #elif UNITY_ANDROID && SPATIALALIGNMENT_ASA
-            return new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsAndroidCoordinateService(configuration), settings, peerConnection)
+            return new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsAndroidCoordinateService(settings), settings, peerConnection);
 #elif UNITY_IOS && SPATIALALIGNMENT_ASA
             Debug.LogError("SpatialAnchorLocalizer does not yet support iOS");
             return null;
