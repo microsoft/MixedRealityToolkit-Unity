@@ -6,7 +6,8 @@ Eye tracking allows for fast and effortless target selections using a combinatio
 - Look & Say _"Select"_ (default voice command)
 - Look & Say _"Explode"_ or _"Pop"_ (custom voice commands)
 - Look & Bluetooth button
-- Look & Pinch (i.e., hold up your hand in front of you and bring your thumb and index finger together)
+- Look & Pinch (i.e., hold up your hand in front of you and pinch your thumb and index finger together): 
+Please note that for this to work, the hand rays need to be disabled!
 
 To select holographic content using eye gaze, there are several options:
 
@@ -21,29 +22,29 @@ As a developer, you want to provide a flexible solution that allows the user to 
 - Look at it from a distance and say "select"
 - Target the button using a hand ray and performing a pinch
 In this case, the most flexible solution is to use the primary focus handler as it will notify you whenever the currently prioritized primary focus pointer triggers an event. 
+Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view.
 
-**IMPORTANT:** Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view.
-If you want to support a [_'look and pinch'_ interaction, you need to disable the hand ray](EyeTracking_EyesAndHands.md).
-In our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see [**Eye-Supported Positioning**](EyeTracking_Positioning.md).
+This is why in our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see [**Eye-Supported Positioning**](EyeTracking_Positioning.md).
 
 **2. Use both eye focus and hand rays at the same time:** 
 There might be instances where you want to be more specific which type of focus pointers can trigger certain events and allow for simultaneously using multiple far interaction techniques. 
 
 For example:
-In your app, a user can use far hand rays to manipulate some holographic mechanical setup.
-As part of that scenario, you want to support a mechanic that grabs some holographic tools to repair an engine. 
+In your app, a user can use far hand rays to manipulate some holographic mechanical setup - e.g., grab and hold som holographic tools using hand rays to repair an engine. 
 While doing so, the user has to go through a number of instructions and record his progress by marking off some check boxes.
 If the user has his/her hands _not busy_, it would be instinctual to simply touch the check box or select it using a hand ray. 
-However, if the user has his/her hands busy, holding the holographic tools in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and simply looking at a check box and say "check it!".
+However, if the user has his/her hands busy, as in our case holding some holographic tools in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and simply looking at a check box and say "check it!".
+
+To enable this, you need to use eye-specific EyeTrackingTarget script that is independent from the core MRTK FocusHandlers and will be discussed in the following.
 
 
-## Use generic focus and pointer handlers
+## 1. Use generic focus and pointer handlers
 If eye tracking is set up correctly (see [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)), enabling users to select 
 holograms using their eyes is the same as for any other focus input (e.g., head gaze or hand ray).
 This provides the great advantage of a flexible way to interact with your holograms by defining the main focus type in your MRTK Input Pointer Profile depending on your user's needs, while leaving your code untouched.
 This allows for switching between head or eye gaze without changing a line of code or replace hand rays with eye targeting for far interactions.
 
-### Focusing a hologram
+### Focusing on a hologram
 To detect when a hologram is focused, use the _'IMixedRealityFocusHandler'_ interface that provides you with two interface members: _OnFocusEnter_ and _OnFocusExit_.
 
 Here is a simple example from [ColorTap.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ColorTap) to change a hologram's color when being looked at.
@@ -107,7 +108,7 @@ _MRTK Configuration Profile_ -> _Input_ -> _Input Actions_.
 Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus input if it is _eye gaze_ and it is currently the primary input pointer.
 For this purpose, you would use the _BaseEyeFocusHandler_ which is specific to eye tracking and which derives from 
 the _FocusHandler_.
-As mentioned before, it will only trigger if eye gaze targeting is currently the primary pointer input (i.e., no hand ray is active). For more information, see [How to support eye gaze + hand gestures](EyeTracking_EyesAndHands.md).
+As mentioned before, it will only trigger if eye gaze targeting is currently the primary pointer input (i.e., no hand ray is active).
 
 
 Here is an example from [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
@@ -171,8 +172,7 @@ The _BaseEyeFocusHandler_ provides more than only _OnEyeFocusStay_. Here is an o
 ```
 
 
-
-## Eye-gaze-specific EyeTrackingTarget 
+## 2. Independent eye-gaze-specific EyeTrackingTarget
 Finally, we provide you with a solution that let's you treat eye-based input completely independent from other focus pointers via the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script. 
 
 This has three _advantages_: 
@@ -191,7 +191,7 @@ Similar to the _BaseFocusHandler_, the _EyeTrackingTarget_ comes ready with seve
 - OnSelected()
 In the following, we walk you through a few examples for how to use _EyeTrackingTarget_.
 
-
+<br>
 
 ### Example #1: Eye-supported smart notifications
 In [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity), 
@@ -229,7 +229,7 @@ Otherwise this can quickly feel extremely overwhelming.
 
 
 
-
+<br>
 
 ### Example #2: Holographic gem rotates slowly when looking at it
 Similar to Example #1, we can easily create a hover feedback for our holographic gems in [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity) scene that will slowly rotate in a constant direction and at a constant speed (in contrast to the rotation example from above) when being looked at. 
@@ -273,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 ![EyeTrackingTarget sample](../Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg)
 
 
-
+<br>
 
 ### Example #3: Pop those gems aka _multimodal eye-gaze-supported target selection_
 In the previous example, we have shown how easy it is to detect whether a target is looked at and how to trigger a reaction to that.
