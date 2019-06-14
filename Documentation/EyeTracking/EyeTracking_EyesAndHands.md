@@ -9,8 +9,8 @@ In our [MRTK eye tracking demos](), we describe several examples for using eyes 
 Please note that MRTK is currently designed in a way that at a distance hand rays act as the prioritized focus pointers. 
 This means that the head and eye gaze pointers will automatically be suppressed once a hand is detected.
 However, this may not be the way you would like to interact at a distance and rather favor a simple _'gaze and commit'_ interaction independent of the presence of hands in your view. 
-To disable the hand ray pointer, simply remove the _'Default Pointer'_ in your _Input -> Pointer_ MRTK configuration settings.
-To use eyes + hands as described above in your app, please also make sure that you meet all of the [requirements for using eye tracking](EyeTracking_BasicSetup.md).
+To disable the hand ray pointer, simply remove the _'DefaultControllerPointer'_ in your _Input -> Pointer_ MRTK configuration setting.
+To use eyes and hands as described above in your app, please also make sure that you meet all of the [requirements for using eye tracking](EyeTracking_BasicSetup.md).
 
 ![How to remove the hand ray](../Images/EyeTracking/mrtk_setup_removehandray.jpg)
 
