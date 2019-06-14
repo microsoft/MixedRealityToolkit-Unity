@@ -187,6 +187,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected new void OnValidate()
         {
+            if (Application.isPlaying)
+            {   // Don't validate during play mode
+                return;
+            }
+
             base.OnValidate();
 
             Debug.Assert(localForward.magnitude > 0);

@@ -72,6 +72,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected void OnValidate()
         {
+            if (Application.isPlaying)
+            {   // Don't validate during play mode
+                return;
+            }
+
             distBack = Math.Max(distBack, 0);
             distFront = Math.Max(distFront, 0);
             debounceThreshold = Math.Max(debounceThreshold, 0);

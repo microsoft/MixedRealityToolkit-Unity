@@ -32,22 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { endPoint = value; }
         }
 
-        #region MonoBehaviour Implementation
-
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            if (endPoint.Position == startPoint.Position)
-            {
-                endPoint.Position = transform.InverseTransformPoint(LineTransform.position) + Vector3.right;
-            }
-
-            startPoint.Position = transform.transform.InverseTransformPoint(LineTransform.position);
-        }
-
-        #endregion MonoBehaviour Implementation
-
         #region Line Data Provider Implementation
 
         /// <inheritdoc />

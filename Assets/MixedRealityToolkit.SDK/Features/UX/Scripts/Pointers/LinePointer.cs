@@ -81,11 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region MonoBehaviour Implementation
 
-        protected virtual void OnValidate()
-        {
-            CheckInitialization();
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();

@@ -76,8 +76,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         #region MonoBehaviour Implementation
 
-        protected override void OnValidate()
-        {
+        private void OnValidate()
+        {   // This is an appropriate use of OnValidate.
             BuildPoints();
         }
 

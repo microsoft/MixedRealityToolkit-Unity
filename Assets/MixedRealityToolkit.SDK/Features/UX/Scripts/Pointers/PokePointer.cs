@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    [ExecuteAlways]
     public class PokePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
         [SerializeField]
@@ -25,12 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // poke-down / poke-up events for this object. This is also the case when the object within
         // the same current closest touchable component's changes (e.g. Unity UI control elements).
         private GameObject currentTouchableObjectDown = null;
-
-        protected void OnValidate()
-        {
-            Debug.Assert(line != null, this);
-            Debug.Assert(visuals != null, this);
-        }
 
         public bool IsNearObject
         {
@@ -262,6 +257,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Poke pointer should not respond when a button is released or hand is un-pinched
             // It should only dispatch events based on collision with touchables.
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            Debug.Assert(line != null, "No line renderer found in PokePointer.");
+            Debug.Assert(visuals != null, "No visuals object found in PokePointer.");
         }
     }
 }

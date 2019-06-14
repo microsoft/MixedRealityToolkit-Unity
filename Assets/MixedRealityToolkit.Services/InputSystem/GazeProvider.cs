@@ -335,7 +335,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnValidate()
         {
-            Debug.Assert(minHeadVelocityThreshold < maxHeadVelocityThreshold, "Minimum head velocity threshold should be less than the maximum velocity threshold.");
+            if (minHeadVelocityThreshold > maxHeadVelocityThreshold)
+            {
+                Debug.LogWarning("Minimum head velocity threshold should be less than the maximum velocity threshold. Changing now.");
+                minHeadVelocityThreshold = maxHeadVelocityThreshold;
+            }
         }
 
         protected override void OnEnable()

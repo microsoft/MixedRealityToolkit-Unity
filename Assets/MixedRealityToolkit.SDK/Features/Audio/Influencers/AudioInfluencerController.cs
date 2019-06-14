@@ -151,7 +151,9 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         }
 
         private void Awake()
-        {           
+        {
+            audioSource = GetComponent<AudioSource>();
+
             initialAudioSourceVolume = audioSource.volume;
 
             // Get optional filters (and initial values) that the sound designer / developer 
@@ -202,11 +204,6 @@ namespace Microsoft.MixedReality.Toolkit.Audio
                 previousInfluencers = influencers;
                 lastUpdate = now;
             }
-        }
-
-        private void OnValidate()
-        {
-            audioSource = gameObject.GetComponent<AudioSource>();
         }
 
         /// <summary>

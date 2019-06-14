@@ -304,12 +304,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         #region MonoBehaviour Implementation
 
-        protected virtual void OnValidate()
-        {
-            UpdateMatrix();
-            distorters.Sort();
-        }
-
         protected virtual void OnEnable()
         {
             UpdateMatrix();
@@ -672,7 +666,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 #endif
-
             DrawUnselectedGizmosPreview();
         }
 

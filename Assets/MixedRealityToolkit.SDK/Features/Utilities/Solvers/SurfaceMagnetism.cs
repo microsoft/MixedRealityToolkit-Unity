@@ -162,23 +162,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         private float ScaleOverride => useLinkedAltScaleOverride ? SolverHandler.AltScale.Current.magnitude : volumeCastSizeOverride;
 
-        protected override void OnValidate()
+        protected override void OnEnable()
         {
-            base.OnValidate();
+            base.OnEnable();
 
-            if (raycastMode == SceneQueryType.BoxRaycast)
-            {
-                boxCollider = gameObject.GetComponent<BoxCollider>();
-
-                if (boxCollider == null)
-                {
-                    Debug.LogError($"Box raycast mode requires a BoxCollider, but none was found on {name}! Please add one.");
-                }
-            }
-        }
-
-        private void Start()
-        {
             if (raycastMode == SceneQueryType.BoxRaycast && boxCollider == null)
             {
                 boxCollider = gameObject.GetComponent<BoxCollider>();
