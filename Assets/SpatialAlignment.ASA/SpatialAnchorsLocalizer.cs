@@ -57,12 +57,14 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
 
 #if !SPATIALALIGNMENT_ASA
             Debug.LogError("Attempting to use SpatialAnchorLocalizer but ASA is not enabled for this build");
+            return null;
 #elif UNITY_WSA && SPATIALALIGNMENT_ASA
             return new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsUWPCoordinateService(configuration), settings, peerConnection);
 #elif UNITY_ANDROID && SPATIALALIGNMENT_ASA
-            spatialCoordinateService = coordinateService = new SpatialAnchorsAndroidCoordinateService(configuration);
+            return new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsAndroidCoordinateService(configuration), settings, peerConnection)
 #elif UNITY_IOS && SPATIALALIGNMENT_ASA
             Debug.LogError("SpatialAnchorLocalizer does not yet support iOS");
+            return null;
 #endif
         }
 
