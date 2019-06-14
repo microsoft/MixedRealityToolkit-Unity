@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private Vector3 markerVisualRotation = new Vector3(0, 180, 0);
 
         public override Guid SpatialLocalizerId => Id;
-        public readonly Guid Id = new Guid("BA5C8EA7-439C-4E1A-9925-218A391EF309");
+        public static readonly Guid Id = new Guid("BA5C8EA7-439C-4E1A-9925-218A391EF309");
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -58,17 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             FieldHelper.ValidateType<IMarkerVisual>(MarkerVisual);
         }
 #endif
-        private void Awake()
-        {
-            if (SpatialCoordinateSystemManager.Instance != null)
-            {
-                SpatialCoordinateSystemManager.Instance.RegisterSpatialLocalizer(this);
-            }
-            else
-            {
-                DebugLog("SpatialCoordinateSystemManager was not found in scene");
-            }
-        }
 
         /// <inheritdoc />
         public override ISpatialLocalizationSession CreateLocalizationSession(IPeerConnection peerConnection, MarkerVisualLocalizationSettings settings)

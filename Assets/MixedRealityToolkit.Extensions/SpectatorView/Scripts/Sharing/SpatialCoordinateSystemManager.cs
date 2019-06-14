@@ -214,29 +214,32 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (!TryGetSpatialCoordinateSystemParticipant(endpoint, out SpatialCoordinateSystemParticipant participant))
             {
-                Debug.LogError("Received participant localization data for a missing participant");
+                Debug.LogError($"Received participant localization data for a missing participant: {endpoint.Address}");
                 return;
             }
 
             if (participant.CurrentLocalizationSession == null)
             {
-                Debug.LogError("Received participant localization data for a participant that is not currently running a localization session");
+                Debug.LogError($"Received participant localization data for a participant that is not currently running a localization session: {endpoint.Address}");
                 return;
             }
 
+            DebugLog($"Data received for participant: {endpoint.Address}, {command}");
             participant.CurrentLocalizationSession.OnDataReceived(reader);
         }
 
         private async Task RunLocalizationSessionAsync(ISpatialLocalizer localizer, ISpatialLocalizationSettings settings, SpatialCoordinateSystemParticipant participant)
         {
+            DebugLog($"Creating localization session: {participant.SocketEndpoint.Address}, {settings.ToString()}, {localizer.ToString()}");
             using (currentLocalizationSession = localizer.CreateLocalizationSession(participant, settings))
             {
+                DebugLog($"Setting localization session for participant: {participant.SocketEndpoint.Address}, {currentLocalizationSession.ToString()}");
                 participant.CurrentLocalizationSession = currentLocalizationSession;
 
                 try
                 {
+                    DebugLog($"Starting localization: {participant.SocketEndpoint.Address}, {currentLocalizationSession.ToString()}");
                     var coordinate = await currentLocalizationSession.LocalizeAsync(CancellationToken.None);
-
                     participant.Coordinate = coordinate;
                 }
                 finally

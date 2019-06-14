@@ -28,18 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private MonoBehaviour MarkerDetector = null;
         private IMarkerDetector markerDetector = null;
 
-        private MarkerDetectorCoordinateService markerDetectorCoordinateService = null;
-        private TaskCompletionSource<int> markerAssigned = null;
-        private CancellationTokenSource discoveryCTS = null;
-
-        private Dictionary<Guid, Action<Action<BinaryWriter>>> sessionWriteAndSendDictionary = new Dictionary<Guid, Action<Action<BinaryWriter>>>();
-        private Dictionary<Guid, string> sessionCoordinateIdDictionary = new Dictionary<Guid, string>();
-        private Dictionary<string, ISpatialCoordinate> coordinateDictionary = new Dictionary<string, ISpatialCoordinate>();
-        private HashSet<string> neededCoordinates = new HashSet<string>();
-        private bool localizing = false;
-
         public override Guid SpatialLocalizerId => Id;
-        public readonly Guid Id = new Guid("2DA7D277-323F-4A0D-B3BB-B2BA6D3EF70E");
+        public static readonly Guid Id = new Guid("2DA7D277-323F-4A0D-B3BB-B2BA6D3EF70E");
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -47,18 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             FieldHelper.ValidateType<IMarkerDetector>(MarkerDetector);
         }
 #endif
-
-        private void Awake()
-        {
-            if (SpatialCoordinateSystemManager.Instance != null)
-            {
-                SpatialCoordinateSystemManager.Instance.RegisterSpatialLocalizer(this);
-            }
-            else
-            {
-                DebugLog("SpatialCoordinateSystemManager was not found in scene");
-            }
-        }
 
         /// <inheritdoc />
         public override ISpatialLocalizationSession CreateLocalizationSession(IPeerConnection peerConnection, MarkerVisualDetectorLocalizationSettings settings)
