@@ -3,14 +3,17 @@ This page covers how to set up your Unity MRTK scene to use eye tracking in your
 The following assumes you are starting out with a fresh new scene.
 Alternatively, you can check out our already configured [MRTK eye tracking examples](EyeTracking_ExamplesOverview.md) with tons of great examples that you can directly build on.
 
+
 ### Eye tracking requirements 
-For eye tracking to work correctly, the following requirements must be met:
+For eye tracking to work correctly, the following requirements must be met.
+If you are new to eye tracking on HoloLens 2 and to how eye tracking is set up in MRTK, don't worry! 
+We will go into detail on how to address each of them further below.
 
 1. An _'Eye Gaze Data Provider'_ must be added to the input system. This provides eye tracking data from the platform.
-2. The GazeProvider must have its "Use Eye Tracking" property set to true. Note that true is the default value (so no special
+2. The GazeProvider must have its _'Use Eye Tracking'_ property set to true. Note that true is the default value (so no special
    action is required unless you have actively unchecked this property.)
-3. The _'Gaze Input'_ capability must be enabled in the application manifest. **Currently this is only available in Visual Studio.**
-4. The HoloLens **must** be calibrated for the current user under system settings.
+3. The _'GazeInput'_ capability must be enabled in the application manifest. **Currently this is only available in Visual Studio.**
+4. The HoloLens **must** be eye calibrated for the current user. Check out our [sample for detecting whether a user is eye calibrated or not](EyeTracking_IsUserCalibrated.md). 
 
 
 **IMPORTANT:** If any of the above requirements are not met, the application will automatically fall back to head-based gaze tracking.
