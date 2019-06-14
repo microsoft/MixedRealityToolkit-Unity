@@ -247,6 +247,56 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_RegisterHandler_" data-uid="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.RegisterHandler*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_RegisterHandler__1_IEventSystemHandler_" data-uid="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.RegisterHandler``1(IEventSystemHandler)">RegisterHandler&lt;T&gt;(IEventSystemHandler)</h4>
+  <div class="markdown level1 summary"><p>Registers the given handler as a global listener for all events handled via the T interface.
+T must be an interface type, not a class type, derived from IEventSystemHandler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void RegisterHandler&lt;T&gt;(IEventSystemHandler handler)
+    where T : IEventSystemHandler</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEventSystemHandler</span></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>Handler to receive global input events of specified handler type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_RegisterHandler__1_IEventSystemHandler__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If you want to register a single C# object as global handler for several event handling interfaces,
+you must call this function for each interface type.</p>
+</div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_Unregister_" data-uid="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.Unregister*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_Unregister_GameObject_" data-uid="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.Unregister(GameObject)">Unregister(GameObject)</h4>
   <div class="markdown level1 summary"><p>Unregisters a <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> from listening for events from this Event System.</p>
@@ -274,6 +324,56 @@
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_UnregisterHandler_" data-uid="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.UnregisterHandler*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_UnregisterHandler__1_IEventSystemHandler_" data-uid="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.UnregisterHandler``1(IEventSystemHandler)">UnregisterHandler&lt;T&gt;(IEventSystemHandler)</h4>
+  <div class="markdown level1 summary"><p>Unregisters the given handler as a global listener for all events handled via the T interface.
+T must be an interface type, not a class type, derived from IEventSystemHandler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void UnregisterHandler&lt;T&gt;(IEventSystemHandler handler)
+    where T : IEventSystemHandler</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEventSystemHandler</span></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>Handler to stop receiving global input events of specified handler type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_UnregisterHandler__1_IEventSystemHandler__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If a single C# object listens to global input events for several event handling interfaces,
+you must call this function for each interface type.</p>
+</div>
 </article>
           </div>
           
