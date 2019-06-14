@@ -63,14 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool IsInputEnabled { get; }
 
         /// <summary>
-        /// Checks to see if one or more registered data providers supports the requested capability
-        /// on the current platform.
-        /// </summary>
-        /// <param name="capability">The capability to check.</param>
-        /// <returns>True if the capability is supported, false otherwise./returns>
-        bool CheckCapability(MixedRealityInputCapabilities capability);
-
-        /// <summary>
         /// Push a disabled input state onto the Input System.
         /// While input is disabled no events will be sent out and the cursor displays
         /// a waiting animation.

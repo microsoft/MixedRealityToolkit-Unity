@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsUniversal,
         "Windows Mixed Reality Device Manager")]
-    public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager
+    public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -42,51 +42,53 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
+        #region IMixedRealityCapabilityCheck Implementation
+
         /// <inheritdoc/ >
-        public override bool CheckCapability(MixedRealityInputCapabilities capability)
+        public bool CheckCapability(MixedRealityCapability capability)
         {
-            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable) // Windows 10 1903 or later
             {
-                // Windows 10 1903 contains an API that allows to check input type support.
 #if WINDOWS_UWP
                 switch (capability)
                 {
-                    case MixedRealityInputCapabilities.ArticulatedHand:
-                    case MixedRealityInputCapabilities.GGVHand:
+                    case MixedRealityCapability.ArticulatedHand:
+                    case MixedRealityCapability.GGVHand:
                         return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Hand);
 
-                    case MixedRealityInputCapabilities.MotionController:
+                    case MixedRealityCapability.MotionController:
                         return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Controller);
                 }
 #endif // WINDOWS_UWP
             }
-            else
-            {
-                // Pre-Windows 10 1903.
+            else // Pre-Windows 10 1903.
+            {                
                 if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
                 {
                     // HoloLens supports GGV hands
-                    return (capability == MixedRealityInputCapabilities.GGVHand);
+                    return (capability == MixedRealityCapability.GGVHand);
                 }
                 else
                 {
                     // Windows Mixed Reality Immersive devices support motion controllers
-                    return (capability == MixedRealityInputCapabilities.MotionController);
+                    return (capability == MixedRealityCapability.MotionController);
                 }
             }
 
-                return false;
+            return false;
         }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
 
 #if UNITY_WSA
 
-            /// <summary>
-            /// The initial size of interactionmanagerStates.
-            /// </summary>
-            /// <remarks>
-            /// This value is arbitrary but chosen to be a number larger than the typical expected number (to avoid
-            /// having to do further allocations).
-            /// </remarks>
+        /// <summary>
+        /// The initial size of interactionmanagerStates.
+        /// </summary>
+        /// <remarks>
+        /// This value is arbitrary but chosen to be a number larger than the typical expected number (to avoid
+        /// having to do further allocations).
+        /// </remarks>
         public const int MaxInteractionSourceStates = 20;
 
         /// <summary>

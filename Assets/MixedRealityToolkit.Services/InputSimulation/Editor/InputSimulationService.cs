@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
-    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService, IMixedRealityEyeGazeDataProvider
+    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService, IMixedRealityEyeGazeDataProvider, IMixedRealityCapabilityCheck
     {
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
@@ -55,18 +55,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <inheritdoc />
-        public override bool CheckCapability(MixedRealityInputCapabilities capability)
+        public bool CheckCapability(MixedRealityCapability capability)
         {
             switch (capability)
             {
-                case MixedRealityInputCapabilities.ArticulatedHand:
+                case MixedRealityCapability.ArticulatedHand:
                     return (InputSimulationProfile.HandSimulationMode == HandSimulationMode.Articulated);
 
-                case MixedRealityInputCapabilities.GGVHand:
+                case MixedRealityCapability.GGVHand:
                     // If any hand simulation is enabled, GGV interactions are supported.
                     return (InputSimulationProfile.HandSimulationMode != HandSimulationMode.Disabled);
 
-                case MixedRealityInputCapabilities.EyeTracking:
+                case MixedRealityCapability.EyeTracking:
                     return InputSimulationProfile.SimulateEyePosition;
             }
 

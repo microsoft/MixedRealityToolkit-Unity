@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.LinuxStandalone,
         "OpenVR Device Manager")]
-    public class OpenVRDeviceManager : UnityJoystickManager
+    public class OpenVRDeviceManager : UnityJoystickManager, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -34,10 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <inheritdoc />
-        public override bool CheckCapability(MixedRealityInputCapabilities capability)
+        public bool CheckCapability(MixedRealityCapability capability)
         {
             // The OpenVR platform supports motion controllers.
-            return (capability == MixedRealityInputCapabilities.MotionController);
+            return (capability == MixedRealityCapability.MotionController);
         }
 
         #region Controller Utilities

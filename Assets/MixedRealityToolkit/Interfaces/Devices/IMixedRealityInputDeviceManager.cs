@@ -9,13 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public interface IMixedRealityInputDeviceManager : IMixedRealityDataProvider
     {
         /// <summary>
-        /// Checks to see if the device manager supports the requested capability on the current platform.
-        /// </summary>
-        /// <param name="capability">The capability to be checked.</param>
-        /// <returns>True if the capability is supported, fale otherwise.</returns>
-        bool CheckCapability(MixedRealityInputCapabilities capability);
-
-        /// <summary>
         /// Retrieve all controllers currently registered with this device at runtime (if direct access is required)
         /// </summary>
         /// <returns></returns>

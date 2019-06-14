@@ -46,12 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected MixedRealityInputSystemProfile InputSystemProfile => InputSystem?.InputSystemProfile;
 
         /// <inheritdoc />
-        public virtual bool CheckCapability(MixedRealityInputCapabilities capability)
-        {
-            return false;
-        }
-
-        /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
 
         /// <summary>
