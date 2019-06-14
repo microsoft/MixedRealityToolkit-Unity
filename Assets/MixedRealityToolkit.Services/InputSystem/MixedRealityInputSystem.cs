@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Jobs;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
