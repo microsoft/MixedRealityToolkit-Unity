@@ -28,19 +28,27 @@ Please note that if hand rays are enabled, the head or eye gaze focus pointer ar
 
 **IMPORTANT:** Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view.
 If you want to support a [_'look and pinch'_ interaction, you need to disable the hand ray](EyeTracking_EyesAndHands.md).
-In our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see [**Eye-Supported Positioning**](EyeTracking_Positioning.md).
+In our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see for example [**Eye-Supported Positioning**](EyeTracking_Positioning.md).
 
 **2. Use both eye focus and hand rays at the same time:** 
 There might be instances where you want to be more specific which type of focus pointers can trigger certain events and allow for simultaneously using multiple far interaction techniques. 
 
 For example:
-In your app, a user can use far hand rays to manipulate some holographic mechanical setup - e.g., grab and hold som holographic tools using hand rays to repair an engine. 
+In your app, a user can use far hand rays to manipulate some holographic mechanical setup.
+As part of that scenario, you want to support a mechanic that grabs some holographic tools to repair an engine. 
 While doing so, the user has to go through a number of instructions and record his progress by marking off some check boxes.
 If the user has his/her hands _not busy_, it would be instinctual to simply touch the check box or select it using a hand ray. 
-However, if the user has his/her hands busy, as in our case holding some holographic tools in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and simply looking at a check box and say "check it!".
+However, if the user has his/her hands busy, holding the holographic tools in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and simply looking at a check box and say "check it!".
 
-To enable this, you need to use eye-specific EyeTrackingTarget script that is independent from the core MRTK FocusHandlers and will be discussed in the following.
+For example:
+In your app, a user can use far hand rays to manipulate some holographic mechanical setup - e.g., grab and hold some distant holographic engine parts and hold them in place. 
+While doing so, the user has to go through a number of instructions and record his progress by marking off some check boxes.
+If the user has his/her hands _not busy_, it would be instinctual to simply touch the check box or select it using a hand ray. 
+However, if the user has his/her hands busy, as in our case holding some holographic tools in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and to simply look at a check box and say "check it!".
 
+To enable this, you need to use eye-specific EyeTrackingTarget script that is independent from the core MRTK FocusHandlers and will be discussed further below.
+
+<br>
 
 ## 1. Use generic focus and pointer handlers
 If eye tracking is set up correctly (see [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)), enabling users to select 
@@ -112,8 +120,7 @@ _MRTK Configuration Profile_ -> _Input_ -> _Input Actions_.
 Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus input if it is _eye gaze_ and it is currently the primary input pointer.
 For this purpose, you would use the _BaseEyeFocusHandler_ which is specific to eye tracking and which derives from 
 the _FocusHandler_.
-As mentioned before, it will only trigger if eye gaze targeting is currently the primary pointer input (i.e., no hand ray is active).
-
+As mentioned before, it will only trigger if eye gaze targeting is currently the primary pointer input (i.e., no hand ray is active). For more information, see [How to support eye gaze + hand gestures](EyeTracking_EyesAndHands.md).
 
 Here is an example from [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
 ).
@@ -175,6 +182,8 @@ The _BaseEyeFocusHandler_ provides more than only _OnEyeFocusStay_. Here is an o
         protected virtual void OnEyeFocusDwell() { }
 ```
 
+<br>
+<br>
 
 ## 2. Independent eye-gaze-specific EyeTrackingTarget
 Finally, we provide you with a solution that let's you treat eye-based input completely independent from other focus pointers via the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script. 
