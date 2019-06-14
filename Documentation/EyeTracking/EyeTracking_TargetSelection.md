@@ -3,10 +3,10 @@
 # Eye-supported target selection
 This page discusses different options for accessing eye gaze data and eye gaze specific events to select targets in MRTK. 
 Eye tracking allows for fast and effortless target selections using a combination of information about what a user is looking at with additional inputs such as _hand tracking_ and _voice commands_:
-- Look & Pinch (i.e., hold up your hand in front of you and pinch your thumb and index finger together)
 - Look & Say _"Select"_ (default voice command)
 - Look & Say _"Explode"_ or _"Pop"_ (custom voice commands)
 - Look & Bluetooth button
+- Look & Pinch (i.e., hold up your hand in front of you and bring your thumb and index finger together)
 
 To select holographic content using eye gaze, there are several options:
 
@@ -21,9 +21,10 @@ As a developer, you want to provide a flexible solution that allows the user to 
 - Look at it from a distance and say "select"
 - Target the button using a hand ray and performing a pinch
 In this case, the most flexible solution is to use the primary focus handler as it will notify you whenever the currently prioritized primary focus pointer triggers an event. 
-Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view.
 
-This is why in our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see [**Eye-Supported Positioning**](EyeTracking_Positioning.md).
+**IMPORTANT:** Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view.
+If you want to support a [_'look and pinch'_ interaction, you need to disable the hand ray](EyeTracking_EyesAndHands.md).
+In our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see [**Eye-Supported Positioning**](EyeTracking_Positioning.md).
 
 **2. Use both eye focus and hand rays at the same time:** 
 There might be instances where you want to be more specific which type of focus pointers can trigger certain events and allow for simultaneously using multiple far interaction techniques. 
@@ -106,7 +107,7 @@ _MRTK Configuration Profile_ -> _Input_ -> _Input Actions_.
 Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus input if it is _eye gaze_ and it is currently the primary input pointer.
 For this purpose, you would use the _BaseEyeFocusHandler_ which is specific to eye tracking and which derives from 
 the _FocusHandler_.
-As mentioned before, it will only trigger if eye gaze targeting is currently the primary pointer input (i.e., no hand ray is active).
+As mentioned before, it will only trigger if eye gaze targeting is currently the primary pointer input (i.e., no hand ray is active). For more information, see [How to support eye gaze + hand gestures](EyeTracking_EyesAndHands.md).
 
 
 Here is an example from [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
