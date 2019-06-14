@@ -17,7 +17,7 @@ using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 
 #if WINDOWS_UWP
 using WindowsInputSpatial = global::Windows.UI.Input.Spatial;
-#endif // WINDOWS_WSA
+#endif // WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
