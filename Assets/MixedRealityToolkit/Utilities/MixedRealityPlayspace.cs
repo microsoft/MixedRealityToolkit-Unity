@@ -152,6 +152,11 @@ namespace Microsoft.MixedReality.Toolkit
             transformation?.Invoke(Transform);
         }
 
+        /// <summary>
+        /// Sets the active playspace to the supplied playspace. 
+        /// If this is different than the current playspace, the current playspace will be disabled.
+        /// </summary>
+        /// <param name="playspace"></param>
         public static void SetActivePlayspace(MixedRealityPlayspace playspace)
         {
             if (playspace == null)
@@ -180,6 +185,11 @@ namespace Microsoft.MixedReality.Toolkit
             mixedRealityPlayspace.gameObject.SetActive(true);
         }
 
+        /// <summary>
+        /// Returns true if the supplied playspace is the active playspace.
+        /// </summary>
+        /// <param name="playspace"></param>
+        /// <returns></returns>
         public static bool IsActivePlayspace(MixedRealityPlayspace playspace)
         {
             return playspace != null && playspace.isActiveAndEnabled && playspace == mixedRealityPlayspace;

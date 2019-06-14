@@ -184,4 +184,3 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         }
     }
 }
- 
