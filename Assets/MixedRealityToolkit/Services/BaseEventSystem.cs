@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         // Lists for handlers which are added/removed during event dispatching.
-        // Game objects and handlers are processed independently, so be kept in separate lists.
+        // Game objects and handlers are processed independently, so can be kept in separate lists.
         private List<Tuple<Action, Type, IEventSystemHandler>> postponedActions = new List<Tuple<Action, Type, IEventSystemHandler>>();
         private List<Tuple<Action, GameObject>> postponedObjectActions = new List<Tuple<Action, GameObject>>();
 
@@ -42,9 +42,9 @@ namespace Microsoft.MixedReality.Toolkit
 
             eventExecutionDepth++;
 
-            // First handle events via old API part, via GameObjects.
-            // This sends event to every component of matching type on this object, 
-            // INCLUDING the ones that don't expect it.
+            // This sends the event to every component that implements the corresponding event handling interface,
+            // regardless of whether it was the one registering the object as global listener or not.
+            // This behavior is kept for backwards compatibility. Will be removed together with the IMixedRealityEventSystem.Register(GameObject listener) interface.
             for (int i = EventListeners.Count - 1; i >= 0; i--)
             {
                 ExecuteEvents.Execute(EventListeners[i], eventData, eventHandler);
@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             eventExecutionDepth--;
 
-            if (eventExecutionDepth == 0 && postponedActions.Count > 0)
+            if (eventExecutionDepth == 0 && (postponedActions.Count > 0 || postponedObjectActions.Count > 0))
             {
                 foreach (var handler in postponedActions)
                 {
@@ -104,6 +104,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
+            // #if due to Microsoft.MixedReality.Toolkit.ReflectionExtensions overload of Type.IsInterface
             #if WINDOWS_UWP && !ENABLE_IL2CPP
                 Debug.Assert(typeof(T).IsInterface());
             #else
@@ -116,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
+            // #if due to Microsoft.MixedReality.Toolkit.ReflectionExtensions overload of Type.IsInterface
             #if WINDOWS_UWP && !ENABLE_IL2CPP
                 Debug.Assert(typeof(T).IsInterface());
             #else
