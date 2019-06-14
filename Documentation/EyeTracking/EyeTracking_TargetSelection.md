@@ -6,14 +6,16 @@ Eye tracking allows for fast and effortless target selections using a combinatio
 - Look & Say _"Select"_ (default voice command)
 - Look & Say _"Explode"_ or _"Pop"_ (custom voice commands)
 - Look & Bluetooth button
-- Look & Pinch (i.e., hold up your hand in front of you and pinch your thumb and index finger together): 
-Please note that for this to work, the hand rays need to be disabled!
+- Look & Pinch (i.e., hold up your hand in front of you and bring your thumb and index finger together)
+    - _Please note that for this to work, the [hand rays need to be disabled](EyeTracking_EyesAndHands.md)!_
 
 To select holographic content using eye gaze, there are several options:
 
 **1. Use the primary focus pointer:** 
-This can be understood as your primary cursor. 
-Please note that based on the current design head or eye gaze is suppressed as a cursor input if hand rays are used.
+This can be understood as your prioritized cursor. 
+By default, if the hands are in view, then this would be hand rays.
+If no hands are in view, then the prioritized pointer would be head or eye gaze. 
+Thus, please note that based on the current design head or eye gaze is suppressed as a cursor input if hand rays are used.
 
 For example: 
 A user wants to select a distant holographic button.
@@ -24,7 +26,9 @@ As a developer, you want to provide a flexible solution that allows the user to 
 In this case, the most flexible solution is to use the primary focus handler as it will notify you whenever the currently prioritized primary focus pointer triggers an event. 
 Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view.
 
-This is why in our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see [**Eye-Supported Positioning**](EyeTracking_Positioning.md).
+**IMPORTANT:** Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view.
+If you want to support a [_'look and pinch'_ interaction, you need to disable the hand ray](EyeTracking_EyesAndHands.md).
+In our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see [**Eye-Supported Positioning**](EyeTracking_Positioning.md).
 
 **2. Use both eye focus and hand rays at the same time:** 
 There might be instances where you want to be more specific which type of focus pointers can trigger certain events and allow for simultaneously using multiple far interaction techniques. 
