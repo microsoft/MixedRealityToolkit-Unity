@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -52,6 +53,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
             string name,
             uint priority,
             BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
+
+        /// <inheritdoc />
+        public override bool CheckCapability(MixedRealityInputCapabilities capability)
+        {
+            switch (capability)
+            {
+                case MixedRealityInputCapabilities.ArticulatedHand:
+                    return (InputSimulationProfile.HandSimulationMode == HandSimulationMode.Articulated);
+
+                case MixedRealityInputCapabilities.GGVHand:
+                    // If any hand simulation is enabled, GGV interactions are supported.
+                    return (InputSimulationProfile.HandSimulationMode != HandSimulationMode.Disabled);
+
+                case MixedRealityInputCapabilities.EyeTracking:
+                    return InputSimulationProfile.SimulateEyePosition;
+            }
+
+            return false;
+        }
 
         /// <inheritdoc />
         public override IMixedRealityController[] GetActiveControllers()

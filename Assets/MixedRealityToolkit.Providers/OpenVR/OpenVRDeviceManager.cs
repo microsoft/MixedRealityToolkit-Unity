@@ -33,6 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             uint priority = DefaultPriority, 
             BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
+        /// <inheritdoc />
+        public override bool CheckCapability(MixedRealityInputCapabilities capability)
+        {
+            // The OpenVR platform supports motion controllers.
+            return (capability == MixedRealityInputCapabilities.MotionController);
+        }
+
         #region Controller Utilities
 
         /// <inheritdoc />

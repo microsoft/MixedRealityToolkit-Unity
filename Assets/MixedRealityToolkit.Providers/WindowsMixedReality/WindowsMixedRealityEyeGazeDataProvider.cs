@@ -51,13 +51,26 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private Ray saccade_initialGazePoint;
         private List<Ray> saccade_newGazeCluster = new List<Ray>();
 
-#if WINDOWS_UWP
-        private static bool askedForETAccessAlready = false; // To make sure that this is only triggered once.
-#endif
-
         public event Action OnSaccade;
         public event Action OnSaccadeX;
         public event Action OnSaccadeY;
+
+#if WINDOWS_UWP
+
+        private static bool askedForETAccessAlready = false; // To make sure that this is only triggered once.
+
+        /// <inheritdoc/ >
+        public override bool CheckCapability(MixedRealityInputCapabilities capability)
+        {
+            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            {
+                return (EyesPose.IsSupported() && (capability == MixedRealityInputCapabilities.EyeTracking));
+            }
+
+            return false;
+        }
+
+#endif // WINDOWS_UWP
 
         public override void Initialize()
         {

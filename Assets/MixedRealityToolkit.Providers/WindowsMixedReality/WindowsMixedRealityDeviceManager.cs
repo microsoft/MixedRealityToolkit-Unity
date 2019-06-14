@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Windows.Input;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using UnityEngine;
 using System;
 
@@ -13,6 +14,10 @@ using System.Linq;
 using UnityEngine.XR.WSA.Input;
 using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 #endif // UNITY_WSA
+
+#if WINDOWS_UWP
+using WindowsInputSpatial = global::Windows.UI.Input.Spatial;
+#endif // WINDOWS_WSA
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
@@ -37,15 +42,51 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
+        /// <inheritdoc/ >
+        public override bool CheckCapability(MixedRealityInputCapabilities capability)
+        {
+            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            {
+                // Windows 10 1903 contains an API that allows to check input type support.
+#if WINDOWS_UWP
+                switch (capability)
+                {
+                    case MixedRealityInputCapabilities.ArticulatedHand:
+                    case MixedRealityInputCapabilities.GGVHand:
+                        return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Hand);
+
+                    case MixedRealityInputCapabilities.MotionController:
+                        return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Controller);
+                }
+#endif // WINDOWS_UWP
+            }
+            else
+            {
+                // Pre-Windows 10 1903.
+                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+                {
+                    // HoloLens supports GGV hands
+                    return (capability == MixedRealityInputCapabilities.GGVHand);
+                }
+                else
+                {
+                    // Windows Mixed Reality Immersive devices support motion controllers
+                    return (capability == MixedRealityInputCapabilities.MotionController);
+                }
+            }
+
+                return false;
+        }
+
 #if UNITY_WSA
 
-        /// <summary>
-        /// The initial size of interactionmanagerStates.
-        /// </summary>
-        /// <remarks>
-        /// This value is arbitrary but chosen to be a number larger than the typical expected number (to avoid
-        /// having to do further allocations).
-        /// </remarks>
+            /// <summary>
+            /// The initial size of interactionmanagerStates.
+            /// </summary>
+            /// <remarks>
+            /// This value is arbitrary but chosen to be a number larger than the typical expected number (to avoid
+            /// having to do further allocations).
+            /// </remarks>
         public const int MaxInteractionSourceStates = 20;
 
         /// <summary>
