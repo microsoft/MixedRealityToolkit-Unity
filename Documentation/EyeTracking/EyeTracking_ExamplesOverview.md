@@ -125,8 +125,11 @@ No problem! Here is what you can do:
 
 Please note that loading the sub scene like this is not persistent: 
 This means that if you deploy your app to the HoloLens 2 device, it will only load the root scene (assuming it appears at the top of your Build Settings). 
-Also, when you share your project with others the sub scenes are not automatically loaded. 
+Also, when you share your project with others, the sub scenes are not automatically loaded. 
 
+<br>
+
+Now that you know how to get the MRTK eye tracking example scenes to work, let's continue with diving deeper into how to select holograms with your eyes: [Eye-supported target selection](EyeTracking_TargetSelection.md).
 
 ---
 [Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
