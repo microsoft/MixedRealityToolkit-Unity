@@ -87,12 +87,15 @@ Now that your scene is set up to use eye tracking, let's take a look at how to a
 Building your app with eye tracking should be similar to how you would compile other HoloLens 2 MRTK apps. 
 The only difference is that the *'Gaze Input'* capability is unfortunately not yet supported by Unity under 'Player Settings -> Publishing Settings -> Capabilities'. 
 To use eye tracking on your HoloLens 2 device, you need to manually edit the package manifest that is part of your built Visual Studio project.
-Follow these steps:
 
+Follow these steps:
 1. Build your Unity project as you would normally do for _HoloLens 2_.
 2. Open your compiled Visual Studio project and then open the _'Package.appxmanifest'_ in your solution.
 3. Make sure to tick the _'GazeInput'_ checkbox under _Capabilities_.
-3.1 You don't see a _'GazeInput'_ capability? 
+
+![Enabling Gaze Input in Visual Studio](../Images/EyeTracking/mrtk_et_gazeinput.jpg)
+
+You don't see a _'GazeInput'_ capability? 
    - Check that your system meets the [prerequisites for using MRTK](../GettingStartedWithTheMRTK.md) (in particular the Windows SDK version). 
    - You can also manually add the entry by opening the appxmanifest in an XML editor and adding the following:
 
@@ -101,8 +104,6 @@ Follow these steps:
     <DeviceCapability Name="gazeInput" />
   </Capabilities>
 ```
-
-![Enabling Gaze Input in Visual Studio](../Images/EyeTracking/mrtk_et_gazeinput.jpg)
 
 #### Have you eye calibrated?
 Finally, please don't forget to run through the eye calibration on your HoloLens 2. 
@@ -114,6 +115,11 @@ Alternatively you can find the eye calibration in the system settings: Settings 
 #### Do you see the permission prompt?
 When starting the app on your HoloLens 2 for the first time, a prompt should pop up asking the user for permission to use eye tracking. 
 If it is not showing up, then that is usually an indication that the _'GazeInput'_ capability was not set. 
+
+<br>
+
+This should get you started with using eye tracking in your MRTK Unity app. 
+Don't forget to check out [our MRTK eye tracking tutorials and samples](EyeTracking_ExamplesOverview.md) demonstrating how to use eye tracking input and conveniently providing scripts that you can reuse in your projects.
 
 ---
 [Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
