@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("linkRadius")]
         [Tooltip("Radius for wireframe edges")]
-        private float wireframeEdgeRadius = 0.005f;
+        private float wireframeEdgeRadius = 0.001f;
         public float WireframeEdgeRadius
         {
             get { return wireframeEdgeRadius; }
@@ -419,7 +419,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("ballRadius")]
         [Tooltip("Radius of the sphere collidable used in rotation handles")]
-        private float rotationHandleDiameter = 0.035f;
+        private float rotationHandleDiameter = 0.1f;
 
         public float RotationHandleDiameter
         {
