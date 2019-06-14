@@ -346,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private Vector2 HalfCell;
 
         //Maximum amount the scroller can travel (vertically)
-        private float maxY => NodeList.Count != 0 ? ((StepMultiplier(NodeList.Count, Tiers) + ModCheck(NodeList.Count, Tiers) - ViewableArea) * CellHeight) : 0.0f;
+        private float maxY => NodeList.Count != 0 ? ((StepMultiplier(NodeList.Count, Tiers) + ModuloCheck(NodeList.Count, Tiers) - ViewableArea) * CellHeight) : 0.0f;
 
         //Minimum amount the scroller can travel (vertically) - this will always be zero. Here for readability
         private readonly float minY = 0.0f;
@@ -355,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private readonly float maxX = 0.0f;
 
         //Minimum amount the scroller can travel (horizontally)
-        private float minX => NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count, Tiers) + ModCheck(NodeList.Count, Tiers) - ViewableArea) * CellWidth) : 0.0f;
+        private float minX => NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count, Tiers) + ModuloCheck(NodeList.Count, Tiers) - ViewableArea) * CellWidth) : 0.0f;
 
         //item index for items that should be visible
         private int numItemsPrevView
@@ -716,7 +716,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
-                    newPos.x = (ModCheck(i, Tiers) != 0) ? (ModCheck(i, Tiers) * CellWidth) + HalfCell.x : HalfCell.x;
+                    newPos.x = (ModuloCheck(i, Tiers) != 0) ? (ModuloCheck(i, Tiers) * CellWidth) + HalfCell.x : HalfCell.x;
                     newPos.y = ((StepMultiplier(i, Tiers) * CellHeight) + HalfCell.y) * -1;
                     newPos.z = 0.0f;
 
@@ -724,7 +724,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 else //left or right
                 {
                     newPos.x = (StepMultiplier(i, Tiers) * CellWidth) + HalfCell.x;
-                    newPos.y = ((ModCheck(i, Tiers) != 0) ? (ModCheck(i, Tiers) * CellHeight) + HalfCell.y : HalfCell.y) * -1;
+                    newPos.y = ((ModuloCheck(i, Tiers) != 0) ? (ModuloCheck(i, Tiers) * CellHeight) + HalfCell.y : HalfCell.y) * -1;
                     newPos.z = 0.0f;
                 }
                 node.Transform.localPosition = newPos;
@@ -1621,7 +1621,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <param name="itemIndex">Index of node item in <see cref="BaseObjectCollection.NodeList"/> to be compared</param>
         /// <param name="divisor">Rows / Columns</param>
         /// <returns>The remainder from the divisor</returns>
-        private static int ModCheck(int itemIndex, int divisor)
+        public static int ModuloCheck(int itemIndex, int divisor)
         {
             //prevent divide by 0
             return (divisor > 0) ? itemIndex % divisor : 0;
@@ -1633,7 +1633,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <param name="itemIndex">Index of node item in <see cref="BaseObjectCollection.NodeList"/> to be compared</param>
         /// <param name="divisor">Rows / Columns</param>
         /// <returns>The multiplier to get the row / column index the item is in</returns>
-        private static int StepMultiplier(int itemIndex, int divisor)
+        public static int StepMultiplier(int itemIndex, int divisor)
         {
             //prevent divide by 0
             return (divisor != 0) ? itemIndex / divisor : 0;
@@ -1968,6 +1968,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             StopAllCoroutines();
             animatingToPosition = false;
             velocityState = VelocityState.None;
+
+            indexOfItem = (indexOfItem < 0) ? 0 : indexOfItem;
 
             if (scrollDirection == ScrollDirectionType.UpAndDown)
             {

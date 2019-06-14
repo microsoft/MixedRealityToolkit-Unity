@@ -190,11 +190,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     EditorGUILayout.EndHorizontal();
 
                     EditorGUILayout.BeginHorizontal();
+
                     amountOfLinesToMoveTo = EditorGUILayout.IntField(amountOfLinesToMoveTo);
                     if (GUILayout.Button("Move By Tiers"))
                     {
                         scrollContainer.MoveByLines(amountOfLinesToMoveTo, animateTransition);
                     }
+
                     EditorGUILayout.EndHorizontal();
 
                     EditorGUILayout.BeginHorizontal();
