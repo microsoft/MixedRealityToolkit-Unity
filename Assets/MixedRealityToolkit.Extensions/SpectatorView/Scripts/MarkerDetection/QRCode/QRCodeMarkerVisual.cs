@@ -35,18 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
 
         private float _paddingScaling =  200.0f / (200.0f - (2.0f * 24.0f)); // sv*.png images have 24 pixels of padding
         private const string _textureFileName = "sv*";
-
-        /// <inheritdoc />
-        public void SetMarkerSize(float size)
-        {
-            _markerSize = size;
-
-            if (_rawImage != null)
-            {
-                var sizeInPixels = GetMarkerSizeInPixels();
-                _rawImage.rectTransform.sizeDelta = new Vector2(sizeInPixels, sizeInPixels);
-            }
-        }
+        private const int _maxMarkerId = 19;
 
         /// <inheritdoc />
         public void ShowMarker(int id)
@@ -84,6 +73,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             }
 
             gameObject.SetActive(false);
+        }
+
+        /// <inheritdoc />
+        public bool TrySetMarkerSize(float size)
+        {
+            _markerSize = size;
+
+            if (_rawImage != null)
+            {
+                var sizeInPixels = GetMarkerSizeInPixels();
+                _rawImage.rectTransform.sizeDelta = new Vector2(sizeInPixels, sizeInPixels);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <inheritdoc />
+        public bool TryGetMaxSupportedMarkerId(out int markerId)
+        {
+            markerId = _maxMarkerId;
+            return true;
         }
 
         private float GetMarkerSizeInPixels()

@@ -445,8 +445,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
                 _markerDetector.SetMarkerSize(_markerSize);
 
             _markerVisual = MarkerVisual as IMarkerVisual;
-            if (_markerVisual != null)
-                _markerVisual.SetMarkerSize(_markerSize);
+            if (_markerVisual == null ||
+                !_markerVisual.TrySetMarkerSize(_markerSize))
+            {
+                Debug.LogWarning("Failed to set marker visual size.");
+            }
 
             SetVisualState(VisualState.none);
 
