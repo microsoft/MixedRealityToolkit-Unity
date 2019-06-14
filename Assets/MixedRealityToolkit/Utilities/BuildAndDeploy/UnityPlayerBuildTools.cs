@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Start a build using Unity's command line.
         /// </summary>
-        public static async void StartCommandLineBuild()
+        public static async void StartCommandLineBuild(bool keepApplicationAlive = false)
         {
             // We don't need stack traces on all our logs. Makes things a lot easier to read.
             Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
@@ -191,6 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             Debug.Log($"Exiting command line build... Build success? {success}");
+            if (keepApplicationAlive) return; // leave function here, without closing the editor
             EditorApplication.Exit(success ? 0 : 1);
         }
 

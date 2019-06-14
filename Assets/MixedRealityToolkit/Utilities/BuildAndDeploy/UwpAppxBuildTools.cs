@@ -28,8 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// </summary>
         /// <param name="buildInfo"></param>
         /// <param name="cancellationToken"></param>
+        /// <param name="buildOnMultipleCores"></param>
         /// <returns>True, if the appx build was successful.</returns>
-        public static async Task<bool> BuildAppxAsync(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default)
+        public static async Task<bool> BuildAppxAsync(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default, bool buildOnMultipleCores = false)
         {
             if (!EditorAssemblyReloadManager.LockReloadAssemblies)
             {
@@ -46,10 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (Application.isBatchMode)
             {
                 // We don't need stack traces on all our logs. Makes things a lot easier to read.
+                Debug.Log("Application is in Batchmode; setting StraceLogType to None");
                 Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
             }
-
-            Debug.Log("Starting Unity Appx Build...");
 
             IsBuilding = true;
             string slnFilename = Path.Combine(buildInfo.OutputDirectory, $"{PlayerSettings.productName}.sln");
@@ -60,16 +60,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 return IsBuilding = false;
             }
 
-            // Get and validate the msBuild path...
             var msBuildPath = await FindMsBuildPathAsync();
-
+            
             if (!File.Exists(msBuildPath))
             {
                 Debug.LogError($"MSBuild.exe is missing or invalid!\n{msBuildPath}");
                 return IsBuilding = false;
             }
 
-            // Ensure that the generated .appx version increments by modifying Package.appxmanifest
+            Debug.Log("Ensure that the generated .appx version increments by modifying Package.appxmanifest");
             try
             {
                 if (!UpdateAppxManifest(buildInfo))
@@ -89,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Building the solution requires first restoring NuGet packages - when built through
             // Visual Studio, VS does this automatically - when building via msbuild like we're doing here,
             // we have to do that step manually.
-            int exitCode = await Run(msBuildPath, $"\"{solutionProjectPath}\" /t:restore", !Application.isBatchMode, cancellationToken);
+            int exitCode = await RunAsync(msBuildPath, $"\"{solutionProjectPath}\" /t:restore", false, cancellationToken);
             if (exitCode != 0)
             {
                 IsBuilding = false;
@@ -97,17 +96,126 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             // Now that NuGet packages have been restored, we can run the actual build process.
-            exitCode = await Run(msBuildPath, 
-                $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} /verbosity:m",
-                !Application.isBatchMode,
-                cancellationToken);
+            string args;
+            if (buildOnMultipleCores)
+            {
+                args =
+                    $"/m /nr:false \"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} /verbosity:n";
+            }
+            else
+            {
+                args =
+                    $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} /verbosity:m";
+            }
+            exitCode = await RunAsync(msBuildPath,
+                args, false, cancellationToken
+                );
             AssetDatabase.SaveAssets();
 
             IsBuilding = false;
             return exitCode == 0;
         }
 
-        private static async Task<int> Run(string fileName, string args, bool showDebug, CancellationToken cancellationToken)
+        /// <summary>
+        /// A sequential approach for building the appx or msix. Especially useful on for usage with Ci Runner.
+        /// </summary>
+        /// <param name="buildInfo"></param>
+        /// <param name="cancellationToken"></param>
+        /// <param name="buildOnMultipleCores"></param>
+        /// <returns>Whether the Build was successful or not</returns>
+        public static bool BuildAppx(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default, bool buildOnMultipleCores = false)
+        {
+            if (!EditorAssemblyReloadManager.LockReloadAssemblies)
+            {
+                Debug.LogError("Lock Reload assemblies before attempting to build appx!");
+                return false;
+            }
+
+            if (IsBuilding)
+            {
+                Debug.LogWarning("Build already in progress!");
+                return false;
+            }
+
+            if (Application.isBatchMode)
+            {
+                // We don't need stack traces on all our logs. Makes things a lot easier to read.
+                Debug.Log("Application is in Batchmode; setting StraceLogType to None");
+                Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
+            }
+
+            Debug.Log("Starting Unity Appx Build...");
+
+            IsBuilding = true;
+            string slnFilename = Path.Combine(buildInfo.OutputDirectory, $"{PlayerSettings.productName}.sln");
+
+            if (!File.Exists(slnFilename))
+            {
+                Debug.LogError("Unable to find Solution to build from!");
+                return IsBuilding = false;
+            }
+
+            Debug.Log("Get and validate the msBuild path...");
+            var msBuildPath = FindMsBuildPath();
+
+            if (!File.Exists(msBuildPath))
+            {
+                Debug.LogError($"MSBuild.exe is missing or invalid!\n{msBuildPath}");
+                return IsBuilding = false;
+            }
+
+            Debug.Log("Ensure that the generated .appx version increments by modifying Package.appxmanifest");
+            try
+            {
+                if (!UpdateAppxManifest(buildInfo))
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to update appxmanifest!\n{e.Message}");
+                return IsBuilding = false;
+            }
+
+            string storagePath = Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), buildInfo.OutputDirectory));
+            string solutionProjectPath = Path.GetFullPath(Path.Combine(storagePath, $@"{PlayerSettings.productName}.sln"));
+
+            // Building the solution requires first restoring NuGet packages - when built through
+            // Visual Studio, VS does this automatically - when building via msbuild like we're doing here,
+            // we have to do that step manually.
+            Debug.Log("restore nuget packages through msbuild");
+            int exitCode = RunSimple(msBuildPath, $"\"{solutionProjectPath}\" /t:restore");
+            if (exitCode != 0)
+            {
+                IsBuilding = false;
+                return false;
+            }
+
+            // Now that NuGet packages have been restored, we can run the actual build process.
+            Debug.Log("build with msbuild");
+
+            string args;
+            if (buildOnMultipleCores)
+            {
+                args =
+                    $"/m /nr:false \"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} /verbosity:n";
+            }
+            else
+            {
+                args =
+                    $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} /verbosity:m";
+            }
+            exitCode = RunSimple(msBuildPath,
+                args
+                );
+            AssetDatabase.SaveAssets();
+
+            IsBuilding = false;
+            return exitCode == 0;
+        }
+
+        private static async Task<int> RunAsync(string fileName, string args, bool showDebug, CancellationToken cancellationToken)
         {
             Debug.Log($"Running command: {fileName} {args}");
 
@@ -158,9 +266,52 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             return processResult.ExitCode;
         }
 
+        private static int RunSimple(string fileName, string args)
+        {
+            Debug.Log($"Running command: {fileName} {args}");
+
+            var proc = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = fileName,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    Arguments = args
+                }
+            };
+            proc.Start();
+            Debug.Log("Process started, waiting for exit");
+            proc.ErrorDataReceived += (s, e) => Debug.Log(e.Data);
+            proc.OutputDataReceived += (s, e) => Debug.Log(e.Data);
+            proc.BeginErrorReadLine();
+            proc.BeginOutputReadLine();
+            proc.WaitForExit();
+
+
+
+            switch (proc.ExitCode)
+            {
+                case 0:
+                    Debug.Log($"Command successful");
+                    break;
+                case -1073741510:
+                    Debug.LogWarning("The build was terminated either by user's keyboard input CTRL+C or CTRL+Break or closing command prompt window.");
+                    break;
+                default:
+                {
+                    Debug.Log($"Command failed, errorCode: {proc.ExitCode}");
+                    break;
+                }
+            }
+            return proc.ExitCode;
+        }
+
         private static async Task<string> FindMsBuildPathAsync()
         {
-            var result = await new Process().StartProcessAsync(
+            var result = await new Process().StartProcessAsync( //This is where to keep on working!!
                 new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
@@ -173,6 +324,46 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 });
 
             foreach (var path in result.Output)
+            {
+                if (!string.IsNullOrEmpty(path))
+                {
+                    string[] paths = path.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (paths.Length > 0)
+                    {
+                        // if there are multiple visual studio installs,
+                        // prefer enterprise, then pro, then community
+                        string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise"))
+                            .ThenBy(p => p.ToLower().Contains("professional"))
+                            .ThenBy(p => p.ToLower().Contains("community")).First();
+
+                        return $@"{bestPath}\MSBuild\15.0\Bin\MSBuild.exe";
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+
+        private static string FindMsBuildPath()
+        {
+            var proc = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    Arguments =
+                        $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
+                    WorkingDirectory = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer"
+                }
+            };
+            proc.Start();
+            proc.WaitForExit();
+            foreach (var path in proc.StandardOutput.ReadToEnd().Split(new [] {Environment.NewLine}, StringSplitOptions.None))
             {
                 if (!string.IsNullOrEmpty(path))
                 {
