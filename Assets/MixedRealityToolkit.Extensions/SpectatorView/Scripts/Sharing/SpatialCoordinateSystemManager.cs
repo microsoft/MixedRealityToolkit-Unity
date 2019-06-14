@@ -36,6 +36,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Debug visual scale.")]
         public float debugVisualScale = 1.0f;
 
+        internal event Action<SpatialCoordinateSystemParticipant> ParticipantConnected;
+
+        internal event Action<SpatialCoordinateSystemParticipant> ParticipantDisconnected;
+
         internal const string CoordinateStateMessageHeader = "COORDSTATE";
         private const string LocalizeCommand = "LOCALIZE";
         private readonly Dictionary<Guid, ISpatialLocalizer> localizers = new Dictionary<Guid, ISpatialLocalizer>();
@@ -145,6 +149,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             SpatialCoordinateSystemParticipant participant = new SpatialCoordinateSystemParticipant(endpoint, debugVisual, debugVisualScale);
             participants[endpoint] = participant;
             participant.ShowDebugVisuals = showDebugVisuals;
+
+            ParticipantConnected?.Invoke(participant);
         }
 
         private void OnDisconnected(SocketEndpoint endpoint)
@@ -153,6 +159,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 participant.Dispose();
                 participants.Remove(endpoint);
+
+                ParticipantDisconnected?.Invoke(participant);
             }
         }
 
