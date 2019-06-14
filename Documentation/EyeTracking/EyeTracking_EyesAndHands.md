@@ -1,4 +1,4 @@
-## Look, pinch and other hand motions
+## How to support _look + hand motions_ (eye gaze & hand gestures)
 
 This page explains how to use eye targeting as a primary pointer in combination with hand motions.
 In our [MRTK eye tracking demos](), we describe several examples for using eyes + hands, for example:
