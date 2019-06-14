@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// The SpectatorView helper class for managing a participant in the spatial coordinate system
     /// </summary>
-    internal class SpatialCoordinateSystemParticipant : DisposableBase, IPeerConnection
+    public class SpatialCoordinateSystemParticipant : DisposableBase, IPeerConnection
     {
         internal const string LocalizationDataExchangeCommand = "LocalizationDataExchange";
         private readonly GameObject debugVisualPrefab;
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 message.Write(SpatialCoordinateSystemManager.CoordinateStateMessageHeader);
 #if UNITY_WSA
-                bool isTracking = UnityEngine.XR.WSA.WorldManager.state == UnityEngine.XR.WSA.PositionalLocatorState.Active;\
+                bool isTracking = UnityEngine.XR.WSA.WorldManager.state == UnityEngine.XR.WSA.PositionalLocatorState.Active;
 #else
                 // For Android, this should refer to GoogleARCore.Session.Status == GoogleARCore.SessionStatus.Tracking, but that requires
                 // an eventual dependency between SpectatorView and GoogleARCore. For now, always report that tracking is enabled
