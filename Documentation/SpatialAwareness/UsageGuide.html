@@ -124,6 +124,19 @@ immediately resume observation.</p>
     observer.Resume();
 }
 </code></pre>
+<h2 id="hiding-the-spatial-mesh">Hiding the spatial mesh</h2>
+<p>It's possible to programmatically hide meshes using the sample code below:</p>
+<pre><code class="lang-C#">if (MixedRealityServiceRegistry.TryGetService&lt;IMixedRealitySpatialAwarenessSystem&gt;(out var service))
+    {
+        IMixedRealityDataProviderAccess dataProviderAccess = service as IMixedRealityDataProviderAccess;
+
+        IMixedRealitySpatialAwarenessMeshObserver observer =
+            dataProviderAccess.GetDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+        
+        observer.DisplayOption = SpatialAwarenessMeshDisplayOptions.None;
+    }
+}
+</code></pre>
 </article>
           </div>
           

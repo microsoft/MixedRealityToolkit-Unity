@@ -97,7 +97,11 @@ spatial awareness system and a supported platform provider.</p>
 </ol>
 <h3 id="enable-spatial-awareness">Enable Spatial Awareness</h3>
 <p>The spatial awareness system is managed by the MixedRealityToolkit object (or another
-<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component).</p>
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component).
+The steps below are not necessary for users of the default profile (DefaultMixedRealityToolkitConfigurationProfile)
+which has this system already enabled. Note that this system is disabled by default on the default HoloLens 2 profile
+(DefaultHoloLens2ConfigurationProfile), and the intent of this is to avoid the visual overhead of calculating
+and rendering the meshes.</p>
 <blockquote>
 <p>The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.</p>
 </blockquote>
@@ -113,10 +117,6 @@ spatial awareness system and a supported platform provider.</p>
 <li>Select the Spatial Awareness System implementation</li>
 </ol>
 <p><img src="../Images/SpatialAwareness/SpatialAwarenessSelectSystemType.png" alt="Select the Spatial Awareness System Implementation"></p>
-<blockquote>
-<p>Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the spatial awareness system pre-configured to use the MixedRealitySpatialAwarenessSystem from the Mixed Reality
-Toolkit Spatial Awareness Service package.</p>
-</blockquote>
 <h3 id="register-observers">Register observers</h3>
 <p>Before the spatial awareness system can provide applications with data about the real-world, at least
 one spatial observer must be registered. Spatial observers are generally platform specific components
@@ -163,7 +163,6 @@ hardware and platform.</p>
 <ul>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.html">Spatial Awareness API documentation</a></li>
 <li><a href="ConfiguringSpatialAwarenessMeshObserver.html">Configuring the Spatial Awareness Mesh Observer</a></li>
-<li><a href="../TODO.html">Using Spatial Awareness in an Application</a></li>
 </ul>
 </article>
           </div>
