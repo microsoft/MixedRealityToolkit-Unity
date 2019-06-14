@@ -8,7 +8,7 @@
     <title>Getting Started with MRTK | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Getting Started with MRTK | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.42.4.0">
+    <meta name="generator" content="docfx 2.43.1.0">
     
     <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -94,7 +94,9 @@
 </li>
 <li><p><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases">Latest MRTK release</a></p>
 </li>
-<li><p>You don't need this to simulate in Unity Editor or run in VR, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need <a href="https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk">Windows SDK 18362+</a>.</p>
+<li><p><a href="https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk">Windows SDK 18362+</a>.</p>
+<p>This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
+when building for OpenVR.</p>
 </li>
 </ul>
 <h1 id="mr-learning-base-module-tutortial">MR Learning Base Module Tutortial</h1>
@@ -198,6 +200,14 @@ If you need to move the players start point, then <strong>move the scene content
 <li>Hit play and test out hand simulation by pressing spacebar.</li>
 </ol>
 <p>You are now ready to start building your project!</p>
+<h2 id="recommended-build-settings-uwp">Recommended build settings (UWP)</h2>
+<p>When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that your build settings &quot;Target SDK Version&quot;
+and &quot;Minimum Platform Version&quot; look like they do in the picture below:</p>
+<p><img src="Images/getting_started/BuildWindow.png" alt=""></p>
+<p>The other settings can be different (for example, Build Configuration/Architecture/Build Type and others can always
+be changed inside the Visual Studio solution).</p>
+<p>Make sure that you click on &quot;Target SDK Version&quot; and that it has the option &quot;10.0.18362.0&quot; - if this is missing,
+it means you have to install <a href="https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk">the latest Windows SDK</a>.</p>
 <h2 id="next-steps">Next steps</h2>
 <p>Here are some suggested next steps:</p>
 <ul>
