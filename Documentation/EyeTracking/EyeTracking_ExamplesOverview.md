@@ -118,15 +118,14 @@ No problem! Here is what you can do:
 1. Load the _root_ scene
 2. In the _root_ scene, disable the _'OnLoadStartScene'_ script 
 3. _Drag and drop_ one of the eye tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view as shown in the screenshot below. 
+
+![Example for additive scene](../Images/EyeTracking/mrtk_et_additivescene.jpg)
+
 4. Press _Play_
 
 Please note that loading the sub scene like this is not persistent: 
 This means that if you deploy your app to the HoloLens 2 device, it will only load the root scene (assuming it appears at the top of your Build Settings). 
 Also, when you share your project with others the sub scenes are not automatically loaded. 
-
-![Example for additive scene](../Images/EyeTracking/mrtk_et_additivescene.jpg)
-
-
 
 
 ---
