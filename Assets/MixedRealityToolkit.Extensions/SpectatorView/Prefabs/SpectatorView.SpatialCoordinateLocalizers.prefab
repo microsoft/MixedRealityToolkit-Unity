@@ -75,15 +75,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 669d6ea811185c94a880316354dde60b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugLogging: 0
+  debugLogging: 1
   anchorPosition: {x: 0, y: 0, z: 0}
   anchorRotation: {x: 0, y: 0, z: 0}
-  configuration:
-    AccountDomain: 
-    AccountId: 
-    AccountKey: 
-    AccessToken: 
-    AuthenticationToken: 
 --- !u!1 &5567181800588551897
 GameObject:
   m_ObjectHideFlags: 0

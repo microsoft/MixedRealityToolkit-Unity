@@ -36,9 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Debug visual scale.")]
         public float debugVisualScale = 1.0f;
 
-        internal event Action<SpatialCoordinateSystemParticipant> ParticipantConnected;
+        public event Action<SpatialCoordinateSystemParticipant> ParticipantConnected;
 
-        internal event Action<SpatialCoordinateSystemParticipant> ParticipantDisconnected;
+        public event Action<SpatialCoordinateSystemParticipant> ParticipantDisconnected;
 
         internal const string CoordinateStateMessageHeader = "COORDSTATE";
         private const string LocalizeCommand = "LOCALIZE";
@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        public Task LocalizeAsync(SocketEndpoint socketEndpoint, ISpatialLocalizer localizer, ISpatialLocalizationSettings settings)
+        public Task LocalizeAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
         {
             if (currentLocalizationSession != null)
             {
@@ -112,6 +112,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
             {
                 Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
+                return Task.CompletedTask;
+            }
+
+            if (!localizers.TryGetValue(spatialLocalizerID, out ISpatialLocalizer localizer))
+            {
+                Debug.LogError($"Could not find a ISpatialLocalizer for spatialLocalizerID {spatialLocalizerID}");
                 return Task.CompletedTask;
             }
 
