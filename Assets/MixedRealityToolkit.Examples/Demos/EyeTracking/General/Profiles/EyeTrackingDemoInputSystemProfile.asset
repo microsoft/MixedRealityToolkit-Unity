@@ -52,7 +52,7 @@ MonoBehaviour:
       reference: Microsoft.MixedReality.Toolkit.Input.InputSimulationService, Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor
     componentName: Input Simulation Service
     priority: 0
-    runtimePlatform: 16
+    runtimePlatform: 208
     deviceManagerProfile: {fileID: 11400000, guid: 0e54184c8f9cca44aad8fdda3f62fd82,
       type: 2}
   - componentType:

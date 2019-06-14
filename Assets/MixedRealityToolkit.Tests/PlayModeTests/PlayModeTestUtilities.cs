@@ -12,6 +12,12 @@ using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using NUnit.Framework;
 using System.Collections;
+using System.IO;
+
+#if UNITY_EDITOR
+using TMPro;
+using UnityEditor;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -76,6 +82,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             inputSimulationService.HandDataRight.Update(true, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
             // Wait one frame for the hand to actually go away
             yield return null;
+        }
+
+        internal static void EnsureTextMeshProEssentials()
+        {
+#if UNITY_EDITOR
+            // Special handling for TMP Settings and importing Essential Resources
+            if (TMP_Settings.instance == null)
+            {
+                string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
+                if (Directory.Exists(packageFullPath))
+                {
+                    AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
+                }
+            }
+#endif
         }
     }
 }
