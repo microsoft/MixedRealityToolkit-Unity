@@ -228,11 +228,20 @@ namespace Microsoft.MixedReality.Toolkit
                 }
             }
             else if (mixedRealityPlayspace == null)
-            {   // If no camera exists, search for a playspace in loaded objects
+            {
+#if UNITY_EDITOR
+                // If no camera exists, search for a playspace in loaded objects
                 if (!SearchForAndEnableExistingPlayspace(Application.isPlaying ? RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes() : EditorSceneUtils.GetRootGameObjectsInLoadedScenes()))
                 {   // If none is found, create one
                     mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
                 }
+#else
+                  // If no camera exists, search for a playspace in loaded objects
+                if (!SearchForAndEnableExistingPlayspace(RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes()))
+                {   // If none is found, create one
+                    mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
+                }
+#endif
             }
 
             // It's very important that the Playspace align with the tracked space,
@@ -255,9 +264,9 @@ namespace Microsoft.MixedReality.Toolkit
             name = NameDisabled;
         }
 
-        #endregion
+#endregion
 
-        #region Multi-scene management
+#region Multi-scene management
 
         private static bool subscribedToEvents = false;
 
@@ -402,6 +411,6 @@ namespace Microsoft.MixedReality.Toolkit
             return enabledOne;
         }
 
-        #endregion
+#endregion
     }
 }
