@@ -372,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("cornerRadius")]
         [Tooltip("Size of the cube collidable used in scale handles")]
-        private float scaleHandleSize = 0.08f;
+        private float scaleHandleSize = 0.15f;
 
         public float ScaleHandleSize
         {
