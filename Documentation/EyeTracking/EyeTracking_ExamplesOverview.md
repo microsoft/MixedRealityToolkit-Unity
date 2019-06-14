@@ -14,8 +14,6 @@ The individual sample scenes will be [loaded additively](https://docs.unity3d.co
 In case, you wonder what that entails, we will explain further below how to set up and test the MRTK eye tracking demos.
 
 ## Overview of the eye tracking demo samples
-Now that you know how to get the [MRTK eye tracking example scenes](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) to work, let us give you an overview of what the individual scenes are about. 
-
 [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md)
 
 This tutorial showcases the ease of accessing eye gaze data to select targets. 
