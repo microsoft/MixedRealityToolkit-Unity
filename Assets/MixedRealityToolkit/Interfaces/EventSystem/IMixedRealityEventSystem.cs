@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// If you want to register a single C# object as global handler for several event handling interfaces,
         /// you must call this function for each interface type.
         /// </remarks>
-        /// <param name="handler">Handler to add to <see cref="HandlerEventListeners"/>.</param>
+        /// <param name="handler">Handler to receive global input events of specified handler type.</param>
         void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler;
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// If a single C# object listens to global input events for several event handling interfaces,
         /// you must call this function for each interface type.
         /// </remarks>
-        /// <param name="handler">Handler to remove from <see cref="HandlerEventListeners"/>.</param>
+        /// <param name="handler">Handler to stop receiving global input events of specified handler type.</param>
         void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler;
     }
 }
