@@ -1938,13 +1938,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 newLocalScale = Mathf.Abs(newLocalScale);
                 newLocalScale = newLocalScale == 0.0f ? 0.01f : newLocalScale;
-                (collider as BoxCollider).size = new Vector3(0.02f / newLocalScale, 0.02f / newLocalScale, 0.02f / newLocalScale);
+                float colliderScale = cornerHandleColliderScale * 0.02f;
+                (collider as BoxCollider).size = new Vector3(colliderScale / newLocalScale, colliderScale / newLocalScale, colliderScale / newLocalScale);
             }
             else if (collider && collider is SphereCollider)
             {
                 newLocalScale = Mathf.Abs(newLocalScale);
+                float colliderScale = rotationHandleDiameter * 0.02f;
                 newLocalScale = newLocalScale == 0.0f ? 0.01f : newLocalScale;
-                (collider as SphereCollider).radius = 0.02f / newLocalScale;
+                (collider as SphereCollider).radius = colliderScale / newLocalScale;
             }
         }
 
