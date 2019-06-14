@@ -52,16 +52,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 closestDistance = float.PositiveInfinity;
                 foreach (var prox in BaseNearInteractionTouchable.Instances)
                 {
-                    if (prox.ColliderEnabled)
-                    {
-                        Vector3 normal;
-                        float dist = prox.DistanceToTouchable(Position, out normal);
-                        if (dist < prox.DistFront && dist < closestDistance)
-                        {   
-                            closestDistance = dist;
-                            newClosestTouchable = prox;
-                            closestNormal = normal;
-                        }
+                    Vector3 normal;
+                    float dist = prox.DistanceToTouchable(Position, out normal);
+                    if (dist < prox.DistFront && dist < closestDistance)
+                    {   
+                        closestDistance = dist;
+                        newClosestTouchable = prox;
+                        closestNormal = normal;
                     }
                 }
             }

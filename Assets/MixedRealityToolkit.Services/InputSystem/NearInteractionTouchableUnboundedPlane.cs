@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// in order to get PointerDown and PointerUp events whenever a PokePointer touches the
     /// attached collider through this surface.
     /// </summary>
-    public class NearInteractionTouchableUnboundedPlane : BaseNearInteractionTouchable
+    public class NearInteractionTouchableUnboundedPlane : ColliderNearInteractionTouchable
     {
 #if UNITY_EDITOR
         private readonly Color handleColor = Color.white;

@@ -29,21 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public TouchableEventType EventsToReceive => eventsToReceive;
 
-        public bool ColliderEnabled { get { return !usesCollider || touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
-
-        /// <summary>
-        /// False if no collider is found on validate.
-        /// This is used to avoid the perf cost of a null check with the collider.
-        /// </summary>
-        protected bool usesCollider = false;
-
-        /// <summary>
-        /// The collider used by this touchable.
-        /// </summary>
-        [SerializeField]
-        [FormerlySerializedAs("collider")]
-        protected Collider touchableCollider;
-
         protected float distFront = 0.2f;
 
         [Tooltip("Distance behind the surface at which you will receive a touch up event")]
@@ -75,11 +60,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
             distBack = Math.Max(distBack, 0);
             distFront = Math.Max(distFront, 0);
             debounceThreshold = Math.Max(debounceThreshold, 0);
-
-            touchableCollider = GetComponent<Collider>();
-            usesCollider = touchableCollider != null;
         }
 
         public abstract float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal);
+    }
+
+    /// <summary>
+    /// Base class for all touchables using colliders
+    /// </summary>
+    [RequireComponent(typeof(Collider))]
+    public abstract class ColliderNearInteractionTouchable : BaseNearInteractionTouchable
+    {
+        public bool ColliderEnabled { get { return touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
+
+        /// <summary>
+        /// The collider used by this touchable.
+        /// </summary>
+        [SerializeField]
+        [FormerlySerializedAs("collider")]
+        private Collider touchableCollider;
+        public Collider TouchableCollider => touchableCollider;
+
+        protected new void OnValidate()
+        {
+            base.OnValidate();
+
+            touchableCollider = GetComponent<Collider>();
+        }
     }
 }
