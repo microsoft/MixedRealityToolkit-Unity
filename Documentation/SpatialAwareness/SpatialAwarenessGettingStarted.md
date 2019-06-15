@@ -18,7 +18,11 @@ spatial awareness system and a supported platform provider.
 ### Enable Spatial Awareness
 
 The spatial awareness system is managed by the MixedRealityToolkit object (or another 
-[service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component). 
+[service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component).
+The steps below are not necessary for users of the default profile (DefaultMixedRealityToolkitConfigurationProfile)
+which has this system already enabled. Note that this system is disabled by default on the default HoloLens 2 profile
+(DefaultHoloLens2ConfigurationProfile), and the intent of this is to avoid the visual overhead of calculating
+and rendering the meshes.
 
 > The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.
 
@@ -33,9 +37,6 @@ The spatial awareness system is managed by the MixedRealityToolkit object (or an
 3. Select the Spatial Awareness System implementation
 
 ![Select the Spatial Awareness System Implementation](../../Documentation/Images/SpatialAwareness/SpatialAwarenessSelectSystemType.png)
-
-> Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the spatial awareness system pre-configured to use the MixedRealitySpatialAwarenessSystem from the Mixed Reality 
-Toolkit Spatial Awareness Service package.
 
 ### Register observers
 
@@ -82,11 +83,9 @@ This feature enables rapid development and testing without requiring the build a
 to do final acceptance testing using a built and deployed version of the application, running on the target 
 hardware and platform.
 
-
 ## See Also
 
 - [Spatial Awareness API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness)
 - [Configuring the Spatial Awareness Mesh Observer](ConfiguringSpatialAwarenessMeshObserver.md)
-- [Using Spatial Awareness in an Application](../TODO.md)
 
 

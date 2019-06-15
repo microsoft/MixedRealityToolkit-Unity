@@ -123,11 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private DateTime lookAtStartTime;
 
         /// <summary>
-        /// Current expected framerate of the eye tracking system.
-        /// </summary>
-        private float EyeTrackerFramerate = 30; // In Hz -> This means that every 1000ms/30 = 33.33ms a new sample should arrive. 
-        
-        /// <summary>
         /// Duration in milliseconds to indicate that if more time than this passes without new eye tracking data, then timeout. 
         /// </summary>
         private float EyeTrackingTimeoutInMilliseconds = 200;
@@ -147,12 +142,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public static Vector3 LookedAtPoint { get; private set; }
 
         #region Focus handling
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             IsLookedAt = false;
             LookedAtTarget = null;
             LookedAtEyeTarget = null;
         }
+
         private void Update()
         {
             // Try to manually poll the eye tracking data
@@ -182,8 +179,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             OnEyeFocusStop();
         }      
 
