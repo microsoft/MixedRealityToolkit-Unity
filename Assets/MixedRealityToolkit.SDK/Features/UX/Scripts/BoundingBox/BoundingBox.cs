@@ -126,6 +126,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (boundsOverride != value)
                 {
                     boundsOverride = value;
+                    
+                    if (boundsOverride == null)
+                    {
+                        prevBoundsOverride = new Bounds();
+                    }
                     CreateRig();
                 }
             }
@@ -654,7 +659,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private HandleType currentHandleType;
 
-        Bounds prevBounds = new Bounds();
+        // The size, position of boundsOverride object in the previous frame
+        // Used to determine if boundsOverride size has changed.
+        private Bounds prevBoundsOverride = new Bounds();
 
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
@@ -799,21 +806,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 UpdateRigHandles();
                 Target.transform.hasChanged = false;
             }
-            else if (HasBoundsOverrideChanged())
+            else if (boundsOverride != null && HasBoundsOverrideChanged())
             {
                 UpdateBounds();
                 UpdateRigHandles();
             }
         }
+
+        /// <summary>
+        /// Assumes that boundsOverride is not null
+        /// Returns true if the size / location of boundsOverride has changed.
+        /// If boundsOverride gets set to null, rig is re-created in BoundsOverride
+        /// property setter.
+        /// </summary>
         private bool HasBoundsOverrideChanged()
         {
-            if (boundsOverride == null)
-            {
-                return false;
-            }
+            Debug.Assert(boundsOverride != null, "HasBoundsOverrideChanged called but boundsOverride is null");
             Bounds curBounds = boundsOverride.bounds;
-            bool result = curBounds != prevBounds;
-            prevBounds = curBounds;
+            bool result = curBounds != prevBoundsOverride;
+            prevBoundsOverride = curBounds;
             return result;
         }
         #endregion MonoBehaviour Methods
