@@ -53,3 +53,20 @@ if (MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSyste
     observer.Resume();
 }
 ```
+
+## Hiding the spatial mesh
+
+It's possible to programmatically hide meshes using the sample code below:
+
+```C#
+if (MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out var service))
+    {
+        IMixedRealityDataProviderAccess dataProviderAccess = service as IMixedRealityDataProviderAccess;
+
+        IMixedRealitySpatialAwarenessMeshObserver observer =
+            dataProviderAccess.GetDataProvider<IMixedRealitySpatialAwarenessMeshObserver>();
+        
+        observer.DisplayOption = SpatialAwarenessMeshDisplayOptions.None;
+    }
+}
+```

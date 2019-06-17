@@ -212,44 +212,76 @@ namespace Microsoft.MixedReality.Toolkit.Input
             AddFloatKey(curves.RotationW, time, pose.Rotation.w);
         }
 
+        /// Add a pose keyframe to an animation curve.
+        /// Keys are only added if the value changes sufficiently.
         private static void AddPoseKeyFiltered(PoseCurves curves, float time, MixedRealityPose pose, float positionThreshold, float rotationThreshold)
         {
-            AddFloatKeyFiltered(curves.PositionX, time, pose.Position.x, positionThreshold);
-            AddFloatKeyFiltered(curves.PositionY, time, pose.Position.y, positionThreshold);
-            AddFloatKeyFiltered(curves.PositionZ, time, pose.Position.z, positionThreshold);
+            AddPositionKeyFiltered(curves.PositionX, curves.PositionY, curves.PositionZ, time, pose.Position, positionThreshold);
+            AddRotationKeyFiltered(curves.RotationX, curves.RotationY, curves.RotationZ, curves.RotationW, time, pose.Rotation, rotationThreshold);
+        }
 
-            AddFloatKeyFiltered(curves.RotationX, time, pose.Rotation.x, rotationThreshold);
-            AddFloatKeyFiltered(curves.RotationY, time, pose.Rotation.y, rotationThreshold);
-            AddFloatKeyFiltered(curves.RotationZ, time, pose.Rotation.z, rotationThreshold);
-            AddFloatKeyFiltered(curves.RotationW, time, pose.Rotation.w, rotationThreshold);
+        private static void AddPositionKeyFiltered(AnimationCurve curveX, AnimationCurve curveY, AnimationCurve curveZ, float time, Vector3 position, float threshold)
+        {
+            float sqrThreshold = threshold * threshold;
+
+            int iX = FindKeyframeInterval(curveX, time);
+            int iY = FindKeyframeInterval(curveY, time);
+            int iZ = FindKeyframeInterval(curveZ, time);
+            if (iX > 0 && iY > 0 && iZ > 0)
+            {
+                Vector3 v0 = new Vector3(curveX.keys[iX - 1].value, curveY.keys[iY - 1].value, curveZ.keys[iZ - 1].value);
+                Vector3 v1 = new Vector3(curveX.keys[iX].value, curveY.keys[iY].value, curveZ.keys[iZ].value);
+
+                if ((v1 - v0).sqrMagnitude <= sqrThreshold && (position - v1).sqrMagnitude <= sqrThreshold)
+                {
+                    curveX.RemoveKey(iX);
+                    curveY.RemoveKey(iY);
+                    curveZ.RemoveKey(iZ);
+                }
+
+                AddFloatKey(curveX, time, position.x);
+                AddFloatKey(curveY, time, position.y);
+                AddFloatKey(curveZ, time, position.z);
+            }
+        }
+
+        private static void AddRotationKeyFiltered(AnimationCurve curveX, AnimationCurve curveY, AnimationCurve curveZ, AnimationCurve curveW, float time, Quaternion rotation, float threshold)
+        {
+            float sqrThreshold = threshold * threshold;
+
+            int iX = FindKeyframeInterval(curveX, time);
+            int iY = FindKeyframeInterval(curveY, time);
+            int iZ = FindKeyframeInterval(curveZ, time);
+            int iW = FindKeyframeInterval(curveW, time);
+            if (iX > 0 && iY > 0 && iZ > 0 && iW > 0)
+            {
+                Quaternion q0 = new Quaternion(curveX.keys[iX - 1].value, curveY.keys[iY - 1].value, curveZ.keys[iZ - 1].value, curveW.keys[iW - 1].value);
+                Quaternion q1 = new Quaternion(curveX.keys[iX].value, curveY.keys[iY].value, curveZ.keys[iZ].value, curveW.keys[iW].value);
+
+                (q0 * Quaternion.Inverse(q1)).ToAngleAxis(out float angle0, out Vector3 axis0);
+                (rotation * Quaternion.Inverse(q0)).ToAngleAxis(out float angle1, out Vector3 axis1);
+                if (angle0 <= sqrThreshold && angle1 <= sqrThreshold)
+                {
+                    curveX.RemoveKey(iX);
+                    curveY.RemoveKey(iY);
+                    curveZ.RemoveKey(iZ);
+                    curveW.RemoveKey(iW);
+                }
+
+                // TODO make use of Bezier interpolation to allow more aggressive compression
+                // and use tangents and weights to accurately merge adjacent splines.
+                AddFloatKey(curveX, time, rotation.x);
+                AddFloatKey(curveY, time, rotation.y);
+                AddFloatKey(curveZ, time, rotation.z);
+                AddFloatKey(curveW, time, rotation.w);
+            }
         }
 
         /// Add a float value to an animation curve
         private static int AddFloatKey(AnimationCurve curve, float time, float value)
         {
-            return curve.AddKey(time, value);
-        }
-
-        /// Add a float value to an animation curve
-        /// Keys are only added if the value changes sufficiently
-        private static int AddFloatKeyFiltered(AnimationCurve curve, float time, float value, float epsilon)
-        {
-            int insertAfter = FindKeyframeInterval(curve, time);
-            if (insertAfter > 0)
-            {
-                // Merge the preceding two intervals if difference is small enough
-                float value0 = curve.keys[insertAfter - 1].value;
-                float value1 = curve.keys[insertAfter].value;
-                if (Mathf.Abs(value1 - value0) <= epsilon && Mathf.Abs(value - value1) <= epsilon)
-                {
-                    curve.RemoveKey(insertAfter);
-                }
-            }
-
             // return curve.AddKey(time, value);
 
-            // TODO make use of Bezier interpolation to allow more aggressive compression
-            // and use tangents and weights to accurately merge adjacent splines.
             // Use linear interpolation to avoid overshooting from bezier tangents
             var keyframe = new Keyframe(time, value, 0.0f, 0.0f, 0.0f, 0.0f);
             keyframe.weightedMode = WeightedMode.Both;
