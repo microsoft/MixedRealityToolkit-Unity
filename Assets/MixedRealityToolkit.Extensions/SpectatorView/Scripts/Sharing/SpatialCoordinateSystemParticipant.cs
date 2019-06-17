@@ -64,6 +64,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                     if (debugVisual == null)
                     {
+                        if (debugVisualPrefab == null)
+                        {
+                            Debug.LogWarning("Debug visual prefab was null when attempting to show a debug visual");
+                            return;
+                        }
+
                         debugVisual = GameObject.Instantiate(debugVisualPrefab);
 
                         if (SpatialCoordinateTransformer.IsInitialized)

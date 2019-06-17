@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
     /// <typeparam name="TKey">The type of Id for this coordinate.</typeparam>
     public abstract class SpatialCoordinateUnityBase<TKey> : SpatialCoordinateBase<TKey>
     {
-        private UnityEngine.Matrix4x4 worldMatrix = UnityEngine.Matrix4x4.identity;
+        protected UnityEngine.Matrix4x4 worldMatrix = UnityEngine.Matrix4x4.identity;
 
         public SpatialCoordinateUnityBase(TKey id) : base(id) { }
 

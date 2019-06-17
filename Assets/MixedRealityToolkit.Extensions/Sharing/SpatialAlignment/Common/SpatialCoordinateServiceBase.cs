@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         private readonly object discoveryLockObject = new object();
         protected readonly CancellationTokenSource disposedCTS = new CancellationTokenSource();
 
-        private bool isTracking;
+        private bool isTracking = false;
 
         protected readonly ConcurrentDictionary<TKey, ISpatialCoordinate> knownCoordinates = new ConcurrentDictionary<TKey, ISpatialCoordinate>();
 
@@ -157,6 +157,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         {
             if (!SupportsDiscovery)
             {
+                UnityEngine.Debug.LogWarning($"{GetType().ToString()} does not support discovery. Failed to discover any coordinates.");
                 return Task.FromResult(false);
             }
 
@@ -180,6 +181,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         {
             if (!SupportsDiscovery)
             {
+                UnityEngine.Debug.LogWarning($"{GetType().ToString()} does not support discovery. Failed to discover any coordinates.");
                 return false;
             }
 
@@ -189,6 +191,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 
                 if (isTracking)
                 {
+                    UnityEngine.Debug.LogWarning($"{GetType().ToString()} is already in a tracking state. This discovery call will be ignored.");
                     return false;
                 }
 
