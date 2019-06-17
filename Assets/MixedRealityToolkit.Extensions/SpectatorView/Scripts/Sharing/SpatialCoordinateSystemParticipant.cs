@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private byte[] previousCoordinateStatusMessage = null;
         private ISpatialCoordinate coordinate;
         private GameObject debugVisual;
-        private SpatialCoordinateLocalizer debugCoordinateLocalizer;
+        private SpatialCoordinateRelativeLocalizer debugCoordinateLocalizer;
         private bool showDebugVisuals;
 
         public SocketEndpoint SocketEndpoint { get; }
@@ -65,8 +65,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     if (debugVisual == null)
                     {
                         debugVisual = GameObject.Instantiate(debugVisualPrefab);
+
+                        if (SpatialCoordinateTransformer.IsInitialized)
+                        {
+                            debugVisual.transform.SetParent(SpatialCoordinateTransformer.Instance.SharedCoordinateOrigin, worldPositionStays: false);
+                        }
+
                         debugVisual.transform.localScale = Vector3.one * debugVisualScale;
-                        debugCoordinateLocalizer = debugVisual.AddComponent<SpatialCoordinateLocalizer>();
+                        debugCoordinateLocalizer = debugVisual.AddComponent<SpatialCoordinateRelativeLocalizer>();
                         debugCoordinateLocalizer.Coordinate = Coordinate;
                     }
 
