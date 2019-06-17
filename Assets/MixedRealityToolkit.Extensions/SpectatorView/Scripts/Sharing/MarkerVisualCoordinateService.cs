@@ -58,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private readonly UnityEngine.Matrix4x4 markerToCamera;
         private readonly UnityEngine.Transform cameraTransform;
 
-        protected override bool SupportsDiscovery => false;
         private bool debugLogging = false;
 
         public MarkerVisualCoordinateService(IMarkerVisual markerVisual, UnityEngine.Matrix4x4 markerToCamera, UnityEngine.Transform cameraTransform, bool debugLogging = false)
@@ -70,19 +69,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             DebugLog("Service Created");
         }
 
+        protected override bool TryParse(string id, out int result)
+        {
+            DebugLog($"Parsing coordinate id: {id}");
+            result = -1;
+            return int.TryParse(id, out result);
+        }
+
         protected override void OnManagedDispose()
         {
             base.OnManagedDispose();
             DebugLog("Service Disposed");
         }
 
-        protected override bool TryParse(string id, out int result) => int.TryParse(id, out result);
-
         protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, int[] idsToLocate)
         {
+            DebugLog($"OnDiscoverCoordinateAsync, CanBeCanceled:{cancellationToken.CanBeCanceled}, IsCancellationRequested:{cancellationToken.IsCancellationRequested}");
             if (idsToLocate == null || idsToLocate.Length < 1)
             {
-                throw new ArgumentNullException($"{nameof(MarkerVisualCoordinateService)} depends on ids so that it could visualize them, at least one should be provided.");
+                UnityEngine.Debug.LogError($"{nameof(MarkerVisualCoordinateService)} depends on ids so that it could visualize them, at least one should be provided.");
+                return;
             }
 
             DebugLog($"Creating spatial coordinate {idsToLocate[0]}");
@@ -92,13 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             DebugLog($"Showing marker");
             markerCoordinate.ShowMarker();
 
-            DebugLog($"Waiting for cancellation token");
-            while (cancellationToken.IsCancellationRequested)
-            {
-                // Continually cache the current marker visual location in the world.
-                markerCoordinate.WorldToCoordinate = markerToCamera * cameraTransform.localToWorldMatrix;
-                await Task.Delay(1, cancellationToken).IgnoreCancellation(); // Wait a frame, this is how Unity synchronization context will let you wait for next frame
-            }
+            DebugLog($"Waiting for cancellation token: CanBeCanceled:{cancellationToken.CanBeCanceled}, IsCancellationRequested:{cancellationToken.IsCancellationRequested}");
+            await Task.WhenAny(Task.Delay(-1, cancellationToken));
+            markerCoordinate.WorldToCoordinate = markerToCamera * cameraTransform.localToWorldMatrix;
 
             DebugLog($"Hiding marker");
             markerCoordinate.HideMarker();

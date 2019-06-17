@@ -88,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             public LocalizationSession(MarkerVisualSpatialLocalizer localizer, MarkerVisualLocalizationSettings settings, IPeerConnection peerConnection, bool debugLogging = false)
             {
+                DebugLog("Session created");
                 this.localizer = localizer;
                 this.settings = settings;
                 this.peerConnection = peerConnection;
@@ -111,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             /// <inheritdoc />
             public async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
             {
-                DebugLog("Localizing");
+                DebugLog($"Localizing, CanBeCanceled:{cancellationToken.CanBeCanceled}, IsCancellationRequested:{cancellationToken.IsCancellationRequested}");
                 if (!TrySendMarkerVisualDiscoveryMessage())
                 {
                     Debug.LogWarning("Failed to send marker visual discovery message, spatial localization failed.");
@@ -127,11 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     return null;
                 }
 
-                DebugLog($"Attempting to discover coordinate: {coordinateId}");
                 ISpatialCoordinate coordinate = null;
                 using (var cts = CancellationTokenSource.CreateLinkedTokenSource(discoveryCTS.Token, cancellationToken))
                 {
-                    if (await coordinateService.TryDiscoverCoordinatesAsync(discoveryCTS.Token, new string[] { coordinateId.ToString() }))
+                    DebugLog($"Attempting to discover coordinate: {coordinateId}, CanBeCanceled:{cts.Token.CanBeCanceled}, IsCancellationRequested:{cts.Token.IsCancellationRequested}");
+                    if (await coordinateService.TryDiscoverCoordinatesAsync(cts.Token, new string[] { coordinateId.ToString() }))
                     {
                         DebugLog($"Coordinate discovery completed: {coordinateId}");
                         if (!coordinateService.TryGetKnownCoordinate(coordinateId, out coordinate))
@@ -139,9 +140,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             DebugLog("Failed to find spatial coordinate although discovery completed.");
                         }
                     }
+                    else
+                    {
+                        DebugLog("TryDiscoverCoordinatesAsync failed.");
+                    }
                 }
 
-                DebugLog($"Waiting for the coordinate to be found: {coordinateId}");
+                DebugLog($"Waiting for coordinate to be found: {coordinateId}");
                 await Task.WhenAny(coordinateFound.Task, Task.Delay(-1, cancellationToken));
 
                 return coordinate;

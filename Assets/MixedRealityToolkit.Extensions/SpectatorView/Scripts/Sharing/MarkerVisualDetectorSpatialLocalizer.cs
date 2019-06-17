@@ -66,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             public LocalizationSession(MarkerVisualDetectorSpatialLocalizer localizer, MarkerVisualDetectorLocalizationSettings settings, IPeerConnection peerConnection, bool debugLogging = false)
             {
+                DebugLog("Session created");
                 this.localizer = localizer;
                 this.settings = settings;
                 this.peerConnection = peerConnection;
@@ -86,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             /// <inheritdoc />
             public async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
             {
-                DebugLog("Waiting for marker visual");
+                DebugLog($"Waiting for marker visual, CanBeCanceled:{cancellationToken.CanBeCanceled}, IsCancellationRequested:{cancellationToken.IsCancellationRequested}");
                 await Task.WhenAny(coordinateAssigned.Task, Task.Delay(-1, cancellationToken));
                 if (string.IsNullOrEmpty(coordinateId))
                 {
@@ -94,10 +95,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     return null;
                 }
 
-                DebugLog($"Attempting to discover coordinate: {coordinateId}");
                 ISpatialCoordinate coordinate = null;
                 using (var cts = CancellationTokenSource.CreateLinkedTokenSource(discoveryCTS.Token, cancellationToken))
                 {
+                    DebugLog($"Attempting to discover coordinate: {coordinateId}, CanBeCanceled:{cts.Token.CanBeCanceled}, IsCancellationRequested:{cts.Token.IsCancellationRequested}");
                     if (await coordinateService.TryDiscoverCoordinatesAsync(cts.Token, new string[] { coordinateId.ToString() }))
                     {
                         DebugLog($"Coordinate discovery completed: {coordinateId}");
@@ -111,6 +112,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                             return coordinate;
                         }
                     }
+                    else
+                    {
+                        DebugLog("TryDiscoverCoordinatesAsync failed.");
+                    }
                 }
 
                 return null;
@@ -120,12 +125,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             public void OnDataReceived(BinaryReader reader)
             {
                 string command = reader.ReadString();
+                DebugLog($"Received command: {command}");
                 switch (command)
                 {
                     case MarkerVisualLocalizationSettings.DiscoveryHeader:
                         int maxSupportedMarkerId = reader.Read();
                         string coordinateId = DetermineCoordinateId(maxSupportedMarkerId);
                         SendCoordinateAssigned(coordinateId);
+                        coordinateAssigned.TrySetResult(coordinateId);
                         break;
                     default:
                         DebugLog($"Sent unknown command: {command}");

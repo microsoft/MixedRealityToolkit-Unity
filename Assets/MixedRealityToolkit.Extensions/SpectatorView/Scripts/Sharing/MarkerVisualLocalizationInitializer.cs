@@ -10,30 +10,29 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private bool debugLogging = false;
 
-        [SerializeField]
-        private MarkerVisualSpatialLocalizer spatialLocalizer;
-
-        private void Start()
+        private void Awake()
         {
+            DebugLog("Registering ParticipantConnected event.");
             SpatialCoordinateSystemManager.Instance.ParticipantConnected += ParticipantConnected;
         }
 
         private void OnDestroy()
         {
+            DebugLog("Registering ParticipantConnected event.");
             SpatialCoordinateSystemManager.Instance.ParticipantConnected -= ParticipantConnected;
         }
 
-        private async void ParticipantConnected(SpatialCoordinateSystemParticipant participant)
+        private void ParticipantConnected(SpatialCoordinateSystemParticipant participant)
         {
-            DebugLog($"Participant connected: {participant.SocketEndpoint.Address}");
-            await SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, spatialLocalizer, new MarkerVisualLocalizationSettings());
+            DebugLog($"Participant connected: {participant?.SocketEndpoint?.Address ?? "IPAddress unknown"}");
+            SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, MarkerVisualSpatialLocalizer.Id, new MarkerVisualLocalizationSettings());
         }
 
         private void DebugLog(string message)
         {
             if (debugLogging)
             {
-                DebugLog($"MarkerVisualLocalizationInitializer: {message}");
+                Debug.Log($"MarkerVisualLocalizationInitializer: {message}");
             }
         }
     }
