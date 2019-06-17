@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
         #region IMixedRealityCapabilityCheck Implementation
 
-        /// <inheritdoc/ >
+        /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
             return (capability == MixedRealityCapability.VoiceCommand);
