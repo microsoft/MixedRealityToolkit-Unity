@@ -1,7 +1,3 @@
-- name: About MRTK
-  items:
-  - name: Authors
-    href: Authors.md
 - name: Getting Started with MRTK
   href: GettingStartedWithTheMRTK.md
   items:
@@ -10,8 +6,6 @@
 - name: Feature Overviews
   href: MixedRealityServices.md
   items:
-  - name: Core Features
-    items:
     - name: Packages
       href: Packaging/MRTK_Packages.md
       items:
@@ -19,6 +13,8 @@
         href: Packaging/MRTK_Modularization.md
     - name: Profiles
       href: Profiles/Profiles.md
+    - name: Profiles Configuration
+      href: MixedRealityConfigurationGuide.md
     - name: Input
       href: Input/Overview.md
       items:
@@ -34,7 +30,7 @@
         href: Input/Pointers.md
       - name: Gestures
         href: Input/Gestures.md
-      - name: Speech
+      - name: Speech(Voice command)
         href: Input/Speech.md
       - name: Dictation
         href: Input/Dictation.md
@@ -81,6 +77,10 @@
         href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
       - name: Usage Guide
         href: SpatialAwareness/UsageGuide.md
+    - name: Multi Scene System
+      href: SceneSystem/SceneSystemGettingStarted.md
+    - name: MRTK Standard Shader
+      href: README_MRTKStandardShader.md
     - name: Boundary System
       href: Boundary/BoundarySystemGettingStarted.md
       items:
@@ -88,8 +88,6 @@
         href: Boundary/ConfiguringBoundaryVisualization.md
     - name: Performance
       href: Performance/PerfGettingStarted.md
-  - name: Utility
-    items:
     - name: In-Editor Input Simulation
       href: InputSimulation/InputSimulationService.md
     - name: Diagnostics System
@@ -124,3 +122,6 @@
     href: Contributing/Roadmap.md
 - name: Notice
   href: Legal/NOTICE.md
+- name: Authors
+  href: Authors.md
+
