@@ -7,6 +7,8 @@ using UnityEngine;
 
 public static class Compilation
 {
+    private const string CSharpVersion = "7.3";
+
     private const string SolutionTemplate = "Assets/MRTK/Tools/SolutionTemplate.sln"; //TODO this won't work, as it's for my symlinked MRTK only
     private const string SDKProjectTemplate = "Assets/MRTK/Tools/SDKProjectTemplate.csproj"; //TODO this won't work, as it's for my symlinked MRTK only
     private const string PropsFileTemplate = "Assets/MRTK/Tools/PropsFileTemplate.props"; //TODO this won't work, as it's for my symlinked MRTK only
@@ -73,7 +75,7 @@ public static class Compilation
 
         Dictionary<string, string> tokensToReplace = new Dictionary<string, string>()
         {
-            {"<!--LANGUAGE_VERSION-->", "7.1" },
+            {"<!--LANGUAGE_VERSION-->", CSharpVersion },
             {"<!--DEVELOPMENT_BUILD-->", "false" }, // Default to false
             {"<!--OUTPUT_PATH_TOKEN-->", Path.Combine("..", "MRTKBuild") },
             {"<!--COMMON_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.CommonDefines) },
