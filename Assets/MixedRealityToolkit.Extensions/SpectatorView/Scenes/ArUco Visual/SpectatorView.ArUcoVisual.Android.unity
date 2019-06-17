@@ -213,7 +213,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugLogging: 1
-  spatialLocalizer: {fileID: 832370150}
 --- !u!1 &621974539
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,6 +905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3217623fe6ba03242a9c3d8c66f4a71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugLogging: 1
   translatedWorldOrigin: {fileID: 1855549804}
 --- !u!4 &2353995268673026218
 Transform:
