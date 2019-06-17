@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// shared spatial coordinate) is used as the effective local world origin (as determined
     /// by the shared spatial coordinate).
     /// </summary>
-    public class SpatialCoordinateWorldOriginTranslator : MonoBehaviour
+    public class SpatialCoordinateWorldOriginTransformer : MonoBehaviour
     {
         [Tooltip("The transform that should be translated to the position of the world origin of the peer device")]
         [SerializeField]
