@@ -26,45 +26,23 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [Tooltip("Timeout in seconds before new scene is loaded.")]
         private float waitTimeInSecBeforeLoading = 0.25f;
 
-
         public void LoadScene()
         {
             LoadScene(SceneToBeLoaded);
         }
 
-        public void LoadScene(string sceneName)
+        public async void LoadScene(string sceneName)
         {
             if (!string.IsNullOrWhiteSpace(sceneName))
             {
-                StartCoroutine(LoadNewScene(sceneName));
+                AudioFeedbackPlayer.Instance.PlaySound(audio_OnSelect);
+                // Load this as a 'single' scene - this will not destroy the manager scene
+                await MixedRealityToolkit.SceneSystem.LoadContent(sceneName, LoadSceneMode.Single);
             }
             else
             {
                 Debug.Log($"Unsupported scene name: {sceneName}");
             }
-        }
-
-        public static string lastSceneLoaded = "";
-        private IEnumerator LoadNewScene(string sceneName)
-        {
-            AudioFeedbackPlayer.Instance.PlaySound(audio_OnSelect);
-
-            // Let's find out the name of the currently loaded additive scene to unload
-            if (SceneManager.sceneCount > 1)
-            {
-                lastSceneLoaded = SceneManager.GetSceneAt(1).name;
-
-                Debug.Log($"Last scene name: {lastSceneLoaded}");
-
-                // Let's wait in case we don't want to switch scenes too abruptly 
-                yield return new WaitForSeconds(waitTimeInSecBeforeLoading);
-
-                SceneManager.UnloadSceneAsync(lastSceneLoaded);
-            }
-
-            Debug.Log($"New scene name: {SceneToBeLoaded}");
-            lastSceneLoaded = SceneToBeLoaded;
-            SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         }
     }
 }

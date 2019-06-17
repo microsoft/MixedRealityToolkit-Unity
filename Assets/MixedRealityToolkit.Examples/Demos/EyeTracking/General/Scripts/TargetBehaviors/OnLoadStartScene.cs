@@ -22,10 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void LoadNewScene()
         {
-            if (SceneToBeLoaded != "")
-            {
-                SceneManager.LoadSceneAsync(SceneToBeLoaded, LoadSceneMode.Additive);
-            }
+            MixedRealityToolkit.SceneSystem.LoadContent(SceneToBeLoaded, LoadSceneMode.Additive);
         }
     }
 }
