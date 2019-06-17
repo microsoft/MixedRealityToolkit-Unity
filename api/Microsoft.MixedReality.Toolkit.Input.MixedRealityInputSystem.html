@@ -104,6 +104,7 @@
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html">IMixedRealityDataProviderAccess</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck.html">IMixedRealityCapabilityCheck</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -176,7 +177,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DocLink(&quot;https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html&quot;)]
-public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem, IMixedRealityEventSystem, IMixedRealityService, IDisposable, IMixedRealityDataProviderAccess</code></pre>
+public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem, IMixedRealityEventSystem, IMixedRealityService, IDisposable, IMixedRealityDataProviderAccess, IMixedRealityCapabilityCheck</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -458,6 +459,52 @@ public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem,
   </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_CheckCapability_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.CheckCapability*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_CheckCapability_Microsoft_MixedReality_Toolkit_MixedRealityCapability_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.CheckCapability(Microsoft.MixedReality.Toolkit.MixedRealityCapability)">CheckCapability(MixedRealityCapability)</h4>
+  <div class="markdown level1 summary"><p>Checks to see if one or more registered data providers supports the requested capability
+on the current platform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CheckCapability(MixedRealityCapability capability)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityCapability.html">MixedRealityCapability</a></td>
+        <td><span class="parametername">capability</span></td>
+        <td><p>The capability to check.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the capability is supported, false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_ClearFallbackInputStack_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.ClearFallbackInputStack*"></a>
@@ -2813,6 +2860,9 @@ of which other <a href="https://docs.unity3d.com/ScriptReference/GameObject.html
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html">IMixedRealityDataProviderAccess</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck.html">IMixedRealityCapabilityCheck</a>
   </div>
 </article>
           </div>
