@@ -1,9 +1,9 @@
-# CI build for developer builds.
+# CI build producing developer packages.
 
 variables:
   UnityVersion: Unity2018.3.7f1
   MRTKVersion: 2.0.0
-  packagingEnabled: false
+  packagingEnabled: true
 
 jobs:
 - job: CIDeveloperValidation
