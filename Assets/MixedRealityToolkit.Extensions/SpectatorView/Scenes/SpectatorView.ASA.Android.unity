@@ -427,6 +427,16 @@ PrefabInstance:
       propertyPath: translatedWorldOrigin
       value: 
       objectReference: {fileID: 1855549804}
+    - target: {fileID: 4616860447135720828, guid: 07101e997098a6f49a61983c9bd4e111,
+        type: 3}
+      propertyPath: transformedCoordinateOrigin
+      value: 
+      objectReference: {fileID: 1855549804}
+    - target: {fileID: 4616860447135720828, guid: 07101e997098a6f49a61983c9bd4e111,
+        type: 3}
+      propertyPath: sharedCoordinateOrigin
+      value: 
+      objectReference: {fileID: 1855549804}
     - target: {fileID: 8251217132207615602, guid: 07101e997098a6f49a61983c9bd4e111,
         type: 3}
       propertyPath: configuration.AccountKey

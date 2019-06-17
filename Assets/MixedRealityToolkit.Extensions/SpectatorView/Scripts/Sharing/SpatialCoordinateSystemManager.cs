@@ -188,11 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return;
             }
 
-            participant.PeerDeviceHasTracking = reader.ReadBoolean();
-            participant.PeerSpatialCoordinateIsLocated = reader.ReadBoolean();
-            participant.PeerIsLocatingSpatialCoordinate = reader.ReadBoolean();
-            participant.PeerSpatialCoordinateWorldPosition = reader.ReadVector3();
-            participant.PeerSpatialCoordinateWorldRotation = reader.ReadQuaternion();
+            participant.ReadCoordinateStateMessage(reader);
         }
 
         private async void OnLocalizeMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
@@ -247,7 +243,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private async Task RunLocalizationSessionAsync(ISpatialLocalizer localizer, ISpatialLocalizationSettings settings, SpatialCoordinateSystemParticipant participant)
         {
             DebugLog($"Creating localization session: {participant.SocketEndpoint.Address}, {settings.ToString()}, {localizer.ToString()}");
-            using (currentLocalizationSession = localizer.CreateLocalizationSession(participant, settings))
+            if (!localizer.TryCreateLocalizationSession(participant, settings, out ISpatialLocalizationSession currentLocalizationSession))
+            {
+                Debug.LogError($"Failed to create an ISpatialLocalizationSession from localizer {localizer.SpatialLocalizerId}");
+                return;
+            }
+
+            using (currentLocalizationSession)
             {
                 DebugLog($"Setting localization session for participant: {participant.SocketEndpoint.Address}, {currentLocalizationSession.ToString()}");
                 participant.CurrentLocalizationSession = currentLocalizationSession;

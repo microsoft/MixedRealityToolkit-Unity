@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private byte[] previousCoordinateStatusMessage = null;
         private ISpatialCoordinate coordinate;
         private GameObject debugVisual;
-        private SpatialCoordinateLocalizer debugCoordinateLocalizer;
+        private SpatialCoordinateRelativeLocalizer debugCoordinateLocalizer;
         private bool showDebugVisuals;
 
         public SocketEndpoint SocketEndpoint { get; }
@@ -71,8 +71,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         }
 
                         debugVisual = GameObject.Instantiate(debugVisualPrefab);
+
+                        if (SpatialCoordinateTransformer.IsInitialized)
+                        {
+                            debugVisual.transform.SetParent(SpatialCoordinateTransformer.Instance.SharedCoordinateOrigin, worldPositionStays: false);
+                        }
+
                         debugVisual.transform.localScale = Vector3.one * debugVisualScale;
-                        debugCoordinateLocalizer = debugVisual.AddComponent<SpatialCoordinateLocalizer>();
+                        debugCoordinateLocalizer = debugVisual.AddComponent<SpatialCoordinateRelativeLocalizer>();
                         debugCoordinateLocalizer.Coordinate = Coordinate;
                     }
 
@@ -179,6 +185,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                 SocketEndpoint.Send(stream.ToArray());
             }
+        }
+
+        internal void ReadCoordinateStateMessage(BinaryReader reader)
+        {
+            PeerDeviceHasTracking = reader.ReadBoolean();
+            PeerSpatialCoordinateIsLocated = reader.ReadBoolean();
+            PeerIsLocatingSpatialCoordinate = reader.ReadBoolean();
+            PeerSpatialCoordinateWorldPosition = reader.ReadVector3();
+            PeerSpatialCoordinateWorldRotation = reader.ReadQuaternion();
         }
     }
 }

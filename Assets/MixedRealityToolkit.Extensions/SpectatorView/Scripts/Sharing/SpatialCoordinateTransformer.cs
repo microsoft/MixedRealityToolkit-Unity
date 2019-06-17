@@ -11,14 +11,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// shared spatial coordinate) is used as the effective local world origin (as determined
     /// by the shared spatial coordinate).
     /// </summary>
-    public class SpatialCoordinateWorldOriginTranslator : MonoBehaviour
+    public class SpatialCoordinateTransformer : Singleton<SpatialCoordinateTransformer>
     {
         [SerializeField]
         private bool debugLogging = false;
 
         [Tooltip("The transform that should be translated to the position of the world origin of the peer device")]
         [SerializeField]
-        private Transform translatedWorldOrigin = null;
+        private Transform sharedCoordinateOrigin = null;
+
+        public Transform SharedCoordinateOrigin => sharedCoordinateOrigin;
 
         private SpatialCoordinateSystemParticipant currentParticipant;
 
@@ -29,8 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             SpatialCoordinateSystemManager.Instance.ParticipantDisconnected += OnParticipantDisconnected;
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             DebugLog("Unregistering ParticipantConnected and ParticipantDisconnected events.");
             SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
             SpatialCoordinateSystemManager.Instance.ParticipantDisconnected -= OnParticipantDisconnected;
@@ -38,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Update()
         {
-            if (currentParticipant != null && translatedWorldOrigin != null && currentParticipant.Coordinate != null && currentParticipant.PeerSpatialCoordinateIsLocated)
+            if (currentParticipant != null && sharedCoordinateOrigin != null && currentParticipant.Coordinate != null && currentParticipant.PeerSpatialCoordinateIsLocated)
             {
                 // Obtain a position and rotation that transforms this application's local world origin to the shared spatial coordinate space.
                 var localWorldToCoordinatePosition = currentParticipant.Coordinate.WorldToCoordinateSpace(Vector3.zero);
@@ -49,9 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 var peerCoordinateToWorldRotation = currentParticipant.PeerSpatialCoordinateWorldRotation;
 
                 // Create a transform that converts the local world space to the peer world space (peer coordinate to peer world * local world to local shared coordinate).
-                translatedWorldOrigin.position = peerCoordinateToWorldPosition + localWorldToCoordinatePosition;
-                translatedWorldOrigin.rotation = peerCoordinateToWorldRotation * localWorldToCoordinateRotation;
-                DebugLog($"Updated transform, Position: {translatedWorldOrigin.position.ToString("G4")}, Rotation: {translatedWorldOrigin.rotation.ToString("G4")}");
+                sharedCoordinateOrigin.position = peerCoordinateToWorldPosition + localWorldToCoordinatePosition;
+                sharedCoordinateOrigin.rotation = peerCoordinateToWorldRotation * localWorldToCoordinateRotation;
+                DebugLog($"Updated transform, Position: {sharedCoordinateOrigin.position.ToString("G4")}, Rotation: {sharedCoordinateOrigin.rotation.ToString("G4")}");
             }
         }
 

@@ -41,23 +41,29 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             return SpatialAnchorsConfiguration.TryDeserialize(reader, out settings);
         }
 
-        public override ISpatialLocalizationSession CreateLocalizationSession(IPeerConnection peerConnection, SpatialAnchorsConfiguration settings)
+        public override bool TryCreateLocalizationSession(IPeerConnection peerConnection, SpatialAnchorsConfiguration settings, out ISpatialLocalizationSession session)
         {
             if ((string.IsNullOrWhiteSpace(settings.AccountId) || string.IsNullOrWhiteSpace(settings.AccountKey)) && string.IsNullOrWhiteSpace(settings.AuthenticationToken) && string.IsNullOrWhiteSpace(settings.AccessToken))
             {
                 Debug.LogError("Authentication method not configured for Azure Spatial Anchors, ensure you configured AccountID and AccountKey, or Authentication Token, or Access Token.", this);
+                session = null;
+                return false;
             }
 
 #if !SPATIALALIGNMENT_ASA
             Debug.LogError("Attempting to use SpatialAnchorLocalizer but ASA is not enabled for this build");
-            return null;
+            session = null;
+            return false;
 #elif UNITY_WSA && SPATIALALIGNMENT_ASA
-            return new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsUWPCoordinateService(settings), settings, peerConnection);
+            session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsUWPCoordinateService(settings), settings, peerConnection);
+            return true;
 #elif UNITY_ANDROID && SPATIALALIGNMENT_ASA
-            return new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsAndroidCoordinateService(settings), settings, peerConnection);
+            session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsAndroidCoordinateService(settings), settings, peerConnection);
+            return true;
 #elif UNITY_IOS && SPATIALALIGNMENT_ASA
             Debug.LogError("SpatialAnchorLocalizer does not yet support iOS");
-            return null;
+            session = null;
+            return false;
 #endif
         }
 

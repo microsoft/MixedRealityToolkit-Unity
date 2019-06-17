@@ -60,10 +60,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 #endif
 
         /// <inheritdoc />
-        public override ISpatialLocalizationSession CreateLocalizationSession(IPeerConnection peerConnection, MarkerVisualLocalizationSettings settings)
+        public override bool TryCreateLocalizationSession(IPeerConnection peerConnection, MarkerVisualLocalizationSettings settings, out ISpatialLocalizationSession session)
         {
             markerVisual = (markerVisual == null) ? MarkerVisual as IMarkerVisual : markerVisual;
-            return new LocalizationSession(this, settings, peerConnection, debugLogging);
+            session = new LocalizationSession(this, settings, peerConnection, debugLogging);
+            return true;
         }
 
         /// <inheritdoc />
