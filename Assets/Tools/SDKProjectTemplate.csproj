@@ -1,11 +1,10 @@
 <Project>
   <PropertyGroup>
     <ProjectGuid><!--PROJECT_GUID_TOKEN--></ProjectGuid>
-    <TargetFramework>netstandard2.0</TargetFramework> <!--TODO: This can probably be removed now that we are custom importing the sdk props/targets-->
+    <TargetFramework>netstandard2.0</TargetFramework> <!--TODO: This is a weird thing, it is a required property, although immediately changed when common props are loaded, before the sdk.props are loaded-->
     <AllowUnsafeBlocks><!--ALLOW_UNSAFE_TOKEN--></AllowUnsafeBlocks>
     <Platforms><!--PROJECT_PLATFORMS_TOKEN--></Platforms>
     <Configurations><!--PROJECT_CONFIGURATIONS_TOKEN--></Configurations>
-    <AssemblySearchPaths>C:\Program Files\Unity\Hub\Editor\2018.3\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api;$(AssemblySearchPaths)</AssemblySearchPaths>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Platforn)' == ''">

@@ -83,7 +83,7 @@ namespace Assets.MRTK.Tools.Scripts
                 // Sometimes the delete isn't committed fast enough, lets spin and wait for this to happen
                 for (int i = 0; i < 10 && Directory.Exists(targetDir); i++)
                 {
-                    Thread.Sleep(10);
+                    Thread.Sleep(100);
                 }
 #endif
             }

@@ -273,7 +273,7 @@ namespace Assets.MRTK.Tools.Scripts
             {
                 if (!Utilities.IsPlatformInstalled(platformPair.Key))
                 {
-                    Debug.LogError($"The platform '{platformPair.Key}' is not installed.");
+                    Debug.LogError($"The platform '{platformPair.Key}' is not installed, it will not be supported in the MSBuild project.");
                     continue;
                 }
 
