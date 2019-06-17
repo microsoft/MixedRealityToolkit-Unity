@@ -58,6 +58,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = Registrar.GetService<IMixedRealityFocusProvider>());
 
+        private IMixedRealityRaycastProvider raycastProvider = null;
+
+        /// <inheritdoc />
+        public IMixedRealityRaycastProvider RaycastProvider => raycastProvider ?? (raycastProvider = Registrar.GetService<IMixedRealityRaycastProvider>());
+
         /// <inheritdoc />
         public IMixedRealityGazeProvider GazeProvider { get; private set; }
 
@@ -242,17 +247,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Disable()
         {
-            GazeProvider = null;
-
-            if (!Application.isPlaying)
+            // Input System adds a gaze provider component on the main camera, which needs to be removed when the input system is disabled/removed.
+            // Otherwise the component would keep references to dead objects.
+            // Unity's way to remove component is to destroy it.
+            if (GazeProvider != null)
             {
-                var component = CameraCache.Main.GetComponent<IMixedRealityGazeProvider>() as Component;
-
-                if (component != null)
+                if (Application.isPlaying)
                 {
-                    UnityEngine.Object.DestroyImmediate(component);
+                    UnityEngine.Object.Destroy(GazeProvider as Component);
                 }
+                else
+                {
+                    UnityEngine.Object.DestroyImmediate(GazeProvider as Component);
+                }
+
+                GazeProvider = null;
             }
+
 
             if (deviceManagers.Count > 0)
             {
@@ -933,7 +944,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
 
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
-            
+
             HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
         }
 

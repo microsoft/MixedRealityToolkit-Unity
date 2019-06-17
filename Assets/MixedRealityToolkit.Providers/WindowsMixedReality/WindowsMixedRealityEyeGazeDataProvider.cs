@@ -82,16 +82,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (pointerPose != null)
             {
                 var eyes = pointerPose.Eyes;
-                if ((eyes != null) && (eyes.Gaze.HasValue))
+                if (eyes != null)
                 {
-                    Ray newGaze = new Ray(WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Origin), WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Direction));
+                    InputSystem?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
 
-                    if (SmoothEyeTracking)
+                    if(eyes.Gaze.HasValue)
                     {
-                        newGaze = SmoothGaze(newGaze);
-                    }
+                        Ray newGaze = new Ray(WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Origin), WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Direction));
 
-                    InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);
+                        if (SmoothEyeTracking)
+                        {
+                            newGaze = SmoothGaze(newGaze);
+                        }
+
+                        InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);
+                    }
                 }
             }
 #endif // WINDOWS_UWP

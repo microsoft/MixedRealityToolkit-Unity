@@ -66,15 +66,10 @@ namespace Microsoft.MixedReality.Toolkit
             for (int i = 0; i < providers.Length; i++)
             {
                 // Check for null and mismatched type.
-                if ((providers[i] == null) ||
-                    !interfaceType.IsAssignableFrom(providers[i].GetType()))
-                {
-                    continue;
-                }
+                if ((providers[i] == null) || !interfaceType.IsAssignableFrom(providers[i].GetType())) { continue; }
 
                 // Check to see if name is valid (not null or whitespace) and if it matches the provider's name.
-                if (!string.IsNullOrWhiteSpace(name) &&
-                    string.Equals(providers[i].Name, name))
+                if (!string.IsNullOrWhiteSpace(name) && string.Equals(providers[i].Name, name))
                 {
                     provider = (T)providers[i];
                 }
@@ -115,31 +110,16 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public T GetService<T>(string name = null, bool showLogs = true) where T : IMixedRealityService
         {
-            T serviceInstance;
-            IMixedRealityServiceRegistrar registrar;
-
-            bool serviceAcquired = MixedRealityServiceRegistry.TryGetService<T>(out serviceInstance, out registrar, name);
-
-            if (serviceAcquired)
-            {
-                // Confirm that the service was registered by this registrar.
-                if (!object.ReferenceEquals(registrar, this))
-                {
-                    serviceAcquired = false;
-                }
-            }
-
-            if (!serviceAcquired)
+            if (!ConfirmService<T>(name))
             {
                 if (showLogs)
                 {
-                    Debug.LogError($"Failed to get the {(string.IsNullOrWhiteSpace(name) ? typeof(T).Name : name)} service.");
+                    Debug.Log("Failed to get the requested service.");
                 }
-
                 return default(T);
             }
 
-            return serviceInstance;
+            return (T)service;
         }
 
         /// <inheritdoc />
@@ -148,22 +128,14 @@ namespace Microsoft.MixedReality.Toolkit
             if (!string.IsNullOrWhiteSpace(name))
             {
                 Debug.LogError("This registrar does not support requesting multiple services of the same interface type and name.");
-                return new List<T>(); ;
+                return new List<T>();
             }
 
-            Type interfaceType = typeof(T);
-            List<T> matchingServices = new List<T>();
+            if (!ConfirmService<T>(name)) { return new List<T>(); }
 
-            IReadOnlyList<IMixedRealityService> allServices = MixedRealityServiceRegistry.GetServices(this);
-            for (int i = 0; i < allServices.Count; i++)
-            {
-                if (interfaceType.IsAssignableFrom(allServices[i].GetType()))
-                {
-                    matchingServices.Add((T)allServices[i]);
-                }
-            }
-
-            return matchingServices;
+            List<T> services = new List<T>();
+            services.Add((T)service);
+            return services;
         }
 
         /// <inheritdoc />
@@ -181,11 +153,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
         {
-            if ((dataProviderInstance == null) ||
-                (dataProviders.Contains(dataProviderInstance)))
-            {
-                return false;
-            }
+            if ((dataProviderInstance == null) || (dataProviders.Contains(dataProviderInstance))) { return false; }
 
             dataProviders.Add(dataProviderInstance);
             return true;
@@ -228,11 +196,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool UnregisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
         {
-            if ((dataProviderInstance == null) ||
-                (!dataProviders.Contains(dataProviderInstance)))
-            {
-                return false;
-            }
+            if ((dataProviderInstance == null) || (!dataProviders.Contains(dataProviderInstance))) { return false; }
 
             dataProviders.Remove(dataProviderInstance);
             return true;
@@ -241,11 +205,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool UnregisterService<T>(string name = null) where T : IMixedRealityService
         {
-            T serviceInstance = default(T);
+            if (!ConfirmService<T>(name)) { return false; }
 
-            if (!MixedRealityServiceRegistry.TryGetService<T>(out serviceInstance, name)) { return false; }
-
-            return UnregisterService<T>(serviceInstance);
+            return UnregisterService<T>((T)service);
         }
 
         /// <inheritdoc />
@@ -307,6 +269,14 @@ namespace Microsoft.MixedReality.Toolkit
         protected virtual void Uninitialize<T>() where T : IMixedRealityService
         {
             MixedRealityServiceRegistry.RemoveService<T>((T)service, this);
+        }
+
+        private bool ConfirmService<T>(string name)
+        {
+            if ((service == null) || !typeof(T).IsAssignableFrom(service.GetType())) { return false; }
+            if (!string.IsNullOrWhiteSpace(name) && !name.Equals(service.Name)) { return false; }
+
+            return true;
         }
     }
 }

@@ -247,35 +247,5 @@ namespace Microsoft.MixedReality.Toolkit
                 out _,                  // The registrar out param is not used, it can be discarded.
                 name);
         }
-
-        /// <summary>
-        /// Returns the collection of all services registered by the specified registrar.
-        /// </summary>
-        /// <param name="registrar">The registrar responsible for the serivces being returned.</param>
-        /// <returns>
-        /// A read only list of the registered services.
-        /// </returns>
-        /// <remarks>
-        /// If the registrar parameter is null, all registered services will be returned.
-        /// </remarks>
-        public static IReadOnlyList<IMixedRealityService> GetServices(IMixedRealityServiceRegistrar registrar = null)
-        {
-            List<IMixedRealityService> services = new List<IMixedRealityService>();
-
-            var registrySnapshot = new Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>>(registry);
-            foreach (Type key in registrySnapshot.Keys)
-            {
-                foreach (var kvp in registrySnapshot[key])
-                {
-                    if ((registrar == null) ||
-                        (object.ReferenceEquals(registrar, kvp.Value)))
-                    {
-                        services.Add(kvp.Key);
-                    }
-                }
-            }
-
-            return services;
-        }
     }
 }

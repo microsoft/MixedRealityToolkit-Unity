@@ -12,6 +12,13 @@ using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using NUnit.Framework;
 using System.Collections;
+using System.IO;
+using Microsoft.MixedReality.Toolkit.Diagnostics;
+
+#if UNITY_EDITOR
+using TMPro;
+using UnityEditor;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -42,6 +49,39 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
             inputSimulationService.UserInputEnabled = false;
             return inputSimulationService;
+        }
+
+        internal static IEnumerator SetupMrtkWithoutGlobalInputHandlers()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+            TestUtilities.InitializePlayspace();
+
+            IMixedRealityInputSystem inputSystem = null;
+            MixedRealityServiceRegistry.TryGetService(out inputSystem);
+
+            Assert.IsNotNull(inputSystem, "Input system must be initialized");
+
+            // Let input system to register all cursors and managers.
+            yield return null;
+
+            // Switch off / Destroy all input components, which listen to global events
+            Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
+            inputSystem.GazeProvider.Enabled = false;
+
+            var diagnosticsVoiceControls = Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
+            foreach (var diagnosticsComponent in diagnosticsVoiceControls)
+            {
+                diagnosticsComponent.enabled = false;
+            }
+
+            // Let objects be destroyed
+            yield return null;
+
+            // Check that input system is clean
+            CollectionAssert.IsEmpty(((BaseEventSystem)inputSystem).EventListeners,      "Input event system handler registry is not empty in the beginning of the test.");
+            CollectionAssert.IsEmpty(((BaseEventSystem)inputSystem).EventHandlersByType, "Input event system handler registry is not empty in the beginning of the test.");
+
+            yield return null;
         }
 
         internal static IEnumerator MoveHandFromTo(Vector3 startPos, Vector3 endPos, int numSteps, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
@@ -76,6 +116,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             inputSimulationService.HandDataRight.Update(true, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
             // Wait one frame for the hand to actually go away
             yield return null;
+        }
+
+        internal static void EnsureTextMeshProEssentials()
+        {
+#if UNITY_EDITOR
+            // Special handling for TMP Settings and importing Essential Resources
+            if (TMP_Settings.instance == null)
+            {
+                string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
+                if (Directory.Exists(packageFullPath))
+                {
+                    AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
+                }
+            }
+#endif
         }
     }
 }
