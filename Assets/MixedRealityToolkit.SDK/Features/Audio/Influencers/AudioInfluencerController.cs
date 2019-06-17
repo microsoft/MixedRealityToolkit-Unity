@@ -102,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// The source of the audio.
         /// </summary>
         [SerializeField]
-        [HideInInspector]   // The inspector will already have a reference to the object, this avoids duplication.
         private AudioSource audioSource;
 
         /// <summary>
@@ -152,7 +151,10 @@ namespace Microsoft.MixedReality.Toolkit.Audio
 
         private void Awake()
         {
-            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = GetComponent<AudioSource>();
+            }
 
             initialAudioSourceVolume = audioSource.volume;
 
