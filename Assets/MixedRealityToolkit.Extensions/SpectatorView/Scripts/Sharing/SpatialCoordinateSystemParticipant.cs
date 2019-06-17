@@ -174,5 +174,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 SocketEndpoint.Send(stream.ToArray());
             }
         }
+
+        internal void ReadCoordinateStateMessage(BinaryReader reader)
+        {
+            PeerDeviceHasTracking = reader.ReadBoolean();
+            PeerSpatialCoordinateIsLocated = reader.ReadBoolean();
+            PeerIsLocatingSpatialCoordinate = reader.ReadBoolean();
+            PeerSpatialCoordinateWorldPosition = reader.ReadVector3();
+            PeerSpatialCoordinateWorldRotation = reader.ReadQuaternion();
+        }
     }
 }

@@ -178,11 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return;
             }
 
-            participant.PeerDeviceHasTracking = reader.ReadBoolean();
-            participant.PeerSpatialCoordinateIsLocated = reader.ReadBoolean();
-            participant.PeerIsLocatingSpatialCoordinate = reader.ReadBoolean();
-            participant.PeerSpatialCoordinateWorldPosition = reader.ReadVector3();
-            participant.PeerSpatialCoordinateWorldRotation = reader.ReadQuaternion();
+            participant.ReadCoordinateStateMessage(reader);
         }
 
         private async void OnLocalizeMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
