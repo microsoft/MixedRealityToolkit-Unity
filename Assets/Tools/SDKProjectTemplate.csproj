@@ -1,12 +1,44 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="COMMON_PROPS_FILE_PATH" />
+<Project>
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Configurations>Editor;Standalone;UWP</Configurations>
-	<BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)\$(MSBuildProjectName)\obj</BaseIntermediateOutputPath>
+    <ProjectGuid><!--PROJECT_GUID_TOKEN--></ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework> <!--TODO: This can probably be removed now that we are custom importing the sdk props/targets-->
+    <AllowUnsafeBlocks><!--ALLOW_UNSAFE_TOKEN--></AllowUnsafeBlocks>
+    <Platforms><!--PROJECT_PLATFORMS_TOKEN--></Platforms>
+    <Configurations><!--PROJECT_CONFIGURATIONS_TOKEN--></Configurations>
+    <AssemblySearchPaths>C:\Program Files\Unity\Hub\Editor\2018.3\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api;$(AssemblySearchPaths)</AssemblySearchPaths>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Platforn)' == ''">
+    <Platform><!--DEFAULT_PLATFORM_TOKEN--></Platform>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)'==''">
+    <Configuration>Editor</Configuration>
+  </PropertyGroup>
+
+  <Import Project="##COMMON_PROPS_FILE_PATH##" />
+  
+  <!--POST common import-->
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)\$(ProjectGuid)\obj</BaseIntermediateOutputPath>
+    <OutputPath>$(OutputPath)\$(ProjectGuid)\bin</OutputPath>
+  </PropertyGroup>
+
+  <!--IMPORT SDK.props manually to be able to set the BaseIntermediateOutputPath path-->
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);*.asmdef;*.asmdef.meta;<!--FOLDER_EXCLUDE_TOKEN--></DefaultItemExcludes>
   </PropertyGroup>
+  
+  <ItemGroup>
+  	<!--PROJECT_REFERENCE_TEMPLATE_START--><ProjectReference Include="##REFERENCE_TOKEN##"/><!--PROJECT_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+  
+  <ItemGroup>
+    <!--SOURCE_INCLUDE_TEMPLATE_START--><Compile Include="##RELATIVE_SOURCE_PATH##" Link="##PROJECT_LINK_PATH##" /><!--SOURCE_INCLUDE_TEMPLATE_END-->
+  </ItemGroup>
+  
+  <!--IMPORT SDK.targets-->
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 </Project>

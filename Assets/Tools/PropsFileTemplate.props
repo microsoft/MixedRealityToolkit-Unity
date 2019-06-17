@@ -1,37 +1,66 @@
 <Project>
   <PropertyGroup>
-    <LangVersion>7.1</LangVersion> <!--This is current version MRTK uses-->
+    <LangVersion><!--LANGUAGE_VERSION--></LangVersion>
+    <DevelopmentBuild><!--DEVELOPMENT_BUILD--></DevelopmentBuild>
     <RelativeBuildFolder><!--OUTPUT_PATH_TOKEN--></RelativeBuildFolder>
-    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\bin</OutputPath>
-    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)</BaseIntermediateOutputPath>
-	<UnityBasePath><!--UNITY_EDITOR_INSTALLATION_PATH--></UnityBasePath>
+	  <DefineConstants><!--COMMON_DEFINE_CONSTANTS--></DefineConstants>
+    <AssemblySearchPaths><!--COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+    
+    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)</OutputPath>
+    <BaseIntermediateOutputPath>$(OutputPath)</BaseIntermediateOutputPath>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)'=='Editor'">
-    <DefineConstants>$(DefineConstants);UNITY_EDITOR</DefineConstants>
-    <UnityLibrariesFolder>$(UnityBasePath)Data\Managed</UnityLibrariesFolder>
+    <DefineConstants>$(DefineConstants);<!--COMMON_EDITOR_DEFINE_CONSTANTS--></DefineConstants>
+    <AssemblySearchPaths><!--EDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->;$(AssemblySearchPaths)</AssemblySearchPaths>
+    <!--Overide development build if we are building an editor build-->
+    <DevelopmentBuild>true</DevelopmentBuild>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(Configuration)'=='UWP'">
-    <DefineConstants>$(DefineConstants);UNITY_UWP;UNITY_WSA</DefineConstants>
-    <UnityLibrariesFolder>$(UnityBasePath)Data\PlaybackEngines\MetroSupport\Managed\UAP\Unprocessed</UnityLibrariesFolder>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)'=='Standalone'">
-    <DefineConstants>$(DefineConstants);UNITY_STANDALONE</DefineConstants>
-    <UnityLibrariesFolder>$(UnityBasePath)Data\PlaybackEngines\windowsstandalonesupport\Managed</UnityLibrariesFolder>
+  <PropertyGroup Condition="'$(DevelopmentBuild)'=='true'">
+    <DefineConstants>$(DefineConstants);<!--COMMON_DEVELOPMENT_DEFINE_CONSTANTS--></DefineConstants>
+    <AssemblySearchPaths><!--DEVELOPMENT_ASSEMBLY_SEARCH_PATHS_TOKEN-->;$(AssemblySearchPaths)</AssemblySearchPaths>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="$(UnityLibrariesFolder)\UnityEngine.dll"/>
-	<Reference Include="$(UnityBasePath)Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll"/>
+    <!--COMMON_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--COMMON_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
-
-  <ItemGroup Condition="'$(Configuration)'=='Standalone'">
-    <Reference Include="$(UnityBasePath)Data\UnityExtensions\Unity\GUISystem\Standalone\UnityEngine.UI.dll"/>
-  </ItemGroup>
-
+  
   <ItemGroup Condition="'$(Configuration)'=='Editor'">
-    <Reference Include="$(UnityLibrariesFolder)\UnityEditor.dll"/>
+    <!--EDITOR_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--EDITOR_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
+  
+  <ItemGroup Condition="'$(DevelopmentBuild)'=='true'">
+    <!--DEVELOPMENT_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--DEVELOPMENT_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+  
+  <!--PLATFORM_TEMPLATE_START-->
+  <PropertyGroup Condition="'$(Platform)'=='##PLATFORM_TOKEN##'">
+    <AssemblySearchPaths><!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->;$(AssemblySearchPaths)</AssemblySearchPaths>
+    <TargetFramework><!--TARGET_FRAMEWORK_TOKEN--></TargetFramework>
+    <DefineConstants>$(DefineConstants);<!--PLATFORM_COMMON_DEFINE_CONSTANTS--></DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Platform)|$(Configuration)'=='##PLATFORM_TOKEN##|Editor'">
+    <AssemblySearchPaths><!--PLATFORM_EDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->;$(AssemblySearchPaths)</AssemblySearchPaths>
+    <DefineConstants>$(DefineConstants);<!--PLATFORM_EDITOR_DEFINE_CONSTANTS--></DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Platform)|$(Configuration)'=='##PLATFORM_TOKEN##|Player'">
+    <AssemblySearchPaths><!--PLATFORM_PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN-->;$(AssemblySearchPaths)</AssemblySearchPaths>
+    <DefineConstants>$(DefineConstants);<!--PLATFORM_PLAYER_DEFINE_CONSTANTS--></DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Platform)'=='##PLATFORM_TOKEN##'">
+    <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Platform)|$(Configuration)'=='##PLATFORM_TOKEN##|Editor'">
+    <!--PLATFORM_EDITOR_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--PLATFORM_EDITOR_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Platform)|$(Configuration)'=='##PLATFORM_TOKEN##|Player'">
+    <!--PLATFORM_PLAYER_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--PLATFORM_PLAYER_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+  <!--PLATFORM_TEMPLATE_END-->
 </Project>
