@@ -13,6 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class SpatialCoordinateWorldOriginTranslator : MonoBehaviour
     {
+        [SerializeField]
+        private bool debugLogging = false;
+
         [Tooltip("The transform that should be translated to the position of the world origin of the peer device")]
         [SerializeField]
         private Transform translatedWorldOrigin = null;
@@ -21,12 +24,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void Start()
         {
+            DebugLog("Registering ParticipantConnected and ParticipantDisconnected events.");
             SpatialCoordinateSystemManager.Instance.ParticipantConnected += OnParticipantConnected;
             SpatialCoordinateSystemManager.Instance.ParticipantDisconnected += OnParticipantDisconnected;
         }
 
         private void OnDestroy()
         {
+            DebugLog("Unregistering ParticipantConnected and ParticipantDisconnected events.");
             SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
             SpatialCoordinateSystemManager.Instance.ParticipantDisconnected -= OnParticipantDisconnected;
         }
@@ -35,20 +40,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             if (currentParticipant != null && translatedWorldOrigin != null && currentParticipant.Coordinate != null && currentParticipant.PeerSpatialCoordinateIsLocated)
             {
-                // We need to transform the remote peer's WorldOrigin into a location in this system's world coordinate system.
-                Vector3 positionOfPeerWorldOriginInCoordinateSpace = -currentParticipant.PeerSpatialCoordinateWorldPosition;
-                Quaternion rotationOfPeerWorldOriginInCoordinateSpace = Quaternion.Inverse(currentParticipant.PeerSpatialCoordinateWorldRotation);
+                // Obtain a position and rotation that transforms this application's local world origin to the shared spatial coordinate space.
+                var localWorldToCoordinatePosition = currentParticipant.Coordinate.WorldToCoordinateSpace(Vector3.zero);
+                var localWorldToCoordinateRotation = currentParticipant.Coordinate.WorldToCoordinateSpace(Quaternion.identity);
 
-                Vector3 positionOfPeerWorldOriginInLocalWorldSpace = currentParticipant.Coordinate.CoordinateToWorldSpace(positionOfPeerWorldOriginInCoordinateSpace);
-                Quaternion rotationOfPeerWorldOriginInLocalWorldSpace = currentParticipant.Coordinate.CoordinateToWorldSpace(rotationOfPeerWorldOriginInCoordinateSpace);
+                // Obtain a position and rotation that transforms the peer's shared spatial coordinate to its local world space.
+                var peerCoordinateToWorldPosition = currentParticipant.PeerSpatialCoordinateWorldPosition;
+                var peerCoordinateToWorldRotation = currentParticipant.PeerSpatialCoordinateWorldRotation;
 
-                translatedWorldOrigin.position = positionOfPeerWorldOriginInLocalWorldSpace;
-                translatedWorldOrigin.rotation = rotationOfPeerWorldOriginInLocalWorldSpace;
+                // Create a transform that converts the local world space to the peer world space (peer coordinate to peer world * local world to local shared coordinate).
+                translatedWorldOrigin.position = peerCoordinateToWorldPosition + localWorldToCoordinatePosition;
+                translatedWorldOrigin.rotation = peerCoordinateToWorldRotation * localWorldToCoordinateRotation;
+                DebugLog($"Updated transform, Position: {translatedWorldOrigin.position.ToString("G4")}, Rotation: {translatedWorldOrigin.rotation.ToString("G4")}");
             }
         }
 
         private void OnParticipantDisconnected(SpatialCoordinateSystemParticipant participant)
         {
+            DebugLog($"Participant disconnected: {participant?.SocketEndpoint?.Address ?? "IPAddress unknown"}");
             if (currentParticipant == null)
             {
                 Debug.LogError("Unexpected that no participant was registered when a participant disconnected");
@@ -58,11 +67,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private void OnParticipantConnected(SpatialCoordinateSystemParticipant participant)
         {
+            DebugLog($"Participant connected: {participant?.SocketEndpoint?.Address ?? "IPAddress unknown"}");
             if (currentParticipant != null)
             {
                 Debug.LogError("Unexpected existing participant when another participant connected");
             }
             currentParticipant = participant;
+        }
+
+        private void DebugLog(string message)
+        {
+            if (debugLogging)
+            {
+                Debug.Log($"SpatialCoordinateWorldOriginTransformer: {message}");
+            }
         }
     }
 }
