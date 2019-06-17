@@ -7,7 +7,7 @@ using System.Collections;
 using System.Text;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHandler
     {
