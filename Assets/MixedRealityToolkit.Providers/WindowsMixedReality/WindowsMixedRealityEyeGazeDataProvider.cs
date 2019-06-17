@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         SupportedPlatforms.WindowsUniversal,
         "Windows Mixed Reality Eye Gaze Provider",
         "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK")]
-    public class WindowsMixedRealityEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider
+    public class WindowsMixedRealityEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -51,13 +51,32 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private Ray saccade_initialGazePoint;
         private List<Ray> saccade_newGazeCluster = new List<Ray>();
 
-#if WINDOWS_UWP
-        private static bool askedForETAccessAlready = false; // To make sure that this is only triggered once.
-#endif
-
         public event Action OnSaccade;
         public event Action OnSaccadeX;
         public event Action OnSaccadeY;
+
+#if WINDOWS_UWP
+
+        private static bool askedForETAccessAlready = false; // To make sure that this is only triggered once.
+
+#endif // WINDOWS_UWP
+
+        #region IMixedRealityCapabilityCheck Implementation
+        
+        /// <inheritdoc/ >
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            {
+#if WINDOWS_UWP
+                return ((capability == MixedRealityCapability.EyeTracking) && EyesPose.IsSupported());
+#endif // WINDOWS_UWP
+            }
+
+            return false;
+        }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
 
         public override void Initialize()
         {

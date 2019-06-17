@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Windows.Input;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using UnityEngine;
 using System;
 
@@ -14,13 +15,17 @@ using UnityEngine.XR.WSA.Input;
 using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 #endif // UNITY_WSA
 
+#if WINDOWS_UWP
+using WindowsInputSpatial = global::Windows.UI.Input.Spatial;
+#endif // WINDOWS_UWP
+
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsUniversal,
         "Windows Mixed Reality Device Manager")]
-    public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager
+    public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -36,6 +41,44 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             string name = null,
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
+
+        #region IMixedRealityCapabilityCheck Implementation
+
+        /// <inheritdoc/ >
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable) // Windows 10 1903 or later
+            {
+#if WINDOWS_UWP
+                switch (capability)
+                {
+                    case MixedRealityCapability.ArticulatedHand:
+                    case MixedRealityCapability.GGVHand:
+                        return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Hand);
+
+                    case MixedRealityCapability.MotionController:
+                        return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Controller);
+                }
+#endif // WINDOWS_UWP
+            }
+            else // Pre-Windows 10 1903.
+            {                
+                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+                {
+                    // HoloLens supports GGV hands
+                    return (capability == MixedRealityCapability.GGVHand);
+                }
+                else
+                {
+                    // Windows Mixed Reality Immersive devices support motion controllers
+                    return (capability == MixedRealityCapability.MotionController);
+                }
+            }
+
+            return false;
+        }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
 
 #if UNITY_WSA
 
