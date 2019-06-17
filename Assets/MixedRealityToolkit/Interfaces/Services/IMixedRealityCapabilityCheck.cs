@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// on the current platform.
         /// </summary>
         /// <param name="capability">The capability to check.</param>
-        /// <returns>True if the capability is supported, false otherwise./returns>
+        /// <returns>True if the capability is supported, false otherwise.</returns>
         bool CheckCapability(MixedRealityCapability capability);
     }
 }
