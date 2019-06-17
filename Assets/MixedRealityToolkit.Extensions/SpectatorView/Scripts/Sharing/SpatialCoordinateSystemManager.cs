@@ -231,7 +231,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         private async Task RunLocalizationSessionAsync(ISpatialLocalizer localizer, ISpatialLocalizationSettings settings, SpatialCoordinateSystemParticipant participant)
         {
-            using (currentLocalizationSession = localizer.CreateLocalizationSession(participant, settings))
+            if (!localizer.TryCreateLocalizationSession(participant, settings, out ISpatialLocalizationSession currentLocalizationSession))
+            {
+                Debug.LogError($"Failed to create an ISpatialLocalizationSession from localizer {localizer.SpatialLocalizerId}");
+                return;
+            }
+
+            using (currentLocalizationSession)
             {
                 participant.CurrentLocalizationSession = currentLocalizationSession;
 

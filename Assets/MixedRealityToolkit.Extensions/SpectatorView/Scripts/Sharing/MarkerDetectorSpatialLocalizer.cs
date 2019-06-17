@@ -50,9 +50,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             return MarkerDetectorLocalizationSettings.TryDeserialize(reader, out settings);
         }
 
-        public override ISpatialLocalizationSession CreateLocalizationSession(IPeerConnection peerConnection, MarkerDetectorLocalizationSettings settings)
+        public override bool TryCreateLocalizationSession(IPeerConnection peerConnection, MarkerDetectorLocalizationSettings settings, out ISpatialLocalizationSession session)
         {
-            return new LocalizationSession(this, settings);
+            session = new LocalizationSession(this, settings);
+            return true;
         }
 
         private class LocalizationSession : DisposableBase, ISpatialLocalizationSession

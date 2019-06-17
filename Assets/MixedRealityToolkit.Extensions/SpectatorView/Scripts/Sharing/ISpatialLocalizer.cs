@@ -21,6 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         bool TryDeserializeSettings(BinaryReader reader, out ISpatialLocalizationSettings settings);
 
-        ISpatialLocalizationSession CreateLocalizationSession(IPeerConnection peerConnection, ISpatialLocalizationSettings settings);
+        bool TryCreateLocalizationSession(IPeerConnection peerConnection, ISpatialLocalizationSettings settings, out ISpatialLocalizationSession session);
     }
 }
