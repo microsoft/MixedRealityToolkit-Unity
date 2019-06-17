@@ -66,6 +66,7 @@ You can find  other example scenes under [**Assets/MixedRealityToolkit.Examples/
 
 # Sample App
 Periodic Table of the Elements is an open-source sample app which demonstrates how to use Mixed Reality Toolkit(MRTK)'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. Read the porting story: [Bringing the Periodic Table of the Elements app to HoloLens 2 with MRTK v2](https://medium.com/@dongyoonpark/bringing-the-periodic-table-of-the-elements-app-to-hololens-2-with-mrtk-v2-a6e3d8362158)
+
 [![Periodic Table of the Elements](https://github.com/microsoft/MRDL_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_201906.jpg)](https://medium.com/@dongyoonpark/bringing-the-periodic-table-of-the-elements-app-to-hololens-2-with-mrtk-v2-a6e3d8362158)
 
 # Engage with the Community
