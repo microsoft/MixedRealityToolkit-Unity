@@ -17,11 +17,48 @@ using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Linq;
+using System;
+using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class BoundingBoxTests
     {
+        #region Utilities
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
+        private GameObject InstantiateSceneAndDefaultBbox()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+            TestUtilities.InitializePlayspace();
+
+            RenderSettings.skybox = null;
+
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.forward * -1.5f;
+            cube.AddComponent<BoundingBox>();
+
+            return cube;
+        }
+        #endregion
+
+        [UnityTest]
+        public IEnumerator BBoxInstantiate()
+        {
+            GameObject bbox = InstantiateSceneAndDefaultBbox();
+            yield return null;
+            BoundingBox bboxComponent = bbox.GetComponent<BoundingBox>();
+            Assert.IsNotNull(bboxComponent);
+
+            GameObject.Destroy(bbox);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+        
     }
 }
 #endif
