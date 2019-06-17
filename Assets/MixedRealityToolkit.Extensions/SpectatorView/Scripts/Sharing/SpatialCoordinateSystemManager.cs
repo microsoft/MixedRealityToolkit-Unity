@@ -55,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return;
             }
 
+            DebugLog($"Registering spatial localizer: {localizer.SpatialLocalizerId}");
             localizers.Add(localizer.SpatialLocalizerId, localizer);
         }
 
@@ -103,6 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public Task LocalizeAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
         {
+            DebugLog("LocalizeAsync");
             if (currentLocalizationSession != null)
             {
                 Debug.LogError($"Failed to start localization session because an existing localization session is in progress");
@@ -121,6 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return Task.CompletedTask;
             }
 
+            DebugLog("Returning a localization session.");
             return RunLocalizationSessionAsync(localizer, settings, participant);
         }
 
@@ -156,7 +159,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             participants[endpoint] = participant;
             participant.ShowDebugVisuals = showDebugVisuals;
 
-            ParticipantConnected?.Invoke(participant);
+            if (ParticipantConnected == null)
+            {
+                Debug.LogWarning("Participant created, but no connection listeners were found");
+                return;
+            }
+
+            DebugLog($"Invoking ParticipantConnected event");
+            ParticipantConnected.Invoke(participant);
         }
 
         private void OnDisconnected(SocketEndpoint endpoint)
@@ -245,8 +255,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 try
                 {
                     DebugLog($"Starting localization: {participant.SocketEndpoint.Address}, {currentLocalizationSession.ToString()}");
-                    var coordinate = await currentLocalizationSession.LocalizeAsync(CancellationToken.None);
-                    participant.Coordinate = coordinate;
+                    // Some SpatialLocalizers/SpatialCoordinateServices key off of token cancellation for their logic flow.
+                    // Therefore, we need to create a cancellation token even it is never actually cancelled by the SpatialCoordinateSystemManager.
+                    using (var localizeCTS = new CancellationTokenSource())
+                    {
+                        var coordinate = await currentLocalizationSession.LocalizeAsync(localizeCTS.Token);
+                        participant.Coordinate = coordinate;
+                    }
                 }
                 finally
                 {
