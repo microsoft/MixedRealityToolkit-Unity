@@ -12,13 +12,17 @@ namespace Assets.MRTK.Tools.Scripts
         private readonly List<CSProjectInfo> dependencies = new List<CSProjectInfo>();
 
         public Guid Guid { get; }
+
         public Assembly Assembly { get; }
+
+        public AssemblyDefinitionInfo AssemblyDefinitionInfo { get; }
 
         public string ProjectFilePath { get; private set; }
 
-        internal CSProjectInfo(Guid guid, Assembly assembly, string baseOutputPath)
+        internal CSProjectInfo(Guid guid, AssemblyDefinitionInfo assemblyDefinitionInfo, Assembly assembly, string baseOutputPath)
         {
             Guid = guid;
+            AssemblyDefinitionInfo = assemblyDefinitionInfo;
             Assembly = assembly;
             ProjectFilePath = Path.Combine(baseOutputPath, $"{assembly.name}.csproj");
         }
@@ -52,6 +56,12 @@ namespace Assets.MRTK.Tools.Scripts
                         {"##PROJECT_LINK_PATH##", normalized.Replace("Assets\\", string.Empty) }
                     }));
                 }
+
+                // Get the assembly references first from AssemblyDefinitionInfo if available (it's actually more correct), otherwise fallback to Assemby
+                IEnumerable<string> references = AssemblyDefinitionInfo == null
+                    ? Assembly.assemblyReferences.Select(t => t.name)
+                    : (AssemblyDefinitionInfo.references ?? Array.Empty<string>());
+
                 projectFileTemplateText = Utilities.ReplaceTokens(projectFileTemplateText, new Dictionary<string, string>()
                 {
                     {"<!--PROJECT_GUID_TOKEN-->", Guid.ToString() },
@@ -60,7 +70,7 @@ namespace Assets.MRTK.Tools.Scripts
                     {"<!--PROJECT_PLATFORMS_TOKEN-->", "StandaloneWindows" },
                     {"<!--DEFAULT_PLATFORM_TOKEN-->", "StandaloneWindows" },
                     {"<!--PROJECT_CONFIGURATIONS_TOKEN-->", "Editor" },
-                    {projectReferenceTemplate, string.Join("\r\n", Assembly.assemblyReferences.Select(t=>projectReferenceTemplate.Replace("##REFERENCE_TOKEN##", $"{t.name}.csproj"))) },
+                    {projectReferenceTemplate, string.Join("\r\n", references.Select(t=>projectReferenceTemplate.Replace("##REFERENCE_TOKEN##", $"{t}.csproj"))) },
                     {sourceIncludeTemplate, string.Join("\r\n", sourceIncludes) }
                 });
             }

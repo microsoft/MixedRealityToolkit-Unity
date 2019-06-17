@@ -117,6 +117,8 @@ namespace Assets.MRTK.Tools.Scripts
 
         private static readonly Dictionary<BuildTarget, BuildTargetGroup> SupportedPlatforms = new Dictionary<BuildTarget, BuildTargetGroup>
         {
+            // The first one is special, it's the Editor platform which is sperate from Editor vs Player configuration
+            //TODO { BuildTarget.NoTarget, BuildTargetGroup.Unknown },
             { BuildTarget.StandaloneWindows, BuildTargetGroup.Standalone },
             { BuildTarget.StandaloneWindows64, BuildTargetGroup.Standalone },
             { BuildTarget.iOS, BuildTargetGroup.iOS },

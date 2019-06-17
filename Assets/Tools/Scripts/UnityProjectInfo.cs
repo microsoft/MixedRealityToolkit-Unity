@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Compilation;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Assets.MRTK.Tools.Scripts
@@ -29,7 +31,35 @@ namespace Assets.MRTK.Tools.Scripts
 
             foreach (KeyValuePair<string, Assembly> pair in unityAssemblies)
             {
-                csProjects.Add(pair.Key, new CSProjectInfo(Guid.NewGuid(), pair.Value, Application.dataPath.Replace("Assets", "MSBuild")));
+                CSProjectInfo toAdd;
+                string asmDefPath = CompilationPipeline.GetAssemblyDefinitionFilePathFromAssemblyName(pair.Key);
+                if (string.IsNullOrEmpty(asmDefPath))
+                {
+                    if (!pair.Key.StartsWith("Assembly-CSharp"))
+                    {
+                        Debug.LogError($"Failed to retrieve AsmDef for script assembly: {pair.Key}");
+                    }
+
+                    toAdd = new CSProjectInfo(Guid.NewGuid(), null, pair.Value, Application.dataPath.Replace("Assets", "MSBuild"));
+                }
+                else
+                {
+                    string guid = AssetDatabase.AssetPathToGUID(asmDefPath);
+                    if (!Guid.TryParse(guid, out Guid guidResult))
+                    {
+                        Debug.LogError($"Failed to get GUID of the AsmDef at '{asmDefPath}' for assembly: {pair.Key}");
+                    }
+                    else
+                    {
+                        guidResult = Guid.NewGuid();
+                    }
+
+                    AssemblyDefinitionAsset assemblyDefinitionAsset = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(asmDefPath);
+                    AssemblyDefinitionInfo assemblyDefinitionInfo = assemblyDefinitionAsset == null ? null : JsonUtility.FromJson<AssemblyDefinitionInfo>(assemblyDefinitionAsset.text);
+                    toAdd = new CSProjectInfo(guidResult, assemblyDefinitionInfo, pair.Value, Application.dataPath.Replace("Assets", "MSBuild"));
+                }
+
+                csProjects.Add(pair.Key, toAdd);
             }
 
             CSProjects = new ReadOnlyDictionary<string, CSProjectInfo>(csProjects);

@@ -31,7 +31,10 @@
   </PropertyGroup>
   
   <ItemGroup>
-  	<!--PROJECT_REFERENCE_TEMPLATE_START--><ProjectReference Include="##REFERENCE_TOKEN##"/><!--PROJECT_REFERENCE_TEMPLATE_END-->
+  	<!--PROJECT_REFERENCE_TEMPLATE_START--><ProjectReference Include="##REFERENCE_TOKEN##">
+      <ExcludeAssets>All</ExcludeAssets>
+      <IncludeAssets>compile</IncludeAssets>
+    </ProjectReference><!--PROJECT_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
   
   <ItemGroup>
