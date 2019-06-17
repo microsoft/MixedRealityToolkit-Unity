@@ -57,6 +57,37 @@ namespace Assets.MRTK.Tools.Scripts
             }
         }
 
+        public static void EnsureCleanDirectory(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                DeleteDirectory(path, true);
+            }
+
+            if (!TryIOWithRetries(() => Directory.CreateDirectory(path), 5, TimeSpan.FromMilliseconds(100)))
+            {
+                throw new InvalidOperationException($"Failed to create the directory at '{path}'.");
+            }
+        }
+
+        public static bool TryIOWithRetries(Action operation, int numRetries, TimeSpan sleepBetweenRetrie)
+        {
+            do
+            {
+                try
+                {
+                    operation();
+                    return true;
+                }
+                catch (UnauthorizedAccessException) { }
+
+                Thread.Sleep(sleepBetweenRetrie);
+                numRetries--;
+            } while (numRetries >= 0);
+
+            return false;
+        }
+
         public static void DeleteDirectory(string targetDir, bool waitForDirectoryDelete = false)
         {
             File.SetAttributes(targetDir, FileAttributes.Normal | FileAttributes.Hidden);

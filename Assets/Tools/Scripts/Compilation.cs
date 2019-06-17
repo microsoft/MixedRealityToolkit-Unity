@@ -1,4 +1,5 @@
 ﻿using Assets.MRTK.Tools.Scripts;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,12 +24,8 @@ public static class Compilation
 
         MakePackagesCopy();
 
-        if (Directory.Exists(Application.dataPath.Replace("Assets", "MSBuild")))
-        {
-            Utilities.DeleteDirectory(Application.dataPath.Replace("Assets", "MSBuild"), true);
-        }
-
-        Directory.CreateDirectory(Application.dataPath.Replace("Assets", "MSBuild"));
+        string path = Application.dataPath.Replace("Assets", "MSBuild");
+        Utilities.EnsureCleanDirectory(path);
 
         string commonPropsFilePath = CreateCommonPropsFile();
         UnityProjectInfo unityProjectInfo = UnityProjectInfo.Instance;
@@ -50,12 +47,7 @@ public static class Compilation
         string[] directories = Directory.GetDirectories(packageCache);
 
         string outputDirectory = Path.Combine(Application.dataPath, "..", Utilities.PackagesCopy);
-        if (Directory.Exists(outputDirectory))
-        {
-            Utilities.DeleteDirectory(outputDirectory, true);
-        }
-
-        Directory.CreateDirectory(outputDirectory);
+        Utilities.EnsureCleanDirectory(outputDirectory);
 
         foreach (string directory in directories)
         {
