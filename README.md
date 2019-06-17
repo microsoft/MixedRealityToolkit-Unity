@@ -38,7 +38,7 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 
 # Getting Started with MRTK 
 | [![Getting Started](Documentation/Images/MRTK_Icon_GettingStarted.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)<br/>[MRTK Getting Started Guide](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)| [![Getting Started](Documentation/Images/MRTK_Icon_Documentation.png)]((https://microsoft.github.io/MixedRealityToolkit-Unity/))<br/>[MRTK Documentation](https://microsoft.github.io/MixedRealityToolkit-Unity/)|
-|---|---|
+|:---|:---|
 
 
 # UI and Interaction Building blocks
