@@ -1,23 +1,25 @@
 - name: Getting Started with MRTK
   href: GettingStartedWithTheMRTK.md
-  items:
-  - name: Upgrading from the HoloToolkit
-    href: HTKToMRTKPortingGuide.md
+- name: Upgrading from HTK
+  href: HTKToMRTKPortingGuide.md
 - name: Feature Overviews
-  href: MixedRealityServices.md
   items:
+  - name: Services
+    href: MixedRealityServices.md
   - name: Packages
-    href: Packaging/MRTK_Packages.md
     items:
-    - name: Mixed Reality Toolkit Componentization
+    - name: MRTK Packages
+      href: Packaging/MRTK_Packages.md
+    - name: MRTK Componentization
       href: Packaging/MRTK_Modularization.md
   - name: Profiles
     href: Profiles/Profiles.md
   - name: Profiles Configuration
     href: MixedRealityConfigurationGuide.md
   - name: Input
-    href: Input/Overview.md
     items:
+    - name: Input Overview
+      href: Input/Overview.md
     - name: Input Providers
       href: Input/InputProviders.md
     - name: Input Events
@@ -71,8 +73,9 @@
     - name: Eye Tracking Interaction Example
       href: EyeTracking/EyeTracking_ExamplesOverview.md
   - name: Spatial Awareness
-    href: SpatialAwareness/SpatialAwarenessGettingStarted.md
     items:
+    - name: Spatial Awareness Overview
+      href: SpatialAwareness/SpatialAwarenessGettingStarted.md
     - name: Configuring the Spatial Awareness Mesh Observer
       href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
     - name: Usage Guide
@@ -82,8 +85,9 @@
   - name: MRTK Standard Shader
     href: README_MRTKStandardShader.md
   - name: Boundary System
-    href: Boundary/BoundarySystemGettingStarted.md
     items:
+    - name: Boundary System Overview
+      href: Boundary/BoundarySystemGettingStarted.md
     - name: Configuring the Boundary Visualization
       href: Boundary/ConfiguringBoundaryVisualization.md
   - name: Performance
@@ -91,8 +95,9 @@
   - name: In-Editor Input Simulation
     href: InputSimulation/InputSimulationService.md
   - name: Diagnostics System
-    href: Diagnostics/DiagnosticsSystemGettingStarted.md
     items:
+    - name: Diagnostics System Overview
+      href: Diagnostics/DiagnosticsSystemGettingStarted.md
     - name: Configuring the Diagnostics System
       href: Diagnostics/ConfiguringDiagnostics.md
     - name: Using the Visual Profiler
@@ -106,8 +111,9 @@
     - name: Shared Experiences
       href: TODO.md
 - name: Contributing
-  href: Contributing/CONTRIBUTING.md
   items:
+  - name: Contributing Overview
+    href: Contributing/CONTRIBUTING.md
   - name: Feature Contribution Process
     href: Contributing/Feature_Contribution_Process.md
   - name: Coding Guidelines
