@@ -44,7 +44,7 @@ To enable this, you need to use eye-specific EyeTrackingTarget script that is in
 <br>
 
 ## 1. Use generic focus and pointer handlers
-If eye tracking is set up correctly (see [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)), enabling users to select 
+If eye tracking is set up correctly (see [Basic MRTK setup to use eye tracking](EyeTracking_BasicSetup.md)), enabling users to select 
 holograms using their eyes is the same as for any other focus input (e.g., head gaze or hand ray).
 This provides the great advantage of a flexible way to interact with your holograms by defining the main focus type in your MRTK Input Pointer Profile depending on your user's needs, while leaving your code untouched.
 This allows for switching between head or eye gaze without changing a line of code or replace hand rays with eye targeting for far interactions.
@@ -355,4 +355,4 @@ public class HitBehaviorDestroyOnSelect : MonoBehaviour
 This should get you started with accessing eye tracking data in your MRTK Unity app! 
 
 ---
-[Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
