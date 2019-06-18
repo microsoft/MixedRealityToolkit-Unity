@@ -91,6 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                         observers.Add(Registrar.GetDataProvider<IMixedRealitySpatialAwarenessObserver>(configuration.ComponentName));
                     }
                 }
+
+                for (int i = 0; i < observers.Count; i++)
+                {
+                    observers[i].Initialize();
+                }
             }
         }
 

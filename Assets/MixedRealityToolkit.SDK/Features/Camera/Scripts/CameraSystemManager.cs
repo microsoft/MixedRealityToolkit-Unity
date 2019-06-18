@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         [SerializeField]
         private MixedRealityCameraProfile profile = null;
 
+        private void Awake()
+        {
+            Initialize();
+        }
+
         protected override void OnDestroy()
         {
             Uninitialize();

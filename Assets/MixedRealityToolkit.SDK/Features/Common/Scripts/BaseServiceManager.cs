@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The collection of registered data providers.
         /// </summary>
-        private List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
+        protected List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
 
         /// <inheritdoc />
         public T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
@@ -181,7 +181,10 @@ namespace Microsoft.MixedReality.Toolkit
         public bool RegisterService<T>(Type concreteType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args) where T : IMixedRealityService
         {
             T serviceInstance = ActivateInstance<T>(concreteType, supportedPlatforms, args);
-            if (serviceInstance == null) { return false; }
+            if (serviceInstance == null)
+            {
+                return false;
+            }
 
             return RegisterService<T>(serviceInstance);
         }
