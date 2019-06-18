@@ -3,7 +3,7 @@
 ## How to support _look + hand motions_ (eye gaze & hand gestures)
 
 This page explains how to use eye targeting as a primary pointer in combination with hand motions.
-In our [MRTK eye tracking demos](), we describe several examples for using eyes + hands, for example:
+In our [MRTK eye tracking demos](EyeTracking_ExamplesOverview.md), we describe several examples for using eyes + hands, for example:
 - [Selection](EyeTracking_TargetSelection.md): Looking at distant holographic button and simply performing a pinch gesture to quickly select it.
 - [Positioning](EyeTracking_Positioning.md): Fluently move a hologram across your scene by simply looking at it, pinching your index finger and thumb together to grab it and then move it around using your hand.
 - [Navigation](EyeTracking_Navigation.md): Simply look at a location you want to zoom in, pinch your index finger and thumb together and _pull_ your hand toward you to zoom in. 
