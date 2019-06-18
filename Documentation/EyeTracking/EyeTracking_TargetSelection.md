@@ -7,7 +7,7 @@ Eye tracking allows for fast and effortless target selections using a combinatio
 - Look & Say _"Explode"_ or _"Pop"_ (custom voice commands)
 - Look & Bluetooth button
 - Look & Pinch (i.e., hold up your hand in front of you and bring your thumb and index finger together)
-    - _Please note that for this to work, the [hand rays need to be disabled](EyeTracking_EyesAndHands.md)!_
+    - _Please note that for this to work, the [hand rays need to be disabled](EyeTracking_EyesAndHands.md#how-to-disable-the-hand-ray)!_
 
 To select holographic content using eye gaze, there are several options:
 
@@ -27,7 +27,7 @@ In this case, the most flexible solution is to use the primary focus handler as 
 Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view.
 
 **IMPORTANT:** Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view.
-If you want to support a [_'look and pinch'_ interaction, you need to disable the hand ray](EyeTracking_EyesAndHands.md).
+If you want to support a [_'look and pinch'_ interaction, you need to disable the hand ray](EyeTracking_EyesAndHands.md#how-to-disable-the-hand-ray).
 In our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see for example [**Eye-Supported Positioning**](EyeTracking_Positioning.md).
 
 **2. Use both eye focus and hand rays at the same time:** 
