@@ -10,8 +10,7 @@ In the following, we will go into more detail what each of the different samples
 ![List of eye tracking scenes](../Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
 
 We will start with a quick overview of what the individual eye tracking demo scenes are about.
-The individual sample scenes will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
-In case, you wonder what that entails, we will explain further below how to set up and test the MRTK eye tracking demos.
+The MRTK eye tracking demo scenes are [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html) which we will explain below how to set up.
 
 ## Overview of the eye tracking demo samples
 [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md)
