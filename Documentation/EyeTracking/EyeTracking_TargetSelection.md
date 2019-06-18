@@ -34,17 +34,10 @@ In our eye tracking sample scenes, we have disabled the hand ray to allow for sh
 There might be instances where you want to be more specific which type of focus pointers can trigger certain events and allow for simultaneously using multiple far interaction techniques. 
 
 For example:
-In your app, a user can use far hand rays to manipulate some holographic mechanical setup.
-As part of that scenario, you want to support a mechanic that grabs some holographic tools to repair an engine. 
-While doing so, the user has to go through a number of instructions and record his progress by marking off some check boxes.
-If the user has his/her hands _not busy_, it would be instinctual to simply touch the check box or select it using a hand ray. 
-However, if the user has his/her hands busy, holding the holographic tools in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and simply looking at a check box and say "check it!".
-
-For example:
 In your app, a user can use far hand rays to manipulate some holographic mechanical setup - e.g., grab and hold some distant holographic engine parts and hold them in place. 
-While doing so, the user has to go through a number of instructions and record his progress by marking off some check boxes.
-If the user has his/her hands _not busy_, it would be instinctual to simply touch the check box or select it using a hand ray. 
-However, if the user has his/her hands busy, as in our case holding some holographic tools in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and to simply look at a check box and say "check it!".
+While doing so, the user has to go through a number of instructions and record her/his progress by marking off some check boxes.
+If the user has her/his hands _not busy_, it would be instinctual to simply touch the check box or select it using a hand ray. 
+However, if the user has her/his hands busy, as in our case holding some holographic engine parts in place, you want to enable the user to seamlessly scroll through the instructions using their eye gaze and to simply look at a check box and say "check it!".
 
 To enable this, you need to use eye-specific EyeTrackingTarget script that is independent from the core MRTK FocusHandlers and will be discussed further below.
 
