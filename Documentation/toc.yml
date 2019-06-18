@@ -1,7 +1,7 @@
 - name: Getting Started with MRTK
   href: GettingStartedWithTheMRTK.md
   items:
-  - name: Upgrading from the HoloToolkit (HTK)
+  - name: Upgrading from the HoloToolkit
     href: HTKToMRTKPortingGuide.md
 - name: Feature Overviews
   href: MixedRealityServices.md
@@ -38,7 +38,7 @@
       href: InputSystem/HandTracking.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
-  - name: UI and Interaction Building Blocks
+  - name: UX Building Blocks
     items:
     - name: Interactable
       href: README_Interactable.md
