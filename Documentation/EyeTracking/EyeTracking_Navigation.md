@@ -53,7 +53,7 @@ The scroll sample demonstrates scrolling text that starts when the user *looks* 
 
 ## Gaze-supported Pan and Zoom
 Who hasn't used a virtual map before to search for their home or to explore entirely new places? 
-Eye Tracking allows you to directly dive into exactly the parts that you're interested in and once zoomed in, you can smoothly follow the course of a street to explore your neighborhood!
+Eye tracking allows you to directly dive into exactly the parts that you're interested in and once zoomed in, you can smoothly follow the course of a street to explore your neighborhood!
 This is not only useful for exploring geographical maps, but also to checking out details in photographs, data visualizations or even live-streamed medical imagery. 
 To use this capability in your app is easy! 
 For content rendered to a [Texture]( https://docs.unity3d.com/ScriptReference/Texture.html) (e.g., a photo, streamed data), simply add the [PanZoomTexture](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomTexture) script.
@@ -110,14 +110,14 @@ MaxRotX | Maximum horizontal rotation angle. This is to limit the rotation in di
 MinRotY | Minimal vertical rotation angle to limit the rotation around the x axis.
 MaxRotY | Maximum vertical rotation angle to limit the rotation around the y axis.
 
-![Eye-supported 3D rotation setup in Unity](../../Documentation/Images/EyeTracking/mrtk_et_nav_rotate.jpg)
+![Eye-supported 3D rotation setup in Unity](../Images/EyeTracking/mrtk_et_nav_rotate.jpg)
 
 In summary, the above scripts should enable you to  get started to use eye gaze for various input navigation tasks such as scrolling texts, zooming and panning textures as well as rotating investigating 3D holograms.
 
 
 ### Related Topics
-- [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)
-- [Eye-Supported Target Selection](EyeTracking_TargetSelection.md)
+- [Basic MRTK setup to use eye tracking](EyeTracking_BasicSetup.md)
+- [Eye-supported target selection](EyeTracking_TargetSelection.md)
 
 ---
-[Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
