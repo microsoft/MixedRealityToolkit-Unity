@@ -23,30 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class NearInteractionTouchableTests
     {
-        /// <summary>
-        /// Test creating adding a NearInteractionTouchable to GameObject programmatically.
-        /// Should be able to run scene without getting any exceptions.
-        /// </summary>
-        /// <returns></returns>
-        [UnityTest]
-        public IEnumerator Test01_ManipulationHandlerInstantiate()
-        {
-            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            testObject.transform.localScale = Vector3.one * 0.2f;
-
-            var touchable = testObject.AddComponent<NearInteractionTouchable>();
-            // Wait for two frames to make sure we don't get null pointer exception.
-            yield return null;
-            yield return null;
-
-            GameObject.Destroy(testObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
-        }
-
-        private InputSimulationService inputSim;
-        IMixedRealityInputSystem inputSystem;
-
         [SetUp]
         public void SetupMrtk()
         {
@@ -66,8 +42,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.ShutdownMixedRealityToolkit();
         }
 
-        private const int numSteps = 30;
+        /// <summary>
+        /// Test creating adding a NearInteractionTouchable to GameObject programmatically.
+        /// Should be able to run scene without getting any exceptions.
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerInstantiate()
+        {
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
 
+            var touchable = testObject.AddComponent<NearInteractionTouchable>();
+            // Wait for two frames to make sure we don't get null pointer exception.
+            yield return null;
+            yield return null;
+
+            GameObject.Destroy(testObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        private const int numSteps = 30;
         // Scale larger than bounds vector to test bounds checks
         private float objectScale = 0.4f;
         private Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
@@ -76,6 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private Vector3 backPosition = new Vector3(0f, 0f, 2f);
         private Vector3 outOfBoundsOffset = new Vector3(0.15f, 0f, 0f);
         private Vector3 touchNormal = new Vector3(0, 0, -1);
+
+        private InputSimulationService inputSim;
+        IMixedRealityInputSystem inputSystem;
 
         private T CreateTouchable<T>() where T : BaseNearInteractionTouchable
         {
@@ -97,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator Test02_NearInteractionTouchable()
+        public IEnumerator NearInteractionTouchable()
         {
             var touchable = CreateTouchable<NearInteractionTouchable>();
             touchable.SetLocalForward(touchNormal);
@@ -150,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator Test03_NearInteractionTouchableUnboundedPlane()
+        public IEnumerator NearInteractionTouchableUnboundedPlane()
         {
             var touchable = CreateTouchable<NearInteractionTouchableUnboundedPlane>();
             touchable.SetLocalNormal(touchNormal);
@@ -202,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator Test04_NearInteractionTouchableVolume()
+        public IEnumerator NearInteractionTouchableVolume()
         {
             var touchable = CreateTouchable<NearInteractionTouchableVolume>();
 
