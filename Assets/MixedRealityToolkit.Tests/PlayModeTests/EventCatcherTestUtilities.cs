@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#define DEBUGGINGREMOVEME
-
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
 // Unity doesn't include the required assemblies (i.e. the ones below).
@@ -19,10 +17,6 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-
-#if DEBUGGINGREMOVEME
-using UnityEditor;
-#endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
