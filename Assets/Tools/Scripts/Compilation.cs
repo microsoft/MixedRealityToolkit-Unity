@@ -1,5 +1,4 @@
 ﻿using Assets.MRTK.Tools.Scripts;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,7 +24,22 @@ public static class Compilation
         MakePackagesCopy();
 
         string path = Application.dataPath.Replace("Assets", "MSBuild");
-        Utilities.EnsureCleanDirectory(path);
+        try
+        {
+            Utilities.EnsureCleanDirectory(path);
+        }
+        catch (IOException ex)
+        {
+            if (ex.Message.Contains(@".vs\MRTK\v15\Server\sqlite3\db.lock"))
+            {
+                Debug.LogError("Generated project appears to be still open with Visual Studio.");
+                throw new InvalidDataException("Generated project appears to be still open with Visual Studio.", ex);
+            }
+            else
+            {
+                throw;
+            }
+        }
 
         string commonPropsFilePath = CreateCommonPropsFile();
         UnityProjectInfo unityProjectInfo = UnityProjectInfo.Instance;
@@ -72,16 +86,16 @@ public static class Compilation
             {"<!--OUTPUT_PATH_TOKEN-->", Path.Combine("..", "MRTKBuild") },
             {"<!--COMMON_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.CommonDefines) },
             {"<!--COMMON_DEVELOPMENT_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.DevelopmentBuildAdditionalDefines) },
-            {"<!--COMMON_EDITOR_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.EditorBuildAdditionalDefines) },
+            {"<!--COMMON_INEDITOR_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.InEditorBuildAdditionalDefines) },
         };
 
         ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.CommonReferences, out HashSet<string> commonAssemblySearchPaths, out HashSet<string> commonAssemblyReferences);
         ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.DevelopmentBuildAdditionalReferences, out HashSet<string> developmentAssemblySearchPaths, out HashSet<string> developmentAssemblyReferences, commonAssemblySearchPaths);
-        ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.EditorBuildAdditionalReferences, out HashSet<string> editorAssemblySearchPaths, out HashSet<string> editorAssemblyReferences, commonAssemblySearchPaths, developmentAssemblySearchPaths);
+        ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.InEditorBuildAdditionalReferences, out HashSet<string> inEditorAssemblySearchPaths, out HashSet<string> inEditorAssemblyReferences, commonAssemblySearchPaths, developmentAssemblySearchPaths);
 
         if (Utilities.TryGetXMLTemplate(templateText, "PLATFORM", out string platformTemplate)
             && Utilities.TryGetXMLTemplate(platformTemplate, "PLATFORM_COMMON_REFERENCE", out string platformCommonReferenceTemplate)
-            && Utilities.TryGetXMLTemplate(platformTemplate, "PLATFORM_EDITOR_REFERENCE", out string platformEditorReferenceTemplate)
+            && Utilities.TryGetXMLTemplate(platformTemplate, "PLATFORM_INEDITOR_REFERENCE", out string platformInEditorReferenceTemplate)
             && Utilities.TryGetXMLTemplate(platformTemplate, "PLATFORM_PLAYER_REFERENCE", out string platformPlayerReferenceTemplate))
         {
             List<string> platformConfigurations = new List<string>();
@@ -89,7 +103,7 @@ public static class Compilation
             foreach (KeyValuePair<BuildTarget, CompilationSettings.CompilationPlatform> pair in CompilationSettings.Instance.AvailablePlatforms)
             {
                 ProcessReferences(pair.Key, pair.Value.CommonPlatformReferences, out HashSet<string> platformCommonAssemblySearchPaths, out HashSet<string> platformCommonAssemblyReferences, commonAssemblySearchPaths);
-                ProcessReferences(pair.Key, pair.Value.AdditionalEditorReferences, out HashSet<string> platformEditorAssemblySearchPaths, out HashSet<string> platformEditorAssemblyReferences, platformCommonAssemblySearchPaths, commonAssemblySearchPaths, editorAssemblySearchPaths);
+                ProcessReferences(pair.Key, pair.Value.AdditionalInEditorReferences, out HashSet<string> platformInEditorAssemblySearchPaths, out HashSet<string> platformInEditorAssemblyReferences, platformCommonAssemblySearchPaths, commonAssemblySearchPaths, inEditorAssemblySearchPaths);
                 ProcessReferences(pair.Key, pair.Value.AdditionalPlayerReferences, out HashSet<string> platformPlayerAssemblySearchPaths, out HashSet<string> platformPlayerAssemblyReferences, platformCommonAssemblySearchPaths, commonAssemblySearchPaths);
 
                 Dictionary<string, string> platformTokens = new Dictionary<string, string>()
@@ -98,16 +112,16 @@ public static class Compilation
                     {"<!--TARGET_FRAMEWORK_TOKEN-->", pair.Value.TargetFramework.AsMSBuildString() },
 
                     {"<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", platformCommonAssemblySearchPaths)},
-                    {"<!--PLATFORM_EDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", platformEditorAssemblySearchPaths)},
+                    {"<!--PLATFORM_INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", platformInEditorAssemblySearchPaths)},
                     {"<!--PLATFORM_PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", platformPlayerAssemblySearchPaths)},
 
                     {"<!--PLATFORM_COMMON_DEFINE_CONSTANTS-->", string.Join(";", pair.Value.CommonPlatformDefines) },
-                    {"<!--PLATFORM_EDITOR_DEFINE_CONSTANTS-->", string.Join(";", pair.Value.AdditionalEditorDefines) },
+                    {"<!--PLATFORM_INEDITOR_DEFINE_CONSTANTS-->", string.Join(";", pair.Value.AdditionalInEditorDefines) },
                     {"<!--PLATFORM_PLAYER_DEFINE_CONSTANTS-->", string.Join(";", pair.Value.AdditionalPlayerDefines) },
                 };
 
                 platformTokens.Add(platformCommonReferenceTemplate, string.Join("\r\n", platformCommonAssemblyReferences.Select(t => platformCommonReferenceTemplate.Replace("##REFERENCE_TOKEN##", t))));
-                platformTokens.Add(platformEditorReferenceTemplate, string.Join("\r\n", platformEditorAssemblyReferences.Select(t => platformEditorReferenceTemplate.Replace("##REFERENCE_TOKEN##", t))));
+                platformTokens.Add(platformInEditorReferenceTemplate, string.Join("\r\n", platformInEditorAssemblyReferences.Select(t => platformInEditorReferenceTemplate.Replace("##REFERENCE_TOKEN##", t))));
                 platformTokens.Add(platformPlayerReferenceTemplate, string.Join("\r\n", platformPlayerAssemblyReferences.Select(t => platformPlayerReferenceTemplate.Replace("##REFERENCE_TOKEN##", t))));
 
                 string filledData = Utilities.ReplaceTokens(platformTemplate, platformTokens);
@@ -123,15 +137,15 @@ public static class Compilation
 
         if (Utilities.TryGetXMLTemplate(templateText, "COMMON_REFERENCE", out string commonReferenceTemplate)
             && Utilities.TryGetXMLTemplate(templateText, "DEVELOPMENT_REFERENCE", out string developmentReferenceTemplate)
-            && Utilities.TryGetXMLTemplate(templateText, "EDITOR_REFERENCE", out string editorReferenceTemplate))
+            && Utilities.TryGetXMLTemplate(templateText, "INEDITOR_REFERENCE", out string inEditorReferenceTemplate))
         {
             tokensToReplace.Add("<!--COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", commonAssemblySearchPaths));
             tokensToReplace.Add("<!--DEVELOPMENT_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", developmentAssemblySearchPaths));
-            tokensToReplace.Add("<!--EDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", editorAssemblySearchPaths));
+            tokensToReplace.Add("<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", inEditorAssemblySearchPaths));
 
             tokensToReplace.Add(commonReferenceTemplate, string.Join("\r\n", commonAssemblyReferences.Select(t => commonReferenceTemplate.Replace("##REFERENCE_TOKEN##", t))));
             tokensToReplace.Add(developmentReferenceTemplate, string.Join("\r\n", developmentAssemblyReferences.Select(t => developmentReferenceTemplate.Replace("##REFERENCE_TOKEN##", t))));
-            tokensToReplace.Add(editorReferenceTemplate, string.Join("\r\n", editorAssemblyReferences.Select(t => editorReferenceTemplate.Replace("##REFERENCE_TOKEN##", t))));
+            tokensToReplace.Add(inEditorReferenceTemplate, string.Join("\r\n", inEditorAssemblyReferences.Select(t => inEditorReferenceTemplate.Replace("##REFERENCE_TOKEN##", t))));
         }
         else
         {

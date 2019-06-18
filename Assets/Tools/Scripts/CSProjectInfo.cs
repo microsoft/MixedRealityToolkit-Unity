@@ -69,7 +69,7 @@ namespace Assets.MRTK.Tools.Scripts
                     {"<!--ALLOW_UNSAFE_TOKEN-->", Assembly.compilerOptions.AllowUnsafeCode.ToString() },
                     {"<!--PROJECT_PLATFORMS_TOKEN-->", "StandaloneWindows" },
                     {"<!--DEFAULT_PLATFORM_TOKEN-->", "StandaloneWindows" },
-                    {"<!--PROJECT_CONFIGURATIONS_TOKEN-->", "Editor" },
+                    {"<!--PROJECT_CONFIGURATIONS_TOKEN-->", "InEditor" },
                     {projectReferenceTemplate, string.Join("\r\n", references.Select(t=>projectReferenceTemplate.Replace("##REFERENCE_TOKEN##", $"{t}.csproj"))) },
                     {sourceIncludeTemplate, string.Join("\r\n", sourceIncludes) }
                 });

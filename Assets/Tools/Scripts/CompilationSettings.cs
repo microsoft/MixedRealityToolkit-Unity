@@ -56,7 +56,7 @@ namespace Assets.MRTK.Tools.Scripts
             /// <summary>
             ///  These defines are specific for this platform editor build.
             /// </summary>
-            public IReadOnlyList<string> AdditionalEditorDefines { get; }
+            public IReadOnlyList<string> AdditionalInEditorDefines { get; }
 
             /// <summary>
             ///  These references are specific for this platform and common or player/editor.
@@ -71,11 +71,11 @@ namespace Assets.MRTK.Tools.Scripts
             /// <summary>
             ///  These references are specific for this platform editor build.
             /// </summary>
-            public IReadOnlyList<string> AdditionalEditorReferences { get; }
+            public IReadOnlyList<string> AdditionalInEditorReferences { get; }
 
             public CompilationPlatform(BuildTarget buildTarget, BuildTargetGroup buildTargetGroup, TargetFramework targetFramework,
-                IReadOnlyList<string> commonPlatformDefines, IReadOnlyList<string> additionalPlayerDefines, IReadOnlyList<string> additionalEditorDefines,
-                IReadOnlyList<string> commonPlatformReferences, IReadOnlyList<string> additionalPlayerReferences, IReadOnlyList<string> additionalEditorReferences)
+                IReadOnlyList<string> commonPlatformDefines, IReadOnlyList<string> additionalPlayerDefines, IReadOnlyList<string> additionalInEditorDefines,
+                IReadOnlyList<string> commonPlatformReferences, IReadOnlyList<string> additionalPlayerReferences, IReadOnlyList<string> additionalInEditorReferences)
             {
                 BuildTarget = buildTarget;
                 BuildTargetGroup = buildTargetGroup;
@@ -84,11 +84,11 @@ namespace Assets.MRTK.Tools.Scripts
 
                 CommonPlatformDefines = commonPlatformDefines;
                 AdditionalPlayerDefines = additionalPlayerDefines;
-                AdditionalEditorDefines = additionalEditorDefines;
+                AdditionalInEditorDefines = additionalInEditorDefines;
 
                 CommonPlatformReferences = commonPlatformReferences;
                 AdditionalPlayerReferences = additionalPlayerReferences;
-                AdditionalEditorReferences = additionalEditorReferences;
+                AdditionalInEditorReferences = additionalInEditorReferences;
             }
         }
 
@@ -117,7 +117,7 @@ namespace Assets.MRTK.Tools.Scripts
 
         private static readonly Dictionary<BuildTarget, BuildTargetGroup> SupportedPlatforms = new Dictionary<BuildTarget, BuildTargetGroup>
         {
-            // The first one is special, it's the Editor platform which is sperate from Editor vs Player configuration
+            // The first one is special, it's the Editor platform which is sperate from In-Editor vs Player configuration
             //TODO { BuildTarget.NoTarget, BuildTargetGroup.Unknown },
             { BuildTarget.StandaloneWindows, BuildTargetGroup.Standalone },
             { BuildTarget.StandaloneWindows64, BuildTargetGroup.Standalone },
@@ -132,18 +132,18 @@ namespace Assets.MRTK.Tools.Scripts
 
         private HashSet<string> commonDefines;
         private HashSet<string> developmentBuildAdditionalDefines;
-        private HashSet<string> editorAdditionalDefines;
+        private HashSet<string> inEditorAdditionalDefines;
 
         private HashSet<string> nonPlayerDefines;
 
         private HashSet<string> commonReferences;
         private HashSet<string> developmentBuildAdditionalReferences;
-        private HashSet<string> editorAdditionalReferences;
+        private HashSet<string> inEditorAdditionalReferences;
 
         private HashSet<string> nonPlayerReferences;
 
         /// <summary>
-        /// These defines are common accross all platforms, and exclude development and editor builds
+        /// These defines are common accross all platforms, and exclude development and in-editor builds
         /// </summary>
         public IReadOnlyList<string> CommonDefines { get; }
 
@@ -153,12 +153,12 @@ namespace Assets.MRTK.Tools.Scripts
         public IReadOnlyList<string> DevelopmentBuildAdditionalDefines { get; }
 
         /// <summary>
-        /// These defines are common accross all platforms for the editor builds
+        /// These defines are common accross all platforms for the in-editor builds
         /// </summary>
-        public IReadOnlyList<string> EditorBuildAdditionalDefines { get; }
+        public IReadOnlyList<string> InEditorBuildAdditionalDefines { get; }
 
         /// <summary>
-        /// These defines are common accross all platforms, and exclude development and editor builds
+        /// These defines are common accross all platforms, and exclude development and in-editor builds
         /// </summary>
         public IReadOnlyList<string> CommonReferences { get; }
 
@@ -168,9 +168,9 @@ namespace Assets.MRTK.Tools.Scripts
         public IReadOnlyList<string> DevelopmentBuildAdditionalReferences { get; }
 
         /// <summary>
-        /// These defines are common accross all platforms for the editor builds
+        /// These defines are common accross all platforms for the in-editor builds
         /// </summary>
-        public IReadOnlyList<string> EditorBuildAdditionalReferences { get; }
+        public IReadOnlyList<string> InEditorBuildAdditionalReferences { get; }
 
         public IReadOnlyDictionary<BuildTarget, CompilationPlatform> AvailablePlatforms { get; }
 
@@ -191,13 +191,13 @@ namespace Assets.MRTK.Tools.Scripts
 
             CommonDefines = new ReadOnlyCollection<string>(commonDefines.ToList());
             DevelopmentBuildAdditionalDefines = new ReadOnlyCollection<string>(developmentBuildAdditionalDefines.ToList());
-            EditorBuildAdditionalDefines = new ReadOnlyCollection<string>(editorAdditionalDefines.ToList());
+            InEditorBuildAdditionalDefines = new ReadOnlyCollection<string>(inEditorAdditionalDefines.ToList());
 
             ProcessCommonReferences(builder);
 
             CommonReferences = new ReadOnlyCollection<string>(commonReferences.ToList());
             DevelopmentBuildAdditionalReferences = new ReadOnlyCollection<string>(developmentBuildAdditionalReferences.ToList());
-            EditorBuildAdditionalReferences = new ReadOnlyCollection<string>(editorAdditionalReferences.ToList());
+            InEditorBuildAdditionalReferences = new ReadOnlyCollection<string>(inEditorAdditionalReferences.ToList());
 
             // Parse data for compilation platforms
             CreateCompilationPlatforms(builder);
@@ -213,10 +213,10 @@ namespace Assets.MRTK.Tools.Scripts
             developmentBuildAdditionalReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
             commonReferences.RemoveWhere(t => !developmentBuildAdditionalReferences.Contains(t));
 
-            // Set editor flag, and get editor references. Filter out commont to common
+            // Set editor flag, and get in-editor references. Filter out commont to common
             builder.flags = AssemblyBuilderFlags.EditorAssembly;
-            editorAdditionalReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
-            commonReferences.RemoveWhere(t => !editorAdditionalReferences.Contains(t));
+            inEditorAdditionalReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
+            commonReferences.RemoveWhere(t => !inEditorAdditionalReferences.Contains(t));
 
             // Reset
             builder.flags = AssemblyBuilderFlags.None;
@@ -235,7 +235,7 @@ namespace Assets.MRTK.Tools.Scripts
                 builder.flags = AssemblyBuilderFlags.EditorAssembly;
                 other = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
                 commonReferences.RemoveWhere(t => !other.Contains(t));
-                editorAdditionalReferences.RemoveWhere(t => !other.Contains(t)); // get only the common
+                inEditorAdditionalReferences.RemoveWhere(t => !other.Contains(t)); // get only the common
 
                 // Reset
                 builder.flags = AssemblyBuilderFlags.None;
@@ -243,13 +243,13 @@ namespace Assets.MRTK.Tools.Scripts
 
             // Remove common from dev/editor
             developmentBuildAdditionalReferences.RemoveWhere(commonReferences.Contains);
-            editorAdditionalReferences.RemoveWhere(commonReferences.Contains);
+            inEditorAdditionalReferences.RemoveWhere(commonReferences.Contains);
 
             // Reset
             builder.buildTarget = BuildTarget.NoTarget;
             builder.buildTargetGroup = BuildTargetGroup.Unknown;
 
-            nonPlayerReferences = new HashSet<string>(commonReferences.Concat(editorAdditionalReferences).Concat(developmentBuildAdditionalReferences));
+            nonPlayerReferences = new HashSet<string>(commonReferences.Concat(inEditorAdditionalReferences).Concat(developmentBuildAdditionalReferences));
         }
 
         private void ProcessCommonDefines(AssemblyBuilder builder)
@@ -262,10 +262,10 @@ namespace Assets.MRTK.Tools.Scripts
             developmentBuildAdditionalDefines = new HashSet<string>(builder.defaultDefines);
             commonDefines.RemoveWhere(t => !developmentBuildAdditionalDefines.Contains(t));
 
-            // Set editor flag, and get editor defines. Filter out commont to common
+            // Set editor flag, and get in-editor defines. Filter out commont to common
             builder.flags = AssemblyBuilderFlags.EditorAssembly;
-            editorAdditionalDefines = new HashSet<string>(builder.defaultDefines);
-            commonDefines.RemoveWhere(t => !editorAdditionalDefines.Contains(t));
+            inEditorAdditionalDefines = new HashSet<string>(builder.defaultDefines);
+            commonDefines.RemoveWhere(t => !inEditorAdditionalDefines.Contains(t));
 
             // Reset
             builder.flags = AssemblyBuilderFlags.None;
@@ -290,7 +290,7 @@ namespace Assets.MRTK.Tools.Scripts
                 builder.flags = AssemblyBuilderFlags.EditorAssembly;
                 other = new HashSet<string>(builder.defaultDefines);
                 commonDefines.RemoveWhere(t => !other.Contains(t));
-                editorAdditionalDefines.RemoveWhere(t => !other.Contains(t)); // get only the common
+                inEditorAdditionalDefines.RemoveWhere(t => !other.Contains(t)); // get only the common
 
                 // Reset
                 builder.flags = AssemblyBuilderFlags.None;
@@ -298,13 +298,13 @@ namespace Assets.MRTK.Tools.Scripts
 
             // Remove common from dev/editor
             developmentBuildAdditionalDefines.RemoveWhere(commonDefines.Contains);
-            editorAdditionalDefines.RemoveWhere(commonDefines.Contains);
+            inEditorAdditionalDefines.RemoveWhere(commonDefines.Contains);
 
             // Reset
             builder.buildTarget = BuildTarget.NoTarget;
             builder.buildTargetGroup = BuildTargetGroup.Unknown;
 
-            nonPlayerDefines = new HashSet<string>(commonDefines.Concat(editorAdditionalDefines).Concat(developmentBuildAdditionalDefines));
+            nonPlayerDefines = new HashSet<string>(commonDefines.Concat(inEditorAdditionalDefines).Concat(developmentBuildAdditionalDefines));
         }
 
         private void CreateCompilationPlatforms(AssemblyBuilder builder)
@@ -322,33 +322,33 @@ namespace Assets.MRTK.Tools.Scripts
 
 
                 builder.flags = AssemblyBuilderFlags.EditorAssembly;
-                HashSet<string> editorDefines = new HashSet<string>(builder.defaultDefines);
-                HashSet<string> editorRefernces = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
+                HashSet<string> inEditorDefines = new HashSet<string>(builder.defaultDefines);
+                HashSet<string> inEditorRefernces = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
 
                 // Remove the non player ones
                 platformCommonDefines.RemoveWhere(t => nonPlayerDefines.Contains(t));
                 playerDefines.RemoveWhere(t => nonPlayerDefines.Contains(t));
-                editorDefines.RemoveWhere(t => nonPlayerDefines.Contains(t));
+                inEditorDefines.RemoveWhere(t => nonPlayerDefines.Contains(t));
 
                 platformCommonReferences.RemoveWhere(t => nonPlayerReferences.Contains(t));
                 playerReferences.RemoveWhere(t => nonPlayerReferences.Contains(t));
-                editorRefernces.RemoveWhere(t => nonPlayerReferences.Contains(t));
+                inEditorRefernces.RemoveWhere(t => nonPlayerReferences.Contains(t));
 
                 // Get common
-                platformCommonDefines.RemoveWhere(t => !editorDefines.Contains(t));
+                platformCommonDefines.RemoveWhere(t => !inEditorDefines.Contains(t));
 
-                platformCommonReferences.RemoveWhere(t => !editorRefernces.Contains(t));
+                platformCommonReferences.RemoveWhere(t => !inEditorRefernces.Contains(t));
 
                 // Get specialized
                 playerDefines.RemoveWhere(t => platformCommonDefines.Contains(t));
-                editorDefines.RemoveWhere(t => platformCommonDefines.Contains(t));
+                inEditorDefines.RemoveWhere(t => platformCommonDefines.Contains(t));
 
                 playerReferences.RemoveWhere(t => platformCommonReferences.Contains(t));
-                editorRefernces.RemoveWhere(t => platformCommonReferences.Contains(t));
+                inEditorRefernces.RemoveWhere(t => platformCommonReferences.Contains(t));
 
                 CompilationPlatform compilationPlatform = new CompilationPlatform(platformPair.Key, platformPair.Value, GetTargetFramework(platformPair),
-                    platformCommonDefines.ToList(), playerDefines.ToList(), editorDefines.ToList(),
-                    platformCommonReferences.ToList(), playerReferences.ToList(), editorRefernces.ToList());
+                    platformCommonDefines.ToList(), playerDefines.ToList(), inEditorDefines.ToList(),
+                    platformCommonReferences.ToList(), playerReferences.ToList(), inEditorRefernces.ToList());
 
                 compilationPlatforms.Add(platformPair.Key, compilationPlatform);
             }

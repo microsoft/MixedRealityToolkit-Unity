@@ -10,10 +10,10 @@
     <BaseIntermediateOutputPath>$(OutputPath)</BaseIntermediateOutputPath>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(Configuration)'=='Editor'">
-    <DefineConstants>$(DefineConstants);<!--COMMON_EDITOR_DEFINE_CONSTANTS--></DefineConstants>
-    <AssemblySearchPaths><!--EDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->;$(AssemblySearchPaths)</AssemblySearchPaths>
-    <!--Overide development build if we are building an editor build-->
+  <PropertyGroup Condition="'$(Configuration)'=='InEditor'">
+    <DefineConstants>$(DefineConstants);<!--COMMON_INEDITOR_DEFINE_CONSTANTS--></DefineConstants>
+    <AssemblySearchPaths><!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->;$(AssemblySearchPaths)</AssemblySearchPaths>
+    <!--Overide development build if we are building an in-editor build-->
     <DevelopmentBuild>true</DevelopmentBuild>
   </PropertyGroup>
   
@@ -26,8 +26,8 @@
     <!--COMMON_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--COMMON_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
   
-  <ItemGroup Condition="'$(Configuration)'=='Editor'">
-    <!--EDITOR_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--EDITOR_REFERENCE_TEMPLATE_END-->
+  <ItemGroup Condition="'$(Configuration)'=='InEditor'">
+    <!--INEDITOR_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--INEDITOR_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
   
   <ItemGroup Condition="'$(DevelopmentBuild)'=='true'">
@@ -41,9 +41,9 @@
     <DefineConstants>$(DefineConstants);<!--PLATFORM_COMMON_DEFINE_CONSTANTS--></DefineConstants>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(Platform)|$(Configuration)'=='##PLATFORM_TOKEN##|Editor'">
-    <AssemblySearchPaths><!--PLATFORM_EDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->;$(AssemblySearchPaths)</AssemblySearchPaths>
-    <DefineConstants>$(DefineConstants);<!--PLATFORM_EDITOR_DEFINE_CONSTANTS--></DefineConstants>
+  <PropertyGroup Condition="'$(Platform)|$(Configuration)'=='##PLATFORM_TOKEN##|InEditor'">
+    <AssemblySearchPaths><!--PLATFORM_INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->;$(AssemblySearchPaths)</AssemblySearchPaths>
+    <DefineConstants>$(DefineConstants);<!--PLATFORM_INEDITOR_DEFINE_CONSTANTS--></DefineConstants>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Platform)|$(Configuration)'=='##PLATFORM_TOKEN##|Player'">
@@ -55,8 +55,8 @@
     <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Platform)|$(Configuration)'=='##PLATFORM_TOKEN##|Editor'">
-    <!--PLATFORM_EDITOR_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--PLATFORM_EDITOR_REFERENCE_TEMPLATE_END-->
+  <ItemGroup Condition="'$(Platform)|$(Configuration)'=='##PLATFORM_TOKEN##|InEditor'">
+    <!--PLATFORM_INEDITOR_REFERENCE_TEMPLATE_START--><Reference Include="##REFERENCE_TOKEN##"/><!--PLATFORM_INEDITOR_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
 
   <ItemGroup Condition="'$(Platform)|$(Configuration)'=='##PLATFORM_TOKEN##|Player'">

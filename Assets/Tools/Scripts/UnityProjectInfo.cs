@@ -85,7 +85,7 @@ namespace Assets.MRTK.Tools.Scripts
                         { "<PROJECT_GUID>", t.Value.Guid.ToString() } }));
 
                 string[] twoConfigs = new string[] {
-                    configurationPlatformEntry.Replace("#CONFIGURATION_PLATFORM_TEMPLATE ", string.Empty).Replace("<Configuration>", "Editor"),
+                    configurationPlatformEntry.Replace("#CONFIGURATION_PLATFORM_TEMPLATE ", string.Empty).Replace("<Configuration>", "InEditor"),
                     configurationPlatformEntry.Replace("#CONFIGURATION_PLATFORM_TEMPLATE ", string.Empty).Replace("<Configuration>", "Player")
                 };
 

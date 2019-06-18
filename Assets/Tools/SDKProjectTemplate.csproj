@@ -12,7 +12,7 @@
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'==''">
-    <Configuration>Editor</Configuration>
+    <Configuration>InEditor</Configuration>
   </PropertyGroup>
 
   <Import Project="##COMMON_PROPS_FILE_PATH##" />
@@ -32,8 +32,7 @@
   
   <ItemGroup>
   	<!--PROJECT_REFERENCE_TEMPLATE_START--><ProjectReference Include="##REFERENCE_TOKEN##">
-      <ExcludeAssets>All</ExcludeAssets>
-      <IncludeAssets>compile</IncludeAssets>
+      <PrivateAssets>All</PrivateAssets>
     </ProjectReference><!--PROJECT_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
   
