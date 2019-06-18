@@ -31,19 +31,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected float distFront = 0.2f;
 
-        [Tooltip("Distance behind the surface at which you will receive a touch up event")]
+        [Tooltip("Distance behind the surface at which you will receive a touch started event")]
         [SerializeField]
-        protected float distBack = 0.25f;
+        [FormerlySerializedAs("distBack")]
+        protected float pokeThreshold = 0.25f;
+        public float PokeThreshold => pokeThreshold;
 
-        [Tooltip("Distance in front of the surface at which you will receive a touch up event")]
+        [Tooltip("Distance in front of the surface at which you will receive a touch completed event")]
         [SerializeField]
         protected float debounceThreshold = 0.01f;
-
-        public float DistBack => distBack;
+        public float DebounceThreshold => debounceThreshold;
 
         public float DistFront => distFront;
 
-        public float DebounceThreshold => debounceThreshold;
 
         protected void OnEnable()
         {
@@ -57,9 +57,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected void OnValidate()
         {
-            distBack = Math.Max(distBack, 0);
-            distFront = Math.Max(distFront, 0);
+            pokeThreshold = Math.Max(pokeThreshold, 0);
             debounceThreshold = Math.Max(debounceThreshold, 0);
+            distFront = Math.Max(distFront, 0);
         }
 
         public abstract float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal);

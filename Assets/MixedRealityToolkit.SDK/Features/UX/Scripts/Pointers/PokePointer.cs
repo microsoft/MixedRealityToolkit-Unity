@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (newClosestTouchable != null)
             {
                 // Build ray (poke from in front to the back of the pointer position)
-                Vector3 start = Position - newClosestTouchable.DistBack * -closestNormal;
+                Vector3 start = Position - newClosestTouchable.PokeThreshold * -closestNormal;
                 Vector3 end = Position + newClosestTouchable.DistFront * -closestNormal;
                 Rays[0].UpdateRayStep(ref start, ref end);
 
@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (Result?.CurrentPointerTarget != null && closestProximityTouchable != null)
             {
-                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - closestProximityTouchable.DistBack;
+                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - closestProximityTouchable.PokeThreshold;
                 bool newIsDown = (distToFront < 0);
                 bool newIsUp = (distToFront > closestProximityTouchable.DebounceThreshold);
 
