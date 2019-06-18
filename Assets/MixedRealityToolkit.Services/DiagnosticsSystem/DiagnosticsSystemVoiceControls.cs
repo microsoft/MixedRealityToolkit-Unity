@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             if (registeredForInput)
             {

@@ -14,7 +14,10 @@ To get started with the Mixed Reality Toolkit you will need:
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
 
 * [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
-* You don't need this to simulate in Unity Editor or run in VR, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
+* [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
+
+  This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
+  when building for OpenVR.
 
 
 # MR Learning Base Module Tutortial 
@@ -128,6 +131,19 @@ If you need to move the players start point, then **move the scene content and N
 
 
 You are now ready to start building your project!
+
+## Recommended build settings (UWP)
+
+When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that your build settings "Target SDK Version"
+and "Minimum Platform Version" look like they do in the picture below:
+
+![](../Documentation/Images/getting_started/BuildWindow.png)
+
+The other settings can be different (for example, Build Configuration/Architecture/Build Type and others can always
+be changed inside the Visual Studio solution).
+
+Make sure that you click on "Target SDK Version" and that it has the option "10.0.18362.0" - if this is missing,
+it means you have to install [the latest Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk).
 
 ## Next steps
 
