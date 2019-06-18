@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
+
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
 {
     /// <summary>
@@ -20,9 +22,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
         void HideMarker();
 
         /// <summary>
-        /// Set the physical size for displaying markers
+        /// Tries to set the physical size for displaying markers
         /// </summary>
         /// <param name="size">The physical size (in meters) that markers should be when shown</param>
-        void SetMarkerSize(float size);
+        /// <returns>Returns true if the marker can be set to the provided size, otherwise false.</returns>
+        bool TrySetMarkerSize(float size);
+
+        /// <summary>
+        /// Tries to obtain the maximum marker id supported by this marker visual.
+        /// </summary>
+        /// <param name="supportedIds">Output maximum marker id</param>
+        /// <returns>Returns true if the maximum marker id can be found, otherwise false.</returns>
+        bool TryGetMaxSupportedMarkerId(out int markerId);
     }
 }

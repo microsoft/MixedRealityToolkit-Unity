@@ -58,14 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private StateSynchronizationObserver stateSynchronizationObserver = null;
 
-        [Header("Spatial Alignment")]
-        /// <summary>
-        /// Parent of the main camera, spatial coordinate system transforms will be applied to this game object.
-        /// </summary>
-        [Tooltip("Parent of the main camera, spatial coordinate system transforms will be applied to this game object.")]
-        [SerializeField]
-        public GameObject parentOfMainCamera = null;
-
         [Header("Recording")]
         /// <summary>
         /// Check to enable the mobile recording service.
@@ -91,14 +83,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             if (stateSynchronizationSceneManager == null ||
                 stateSynchronizationBroadcaster == null ||
-                stateSynchronizationObserver == null ||
-                parentOfMainCamera == null)
+                stateSynchronizationObserver == null)
             {
                 Debug.LogError("StateSynchronization scene isn't configured correctly");
                 return;
             }
-
-            SpatialCoordinateSystemManager.Instance.transformedGameObject = parentOfMainCamera;
 
             switch (Role)
             {

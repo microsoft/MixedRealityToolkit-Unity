@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
     /// Helper base class for implementations of <see cref="ISpatialCoordinate"/>.
     /// </summary>
     /// <typeparam name="TKey">The type of Id for this coordinate.</typeparam>
-    public abstract class SpatialCoordinateBase<TKey> : DisposableBase, ISpatialCoordinate
+    public abstract class SpatialCoordinateBase<TKey> : ISpatialCoordinate
     {
         public event Action StateChanged;
 

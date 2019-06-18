@@ -109,11 +109,9 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
                 await session.DeleteAnchorAsync(spatialAnchorsCoordinate.CloudSpatialAnchor);
 
                 // Dispose in case of success only
-                using (spatialAnchorsCoordinate)
-                {
-                    OnRemoveCoordinate(id);
-                    return true;
-                }
+                OnRemoveCoordinate(id);
+                spatialAnchorsCoordinate.Destroy();
+                return true;
 
             }
             finally

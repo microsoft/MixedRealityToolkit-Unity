@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         }
 
         /// <inheritdoc />
-        public void SetMarkerSize(float size)
+        public bool TrySetMarkerSize(float size)
         {
             _markerSize = size;
 
@@ -129,7 +129,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             {
                 var sizeInPixels = GetMarkerSizeInPixels();
                 _rawImage.rectTransform.sizeDelta = new Vector2(sizeInPixels, sizeInPixels);
+                return true;
             }
+
+            return false;
+        }
+
+        /// <inheritdoc />
+        public bool TryGetMaxSupportedMarkerId(out int markerId)
+        {
+            markerId = cCodes.Length - 1;
+            return true;
         }
 
         private float GetMarkerSizeInPixels()

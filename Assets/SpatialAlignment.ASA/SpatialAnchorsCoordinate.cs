@@ -61,10 +61,8 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
         }
 
         /// <inheritdoc/>
-        protected override void OnManagedDispose()
+        public void Destroy()
         {
-            base.OnManagedDispose();
-
             UnityEngine.Object.Destroy(anchorGO);
         }
     }

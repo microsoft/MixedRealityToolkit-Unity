@@ -5,9 +5,9 @@ using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public class MarkerDetectorCoordinateService : SpatialCoordinateServiceBase<int>
     {
-        private class SpatialCoordinate : SpatialCoordinateBase<int>
+        private class SpatialCoordinate : SpatialCoordinateUnityBase<int>
         {
             private Marker marker;
 
@@ -33,28 +33,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                     if (marker != value)
                     {
                         marker = value;
+
+                        if (marker != null)
+                        {
+                            SetCoordinateWorldTransform(marker.Position, marker.Rotation);
+                        }
                     }
                 }
             }
 
             public override LocatedState State => marker == null ? LocatedState.Resolved : LocatedState.Tracking;
 
-            public SpatialCoordinate(int id)
-                : base(id) { }
-
             public SpatialCoordinate(Marker marker)
                 : base(marker?.Id ?? throw new ArgumentNullException(nameof(marker)))
             {
                 Marker = marker;
             }
-
-            public override Vector3 CoordinateToWorldSpace(Vector3 vector) => vector - marker.Position.AsNumericsVector();
-
-            public override Quaternion CoordinateToWorldSpace(Quaternion quaternion) => UnityEngine.Quaternion.Inverse(marker.Rotation).AsNumericsQuaternion() * quaternion;
-
-            public override Vector3 WorldToCoordinateSpace(Vector3 vector) => vector + marker.Position.AsNumericsVector();
-
-            public override Quaternion WorldToCoordinateSpace(Quaternion quaternion) => marker.Rotation.AsNumericsQuaternion() * quaternion;
         }
 
         private readonly IMarkerDetector markerDetector;
@@ -139,8 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return;
             }
 
-            var coordinate = new SpatialCoordinate(idsToLocate[0]);
-            coordinate.Marker = new Marker(coordinate.Id, UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity);
+            var coordinate = new SpatialCoordinate(new Marker(idsToLocate[0], UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity));
             DebugLog("Created artificial coordinate at origin for debugging in the editor");
             await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken).IgnoreCancellation();
             OnNewCoordinate(coordinate.Id, coordinate);

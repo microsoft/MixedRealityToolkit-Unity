@@ -71,6 +71,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             connectionManager.OnReceive += OnReceive;
         }
 
+        protected virtual void Start()
+        {
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.RegisterNetworkManager(this);
+            }
+            else
+            {
+                Debug.LogError("Attempted to register NetworkManager with the SpatialCoordinateSystemManager but no SpatialCoordinateSystemManager is initialized");
+            }
+        }
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -81,6 +93,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             connectionManager.OnConnected -= OnConnected;
             connectionManager.OnDisconnected -= OnDisconnected;
             connectionManager.OnReceive -= OnReceive;
+
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.UnregisterNetworkManager(this);
+            }
         }
 
         protected virtual void OnConnected(SocketEndpoint endpoint)

@@ -3,31 +3,14 @@ using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     public class SpatialCoordinateSystemManager : Singleton<SpatialCoordinateSystemManager>
     {
-        /// <summary>
-        /// SpectatorView MonoBehaviour running on the device.
-        /// </summary>
-        [Tooltip("SpectatorView MonoBehaviour running on the device.")]
-        [SerializeField]
-        private SpectatorView spectatorView = null;
-
-        /// <summary>
-        /// SpatialLocalizer used for setting up the coordinate system.
-        /// </summary>
-        [Tooltip("SpatialLocalizer used for setting up the coordinate system.")]
-        [SerializeField]
-        private SpatialLocalizer spatialLocalizer = null;
-
-        /// <summary>
-        /// GameObject that is transformed to move content into the correct position within the spatial coordinate system.
-        /// </summary>
-        public GameObject transformedGameObject { get; set; }
-
         /// <summary>
         /// Check for debug logging.
         /// </summary>
@@ -53,12 +36,116 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [Tooltip("Debug visual scale.")]
         public float debugVisualScale = 1.0f;
 
-        public const string SpatialLocalizationMessageHeader = "LOCALIZE";
-        readonly string[] supportedCommands = { SpatialLocalizationMessageHeader };
+        public event Action<SpatialCoordinateSystemParticipant> ParticipantConnected;
 
+        public event Action<SpatialCoordinateSystemParticipant> ParticipantDisconnected;
+
+        internal const string CoordinateStateMessageHeader = "COORDSTATE";
+        private const string LocalizeCommand = "LOCALIZE";
+        private readonly Dictionary<Guid, ISpatialLocalizer> localizers = new Dictionary<Guid, ISpatialLocalizer>();
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
+        private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
+        private ISpatialLocalizationSession currentLocalizationSession = null;
 
-        public void OnConnected(SocketEndpoint endpoint)
+        public void RegisterSpatialLocalizer(ISpatialLocalizer localizer)
+        {
+            if (localizers.ContainsKey(localizer.SpatialLocalizerId))
+            {
+                Debug.LogError($"Cannot register multiple SpatialLocalizers with the same ID {localizer.SpatialLocalizerId}");
+                return;
+            }
+
+            DebugLog($"Registering spatial localizer: {localizer.SpatialLocalizerId}");
+            localizers.Add(localizer.SpatialLocalizerId, localizer);
+        }
+
+        public void UnregisterSpatialLocalizer(ISpatialLocalizer localizer)
+        {
+            if (!localizers.Remove(localizer.SpatialLocalizerId))
+            {
+                Debug.LogError($"Attempted to unregister SpatialLocalizer with ID {localizer.SpatialLocalizerId} that was not registered.");
+            }
+        }
+
+        public void RegisterNetworkManager(INetworkManager networkManager)
+        {
+            if (!networkManagers.Add(networkManager))
+            {
+                Debug.LogError($"Attempted to register the same network manager multiple times");
+                return;
+            }
+
+            RegisterEvents(networkManager);
+        }
+
+        public void UnregisterNetworkManager(INetworkManager networkManager)
+        {
+            if (!networkManagers.Remove(networkManager))
+            {
+                Debug.LogError($"Attempted to unregister a network manager that was not registered");
+                return;
+            }
+
+            UnregisterEvents(networkManager);
+        }
+
+        public void InitiateRemoteLocalization(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter message = new BinaryWriter(stream))
+            {
+                message.Write(LocalizeCommand);
+                message.Write(spatialLocalizerID);
+                settings.Serialize(message);
+
+                socketEndpoint.Send(stream.ToArray());
+            }
+        }
+
+        public Task LocalizeAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
+        {
+            DebugLog("LocalizeAsync");
+            if (currentLocalizationSession != null)
+            {
+                Debug.LogError($"Failed to start localization session because an existing localization session is in progress");
+                return Task.CompletedTask;
+            }
+
+            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
+            {
+                Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
+                return Task.CompletedTask;
+            }
+
+            if (!localizers.TryGetValue(spatialLocalizerID, out ISpatialLocalizer localizer))
+            {
+                Debug.LogError($"Could not find a ISpatialLocalizer for spatialLocalizerID {spatialLocalizerID}");
+                return Task.CompletedTask;
+            }
+
+            DebugLog("Returning a localization session.");
+            return RunLocalizationSessionAsync(localizer, settings, participant);
+        }
+
+        protected override void OnDestroy()
+        {
+            foreach (INetworkManager networkManager in networkManagers)
+            {
+                UnregisterEvents(networkManager);
+            }
+
+            CleanUpParticipants();
+        }
+
+        private void Update()
+        {
+            foreach (var participant in participants.Values)
+            {
+                participant.CheckForStateChanges();
+            }
+        }
+
+        private void OnConnected(SocketEndpoint endpoint)
         {
             if (participants.ContainsKey(endpoint))
             {
@@ -66,138 +153,152 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 return;
             }
 
-            if (spectatorView.Role == Role.Spectator)
+            DebugLog($"Creating new SpatialCoordinateSystemParticipant, IPAddress: {endpoint.Address}, DebugLogging: {debugLogging}");
+
+            SpatialCoordinateSystemParticipant participant = new SpatialCoordinateSystemParticipant(endpoint, debugVisual, debugVisualScale);
+            participants[endpoint] = participant;
+            participant.ShowDebugVisuals = showDebugVisuals;
+
+            if (ParticipantConnected == null)
             {
-                if (participants.Count > 0 &&
-                    !participants.ContainsKey(endpoint))
-                {
-                    Debug.LogWarning("A second SpatialCoordinateSystemParticipant connected while the device was running as a spectator. This is an unexpected scenario.");
-                    return;
-                }
+                Debug.LogWarning("Participant created, but no connection listeners were found");
+                return;
             }
 
-            DebugLog($"Creating new SpatialCoordinateSystemParticipant, Role: {spectatorView.Role}, IPAddress: {endpoint.Address}, SceneRoot: {transformedGameObject}, DebugLogging: {debugLogging}");
-            var actAsHost = spectatorView.Role == Role.User;
-            var participant = new SpatialCoordinateSystemParticipant(actAsHost, endpoint, WriteAndSendMessage, CreateDebugVisualParent, debugLogging, showDebugVisuals, debugVisual, debugVisualScale);
-            participants[endpoint] = participant;
-            if (spatialLocalizer != null)
-            {
-                DebugLog($"Localizing SpatialCoordinateSystemParticipant: {endpoint.Address}");
-                participant.LocalizeAsync(spatialLocalizer).FireAndForget();
-            }
-            else
-            {
-                Debug.LogWarning("Spatial localizer not specified for SpatialCoordinateSystemManager");
-            }
+            DebugLog($"Invoking ParticipantConnected event");
+            ParticipantConnected.Invoke(participant);
         }
 
-        public void OnDisconnected(SocketEndpoint endpoint)
+        private void OnDisconnected(SocketEndpoint endpoint)
         {
             if (participants.TryGetValue(endpoint, out var participant))
             {
                 participant.Dispose();
                 participants.Remove(endpoint);
+
+                ParticipantDisconnected?.Invoke(participant);
             }
         }
 
-        public void HandleCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void OnCoordinateStateReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            if (command == SpatialLocalizationMessageHeader)
+            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
             {
-                if (!participants.TryGetValue(endpoint, out var participant))
-                {
-                    Debug.LogError("Received a message for an endpoint that had no associated spatial coordinate system participant");
-                }
-                else
-                {
-                    participant.ReceiveMessage(reader);
-                }
+                Debug.LogError($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
+                return;
             }
+
+            participant.ReadCoordinateStateMessage(reader);
         }
 
-        protected override void Awake()
+        private async void OnLocalizeMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            RegisterCommands();
-        }
-
-        protected override void OnDestroy()
-        {
-            UnregisterCommands();
-            CleanUpParticipants();
-        }
-
-        private void Update()
-        {
-            if (spectatorView.parentOfMainCamera != null)
+            if (currentLocalizationSession != null)
             {
-                if (spectatorView.Role == Role.User)
+                Debug.LogError($"Failed to start localization session because an existing localization session is in progress");
+                return;
+            }
+
+            Guid spatialLocalizerID = reader.ReadGuid();
+
+            if (!localizers.TryGetValue(spatialLocalizerID, out ISpatialLocalizer localizer))
+            {
+                Debug.LogError($"Request to begin localization with localizer {spatialLocalizerID} but no localizer with that ID was registered");
+                return;
+            }
+
+            if (!localizer.TryDeserializeSettings(reader, out ISpatialLocalizationSettings settings))
+            {
+                Debug.LogError($"Failed to deserialize settings for localizer {spatialLocalizerID}");
+                return;
+            }
+
+            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
+            {
+                Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
+                return;
+            }
+
+            await RunLocalizationSessionAsync(localizer, settings, participant);
+        }
+
+        private void OnParticipantDataReceived(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            if (!TryGetSpatialCoordinateSystemParticipant(endpoint, out SpatialCoordinateSystemParticipant participant))
+            {
+                Debug.LogError($"Received participant localization data for a missing participant: {endpoint.Address}");
+                return;
+            }
+
+            if (participant.CurrentLocalizationSession == null)
+            {
+                Debug.LogError($"Received participant localization data for a participant that is not currently running a localization session: {endpoint.Address}");
+                return;
+            }
+
+            DebugLog($"Data received for participant: {endpoint.Address}, {command}");
+            participant.CurrentLocalizationSession.OnDataReceived(reader);
+        }
+
+        private async Task RunLocalizationSessionAsync(ISpatialLocalizer localizer, ISpatialLocalizationSettings settings, SpatialCoordinateSystemParticipant participant)
+        {
+            DebugLog($"Creating localization session: {participant.SocketEndpoint.Address}, {settings.ToString()}, {localizer.ToString()}");
+            if (!localizer.TryCreateLocalizationSession(participant, settings, out ISpatialLocalizationSession currentLocalizationSession))
+            {
+                Debug.LogError($"Failed to create an ISpatialLocalizationSession from localizer {localizer.SpatialLocalizerId}");
+                return;
+            }
+
+            using (currentLocalizationSession)
+            {
+                DebugLog($"Setting localization session for participant: {participant.SocketEndpoint.Address}, {currentLocalizationSession.ToString()}");
+                participant.CurrentLocalizationSession = currentLocalizationSession;
+
+                try
                 {
-                    // We don't currently apply a transform to the user's camera.
-                    return;
-                }
-                else
-                {
-                    // When running as the spectator, we should currently only have one potential participant (the user)
-                    foreach (var participant in participants)
+                    DebugLog($"Starting localization: {participant.SocketEndpoint.Address}, {currentLocalizationSession.ToString()}");
+                    // Some SpatialLocalizers/SpatialCoordinateServices key off of token cancellation for their logic flow.
+                    // Therefore, we need to create a cancellation token even it is never actually cancelled by the SpatialCoordinateSystemManager.
+                    using (var localizeCTS = new CancellationTokenSource())
                     {
-                        if (participant.Value.TryTransformToHostWorldSpace(Vector3.zero, out var position) &&
-                            participant.Value.TryTransformToHostWorldSpace(Quaternion.identity, out var rotation))
-                        {
-                            DebugLog($"Parent of main camera transform set: Position: {position.ToString("G4")}, Rotation: {rotation.ToString("G4")}");
-                            spectatorView.parentOfMainCamera.transform.position = position;
-                            spectatorView.parentOfMainCamera.transform.rotation = rotation;
-                            break;
-                        }
+                        var coordinate = await currentLocalizationSession.LocalizeAsync(localizeCTS.Token);
+                        participant.Coordinate = coordinate;
                     }
                 }
+                finally
+                {
+                    participant.CurrentLocalizationSession = null;
+                }
             }
+            currentLocalizationSession = null;
         }
 
-        private void RegisterCommands()
+        private void RegisterEvents(INetworkManager networkManager)
         {
-            DebugLog($"Registering for appropriate commands: StateSynchronizationObserver.IsInitialized: {StateSynchronizationObserver.IsInitialized}, StateSynchronizationBroadcaster.IsInitialized: {StateSynchronizationBroadcaster.IsInitialized}");
-            foreach (var command in supportedCommands)
-            {
-                if (StateSynchronizationObserver.IsInitialized)
-                {
-                    StateSynchronizationObserver.Instance.Connected += OnConnected;
-                    StateSynchronizationObserver.Instance.Disconnected += OnDisconnected;
-                    StateSynchronizationObserver.Instance.RegisterCommandHandler(command, HandleCommand);
-                }
-                if (StateSynchronizationBroadcaster.IsInitialized)
-                {
-                    StateSynchronizationBroadcaster.Instance.Connected += OnConnected;
-                    StateSynchronizationBroadcaster.Instance.Disconnected += OnDisconnected;
-                    StateSynchronizationBroadcaster.Instance.RegisterCommandHandler(command, HandleCommand);
-                }
-            }
+            networkManager.Connected += OnConnected;
+            networkManager.Disconnected += OnDisconnected;
+            networkManager.RegisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
+            networkManager.RegisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
+            networkManager.RegisterCommandHandler(SpatialCoordinateSystemParticipant.LocalizationDataExchangeCommand, OnParticipantDataReceived);
         }
 
-        private void UnregisterCommands()
+        private void UnregisterEvents(INetworkManager networkManager)
         {
-            DebugLog($"Unregistering for appropriate commands: StateSynchronizationObserver.IsInitialized: {StateSynchronizationObserver.IsInitialized}, StateSynchronizationBroadcaster.IsInitialized: {StateSynchronizationBroadcaster.IsInitialized}");
-            foreach (var command in supportedCommands)
-            {
-                if (StateSynchronizationObserver.IsInitialized)
-                {
-                    StateSynchronizationObserver.Instance.Connected -= OnConnected;
-                    StateSynchronizationObserver.Instance.Disconnected -= OnDisconnected;
-                    StateSynchronizationObserver.Instance.UnregisterCommandHandler(command, HandleCommand);
-                }
-                if (StateSynchronizationBroadcaster.IsInitialized)
-                {
-                    StateSynchronizationBroadcaster.Instance.Connected -= OnConnected;
-                    StateSynchronizationBroadcaster.Instance.Disconnected -= OnDisconnected;
-                    StateSynchronizationBroadcaster.Instance.UnregisterCommandHandler(command, HandleCommand);
-                }
-            }
+            networkManager.Connected -= OnConnected;
+            networkManager.Disconnected -= OnDisconnected;
+            networkManager.UnregisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
+            networkManager.UnregisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
+            networkManager.UnregisterCommandHandler(SpatialCoordinateSystemParticipant.LocalizationDataExchangeCommand, OnParticipantDataReceived);
         }
 
         private void CleanUpParticipants()
         {
             foreach(var participant in participants)
             {
-                participant.Value.Dispose();
+                if (participant.Value != null)
+                {
+                    participant.Value.Dispose();
+                }
             }
 
             participants.Clear();
@@ -211,30 +312,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
         }
 
-        private void WriteAndSendMessage(SocketEndpoint endpoint, Action<BinaryWriter> callToWrite)
+        internal bool TryGetSpatialCoordinateSystemParticipant(SocketEndpoint connectedEndpoint, out SpatialCoordinateSystemParticipant participant)
         {
-            DebugLog($"Writing and sending message to endpoint: {endpoint.Address}");
-            using (MemoryStream memoryStream = new MemoryStream())
-            using (BinaryWriter writer = new BinaryWriter(memoryStream))
-            {
-                writer.Write(SpatialLocalizationMessageHeader);
-                callToWrite(writer);
-                endpoint.Send(memoryStream.ToArray());
-            }
-        }
-
-        private GameObject CreateDebugVisualParent()
-        {
-            var go = new GameObject();
-            go.transform.position = Vector3.zero;
-            go.transform.rotation = Quaternion.identity;
-
-            if (spectatorView.parentOfMainCamera != null)
-            {
-                go.transform.parent = spectatorView.parentOfMainCamera.transform;
-            }
-
-            return go;
+            return participants.TryGetValue(connectedEndpoint, out participant);
         }
     }
 }
