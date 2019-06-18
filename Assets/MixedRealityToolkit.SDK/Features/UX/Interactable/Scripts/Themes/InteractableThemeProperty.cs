@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (ShaderPropertyIDs == null)
             {
                 ShaderPropertyIDs = new List<int>(ShaderOptionNames.Count);
-                for(int i = 0; i < this.ShaderOptionNames.Count; i++)
+                for (int i = 0; i < this.ShaderOptionNames.Count; i++)
                 {
                     ShaderPropertyIDs.Add(Shader.PropertyToID(this.ShaderOptionNames[i]));
                 }
