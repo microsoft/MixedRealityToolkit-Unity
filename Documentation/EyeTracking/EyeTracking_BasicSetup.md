@@ -121,7 +121,7 @@ When starting the app on your HoloLens 2 for the first time, a prompt should pop
 If it is not showing up, then that is usually an indication that the _'GazeInput'_ capability was not set. 
 
 After the permission prompt showed up once, it will not show up automatically again. 
-If you _"denied eye tracking permission"_, you can reset this in Settings -> System -> Privacy. 
+If you _"denied eye tracking permission"_, you can reset this in Settings -> Privacy -> Apps. 
 
 <br>
 
