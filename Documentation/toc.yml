@@ -42,18 +42,18 @@
     items:
     - name: Interactable
       href: README_Interactable.md
+    - name: Button
+      href: README_Button.md
+    - name: Bounding Box
+      href: README_BoundingBox.md
     - name: Object Manipulation
       href: README_ManipulationHandler.md
+    - name: Sliders
+      href: README_Sliders.md
     - name: Fingertip Visualization
       href: README_FingertipVisualization.md
     - name: App Bar
       href: README_AppBar.md
-    - name: Bounding Box
-      href: README_BoundingBox.md
-    - name: Button
-      href: README_Button.md
-    - name: Sliders
-      href: README_Sliders.md
     - name: Object Collection
       href: README_ObjectCollection.md
     - name: Pointers
