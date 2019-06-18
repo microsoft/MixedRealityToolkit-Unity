@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty pointingExtent;
         private SerializedProperty pointingRaycastLayerMasks;
         private SerializedProperty pokeRaycastLayerMasks;
+        private SerializedProperty sceneQueryBufferSize;
         private static bool showPointerOptionProperties = true;
         private SerializedProperty pointerOptions;
         private ReorderableList pointerOptionList;
@@ -40,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             pointingExtent = serializedObject.FindProperty("pointingExtent");
             pointingRaycastLayerMasks = serializedObject.FindProperty("pointingRaycastLayerMasks");
             pokeRaycastLayerMasks = serializedObject.FindProperty("pokeRaycastLayerMasks");
+            sceneQueryBufferSize = serializedObject.FindProperty("sceneQueryBufferSize");
             pointerOptions = serializedObject.FindProperty("pointerOptions");
             debugDrawPointingRays = serializedObject.FindProperty("debugDrawPointingRays");
             debugDrawPointingRayColors = serializedObject.FindProperty("debugDrawPointingRayColors");
@@ -88,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
                     EditorGUILayout.PropertyField(pokeRaycastLayerMasks, true);
                     EditorGUILayout.PropertyField(pointerMediator);
+                    EditorGUILayout.PropertyField(sceneQueryBufferSize);
 
                     EditorGUILayout.Space();
                     showPointerOptionProperties = EditorGUILayout.Foldout(showPointerOptionProperties, "Pointer Options", true);

@@ -33,6 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal;
         public QueryTriggerInteraction TriggerInteraction => triggerInteraction;
 
+        private Collider[] queryBuffer;
+
         private float closestDistance = 0.0f;
 
         private Vector3 closestNormal = Vector3.forward;
@@ -51,9 +53,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             await EnsureInputSystemValid();
 
+            var pointerProfile = MixedRealityToolkit.Instance.ActiveProfile?.InputSystemProfile?.PointerProfile;
+
             // Initialize layer masks
-            var profileLayerMasks = MixedRealityToolkit.Instance.ActiveProfile?.InputSystemProfile?.PointerProfile?.PokeRaycastLayerMasks;
+            var profileLayerMasks = pointerProfile?.PokeRaycastLayerMasks;
             PokeLayerMasks = profileLayerMasks ?? new LayerMask[] { UnityEngine.Physics.DefaultRaycastLayers };
+
+            queryBuffer = new Collider[pointerProfile ? pointerProfile.SceneQueryBufferSize : 1];
         }
 
         protected void OnValidate()
@@ -122,10 +128,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             distance = float.PositiveInfinity;
             normal = Vector3.zero;
 
-            Collider[] colliders = UnityEngine.Physics.OverlapSphere(Position, touchableDistance, layerMask, triggerInteraction);
-            foreach (var collider in colliders)
+            int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(Position, touchableDistance, queryBuffer, layerMask, triggerInteraction);
+            if (numColliders == queryBuffer.Length)
             {
-                var touchable = collider.GetComponent<ColliderNearInteractionTouchable>();
+                Debug.LogWarning("Maximum number of colliders found in PokePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
+            }
+
+            for (int i = 0; i < numColliders; ++i)
+            {
+                var touchable = queryBuffer[i].GetComponent<ColliderNearInteractionTouchable>();
                 if (touchable)
                 {
                     float dist = touchable.DistanceToTouchable(Position, out normal);
