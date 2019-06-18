@@ -1,5 +1,5 @@
 # Eye tracking examples in MRTK
-This page covers how to get quickly started with using eye tracking in MRTK by building on our provided [MRTK eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking).
+This page covers how to get quickly started with using eye tracking in MRTK by building on our provided [MRTK eye tracking examples](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking).
 The samples let you experience one of our new magical input capabilities: **Eye tracking**! 
 The demo includes a number of different use cases ranging from implicit eye-based activations to how to seamlessly combine information about what you are looking at with **voice** and **hand** input. 
 This enables users to quickly and effortlessly select and move holographic content across their view simply by looking at a target and saying _'Select'_ or performing a hand gesture. 
