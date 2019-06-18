@@ -10,7 +10,7 @@ Another interesting application is the hands-free observation of 3D holograms by
 These are some of the examples that are described on this page in context of eye-supported navigation. 
 
 The following descriptions assume that you are already familiar with how to 
-[set up Eye Tracking in your MRTK scene](EyeTracking_BasicSetup.md) and with the basics of [accessing eye tracking data](EyeTracking_TargetSelection.md) in MRTK Unity.
+[set up eye tracking in your MRTK scene](EyeTracking_BasicSetup.md) and with the basics of [accessing eye tracking data](EyeTracking_TargetSelection.md) in MRTK Unity.
 The examples discussed in the following are all part of the 
 [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity)
 scene. 
