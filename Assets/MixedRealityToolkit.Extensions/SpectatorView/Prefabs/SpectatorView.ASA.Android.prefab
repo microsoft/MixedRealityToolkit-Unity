@@ -453,6 +453,9 @@ MonoBehaviour:
   stateSynchronizationSceneManager: {fileID: 5528765749981121093}
   stateSynchronizationBroadcaster: {fileID: 5528765751334162604}
   stateSynchronizationObserver: {fileID: 5528765751305678288}
+  enableMobileRecordingService: 1
+  mobileRecordingServiceVisualPrefab: {fileID: 3991847289853751625, guid: 9771d3a665ea3184f9c3731093a51da4,
+    type: 3}
 --- !u!1 &5528765751079408163
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,7 +468,7 @@ GameObject:
   - component: {fileID: 5528765751079408191}
   - component: {fileID: 8251217132207615602}
   m_Layer: 0
-  m_Name: SpatialCoordinateSystem
+  m_Name: SpatialAlignment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

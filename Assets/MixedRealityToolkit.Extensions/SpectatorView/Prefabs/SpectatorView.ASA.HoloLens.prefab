@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6520627996300456612}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6520627995422491499
 MonoBehaviour:
@@ -92,7 +92,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6520627996300456612}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6520627995603351790
 MonoBehaviour:
@@ -346,49 +346,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa64e43c5d4d26d4eade391bc1f935ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6520627996225767296
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6520627996225767297}
-  - component: {fileID: 6520627996225767310}
-  m_Layer: 0
-  m_Name: CommandService
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6520627996225767297
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6520627996225767296}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6520627996300456612}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6520627996225767310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6520627996225767296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fdece428916bb049a4c4eade7519d27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6520627996300456615
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,7 +373,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6520627996225767297}
   - {fileID: 6520627995422491498}
   - {fileID: 6520627996385174020}
   - {fileID: 6520627996426280824}
@@ -454,7 +410,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6520627996300456612}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6520627996385174023
 MonoBehaviour:
@@ -468,8 +424,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e82979a845c4c8469ffdce5ca285d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugLogging: 1
   connectionManager: {fileID: 6520627995422491499}
+  debugLogging: 1
   Port: 7410
 --- !u!114 &6520627996385174021
 MonoBehaviour:
@@ -513,7 +469,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6520627996300456612}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6520627996426280827
 MonoBehaviour:
@@ -527,8 +483,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f820ead9dbb8f244b5614cf48d6247d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugLogging: 1
   connectionManager: {fileID: 6520627995422491499}
+  debugLogging: 1
   port: 7410
 --- !u!1 &6520627996605099983
 GameObject:
@@ -593,8 +549,9 @@ MonoBehaviour:
   stateSynchronizationSceneManager: {fileID: 6520627995603351790}
   stateSynchronizationBroadcaster: {fileID: 6520627996385174023}
   stateSynchronizationObserver: {fileID: 6520627996426280827}
-  broadcastedContent: {fileID: 0}
   parentOfMainCamera: {fileID: 0}
+  enableMobileRecordingService: 1
+  mobileRecordingServiceVisualPrefab: {fileID: 0}
 --- !u!1 &6520627996652478600
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,7 +564,7 @@ GameObject:
   - component: {fileID: 6520627996652478612}
   - component: {fileID: 6520627996652478614}
   m_Layer: 0
-  m_Name: SpatialCoordinateSystem
+  m_Name: SpatialAlignment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -662,8 +619,8 @@ MonoBehaviour:
   anchorPosition: {x: 0, y: 0, z: 0}
   anchorRotation: {x: 0, y: 0, z: 0}
   configuration:
-    AccessToken: 
     AccountDomain: 
     AccountId: 
     AccountKey: 
+    AccessToken: 
     AuthenticationToken: 
