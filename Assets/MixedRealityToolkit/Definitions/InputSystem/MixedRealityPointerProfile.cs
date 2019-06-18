@@ -31,6 +31,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public LayerMask[] PointingRaycastLayerMasks => pointingRaycastLayerMasks;
 
         [SerializeField]
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the touchable objects.")]
+        private LayerMask[] pokeRaycastLayerMasks = { UnityEngine.Physics.DefaultRaycastLayers };
+
+        /// <summary>
+        /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
+        /// </summary>
+        public LayerMask[] PokeRaycastLayerMasks => pokeRaycastLayerMasks;
+
+        [SerializeField]
         private bool debugDrawPointingRays = false;
 
         /// <summary>

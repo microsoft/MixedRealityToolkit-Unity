@@ -21,6 +21,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected float touchableDistance = 0.2f;
         public float TouchableDistance => touchableDistance;
 
+        /// <inheritdoc />
+        private LayerMask[] pokeLayerMasks = null;
+        public LayerMask[] PokeLayerMasks => pokeLayerMasks;
+
+        /// <summary>
+        /// Specify whether queries for touchable surfaces hit triggers.
+        /// </summary>
+        [SerializeField]
+        protected QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal;
+        public QueryTriggerInteraction TriggerInteraction => triggerInteraction;
+
         private float closestDistance = 0.0f;
 
         private Vector3 closestNormal = Vector3.forward;
@@ -32,6 +43,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // poke-down / poke-up events for this object. This is also the case when the object within
         // the same current closest touchable component's changes (e.g. Unity UI control elements).
         private GameObject currentTouchableObjectDown = null;
+
+        protected override async void Start()
+        {
+            base.Start();
+
+            await EnsureInputSystemValid();
+
+            // Initialize layer masks
+            var profileLayerMasks = MixedRealityToolkit.Instance.ActiveProfile?.InputSystemProfile?.PointerProfile?.PokeRaycastLayerMasks;
+            pokeLayerMasks = profileLayerMasks ?? new LayerMask[] { UnityEngine.Physics.DefaultRaycastLayers };
+        }
 
         protected void OnValidate()
         {
@@ -54,20 +76,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             closestNormal = Rotation * Vector3.forward;
 
-            // Check proximity
-            BaseNearInteractionTouchable newClosestTouchable = null;
+            var layerMasks = PrioritizedLayerMasksOverride ?? PokeLayerMasks;
+
+            // Find closest touchable
+            ColliderNearInteractionTouchable newClosestTouchable = null;
+            foreach (var layerMask in layerMasks)
             {
-                closestDistance = float.PositiveInfinity;
-                foreach (var prox in BaseNearInteractionTouchable.Instances)
+                if (FindClosestTouchableForLayerMask(layerMask, out newClosestTouchable, out closestDistance, out closestNormal))
                 {
-                    Vector3 normal;
-                    float dist = prox.DistanceToTouchable(Position, out normal);
-                    if (dist < TouchableDistance && dist < closestDistance)
-                    {   
-                        closestDistance = dist;
-                        newClosestTouchable = prox;
-                        closestNormal = normal;
-                    }
+                    break;
                 }
             }
 
@@ -96,6 +113,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
             closestProximityTouchable = newClosestTouchable;
 
             visuals.SetActive(IsActive);
+        }
+
+        private bool FindClosestTouchableForLayerMask(LayerMask layerMask, out ColliderNearInteractionTouchable closest, out float distance, out Vector3 normal)
+        {
+            closest = null;
+            distance = float.PositiveInfinity;
+            normal = Vector3.zero;
+
+            Collider[] colliders = UnityEngine.Physics.OverlapSphere(Position, touchableDistance, layerMask, triggerInteraction);
+            foreach (var collider in colliders)
+            {
+                var touchable = collider.GetComponent<ColliderNearInteractionTouchable>();
+                if (touchable)
+                {
+                    float dist = touchable.DistanceToTouchable(Position, out normal);
+                    if (dist < distance)
+                    {   
+                        closest = touchable;
+                        distance = dist;
+                    }
+                }
+            }
+            return closest != null;
         }
 
         public override void OnPostSceneQuery()

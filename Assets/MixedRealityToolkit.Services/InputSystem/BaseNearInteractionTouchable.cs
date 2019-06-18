@@ -18,9 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public abstract class BaseNearInteractionTouchable : MonoBehaviour
     {
-        public static IReadOnlyCollection<BaseNearInteractionTouchable> Instances { get { return instances.AsReadOnly(); } }
-        private static readonly List<BaseNearInteractionTouchable> instances = new List<BaseNearInteractionTouchable>();
-
         [SerializeField]
         protected TouchableEventType eventsToReceive = TouchableEventType.Touch;
 
@@ -39,16 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         protected float debounceThreshold = 0.01f;
         public float DebounceThreshold => debounceThreshold;
-
-        protected void OnEnable()
-        {
-            instances.Add(this);
-        }
-
-        protected void OnDisable()
-        {
-            instances.Remove(this);
-        }
 
         protected void OnValidate()
         {
