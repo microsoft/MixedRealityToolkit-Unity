@@ -78,7 +78,7 @@ _OnPointerUp_, _OnPointerDown_, and _OnPointerClicked_.
 
 In the example below, we change the color of a hologram by looking at it and pinching or saying "select".
 Which action is required to trigger the event is defined by ```eventData.MixedRealityInputAction == selectAction``` whereby we can set the type of ```selectAction``` in the Unity Editor - by default it's the "Select" action.
-The types of available [MixedRealityInputActions](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/InputActions.html) can be configured in the MRTK Profiler via
+The types of available [MixedRealityInputActions](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/InputActions.html) can be configured in the MRTK Profile via
 _MRTK Configuration Profile_ -> _Input_ -> _Input Actions_. 
 
 ```csharp 
