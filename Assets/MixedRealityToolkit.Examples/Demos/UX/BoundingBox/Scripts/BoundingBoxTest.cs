@@ -56,6 +56,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var mh = cube.AddComponent<ManipulationHandler>();
                 yield return WaitForSpeechCommand();
 
+                SetStatus("Set Target bounds override");
+                var newObject = new GameObject();
+                var bc = newObject.AddComponent<BoxCollider>();
+                bc.center = new Vector3(.25f, 0, 0);
+                bc.size = new Vector3(0.162f, 0.1f, 1);
+                bbox.BoundsOverride = bc;
+                yield return WaitForSpeechCommand();
+
+                SetStatus("Change target bounds override size");
+                bc.size = new Vector3(0.5f, 0.1f, 1);
+                yield return WaitForSpeechCommand();
+
+                SetStatus("Remove target bounds override");
+                bbox.BoundsOverride = null;
+                Destroy(newObject);
+                newObject = null;
+                yield return WaitForSpeechCommand();
+
                 SetStatus("HideElementsInInspector true");
                 bbox.HideElementsInInspector = true;
                 yield return WaitForSpeechCommand();
