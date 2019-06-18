@@ -93,6 +93,10 @@ Follow these steps:
 2. Open your compiled Visual Studio project and then open the _'Package.appxmanifest'_ in your solution.
 3. Make sure to tick the _'GazeInput'_ checkbox under _Capabilities_.
 
+_Please note:_ 
+You only have to do this if you build into a new build folder.
+This means that if you had already built your Unity project and set up the appxmanifest before and now target the same folder again, the appxmanifest should stay untouched.
+
 ![Enabling Gaze Input in Visual Studio](../Images/EyeTracking/mrtk_et_gazeinput.jpg)
 
 You don't see a _'GazeInput'_ capability? 
