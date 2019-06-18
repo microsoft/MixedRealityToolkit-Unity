@@ -28,7 +28,7 @@ It simply parents a few text meshes and has some additional triggers for blendin
 This includes slowly increasing its size and opacity on activation. 
 Once the notification is dismissed, it will slowly decrease its size and fade out.
 
-	- Attached to the *_EyeCalibrationChecker_ game object* is the *_EyeCalibrationChecker_ script* which exposes two Unity Events:
+	- Attached to the *_EyeCalibrationChecker_ game object* is the [EyeCalibrationChecker](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeCalibrationChecker) script which exposes two Unity Events:
 		- OnEyeCalibrationDetected()
 		- OnNoEyeCalibrationDetected()
 
