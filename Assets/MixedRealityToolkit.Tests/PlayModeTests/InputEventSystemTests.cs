@@ -287,6 +287,62 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
         }
+
+        /// <summary>
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestInputSystemGlobalHandlerListener()
+        {
+            // Need to remove cursors and other global event handlers
+            yield return PlayModeTestUtilities.SetupMrtkWithoutGlobalInputHandlers();
+
+            IMixedRealityInputSystem iInputSystem = null;
+            MixedRealityServiceRegistry.TryGetService(out iInputSystem);
+
+            BaseEventSystem inputSystem = (BaseEventSystem)iInputSystem;
+
+            var object1 = new GameObject("Object");
+
+            var listener = object1.AddComponent<TestInputGlobalHandlerListener>();
+
+            yield return null;
+
+            // No event listener registration in this test
+            CollectionAssert.IsEmpty(inputSystem.EventListeners, "Event listener for old event system API shouldn't be registered");
+
+            CollectionAssert.AreEquivalent(
+                new List<System.Type> {
+                    typeof(IMixedRealityHandJointHandler),
+                    typeof(IMixedRealitySpeechHandler),
+                    typeof(IMixedRealityBaseInputHandler),
+                    typeof(IMixedRealityInputHandler<float>)
+                },
+                inputSystem.EventHandlersByType.Keys,
+                "Input event system doesn't contain expected event handler types.");
+
+            CollectionAssert.AreEquivalent(
+                new List<IEventSystemHandler> { listener },
+                inputSystem.EventHandlersByType[typeof(IMixedRealityHandJointHandler)],
+                "Input event system doesn't contain expected IMixedRealityHandJointHandler handlers.");
+
+            CollectionAssert.AreEquivalent(
+                new List<IEventSystemHandler> { listener },
+                inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)],
+                "Input event system doesn't contain expected IMixedRealitySpeechHandler handlers.");
+
+            CollectionAssert.AreEquivalent(
+                new List<IEventSystemHandler> { listener },
+                inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)],
+                "Input event system doesn't contain expected IMixedRealityBaseInputHandler handlers.");
+
+            CollectionAssert.AreEquivalent(
+                new List<IEventSystemHandler> { listener },
+                inputSystem.EventHandlersByType[typeof(IMixedRealityInputHandler<float>)],
+                "Input event system doesn't contain expected IMixedRealityInputHandler<float> handlers.");
+
+            Object.Destroy(object1);
+            yield return null;
+        }
     }
 }
 #endif

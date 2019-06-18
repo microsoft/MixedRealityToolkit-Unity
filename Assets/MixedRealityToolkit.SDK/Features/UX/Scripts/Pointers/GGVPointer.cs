@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class GGVPointer : InputSystemGlobalListener, IMixedRealityPointer, IMixedRealityInputHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler
+    public class GGVPointer : InputSystemGlobalHandlerListener, IMixedRealityPointer, IMixedRealityInputHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler
     {
         [Header("Pointer")]
         [SerializeField]
@@ -275,6 +275,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
+
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            RegisterAllHandlers<GGVPointer>();
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            UnregisterAllHandlers<GGVPointer>();
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
 
         #region IMixedRealitySourcePoseHandler
 

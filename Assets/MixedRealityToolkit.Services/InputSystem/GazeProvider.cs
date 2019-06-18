@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [DisallowMultipleComponent]
     public class GazeProvider :
-        InputSystemGlobalListener,
+        InputSystemGlobalHandlerListener,
         IMixedRealityGazeProvider,
         IMixedRealityEyeGazeProvider,
         IMixedRealityInputHandler
@@ -437,6 +437,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion MonoBehaviour Implementation
+
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
 
         #region IMixedRealityInputHandler Implementation
 

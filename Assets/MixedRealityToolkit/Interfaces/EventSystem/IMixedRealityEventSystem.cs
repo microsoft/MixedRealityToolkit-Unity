@@ -36,8 +36,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="listener"><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to add to <see cref="EventListeners"/>.</param>
         // Marking method as obsolete triggers a lot of warnings in MRTK code base.
         // This should be commented out once follow up task #4847 is complete.
-        //[Obsolete("Register using a game object causes all components of this object to receive global events of all types. " +
-        //    "Use RegisterHandler<> methods instead to avoid unexpected behavior.")]
+        [Obsolete("Register using a game object causes all components of this object to receive global events of all types. " +
+            "Use RegisterHandler<> methods instead to avoid unexpected behavior.")]
         void Register(GameObject listener);
 
         /// <summary>
@@ -46,8 +46,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="listener"><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to remove from <see cref="EventListeners"/>.</param>
         // Marking method as obsolete triggers a lot of warnings in MRTK code base.
         // This should be commented out once follow up task #4847 is complete
-        //[Obsolete("Unregister using a game object will disable listening of global events for all components of this object. " +
-        //    "Use UnregisterHandler<> methods instead to avoid unexpected behavior.")]
+        [Obsolete("Unregister using a game object will disable listening of global events for all components of this object. " +
+            "Use UnregisterHandler<> methods instead to avoid unexpected behavior.")]
         void Unregister(GameObject listener);
 
         /// <summary>

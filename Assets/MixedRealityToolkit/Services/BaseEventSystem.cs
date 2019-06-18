@@ -104,12 +104,18 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
+            if(handler == null)
+            {
+                return;
+            }
+
             // #if due to Microsoft.MixedReality.Toolkit.ReflectionExtensions overload of Type.IsInterface
             #if WINDOWS_UWP && !ENABLE_IL2CPP
                 Debug.Assert(typeof(T).IsInterface());
             #else
                 Debug.Assert(typeof(T).IsInterface);
             #endif
+            Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()));
 
             TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
         }
@@ -117,12 +123,18 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
+            if(handler == null)
+            {
+                return;
+            }
+
             // #if due to Microsoft.MixedReality.Toolkit.ReflectionExtensions overload of Type.IsInterface
             #if WINDOWS_UWP && !ENABLE_IL2CPP
                 Debug.Assert(typeof(T).IsInterface());
             #else
                 Debug.Assert(typeof(T).IsInterface);
             #endif
+            Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()));
 
             TraverseEventSystemHandlerHierarchy<T>(handler, UnregisterHandler);
         }
