@@ -21,9 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected float touchableDistance = 0.2f;
         public float TouchableDistance => touchableDistance;
 
-        /// <inheritdoc />
-        private LayerMask[] pokeLayerMasks = null;
-        public LayerMask[] PokeLayerMasks => pokeLayerMasks;
+        /// <summary>
+        /// The LayerMasks, in prioritized order, that are used to determine the touchable objects.
+        /// </summary>
+        public LayerMask[] PokeLayerMasks { get; private set; }
 
         /// <summary>
         /// Specify whether queries for touchable surfaces hit triggers.
@@ -52,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Initialize layer masks
             var profileLayerMasks = MixedRealityToolkit.Instance.ActiveProfile?.InputSystemProfile?.PointerProfile?.PokeRaycastLayerMasks;
-            pokeLayerMasks = profileLayerMasks ?? new LayerMask[] { UnityEngine.Physics.DefaultRaycastLayers };
+            PokeLayerMasks = profileLayerMasks ?? new LayerMask[] { UnityEngine.Physics.DefaultRaycastLayers };
         }
 
         protected void OnValidate()
