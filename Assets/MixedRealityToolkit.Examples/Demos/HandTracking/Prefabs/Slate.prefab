@@ -632,6 +632,7 @@ MonoBehaviour:
   centerPoint: {fileID: 0}
   leftPoint: {fileID: 4531382727374914902}
   rightPoint: {fileID: 5073403802680592322}
+  proximityLightCenterColor: {r: 0.25, g: 0.25, b: 0.25, a: 0}
   currentScale: 0
   PanStarted:
     m_PersistentCalls:
@@ -1321,6 +1322,11 @@ PrefabInstance:
       propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23134458986606660, guid: eb3627b069d8e8044a4ce84651787f6a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fc1d56dcfc4950949a5b56a1399a1822, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb3627b069d8e8044a4ce84651787f6a, type: 3}
 --- !u!4 &4536434116438610512 stripped
@@ -1399,6 +1405,11 @@ PrefabInstance:
       propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23134458986606660, guid: eb3627b069d8e8044a4ce84651787f6a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fc1d56dcfc4950949a5b56a1399a1822, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb3627b069d8e8044a4ce84651787f6a, type: 3}
 --- !u!1 &5073403802680592322 stripped
