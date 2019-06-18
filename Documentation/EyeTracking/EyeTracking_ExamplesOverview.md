@@ -101,7 +101,7 @@ Please beware that the _simulated eye gaze_ via mouse control is a rather poor s
 It is great for testing the basic functionality though before iterating on the design by deploying it to the HoloLens 2 device.
 Coming back to our eye tracking sample scene: The gem rotates as long as being looked at and can be destroyed by "looking" at it and ...
 - Pressing _Enter_ (which simulates saying "select")
-- Actually saying _"select"_ into your microphone
+- Saying _"select"_ into your microphone
 - While pressing _Space_ to show the simulated hand input, click the left mouse button to perform a simulated pinch
 
 We describe in more detail how you can achieve these interactions in our [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md) tutorial.
