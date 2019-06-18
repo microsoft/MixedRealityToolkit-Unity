@@ -13,7 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         protected GameObject visuals;
-        
+
+        /// <summary>
+        /// Maximum distance a which a touchable surface can be interacted with.
+        /// </summary>
+        [SerializeField]
+        protected float touchableDistance = 0.2f;
+        public float TouchableDistance => touchableDistance;
+
         private float closestDistance = 0.0f;
 
         private Vector3 closestNormal = Vector3.forward;
@@ -30,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Debug.Assert(line != null, this);
             Debug.Assert(visuals != null, this);
+            touchableDistance = Mathf.Max(touchableDistance, 0);
         }
 
         public bool IsNearObject
@@ -54,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     Vector3 normal;
                     float dist = prox.DistanceToTouchable(Position, out normal);
-                    if (dist < prox.DistFront && dist < closestDistance)
+                    if (dist < TouchableDistance && dist < closestDistance)
                     {   
                         closestDistance = dist;
                         newClosestTouchable = prox;
@@ -67,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Build ray (poke from in front to the back of the pointer position)
                 Vector3 start = Position - newClosestTouchable.PokeThreshold * -closestNormal;
-                Vector3 end = Position + newClosestTouchable.DistFront * -closestNormal;
+                Vector3 end = Position + touchableDistance * -closestNormal;
                 Rays[0].UpdateRayStep(ref start, ref end);
 
                 line.SetPosition(0, Position);
