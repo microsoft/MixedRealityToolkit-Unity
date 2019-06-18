@@ -42,6 +42,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
+        [Tooltip("The raycast provider service concrete type to use when raycasting.")]
+        [Implements(typeof(IMixedRealityRaycastProvider), TypeGrouping.ByNamespaceFlat)]
+        private SystemType raycastProviderType;
+
+        /// <summary>
+        /// The raycast provider service concrete type to use when raycasting.
+        /// </summary>
+        public SystemType RaycastProviderType
+        {
+            get { return raycastProviderType; }
+            internal set { raycastProviderType = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
         private MixedRealityInputActionsProfile inputActionsProfile;
 

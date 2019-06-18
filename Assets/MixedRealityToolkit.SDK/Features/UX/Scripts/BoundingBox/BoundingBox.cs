@@ -118,6 +118,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("BoxColliderToUse")]
         private BoxCollider boundsOverride = null;
+        public BoxCollider BoundsOverride
+        {
+            get { return boundsOverride; }
+            set 
+            {
+                if (boundsOverride != value)
+                {
+                    boundsOverride = value;
+                    
+                    if (boundsOverride == null)
+                    {
+                        prevBoundsOverride = new Bounds();
+                    }
+                    CreateRig();
+                }
+            }
+        }
 
         [Header("Behavior")]
         [SerializeField]
@@ -601,8 +618,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private BoundsCalculationMethod boundsMethod;
 
-
-
         private List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
         private List<Transform> links;
         private List<Transform> corners;
@@ -643,7 +658,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 diagonalDir;
 
         private HandleType currentHandleType;
-        private Vector3 lastBounds;
+
+        // The size, position of boundsOverride object in the previous frame
+        // Used to determine if boundsOverride size has changed.
+        private Bounds prevBoundsOverride = new Bounds();
 
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
@@ -788,6 +806,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 UpdateRigHandles();
                 Target.transform.hasChanged = false;
             }
+            else if (boundsOverride != null && HasBoundsOverrideChanged())
+            {
+                UpdateBounds();
+                UpdateRigHandles();
+            }
+        }
+
+        /// <summary>
+        /// Assumes that boundsOverride is not null
+        /// Returns true if the size / location of boundsOverride has changed.
+        /// If boundsOverride gets set to null, rig is re-created in BoundsOverride
+        /// property setter.
+        /// </summary>
+        private bool HasBoundsOverrideChanged()
+        {
+            Debug.Assert(boundsOverride != null, "HasBoundsOverrideChanged called but boundsOverride is null");
+            Bounds curBounds = boundsOverride.bounds;
+            bool result = curBounds != prevBoundsOverride;
+            prevBoundsOverride = curBounds;
+            return result;
         }
         #endregion MonoBehaviour Methods
 
