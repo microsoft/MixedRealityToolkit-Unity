@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public GameObject GazeTarget { get; private set; }
 
         /// <inheritdoc />
-        public RaycastHit HitInfo { get; private set; }
+        public MixedRealityRaycastHit HitInfo { get; private set; }
 
         /// <inheritdoc />
         public Vector3 HitPosition { get; private set; }
