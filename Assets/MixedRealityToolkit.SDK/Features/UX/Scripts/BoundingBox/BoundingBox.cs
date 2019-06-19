@@ -2,8 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -591,10 +589,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Header("Events")]
-        public UnityEvent RotateStarted;
-        public UnityEvent RotateStopped;
-        public UnityEvent ScaleStarted;
-        public UnityEvent ScaleStopped;
+        public UnityEvent RotateStarted = new UnityEvent();
+        public UnityEvent RotateStopped = new UnityEvent();
+        public UnityEvent ScaleStarted = new UnityEvent();
+        public UnityEvent ScaleStopped = new UnityEvent();
         #endregion Serialized Fields
 
         #region Private Properties
