@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Getting started with Eye Tracking in MRTK | Mixed Reality Toolkit Documentation </title>
+    <title>Getting started with eye tracking in MRTK | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Getting started with Eye Tracking in MRTK | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Getting started with eye tracking in MRTK | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.43.1.0">
     
     <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
@@ -80,34 +80,36 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="getting-started-with-eye-tracking-in-mrtk">Getting started with Eye Tracking in MRTK</h1>
+<h1 id="getting-started-with-eye-tracking-in-mrtk">Getting started with eye tracking in MRTK</h1>
 
-<p>This page covers how to set up your Unity MRTK scene to use Eye Tracking in your app.
+<p>This page covers how to set up your Unity MRTK scene to use eye tracking in your app.
 The following assumes you are starting out with a fresh new scene.
-Alternatively, you can check out our already configured <a href="EyeTracking_ExamplesOverview.html">MRTK Eye Tracking Examples</a>.</p>
-<h3 id="eye-tracking-requirements">Eye tracking requirements</h3>
-<p>For Eye Tracking to work correctly, the following requirements must be met:</p>
+Alternatively, you can check out our already configured <a href="EyeTracking_ExamplesOverview.html">MRTK eye tracking examples</a> with tons of great examples that you can directly build on.</p>
+<h2 id="eye-tracking-requirements-checklist">Eye tracking requirements checklist</h2>
+<p>For eye tracking to work correctly, the following requirements must be met.
+If you are new to eye tracking on HoloLens 2 and to how eye tracking is set up in MRTK, don't worry!
+We will go into detail on how to address each of them further below.</p>
 <ol>
 <li>An <em>'Eye Gaze Data Provider'</em> must be added to the input system. This provides eye tracking data from the platform.</li>
-<li>The GazeProvider must have its &quot;Use Eye Tracking&quot; property set to true. Note that true is the default value (so no special
+<li>The GazeProvider must have its <em>'Use Eye Tracking'</em> property set to true. Note that true is the default value (so no special
 action is required unless you have actively unchecked this property.)</li>
-<li>The <em>'Gaze Input'</em> capability must be enabled in the application manifest. <strong>Currently this is only available in Visual Studio.</strong></li>
-<li>The HoloLens <strong>must</strong> be calibrated for the current user under system settings.</li>
+<li>The <em>'GazeInput'</em> capability must be enabled in the application manifest. <strong>Currently this is only available in Visual Studio.</strong></li>
+<li>The HoloLens <strong>must</strong> be eye calibrated for the current user. Check out our <a href="EyeTracking_IsUserCalibrated.html">sample for detecting whether a user is eye calibrated or not</a>.</li>
 </ol>
 <p><strong>IMPORTANT:</strong> If any of the above requirements are not met, the application will automatically fall back to head-based gaze tracking.</p>
-<p>Below are the steps required to enable eye tracking in an application.</p>
+<h2 id="setting-up-eye-tracking-step-by-step">Setting up eye tracking step-by-step</h2>
 <h3 id="setting-up-the-scene">Setting up the scene</h3>
 <p>Set up the <em>MixedRealityToolkit</em> by simply clicking <em>'Mixed Reality Toolkit -&gt; Configure…'</em> in the menu bar.</p>
-<p><img src="../Images/EyeTracking/mrtk_setup_configure.png" alt="MRTK"></p>
-<h3 id="setting-up-the-mrtk-profiles-required-for-eye-tracking">Setting up the MRTK profiles required for Eye Tracking</h3>
+<p><img src="../Images/EyeTracking/mrtk_setup_configure.jpg" alt="MRTK"></p>
+<h3 id="setting-up-the-mrtk-profiles-required-for-eye-tracking">Setting up the MRTK profiles required for eye tracking</h3>
 <p>After setting up your MRTK scene, you will be asked to choose a profile for MRTK.
 You can simply select <em>DefaultMixedRealityToolkitConfigurationProfile</em> and then select the <em>'Copy &amp; Customize'</em> option.</p>
-<p><img src="../Images/EyeTracking/mrtk_setup_configprofile.png" alt="MRTK"></p>
+<p><img src="../Images/EyeTracking/mrtk_setup_configprofile.jpg" alt="MRTK"></p>
 <h3 id="create-an-eye-gaze-data-provider">Create an &quot;Eye Gaze Data Provider&quot;</h3>
 <ul>
-<li><p>Navigate to the <em>'Input System Profile'</em> in your MRTK main profile.</p>
+<li><p>Click on the <em>'Input'</em> tab in your MRTK profile.</p>
 </li>
-<li><p>To edit the default one ( <em>'DefaultMixedRealityInputSystemProfile'</em> ), click the <em>'Clone'</em> button next to it.</p>
+<li><p>To edit the default one ( <em>'DefaultMixedRealityInputSystemProfile'</em> ), click the <em>'Clone'</em> button next to it. A <em>'Clone Profile'</em> menu appears. Simply click on <em>'Clone'</em> at the bottom of that menu.</p>
 </li>
 <li><p>Double click on your new input profile and select <em>'+ Add Data Provider'</em>.</p>
 </li>
@@ -120,56 +122,81 @@ You can simply select <em>DefaultMixedRealityToolkitConfigurationProfile</em> an
 </ul>
 </li>
 </ul>
-<p><img src="../Images/EyeTracking/mrtk_setup_eyes_dataprovider.png" alt="MRTK"></p>
-<h3 id="enabling-eye-tracking-in-the-gazeprovider">Enabling Eye Tracking in the GazeProvider</h3>
+<p><img src="../Images/EyeTracking/mrtk_setup_eyes_dataprovider.jpg" alt="MRTK"></p>
+<h3 id="enabling-eye-tracking-in-the-gazeprovider">Enabling eye tracking in the GazeProvider</h3>
 <p>In HoloLens v1, head gaze was used as primary pointing technique.
-While head gaze is still available via the <em>GazeProvider</em> in MRTK which is attached to your <a href="https://docs.unity3d.com/ScriptReference/Camera.html">Camera</a>, you can check to use eye gaze instead by ticking the <em>'Use Eye Tracking'</em> checkbox as shown in the screenshot below.</p>
+While head gaze is still available via the <em>GazeProvider</em> in MRTK which is attached to your <a href="https://docs.unity3d.com/ScriptReference/Camera.html">Camera</a>, you can check to use eye gaze instead by ticking the <em>'UseEyeTracking'</em> checkbox as shown in the screenshot below.</p>
 <p><img src="../Images/EyeTracking/mrtk_setup_eyes_gazeprovider.png" alt="MRTK"></p>
 <p><strong>NOTE:</strong> Developers can toggle between eye tracking and head tracking in code by changing the <em>'UseEyeTracking'</em> property of <em>'GazeProvider'</em>.</p>
-<h3 id="simulating-eye-tracking-in-the-unity-editor">Simulating Eye Tracking in the Unity Editor</h3>
-<p>You can simulate Eye Tracking input in the Unity Editor to ensure that events are correctly triggered before deploying the app to your HoloLens 2.
+<h3 id="simulating-eye-tracking-in-the-unity-editor">Simulating eye tracking in the Unity Editor</h3>
+<p>You can simulate eye tracking input in the Unity Editor to ensure that events are correctly triggered before deploying the app to your HoloLens 2.
 The eye gaze signal is simulated by simply using the camera's location as eye gaze origin and the camera's forward vector as eye gaze direction.
 While this is great for initial testing, please note that it is not a good imitation for rapid eye movements.
 For this, it is better to ensure frequent tests of your eye-based interactions on the HoloLens 2.</p>
 <ol>
-<li><strong>Enable simulated Eye Tracking</strong>:
+<li><strong>Enable simulated eye tracking</strong>:
 <ul>
-<li>Navigate to your main <em>'MRTK Configuration Profile'</em> -&gt; <em>'Input System Profile'</em> -&gt; <em>'Data Providers'</em> -&gt; <em>'Input Simulation Service'</em>.</li>
+<li>Click on the <em>'Input'</em> tab in your MRTK configuration profile.</li>
+<li>From there, navigate to <em>'Input Data Providers'</em> -&gt; <em>'Input Simulation Service'</em>.</li>
 <li>Check the <em>'Simulate Eye Position'</em> checkbox.</li>
 </ul>
 </li>
 </ol>
-<p><img src="../Images/EyeTracking/mrtk_setup_eyes_simulate.png" alt="MRTK"></p>
+<p><img src="../Images/EyeTracking/mrtk_setup_eyes_simulate.jpg" alt="MRTK"></p>
 <ol start="2">
 <li><strong>Disable default head gaze cursor</strong>:
 In general, it is recommended to avoid showing an eye gaze cursor or if absolutely required to make it <em>very</em> subtle.
-Check out our <a href="EyeTracking_Cursor.html">eye gaze cursor tutorial</a> for more information on how to best handle it.
 We do recommend to hide the default head gaze cursor that is attached to the MRTK gaze pointer profile by default.
 <ul>
-<li>Navigate to your main <em>'MRTK Configuration Profile'</em> -&gt; <em>'Input System Profile'</em> -&gt; <em>'PointerSettings.PointerProfile'</em></li>
-<li>At the bottom of the <em>'PointerProfile'</em>, you should assign an invisible cursor prefab to the <em>'GazeCursor'</em>. If you downloaded the MRTK Examples folder, you can simply reference the included -'EyeGazeCursor'_ prefab.</li>
+<li>Navigate to your MRTK configuration profile -&gt; <em>'Input'</em> -&gt; <em>'Pointers'</em></li>
+<li>Clone the <em>'DefaultMixedRealityInputPointerProfile'</em> to make changes to it.</li>
+<li>At the top of the <em>'Pointer Settings'</em>, you should assign an invisible cursor prefab to the <em>'GazeCursor'</em>. If you downloaded the MRTK Examples folder, you can simply reference the included <em>'EyeGazeCursor'</em> prefab.</li>
 </ul>
 </li>
 </ol>
-<p><img src="../Images/EyeTracking/mrtk_setup_eyes_gazesettings.png" alt="MRTK"></p>
+<p><img src="../Images/EyeTracking/mrtk_setup_eyes_gazesettings.jpg" alt="MRTK"></p>
 <h3 id="accessing-eye-gaze-data">Accessing eye gaze data</h3>
-<p>Now that your scene is set up to use Eye Tracking, let's take a look at how to access it in your scripts:
-<a href="EyeTracking_EyeGazeProvider.html">Accessing Eye Tracking Data in your Unity Script</a>.</p>
+<p>Now that your scene is set up to use eye tracking, let's take a look at how to access it in your scripts:
+<a href="EyeTracking_EyeGazeProvider.html">Accessing eye tracking data via EyeGazeProvider</a> and <a href="EyeTracking_TargetSelection.html">eye-supported target selections</a>.</p>
 <h3 id="testing-your-unity-app-on-a-hololens-2">Testing your Unity app on a HoloLens 2</h3>
-<p>Building your app with Eye Tracking should be similar to how you would compile other HoloLens 2 MRTK apps.
+<p>Building your app with eye tracking should be similar to how you would compile other HoloLens 2 MRTK apps.
 The only difference is that the <em>'Gaze Input'</em> capability is unfortunately not yet supported by Unity under 'Player Settings -&gt; Publishing Settings -&gt; Capabilities'.
-To use Eye Tracking on your HoloLens 2 device, you need to manually edit the package manifest that is part of your build Visual Studio project.
-Follow these steps:</p>
+To use eye tracking on your HoloLens 2 device, you need to manually edit the package manifest that is part of your built Visual Studio project.</p>
+<p>Follow these steps:</p>
 <ol>
 <li>Build your Unity project as you would normally do for <em>HoloLens 2</em>.</li>
 <li>Open your compiled Visual Studio project and then open the <em>'Package.appxmanifest'</em> in your solution.</li>
-<li>Make sure to tick the <em>'Gaze Input'</em> checkbox under <em>Capabilities</em>.</li>
+<li>Make sure to tick the <em>'GazeInput'</em> checkbox under <em>Capabilities</em>.</li>
 </ol>
+<p><em>Please note:</em>
+You only have to do this if you build into a new build folder.
+This means that if you had already built your Unity project and set up the appxmanifest before and now target the same folder again, the appxmanifest should stay untouched.</p>
 <p><img src="../Images/EyeTracking/mrtk_et_gazeinput.jpg" alt="Enabling Gaze Input in Visual Studio"></p>
-<p><strong>IMPORTANT:</strong> Don't forget to calibrate HoloLens for the current user. Without calibration, eye tracking won't work. Calibration can be found under system settings.</p>
-<p>If everything is set up correctly, a prompt should pop up asking the user for permission to use Eye Tracking when you start your Unity app on a HoloLens 2 device for the first time.</p>
+<p>You don't see a <em>'GazeInput'</em> capability?</p>
+<ul>
+<li>Check that your system meets the <a href="../GettingStartedWithTheMRTK.html#prerequisites">prerequisites for using MRTK</a> (in particular the Windows SDK version).</li>
+<li>You can also manually add the entry by opening the appxmanifest in an XML editor and adding the following:</li>
+</ul>
+<pre><code class="lang-xml">  &lt;Capabilities&gt;
+    &lt;DeviceCapability Name=&quot;gazeInput&quot; /&gt;
+  &lt;/Capabilities&gt;
+</code></pre>
+<h4 id="have-you-eye-calibrated">Have you eye calibrated?</h4>
+<p>Finally, please don't forget to run through the eye calibration on your HoloLens 2.
+The eye tracking system will not return any input if the user is not calibrated.
+Easiest way to get to the calibration is by flipping up the visor and back down.
+A system notification should appear welcoming you as a new user and asking you to go through the eye calibration.
+Alternatively you can find the eye calibration in the system settings: Settings -&gt; System -&gt; Utilities -&gt; Open Calibration.</p>
+<h4 id="do-you-see-the-eye-tracking-permission-prompt">Do you see the eye tracking permission prompt?</h4>
+<p>When starting the app on your HoloLens 2 for the first time, a prompt should pop up asking the user for permission to use eye tracking.
+If it is not showing up, then that is usually an indication that the <em>'GazeInput'</em> capability was not set.</p>
+<p>After the permission prompt showed up once, it will not show up automatically again.
+If you <em>&quot;denied eye tracking permission&quot;</em>, you can reset this in Settings -&gt; Privacy -&gt; Apps.</p>
+<br>
+<p>This should get you started with using eye tracking in your MRTK Unity app.
+Don't forget to check out <a href="EyeTracking_ExamplesOverview.html">our MRTK eye tracking tutorials and samples</a> demonstrating how to use eye tracking input and conveniently providing scripts that you can reuse in your projects.</p>
 <hr>
-<p><a href="EyeTracking_Main.html">Back to &quot;Eye Tracking in the MixedRealityToolkit&quot;</a></p>
+<p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>
 </article>
           </div>
           

@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>To be or not to be eye calibrated | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="To be or not to be eye calibrated | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.43.1.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<p><img src="../Images/EyeTracking/mrtk_et_calibration_notification_example.jpg" alt="Screenshot from eye calibration notification"></p>
+<h2 id="to-be-or-not-to-be-eye-calibrated">To be or not to be eye calibrated</h2>
+<p>If eye tracking is a fundamental part of your app experience, you may wish to ensure that the user's eye calibration is valid.
+The main reason for it to be invalid is that the user chose to skip the eye tracking calibration.
+This page describes:</p>
+<ul>
+<li>Describes how to detect that a user is eye calibrated</li>
+<li>Provides a sample for how to trigger a user notification to instruct the user to go through the eye calibration
+<ul>
+<li>Automatically dismiss notification if eye calibration becomes valid</li>
+<li>Manually dismiss notification if user chooses to continue without calibration</li>
+</ul>
+</li>
+</ul>
+<h3 id="how-to-detect-the-eye-calibration-state">How to detect the eye calibration state</h3>
+<p>The <a href="EyeTracking_EyeGazeProvider.html">MixedRealityToolkit.InputSystem.EyeGazeProvider</a> provides a <code>bool?</code> property called <code>IsEyeGazeValid</code>.
+It returns null if no information from the eye tracker is available yet.
+Once data has been received, it will either return true or false to indicate that the user's eye tracking calibration is valid or invalid.</p>
+<h3 id="sample-eye-calibration-notification---step-by-step">Sample eye calibration notification - Step-by-step</h3>
+<ol>
+<li><p>Open the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking">MRTK eye tracking example package</a></p>
+</li>
+<li><p>Load <em>EyeTrackingDemo-00-RootScene.unity</em> scene</p>
+</li>
+<li><p>Check out <em>EyeCalibrationChecker</em>:</p>
+<ul>
+<li><p>In this scene, we have already a sample for detecting whether the current user is calibrated under the <em><em>EyeCalibrationChecker</em> game object</em>.
+It simply parents a few text meshes and has some additional triggers for blending the notification in and out.
+This includes slowly increasing its size and opacity on activation.
+Once the notification is dismissed, it will slowly decrease its size and fade out.</p>
+</li>
+<li><p>Attached to the <em><em>EyeCalibrationChecker</em> game object</em> is the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeCalibrationChecker.html">EyeCalibrationChecker</a> script which exposes two Unity Events:</p>
+<ul>
+<li>OnEyeCalibrationDetected()</li>
+<li>OnNoEyeCalibrationDetected()</li>
+</ul>
+</li>
+<li><p>These events will only trigger if the calibration status changes. Hence, if a user chooses to dismiss the notification, the notification will not show up again until</p>
+<ul>
+<li>The app gets restarted</li>
+<li>A valid user has been detected and then a new uncalibrated user has put the device on</li>
+</ul>
+</li>
+<li><p>For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a <code>bool editorTestUserIsCalibrated</code> flag. For example, when the app is running in the Unity Editor you can test, whether the notification automatically pops up once the calibration status changes from true to false and whether it automatically dismisses the notification again once the status changes from false to true.</p>
+</li>
+</ul>
+</li>
+</ol>
+<pre><code class="lang-csharp">   ...
+        
+        void Update()
+        {
+      // Get the latest calibration state from the EyeGazeProvider
+      bool? calibrationStatus = InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
+
+      ... 
+
+      if (calibrationStatus != null)
+      {
+         if (prevCalibrationStatus != calibrationStatus)
+         {
+            if (calibrationStatus == false)
+            {
+               OnNoEyeCalibrationDetected.Invoke();
+            }
+         else
+         {
+            OnEyeCalibrationDetected.Invoke();
+         }
+         
+         prevCalibrationStatus = calibrationStatus;
+      }
+   }
+
+   private bool? prevCalibrationStatus = null;        
+        
+   private IMixedRealityInputSystem inputSystem = null;
+
+        /// &lt;summary&gt;
+        /// The active instance of the input system.
+        /// &lt;/summary&gt;
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService&lt;IMixedRealityInputSystem&gt;(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+</code></pre>
+<hr>
+<p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/EyeTracking/EyeTracking_IsUserCalibrated.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

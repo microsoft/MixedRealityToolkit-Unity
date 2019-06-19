@@ -546,7 +546,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_BasicSetup.html",
-          "hash": "HvnzPLqtYICydOLsGTPJYA=="
+          "hash": "q8Osf8xA92qoTLiCLbbkXQ=="
         }
       },
       "is_incremental": false,
@@ -558,7 +558,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Cursor.html",
-          "hash": "K30kzUIPgTdxKr2sP9+SYA=="
+          "hash": "pdWAqEbTJ/HfHCLGYFWFoQ=="
         }
       },
       "is_incremental": false,
@@ -570,7 +570,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_ExamplesOverview.html",
-          "hash": "v3czWD7k2453rp+AvoZBKw=="
+          "hash": "7LcrvvUseO2hR9qAsCi84A=="
         }
       },
       "is_incremental": false,
@@ -582,7 +582,31 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_EyeGazeProvider.html",
-          "hash": "ZbG9lGQqLFy4i9smqCx3Fw=="
+          "hash": "NL7BM1tXjHuRf8/4lUNO5Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_EyesAndHands.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_EyesAndHands.html",
+          "hash": "uVLxwwZxK3dzA8gLRvMj9Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_IsUserCalibrated.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_IsUserCalibrated.html",
+          "hash": "qZfgJA7exkzC0d9htI2ZUg=="
         }
       },
       "is_incremental": false,
@@ -594,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Main.html",
-          "hash": "iQsbbOYUto2U1L9896s9uw=="
+          "hash": "8kPJR52OFEoFhx7LJJ3Rig=="
         }
       },
       "is_incremental": false,
@@ -606,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Navigation.html",
-          "hash": "sbcwuxtJbM0SCrGF8MxoCQ=="
+          "hash": "miHjodsIbBnapGJ/wlFtEA=="
         }
       },
       "is_incremental": false,
@@ -618,7 +642,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Positioning.html",
-          "hash": "Xbt++fpMjAQgu+1TtqnlAQ=="
+          "hash": "WuUD1mpFnBBujtZcZQr0VQ=="
         }
       },
       "is_incremental": false,
@@ -630,7 +654,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_TargetSelection.html",
-          "hash": "f9kO/Xas16Whza6px38C1Q=="
+          "hash": "FYrKmCybpdqjC2Vyn5VGGw=="
         }
       },
       "is_incremental": false,
@@ -642,7 +666,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Visualization.html",
-          "hash": "WIs6s5lZ83zIsbVl/FPuVw=="
+          "hash": "+W9FatbiDEfDqqyZi3kTsQ=="
         }
       },
       "is_incremental": false,
@@ -1356,10 +1380,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget.jpg",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget.jpg"
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg"
         }
       },
       "is_incremental": false,
@@ -1371,6 +1395,39 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_additivescene.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_additivescene.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_build_settings.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_build_settings.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_calibration_notification_example.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_calibration_notification_example.jpg"
         }
       },
       "is_incremental": false,
@@ -1404,6 +1461,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/EyeTracking/mrtk_et_heatmaps.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_list_et_scenes.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_list_et_scenes.jpg"
         }
       },
       "is_incremental": false,
@@ -1466,6 +1534,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_onloadstartscene.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_onloadstartscene.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_placeholder.png",
       "output": {
         "resource": {
@@ -1499,21 +1578,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_rootscene_onload.png",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_scenemenu.jpg",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_rootscene_onload.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_rootscene_onload2.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_rootscene_onload2.png"
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_scenemenu.jpg"
         }
       },
       "is_incremental": false,
@@ -1532,10 +1600,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configprofile.png",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_voicecmdsample.jpg",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configprofile.png"
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_voicecmdsample.jpg"
         }
       },
       "is_incremental": false,
@@ -1543,10 +1611,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configure.png",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configprofile.jpg",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configure.png"
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configprofile.jpg"
         }
       },
       "is_incremental": false,
@@ -1554,10 +1622,21 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_dataprovider.png",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configure.jpg",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_dataprovider.png"
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configure.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_dataprovider.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_dataprovider.jpg"
         }
       },
       "is_incremental": false,
@@ -1576,10 +1655,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_gazesettings.png",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_gazesettings.jpg",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_gazesettings.png"
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_gazesettings.jpg"
         }
       },
       "is_incremental": false,
@@ -1587,10 +1666,21 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_simulate.png",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_simulate.jpg",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_simulate.png"
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_simulate.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_removehandray.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_removehandray.jpg"
         }
       },
       "is_incremental": false,
@@ -8441,7 +8531,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html",
-          "hash": "zlCWSHx9GOsCJkeCJjqPOw=="
+          "hash": "P/ZTCKIlKw6YEro4NMUtjQ=="
         }
       },
       "is_incremental": false,
@@ -16159,7 +16249,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 100,
+          "total_file_count": 102,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

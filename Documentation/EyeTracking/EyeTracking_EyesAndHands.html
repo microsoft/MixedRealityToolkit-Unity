@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Visualizing eye tracking data in MRTK | Mixed Reality Toolkit Documentation </title>
+    <title>Eyes + Hand Interaction | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Visualizing eye tracking data in MRTK | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Eyes + Hand Interaction | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.43.1.0">
     
     <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
@@ -80,13 +80,24 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+<h1 id="eyes--hand-interaction">Eyes + Hand Interaction</h1>
 
-<p><img src="../Images/EyeTracking/mrtk_et_heatmaps.png" alt="MRTK"></p>
-<h1 id="visualizing-eye-tracking-data-in-mrtk">Visualizing eye tracking data in MRTK</h1>
-<!-- TODO: Add content -->
-<p><em>We're currently restructuring and improving the MRTK documentation.
-This content will be updated soon!
-If you have any questions regarding this section please post in our MRTK slack channel.</em></p>
+<h2 id="how-to-support-look--hand-motions-eye-gaze--hand-gestures">How to support <em>look + hand motions</em> (eye gaze &amp; hand gestures)</h2>
+<p>This page explains how to use eye targeting as a primary pointer in combination with hand motions.
+In our <a href="EyeTracking_ExamplesOverview.html">MRTK eye tracking demos</a>, we describe several examples for using eyes + hands, for example:</p>
+<ul>
+<li><a href="EyeTracking_TargetSelection.html">Selection</a>: Looking at distant holographic button and simply performing a pinch gesture to quickly select it.</li>
+<li><a href="EyeTracking_Positioning.html">Positioning</a>: Fluently move a hologram across your scene by simply looking at it, pinching your index finger and thumb together to grab it and then move it around using your hand.</li>
+<li><a href="EyeTracking_Navigation.html">Navigation</a>: Simply look at a location you want to zoom in, pinch your index finger and thumb together and <em>pull</em> your hand toward you to zoom in.</li>
+</ul>
+<p>Please note that MRTK is currently designed in a way that at a distance hand rays act as the prioritized focus pointers.
+This means that the head and eye gaze pointers will automatically be suppressed once a hand is detected.
+However, this may not be the way you would like to interact at a distance and rather favor a simple <em>'gaze and commit'</em> interaction independent of the presence of hands in your view.</p>
+<h3 id="how-to-disable-the-hand-ray">How to disable the hand ray</h3>
+<p>To disable the hand ray pointer, simply remove the <em>'DefaultControllerPointer'</em> in your <em>Input -&gt; Pointer</em> MRTK configuration setting.
+To use eyes and hands as described above in your app, please also make sure that you meet all of the <a href="EyeTracking_BasicSetup.html">requirements for using eye tracking</a>.</p>
+<p><img src="../Images/EyeTracking/mrtk_setup_removehandray.jpg" alt="How to remove the hand ray"></p>
+<p>You can also check out, how the input profile <em>EyeTrackingDemoPointerProfile</em> from the eye tracking sample package is set up as a reference.</p>
 <hr>
 <p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>
 </article>
@@ -97,7 +108,7 @@ If you have any questions regarding this section please post in our MRTK slack c
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/EyeTracking/EyeTracking_Visualization.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/EyeTracking/EyeTracking_EyesAndHands.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

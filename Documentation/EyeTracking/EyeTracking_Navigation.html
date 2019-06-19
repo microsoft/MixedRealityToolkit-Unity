@@ -90,9 +90,7 @@ The map also automatically adjusts the content to keep the things of interest wi
 Another interesting application is the hands-free observation of 3D holograms by automatically bringing the parts of the hologram that you are looking at to the front.
 These are some of the examples that are described on this page in context of eye-supported navigation.</p>
 <p>The following descriptions assume that you are already familiar with how to
-<a href="EyeTracking_BasicSetup.html">set up Eye Tracking in your MRTK scene</a> and with the basics of accessing Eye Tracking data in Unity including the
-<a href="EyeTracking_TargetSelection.html#use-eye-gaze-specific-eyetrackingtarget">EyeTrackingTarget</a>
-component.
+<a href="EyeTracking_BasicSetup.html">set up eye tracking in your MRTK scene</a> and with the basics of <a href="EyeTracking_TargetSelection.html">accessing eye tracking data</a> in MRTK Unity.
 The examples discussed in the following are all part of the
 <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity">EyeTrackingDemo-03-Navigation.unity</a>
 scene.</p>
@@ -157,13 +155,10 @@ In the following, the parameters of <a class="xref" href="../../api/Microsoft.Mi
 <h3 id="eyetrackingtarget">EyeTrackingTarget</h3>
 <p>Attaching the <em>EyeTrackingTarget</em> component allows for flexibly handle eye-gaze-related events.
 The scroll sample demonstrates scrolling text that starts when the user <em>looks</em> at the panel and stops when the user is <em>looking away</em> from it.
-Alternatively, please use the
-<a href="EyeTracking_TargetSelection.html#use-eye-gaze-specific-baseeyefocushandler">BaseEyeFocusHandler</a>
-to handle Eye Tracking events directly in your code to trigger the <em>StartFocusing</em> and <em>StopFocusing</em> methods in <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ScrollRectTransf.html">ScrollRectTransf</a>.</p>
-<p><img src="../Images/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg" alt="Eye-supported scroll setup in Unity: EyeTrackingTarget"></p>
+<img src="../Images/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg" alt="Eye-supported scroll setup in Unity: EyeTrackingTarget"></p>
 <h2 id="gaze-supported-pan-and-zoom">Gaze-supported Pan and Zoom</h2>
 <p>Who hasn't used a virtual map before to search for their home or to explore entirely new places?
-Eye Tracking allows you to directly dive into exactly the parts that you're interested in and once zoomed in, you can smoothly follow the course of a street to explore your neighborhood!
+Eye tracking allows you to directly dive into exactly the parts that you're interested in and once zoomed in, you can smoothly follow the course of a street to explore your neighborhood!
 This is not only useful for exploring geographical maps, but also to checking out details in photographs, data visualizations or even live-streamed medical imagery.
 To use this capability in your app is easy!
 For content rendered to a <a href="https://docs.unity3d.com/ScriptReference/Texture.html">Texture</a> (e.g., a photo, streamed data), simply add the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomTexture.html">PanZoomTexture</a> script.
@@ -306,11 +301,11 @@ When you dismiss the target (look &amp; pinch or say <em>&quot;Send back&quot;</
 <p>In summary, the above scripts should enable you to  get started to use eye gaze for various input navigation tasks such as scrolling texts, zooming and panning textures as well as rotating investigating 3D holograms.</p>
 <h3 id="related-topics">Related Topics</h3>
 <ul>
-<li><a href="EyeTracking_BasicSetup.html">Basic MRTK Setup to use Eye Tracking</a></li>
-<li><a href="EyeTracking_TargetSelection.html">Eye-Supported Target Selection</a></li>
+<li><a href="EyeTracking_BasicSetup.html">Basic MRTK setup to use eye tracking</a></li>
+<li><a href="EyeTracking_TargetSelection.html">Eye-supported target selection</a></li>
 </ul>
 <hr>
-<p><a href="EyeTracking_Main.html">Back to &quot;Eye Tracking in the MixedRealityToolkit&quot;</a></p>
+<p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>
 </article>
           </div>
           
