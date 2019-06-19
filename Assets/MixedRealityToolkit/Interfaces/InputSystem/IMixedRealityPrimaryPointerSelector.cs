@@ -11,12 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public interface IMixedRealityPrimaryPointerSelector
     {
         /// <summary>
-        /// Called after construction to initialize the selector.
+        /// Called on initialization of the focus provider to initialize the selector.
         /// </summary>
         void Initialize();
 
         /// <summary>
-        /// Called on destruction of the selector.
+        /// Called on destruction of the focus provider to destroy the selector.
         /// </summary>
         void Destroy();
 
