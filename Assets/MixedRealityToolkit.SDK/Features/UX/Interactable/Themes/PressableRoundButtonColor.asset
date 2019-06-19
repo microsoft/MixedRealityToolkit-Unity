@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: 
   Settings:
   - Name: InteractableColorTheme
-    AssemblyQualifiedName:  Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme,
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme,
       Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Color
@@ -550,6 +550,8 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
+    CustomSettings: []
+    CustomHistory: []
     Easing:
       Enabled: 0
       Curve:
@@ -584,4 +586,4 @@ MonoBehaviour:
       Target: {fileID: 0}
       States: []
   CustomSettings: []
-  States: {fileID: 0}
+  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}

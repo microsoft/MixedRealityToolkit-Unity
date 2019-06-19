@@ -56,7 +56,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -114,8 +114,9 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Getting annoyed by the eye cursor? No problem! Simply say "Hide cursor"!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
+  m_sharedMaterial: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -236,7 +237,7 @@ Transform:
   m_GameObject: {fileID: 2701345762782396268}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.14, z: 0}
+  m_LocalScale: {x: 0.25, y: 0.14, z: 0.01}
   m_Children: []
   m_Father: {fileID: 4961919311305103524}
   m_RootOrder: 0
@@ -315,23 +316,12 @@ MonoBehaviour:
     id: 0
     description: 
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 0
-  OnLookAtStart:
+  voiceSelect: []
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7943476569482568305}
-        m_MethodName: Engage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5272872636312312750}
         m_MethodName: Engage
         m_Mode: 1
         m_Arguments:
@@ -353,28 +343,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5272872636312312750}
+        m_MethodName: Engage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnLookAway:
+  onLookAway:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7943476569482568305}
-        m_MethodName: Disengage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5272872636312312750}
         m_MethodName: Disengage
         m_Mode: 1
         m_Arguments:
@@ -396,9 +386,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5272872636312312750}
+        m_MethodName: Disengage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  onDwell:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3645220354646111742}
@@ -414,12 +415,12 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onSelected:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  timeToTriggerDwellInSec: 0
+  eyeCursorSnapToTargetCenter: 0
 --- !u!1 &7317347159838423921
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,7 +434,7 @@ GameObject:
   - component: {fileID: 5272872636312312750}
   - component: {fileID: 3645220354646111742}
   m_Layer: 0
-  m_Name: EyeTracking_Notification
+  m_Name: EyeTrackingDemos Notification
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

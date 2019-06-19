@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <returns>
         /// Read only copy of the list of registered observers.
         /// </returns>
+        [Obsolete("GetObservers will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProviders instead")]
         IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers();
 
         /// <summary>
@@ -53,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <returns>
         /// Readonly copy of the list of registered observers that implement the specified type.
         /// </returns>
+        [Obsolete("GetObservers<T> will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProviders<T> instead")]
         IReadOnlyList<T> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
@@ -65,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <remarks>
         /// If more than one observer is registered under the specified name, the first will be returned.
         /// </remarks>
+        [Obsolete("GetObserver will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProvider instead")]
         IMixedRealitySpatialAwarenessObserver GetObserver(string name);
 
         /// <summary>
@@ -78,7 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <remarks>
         /// If more than one observer is registered under the specified name, the first will be returned.
         /// </remarks>
-        T GetObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver;
+        [Obsolete("GetObserver<T> will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProvider<T> instead")]
+        T GetObserver<T>(string name = null) where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
         /// Starts / restarts all spatial observers of the specified type.

@@ -42,6 +42,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
+        [Tooltip("The raycast provider service concrete type to use when raycasting.")]
+        [Implements(typeof(IMixedRealityRaycastProvider), TypeGrouping.ByNamespaceFlat)]
+        private SystemType raycastProviderType;
+
+        /// <summary>
+        /// The raycast provider service concrete type to use when raycasting.
+        /// </summary>
+        public SystemType RaycastProviderType
+        {
+            get { return raycastProviderType; }
+            internal set { raycastProviderType = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
         private MixedRealityInputActionsProfile inputActionsProfile;
 
@@ -93,14 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             internal set { gesturesProfile = value; }
         }
 
-
-        private IMixedRealitySpeechSystem speechSystem;
-
-        /// <summary>
-        /// Current Registered Speech System.
-        /// </summary>
-        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpeechSystem>());
-
         /// <summary>
         /// The list of cultures where speech recognition is supported
         /// </summary>
@@ -130,11 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <summary>
-        /// Is the speech Commands Enabled?
-        /// </summary>
-        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled;
-
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
         private MixedRealitySpeechCommandsProfile speechCommandsProfile;
@@ -147,18 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return speechCommandsProfile; }
             internal set { speechCommandsProfile = value; }
         }
-
-        private IMixedRealityDictationSystem dictationSystem;
-
-        /// <summary>
-        /// Current Registered Dictation System.
-        /// </summary>
-        public IMixedRealityDictationSystem DictationSystem => dictationSystem ?? (dictationSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityDictationSystem>());
-
-        /// <summary>
-        /// Is Dictation Enabled?
-        /// </summary>
-        public bool IsDictationEnabled => MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && DictationSystem != null;
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]

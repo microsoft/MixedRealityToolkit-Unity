@@ -5,18 +5,19 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
-        SupportedPlatforms.WindowsEditor,
+        SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
         "Input Simulation Service",
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
-    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService
+    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService, IMixedRealityEyeGazeDataProvider, IMixedRealityCapabilityCheck
     {
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
@@ -49,9 +50,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public InputSimulationService(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            string name, 
-            uint priority, 
+            string name,
+            uint priority,
             BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
+
+        /// <inheritdoc />
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            switch (capability)
+            {
+                case MixedRealityCapability.ArticulatedHand:
+                    return (InputSimulationProfile.HandSimulationMode == HandSimulationMode.Articulated);
+
+                case MixedRealityCapability.GGVHand:
+                    // If any hand simulation is enabled, GGV interactions are supported.
+                    return (InputSimulationProfile.HandSimulationMode != HandSimulationMode.Disabled);
+
+                case MixedRealityCapability.EyeTracking:
+                    return InputSimulationProfile.SimulateEyePosition;
+            }
+
+            return false;
+        }
 
         /// <inheritdoc />
         public override IMixedRealityController[] GetActiveControllers()
@@ -63,6 +83,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void Initialize()
         {
             ArticulatedHandPose.LoadGesturePoses();
+        }
+
+        public override void Destroy()
+        {
+            ArticulatedHandPose.ResetGesturePoses();
         }
 
         /// <inheritdoc />
@@ -97,7 +122,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (profile.SimulateEyePosition)
             {
-                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(null, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), System.DateTime.UtcNow);
+                // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
+                InputSystem?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+
+                // Update the simulated eye gaze with the current camera position and forward vector
+                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
             }
 
             switch (profile.HandSimulationMode)
@@ -162,6 +191,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return inputSimulationProfile;
             }
         }
+
+        /// <inheritdoc/>
+        IMixedRealityEyeSaccadeProvider IMixedRealityEyeGazeDataProvider.SaccadeProvider => null;
+
+        /// <inheritdoc/>
+        bool IMixedRealityEyeGazeDataProvider.SmoothEyeTracking { get; set; }
 
         private void EnableCameraControl()
         {

@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Invoked whent the event is changed.
+        /// Invoked when the event is changed.
         /// </summary>
         /// <param name="indexArray">
         /// A two-element sized index array where the first element is the index of the
@@ -136,15 +136,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // show event dropdown
             int id = InspectorUIUtility.ReverseLookup(className.stringValue, options.ClassNames);
-            int newId = EditorGUILayout.Popup("Select Event Type", id, options.ClassNames);
-
-            if (id != newId || String.IsNullOrEmpty(className.stringValue))
+            
+            Rect position = EditorGUILayout.GetControlRect();
+            GUIContent selectLable = new GUIContent("Select Event Type", "Select the event type from the list");
+            EditorGUI.BeginProperty(position, selectLable, className);
             {
-                className.stringValue = options.ClassNames[newId];
-                assemblyQualifiedName.stringValue = options.AssemblyQualifiedNames[newId];
+                int newId = EditorGUI.Popup(position, selectLable.text, id, options.ClassNames);
 
-                changeEvent(new int[] { index, newId }, eventItem);
+                if (id != newId || String.IsNullOrEmpty(className.stringValue))
+                {
+                    className.stringValue = options.ClassNames[newId];
+                    assemblyQualifiedName.stringValue = options.AssemblyQualifiedNames[newId];
+
+                    changeEvent(new int[] { index, newId }, eventItem);
+                }
+
             }
+            EditorGUI.EndProperty();
 
             if (!hideEvents.boolValue)
             {

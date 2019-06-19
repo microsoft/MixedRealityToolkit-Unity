@@ -3,12 +3,17 @@
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
+
+#if WINDOWS_UWP
+using WindowsSpatialSurfaces = global::Windows.Perception.Spatial.Surfaces;
+#endif // WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 {
@@ -19,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset", 
         "MixedRealityToolkit.SDK")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
-    public class WindowsMixedRealitySpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver
+    public class WindowsMixedRealitySpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -70,7 +75,24 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             VisibleMaterial = profile.VisibleMaterial;
         }
 
-        #region IMixedRealityToolkit implementation
+        #region IMixedRealityCapabilityCheck Implementation
+
+        /// <inheritdoc />
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            {
+#if WINDOWS_UWP
+                return ((capability == MixedRealityCapability.SpatialAwarenessMesh) && WindowsSpatialSurfaces.SpatialSurfaceObserver.IsSupported());
+#endif // WINDOWS_UWP
+            }
+
+            return false;
+        }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
+
+#region IMixedRealityToolkit implementation
 
 #if UNITY_WSA
 
@@ -116,9 +138,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
 #endif // UNITY_WSA
 
-        #endregion IMixedRealityToolkit implementation
+#endregion IMixedRealityToolkit implementation
 
-        #region IMixedRealitySpatialAwarenessObserver implementation
+#region IMixedRealitySpatialAwarenessObserver implementation
 
         private GameObject observedObjectParent = null;
 
@@ -191,11 +213,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
             set
             {
-                if (value != displayOption)
-                {
-                    displayOption = value;
-                    ApplyUpdatedMeshDisplayOption(displayOption);
-                }
+                displayOption = value;
+                ApplyUpdatedMeshDisplayOption(displayOption);
             }
         }
 
@@ -404,6 +423,36 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         }
 
         /// <summary>
+        /// Internal component to monitor the WorldAnchor's transform, apply the MixedRealityPlayspace transform,
+        /// and apply it to its parent.
+        /// </summary>
+        private class PlayspaceAdapter : MonoBehaviour
+        {
+            /// <summary>
+            /// Compute concatenation of lhs * rhs such that lhs * (rhs * v) = Concat(lhs, rhs) * v
+            /// </summary>
+            /// <param name="lhs">Second transform to apply</param>
+            /// <param name="rhs">First transform to apply</param>
+            /// <returns></returns>
+            private static Pose Concatenate(Pose lhs, Pose rhs)
+            {
+                return rhs.GetTransformedBy(lhs);
+            }
+
+            /// <summary>
+            /// Compute and set the parent's transform.
+            /// </summary>
+            private void Update()
+            {
+                Pose worldFromPlayspace = new Pose(MixedRealityPlayspace.Position, MixedRealityPlayspace.Rotation);
+                Pose anchorPose = new Pose(transform.position, transform.rotation);
+                Pose parentPose = Concatenate(worldFromPlayspace, anchorPose);
+                transform.parent.position = parentPose.position;
+                transform.parent.rotation = parentPose.rotation;
+            }
+        }
+
+        /// <summary>
         /// Issue a request to the Surface Observer to begin baking the mesh.
         /// </summary>
         /// <param name="surfaceId">ID of the mesh to bake.</param>
@@ -418,7 +467,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             {
                 newMesh = SpatialAwarenessMeshObject.Create(null, MeshPhysicsLayer, meshName, surfaceId.handle);
 
-                worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
+                // The WorldAnchor component places its object where the anchor is in the same space as the camera. 
+                // But since the camera is repositioned by the MixedRealityPlayspace's transform, the meshes' transforms
+                // should also the WorldAnchor position repositioned by the MixedRealityPlayspace's transform.
+                // So rather than put the WorldAnchor on the mesh's GameObject, the WorldAnchor is placed out of the way in the scene,
+                // and its transform is concatenated with the Playspace transform to compute the transform on the mesh's object.
+                // That adapting the WorldAnchor's transform into playspace is done by the internal PlayspaceAdapter component.
+                // The GameObject the WorldAnchor is placed on is unimportant, but it is convenient for cleanup to make it a child
+                // of the GameObject whose transform will track it.
+                GameObject anchorHolder = new GameObject(meshName + "_anchor");
+                anchorHolder.AddComponent<PlayspaceAdapter>(); // replace with required component?
+                worldAnchor = anchorHolder.AddComponent<WorldAnchor>(); // replace with required component and GetComponent()? 
+                anchorHolder.transform.SetParent(newMesh.GameObject.transform, false);
             }
             else
             {
@@ -429,7 +489,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 newMesh.Id = surfaceId.handle;
                 newMesh.GameObject.SetActive(true);
 
-                worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
+                // There should be exactly one child on the newMesh.GameObject, and that is the GameObject added above
+                // to hold the WorldAnchor component and adapter.
+                Debug.Assert(newMesh.GameObject.transform.childCount == 1, "Expecting a single child holding the WorldAnchor");
+                worldAnchor = newMesh.GameObject.transform.GetChild(0).gameObject.GetComponent<WorldAnchor>();
             }
 
             Debug.Assert(worldAnchor != null);
@@ -650,6 +713,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
-        #endregion IMixedRealitySpatialAwarenessObserver implementation
+#endregion IMixedRealitySpatialAwarenessObserver implementation
     }
 }

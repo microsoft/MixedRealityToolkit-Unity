@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 {
@@ -63,65 +64,73 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription))
-            {
-                return;
-            }
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.SpatialAwareness);
 
-            bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
-            serializedObject.Update();
-
-            EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                EditorGUILayout.PropertyField(startupBehavior);
+                serializedObject.Update();
+
+                EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.PropertyField(startupBehavior);
+                    EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(updateInterval);
+                    EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(isStationaryObserver);
+                    EditorGUILayout.PropertyField(observerVolumeType, volumeTypeContent);
+                    string message = string.Empty;
+                    if (observerVolumeType.intValue == (int)VolumeType.AxisAlignedCube)
+                    {
+                        message = "Observed meshes will be aligned to the world coordinate space.";
+                    }
+                    else if (observerVolumeType.intValue == (int)VolumeType.UserAlignedCube)
+                    {
+                        message = "Observed meshes will be aligned to the user's coordinate space.";
+                    }
+                    else if (observerVolumeType.intValue == (int)VolumeType.Sphere)
+                    {
+                        message = "The X value of the Observation Extents will be used as the sphere radius.";
+                    }
+                    EditorGUILayout.HelpBox(message, MessageType.Info);
+                    EditorGUILayout.PropertyField(observationExtents);
+                }
+
                 EditorGUILayout.Space();
-                EditorGUILayout.PropertyField(updateInterval);
+                EditorGUILayout.LabelField("Physics Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
+                    EditorGUILayout.PropertyField(recalculateNormals);
+                }
+
                 EditorGUILayout.Space();
-                EditorGUILayout.PropertyField(isStationaryObserver);
-                EditorGUILayout.PropertyField(observerVolumeType, volumeTypeContent);
-                string message = string.Empty;
-                if (observerVolumeType.intValue == (int)VolumeType.AxisAlignedCube)
+                EditorGUILayout.LabelField("Level of Detail Settings", EditorStyles.boldLabel);
                 {
-                    message = "Observed meshes will be aligned to the world coordinate space.";
+                    EditorGUILayout.PropertyField(levelOfDetail, lodContent);
+                    EditorGUILayout.PropertyField(trianglesPerCubicMeter, trianglesPerCubicMeterContent);
+                    EditorGUILayout.HelpBox("The value of Triangles per Cubic Meter is ignored unless Level of Detail is set to Custom.", MessageType.Info);
                 }
-                else if (observerVolumeType.intValue == (int)VolumeType.UserAlignedCube)
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Display Settings", EditorStyles.boldLabel);
                 {
-                    message = "Observed meshes will be aligned to the user's coordinate space.";
+                    EditorGUILayout.PropertyField(displayOption, displayOptionContent);
+                    EditorGUILayout.PropertyField(visibleMaterial);
+                    EditorGUILayout.PropertyField(occlusionMaterial);
                 }
-                else if (observerVolumeType.intValue == (int)VolumeType.Sphere)
-                {
-                    message = "The X value of the Observation Extents will be used as the sphere radius.";
-                }
-                EditorGUILayout.HelpBox(message, MessageType.Info);
-                EditorGUILayout.PropertyField(observationExtents);
-            }
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Physics Settings", EditorStyles.boldLabel);
-            {
-                EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
-                EditorGUILayout.PropertyField(recalculateNormals);
+                serializedObject.ApplyModifiedProperties();
             }
+        }
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Level of Detail Settings", EditorStyles.boldLabel);
-            {
-                EditorGUILayout.PropertyField(levelOfDetail, lodContent);
-                EditorGUILayout.PropertyField(trianglesPerCubicMeter, trianglesPerCubicMeterContent);
-                EditorGUILayout.HelpBox("The value of Triangles per Cubic Meter is ignored unless Level of Detail is set to Custom.", MessageType.Info);
-            }
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Display Settings", EditorStyles.boldLabel);
-            {
-                EditorGUILayout.PropertyField(displayOption, displayOptionContent);
-                EditorGUILayout.PropertyField(visibleMaterial);
-                EditorGUILayout.PropertyField(occlusionMaterial);
-            }
-
-            serializedObject.ApplyModifiedProperties();
-            GUI.enabled = wasGUIEnabled;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
+                   MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile != null &&
+                   MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile.ObserverConfigurations != null &&
+                   MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile.ObserverConfigurations.Any(s => s.ObserverProfile == profile);
         }
     }
 }

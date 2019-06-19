@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
@@ -36,31 +35,31 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
+
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                return;
+                serializedObject.Update();
+
+                EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
+                EditorGUILayout.PropertyField(jointPrefab);
+                EditorGUILayout.PropertyField(palmPrefab);
+                EditorGUILayout.PropertyField(fingertipPrefab);
+                EditorGUILayout.PropertyField(handMeshPrefab);
+                EditorGUILayout.PropertyField(enableHandMeshVisualization);
+                EditorGUILayout.PropertyField(enableHandJointVisualization);
+
+                serializedObject.ApplyModifiedProperties();
             }
+        }
 
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
-            {
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-                return;
-            }
-
-            bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
-            serializedObject.Update();
-
-            EditorGUILayout.LabelField("General settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(jointPrefab);
-            EditorGUILayout.PropertyField(palmPrefab);
-            EditorGUILayout.PropertyField(fingertipPrefab);
-            EditorGUILayout.PropertyField(handMeshPrefab);
-            EditorGUILayout.PropertyField(enableHandMeshVisualization);
-            EditorGUILayout.PropertyField(enableHandJointVisualization);
-
-            serializedObject.ApplyModifiedProperties();
-            GUI.enabled = wasGUIEnabled;
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
+                   MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile;
         }
     }
 }
