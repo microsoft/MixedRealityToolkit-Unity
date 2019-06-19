@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
         "Windows Speech Input")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Speech.html")]
-    public class WindowsSpeechInputProvider : BaseInputDeviceManager, IMixedRealitySpeechSystem
+    public class WindowsSpeechInputProvider : BaseInputDeviceManager, IMixedRealitySpeechSystem, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -56,6 +56,16 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             keywordRecognizer?.IsRunning ??
 #endif
             false;
+
+        #region IMixedRealityCapabilityCheck Implementation
+
+        /// <inheritdoc />
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            return (capability == MixedRealityCapability.VoiceCommand);
+        }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
         public void StartRecognition()
