@@ -964,7 +964,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     TransformTarget();
                     UpdateBounds();
                     UpdateRigHandles();
-
                 }
                 else if (!isChildOfTarget && Target.transform.hasChanged)
                 {
@@ -1177,7 +1176,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     collider.size = (scaleHandleSize * cornerHandleColliderScale) * Vector3.one;
 
                     float localScale = corner.transform.localScale.x;
-                    localScale = localScale == 0.0f ? 0.0001f : localScale;
+                    // When localScale is zero there is a divide error that caused code to be skipped over when the exception threw.
+                    localScale = Mathf.Max(0.0001f, localScale);
                     (collider as BoxCollider).size = new Vector3(0.02f / localScale, 0.02f / localScale, 0.02f / localScale);
 
                     // In order for the corner to be grabbed using near interaction we need
@@ -1313,7 +1313,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         SphereCollider sphereCollider = ball.AddComponent<SphereCollider>();
                         sphereCollider.radius = 0.5f * rotationHandleDiameter;
                         float localScale = ball.transform.localScale.x;
-                        localScale = localScale == 0.0f ? 0.0001f : localScale;
+                        localScale = Mathf.Max(0.0001f, localScale);
                         sphereCollider.radius = 0.04f / localScale;
                     }
                     else if( rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
@@ -1321,7 +1321,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Debug.Assert(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box);
                         BoxCollider collider = ball.AddComponent<BoxCollider>();
                         float localScale = ball.transform.localScale.x;
-                        localScale = localScale == 0.0f ? 0.01f : localScale;
+                        localScale = Mathf.Max(0.01f, localScale);
                         float finalScale = rotationHandleColliderDiameter * 0.02f;
                         (collider as BoxCollider).size = new Vector3(finalScale / localScale, finalScale / localScale, finalScale / localScale);
                     }
@@ -2114,6 +2114,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             point = new Vector3(float.NaN, float.NaN, float.NaN);
             return false;
         }
+
         private bool TryGetEyeGazePoint(out Vector3 point)
         {
             if (EyeTrackingProvider != null && EyeTrackingProvider.GazePointer != null && eyeTrackingProvider.GazePointer.Result != null)
@@ -2124,6 +2125,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             point = new Vector3(float.NaN, float.NaN, float.NaN);
             return false;
         }
+
         private void GetControllerPoints(List<Vector3> points)
         {
             foreach (IMixedRealityInputSource source in inputSystem.DetectedInputSources)
@@ -2134,6 +2136,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
+
         private void Flatten()
         {
             if (flattenAxis == FlattenModeType.FlattenX)
