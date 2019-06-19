@@ -8,7 +8,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class FollowMeToggle : MonoBehaviour
     {
-        private Orbital orbital;
+        [SerializeField]
+        [Tooltip("An opional object for visualizing the carry mode state")]
+        private GameObject visualizationObject = null;
+
+        private Orbital orbital = null;
 
         private void Start()
         {
@@ -23,6 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // Toggle Orbital Solver component
                 // You can tweak the detailed positioning behavior such as offset, lerping time, orientation type in the Inspector panel
                 orbital.enabled = !orbital.enabled;
+
+                if(visualizationObject != null)
+                {
+                    visualizationObject.SetActive(orbital.enabled);
+                }
             }
 
         }

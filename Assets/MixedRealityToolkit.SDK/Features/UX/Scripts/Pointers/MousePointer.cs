@@ -54,8 +54,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool IsInteractionEnabled => isInteractionEnabled;
 
         private IMixedRealityController controller;
+
         private MixedRealityMouseInputProfile mouseInputProfile = null;
-        private MixedRealityMouseInputProfile MouseInputProfile => mouseInputProfile ?? (mouseInputProfile = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>()?.MouseInputProfile);
+
+        private MixedRealityMouseInputProfile MouseInputProfile
+        {
+            get
+            {
+                if (mouseInputProfile == null)
+                {
+                    // Get the profile from the input system's registered mouse device manager.
+                    IMixedRealityMouseDeviceManager mouseManager = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityMouseDeviceManager>();
+                    mouseInputProfile = mouseManager?.MouseInputProfile;
+                }
+                return mouseInputProfile;
+            }
+        }
 
 
         /// <inheritdoc />

@@ -8,15 +8,23 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 
 To get started with the Mixed Reality Toolkit you will need:
 
-* [Visual Studio 2017](http://dev.windows.com/downloads)
-* [Unity 2018.3.x](https://unity3d.com/get-unity/download/archive)
+* [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/)
+* [Unity 2018.4.x](https://unity3d.com/get-unity/download/archive)
 
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
 
 * [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
-* You don't need this to simulate in Unity Editor or run in VR, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
+* [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
+
+  This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
+  when building for OpenVR.
 
 
+# MR Learning Base Module Tutortial 
+If you are new to MRTK, or MR development, we recommend you check out the [MR Learning Base Module](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2.
+
+
+# Add MRTK to your Unity Project
 ## Get the latest MRTK Unity packages
 1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
 2. Under Assets, download both `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` and `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
@@ -34,7 +42,7 @@ For instance, if you want to create a HoloLens application, switch to Universal 
 - Click on the **Switch Platform** button
 
 ## Import MRTK packages into your Unity project
-1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.
+1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. 
 
 2. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
 
@@ -62,15 +70,15 @@ The [hand interaction examples scene](README_HandInteractionExamples.md) is a gr
 1. Create a new Unity project and then import both the **Foundation** and **Examples** unity packages following [the steps above](#import-mrtk-packages-into-your-unity-project).
 2. Open the HandInteractionExamples scene under `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples`
 
-3. You will get a prompt asking you to import "TMP Essentials". 
+3. You may get a prompt asking you to import "TMP Essentials". 
 
 ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
 
-4. Select "Import TMP essentials" button. "TMP Essentials" refers to TextMeshPro plugin, which some of the MRTK examples use for improved text rendering.
+If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials" refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See [Text in Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity) for more detailed information)
 
-5. Close the TMPPro dialog. After this you need to reload the scene, so close and re-open your scene.
+4. Close the TMP dialog. After this you need to reload the scene. You can do this by opening other example scene and open HandInteractionExamples scene again.
 
-6. Press the play button.
+5. Press the play button.
 
 Have fun exploring the scene! You can use simulated hands to interact in editor. You can:
 - Press WASD keys to fly / move.
@@ -102,7 +110,9 @@ Click "OK".
 
 ![](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
 
-> **NOTE**: Note that the other configuration profiles in this picker are from other scenes in the examples package. If you did not install the examples package, you would not have been prompted to choose a specific profile (as the foundation package only contains a single MixedRealityToolkitConfigurationProfile - the default one). The other profiles are part of their respective example scenes (for example, the HandInteractionAllExampleMixedRealityToolkitConfigurationProfile) is part of the [HandInteractionExamples scene](README_HandInteractionExamples.md).
+> **NOTE**: Note that if you are getting started on the HoloLens 2, you should choose the "DefaultHoloLens2ConfigurationProfile" instead.
+> See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between 
+> DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
 
 You will then see the following in your Scene hierarchy:
 
@@ -121,6 +131,19 @@ If you need to move the players start point, then **move the scene content and N
 
 
 You are now ready to start building your project!
+
+## Recommended build settings (UWP)
+
+When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that your build settings "Target SDK Version"
+and "Minimum Platform Version" look like they do in the picture below:
+
+![](../Documentation/Images/getting_started/BuildWindow.png)
+
+The other settings can be different (for example, Build Configuration/Architecture/Build Type and others can always
+be changed inside the Visual Studio solution).
+
+Make sure that you click on "Target SDK Version" and that it has the option "10.0.18362.0" - if this is missing,
+it means you have to install [the latest Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk).
 
 ## Next steps
 

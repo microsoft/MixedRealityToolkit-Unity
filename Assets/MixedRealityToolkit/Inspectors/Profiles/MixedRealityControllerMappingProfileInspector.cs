@@ -37,92 +37,51 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static MixedRealityControllerMappingProfile thisProfile;
 
         private SerializedProperty mixedRealityControllerMappingProfiles;
-        private float defaultLabelWidth;
-        private float defaultFieldWidth;
-        private GUIStyle controllerButtonStyle;
+
         private static bool showControllerDefinitions = false;
 
         private const string ProfileTitle = "Controller Input Mapping Settings";
         private const string ProfileDescription = "Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
                                     "You'll want to define all your Input Actions first. They can then be wired up to hardware sensors, controllers, gestures, and other input devices.";
 
-
         private readonly List<ControllerRenderProfile> controllerRenderList = new List<ControllerRenderProfile>();
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            if (controllerButtonStyle == null)
-            {
-                controllerButtonStyle = new GUIStyle("LargeButton")
-                {
-                    imagePosition = ImagePosition.ImageAbove,
-                    fontStyle = FontStyle.Bold,
-                    stretchHeight = true,
-                    stretchWidth = true,
-                    wordWrap = true,
-                    fontSize = 10,
-                };
-            }
-        }
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
             mixedRealityControllerMappingProfiles = serializedObject.FindProperty("mixedRealityControllerMappingProfiles");
-
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
-                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
-            {
-                return;
-            }
-
             thisProfile = target as MixedRealityControllerMappingProfile;
-            defaultLabelWidth = EditorGUIUtility.labelWidth;
-            defaultFieldWidth = EditorGUIUtility.fieldWidth;
         }
 
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, BackProfileType.Input))
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
+
+            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target), false))
             {
-                return;
+                serializedObject.Update();
+
+                RenderControllerList(mixedRealityControllerMappingProfiles);
+
+                serializedObject.ApplyModifiedProperties();
             }
+        }
 
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
-            {
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-                return;
-            }
-
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
-            {
-                EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
-                return;
-            }
-
-            bool wasGUIEnabled = GUI.enabled;
-            GUI.enabled = wasGUIEnabled && !IsProfileLock((BaseMixedRealityProfile)target);
-            serializedObject.Update();
-
-            RenderControllerList(mixedRealityControllerMappingProfiles);
-
-            serializedObject.ApplyModifiedProperties();
-            GUI.enabled = wasGUIEnabled;
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
+                   MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile;
         }
 
         private void RenderControllerList(SerializedProperty controllerList)
         {
             if (thisProfile.MixedRealityControllerMappingProfiles.Length != controllerList.arraySize) { return; }
 
-            if (RenderIndentedButton(ControllerAddButtonContent, EditorStyles.miniButton))
+            if (MixedRealityEditorUtility.RenderIndentedButton(ControllerAddButtonContent, EditorStyles.miniButton))
             {
                 AddController(controllerList, typeof(GenericJoystickController));
                 return;
@@ -271,12 +230,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                     return;
                                 }
 
-                                if (RenderIndentedButton("Edit Input Action Map"))
+                                if (MixedRealityEditorUtility.RenderIndentedButton("Edit Input Action Map"))
                                 {
                                     ControllerPopupWindow.Show(controllerMapping, interactionsProperty, handedness);
                                 }
 
-                                if (RenderIndentedButton("Reset Input Actions"))
+                                if (MixedRealityEditorUtility.RenderIndentedButton("Reset Input Actions"))
                                 {
                                     interactionsProperty.ClearArray();
                                     serializedObject.ApplyModifiedProperties();
@@ -301,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                             var buttonContent = new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTextureScaled(controllerType, handedness));
 
-                            if (GUILayout.Button(buttonContent, controllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
+                            if (GUILayout.Button(buttonContent, MixedRealityStylesUtility.ControllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
                             {
                                 ControllerPopupWindow.Show(controllerMapping, interactionsProperty, handedness);
                             }

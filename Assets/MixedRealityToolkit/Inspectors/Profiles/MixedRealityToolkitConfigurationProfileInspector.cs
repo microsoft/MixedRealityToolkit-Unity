@@ -2,9 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -41,6 +44,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty enableDiagnosticsSystem;
         private SerializedProperty diagnosticsSystemType;
         private SerializedProperty diagnosticsSystemProfile;
+        // Scene system properties
+        private SerializedProperty enableSceneSystem;
+        private SerializedProperty sceneSystemType;
+        private SerializedProperty sceneSystemProfile;
 
         // Additional registered components profile
         private SerializedProperty registeredServiceProvidersProfile;
@@ -51,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private MixedRealityToolkitConfigurationProfile configurationProfile;
         private Func<bool>[] RenderProfileFuncs;
 
-        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "Extensions", "Editor" };
+        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "Scene System", "Extensions", "Editor" };
         private static int SelectedProfileTab = 0;
 
         protected override void OnEnable()
@@ -89,6 +96,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
             diagnosticsSystemProfile = serializedObject.FindProperty("diagnosticsSystemProfile");
+            // Scene system configuration
+            enableSceneSystem = serializedObject.FindProperty("enableSceneSystem");
+            sceneSystemType = serializedObject.FindProperty("sceneSystemType");
+            sceneSystemProfile = serializedObject.FindProperty("sceneSystemProfile");
 
             // Additional registered components configuration
             registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
@@ -103,12 +114,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     () => {
                         EditorGUILayout.PropertyField(enableCameraSystem);
                         EditorGUILayout.PropertyField(cameraSystemType);
-                        return RenderProfile(cameraProfile);
+                        return RenderProfile(cameraProfile, typeof(MixedRealityCameraProfile), true, false);
                     },
                     () => {
-                         EditorGUILayout.PropertyField(enableInputSystem);
+                        EditorGUILayout.PropertyField(enableInputSystem);
                         EditorGUILayout.PropertyField(inputSystemType);
-                        return RenderProfile(inputSystemProfile, true, false, typeof(IMixedRealityInputSystem));
+                        return RenderProfile(inputSystemProfile, null, true, false, typeof(IMixedRealityInputSystem));
                     },
                     () => {
                         var experienceScale = (ExperienceScale)targetExperienceScale.intValue;
@@ -121,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
                         EditorGUILayout.PropertyField(enableBoundarySystem);
                         EditorGUILayout.PropertyField(boundarySystemType);
-                        return RenderProfile(boundaryVisualizationProfile, true, false, typeof(IMixedRealityBoundarySystem));
+                        return RenderProfile(boundaryVisualizationProfile, null, true, false, typeof(IMixedRealityBoundarySystem));
                     },
                     () => {
                         EditorGUILayout.PropertyField(enableTeleportSystem);
@@ -132,16 +143,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
                         EditorGUILayout.PropertyField(spatialAwarenessSystemType);
                         EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
-                        return RenderProfile(spatialAwarenessSystemProfile, true, false, typeof(IMixedRealitySpatialAwarenessSystem));
+                        return RenderProfile(spatialAwarenessSystemProfile, null, true, false, typeof(IMixedRealitySpatialAwarenessSystem));
                     },
                     () => {
                         EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
                         EditorGUILayout.PropertyField(enableDiagnosticsSystem);
                         EditorGUILayout.PropertyField(diagnosticsSystemType);
-                        return RenderProfile(diagnosticsSystemProfile);
+                        return RenderProfile(diagnosticsSystemProfile, typeof(MixedRealityDiagnosticsProfile));
                     },
                     () => {
-                        return RenderProfile(registeredServiceProvidersProfile);
+                        EditorGUILayout.PropertyField(enableSceneSystem);
+                        EditorGUILayout.PropertyField(sceneSystemType);
+                        return RenderProfile(sceneSystemProfile, typeof(MixedRealitySceneSystemProfile), true, true, typeof(IMixedRealitySceneSystem));
+                    },
+                    () => {
+                        return RenderProfile(registeredServiceProvidersProfile, typeof(MixedRealityRegisteredServiceProvidersProfile), true, false);
                     },
                     () => {
                         EditorGUILayout.PropertyField(useServiceInspectors);
@@ -156,14 +172,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var configurationProfile = (MixedRealityToolkitConfigurationProfile)target;
             serializedObject.Update();
 
-            RenderMixedRealityToolkitLogo();
+            RenderMRTKLogo();
 
             if (!MixedRealityToolkit.IsInitialized)
             {
                 EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Warning);
-                if (GUILayout.Button("Click here to add Mixed Reality Toolkit instance to scene"))
+                if (MixedRealityEditorUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
                 {
-                    new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                    MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configurationProfile);
                 }
             }
 
@@ -215,18 +231,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.BeginHorizontal();
 
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(100));
-                    GUI.enabled = true; // Force enable so we can view profile defaults
-                    SelectedProfileTab = GUILayout.SelectionGrid(SelectedProfileTab, ProfileTabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
-                    GUI.enabled = isGUIEnabled;
-                EditorGUILayout.EndVertical();
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(100));
+            GUI.enabled = true; // Force enable so we can view profile defaults
+            SelectedProfileTab = GUILayout.SelectionGrid(SelectedProfileTab, ProfileTabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
+            GUI.enabled = isGUIEnabled;
+            EditorGUILayout.EndVertical();
 
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    changed |= RenderProfileFuncs[SelectedProfileTab]();
-                }
-                EditorGUILayout.EndVertical();
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            using (new EditorGUI.IndentLevelScope())
+            {
+                changed |= RenderProfileFuncs[SelectedProfileTab]();
+            }
+            EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
 
             if (!changed)
@@ -241,6 +257,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(configurationProfile);
             }
+        }
+
+        protected override bool IsProfileInActiveInstance()
+        {
+            var profile = target as BaseMixedRealityProfile;
+            return MixedRealityToolkit.IsInitialized && profile != null &&
+                   profile == MixedRealityToolkit.Instance.ActiveProfile;
         }
 
         private static string GetExperienceDescription(ExperienceScale experienceScale)

@@ -102,7 +102,7 @@ Transform:
   m_GameObject: {fileID: 1593403575765298}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4673604112312492}
   - {fileID: 4217569105187210}
@@ -590,6 +590,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
         type: 2}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: startPushDistance
+      value: -0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: pressDistance
+      value: -0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: releaseDistanceDelta
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
 --- !u!4 &4785474610859267622 stripped
@@ -786,6 +806,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
         type: 2}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: startPushDistance
+      value: -0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: pressDistance
+      value: -0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: releaseDistanceDelta
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
 --- !u!4 &8104353317294266436 stripped
@@ -982,6 +1022,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
         type: 2}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: startPushDistance
+      value: -0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: pressDistance
+      value: -0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: releaseDistanceDelta
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
 --- !u!4 &8163201548161550002 stripped
@@ -2144,6 +2204,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
         type: 2}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: startPushDistance
+      value: -0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: pressDistance
+      value: -0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: releaseDistanceDelta
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
 --- !u!4 &655251079398066782 stripped
@@ -2530,6 +2610,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
         type: 2}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: startPushDistance
+      value: -0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: pressDistance
+      value: -0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: releaseDistanceDelta
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
 --- !u!4 &3694120295894265658 stripped
