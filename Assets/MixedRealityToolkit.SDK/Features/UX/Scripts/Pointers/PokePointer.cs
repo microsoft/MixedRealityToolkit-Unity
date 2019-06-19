@@ -14,23 +14,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         protected GameObject visuals;
 
+        [SerializeField]
+        [Tooltip("Maximum distance a which a touchable surface can be interacted with.")]
+        protected float touchableDistance = 0.2f;
         /// <summary>
         /// Maximum distance a which a touchable surface can be interacted with.
         /// </summary>
-        [SerializeField]
-        protected float touchableDistance = 0.2f;
         public float TouchableDistance => touchableDistance;
 
+        [SerializeField]
+        [Tooltip("Maximum number of colliders that can be detected in a scene query.")]
+        [Min(1)]
+        private int sceneQueryBufferSize = 64;
+        /// <summary>
+        /// Maximum number of colliders that can be detected in a scene query.
+        /// </summary>
+        public int SceneQueryBufferSize => sceneQueryBufferSize;
+
+        [SerializeField]
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the touchable objects.")]
+        private LayerMask[] pokeLayerMasks = { UnityEngine.Physics.DefaultRaycastLayers };
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the touchable objects.
         /// </summary>
-        public LayerMask[] PokeLayerMasks { get; private set; }
+        public LayerMask[] PokeLayerMasks => pokeLayerMasks;
 
+        [SerializeField]
+        [Tooltip("Specify whether queries for touchable surfaces hit triggers.")]
+        protected QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal;
         /// <summary>
         /// Specify whether queries for touchable surfaces hit triggers.
         /// </summary>
-        [SerializeField]
-        protected QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal;
         public QueryTriggerInteraction TriggerInteraction => triggerInteraction;
 
         private Collider[] queryBuffer;
@@ -47,19 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // the same current closest touchable component's changes (e.g. Unity UI control elements).
         private GameObject currentTouchableObjectDown = null;
 
-        protected override async void Start()
+        protected override void Start()
         {
             base.Start();
 
-            await EnsureInputSystemValid();
-
-            var pointerProfile = MixedRealityToolkit.Instance.ActiveProfile?.InputSystemProfile?.PointerProfile;
-
-            // Initialize layer masks
-            var profileLayerMasks = pointerProfile?.PokeRaycastLayerMasks;
-            PokeLayerMasks = profileLayerMasks ?? new LayerMask[] { UnityEngine.Physics.DefaultRaycastLayers };
-
-            queryBuffer = new Collider[pointerProfile ? pointerProfile.SceneQueryBufferSize : 1];
+            queryBuffer = new Collider[sceneQueryBufferSize];
         }
 
         protected void OnValidate()
@@ -67,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Debug.Assert(line != null, this);
             Debug.Assert(visuals != null, this);
             touchableDistance = Mathf.Max(touchableDistance, 0);
+            sceneQueryBufferSize = Mathf.Max(sceneQueryBufferSize, 1);
         }
 
         public bool IsNearObject

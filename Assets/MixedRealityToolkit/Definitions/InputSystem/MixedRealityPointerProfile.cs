@@ -31,23 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public LayerMask[] PointingRaycastLayerMasks => pointingRaycastLayerMasks;
 
         [SerializeField]
-        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the touchable objects.")]
-        private LayerMask[] pokeRaycastLayerMasks = { UnityEngine.Physics.DefaultRaycastLayers };
-
-        /// <summary>
-        /// The LayerMasks, in prioritized order, that are used to determine the touchable objects.
-        /// </summary>
-        public LayerMask[] PokeRaycastLayerMasks => pokeRaycastLayerMasks;
-
-        [SerializeField]
-        [Tooltip("Maximum number of colliders that can be detected in a scene query.")]
-        private int sceneQueryBufferSize = 64;
-        /// <summary>
-        /// Maximum number of colliders that can be detected in a scene query.
-        /// </summary>
-        public int SceneQueryBufferSize => sceneQueryBufferSize;
-
-        [SerializeField]
         private bool debugDrawPointingRays = false;
 
         /// <summary>
