@@ -24,15 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             Initialize();
         }
 
-        protected override void Update()
-        {
-            base.Update();
-            for (int i = 0; i < dataProviders.Count; i++)
-            {
-                dataProviders[i]?.Update();
-            }
-        }
-
         protected override void OnDestroy()
         {
             Uninitialize();

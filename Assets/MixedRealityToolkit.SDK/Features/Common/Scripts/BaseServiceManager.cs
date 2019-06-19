@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,15 @@ namespace Microsoft.MixedReality.Toolkit
 {
     public class BaseServiceManager : MonoBehaviour, IMixedRealityServiceRegistrar
     {
-        protected IMixedRealityService service = null;
+        // todo: remove
+        //protected IMixedRealityService service = null;
+        // todo: rename to services (when done)
+        protected Dictionary<Type, IMixedRealityService> registeredServices = new Dictionary<Type, IMixedRealityService>();
+
+        /// <summary>
+        /// The collection of registered data providers.
+        /// </summary>
+        private List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
 
         #region MonoBehaviour implementation
 
@@ -18,7 +27,17 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (Application.isPlaying)
             {
-                service?.Update();
+                IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
+                for (int i = 0; i < serviceSnapshot.Count; i++)
+                {
+                    serviceSnapshot[i]?.Update();
+                }
+
+                IMixedRealityDataProvider[] providers = dataProviders.ToArray();
+                for (int i = 0; i < providers.Length; i++)
+                {
+                    providers[i]?.Update();
+                }
             }
         }
 
@@ -26,7 +45,17 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (Application.isPlaying)
             {
-                service?.Enable();
+                IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
+                for (int i = 0; i < serviceSnapshot.Count; i++)
+                {
+                    serviceSnapshot[i]?.Enable();
+                }
+
+                IMixedRealityDataProvider[] providers = dataProviders.ToArray();
+                for (int i = 0; i < providers.Length; i++)
+                {
+                    providers[i]?.Enable();
+                }
             }
         }
 
@@ -34,27 +63,44 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (Application.isPlaying)
             {
-                service?.Disable();
+                IMixedRealityDataProvider[] providers = dataProviders.ToArray();
+                for (int i = 0; i < providers.Length; i++)
+                {
+                    providers[i]?.Disable();
+                }
+
+                IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
+                for (int i = 0; i < serviceSnapshot.Count; i++)
+                {
+                    serviceSnapshot[i]?.Disable();
+                }
             }
         }
 
         protected virtual void OnDestroy()
         {
-            if (service != null)
+            IMixedRealityDataProvider[] providers = dataProviders.ToArray();
+            for (int i = 0; i < providers.Length; i++)
             {
-                service.Disable(); // Disable before destroy to ensure the service has time to get in a good state.
-                service.Destroy();
+                providers[i]?.Disable(); // Disable before destroy to ensure the data provider has time to get in a good state.
+                providers[i]?.Destroy();
             }
+            // Clear the actual collection
+            dataProviders.Clear();
+
+            IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
+            for (int i = 0; i < serviceSnapshot.Count; i++)
+            {
+                serviceSnapshot[i].Disable(); // Disable before destroy to ensure the service has time to get in a good state.
+                serviceSnapshot[i].Destroy();
+            }
+            // Clear the actual collection
+            registeredServices.Clear();
         }
 
         #endregion MonoBehaviour implementation
 
         #region IMixedRealityServiceRegistrar implementation
-
-        /// <summary>
-        /// The collection of registered data providers.
-        /// </summary>
-        protected List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
 
         /// <inheritdoc />
         public T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
@@ -110,31 +156,32 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public T GetService<T>(string name = null, bool showLogs = true) where T : IMixedRealityService
         {
-            if (!ConfirmService<T>(name))
+            T serviceInstance = FindService<T>(name);
+
+            if (showLogs && (serviceInstance == null))
             {
-                if (showLogs)
-                {
-                    Debug.Log("Failed to get the requested service.");
-                }
-                return default(T);
+                Debug.Log("Failed to get the requested service.");
             }
 
-            return (T)service;
+            return serviceInstance;
         }
 
         /// <inheritdoc />
         public IReadOnlyList<T> GetServices<T>(string name = null) where T : IMixedRealityService
         {
+            List<T> services = new List<T>();
+
             if (!string.IsNullOrWhiteSpace(name))
             {
                 Debug.LogError("This registrar does not support requesting multiple services of the same interface type and name.");
-                return new List<T>();
+                return services;
             }
 
-            if (!ConfirmService<T>(name)) { return new List<T>(); }
-
-            List<T> services = new List<T>();
-            services.Add((T)service);
+            T serviceInstance = FindService<T>();
+            if (serviceInstance != null)
+            {
+                services.Add(serviceInstance);
+            }
             return services;
         }
 
@@ -171,8 +218,19 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool RegisterService<T>(T serviceInstance) where T : IMixedRealityService
         {
+            Type interfaceType = typeof(T);
+
+            if (registeredServices.ContainsKey(interfaceType))
+            {
+                Debug.LogError("This registrar does not support registering multiple services of the same interface type.");
+                return false;
+            }
+
             bool registered = MixedRealityServiceRegistry.AddService<T>(serviceInstance, this);
-            if (registered) { service = serviceInstance; }
+            if (registered)
+            {
+                registeredServices.Add(interfaceType, serviceInstance);
+            }
 
             return registered;
         }
@@ -208,9 +266,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool UnregisterService<T>(string name = null) where T : IMixedRealityService
         {
-            if (!ConfirmService<T>(name)) { return false; }
+            T serviceInstance = FindService<T>(name);
 
-            return UnregisterService<T>((T)service);
+            if (serviceInstance == null) { return false; }
+
+            return UnregisterService<T>(serviceInstance);
         }
 
         /// <inheritdoc />
@@ -218,7 +278,10 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (serviceInstance == null) { return false; }
 
-            // Only remove services that were registered by this registrar instance.
+            Type interfaceType = typeof(T);
+            if (!registeredServices.ContainsKey(interfaceType)) { return false; }
+
+            registeredServices.Remove(interfaceType);
             return MixedRealityServiceRegistry.RemoveService<T>(serviceInstance, this);
         }
 
@@ -266,20 +329,28 @@ namespace Microsoft.MixedReality.Toolkit
         protected virtual void Initialize<T>(Type concreteType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args) where T : IMixedRealityService
         {
             RegisterService<T>(concreteType, supportedPlatforms, args);
-            service?.Initialize();
+            T serviceInstance = FindService<T>();
+            serviceInstance?.Initialize();
         }
 
         protected virtual void Uninitialize<T>() where T : IMixedRealityService
         {
-            MixedRealityServiceRegistry.RemoveService<T>((T)service, this);
+            T serviceInstance = FindService<T>();
+
+            if (serviceInstance != null)
+            {
+                registeredServices.Remove(typeof(T));
+                MixedRealityServiceRegistry.RemoveService<T>(serviceInstance, this);
+            }
         }
 
-        private bool ConfirmService<T>(string name)
+        private T FindService<T>(string name = null) where T : IMixedRealityService
         {
-            if ((service == null) || !typeof(T).IsAssignableFrom(service.GetType())) { return false; }
-            if (!string.IsNullOrWhiteSpace(name) && !name.Equals(service.Name)) { return false; }
+            Type interfaceType = typeof(T);
 
-            return true;
-        }
+            if (!registeredServices.ContainsKey(interfaceType)) { return default(T); }
+
+            return (T)registeredServices[interfaceType];
+         }
     }
 }
