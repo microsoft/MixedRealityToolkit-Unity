@@ -93,9 +93,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             serializedObject.Update();
 
+            EditorGUI.BeginChangeCheck();
+
             ScrollingObjectCollection scrollContainer = (ScrollingObjectCollection)target;
 
             EditorGUILayout.LabelField("Collection Properties", EditorStyles.boldLabel);
+
             using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(sorting);
@@ -127,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.LabelField("Scrolling Properties", EditorStyles.boldLabel);
 
             using (new EditorGUI.IndentLevelScope())
-            {                
+            {
                 EditorGUILayout.PropertyField(dragTimeThreshold);
                 EditorGUILayout.PropertyField(handDeltaMagThreshold);
                 EditorGUILayout.Space();
@@ -220,6 +223,22 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             serializedObject.ApplyModifiedProperties();
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                for (int i = 0; i < scrollContainer.CollectionNodes.Count; i++)
+                {
+                    ObjectCollectionNode node = scrollContainer.CollectionNodes[i];
+
+                    if (node.Transform == null) { continue; }
+
+                    if (!CheckForStandardShader(node.GameObject.GetComponentsInChildren<Renderer>()))
+                    {
+                        Debug.LogWarning(node.GameObject.name + " has a renderer that is not using " + MRTKstd.ToString() + ". This will result in unexpected results with ScrollingObjectCollection");
+                    }
+                }
+            }
+
         }
 
         [DrawGizmo(GizmoType.Selected)]
@@ -275,19 +294,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 {
                     ObjectCollectionNode node = scrollContainer.CollectionNodes[i];
 
-                    if(node.Transform == null) { continue; }
-
-                    if (!CheckForStandardShader(node.GameObject.GetComponentsInChildren<Renderer>()))
-                    {
-                        Debug.LogWarning(node.GameObject.name + " has a renderer that is not using " + MRTKstd.ToString() + ". This will result in unexpected results with ScrollingObjectCollection");
-                    }
+                    if (node.Transform == null) { continue; }
 
                     Vector3 cp = node.Transform.position;
                     cp.z = center.z;
-                    if(scrollContainer.IsItemVisible(i))
-                    {
-                        UnityEditor.Handles.Label(cp, new GUIContent(i.ToString()));
-                    }
+
+                    UnityEditor.Handles.Label(cp, new GUIContent(i.ToString()));
                 }
             }
         }
@@ -296,14 +308,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             foreach (Renderer rend in rends)
             {
-                if(rend.sharedMaterial.shader != MRTKstd && rend.sharedMaterial.shader != MRTKtmp)
+                if (rend.sharedMaterial.shader != MRTKstd && rend.sharedMaterial.shader != MRTKtmp)
                 {
                     return false;
                 }
             }
             return true;
         }
-
 
     }
 }

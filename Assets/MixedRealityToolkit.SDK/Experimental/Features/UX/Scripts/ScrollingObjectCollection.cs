@@ -559,7 +559,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             //scrollContainer empty game object null check - ensure its set up properly
             if (scrollContainer == null)
             {
-                scrollContainer = new GameObject();
+                GameObject oldContainer = GameObject.Find("Container");
+
+                if(oldContainer)
+                {
+                    scrollContainer = oldContainer;
+                    Debug.LogWarning("Scrolling Object Collection found an existing Container object, using it for the list");
+                }
+                else
+                {
+                    scrollContainer = new GameObject();
+                }
+
                 scrollContainer.name = "Container";
                 scrollContainer.transform.parent = transform;
                 scrollContainer.transform.localPosition = Vector3.zero;
@@ -569,7 +580,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             //ClippingObject empty game object null check - ensure its set up properly
             if (clippingObject == null)
             {
-                clippingObject = new GameObject();
+                GameObject oldClippingObj = GameObject.Find("Clipping Bounds");
+
+                if (oldClippingObj)
+                {
+                    clippingObject = oldClippingObj;
+                    Debug.LogWarning("Scrolling Object Collection found an existing Clipping object, using it for the list");
+                }
+                else
+                {
+                    clippingObject = new GameObject();
+                }
+
                 clippingObject.name = "Clipping Bounds";
                 clippingObject.transform.parent = transform;
                 clippingObject.transform.localRotation = Quaternion.identity;
@@ -579,7 +601,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             //ClippingBox  component null check - ensure its set up properly
             if (clipBox == null)
             {
-                clipBox = clippingObject.AddComponent<ClippingBox>();
+                clipBox = clippingObject.GetComponent<ClippingBox>();
+
+                if (clipBox == null)
+                {
+                    clipBox = clippingObject.AddComponent<ClippingBox>();
+                }
+
                 clipBox.ClippingSide = ClippingPrimitive.Side.Outside;
 
                 if (useOnPreRender)
