@@ -2324,6 +2324,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRDL_PeriodicTable.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRDL_PeriodicTable.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRTK-ControllerDiagram.png",
       "output": {
         "resource": {
@@ -2654,6 +2665,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_Boundary.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_Boundary.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRTK_Icon_ControllerVisualization.png",
       "output": {
         "resource": {
@@ -2669,6 +2691,28 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/MRTK_Icon_Diagnostics.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_Documentation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_Documentation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_Experimental.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_Experimental.png"
         }
       },
       "is_incremental": false,
@@ -2698,6 +2742,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_GettingStarted.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_GettingStarted.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRTK_Icon_HandTracking.png",
       "output": {
         "resource": {
@@ -2713,6 +2768,28 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/MRTK_Icon_InputSystem.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_Profiles.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_Profiles.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_SceneSystem.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_SceneSystem.png"
         }
       },
       "is_incremental": false,
@@ -4573,7 +4650,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "MfN/EaQ2EefC0NIdfbJm0g=="
+          "hash": "acN96R+r6KOd/mKA4V5Fpw=="
         }
       },
       "is_incremental": false,
@@ -4585,7 +4662,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "w7tOsgrkWbKEqkdJz/vFJA=="
+          "hash": "j+raFXSOgoDqWj7uiWVMEg=="
         }
       },
       "is_incremental": false,
@@ -16085,17 +16162,17 @@
           "total_file_count": 100,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 951,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 951,
           "skipped_file_count": 0
         }
       }
