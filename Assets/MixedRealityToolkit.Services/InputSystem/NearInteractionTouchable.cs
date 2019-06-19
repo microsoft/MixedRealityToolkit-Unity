@@ -75,8 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void SetLocalUp(Vector3 newLocalUp)
         {
-            localForward = newLocalUp;
-            localUp = Vector3.Cross(localForward, LocalRight).normalized;
+            localUp = newLocalUp;
+            localForward = Vector3.Cross(LocalRight, localUp).normalized;
         }
 
         /// <summary>
