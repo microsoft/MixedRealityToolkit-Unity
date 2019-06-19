@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using UnityEngine;
 using UnityEngine.XR.WSA;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     [Serializable]
     public struct StabilizationPlaneOverride
@@ -301,7 +300,7 @@ namespace HoloToolkit.Unity
             debugPlane.Normal = OverridePlane.Normal;
 #elif UNITY_WSA
             // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
-            HolographicSettings.SetFocusPointForFrame(planePosition, OverridePlane.Value.Normal, velocity);
+            HolographicSettings.SetFocusPointForFrame(planePosition, OverridePlane.Normal, velocity);
 #endif
         }
 
