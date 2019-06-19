@@ -19,12 +19,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Performs a raycast using the specified <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
         /// </summary>
+        /// <remarks>
+        /// If nothing was hit, hitInfo will be null.
+        /// </remarks>
         /// <returns>Whether or not the raycast hit something.</returns>
         bool Raycast(RayStep step, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo);
 
         /// <summary>
         /// Performs a sphere cast with the specified <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> and radius.
         /// </summary>
+        /// <remarks>
+        /// If nothing was hit, hitInfo will be null.
+        /// </remarks>
         /// <returns>Whether or not the SphereCast hit something.</returns>
         bool SphereCast(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo);
     }

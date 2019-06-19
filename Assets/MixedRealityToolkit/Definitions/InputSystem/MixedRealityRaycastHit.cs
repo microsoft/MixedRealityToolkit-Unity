@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// The resulting hit information from an IMixedRealityRaycastProvider.
     /// </summary>
-    public struct MixedRealityRaycastHit
+    public class MixedRealityRaycastHit
     {
         public Vector3 point;
         public Vector3 normal;
@@ -31,17 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             textureCoord = hitInfo.textureCoord;
             textureCoord2 = hitInfo.textureCoord2;
             transform = hitInfo.transform;
-
-            try
-            {
-                lightmapCoord = hitInfo.lightmapCoord;
-            }
-            catch (Exception)
-            {
-                // Accessing lightmap coord appears to throw a NullReferenceException in some cases, probably when lightmaps are not used.
-                // Catch this, and just leave as default value.
-                lightmapCoord = Vector2.zero;
-            }
+            lightmapCoord = hitInfo.lightmapCoord;
         }
     }
 }
