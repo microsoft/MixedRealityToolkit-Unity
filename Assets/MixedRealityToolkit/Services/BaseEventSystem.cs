@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
-            if(handler == null)
+            if (handler == null)
             {
                 return;
             }
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
-            if(handler == null)
+            if (handler == null)
             {
                 return;
             }
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                             var comp = handlerEntry.handler as Component;
 
-                            if (comp && comp.gameObject == listener)
+                            if (comp != null && comp.gameObject == listener)
                             {
                                 handlerEntry.parentObjectIsInObjectCollection = true;
                                 typeEntry.Value[index] = handlerEntry;
@@ -195,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit
                         }
                     }
 
-                    if(report)
+                    if (report)
                     {
                         WarnAboutConflictingApis(listener.name);
                     }
@@ -219,9 +219,9 @@ namespace Microsoft.MixedReality.Toolkit
                     // Reset cached flags in handler collection as object will not intercept the events anymore.
                     // This is a slow loop, which is here to maintain backward compatibility and enable co-existing of
                     // new and old API.
-                    foreach(var typeEntry in EventHandlersByType)
+                    foreach (var typeEntry in EventHandlersByType)
                     {
-                        for(int index = 0; index < typeEntry.Value.Count; index++)
+                        for (int index = 0; index < typeEntry.Value.Count; index++)
                         {
                             var handlerEntry = typeEntry.Value[index];
 
@@ -278,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit
             bool isParentObjectRegistered = false;
 
             var componentHandler = handler as Component;
-            if (componentHandler && EventListeners.Contains(componentHandler.gameObject))
+            if (componentHandler != null && EventListeners.Contains(componentHandler.gameObject))
             {
                 isParentObjectRegistered = true;
                 WarnAboutConflictingApis(componentHandler.gameObject.name);

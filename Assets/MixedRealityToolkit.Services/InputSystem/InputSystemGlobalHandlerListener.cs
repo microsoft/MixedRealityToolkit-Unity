@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected void UnregisterAllHandlers<T>() where T: class, IEventSystemHandler
         {
-            if(InputSystem == null)
+            if (InputSystem == null)
             {
                 return;
             }
