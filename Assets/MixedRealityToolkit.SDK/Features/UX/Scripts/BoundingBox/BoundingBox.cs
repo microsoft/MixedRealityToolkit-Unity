@@ -713,10 +713,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Header("Events")]
-        public UnityEvent RotateStarted;
-        public UnityEvent RotateStopped;
-        public UnityEvent ScaleStarted;
-        public UnityEvent ScaleStopped;
+        public UnityEvent RotateStarted = new UnityEvent();
+        public UnityEvent RotateStopped = new UnityEvent();
+        public UnityEvent ScaleStarted = new UnityEvent();
+        public UnityEvent ScaleStopped = new UnityEvent();
         #endregion Serialized Fields
 
         #region Private Properties
