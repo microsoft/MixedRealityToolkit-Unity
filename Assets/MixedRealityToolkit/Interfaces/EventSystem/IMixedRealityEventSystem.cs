@@ -16,9 +16,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// List of event listeners that are registered to this Event System.
         /// </summary>
-        // Marking EventListeners as obsolete triggers a lot of warnings in MRTK code base.
-        // This should be commented out once follow up task #4847 is complete.
-        //[Obsolete("EventListeners is replaced by EventHandlersByType and will be removed in a future release.")]*/
+        /// <remarks>
+        /// This collection is obsolete is replaced by handler-based storage and will be removed in a future release.
+        /// </remarks>
         List<GameObject> EventListeners { get; }
 
         /// <summary>
@@ -34,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// Registers a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen for events from this Event System.
         /// </summary>
         /// <param name="listener"><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to add to <see cref="EventListeners"/>.</param>
-        // Marking method as obsolete triggers a lot of warnings in MRTK code base.
-        // This should be commented out once follow up task #4847 is complete.
         [Obsolete("Register using a game object causes all components of this object to receive global events of all types. " +
             "Use RegisterHandler<> methods instead to avoid unexpected behavior.")]
         void Register(GameObject listener);
@@ -44,8 +42,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// Unregisters a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening for events from this Event System.
         /// </summary>
         /// <param name="listener"><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to remove from <see cref="EventListeners"/>.</param>
-        // Marking method as obsolete triggers a lot of warnings in MRTK code base.
-        // This should be commented out once follow up task #4847 is complete
         [Obsolete("Unregister using a game object will disable listening of global events for all components of this object. " +
             "Use UnregisterHandler<> methods instead to avoid unexpected behavior.")]
         void Unregister(GameObject listener);
