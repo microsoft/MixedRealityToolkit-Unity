@@ -6,17 +6,10 @@
 // Unity doesn't include the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using NUnit.Framework;
 using System;
-using System.Collections;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.TestTools;
+using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -73,18 +66,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <remarks>
     /// Touching an object does not imply getting focus, so use a global event handler to be independent from focus.
     /// </remarks>
-    public class TouchEventCatcher : GlobalEventCatcher<TouchEventCatcher>, IMixedRealityTouchHandler
+    public class TouchEventCatcher : FocusedObjectEventCatcher<TouchEventCatcher>, IMixedRealityTouchHandler
     {
+        public readonly UnityEvent OnTouchStartedEvent = new UnityEvent();
+        public readonly UnityEvent OnTouchCompletedEvent = new UnityEvent();
+
         /// <inheritdoc />
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
             ++eventsCompleted;
+
+            OnTouchCompletedEvent.Invoke();
         }
 
         /// <inheritdoc />
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
             ++eventsStarted;
+
+            OnTouchStartedEvent.Invoke();
         }
 
         /// <inheritdoc />

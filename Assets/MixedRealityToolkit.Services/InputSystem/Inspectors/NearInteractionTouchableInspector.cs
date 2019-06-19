@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [UnityEditor.CustomEditor(typeof(NearInteractionTouchable))]
+    [UnityEditor.CustomEditor(typeof(NearInteractionTouchable), true)]
     public class NearInteractionTouchableInspector : UnityEditor.Editor
     {
         private readonly Color handleColor = Color.white;

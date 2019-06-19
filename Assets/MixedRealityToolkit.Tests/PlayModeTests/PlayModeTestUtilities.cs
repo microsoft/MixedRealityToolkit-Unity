@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bool isPinching = gestureId == ArticulatedHandPose.GestureId.Grab || gestureId == ArticulatedHandPose.GestureId.Pinch || gestureId == ArticulatedHandPose.GestureId.PinchSteadyWrist;
             for (int i = 0; i < numSteps; i++)
             {
-                float t = 1.0f / numSteps * i;
+                float t = numSteps > 1 ? 1.0f / (numSteps - 1) * i : 1.0f;
                 Vector3 handPos = Vector3.Lerp(startPos, endPos, t);
                 var handDataGenerator = GenerateHandPose(
                         gestureId,
