@@ -37,5 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         /// <param name="eventData">Contains information about the HandTrackingInputSource.</param>
         void OnTouchUpdated(HandTrackingInputEventData eventData);
+
+        /// <summary>
+        /// A concrete way for touchable components to be reset to their original state.
+        /// </summary>
+        void OnTouchCancelled();
     }
 }

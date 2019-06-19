@@ -809,6 +809,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             eventData.Use();
         }
         public void OnTouchUpdated(HandTrackingInputEventData eventData) { }
+
+        public void OnTouchCancelled() { }
+
         #endregion IMixedRealityTouchHandler
 
 

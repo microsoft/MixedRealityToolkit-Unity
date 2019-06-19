@@ -249,6 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region IMixedRealityTouchHandler implementation
 
+        /// <inheritdoc />
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
             if (PassThroughMode && eventData.Sender == null)
@@ -301,6 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             eventData.Use();
         }
 
+        /// <inheritdoc />
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
             if (PassThroughMode && eventData.Sender == null)
@@ -322,6 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <inheritdoc />
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
             if (PassThroughMode && eventData.Sender == null)
@@ -341,6 +344,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 IsTouching = (touchPoints.Count > 0);
                 eventData.Use();
             }
+        }
+
+        /// <inheritdoc />
+        public void OnTouchCancelled()
+        {
+            // clear touch points in case we get disabled and can't receive the touch end event anymore
+            touchPoints.Clear();
+
+            // make sure button doesn't stay in a pressed state in case we disable the button while pressing it
+            currentPushDistance = startPushDistance;
+            UpdateMovingVisualsPosition();
         }
 
         #endregion OnTouch

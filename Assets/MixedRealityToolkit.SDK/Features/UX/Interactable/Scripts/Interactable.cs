@@ -1091,6 +1091,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
         }
+
+        public void OnTouchCancelled() { }
+
         #endregion TouchHandlers
 
         #region InputHandlers

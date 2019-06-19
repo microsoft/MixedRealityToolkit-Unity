@@ -414,6 +414,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData) { }
+
+        public void OnTouchCancelled() { }
+
         #endregion IMixedRealityHandTrackHandler
 
         #region BaseFocusHandler Methods

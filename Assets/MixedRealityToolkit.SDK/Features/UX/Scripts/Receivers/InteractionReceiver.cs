@@ -321,9 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void OnTouchUpdated(HandTrackingInputEventData eventData)
-        {
-        }
+        public void OnTouchUpdated(HandTrackingInputEventData eventData) { }
 
         /// <inheritdoc />
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
@@ -334,6 +332,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
         }
+
+        public void OnTouchCancelled() { }
 
         #endregion IMixedRealityHandTrackingHandler Implementation
 

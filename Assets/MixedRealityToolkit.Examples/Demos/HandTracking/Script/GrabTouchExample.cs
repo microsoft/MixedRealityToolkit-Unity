@@ -55,5 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
         }
+        public void OnTouchCancelled() { }
+
     }
 }
