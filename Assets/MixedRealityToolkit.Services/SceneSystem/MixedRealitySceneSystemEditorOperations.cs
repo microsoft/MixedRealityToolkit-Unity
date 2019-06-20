@@ -164,6 +164,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             EditorSceneManager.newSceneCreated += EditorSceneManagerNewSceneCreated;
             EditorSceneManager.sceneOpened += EditorSceneManagerSceneOpened;
             EditorSceneManager.sceneClosed += EditorSceneManagerSceneClosed;
+
+            EditorBuildSettings.sceneListChanged += EditorSceneListChanged;
         }
 
         private void EditorUnsubscribeFromEvents()
@@ -175,6 +177,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             EditorSceneManager.newSceneCreated += EditorSceneManagerNewSceneCreated;
             EditorSceneManager.sceneOpened -= EditorSceneManagerSceneOpened;
             EditorSceneManager.sceneClosed -= EditorSceneManagerSceneClosed;
+
+            EditorBuildSettings.sceneListChanged -= EditorSceneListChanged;
         }
 
         #endregion
@@ -202,6 +206,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private void EditorApplicationProjectChanged()
         {
             buildSettingsDirty = true;
+        }
+
+        private void EditorSceneListChanged()
+        {
+            buildSettingsDirty = true;
+
+            EditorCheckForChanges();
         }
 
         private void EditorSceneManagerSceneClosed(Scene scene) { activeSceneDirty = true; }
@@ -260,11 +271,16 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             if (buildSettingsDirty)
             {
+                buildSettingsDirty = false;
+
                 EditorUpdateBuildSettings();
             }
 
             if (activeSceneDirty || heirarchyDirty)
             {
+                heirarchyDirty = false;
+                activeSceneDirty = false;
+
                 EditorUpdateManagerScene();
                 EditorUpdateLightingScene(heirarchyDirty);
                 EditorUpdateContentScenes(activeSceneDirty);
@@ -272,11 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 contentTracker.RefreshLoadedContent();
             }
 
-            updatingSettingsOnEditorChanged = false;
+            EditorUtility.SetDirty(profile);
 
-            buildSettingsDirty = false;
-            heirarchyDirty = false;
-            activeSceneDirty = false;
+            updatingSettingsOnEditorChanged = false;
         }
         
         /// <summary>
