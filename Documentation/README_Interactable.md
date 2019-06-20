@@ -342,3 +342,6 @@ public override State CompareStates()
     return currentState;
 }
 ```
+
+## See also
+- [MRTK Standard Shader](README_MRTKStandardShader.md)
