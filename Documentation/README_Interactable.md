@@ -235,7 +235,7 @@ If creating a custom interactable theme to modify shader properties, it is advis
 
 Regardless of whether extending the `InteractableShaderTheme` class or not, it is highly recommended to set shader properties 1) via [**MaterialPropertyBlock**](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) and 2) using the shader properties integer keys instead of string keys. Unity assigns integer keys for all shader properties in a project at runtime.See [**Shader.PropertyToID**](https://docs.unity3d.com/ScriptReference/Shader.PropertyToID.html) for more details on. The integer key for an interactable property can be accessed via  `InteractableThemeProperty.GetShaderPropertyId()`. 
 
-Both of these two steps will help with performance. [**MaterialPropertyBlock**](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) will ensure a new material instance is not created for every object modifying a shader property and integer shader property IDs will elimnate the string-to-int lookup step performed by Unity when using string keys (i.e "_Color") on set/get functions.
+Both of these two steps will help with performance. [**MaterialPropertyBlock**](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) will ensure a new material instance is not created for every object modifying a shader property and integer shader property IDs will eliminate the string-to-int lookup step performed by Unity when using string keys (i.e "_Color") on set/get functions.
 
 ``` csharp
 public override void SetValue(InteractableThemeProperty property, int index, float percentage)
