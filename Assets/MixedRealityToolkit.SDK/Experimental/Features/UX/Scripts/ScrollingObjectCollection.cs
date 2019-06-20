@@ -63,8 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// </summary>
         [SerializeField]
         [Tooltip("The amount of movement the user's pointer can make before its considerd a drag gesture")]
-        [Range(0.0f, 1.0f)]
-        private float handDeltaMagThreshold;
+        [Range(0.0f, 2.0f)]
+        private float handDeltaMagThreshold = 0.1f;
 
         public float HandDeltaMagThreshold
         {
@@ -562,11 +562,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             //scrollContainer empty game object null check - ensure its set up properly
             if (scrollContainer == null)
             {
-                GameObject oldContainer = GameObject.Find("Container");
+                Transform oldContainer = transform.Find("Container");
 
-                if (oldContainer)
+                if (oldContainer != null)
                 {
-                    scrollContainer = oldContainer;
+                    scrollContainer = oldContainer.gameObject;
                     Debug.LogWarning("Scrolling Object Collection found an existing Container object, using it for the list");
                 }
                 else
@@ -583,11 +583,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             //ClippingObject empty game object null check - ensure its set up properly
             if (clippingObject == null)
             {
-                GameObject oldClippingObj = GameObject.Find("Clipping Bounds");
+                Transform oldClippingObj = transform.Find("Clipping Bounds");
 
-                if (oldClippingObj)
+                if (oldClippingObj != null)
                 {
-                    clippingObject = oldClippingObj;
+                    clippingObject = oldClippingObj.gameObject;
                     Debug.LogWarning("Scrolling Object Collection found an existing Clipping object, using it for the list");
                 }
                 else
@@ -790,7 +790,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             //get a point in front of the scrollContainer to use for the dot product check
             finalOffset = (AxisOrientationToTransformDirection(collectionForward) * -1.0f) * thresholdOffset;
-            thresholdPoint = transform.position - finalOffset;
+            thresholdPoint = transform.InverseTransformPoint(transform.localPosition - finalOffset);
 
             //Use the first element for collection bounds -> for occluder positioning
             //temporarily zero out the rotation so we can get an accurate bounds
@@ -2029,22 +2029,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             switch (axis)
             {
                 case AxisOrientationType.PositiveX:
-                    return Vector3.right;
+                    return transform.right;
 
                 case AxisOrientationType.NegativeX:
-                    return Vector3.right * -1.0f;
+                    return transform.right * -1.0f;
 
                 case AxisOrientationType.PositiveY:
-                    return Vector3.up;
+                    return transform.up;
 
                 case AxisOrientationType.NegativeY:
-                    return Vector3.up * -1.0f;
+                    return transform.up * -1.0f;
 
                 case AxisOrientationType.PositiveZ:
-                    return Vector3.forward;
+                    return transform.forward;
 
                 case AxisOrientationType.NegativeZ:
-                    return Vector3.forward * -1.0f;
+                    return transform.forward * -1.0f;
 
                 default:
                     return Vector3.zero;
