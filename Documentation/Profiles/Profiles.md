@@ -35,7 +35,10 @@ The key differences between the HoloLens2 profile and the Default Profile are:
 - Boundary System has been disabled (there are no boundaries in AR)
 - Teleport System has been disabled (primarily a VR concept)
 - Spatial Awareness System has been disabled (spatial meshes won't render, but this can be turned back
-  on by following the [instructions here](../SpatialAwareness/SpatialAwarenessGettingStarted.md))
+  on by following the [instructions here](../SpatialAwareness/SpatialAwarenessGettingStarted.md). Spatial
+  meshes are turned off by default based on client feedback - it is an interesting visualization to see
+  initially but is typically turned off to avoid the visual distraction and the additional perf hit of
+  having it on)
 - The eye tracking provider and settings have been enabled
 - Eye simulation has been enabled by default
 - Hand mesh visualization is disabled (there is a performance overhead associated with using hand meshes)
