@@ -231,7 +231,7 @@ Custom Settings added to the new class will also be displayed in the inspector. 
 
 ### Extending shader themes
 
-If creating a custom Interactable Theme to modify shader properties, it is advised to extend the `InteractableShaderTheme` class. Please see the `InteractableColorTheme` class as an example to extend the `InteractableShaderTheme` class.
+If creating a custom interactable theme to modify shader properties, it is advised to extend the `InteractableShaderTheme` class. Please see the `InteractableColorTheme` class as an example to extend the `InteractableShaderTheme` class.
 
 Regardless of whether extending the `InteractableShaderTheme` class or not, it is highly recommended to set shader properties 1) via [**MaterialPropertyBlock**](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) and 2) using the shader properties integer keys instead of string keys. Unity assigns integer keys for all shader properties in a project at runtime.See [**Shader.PropertyToID**](https://docs.unity3d.com/ScriptReference/Shader.PropertyToID.html) for more details on. The integer key for an interactable property can be accessed via  `InteractableThemeProperty.GetShaderPropertyId()`. 
 
