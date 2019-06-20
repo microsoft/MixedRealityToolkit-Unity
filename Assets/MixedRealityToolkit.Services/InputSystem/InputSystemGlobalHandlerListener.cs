@@ -2,11 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -16,11 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public abstract class InputSystemGlobalHandlerListener : MonoBehaviour
     {
         private bool lateInitialize = true;
-
-        private readonly Type eventSystemHandlerType = typeof(IEventSystemHandler);
-        private readonly MethodInfo registerHandlerMethod = typeof(IMixedRealityEventSystem).GetMethod("RegisterHandler");
-        private readonly MethodInfo unregisterHandlerMethod = typeof(IMixedRealityEventSystem).GetMethod("UnregisterHandler");
-
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
