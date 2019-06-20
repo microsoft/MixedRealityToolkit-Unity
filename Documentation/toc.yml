@@ -81,7 +81,17 @@
     - name: Usage Guide
       href: SpatialAwareness/UsageGuide.md
   - name: Multi Scene System
-    href: SceneSystem/SceneSystemGettingStarted.md
+    items:
+    - name: Multi Scene System Overview
+      href: SceneSystem/SceneSystemGettingStarted.md
+    - name: Scene Types
+      href: SceneSystem/SceneSystemSceneTypes.md
+    - name: Content Scene Loading
+      href: SceneSystem/SceneSystemContentLoading.md
+    - name: Monitoring Content Loading
+      href: SceneSystem/SceneSystemLoadProgress.md
+    - name: Lighting Scene Operations
+      href: SceneSystem/SceneSystemLightingScenes.md
   - name: MRTK Standard Shader
     href: README_MRTKStandardShader.md
   - name: Boundary System
