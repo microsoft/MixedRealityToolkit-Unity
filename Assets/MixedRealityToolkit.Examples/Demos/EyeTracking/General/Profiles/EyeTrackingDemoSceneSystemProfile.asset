@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: b81dae1d46879b444aa9847f7961649f, type: 3}
   m_Name: EyeTrackingDemoSceneSystemProfile
   m_EditorClassIdentifier: 
@@ -18,42 +17,42 @@ MonoBehaviour:
   managerScene:
     Name: EyeTrackingDemo-00-RootScene
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-00-RootScene.unity
-    Included: 1
-    BuildIndex: 0
+    Included: 0
+    BuildIndex: -1
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 27c3fbe0128089f48994cdc6af8668fc, type: 3}
   useLightingScene: 0
-  defaultLightingSceneIndex: 0
+  defaultLightingSceneIndex: -1
   lightingScenes: []
   contentScenes:
   - Name: EyeTrackingDemo-01-BasicSetup
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-01-BasicSetup.unity
-    Included: 1
-    BuildIndex: 3
+    Included: 0
+    BuildIndex: -1
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 3ac2cf3aa0e281340babd2053d8b7d46, type: 3}
   - Name: EyeTrackingDemo-02-TargetSelection
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
-    Included: 1
-    BuildIndex: 4
+    Included: 0
+    BuildIndex: -1
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 55643f7e4eceb734784192b162f565e0, type: 3}
   - Name: EyeTrackingDemo-03-Navigation
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
-    Included: 1
-    BuildIndex: 5
+    Included: 0
+    BuildIndex: -1
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 5df475f0bf57b1f488d59e0e16040d9a, type: 3}
   - Name: EyeTrackingDemo-04-TargetPositioning
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity
     Included: 1
-    BuildIndex: 6
+    BuildIndex: 3
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 91ded1f5ef2ae854ba4ac94eca7a2494, type: 3}
   - Name: EyeTrackingDemo-05-Visualizer
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity
     Included: 1
-    BuildIndex: 7
+    BuildIndex: 2
     Tag: Untagged
     Asset: {fileID: 3671201678493226958, guid: 2d6c43a82f3a88c4dbdc3b5e99a68d8a, type: 3}
   permittedLightingSceneComponentTypes:
@@ -65,7 +64,7 @@ MonoBehaviour:
   - reference: UnityEngine.LightProbeProxyVolume, UnityEngine.CoreModule
   contentTags: []
   cachedLightingSettings: []
-  editorManageBuildSettings: 0
+  editorManageBuildSettings: 1
   editorEnforceSceneOrder: 1
   editorManageLoadedScenes: 1
   editorEnforceLightingSceneTypes: 0
