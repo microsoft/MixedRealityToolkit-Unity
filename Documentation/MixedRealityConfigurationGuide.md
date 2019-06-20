@@ -369,10 +369,9 @@ If your controller representation in the scene needs to be offset from the physi
 Service Inspectors are an editor-only feature that generates in-scene objects representing active services. Selecting these objects displays inspectors which offer documentation links, control over editor visualizations and insight into the state of the service.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.png" width="350px" style="display:block;">
-<sup>Service Inspectors</sup>
+Service Inspectors
 
 You can enable service inspectors by checking 'Use Service Inspectors' under Editor Settings in your Configuration Profile.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.png" width="650px" style="display:block;">
-
-<sup>Enable Service Inspectors</sup>
+Enable Service Inspectors
