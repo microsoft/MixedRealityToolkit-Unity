@@ -9599,7 +9599,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html",
-          "hash": "TwNj1mkZV5aQf6yS+sVvzg=="
+          "hash": "Wr2WOP4GnuhEGFd/AGYmSw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableInspector.html",
+          "hash": "jZ500/5JT0HeD4LGam6sYQ=="
         }
       },
       "is_incremental": false,
@@ -9611,7 +9623,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnboundedPlane.html",
-          "hash": "1I3oWriqdhyU4LGjhBKHvg=="
+          "hash": "KLc6UBtn9fc1wqmjYDBHmg=="
         }
       },
       "is_incremental": false,
@@ -10151,7 +10163,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "CcfgDWydmd3mMM/s2ydC4w=="
+          "hash": "h9JHvEv/c9Bkz0N2jawhdQ=="
         }
       },
       "is_incremental": false,
@@ -11575,6 +11587,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.FocusedObjectEventCatcher-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.FocusedObjectEventCatcher-1.html",
+          "hash": "idziomxYhoDerHMxKIV1zg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.GlobalEventCatcher-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.GlobalEventCatcher-1.html",
+          "hash": "Z9dd2M3EcS8bF2q21uvCpg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.TestFixture_01_UnityInputManagerHelperTests.yml",
       "output": {
         ".html": {
@@ -11635,6 +11671,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.html",
+          "hash": "5hePTfnVTrxL+MSv6Em4IQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.yml",
       "output": {
         ".html": {
@@ -11671,11 +11719,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.TouchEventCatcher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TouchEventCatcher.html",
+          "hash": "eUXpgD3IQSvgp1hxwJaPFA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "bsxsB3djFRYod97m4UwFDg=="
+          "hash": "WpQuTZffnPyKSBp1A1akFA=="
         }
       },
       "is_incremental": false,
@@ -16187,7 +16247,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "6RSOtOU2frNUduHcEqH0/Q=="
+          "hash": "LPQb/M+zV14lsSVa2toOmQ=="
         }
       },
       "is_incremental": false,
@@ -16246,6 +16306,12 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 956,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -16257,12 +16323,6 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 951,
           "skipped_file_count": 0
         }
       }
