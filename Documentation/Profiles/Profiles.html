@@ -111,11 +111,17 @@ of the default selected profile.</p>
 <li>Boundary System has been disabled (there are no boundaries in AR)</li>
 <li>Teleport System has been disabled (primarily a VR concept)</li>
 <li>Spatial Awareness System has been disabled (spatial meshes won't render, but this can be turned back
-on by following the <a href="../SpatialAwareness/SpatialAwarenessGettingStarted.html">instructions here</a>)</li>
+on by following the <a href="../SpatialAwareness/SpatialAwarenessGettingStarted.html">instructions here</a>. Spatial
+meshes are turned off by default based on client feedback - it is an interesting visualization to see
+initially but is typically turned off to avoid the visual distraction and the additional performance hit of
+having it on.</li>
 <li>The eye tracking provider and settings have been enabled</li>
 <li>Eye simulation has been enabled by default</li>
 <li>Hand mesh visualization is disabled (there is a performance overhead associated with using hand meshes)</li>
-<li>Camera profile settings are set to match such that the editor quality and player quality are the same.</li>
+<li>Camera profile settings are set to match such that the editor quality and player quality are the same.
+(This is different from the default camera profile where Opaque displays are set to higher quality -
+this change makes it so that in-editor quality will be lower, which will more closely match what will
+be rendered on the device)</li>
 </ul>
 </article>
           </div>
