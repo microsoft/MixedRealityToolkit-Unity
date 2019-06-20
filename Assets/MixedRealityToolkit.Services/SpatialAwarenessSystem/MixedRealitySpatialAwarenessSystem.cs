@@ -362,13 +362,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public void ClearObservations()
         {
-            // todo
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].ClearObservations();
+            }
         }
 
         /// <inheritdoc />
-        public void ClearObservations<T>(string name = null) where T : IMixedRealitySpatialAwarenessObserver
+        public void ClearObservations<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
-            // todo
+            T observer = GetObserver<T>(name);
+            observer?.ClearObservations();
         }
 
         /// <inheritdoc />
