@@ -34,11 +34,16 @@ jobs:
       downloadType: 'single'
       artifactName: 'NuGet'
       downloadPath: '$(Build.SourcesDirectory)'
-    
+
+  - powershell: |
+      $Authorization = "Basic " + [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes('$(scriptsRepoVSTSuser):$(scriptsRepoPAT)'))
+      git clone -c http.extraheader="AUTHORIZATION: $Authorization" -b mrtk $(scriptsRepoURL) $(Build.ArtifactStagingDirectory)\scripts
+    displayName: "Clone release scripts"
+
   # sign all DLLs
   - template: templates/tasks/signing.yml
     parameters:
-      ConfigName: "MRTKSignConfig.xml"
+      ConfigName: "$(Build.ArtifactStagingDirectory)/scripts/signconfig/MRTKSignConfig.xml"
 
   # Create pre-release packages
   - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
@@ -66,7 +71,7 @@ jobs:
 
   - template: templates/tasks/signing.yml
     parameters:
-      ConfigName: "MRTKNuGetSignConfig.xml"
+      ConfigName: "$(Build.ArtifactStagingDirectory)/scripts/signconfig/MRTKNuGetSignConfig.xml"
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Packages'
