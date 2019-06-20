@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #region IMixedRealityCapabilityCheck Implementation
         
-        /// <inheritdoc/ >
+        /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
             if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)

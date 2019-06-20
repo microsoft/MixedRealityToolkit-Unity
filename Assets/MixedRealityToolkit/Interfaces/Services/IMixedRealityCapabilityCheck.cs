@@ -1,5 +1,4 @@
-﻿using System.Collections;
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 namespace Microsoft.MixedReality.Toolkit
@@ -11,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// on the current platform.
         /// </summary>
         /// <param name="capability">The capability to check.</param>
-        /// <returns>True if the capability is supported, false otherwise./returns>
+        /// <returns>True if the capability is supported, false otherwise.</returns>
         bool CheckCapability(MixedRealityCapability capability);
     }
 }

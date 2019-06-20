@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
         #region IMixedRealityCapabilityCheck Implementation
 
-        /// <inheritdoc/ >
+        /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
             if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
