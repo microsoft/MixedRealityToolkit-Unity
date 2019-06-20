@@ -5,9 +5,11 @@
     <RelativeBuildFolder><!--OUTPUT_PATH_TOKEN--></RelativeBuildFolder>
 	  <DefineConstants><!--COMMON_DEFINE_CONSTANTS--></DefineConstants>
     <AssemblySearchPaths><!--COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+    <Platforms><!--SUPPORTED_PLATFORMS_TOKEN--></Platforms>
     
-    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)</OutputPath>
+    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\</OutputPath>
     <BaseIntermediateOutputPath>$(OutputPath)</BaseIntermediateOutputPath>
+    <Configurations>InEditor;Player</Configurations>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='InEditor'">

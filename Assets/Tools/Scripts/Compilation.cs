@@ -1,8 +1,10 @@
-﻿using Assets.MRTK.Tools.Scripts;
+﻿#if UNITY_EDITOR
+using Assets.MRTK.Tools.Scripts;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Compilation;
 using UnityEngine;
 
 public static class Compilation
@@ -42,7 +44,7 @@ public static class Compilation
         }
 
         string commonPropsFilePath = CreateCommonPropsFile();
-        UnityProjectInfo unityProjectInfo = UnityProjectInfo.Instance;
+        UnityProjectInfo unityProjectInfo = UnityProjectInfo.CreateProjectInfo();
 
         //// Read the solution template
         string solutionTemplateText = File.ReadAllText(Utilities.UnityFolderRelativeToAbsolutePath(SolutionTemplate));
@@ -87,6 +89,7 @@ public static class Compilation
             {"<!--COMMON_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.CommonDefines) },
             {"<!--COMMON_DEVELOPMENT_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.DevelopmentBuildAdditionalDefines) },
             {"<!--COMMON_INEDITOR_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.InEditorBuildAdditionalDefines) },
+            {"<!--SUPPORTED_PLATFORMS_TOKEN-->", string.Join(";", CompilationSettings.Instance.AvailablePlatforms.Select(t=>t.Key.Name)) }
         };
 
         ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.CommonReferences, out HashSet<string> commonAssemblySearchPaths, out HashSet<string> commonAssemblyReferences);
@@ -100,15 +103,15 @@ public static class Compilation
         {
             List<string> platformConfigurations = new List<string>();
 
-            foreach (KeyValuePair<BuildTarget, CompilationSettings.CompilationPlatform> pair in CompilationSettings.Instance.AvailablePlatforms)
+            foreach (KeyValuePair<AssemblyDefinitionPlatform, CompilationSettings.CompilationPlatform> pair in CompilationSettings.Instance.AvailablePlatforms)
             {
-                ProcessReferences(pair.Key, pair.Value.CommonPlatformReferences, out HashSet<string> platformCommonAssemblySearchPaths, out HashSet<string> platformCommonAssemblyReferences, commonAssemblySearchPaths);
-                ProcessReferences(pair.Key, pair.Value.AdditionalInEditorReferences, out HashSet<string> platformInEditorAssemblySearchPaths, out HashSet<string> platformInEditorAssemblyReferences, platformCommonAssemblySearchPaths, commonAssemblySearchPaths, inEditorAssemblySearchPaths);
-                ProcessReferences(pair.Key, pair.Value.AdditionalPlayerReferences, out HashSet<string> platformPlayerAssemblySearchPaths, out HashSet<string> platformPlayerAssemblyReferences, platformCommonAssemblySearchPaths, commonAssemblySearchPaths);
+                ProcessReferences(pair.Key.BuildTarget, pair.Value.CommonPlatformReferences, out HashSet<string> platformCommonAssemblySearchPaths, out HashSet<string> platformCommonAssemblyReferences, commonAssemblySearchPaths);
+                ProcessReferences(pair.Key.BuildTarget, pair.Value.AdditionalInEditorReferences, out HashSet<string> platformInEditorAssemblySearchPaths, out HashSet<string> platformInEditorAssemblyReferences, platformCommonAssemblySearchPaths, commonAssemblySearchPaths, inEditorAssemblySearchPaths);
+                ProcessReferences(pair.Key.BuildTarget, pair.Value.AdditionalPlayerReferences, out HashSet<string> platformPlayerAssemblySearchPaths, out HashSet<string> platformPlayerAssemblyReferences, platformCommonAssemblySearchPaths, commonAssemblySearchPaths);
 
                 Dictionary<string, string> platformTokens = new Dictionary<string, string>()
                 {
-                    {"##PLATFORM_TOKEN##", pair.Value.BuildTarget.ToString() },
+                    {"##PLATFORM_TOKEN##", pair.Key.Name},
                     {"<!--TARGET_FRAMEWORK_TOKEN-->", pair.Value.TargetFramework.AsMSBuildString() },
 
                     {"<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", platformCommonAssemblySearchPaths)},
@@ -180,3 +183,4 @@ public static class Compilation
         }
     }
 }
+#endif

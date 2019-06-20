@@ -3,43 +3,57 @@
     <ProjectGuid><!--PROJECT_GUID_TOKEN--></ProjectGuid>
     <TargetFramework>netstandard2.0</TargetFramework> <!--TODO: This is a weird thing, it is a required property, although immediately changed when common props are loaded, before the sdk.props are loaded-->
     <AllowUnsafeBlocks><!--ALLOW_UNSAFE_TOKEN--></AllowUnsafeBlocks>
-    <Platforms><!--PROJECT_PLATFORMS_TOKEN--></Platforms>
     <Configurations><!--PROJECT_CONFIGURATIONS_TOKEN--></Configurations>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Platforn)' == ''">
-    <Platform><!--DEFAULT_PLATFORM_TOKEN--></Platform>
-  </PropertyGroup>
   
-  <PropertyGroup Condition="'$(Configuration)'==''">
-    <Configuration>InEditor</Configuration>
-  </PropertyGroup>
-
   <Import Project="##COMMON_PROPS_FILE_PATH##" />
   
   <!--POST common import-->
   <PropertyGroup>
-    <BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)\$(ProjectGuid)\obj</BaseIntermediateOutputPath>
-    <OutputPath>$(OutputPath)\$(ProjectGuid)\bin</OutputPath>
+    <BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)$(ProjectGuid)\obj\$(Configuration)\</BaseIntermediateOutputPath>
+    <OutputPath>$(OutputPath)$(ProjectGuid)\bin\</OutputPath>
+    <OutDir>$(OutputPath)$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
 
   <!--IMPORT SDK.props manually to be able to set the BaseIntermediateOutputPath path-->
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
+  <!--<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Player|WSA'">
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.8" />
+  </ItemGroup>-->
+  
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);*.asmdef;*.asmdef.meta;<!--FOLDER_EXCLUDE_TOKEN--></DefaultItemExcludes>
   </PropertyGroup>
   
-  <ItemGroup>
-  	<!--PROJECT_REFERENCE_TEMPLATE_START--><ProjectReference Include="##REFERENCE_TOKEN##">
+<!--PROJECT_REFERENCE_SET_TEMPLATE_START-->
+  <ItemGroup Condition="'$(Configuration)'=='##REFERENCE_CONFIGURATION_TOKEN##'">
+<!--PROJECT_REFERENCE_TEMPLATE_START-->
+    <ProjectReference Include="##REFERENCE_TOKEN##" Condition="##CONDITION_TOKEN##">
       <PrivateAssets>All</PrivateAssets>
-    </ProjectReference><!--PROJECT_REFERENCE_TEMPLATE_END-->
+    </ProjectReference>
+<!--PROJECT_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
+<!--PROJECT_REFERENCE_SET_TEMPLATE_END-->
   
   <ItemGroup>
-    <!--SOURCE_INCLUDE_TEMPLATE_START--><Compile Include="##RELATIVE_SOURCE_PATH##" Link="##PROJECT_LINK_PATH##" /><!--SOURCE_INCLUDE_TEMPLATE_END-->
+<!--SOURCE_INCLUDE_TEMPLATE_START--><Compile Include="##RELATIVE_SOURCE_PATH##" Link="##PROJECT_LINK_PATH##" /><!--SOURCE_INCLUDE_TEMPLATE_END-->
   </ItemGroup>
   
   <!--IMPORT SDK.targets-->
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+  <!--We control whether we build the project this way, depending on the platform/configuration-->
+  <PropertyGroup>
+    <OriginalBuildDependsOn>$(BuildDependsOn)</OriginalBuildDependsOn>
+    <BuildDependsOn></BuildDependsOn>
+  </PropertyGroup>
+  <Target Name="OriginalBuild" DependsOnTargets="$(OriginalBuildDependsOn)">
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
+<!--SUPPORTED_PLATFORM_BUILD_CONDITION_TEMPLATE_START-->
+    <CallTarget Targets="OriginalBuild" Condition="'$(Configuration)|$(Platform)'=='##SUPPORTED_CONFIGURATION_TOKEN##|##SUPPORTED_PLATFORM_TOKEN##'"/>
+<!--SUPPORTED_PLATFORM_BUILD_CONDITION_TEMPLATE_END-->
+  </Target>
 </Project>

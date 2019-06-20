@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -16,7 +17,10 @@ namespace Assets.MRTK.Tools.Scripts
 
         private readonly Dictionary<string, Assembly> unityAssemblies;
 
-        public static UnityProjectInfo Instance { get; } = new UnityProjectInfo();
+        public static UnityProjectInfo CreateProjectInfo()
+        {
+            return new UnityProjectInfo();
+        }
 
         public IReadOnlyDictionary<string, Assembly> UnityAssemblies { get; }
 
@@ -28,6 +32,7 @@ namespace Assets.MRTK.Tools.Scripts
             UnityAssemblies = new ReadOnlyDictionary<string, Assembly>(unityAssemblies);
 
             Dictionary<string, CSProjectInfo> csProjects = new Dictionary<string, CSProjectInfo>();
+            CSProjects = new ReadOnlyDictionary<string, CSProjectInfo>(csProjects);
 
             foreach (KeyValuePair<string, Assembly> pair in unityAssemblies)
             {
@@ -56,13 +61,33 @@ namespace Assets.MRTK.Tools.Scripts
 
                     AssemblyDefinitionAsset assemblyDefinitionAsset = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(asmDefPath);
                     AssemblyDefinitionInfo assemblyDefinitionInfo = assemblyDefinitionAsset == null ? null : JsonUtility.FromJson<AssemblyDefinitionInfo>(assemblyDefinitionAsset.text);
+                    assemblyDefinitionInfo?.Validate();
                     toAdd = new CSProjectInfo(guidResult, assemblyDefinitionInfo, pair.Value, Application.dataPath.Replace("Assets", "MSBuild"));
                 }
 
                 csProjects.Add(pair.Key, toAdd);
             }
 
-            CSProjects = new ReadOnlyDictionary<string, CSProjectInfo>(csProjects);
+            foreach (CSProjectInfo project in CSProjects.Values)
+            {
+                // Get the assembly references first from AssemblyDefinitionInfo if available (it's actually more correct), otherwise fallback to Assemby
+                IEnumerable<string> references = project.AssemblyDefinitionInfo == null
+                    ? project.Assembly.assemblyReferences.Select(t => t.name)
+                    : (project.AssemblyDefinitionInfo.references ?? Array.Empty<string>());
+
+                foreach (string reference in references)
+                {
+                    if (CSProjects.TryGetValue(reference, out CSProjectInfo dependency))
+                    {
+                        project.AddDependency(dependency);
+                    }
+                    else
+                    {
+                        Debug.LogError($"Failed to get dependency '{reference}' for project '{project.Name}'.");
+                    }
+                }
+            }
+
         }
 
         public void ExportSolution(string solutionTemplateText, string projectFileTemplateText, string commonPropsFilePath)
@@ -80,7 +105,7 @@ namespace Assets.MRTK.Tools.Scripts
                 IEnumerable<string> projectEntries = CSProjects.Select(t =>
                     Utilities.ReplaceTokens(projectEntryTemplate, new Dictionary<string, string>() {
                         {"#PROJECT_TEMPLATE ", string.Empty },
-                        { "<PROJECT_NAME>", t.Value.Assembly.name },
+                        { "<PROJECT_NAME>", t.Value.Name },
                         { "<PROJECT_RELATIVE_PATH>", Path.GetFileName(t.Value.ProjectFilePath) },
                         { "<PROJECT_GUID>", t.Value.Guid.ToString() } }));
 
@@ -89,8 +114,8 @@ namespace Assets.MRTK.Tools.Scripts
                     configurationPlatformEntry.Replace("#CONFIGURATION_PLATFORM_TEMPLATE ", string.Empty).Replace("<Configuration>", "Player")
                 };
 
-                IEnumerable<string> configPlatforms = CompilationSettings.Instance.AvailablePlatforms.Values
-                    .SelectMany(p => twoConfigs.Select(t => t.Replace("<Platform>", p.BuildTarget.ToString())));
+                IEnumerable<string> configPlatforms = CompilationSettings.Instance.AvailablePlatforms.Keys
+                    .SelectMany(p => twoConfigs.Select(t => t.Replace("<Platform>", p.Name.ToString())));
 
                 solutionTemplateText = Utilities.ReplaceTokens(solutionTemplateText, new Dictionary<string, string>()
                 {
@@ -112,3 +137,4 @@ namespace Assets.MRTK.Tools.Scripts
         }
     }
 }
+#endif

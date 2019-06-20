@@ -1,25 +1,14 @@
-﻿using System;
-using System.IO;
-using UnityEditor;
+﻿#if UNITY_EDITOR
+using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.MRTK.Tools.Scripts
 {
     public class AssemblyDefinitionInfo
     {
-        public static AssemblyDefinitionInfo Parse(string assetGuid)
-        {
-            Guid guid = Guid.Parse(assetGuid);
-
-            string relativePath = AssetDatabase.GUIDToAssetPath(assetGuid);
-            string asmdefContents = File.ReadAllText(Utilities.UnityFolderRelativeToAbsolutePath(relativePath));
-
-            AssemblyDefinitionInfo assemblyDefinitionInfo = JsonUtility.FromJson<AssemblyDefinitionInfo>(asmdefContents);
-            assemblyDefinitionInfo.Guid = guid;
-            assemblyDefinitionInfo.AssetsRelativePath = relativePath;
-
-            return assemblyDefinitionInfo;
-        }
+        public const string EditorPlatform = "Editor";
+        public const string TestAssembliesReference = "TestAssemblies";
 
         public Guid Guid;
         public string AssetsRelativePath;
@@ -35,5 +24,25 @@ namespace Assets.MRTK.Tools.Scripts
         public string[] precompiledReferences;
         public bool autoReferenced;
         public string[] defineConstraints;
+
+        public bool EditorPlatformSupported { get; private set; }
+
+        public bool TestAssembly { get; private set; }
+
+        public void Validate()
+        {
+            if (excludePlatforms.Length > 0 && includePlatforms.Length > 0)
+            {
+                Debug.LogError($"Assembly definition file '{name}' contains both excluded and included platform list, will refer to only included.");
+                excludePlatforms = Array.Empty<string>();
+            }
+
+            EditorPlatformSupported =
+                (includePlatforms.Length > 0 && includePlatforms.Contains(EditorPlatform))
+                || (excludePlatforms.Length > 0 && !excludePlatforms.Contains(EditorPlatform));
+
+            TestAssembly = optionalUnityReferences?.Contains(TestAssembliesReference) ?? false;
+        }
     }
 }
+#endif

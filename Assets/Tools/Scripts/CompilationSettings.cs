@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -38,7 +39,7 @@ namespace Assets.MRTK.Tools.Scripts
     {
         public class CompilationPlatform
         {
-            public BuildTarget BuildTarget { get; }
+            public AssemblyDefinitionPlatform AssemblyDefinitionPlatform { get; }
             public BuildTargetGroup BuildTargetGroup { get; }
 
             public TargetFramework TargetFramework { get; }
@@ -73,11 +74,11 @@ namespace Assets.MRTK.Tools.Scripts
             /// </summary>
             public IReadOnlyList<string> AdditionalInEditorReferences { get; }
 
-            public CompilationPlatform(BuildTarget buildTarget, BuildTargetGroup buildTargetGroup, TargetFramework targetFramework,
+            public CompilationPlatform(AssemblyDefinitionPlatform assemblyDefinitionPlatform, BuildTargetGroup buildTargetGroup, TargetFramework targetFramework,
                 IReadOnlyList<string> commonPlatformDefines, IReadOnlyList<string> additionalPlayerDefines, IReadOnlyList<string> additionalInEditorDefines,
                 IReadOnlyList<string> commonPlatformReferences, IReadOnlyList<string> additionalPlayerReferences, IReadOnlyList<string> additionalInEditorReferences)
             {
-                BuildTarget = buildTarget;
+                AssemblyDefinitionPlatform = assemblyDefinitionPlatform;
                 BuildTargetGroup = buildTargetGroup;
 
                 TargetFramework = targetFramework;
@@ -92,53 +93,48 @@ namespace Assets.MRTK.Tools.Scripts
             }
         }
 
-        //TODO consider removing
-        //private class FileNameEqualityComparer : IEqualityComparer<string>
-        //{
-        //    public static FileNameEqualityComparer Instance { get; } = new FileNameEqualityComparer();
-
-        //    private FileNameEqualityComparer() { }
-
-        //    public bool Equals(string x, string y)
-        //    {
-        //        if (x == null || y == null)
-        //        {
-        //            return Equals(x, y);
-        //        }
-
-        //        return Equals(Path.GetFileName(y), Path.GetFileName(y));
-        //    }
-
-        //    public int GetHashCode(string obj)
-        //    {
-        //        return obj == null ? 0 : Path.GetFileName(obj).GetHashCode();
-        //    }
-        //}
-
-        private static readonly Dictionary<BuildTarget, BuildTargetGroup> SupportedPlatforms = new Dictionary<BuildTarget, BuildTargetGroup>
+        private class AssemblyDefinitionPlatformEqualityComparer : IEqualityComparer<AssemblyDefinitionPlatform>
         {
-            // The first one is special, it's the Editor platform which is sperate from In-Editor vs Player configuration
-            //TODO { BuildTarget.NoTarget, BuildTargetGroup.Unknown },
-            { BuildTarget.StandaloneWindows, BuildTargetGroup.Standalone },
-            { BuildTarget.StandaloneWindows64, BuildTargetGroup.Standalone },
-            { BuildTarget.iOS, BuildTargetGroup.iOS },
-            { BuildTarget.Android, BuildTargetGroup.Android },
-            { BuildTarget.WSAPlayer, BuildTargetGroup.WSA },
+            public static AssemblyDefinitionPlatformEqualityComparer Instance { get; } = new AssemblyDefinitionPlatformEqualityComparer();
+
+            private AssemblyDefinitionPlatformEqualityComparer() { }
+
+            public bool Equals(AssemblyDefinitionPlatform x, AssemblyDefinitionPlatform y)
+            {
+                return x.BuildTarget == y.BuildTarget;
+            }
+
+            public int GetHashCode(AssemblyDefinitionPlatform obj)
+            {
+                return obj.BuildTarget.GetHashCode();
+            }
+        }
+
+        private static readonly HashSet<BuildTarget> supportedBuildTargets = new HashSet<BuildTarget>()
+        {
+            //BuildTarget.NoTarget, // This is the Unity Editor build target
+            BuildTarget.StandaloneWindows,
+            BuildTarget.StandaloneWindows64,
+            BuildTarget.iOS,
+            BuildTarget.Android,
+            BuildTarget.WSAPlayer
         };
+
+        private readonly List<AssemblyDefinitionPlatform> supportedPlatforms;
 
         public static CompilationSettings Instance { get; } = new CompilationSettings();
 
-        private readonly Dictionary<BuildTarget, CompilationPlatform> compilationPlatforms = new Dictionary<BuildTarget, CompilationPlatform>();
+        private readonly Dictionary<AssemblyDefinitionPlatform, CompilationPlatform> compilationPlatforms = new Dictionary<AssemblyDefinitionPlatform, CompilationPlatform>();
 
         private HashSet<string> commonDefines;
-        private HashSet<string> developmentBuildAdditionalDefines;
-        private HashSet<string> inEditorAdditionalDefines;
+        private HashSet<string> commonDevelopmentDefines;
+        private HashSet<string> commonInEditorDefines;
 
         private HashSet<string> nonPlayerDefines;
 
         private HashSet<string> commonReferences;
-        private HashSet<string> developmentBuildAdditionalReferences;
-        private HashSet<string> inEditorAdditionalReferences;
+        private HashSet<string> commonDevelopmentReferences;
+        private HashSet<string> commonInEditorReferences;
 
         private HashSet<string> nonPlayerReferences;
 
@@ -172,11 +168,13 @@ namespace Assets.MRTK.Tools.Scripts
         /// </summary>
         public IReadOnlyList<string> InEditorBuildAdditionalReferences { get; }
 
-        public IReadOnlyDictionary<BuildTarget, CompilationPlatform> AvailablePlatforms { get; }
+        public IReadOnlyDictionary<AssemblyDefinitionPlatform, CompilationPlatform> AvailablePlatforms { get; }
 
         private CompilationSettings()
         {
-            AvailablePlatforms = new ReadOnlyDictionary<BuildTarget, CompilationPlatform>(compilationPlatforms);
+            supportedPlatforms = CompilationPipeline.GetAssemblyDefinitionPlatforms().Where(t => supportedBuildTargets.Contains(t.BuildTarget)).ToList();
+
+            AvailablePlatforms = new ReadOnlyDictionary<AssemblyDefinitionPlatform, CompilationPlatform>(compilationPlatforms);
 
             // NOTE: builder.defaultDefines and builder.defaultReferences fetches the data each request based on settings of the builder
             // We will use that to understand all of configuration we need.
@@ -190,14 +188,14 @@ namespace Assets.MRTK.Tools.Scripts
             ProcessCommonDefines(builder);
 
             CommonDefines = new ReadOnlyCollection<string>(commonDefines.ToList());
-            DevelopmentBuildAdditionalDefines = new ReadOnlyCollection<string>(developmentBuildAdditionalDefines.ToList());
-            InEditorBuildAdditionalDefines = new ReadOnlyCollection<string>(inEditorAdditionalDefines.ToList());
+            DevelopmentBuildAdditionalDefines = new ReadOnlyCollection<string>(commonDevelopmentDefines.ToList());
+            InEditorBuildAdditionalDefines = new ReadOnlyCollection<string>(commonInEditorDefines.ToList());
 
             ProcessCommonReferences(builder);
 
             CommonReferences = new ReadOnlyCollection<string>(commonReferences.ToList());
-            DevelopmentBuildAdditionalReferences = new ReadOnlyCollection<string>(developmentBuildAdditionalReferences.ToList());
-            InEditorBuildAdditionalReferences = new ReadOnlyCollection<string>(inEditorAdditionalReferences.ToList());
+            DevelopmentBuildAdditionalReferences = new ReadOnlyCollection<string>(commonDevelopmentReferences.ToList());
+            InEditorBuildAdditionalReferences = new ReadOnlyCollection<string>(commonInEditorReferences.ToList());
 
             // Parse data for compilation platforms
             CreateCompilationPlatforms(builder);
@@ -210,46 +208,53 @@ namespace Assets.MRTK.Tools.Scripts
 
             // Set development build flag and try to get the dev references, filter out common to common,
             builder.flags = AssemblyBuilderFlags.DevelopmentBuild;
-            developmentBuildAdditionalReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
-            commonReferences.RemoveWhere(t => !developmentBuildAdditionalReferences.Contains(t));
+            commonDevelopmentReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
+            commonReferences.RemoveWhere(t => !commonDevelopmentReferences.Contains(t));
 
             // Set editor flag, and get in-editor references. Filter out commont to common
             builder.flags = AssemblyBuilderFlags.EditorAssembly;
-            inEditorAdditionalReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
-            commonReferences.RemoveWhere(t => !inEditorAdditionalReferences.Contains(t));
-
-            // Reset
-            builder.flags = AssemblyBuilderFlags.None;
+            commonInEditorReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
+            commonReferences.RemoveWhere(t => !commonInEditorReferences.Contains(t));
 
             // Go through each platform weeding out common for each of the three
-            foreach (KeyValuePair<BuildTarget, BuildTargetGroup> platformPair in SupportedPlatforms)
+            foreach (AssemblyDefinitionPlatform supportedPlatform in supportedPlatforms)
             {
-                builder.buildTarget = platformPair.Key;
-                builder.buildTargetGroup = platformPair.Value;
+                if (!IsPlatformInstalled(supportedPlatform))
+                {
+                    continue;
+                }
+
+                // Reset
+                builder.flags = AssemblyBuilderFlags.None;
+
+                builder.buildTarget = supportedPlatform.BuildTarget;
+                builder.buildTargetGroup = GetBuildTargetGroup(supportedPlatform);
 
                 builder.flags = AssemblyBuilderFlags.DevelopmentBuild;
                 HashSet<string> other = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
                 commonReferences.RemoveWhere(t => !other.Contains(t));
-                developmentBuildAdditionalReferences.RemoveWhere(t => !other.Contains(t)); // get only the common
+                commonDevelopmentReferences.RemoveWhere(t => !other.Contains(t)); // get only the common
 
                 builder.flags = AssemblyBuilderFlags.EditorAssembly;
                 other = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
                 commonReferences.RemoveWhere(t => !other.Contains(t));
-                inEditorAdditionalReferences.RemoveWhere(t => !other.Contains(t)); // get only the common
-
-                // Reset
-                builder.flags = AssemblyBuilderFlags.None;
+                commonInEditorReferences.RemoveWhere(t => !other.Contains(t)); // get only the common
             }
 
             // Remove common from dev/editor
-            developmentBuildAdditionalReferences.RemoveWhere(commonReferences.Contains);
-            inEditorAdditionalReferences.RemoveWhere(commonReferences.Contains);
+            commonDevelopmentReferences.RemoveWhere(commonReferences.Contains);
+            commonInEditorReferences.RemoveWhere(commonReferences.Contains);
 
             // Reset
             builder.buildTarget = BuildTarget.NoTarget;
             builder.buildTargetGroup = BuildTargetGroup.Unknown;
 
-            nonPlayerReferences = new HashSet<string>(commonReferences.Concat(inEditorAdditionalReferences).Concat(developmentBuildAdditionalReferences));
+            nonPlayerReferences = new HashSet<string>(commonReferences.Concat(commonInEditorReferences).Concat(commonDevelopmentReferences));
+        }
+
+        private bool IsPlatformInstalled(AssemblyDefinitionPlatform platform)
+        {
+            return platform.Name.Equals("Editor") || Utilities.IsPlatformInstalled(platform.BuildTarget);
         }
 
         private void ProcessCommonDefines(AssemblyBuilder builder)
@@ -259,61 +264,60 @@ namespace Assets.MRTK.Tools.Scripts
 
             // Set development build flag and try to get the dev defines, filter out common to common,
             builder.flags = AssemblyBuilderFlags.DevelopmentBuild;
-            developmentBuildAdditionalDefines = new HashSet<string>(builder.defaultDefines);
-            commonDefines.RemoveWhere(t => !developmentBuildAdditionalDefines.Contains(t));
+            commonDevelopmentDefines = new HashSet<string>(builder.defaultDefines);
+            commonDefines.RemoveWhere(t => !commonDevelopmentDefines.Contains(t));
 
             // Set editor flag, and get in-editor defines. Filter out commont to common
             builder.flags = AssemblyBuilderFlags.EditorAssembly;
-            inEditorAdditionalDefines = new HashSet<string>(builder.defaultDefines);
-            commonDefines.RemoveWhere(t => !inEditorAdditionalDefines.Contains(t));
-
-            // Reset
-            builder.flags = AssemblyBuilderFlags.None;
+            commonInEditorDefines = new HashSet<string>(builder.defaultDefines);
+            commonDefines.RemoveWhere(t => !commonInEditorDefines.Contains(t));
 
             // Go through each platform weeding out common for each of the three
-            foreach (KeyValuePair<BuildTarget, BuildTargetGroup> platformPair in SupportedPlatforms)
+            foreach (AssemblyDefinitionPlatform supportedPlatform in supportedPlatforms)
             {
-                if (!Utilities.IsPlatformInstalled(platformPair.Key))
+                if (!IsPlatformInstalled(supportedPlatform))
                 {
-                    Debug.LogError($"The platform '{platformPair.Key}' is not installed, it will not be supported in the MSBuild project.");
+                    Debug.LogError($"The platform '{supportedPlatform.DisplayName}' is not installed, it will not be supported in the MSBuild project.");
                     continue;
                 }
 
-                builder.buildTarget = platformPair.Key;
-                builder.buildTargetGroup = platformPair.Value;
+                // Reset
+                builder.flags = AssemblyBuilderFlags.None;
+
+                builder.buildTarget = supportedPlatform.BuildTarget;
+                builder.buildTargetGroup = GetBuildTargetGroup(supportedPlatform);
 
                 builder.flags = AssemblyBuilderFlags.DevelopmentBuild;
                 HashSet<string> other = new HashSet<string>(builder.defaultDefines);
                 commonDefines.RemoveWhere(t => !other.Contains(t));
-                developmentBuildAdditionalDefines.RemoveWhere(t => !other.Contains(t)); // get only the common
+                commonDevelopmentDefines.RemoveWhere(t => !other.Contains(t)); // get only the common
 
                 builder.flags = AssemblyBuilderFlags.EditorAssembly;
                 other = new HashSet<string>(builder.defaultDefines);
                 commonDefines.RemoveWhere(t => !other.Contains(t));
-                inEditorAdditionalDefines.RemoveWhere(t => !other.Contains(t)); // get only the common
-
-                // Reset
-                builder.flags = AssemblyBuilderFlags.None;
+                commonInEditorDefines.RemoveWhere(t => !other.Contains(t)); // get only the common
             }
 
             // Remove common from dev/editor
-            developmentBuildAdditionalDefines.RemoveWhere(commonDefines.Contains);
-            inEditorAdditionalDefines.RemoveWhere(commonDefines.Contains);
+            commonDevelopmentDefines.RemoveWhere(commonDefines.Contains);
+            commonInEditorDefines.RemoveWhere(commonDefines.Contains);
 
             // Reset
             builder.buildTarget = BuildTarget.NoTarget;
             builder.buildTargetGroup = BuildTargetGroup.Unknown;
 
-            nonPlayerDefines = new HashSet<string>(commonDefines.Concat(inEditorAdditionalDefines).Concat(developmentBuildAdditionalDefines));
+            nonPlayerDefines = new HashSet<string>(commonDefines.Concat(commonInEditorDefines).Concat(commonDevelopmentDefines));
         }
 
         private void CreateCompilationPlatforms(AssemblyBuilder builder)
         {
             // Now go through and get defines for each platform
-            foreach (KeyValuePair<BuildTarget, BuildTargetGroup> platformPair in SupportedPlatforms)
+            foreach (AssemblyDefinitionPlatform supportedPlatform in supportedPlatforms)
             {
-                builder.buildTarget = platformPair.Key;
-                builder.buildTargetGroup = platformPair.Value;
+                BuildTargetGroup buildTargetGroup = GetBuildTargetGroup(supportedPlatform);
+
+                builder.buildTarget = supportedPlatform.BuildTarget;
+                builder.buildTargetGroup = buildTargetGroup;
                 HashSet<string> platformCommonDefines = new HashSet<string>(builder.defaultDefines);
                 HashSet<string> playerDefines = new HashSet<string>(builder.defaultDefines);
 
@@ -346,17 +350,37 @@ namespace Assets.MRTK.Tools.Scripts
                 playerReferences.RemoveWhere(t => platformCommonReferences.Contains(t));
                 inEditorRefernces.RemoveWhere(t => platformCommonReferences.Contains(t));
 
-                CompilationPlatform compilationPlatform = new CompilationPlatform(platformPair.Key, platformPair.Value, GetTargetFramework(platformPair),
+                CompilationPlatform compilationPlatform = new CompilationPlatform(supportedPlatform, GetBuildTargetGroup(supportedPlatform), GetTargetFramework(buildTargetGroup),
                     platformCommonDefines.ToList(), playerDefines.ToList(), inEditorDefines.ToList(),
                     platformCommonReferences.ToList(), playerReferences.ToList(), inEditorRefernces.ToList());
 
-                compilationPlatforms.Add(platformPair.Key, compilationPlatform);
+                compilationPlatforms.Add(supportedPlatform, compilationPlatform);
             }
         }
 
-        private TargetFramework GetTargetFramework(KeyValuePair<BuildTarget, BuildTargetGroup> platformPair)
+        private BuildTargetGroup GetBuildTargetGroup(AssemblyDefinitionPlatform assemblyDefinitionPlatform)
         {
-            switch (PlayerSettings.GetApiCompatibilityLevel(platformPair.Value))
+            switch (assemblyDefinitionPlatform.BuildTarget)
+            {
+                case BuildTarget.iOS:
+                    return BuildTargetGroup.iOS;
+                case BuildTarget.Android:
+                    return BuildTargetGroup.Android;
+                case BuildTarget.StandaloneWindows:
+                case BuildTarget.StandaloneWindows64:
+                    return BuildTargetGroup.Standalone;
+                case BuildTarget.WSAPlayer:
+                    return BuildTargetGroup.WSA;
+                case BuildTarget.NoTarget:
+                    return BuildTargetGroup.Unknown;
+                default:
+                    throw new PlatformNotSupportedException($"Don't currently support {assemblyDefinitionPlatform.DisplayName}");
+            }
+        }
+
+        private TargetFramework GetTargetFramework(BuildTargetGroup buildTargetGroup)
+        {
+            switch (PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup))
             {
                 case ApiCompatibilityLevel.NET_2_0:
                 case ApiCompatibilityLevel.NET_2_0_Subset:
@@ -382,3 +406,4 @@ namespace Assets.MRTK.Tools.Scripts
         }
     }
 }
+#endif
