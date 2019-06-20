@@ -14,24 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// <summary>
     /// A custom shader inspector for the "Mixed Reality Toolkit/Standard" shader.
     /// </summary>
-    public class MixedRealityStandardShaderGUI : ShaderGUI
+    public class MixedRealityStandardShaderGUI : MixedRealityShaderGUI
     {
-        protected enum RenderingMode
-        {
-            Opaque,
-            TransparentCutout,
-            Transparent,
-            PremultipliedTransparent,
-            Additive,
-            Custom
-        }
-
-        protected enum CustomRenderingMode
-        {
-            Opaque,
-            TransparentCutout,
-            Transparent
-        }
 
         protected enum AlbedoAlphaMode
         {
@@ -40,54 +24,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Smoothness
         }
 
-        protected enum DepthWrite
-        {
-            Off,
-            On
-        }
-
         protected static class Styles
         {
             public static string primaryMapsTitle = "Main Maps";
             public static string renderingOptionsTitle = "Rendering Options";
             public static string advancedOptionsTitle = "Advanced Options";
             public static string fluentOptionsTitle = "Fluent Options";
-            public static string renderTypeName = "RenderType";
-            public static string renderingModeName = "_Mode";
-            public static string customRenderingModeName = "_CustomMode";
-            public static string sourceBlendName = "_SrcBlend";
-            public static string destinationBlendName = "_DstBlend";
-            public static string blendOperationName = "_BlendOp";
-            public static string depthTestName = "_ZTest";
-            public static string depthWriteName = "_ZWrite";
-            public static string depthOffsetFactorName = "_ZOffsetFactor";
-            public static string depthOffsetUnitsName = "_ZOffsetUnits";
-            public static string colorWriteMaskName = "_ColorWriteMask";
             public static string instancedColorName = "_InstancedColor";
             public static string instancedColorFeatureName = "_INSTANCED_COLOR";
             public static string stencilComparisonName = "_StencilComparison";
             public static string stencilOperationName = "_StencilOperation";
-            public static string alphaTestOnName = "_ALPHATEST_ON";
-            public static string alphaBlendOnName = "_ALPHABLEND_ON";
             public static string disableAlbedoMapName = "_DISABLE_ALBEDO_MAP";
             public static string albedoMapAlphaMetallicName = "_METALLIC_TEXTURE_ALBEDO_CHANNEL_A";
             public static string albedoMapAlphaSmoothnessName = "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A";
             public static string propertiesComponentHelp = "Use the {0} component to control {1} properties.";
-            public static readonly string[] renderingModeNames = Enum.GetNames(typeof(RenderingMode));
-            public static readonly string[] customRenderingModeNames = Enum.GetNames(typeof(CustomRenderingMode));
             public static readonly string[] albedoAlphaModeNames = Enum.GetNames(typeof(AlbedoAlphaMode));
-            public static readonly string[] depthWriteNames = Enum.GetNames(typeof(DepthWrite));
-            public static GUIContent sourceBlend = new GUIContent("Source Blend", "Blend Mode of Newly Calculated Color");
-            public static GUIContent destinationBlend = new GUIContent("Destination Blend", "Blend Mode of Existing Color");
-            public static GUIContent blendOperation = new GUIContent("Blend Operation", "Operation for Blending New Color With Existing Color");
-            public static GUIContent depthTest = new GUIContent("Depth Test", "How Should Depth Testing Be Performed.");
-            public static GUIContent depthWrite = new GUIContent("Depth Write", "Controls Whether Pixels From This Material Are Written to the Depth Buffer");
-            public static GUIContent depthOffsetFactor = new GUIContent("Depth Offset Factor", "Scales the Maximum Z Slope, with Respect to X or Y of the Polygon");
-            public static GUIContent depthOffsetUnits = new GUIContent("Depth Offset Units", "Scales the Minimum Resolvable Depth Buffer Value");
-            public static GUIContent colorWriteMask = new GUIContent("Color Write Mask", "Color Channel Writing Mask");
             public static GUIContent instancedColor = new GUIContent("Instanced Color", "Enable a Unique Color Per Instance");
-            public static GUIContent cullMode = new GUIContent("Cull Mode", "Triangle Culling Mode");
-            public static GUIContent renderQueueOverride = new GUIContent("Render Queue Override", "Manually Override the Render Queue");
             public static GUIContent albedo = new GUIContent("Albedo", "Albedo (RGB) and Transparency (Alpha)");
             public static GUIContent albedoAssignedAtRuntime = new GUIContent("Assigned at Runtime", "As an optimization albedo operations are disabled when no albedo texture is specified. If a albedo texture will be specified at runtime enable this option.");
             public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Threshold for Alpha Cutoff");
@@ -264,16 +216,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         protected void FindProperties(MaterialProperty[] props)
         {
-            renderingMode = FindProperty(Styles.renderingModeName, props);
-            customRenderingMode = FindProperty(Styles.customRenderingModeName, props);
-            sourceBlend = FindProperty(Styles.sourceBlendName, props);
-            destinationBlend = FindProperty(Styles.destinationBlendName, props);
-            blendOperation = FindProperty(Styles.blendOperationName, props);
-            depthTest = FindProperty(Styles.depthTestName, props);
-            depthWrite = FindProperty(Styles.depthWriteName, props);
-            depthOffsetFactor = FindProperty(Styles.depthOffsetFactorName, props);
-            depthOffsetUnits = FindProperty(Styles.depthOffsetUnitsName, props);
-            colorWriteMask = FindProperty(Styles.colorWriteMaskName, props);
+            renderingMode = FindProperty(BaseStyles.renderingModeName, props);
+            customRenderingMode = FindProperty(BaseStyles.customRenderingModeName, props);
+            sourceBlend = FindProperty(BaseStyles.sourceBlendName, props);
+            destinationBlend = FindProperty(BaseStyles.destinationBlendName, props);
+            blendOperation = FindProperty(BaseStyles.blendOperationName, props);
+            depthTest = FindProperty(BaseStyles.depthTestName, props);
+            depthWrite = FindProperty(BaseStyles.depthWriteName, props);
+            depthOffsetFactor = FindProperty(BaseStyles.depthOffsetFactorName, props);
+            depthOffsetUnits = FindProperty(BaseStyles.depthOffsetUnitsName, props);
+            colorWriteMask = FindProperty(BaseStyles.colorWriteMaskName, props);
             instancedColor = FindProperty(Styles.instancedColorName, props);
             cullMode = FindProperty("_CullMode", props);
             renderQueueOverride = FindProperty("_RenderQueueOverride", props);
@@ -430,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Setup the rendering mode based on the old shader.
             if (oldShader == null || !oldShader.name.Contains("Legacy Shaders/"))
             {
-                SetupMaterialWithRenderingMode(material, (RenderingMode)material.GetFloat(Styles.renderingModeName), CustomRenderingMode.Opaque, -1);
+                SetupMaterialWithRenderingMode(material, (RenderingMode)material.GetFloat(BaseStyles.renderingModeName), CustomRenderingMode.Opaque, -1);
             }
             else
             {
@@ -445,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     mode = RenderingMode.Transparent;
                 }
 
-                material.SetFloat(Styles.renderingModeName, (float)mode);
+                material.SetFloat(BaseStyles.renderingModeName, (float)mode);
 
                 MaterialChanged(material);
             }
@@ -473,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUI.showMixedValue = renderingMode.hasMixedValue;
             RenderingMode mode = (RenderingMode)renderingMode.floatValue;
             EditorGUI.BeginChangeCheck();
-            mode = (RenderingMode)EditorGUILayout.Popup(renderingMode.displayName, (int)mode, Styles.renderingModeNames);
+            mode = (RenderingMode)EditorGUILayout.Popup(renderingMode.displayName, (int)mode, BaseStyles.renderingModeNames);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -496,15 +448,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if ((RenderingMode)renderingMode.floatValue == RenderingMode.Custom)
             {
                 EditorGUI.indentLevel += 2;
-                customRenderingMode.floatValue = EditorGUILayout.Popup(customRenderingMode.displayName, (int)customRenderingMode.floatValue, Styles.customRenderingModeNames);
-                materialEditor.ShaderProperty(sourceBlend, Styles.sourceBlend);
-                materialEditor.ShaderProperty(destinationBlend, Styles.destinationBlend);
-                materialEditor.ShaderProperty(blendOperation, Styles.blendOperation);
-                materialEditor.ShaderProperty(depthTest, Styles.depthTest);
-                depthWrite.floatValue = EditorGUILayout.Popup(depthWrite.displayName, (int)depthWrite.floatValue, Styles.depthWriteNames);
-                materialEditor.ShaderProperty(depthOffsetFactor, Styles.depthOffsetFactor);
-                materialEditor.ShaderProperty(depthOffsetUnits, Styles.depthOffsetUnits);
-                materialEditor.ShaderProperty(colorWriteMask, Styles.colorWriteMask);
+                customRenderingMode.floatValue = EditorGUILayout.Popup(customRenderingMode.displayName, (int)customRenderingMode.floatValue, BaseStyles.customRenderingModeNames);
+                materialEditor.ShaderProperty(sourceBlend, BaseStyles.sourceBlend);
+                materialEditor.ShaderProperty(destinationBlend, BaseStyles.destinationBlend);
+                materialEditor.ShaderProperty(blendOperation, BaseStyles.blendOperation);
+                materialEditor.ShaderProperty(depthTest, BaseStyles.depthTest);
+                depthWrite.floatValue = EditorGUILayout.Popup(depthWrite.displayName, (int)depthWrite.floatValue, BaseStyles.depthWriteNames);
+                materialEditor.ShaderProperty(depthOffsetFactor, BaseStyles.depthOffsetFactor);
+                materialEditor.ShaderProperty(depthOffsetUnits, BaseStyles.depthOffsetUnits);
+                materialEditor.ShaderProperty(colorWriteMask, BaseStyles.colorWriteMask);
                 EditorGUI.indentLevel -= 2;
             }
 
@@ -517,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            materialEditor.ShaderProperty(cullMode, Styles.cullMode);
+            materialEditor.ShaderProperty(cullMode, BaseStyles.cullMode);
         }
 
         protected void MainMapOptions(MaterialEditor materialEditor, Material material)
@@ -807,7 +759,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUI.BeginChangeCheck();
 
-            materialEditor.ShaderProperty(renderQueueOverride, Styles.renderQueueOverride);
+            materialEditor.ShaderProperty(renderQueueOverride, BaseStyles.renderQueueOverride);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -897,206 +849,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.EnableKeyword(Styles.albedoMapAlphaSmoothnessName);
                     }
                     break;
-            }
-        }
-
-        protected static void SetupMaterialWithRenderingMode(Material material, RenderingMode mode, CustomRenderingMode customMode, int renderQueueOverride)
-        {
-            switch (mode)
-            {
-                case RenderingMode.Opaque:
-                    {
-                        material.SetOverrideTag(Styles.renderTypeName, Styles.renderingModeNames[(int)RenderingMode.Opaque]);
-                        material.SetInt(Styles.customRenderingModeName, (int)CustomRenderingMode.Opaque);
-                        material.SetInt(Styles.sourceBlendName, (int)BlendMode.One);
-                        material.SetInt(Styles.destinationBlendName, (int)BlendMode.Zero);
-                        material.SetInt(Styles.blendOperationName, (int)BlendOp.Add);
-                        material.SetInt(Styles.depthTestName, (int)CompareFunction.LessEqual);
-                        material.SetInt(Styles.depthWriteName, (int)DepthWrite.On);
-                        material.SetFloat(Styles.depthOffsetFactorName, 0.0f);
-                        material.SetFloat(Styles.depthOffsetUnitsName, 0.0f);
-                        material.SetInt(Styles.colorWriteMaskName, (int)ColorWriteMask.All);
-                        material.DisableKeyword(Styles.alphaTestOnName);
-                        material.DisableKeyword(Styles.alphaBlendOnName);
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Geometry;
-                    }
-                    break;
-
-                case RenderingMode.TransparentCutout:
-                    {
-                        material.SetOverrideTag(Styles.renderTypeName, Styles.renderingModeNames[(int)RenderingMode.TransparentCutout]);
-                        material.SetInt(Styles.customRenderingModeName, (int)CustomRenderingMode.TransparentCutout);
-                        material.SetInt(Styles.sourceBlendName, (int)BlendMode.One);
-                        material.SetInt(Styles.destinationBlendName, (int)BlendMode.Zero);
-                        material.SetInt(Styles.blendOperationName, (int)BlendOp.Add);
-                        material.SetInt(Styles.depthTestName, (int)CompareFunction.LessEqual);
-                        material.SetInt(Styles.depthWriteName, (int)DepthWrite.On);
-                        material.SetFloat(Styles.depthOffsetFactorName, 0.0f);
-                        material.SetFloat(Styles.depthOffsetUnitsName, 0.0f);
-                        material.SetInt(Styles.colorWriteMaskName, (int)ColorWriteMask.All);
-                        material.EnableKeyword(Styles.alphaTestOnName);
-                        material.DisableKeyword(Styles.alphaBlendOnName);
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.AlphaTest;
-                    }
-                    break;
-
-                case RenderingMode.Transparent:
-                    {
-                        material.SetOverrideTag(Styles.renderTypeName, Styles.renderingModeNames[(int)RenderingMode.Transparent]);
-                        material.SetInt(Styles.customRenderingModeName, (int)CustomRenderingMode.Transparent);
-                        material.SetInt(Styles.sourceBlendName, (int)BlendMode.SrcAlpha);
-                        material.SetInt(Styles.destinationBlendName, (int)BlendMode.OneMinusSrcAlpha);
-                        material.SetInt(Styles.blendOperationName, (int)BlendOp.Add);
-                        material.SetInt(Styles.depthTestName, (int)CompareFunction.LessEqual);
-                        material.SetInt(Styles.depthWriteName, (int)DepthWrite.Off);
-                        material.SetFloat(Styles.depthOffsetFactorName, 0.0f);
-                        material.SetFloat(Styles.depthOffsetUnitsName, 0.0f);
-                        material.SetInt(Styles.colorWriteMaskName, (int)ColorWriteMask.All);
-                        material.DisableKeyword(Styles.alphaTestOnName);
-                        material.EnableKeyword(Styles.alphaBlendOnName);
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
-                    }
-                    break;
-
-                case RenderingMode.PremultipliedTransparent:
-                    {
-                        material.SetOverrideTag(Styles.renderTypeName, Styles.renderingModeNames[(int)RenderingMode.Transparent]);
-                        material.SetInt(Styles.customRenderingModeName, (int)CustomRenderingMode.Transparent);
-                        material.SetInt(Styles.sourceBlendName, (int)BlendMode.One);
-                        material.SetInt(Styles.destinationBlendName, (int)BlendMode.OneMinusSrcAlpha);
-                        material.SetInt(Styles.blendOperationName, (int)BlendOp.Add);
-                        material.SetInt(Styles.depthTestName, (int)CompareFunction.LessEqual);
-                        material.SetInt(Styles.depthWriteName, (int)DepthWrite.Off);
-                        material.SetFloat(Styles.depthOffsetFactorName, 0.0f);
-                        material.SetFloat(Styles.depthOffsetUnitsName, 0.0f);
-                        material.SetInt(Styles.colorWriteMaskName, (int)ColorWriteMask.All);
-                        material.DisableKeyword(Styles.alphaTestOnName);
-                        material.EnableKeyword(Styles.alphaBlendOnName);
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
-                    }
-                    break;
-
-                case RenderingMode.Additive:
-                    {
-                        material.SetOverrideTag(Styles.renderTypeName, Styles.renderingModeNames[(int)RenderingMode.Transparent]);
-                        material.SetInt(Styles.customRenderingModeName, (int)CustomRenderingMode.Transparent);
-                        material.SetInt(Styles.sourceBlendName, (int)BlendMode.One);
-                        material.SetInt(Styles.destinationBlendName, (int)BlendMode.One);
-                        material.SetInt(Styles.blendOperationName, (int)BlendOp.Add);
-                        material.SetInt(Styles.depthTestName, (int)CompareFunction.LessEqual);
-                        material.SetInt(Styles.depthWriteName, (int)DepthWrite.Off);
-                        material.SetFloat(Styles.depthOffsetFactorName, 0.0f);
-                        material.SetFloat(Styles.depthOffsetUnitsName, 0.0f);
-                        material.SetInt(Styles.colorWriteMaskName, (int)ColorWriteMask.All);
-                        material.DisableKeyword(Styles.alphaTestOnName);
-                        material.EnableKeyword(Styles.alphaBlendOnName);
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
-                    }
-                    break;
-
-                case RenderingMode.Custom:
-                    {
-                        material.SetOverrideTag(Styles.renderTypeName, Styles.customRenderingModeNames[(int)customMode]);
-                        // _SrcBlend, _DstBlend, _BlendOp, _ZTest, _ZWrite, _ColorWriteMask are controlled by UI.
-
-                        switch (customMode)
-                        {
-                            case CustomRenderingMode.Opaque:
-                                {
-                                    material.DisableKeyword(Styles.alphaTestOnName);
-                                    material.DisableKeyword(Styles.alphaBlendOnName);
-                                }
-                                break;
-
-                            case CustomRenderingMode.TransparentCutout:
-                                {
-                                    material.EnableKeyword(Styles.alphaTestOnName);
-                                    material.DisableKeyword(Styles.alphaBlendOnName);
-                                }
-                                break;
-
-                            case CustomRenderingMode.Transparent:
-                                {
-                                    material.DisableKeyword(Styles.alphaTestOnName);
-                                    material.EnableKeyword(Styles.alphaBlendOnName);
-                                }
-                                break;
-                        }
-
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : material.renderQueue;
-                    }
-                    break;
-            }
-        }
-
-        protected static bool PropertyEnabled(MaterialProperty property)
-        {
-            return !property.floatValue.Equals(0.0f);
-        }
-
-        protected static float? GetFloatProperty(Material material, string propertyName)
-        {
-            if (material.HasProperty(propertyName))
-            {
-                return material.GetFloat(propertyName);
-            }
-
-            return null;
-        }
-
-        protected static Vector4? GetVectorProperty(Material material, string propertyName)
-        {
-            if (material.HasProperty(propertyName))
-            {
-                return material.GetVector(propertyName);
-            }
-
-            return null;
-        }
-
-        protected static Color? GetColorProperty(Material material, string propertyName)
-        {
-            if (material.HasProperty(propertyName))
-            {
-                return material.GetColor(propertyName);
-            }
-
-            return null;
-        }
-
-        protected static void SetFloatProperty(Material material, string keywordName, string propertyName, float? propertyValue)
-        {
-            if (propertyValue.HasValue)
-            {
-                if (keywordName != null)
-                {
-                    if (!propertyValue.Value.Equals(0.0f))
-                    {
-                        material.EnableKeyword(keywordName);
-                    }
-                    else
-                    {
-                        material.DisableKeyword(keywordName);
-                    }
-                }
-
-                material.SetFloat(propertyName, propertyValue.Value);
-            }
-        }
-
-        protected static void SetVectorProperty(Material material, string propertyName, Vector4? propertyValue)
-        {
-            if (propertyValue.HasValue)
-            {
-                material.SetVector(propertyName, propertyValue.Value);
-            }
-        }
-
-        protected static void SetColorProperty(Material material, string propertyName, Color? propertyValue)
-        {
-            if (propertyValue.HasValue)
-            {
-                material.SetColor(propertyName, propertyValue.Value);
             }
         }
 

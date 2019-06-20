@@ -8,6 +8,20 @@ Shader "Mixed Reality Toolkit/Wireframe"
 {
     Properties
     {
+        // Advanced options.
+        [Enum(RenderingMode)] _Mode("Rendering Mode", Float) = 0                                     // "Opaque"
+        [Enum(CustomRenderingMode)] _CustomMode("Mode", Float) = 0                                   // "Opaque"
+        [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend("Source Blend", Float) = 1                 // "One"
+        [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend("Destination Blend", Float) = 0            // "Zero"
+        [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("Blend Operation", Float) = 0                 // "Add"
+        [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("Depth Test", Float) = 4                // "LessEqual"
+        [Enum(DepthWrite)] _ZWrite("Depth Write", Float) = 1                                         // "On"
+        _ZOffsetFactor("Depth Offset Factor", Float) = 0                                             // "Zero"
+        _ZOffsetUnits("Depth Offset Units", Float) = 0                                               // "Zero"
+        [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("Color Write Mask", Float) = 15 // "All"
+        [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Float) = 2                     // "Back"
+        _RenderQueueOverride("Render Queue Override", Range(-1.0, 5000)) = -1
+
         _BaseColor("Base color", Color) = (0.0, 0.0, 0.0, 1.0)
         _WireColor("Wire color", Color) = (1.0, 1.0, 1.0, 1.0)
         _WireThickness("Wire thickness", Range(0, 800)) = 100
@@ -15,6 +29,13 @@ Shader "Mixed Reality Toolkit/Wireframe"
     SubShader
     {
         Tags { "RenderType" = "Opaque" }
+        Blend[_SrcBlend][_DstBlend]
+        BlendOp[_BlendOp]
+        ZTest[_ZTest]
+        ZWrite[_ZWrite]
+        Cull[_CullMode]
+        Offset[_ZOffsetFactor],[_ZOffsetUnits]
+        ColorMask[_ColorWriteMask]
 
         Pass
         {
@@ -27,7 +48,7 @@ Shader "Mixed Reality Toolkit/Wireframe"
 
             // We only target the HoloLens (and the Unity editor), so take advantage of shader model 5.
             #pragma target 5.0
-            #pragma only_renderers d3d11
+            #pragma only_renderers d3d11 //D3D 11 & 12
 
             #include "UnityCG.cginc"
 
@@ -118,5 +139,7 @@ Shader "Mixed Reality Toolkit/Wireframe"
             ENDCG
         }
     }
+
     FallBack "Diffuse"
+    CustomEditor "Microsoft.MixedReality.Toolkit.Editor.MixedRealityWireframeShaderGUI"
 }
