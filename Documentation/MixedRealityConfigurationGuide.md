@@ -173,11 +173,13 @@ An optional but highly useful feature of the MRTK is the plugin diagnostics func
 
 > The MRTK also allows you to write your own diagnostic system and you can use the selection below to switch the system used without rewriting the toolkit. For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png" width="650px" style="display:block;">
+<sup>Diagnostics System Selection</sup>
 
 The diagnostics profile provides several simple systems to monitor whilst the project is running, including a handy On/Off switch to enable / disable the display pane in the scene.
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png" width="650px" style="display:block;">
+<sup>Diagnostics Profile</sup>
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit configuration screen.
 
@@ -188,7 +190,8 @@ The diagnostics profile provides several simple systems to monitor whilst the pr
 
 The MRTK provides this optional service to help you manage complex additive scene loading / unloading. To decide if the Scene System would be a good fit for your project, read the [Scene System Getting Started Guide.](SceneSystem/SceneSystemGettingStarted.md)
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png" width="650px" style="display:block;">
+<sup>Scene System Profile</sup>
 
 ---
 <a name="services"/>
@@ -203,7 +206,9 @@ Any registered service still gets the full advantage of all of the Unity events,
 
 Check out the [Guide to building Registered Services]() (Coming Soon) for more details about creating your own services
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png" width="650px" style="display:block;">
+<sup>Scene System Profile</sup>
+
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit configuration screen.
 
@@ -231,7 +236,8 @@ Events utilizing input actions are not limited to physical controllers and can s
 
 > Input actions are one of the few components which is not editable at runtime, they are a design time configuration only. This profile should not be swapped out whilst the project is running due to the framework (and your projects) dependency on the ID's generated for each action.
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png" width="650px" style="display:block;">
+<sup>Input Actions Profile</sup>
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit input system settings screen.
 
@@ -244,7 +250,7 @@ Input action rules provide a way to automatically translate an event raised for 
 
 For example, converting the single dual axis input event from a DPad in to the 4 corresponding "Dpad Up" / "DPad Down" / "Dpad Left" / "Dpad Right" actions (as shown in the image below).
 
-> This could also be done i your own code, but seeing as this was a very common patter, the framework provides a mechanism to do this "out of the box"
+> This could also be done in your own code. However, seeing as this was a very common pattern, the framework provides a mechanism to do this "out of the box"
 
 Input action Rules can be configured for any of the available input axis. However, input actions from one axis type can be translated to another input action of the same axis type. You can map a dual axis action to another dual axis action, but not to a digital or none action.
 
@@ -263,7 +269,9 @@ Pointers can also be visualized within the active scene using one of the many li
 
 > See the [Guide to Pointers documentation]() **Coming Soon** for more information on creating your own pointers.
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png" width="650px" style="display:block;">
+<sup>Input Pointer Profile</sup>
+
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit input system settings screen.
 
@@ -284,7 +292,8 @@ Gestures are a system specific implementation allowing you to assign input actio
 
 > Note, the current implementation is for the HoloLens only and will be enhanced for other systems as they are added to the Toolkit in the future (no dates yet).
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png" width="650px" style="display:block;">
+<sup>Gesture Profile</sup>
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit input system settings screen.
 
@@ -295,9 +304,10 @@ Gestures are a system specific implementation allowing you to assign input actio
 
 Like gestures, some runtime platforms also provide intelligent "Speech to Text" functionality with the ability to generate commands that can be received by a Unity project. This configuration profile allows you to configure registered "words" and translate them in to input actions that can be received by your project. They can also be attached to keyboard actions if required.
 
-> The system currently only supports speech when running on Windows 10 platforms, e.g. HoloLens and Windows 10 desktop and will be enhanced for other systems as they are added to the Toolkit in the future (no dates yet).
+> The system currently only supports speech when running on Windows 10 platforms, e.g. HoloLens and Windows 10 desktop and will be enhanced for other systems as they are added to MRTK in the future (no dates yet).
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png" width="650px" style="display:block;">
+<sup>Speech Commands Profile</sup>
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit input system settings screen.
 
@@ -310,7 +320,8 @@ One of the core configuration screens for the Mixed Reality Toolkit is the abili
 
 The configuration screen below allows you to configure any of the controllers currently recognized by the toolkit.
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png" width="650px" style="display:block;">
+<sup>Controller Mapping Profile</sup>
 
 The MRTK provides a default configuration for the following controllers / systems:
 
@@ -345,7 +356,8 @@ This can be configured at a "Global" (all instances of a controller for a specif
 
 If your controller representation in the scene needs to be offset from the physical controller position, then simply set that offset against the controller model's prefab (e.g. setting the transform position of the controller prefab with an offset position).
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png" width="650px" style="display:block;">
+<sup>Controller Visualization Profile</sup>
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
 
@@ -355,8 +367,10 @@ If your controller representation in the scene needs to be offset from the physi
 
 Service Inspectors are an editor-only feature that generates in-scene objects representing active services. Selecting these objects displays inspectors which offer documentation links, control over editor visualizations and insight into the state of the service.
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.png" width="350px" style="display:block;">
+<sup>Service Inspectors</sup>
 
 You can enable service inspectors by checking 'Use Service Inspectors' under Editor Settings in your Configuration Profile.
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.png" width="650px" style="display:block;">
+<sup>Enable Service Inspectors</sup>
