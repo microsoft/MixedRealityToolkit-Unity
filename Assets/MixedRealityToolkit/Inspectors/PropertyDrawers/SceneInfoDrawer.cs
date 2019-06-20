@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [InitializeOnLoadMethod]
         private static void SubscribeToEvents()
         {
+            cachedScenes = EditorBuildSettings.scenes;
             EditorBuildSettings.sceneListChanged += SceneListChanged;
         }
 
@@ -196,9 +197,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Draw our button
             EditorGUI.BeginDisabledGroup(buttonsDisabled || Application.isPlaying);
+            if (!string.IsNullOrEmpty(pathProperty.stringValue) && asset == null)
+            {
+                // The scene is missing
+                // This may be due to a local file ID mismatch
+                // Try to find it based on guid first
+                asset = AssetDatabase.LoadAssetAtPath<SceneAsset>(pathProperty.stringValue);
+            }
+
+
             if (!string.IsNullOrEmpty (nameProperty.stringValue) && asset == null)
             {
-                // The scene is missing - draw a button that lets people attempt to recover it
+                // If we still can't find it, draw a button that lets people attempt to recover it
                 if (GUI.Button(buttonRect, "Search for missing scene", EditorStyles.toolbarButton))
                 {
                    changed |= FindScene(nameProperty, pathProperty, ref asset);
