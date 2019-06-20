@@ -174,6 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             RenderMRTKLogo();
 
+            CheckEditorPlayMode();
+
             if (!MixedRealityToolkit.IsInitialized)
             {
                 EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Warning);
@@ -212,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
             }
 
-            bool isGUIEnabled = !IsProfileLock((BaseMixedRealityProfile)target);
+            bool isGUIEnabled = !IsProfileLock((BaseMixedRealityProfile)target) && GUI.enabled;
             GUI.enabled = isGUIEnabled;
 
             EditorGUI.BeginChangeCheck();
@@ -229,6 +231,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.Space();
             }
 
+            changed |= EditorGUI.EndChangeCheck();
+
             EditorGUILayout.BeginHorizontal();
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(100));
@@ -244,11 +248,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
-
-            if (!changed)
-            {
-                changed |= EditorGUI.EndChangeCheck();
-            }
 
             serializedObject.ApplyModifiedProperties();
             GUI.enabled = true;
