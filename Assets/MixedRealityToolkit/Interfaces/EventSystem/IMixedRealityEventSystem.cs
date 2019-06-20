@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// List of event listeners that are registered to this Event System.
         /// </summary>
         /// <remarks>
-        /// This collection is obsolete is replaced by handler-based storage and will be removed in a future release.
+        /// This collection is obsolete and is replaced by handler-based internal storage. It will be removed in a future release.
         /// </remarks>
         List<GameObject> EventListeners { get; }
 

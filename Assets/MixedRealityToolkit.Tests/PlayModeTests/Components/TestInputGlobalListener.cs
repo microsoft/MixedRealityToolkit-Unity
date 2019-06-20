@@ -153,12 +153,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         protected override void RegisterHandlers()
         {
-            RegisterAllHandlers<TestInputGlobalHandlerListener>();
+            InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler<float>>(this);
         }
 
         protected override void UnregisterHandlers()
         {
-            UnregisterAllHandlers<TestInputGlobalHandlerListener>();
+            InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler<float>>(this);
         }
     }
 #pragma warning restore 0618

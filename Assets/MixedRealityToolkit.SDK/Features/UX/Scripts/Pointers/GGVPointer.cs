@@ -280,12 +280,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected override void RegisterHandlers()
         {
-            RegisterAllHandlers<GGVPointer>();
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
+            InputSystem?.RegisterHandler<IMixedRealitySourcePoseHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         protected override void UnregisterHandlers()
         {
-            UnregisterAllHandlers<GGVPointer>();
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
+            InputSystem?.UnregisterHandler<IMixedRealitySourcePoseHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         #endregion InputSystemGlobalHandlerListener Implementation
