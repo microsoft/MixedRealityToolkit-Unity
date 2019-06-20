@@ -138,12 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             SetCursor();
-
-            BaseCursor c = BaseCursor as BaseCursor;
-            if (c != null)
-            {
-                c.VisibleSourcesCount++;
-            }
         }
 
         protected override async void Start()

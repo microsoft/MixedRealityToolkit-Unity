@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You may also configure the script on only enable certain manipulations. The script works with 
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
-    public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
+    public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
         public enum HandMovementType
@@ -199,7 +199,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private TwoHandMoveLogic moveLogic;
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
-        private Dictionary<uint, IMixedRealityPointer> pointerIdToPointerMap = new Dictionary<uint, IMixedRealityPointer>();
+        private Dictionary<uint, IMixedRealityPointer> hoverPointersMap = new Dictionary<uint, IMixedRealityPointer>();
+        private Dictionary<uint, IMixedRealityPointer> downPointersMap = new Dictionary<uint, IMixedRealityPointer>();
 
         private Quaternion objectToHandRotation;
         private Vector3 objectToHandTranslation;
@@ -252,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 sum = Vector3.zero;
             int count = 0;
-            foreach (var p in pointerIdToPointerMap.Values)
+            foreach (var p in downPointersMap.Values)
             {
                 sum += p.Position;
                 count++;
@@ -264,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 sum = Vector3.zero;
             int numControllers = 0;
-            foreach (var p in pointerIdToPointerMap.Values)
+            foreach (var p in downPointersMap.Values)
             {
                 // Check pointer has a valid controller (e.g. gaze pointer doesn't)
                 if (p.Controller != null)
@@ -280,7 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 sum = Vector3.zero;
             int numControllers = 0;
-            foreach (var p in pointerIdToPointerMap.Values)
+            foreach (var p in downPointersMap.Values)
             {
                 // Check pointer has a valid controller (e.g. gaze pointer doesn't)
                 if (p.Controller != null)
@@ -294,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool IsNearManipulation()
         {
-            foreach (var item in pointerIdToPointerMap)
+            foreach (var item in downPointersMap)
             {
                 if (item.Value is IMixedRealityNearPointer)
                 {
@@ -306,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateStateMachine()
         {
-            var handsPressedCount = pointerIdToPointerMap.Count;
+            var handsPressedCount = downPointersMap.Count;
             State newState = currentState;
             // early out for no hands or one hand if TwoHandedOnly is active
             if (handsPressedCount == 0 || (handsPressedCount == 1 && manipulationType == HandMovementType.TwoHandedOnly))
@@ -440,14 +441,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             // If we only allow one handed manipulations, check there is no hand interacting yet. 
-            if (manipulationType != HandMovementType.OneHandedOnly || pointerIdToPointerMap.Count == 0)
+            if (manipulationType != HandMovementType.OneHandedOnly || downPointersMap.Count == 0)
             {
                 uint id = eventData.Pointer.PointerId;
                 // Ignore poke pointer events
-                if (!eventData.used
-                    && !pointerIdToPointerMap.ContainsKey(eventData.Pointer.PointerId))
+                if (!eventData.used && !downPointersMap.ContainsKey(id))
                 {
-                    if (pointerIdToPointerMap.Count == 0)
+                    if (downPointersMap.Count == 0)
                     {
                         rigidBody = GetComponent<Rigidbody>();
                         if (rigidBody != null)
@@ -456,13 +456,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             rigidBody.isKinematic = true;
                         }
                     }
-                    pointerIdToPointerMap.Add(id, eventData.Pointer);
+                    downPointersMap.Add(id, eventData.Pointer);
 
                     UpdateStateMachine();
                 }
             }
 
-            if (pointerIdToPointerMap.Count > 0)
+            if (downPointersMap.Count > 0)
             {
                 // Always mark the pointer data as used to prevent any other behavior to handle pointer events
                 // as long as the ManipulationHandler is active.
@@ -483,14 +483,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             uint id = eventData.Pointer.PointerId;
-            if (pointerIdToPointerMap.ContainsKey(id))
+            if (downPointersMap.ContainsKey(id))
             {
-                if (pointerIdToPointerMap.Count == 1)
+                if (downPointersMap.Count == 1 && rigidBody != null)
                 {
                     ReleaseRigidBody();
                 }
 
-                pointerIdToPointerMap.Remove(id);
+                downPointersMap.Remove(id);
             }
 
             UpdateStateMachine();
@@ -530,8 +530,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         
         private void HandleOneHandMoveUpdated()
         {
-            Debug.Assert(pointerIdToPointerMap.Count == 1);
-            IMixedRealityPointer pointer = pointerIdToPointerMap.Values.First();
+            Debug.Assert(downPointersMap.Count == 1);
+            IMixedRealityPointer pointer = downPointersMap.Values.First();
 
             Quaternion targetRotation = Quaternion.identity;
             RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
@@ -621,8 +621,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void HandleOneHandMoveStarted()
         {
-            Assert.IsTrue(pointerIdToPointerMap.Count == 1);
-            IMixedRealityPointer pointer = pointerIdToPointerMap.Values.First();
+            Assert.IsTrue(downPointersMap.Count == 1);
+            IMixedRealityPointer pointer = downPointersMap.Values.First();
 
             moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
 
@@ -684,6 +684,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Unused Event Handlers
         /// <inheritdoc />
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
+        public void OnBeforeFocusChange(FocusEventData eventData) { }
+
         #endregion Unused Event Handlers
 
         #region Private methods
@@ -703,7 +705,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Dictionary<uint, Vector3> GetHandPositionMap()
         {
             var handPositionMap = new Dictionary<uint, Vector3>();
-            foreach (var item in pointerIdToPointerMap)
+            foreach (var item in downPointersMap)
             {
                 handPositionMap.Add(item.Key, item.Value.Position);
             }
@@ -720,6 +722,74 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (OnHoverEntered != null)
             {
                 OnHoverEntered.Invoke(new ManipulationEventData { IsNearInteraction = !isFar }); 
+            }
+        }
+
+        public void OnFocusChanged(FocusEventData eventData)
+        {
+            if (eventData.NewFocusedObject != null && eventData.NewFocusedObject.transform.IsChildOf(transform))
+            {
+                // If we only allow one handed manipulations, check there is no hand interacting yet. 
+                if (manipulationType != HandMovementType.OneHandedOnly || hoverPointersMap.Count == 0)
+                {
+                    uint id = eventData.Pointer.PointerId;
+                    // Ignore poke pointer events
+                    if (!eventData.used && 
+                        eventData.Pointer.Controller != null &&
+                        !hoverPointersMap.ContainsKey(id))
+                    {
+                        hoverPointersMap.Add(id, eventData.Pointer);
+                    }
+                }
+            }
+            else
+            {
+                uint id = eventData.Pointer.PointerId;
+                if (hoverPointersMap.ContainsKey(id))
+                {
+                    var bc = hoverPointersMap[id].BaseCursor as BaseCursor;
+                    if (bc == null)
+                    {
+                        var ggvPointer = hoverPointersMap[id] as GGVPointer;
+                        if (ggvPointer != null)
+                        {
+                            bc = ggvPointer.GazeCursor as BaseCursor;
+                        }
+                    }
+                    if (bc != null)
+                    {
+                        // clear the move bit
+                        bc.CurrentCursorActions &= ~BaseCursor.CursorAction.Move;
+                    }
+                    hoverPointersMap.Remove(id);
+                }
+            }
+            
+            if (manipulationType != HandMovementType.OneHandedOnly)
+            {
+                foreach (var p in hoverPointersMap.Values)
+                {
+                    var bc = p.BaseCursor as BaseCursor;
+                    if (bc == null)
+                    {
+                        var ggvPointer = p as GGVPointer;
+                        if (ggvPointer != null)
+                        {
+                            bc = ggvPointer.GazeCursor as BaseCursor;
+                        }
+                    }
+                    if (bc != null)
+                    {
+                        if (hoverPointersMap.Count >= 2)
+                        {
+                            bc.CurrentCursorActions |= BaseCursor.CursorAction.Move;
+                        }
+                        else
+                        {
+                            bc.CurrentCursorActions &= ~BaseCursor.CursorAction.Move;
+                        }
+                    }
+                }
             }
         }
 

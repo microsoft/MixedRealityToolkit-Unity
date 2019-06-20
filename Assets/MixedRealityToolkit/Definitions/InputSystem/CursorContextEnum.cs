@@ -8,10 +8,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public enum CursorContextEnum
     {
-        /// <summary>
-        /// Useful for releasing external override.
-        /// See <c>CursorStateEnum.Contextual</c>
-        /// </summary>
         None = -1,
         MoveEastWest,
         MoveNorthSouth,
@@ -20,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         MoveCross,
         RotateEastWest,
         RotateNorthSouth,
-        /// <summary>
-        /// Allows for external override
-        /// </summary>
         Contextual
     }
 }

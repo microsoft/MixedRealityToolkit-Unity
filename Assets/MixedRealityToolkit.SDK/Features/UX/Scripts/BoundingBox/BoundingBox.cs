@@ -1891,21 +1891,53 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
-            if (activation == BoundingBoxActivationType.ActivateManually || activation == BoundingBoxActivationType.ActivateOnStart)
+            if (activation != BoundingBoxActivationType.ActivateManually && activation != BoundingBoxActivationType.ActivateOnStart)
             {
-                return;
+                if (DoesActivationMatchFocus(eventData))
+                {
+                    bool handInProximity = eventData.NewFocusedObject != null && eventData.NewFocusedObject.transform.IsChildOf(transform);
+                    if (handInProximity == wireframeOnly)
+                    {
+                        wireframeOnly = !handInProximity;
+                        ResetHandleVisibility();
+                    }
+                }
             }
 
-            if (!DoesActivationMatchFocus(eventData))
+            if (eventData.NewFocusedObject != null && eventData.NewFocusedObject.transform.IsChildOf(transform))
             {
-                return;
-            }
+                GameObject grabbedHandle = eventData.Pointer.Result.CurrentPointerTarget;
+                if (grabbedHandle)
+                {
+                    currentHandleType = GetHandleType(grabbedHandle.transform);
 
-            bool handInProximity = eventData.NewFocusedObject != null && eventData.NewFocusedObject.transform.IsChildOf(transform);
-            if (handInProximity == wireframeOnly)
+                    var bc = eventData.Pointer.BaseCursor as BaseCursor;
+                    if (bc != null)
+                    {
+                        bc.handleRigTransform = rigRoot.transform;
+                        bc.handleRigBounds = currentBoundsExtents;
+                        switch (currentHandleType)
+                        {
+                            case HandleType.Rotation:
+                                bc.CurrentCursorActions |= BaseCursor.CursorAction.Rotate;
+                                break;
+                            case HandleType.Scale:
+                                bc.CurrentCursorActions |= BaseCursor.CursorAction.Scale;
+                                break;
+                            case HandleType.None:
+                                bc.CurrentCursorActions &= ~(BaseCursor.CursorAction.Rotate | BaseCursor.CursorAction.Scale);
+                                break;
+                        }
+                    }
+                }
+            }
+            else
             {
-                wireframeOnly = !handInProximity;
-                ResetHandleVisibility();
+                var bc = eventData.Pointer.BaseCursor as BaseCursor;
+                if (bc != null)
+                {
+                    bc.CurrentCursorActions &= ~(BaseCursor.CursorAction.Rotate | BaseCursor.CursorAction.Scale);
+                }
             }
         }
 

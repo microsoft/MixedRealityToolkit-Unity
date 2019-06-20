@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -30,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
-        public CursorContextEnum CursorContext { get; set; } = CursorContextEnum.None;
+        public CursorContextEnum CursorContext { get; private set; } = CursorContextEnum.None;
 
         /// <summary>
         /// Surface distance to place the cursor off of the surface at
@@ -128,6 +129,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return visibleSourcesCount; }
             set { visibleSourcesCount = value; }
         }
+
+        [Flags]
+        public enum CursorAction
+        {
+            None = 0,
+            Move = 1 << 0,
+            Rotate = 1 << 1,
+            Scale = 1 << 2
+        }
+
+        public CursorAction CurrentCursorActions = CursorAction.None;
+
+        public Transform handleRigTransform = null;
+        public Vector3 handleRigBounds = Vector3.zero;
 
         private Vector3 targetPosition;
         private Vector3 targetScale;
@@ -504,7 +519,94 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual CursorContextEnum CheckCursorContext()
         {
             // Temp implementation
-            return CursorContextEnum.None;
+            if (CursorContext != CursorContextEnum.Contextual)
+            {
+                if ((CurrentCursorActions & CursorAction.Move) != 0)
+                {
+                    return CursorContextEnum.MoveCross;
+                }
+                else if ((CurrentCursorActions & CursorAction.Scale) != 0)
+                {
+                    if (handleRigTransform != null)
+                    {
+                        Vector3 adjustedHandlePos = handleRigTransform.InverseTransformVector(Position - handleRigTransform.position);
+                        adjustedHandlePos.x /= handleRigBounds.x;
+                        adjustedHandlePos.y /= handleRigBounds.y;
+                        adjustedHandlePos.z /= handleRigBounds.z;
+
+
+                        if (adjustedHandlePos.y > 0)
+                        {
+                            if (adjustedHandlePos.x * adjustedHandlePos.z > 0) // 1st or 3rd quadrant
+                            {
+                                if (Math.Abs(adjustedHandlePos.x) < Math.Abs(adjustedHandlePos.z))
+                                {
+                                    return CursorContextEnum.MoveNorthwestSoutheast;
+                                }
+                                else
+                                {
+                                    return CursorContextEnum.MoveNortheastSouthwest;
+                                }
+                            }
+                            else // 2nd or 4th quadrant
+                            {
+                                if (Math.Abs(adjustedHandlePos.x) < Math.Abs(adjustedHandlePos.z))
+                                {
+                                    return CursorContextEnum.MoveNortheastSouthwest;
+                                }
+                                else
+                                {
+                                    return CursorContextEnum.MoveNorthwestSoutheast;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (adjustedHandlePos.x * adjustedHandlePos.z > 0) // 1st or 3rd quadrant
+                            {
+                                if (Math.Abs(adjustedHandlePos.x) < Math.Abs(adjustedHandlePos.z))
+                                {
+                                    return CursorContextEnum.MoveNortheastSouthwest;
+                                }
+                                else
+                                {
+                                    return CursorContextEnum.MoveNorthwestSoutheast;
+                                }
+                            }
+                            else // 2nd or 4th quadrant
+                            {
+                                if (Math.Abs(adjustedHandlePos.x) < Math.Abs(adjustedHandlePos.z))
+                                {
+                                    return CursorContextEnum.MoveNorthwestSoutheast;
+                                }
+                                else
+                                {
+                                    return CursorContextEnum.MoveNortheastSouthwest;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if ((CurrentCursorActions & CursorAction.Rotate) != 0)
+                {
+                    if (handleRigTransform != null)
+                    {
+                        Vector3 adjustedHandlePos = handleRigTransform.InverseTransformVector(Position - handleRigTransform.position);
+
+                        if (Math.Abs(adjustedHandlePos.y) > Math.Abs(adjustedHandlePos.x) &&
+                        Math.Abs(adjustedHandlePos.y) > Math.Abs(adjustedHandlePos.z))
+                        {
+                            return CursorContextEnum.RotateNorthSouth;
+                        }
+                        else
+                        {
+                            return CursorContextEnum.RotateEastWest;
+                        }
+                    }
+                }
+                return CursorContextEnum.None;
+            }
+            return CursorContextEnum.Contextual;
         }
 
         /// <summary>
