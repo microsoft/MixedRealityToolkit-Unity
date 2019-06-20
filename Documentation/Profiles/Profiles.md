@@ -43,3 +43,7 @@ The key differences between the HoloLens2 profile and the Default Profile are:
 - Eye simulation has been enabled by default
 - Hand mesh visualization is disabled (there is a performance overhead associated with using hand meshes)
 - Camera profile settings are set to match such that the editor quality and player quality are the same.
+  (This is different from the default camera profile where Opaque displays are set to higher quality -
+  this change makes it so that in-editor quality will be lower, which will more closely match what will
+  be rendered on the device)
+  
