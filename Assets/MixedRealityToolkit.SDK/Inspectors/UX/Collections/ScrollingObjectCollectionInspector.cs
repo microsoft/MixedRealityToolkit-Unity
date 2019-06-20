@@ -36,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty velocityType;
         private SerializedProperty velocityMultiplier;
         private SerializedProperty velocityFalloff;
+        private SerializedProperty bounceMultiplier;
         private SerializedProperty animationCurve;
         private SerializedProperty animationLength;
 
@@ -76,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             velocityType = serializedObject.FindProperty("typeOfVelocity");
             velocityMultiplier = serializedObject.FindProperty("velocityMultiplier");
             velocityFalloff = serializedObject.FindProperty("velocityFalloff");
+            bounceMultiplier = serializedObject.FindProperty("bounceMultiplier");
             animationCurve = serializedObject.FindProperty("paginationCurve");
             animationLength = serializedObject.FindProperty("animationLength");
 
@@ -149,8 +151,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.PropertyField(velocityType);
-                EditorGUILayout.PropertyField(velocityMultiplier);
-                EditorGUILayout.PropertyField(velocityFalloff);
+
+                if(velocityType.enumValueIndex <= 1)
+                {
+                    EditorGUILayout.PropertyField(velocityMultiplier);
+                    EditorGUILayout.PropertyField(velocityFalloff);
+                    EditorGUILayout.PropertyField(bounceMultiplier);
+                }
             }
 
             EditorGUILayout.Space();
@@ -258,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 if (scrollContainer.ClippingObject != null)
                 {
                     center = scrollContainer.ClippingObject.transform.position;
-                    center.z = scrollContainer.ClippingObject.transform.position.z + scrollContainer.ClippingObject.transform.localScale.z * (ScrollingObjectCollection.AxisOrientationToDirection(scrollContainer.CollectionForward).z * 0.5f);
+                    //center.z = scrollContainer.transform.InverseTransformPoint(scrollContainer.ClippingObject.transform.position + scrollContainer.ClippingObject.transform.localScale).z;// * (scrollContainer.transform.InverseTransformPoint(ScrollingObjectCollection.AxisOrientationToDirection(scrollContainer.CollectionForward)).z * 0.5f);
                 }
                 else
                 {
@@ -269,16 +276,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 if (Application.isPlaying)
                 {
                     //now that its running lets show the press plane so users have feedback about touch
-                    center.z = pressPlane.vector3Value.z;
+                    center = scrollContainer.transform.TransformPoint(scrollContainer.ClippingObject.transform.localPosition + pressPlane.vector3Value);
                 }
 
                 UnityEditor.Handles.color = arrowColor;
 
                 float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
-                UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(scrollContainer.transform.rotation * ScrollingObjectCollection.AxisOrientationToDirection(scrollContainer.CollectionForward)), arrowSize, EventType.Repaint);
+                Quaternion rot = scrollContainer.transform.rotation * Quaternion.LookRotation(ScrollingObjectCollection.AxisOrientationToDirection(scrollContainer.CollectionForward), scrollContainer.transform.up);
+                UnityEditor.Handles.ArrowHandleCap(0, center, rot, arrowSize, EventType.Repaint);
 
-                Vector3 rightDelta = scrollContainer.transform.localToWorldMatrix.MultiplyVector(scrollContainer.transform.right * scrollContainer.ClippingObject.transform.localScale.x * 0.5f);
-                Vector3 upDelta = scrollContainer.transform.localToWorldMatrix.MultiplyVector(scrollContainer.transform.up * scrollContainer.ClippingObject.transform.localScale.y * 0.5f);
+                Vector3 rightDelta = scrollContainer.transform.right * scrollContainer.ClippingObject.transform.localScale.x * 0.5f;
+                Vector3 upDelta = scrollContainer.transform.up * scrollContainer.ClippingObject.transform.localScale.y * 0.5f;
 
                 Vector3[] points = new Vector3[4];
                 points[0] = center + rightDelta + upDelta;
@@ -297,7 +305,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     if (node.Transform == null) { continue; }
 
                     Vector3 cp = node.Transform.position;
-                    cp.z = center.z;
 
                     UnityEditor.Handles.Label(cp, new GUIContent(i.ToString()));
                 }
