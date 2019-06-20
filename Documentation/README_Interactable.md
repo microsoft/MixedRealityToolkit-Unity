@@ -229,7 +229,7 @@ The SetValue function is used to set the property value based on the current sta
 
 Custom Settings added to the new class will also be displayed in the inspector. If there are properties that need to be exposed in the inspector but do not need to be based on states, they should be added to the Custom Settings list.
 
-### Extending Shader Themes
+### Extending shader themes
 
 If creating a custom Interactable Theme to modify shader properties, it is advised to extend the `InteractableShaderTheme` class. Please see the `InteractableColorTheme` class as an example to extend the `InteractableShaderTheme` class.
 
