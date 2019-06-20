@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class NearInteractionTouchable : BaseNearInteractionTouchable
     {
-        private enum TouchableSurface
+        public enum TouchableSurfaceType
         {
             BoxCollider,
             UnityUI,
@@ -37,6 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected Vector3 localUp = Vector3.up;
         public Vector3 LocalUp { get => localUp; }
 
+        public bool AreLocalVectorsOrthogonal => Vector3.Dot(localForward, localUp) == 0;
+
         /// <summary>
         /// Local space object center
         /// </summary>
@@ -46,7 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The type of surface to calculate the touch point on.")]
-        private TouchableSurface touchableSurface = TouchableSurface.BoxCollider;
+        [FormerlySerializedAs("touchableSurface")]
+        private TouchableSurfaceType surfaceType = TouchableSurfaceType.BoxCollider;
+        public TouchableSurfaceType SurfaceType { get => surfaceType; set => surfaceType = value; }
 
         public Vector3 LocalRight
         {
@@ -101,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Check initial setup
             if (bounds == Vector2.zero)
             {
-                if (touchableSurface == TouchableSurface.UnityUI)
+                if (surfaceType == TouchableSurfaceType.UnityUI)
                 {
                     RectTransform rt = GetComponent<RectTransform>();
                     if (rt != null)

@@ -7,13 +7,13 @@
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Input.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator NearInteractionTouchable()
+        public IEnumerator NearInteractionTouchableVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchable>(objectScale);
             touchable.SetLocalForward(touchNormal);
@@ -194,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator NearInteractionTouchableUnboundedPlane()
+        public IEnumerator NearInteractionTouchableUnboundedPlaneVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchableUnboundedPlane>(objectScale);
             touchable.SetLocalNormal(touchNormal);
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator NearInteractionTouchableVolume()
+        public IEnumerator NearInteractionTouchableVolumeVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchableVolume>(objectScale);
 
@@ -387,6 +387,34 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 UnityEngine.Object.Destroy(touchable.gameObject);
             }
+        }
+
+        /// <summary>
+        /// Test Unity UI elements with touchables
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableUnityUiTest()
+        {
+            var canvas = UnityUiUtilities.CreateCanvas(0.002f);
+            var touchable = canvas.GetComponent<NearInteractionTouchable>();
+
+            var button = UnityUiUtilities.CreateButton("test", Color.gray, Color.blue, Color.green);
+            button.transform.SetParent(canvas.transform);
+
+            canvas.transform.position = objectPosition;
+
+            UnityEditor.EditorApplication.isPaused = true;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
+            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, 1, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSim);
+
+            UnityEngine.Object.Destroy(touchable.gameObject);
         }
 
     }
