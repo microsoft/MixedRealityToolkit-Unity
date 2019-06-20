@@ -29,6 +29,7 @@ The main configuration profile, which is attached to the *MixedRealityToolkit* G
 When you open the main Mixed Reality Toolkit Configuration Profile, you will see the following screen in the inspector:
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png" width="650px" style="display:block;">
+
 <sup>Mixed Reality Toolkit Configuration Profile</sup>
 
 > If you select a MixedRealityToolkitConfigurationProfile asset without the MixedRealityToolkit in the scene, it will ask you if you want the MRTK to automatically setup the scene for you. This is optional, however, there must be an active MixedRealityToolkit object in the scene to access all the configuration screens.
@@ -68,8 +69,7 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
 
 Located on the main Mixed Reality Toolkit configuration page, this setting defines the default operation for the Mixed Reality environment for your project.
 
-<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png" width="650px" style="display:block;">
-<sup>Mixed Reality Toolkit Configuration Profile</sup>
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png" width="650px" style="display:block;"><sup>Mixed Reality Toolkit Configuration Profile</sup>
 
 ---
 <a name="camera"/>
@@ -359,6 +359,7 @@ If your controller representation in the scene needs to be offset from the physi
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png" width="650px" style="display:block;">
 <sup>Controller Visualization Profile</sup>
 
+
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
 
 <a name="inspectors"/>
@@ -373,4 +374,5 @@ Service Inspectors are an editor-only feature that generates in-scene objects re
 You can enable service inspectors by checking 'Use Service Inspectors' under Editor Settings in your Configuration Profile.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.png" width="650px" style="display:block;">
+
 <sup>Enable Service Inspectors</sup>
