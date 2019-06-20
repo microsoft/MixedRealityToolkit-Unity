@@ -655,38 +655,40 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return;
             }
 
-            bool changedScenes = false;
-
             if (profile.UseManagerScene)
             {
-                changedScenes |= EditorSceneUtils.AddSceneToBuildSettings(
-                    profile.ManagerScene, 
-                    cachedBuildScenes, 
-                    EditorSceneUtils.BuildIndexTarget.First);
+                if (EditorSceneUtils.AddSceneToBuildSettings(
+                    profile.ManagerScene,
+                    cachedBuildScenes,
+                    EditorSceneUtils.BuildIndexTarget.First))
+                {
+                    cachedBuildScenes = EditorBuildSettings.scenes;
+                }
             }
 
             foreach (SceneInfo contentScene in profile.ContentScenes)
             {
-                changedScenes |= EditorSceneUtils.AddSceneToBuildSettings(
+                if (EditorSceneUtils.AddSceneToBuildSettings(
                     contentScene,
                     cachedBuildScenes, 
-                    EditorSceneUtils.BuildIndexTarget.None);
+                    EditorSceneUtils.BuildIndexTarget.None))
+                {
+                    cachedBuildScenes = EditorBuildSettings.scenes;
+                }
             }
 
             if (profile.UseLightingScene)
             {
                 foreach (SceneInfo lightingScene in profile.LightingScenes)
                 {   // Make sure ALL lighting scenes are added to build settings
-                    changedScenes |= EditorSceneUtils.AddSceneToBuildSettings(
+                    if (EditorSceneUtils.AddSceneToBuildSettings(
                         lightingScene, 
-                        cachedBuildScenes, 
-                        EditorSceneUtils.BuildIndexTarget.Last);
+                        cachedBuildScenes,
+                        EditorSceneUtils.BuildIndexTarget.Last))
+                    {
+                        cachedBuildScenes = EditorBuildSettings.scenes;
+                    }
                 }
-            }
-
-            if (changedScenes)
-            {   // If we made changes, cache the build scenes again
-                cachedBuildScenes = EditorBuildSettings.scenes;
             }
 
             EditorCheckForSceneNameDuplicates();
