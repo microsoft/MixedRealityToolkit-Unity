@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
-#region IMixedRealityToolkit implementation
+        #region IMixedRealityToolkit implementation
 
 #if UNITY_WSA
 
@@ -138,9 +138,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
 #endif // UNITY_WSA
 
-#endregion IMixedRealityToolkit implementation
+        #endregion IMixedRealityToolkit implementation
 
-#region IMixedRealitySpatialAwarenessObserver implementation
+        #region IMixedRealitySpatialAwarenessObserver implementation
 
         private GameObject observedObjectParent = null;
 
@@ -713,6 +713,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
-#endregion IMixedRealitySpatialAwarenessObserver implementation
+        public override void ClearObservations()
+        {
+            // todo
+        }
+
+        #endregion IMixedRealitySpatialAwarenessObserver implementation
     }
 }

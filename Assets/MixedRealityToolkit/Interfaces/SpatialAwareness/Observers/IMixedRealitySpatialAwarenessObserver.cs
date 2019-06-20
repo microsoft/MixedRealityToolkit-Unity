@@ -74,5 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// Stop | pause the observer
         /// </summary>
         void Suspend();
+
+        /// <summary>
+        /// todo - should this suspend, clear, resume? should it require the observers to be suspended?
+        /// </summary>
+        /* todo: bool? */void ClearObservations();
     }
 }

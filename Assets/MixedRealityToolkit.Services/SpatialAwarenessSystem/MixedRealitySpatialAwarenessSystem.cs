@@ -360,6 +360,18 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         }
 
         /// <inheritdoc />
+        public void ClearObservations()
+        {
+            // todo
+        }
+
+        /// <inheritdoc />
+        public void ClearObservations<T>(string name = null) where T : IMixedRealitySpatialAwarenessObserver
+        {
+            // todo
+        }
+
+        /// <inheritdoc />
         public void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject)
         {
             meshEventData.Initialize(observer, meshId, meshObject);
