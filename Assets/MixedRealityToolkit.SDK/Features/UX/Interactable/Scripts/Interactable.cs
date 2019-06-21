@@ -104,11 +104,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected bool forceUpdate = false;
 
         // basic button states
+
+        //TODO: Enable PassThroughMode to enable events to continue up the hierarchy
+        /*
         /// <summary>
         /// Enables indirect manipulation of buttons by sending the touch events to parent objects, for example by <see cref="ScrollingObjectCollection"/>
         /// </summary>
         /// <remarks>Reinvokes the touch events to send upward</remarks>
         public bool PassThroughMode { get; set; }
+        */
+
         public bool HasFocus { get; private set; }
         public bool HasPress { get; private set; }
         public bool IsDisabled { get; private set; }
