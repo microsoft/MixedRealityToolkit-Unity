@@ -20,7 +20,7 @@ The hand mesh is used if fully defined mesh data is provided by the hand trackin
 
 <img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png" width="350px"  style="display:block;">
 
-Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely by unchecking **Enable Hand Mesh Updates** option.
+Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely by unchecking **Enable Hand Mesh Visualization** option.
 
 # Scripting
 
