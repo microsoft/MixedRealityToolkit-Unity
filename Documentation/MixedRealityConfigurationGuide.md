@@ -78,6 +78,7 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png" width="650px" style="display:block;">
 
+
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit configuration screen.
 
 ---
@@ -106,6 +107,7 @@ Each of the individual profiles are detailed below:
 * [Controller mapping configuration](#mapping)
 * [Controller visualization settings](#visualization)
 
+
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit configuration screen.
 
 ---
@@ -116,6 +118,7 @@ Each of the individual profiles are detailed below:
 The boundary system translates the perceived boundary reported by the underlying platforms boundary / guardian system. The Boundary visualizer configuration gives you the ability to automatically show the recorded boundary within your scene relative to the user's position.The boundary will also react / update based on where the user teleports within the scene.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png" width="650px" style="display:block;">
+
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
 
