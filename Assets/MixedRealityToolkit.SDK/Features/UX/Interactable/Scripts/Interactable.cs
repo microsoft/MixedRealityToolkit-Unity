@@ -367,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 keys.Add(commands[i].Keyword);
             }
 
-            keys.Insert(0, "-No Selection-");
+            keys.Insert(0, "(No Selection)");
             keywords = keys.ToArray();
             return true;
         }
