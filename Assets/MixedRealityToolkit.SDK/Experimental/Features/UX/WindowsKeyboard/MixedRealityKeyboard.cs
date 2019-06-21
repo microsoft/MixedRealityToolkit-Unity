@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     var oldValue = text;
                     text = value;
-                    TextChanged?.Invoke(new KeyboardTextData(oldValue, value, this));
+                    TextChanged?.Invoke(new KeyboardTextData(oldValue, value));
                 }
             }
         }

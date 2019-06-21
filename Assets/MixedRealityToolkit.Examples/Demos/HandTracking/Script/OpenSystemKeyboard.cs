@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    public class OpenKeyboard : MonoBehaviour
+    public class OpenSystemKeyboard : MonoBehaviour
     {
         private MixedRealityKeyboard wmrKeyboard;
         private TouchScreenKeyboard touchscreenKeyboard;
@@ -27,7 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void Open()
         {
-            keyboard.ShowKeyboard();
+#if !UNITY_EDITOR && UNITY_WSA
+            wmrKeyboard.ShowKeyboard();
+#else
+            touchscreenKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
+#endif
         }
 
         private void Update()
@@ -40,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             // touchscreenkeyboard. 
             // We will use touchscreenkeyboard once Unity bug is fixed
             // Unity bug tracking the issue https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3
-            if (keyboard != null)
+            if (touchscreenKeyboard != null)
             {
                 keyboardText = touchscreenKeyboard.text;
                 if (TouchScreenKeyboard.visible)

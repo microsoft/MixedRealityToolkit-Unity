@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultManagerScene.unity
-    guid: ae7bb08d297fb69408695d8de0962524
-  - enabled: 1
-    path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultLightingScene.unity
-    guid: 7e54e36c44f826c438c95da79f8de638
+    path: Assets/Julia/TestLaunchURIAsync.unity
+    guid: c49c51d3395a8894a89e44be85764b7c
   m_configObjects: {}
