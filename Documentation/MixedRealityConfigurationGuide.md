@@ -6,7 +6,6 @@ The Mixed Reality Toolkit centralizes as much of the configuration required to m
 
 **This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit, more in-depth guides for each of the features is coming soon.**
 
-Configuration profiles provide reusable blocks of configuration that can be used and swapped out at runtime (with the exception of the InputActions profile) to meet the demands for most Mixed Reality projects. This allows you to style your configuration for different input types (driving vs flying) or different behavior's your project needs.
 
 > Configuration Profile Usage Guide is coming soon
 
