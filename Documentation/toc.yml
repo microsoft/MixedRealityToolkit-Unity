@@ -4,14 +4,6 @@
   href: HTKToMRTKPortingGuide.md
 - name: Feature Overviews
   items:
-  - name: Services
-    href: MixedRealityServices.md
-  - name: Packages
-    items:
-    - name: MRTK Packages
-      href: Packaging/MRTK_Packages.md
-    - name: MRTK Componentization
-      href: Packaging/MRTK_Modularization.md
   - name: Profiles
     href: Profiles/Profiles.md
   - name: Profiles Configuration
@@ -40,6 +32,8 @@
       href: InputSystem/HandTracking.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
+  - name: In-Editor Input Simulation
+    href: InputSimulation/InputSimulationService.md
   - name: UX Building Blocks
     items:
     - name: Interactable
@@ -72,6 +66,8 @@
       href: README_HandInteractionExamples.md
     - name: Eye Tracking Interaction Example
       href: EyeTracking/EyeTracking_ExamplesOverview.md
+  - name: MRTK Standard Shader
+    href: README_MRTKStandardShader.md
   - name: Spatial Awareness
     items:
     - name: Spatial Awareness Overview
@@ -92,18 +88,12 @@
       href: SceneSystem/SceneSystemLoadProgress.md
     - name: Lighting Scene Operations
       href: SceneSystem/SceneSystemLightingScenes.md
-  - name: MRTK Standard Shader
-    href: README_MRTKStandardShader.md
   - name: Boundary System
     items:
     - name: Boundary System Overview
       href: Boundary/BoundarySystemGettingStarted.md
     - name: Configuring the Boundary Visualization
       href: Boundary/ConfiguringBoundaryVisualization.md
-  - name: Performance
-    href: Performance/PerfGettingStarted.md
-  - name: In-Editor Input Simulation
-    href: InputSimulation/InputSimulationService.md
   - name: Diagnostics System
     items:
     - name: Diagnostics System Overview
@@ -112,6 +102,16 @@
       href: Diagnostics/ConfiguringDiagnostics.md
     - name: Using the Visual Profiler
       href: Diagnostics/UsingVisualProfiler.md
+  - name: Services
+    href: MixedRealityServices.md
+  - name: Packages
+    items:
+    - name: MRTK Packages
+      href: Packaging/MRTK_Packages.md
+    - name: MRTK Componentization
+      href: Packaging/MRTK_Modularization.md
+  - name: Performance
+    href: Performance/PerfGettingStarted.md
   - name: Extension Service Creation Wizard
     href: Utilities/ExtensionServiceCreationWizard.md
   - name: Experimental Features
