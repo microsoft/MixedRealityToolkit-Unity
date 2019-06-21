@@ -3,7 +3,6 @@
 variables:
   UnityVersion: Unity2018.3.7f1
   MRTKVersion: 2.0.0
-  packagingEnabled: true
 
 jobs:
 - job: CIDeveloperValidation
@@ -16,3 +15,5 @@ jobs:
     - SDK_18362 -equals TRUE
   steps:
   - template: templates/ci-common.yml
+    parameters:
+      packagingEnabled: true
