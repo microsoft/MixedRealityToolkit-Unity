@@ -545,10 +545,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (contextCenter != null)
                     {
-                        Vector3 adjustedHandlePos = contextCenter.InverseTransformPoint(Position);
+                        Vector3 adjustedCursorPos = contextCenter.InverseTransformPoint(Position);
 
-                        if (Math.Abs(adjustedHandlePos.y) > Math.Abs(adjustedHandlePos.x) &&
-                        Math.Abs(adjustedHandlePos.y) > Math.Abs(adjustedHandlePos.z))
+                        if (Math.Abs(adjustedCursorPos.y) > Math.Abs(adjustedCursorPos.x) &&
+                        Math.Abs(adjustedCursorPos.y) > Math.Abs(adjustedCursorPos.z))
                         {
                             return CursorContextEnum.RotateNorthSouth;
                         }

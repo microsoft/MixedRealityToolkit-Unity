@@ -81,8 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public IMixedRealityCursor BaseCursor { get; set; }
 
-        public IMixedRealityCursor GazeCursor { get { return gazeProvider.GazePointer.BaseCursor; } }
-
         public ICursorModifier CursorModifier { get; set; }
 
         public bool IsInteractionEnabled => IsActive;
