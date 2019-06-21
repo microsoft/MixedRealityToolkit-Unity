@@ -8,15 +8,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     public class OpenKeyboard : MonoBehaviour
     {
-        private MixedRealityKeyboard keyboard;
+        private MixedRealityKeyboard wmrKeyboard;
+        private TouchScreenKeyboard touchscreenKeyboard;
         public static string keyboardText = "";
         public TextMesh debugMessage;
 
-        public void Start()
+        private void Start()
         {
-            keyboard = gameObject.AddComponent<MixedRealityKeyboard>();
-            keyboard.TextChanged.AddListener((eventData) => debugMessage.text = "typing... " + keyboard.Text);
-            keyboard.KeyboardHidden.AddListener(() => debugMessage.text = "typed " + keyboard.Text);
+#if !UNITY_EDITOR && UNITY_WSA
+            // Windows mixed reality keyboard initialization goes here
+            wmrKeyboard = gameObject.AddComponent<MixedRealityKeyboard>();
+            wmrKeyboard.TextChanged.AddListener((eventData) => debugMessage.text = "typing... " + keyboard.Text);
+            wmrKeyboard.KeyboardHidden.AddListener(() => debugMessage.text = "typed " + keyboard.Text);
+#else
+            // non-Windows mixed reality keyboard initialization goes here
+#endif
         }
 
         public void Open()
@@ -24,9 +30,30 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             keyboard.ShowKeyboard();
         }
 
-        public void Close()
+        private void Update()
         {
-            keyboard.HideKeyboard();
+#if !UNITY_EDITOR && UNITY_WSA
+            // Windows mixed reality keyboard update goes here
+#else
+            // non-Windows mixed reality keyboard initialization goes here
+            // for non-Windows mixed reality keyboards just use Unity's default
+            // touchscreenkeyboard. 
+            // We will use touchscreenkeyboard once Unity bug is fixed
+            // Unity bug tracking the issue https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3
+            if (keyboard != null)
+            {
+                keyboardText = touchscreenKeyboard.text;
+                if (TouchScreenKeyboard.visible)
+                {
+                    debugMessage.text = "typing... " + keyboardText;
+                }
+                else
+                {
+                    debugMessage.text = "typed " + keyboardText;
+                    touchscreenKeyboard = null;
+                }
+            }
+#endif
         }
     }
 }
