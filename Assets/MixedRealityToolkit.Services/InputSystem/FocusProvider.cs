@@ -30,6 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
+        private Collider[] colliderQueryBuffer;
+        private int sceneQueryBufferSize = 64;
 
         public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators
         {
@@ -484,6 +486,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 FindOrCreateUiRaycastCamera();
             }
 
+            colliderQueryBuffer = new Collider[sceneQueryBufferSize];
+
             var primaryPointerSelectorType = InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
             if (primaryPointerSelectorType != null)
             {
@@ -866,7 +870,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Perform raycast to determine focused object
                     var raycastProvider = InputSystem.RaycastProvider;
                     hitResult3d.Clear();
-                    QueryScene(pointer.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d);
+                    QueryScene(pointer.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, colliderQueryBuffer);
                     PointerHitResult hit = hitResult3d;
 
                     // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
@@ -978,7 +982,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="pointerData"></param>
         /// <param name="prioritizedLayerMasks"></param>
-        private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
+        private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, Collider[] colliderBuffer = null)
         {
             float rayStartDistance = 0;
             MixedRealityRaycastHit hitInfo;
@@ -1019,17 +1023,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         break;
                     case SceneQueryType.SphereOverlap:
-                        Collider[] colliders = UnityEngine.Physics.OverlapSphere(pointer.Rays[i].Origin, pointer.SphereCastRadius, ~UnityEngine.Physics.IgnoreRaycastLayer);
 
-                        if (colliders.Length > 0)
+                        int numColliders;
+
+                        if (colliderBuffer != null)
+                        {
+                            numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(pointer.Rays[i].Origin, pointer.SphereCastRadius, colliderBuffer, ~UnityEngine.Physics.IgnoreRaycastLayer);
+                        }
+                        else
+                        {
+                            colliderBuffer = UnityEngine.Physics.OverlapSphere(pointer.Rays[i].Origin, pointer.SphereCastRadius, ~UnityEngine.Physics.IgnoreRaycastLayer);
+                            numColliders = colliderBuffer.Length;
+                        }                        
+
+                        if (colliderBuffer.Length > 0)
                         {
                             Vector3 testPoint = pointer.Rays[i].Origin;
                             GameObject closest = null;
                             float closestDistance = Mathf.Infinity;
                             Vector3 objectHitPoint = testPoint;
 
-                            foreach (Collider collider in colliders)
+                            for (int c = 0; c < numColliders; c++)
                             {
+                                Collider collider = colliderBuffer[c];
+
                                 // Policy: in order for an collider to be near interactable it must have
                                 // a NearInteractionGrabbable component on it.
                                 // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap,
