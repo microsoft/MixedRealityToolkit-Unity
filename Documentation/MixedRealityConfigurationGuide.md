@@ -332,4 +332,8 @@ Service Inspectors are an editor-only feature that generates in-scene objects re
 
 You can enable service inspectors by checking 'Use Service Inspectors' under Editor Settings in your Configuration Profile.
 
-<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG" width="650px" style="display:block;">
+<figure>
+  <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG" width="650px" style="display:block;">
+  <figcaption>Enable Service Inspectors</figcaption>
+</figure>
+
