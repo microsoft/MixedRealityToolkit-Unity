@@ -22,8 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         float manipulationStartThreshold = 0.0f;
 
         private float SelectDownStartTime = 0.0f;
-        private bool manipulationInProgress = false;
         private bool holdInProgress = false;
+        private bool manipulationInProgress = false;
+        private bool navigationInProgress = false;
         private Vector3 currentRailsUsed = Vector3.one;
         private Vector3 currentPosition = Vector3.zero;
         private Vector3 cumulativeDelta = Vector3.zero;
@@ -148,32 +149,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
 
-                                // Stop gestures
-                                CompleteHoldGesture();
-                                CompleteManipulationNavigationGesture();
+                                // Stop active gestures
+                                CompleteHold();
+                                CompleteManipulation();
+                                CompleteNavigation();
                             }
                         }
                         else if (Interactions[i].BoolData)
                         {
-                            if (!manipulationInProgress)
+                            if (manipulationInProgress)
+                            {
+                                UpdateManipulation();
+                            }
+
+                            if (navigationInProgress)
+                            {
+                                UpdateNavigation();
+                            }
+                            else
                             {
                                 if (cumulativeDelta.magnitude > manipulationStartThreshold)
                                 {
-                                    CancelHoldGesture();
-                                    StartManipulationNavigationGesture();
+                                    CancelHold();
+                                    StartNavigation();
                                 }
                                 else if (!holdInProgress)
                                 {
                                     float time = Time.time;
                                     if (time >= SelectDownStartTime + holdStartDuration)
                                     {
-                                        StartHoldGesture();
+                                        StartHold();
+                                        StartManipulation();
                                     }
                                 }
-                            }
-                            else
-                            {
-                                UpdateManipulationNavigationGesture();
                             }
                         }
                         break;
@@ -181,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void StartHoldGesture()
+        private void StartHold()
         {
             if (!holdInProgress)
             {
@@ -190,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void CompleteHoldGesture()
+        private void CompleteHold()
         {
             if (holdInProgress)
             {
@@ -199,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void CancelHoldGesture()
+        private void CancelHold()
         {
             if (holdInProgress)
             {
@@ -208,44 +216,77 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void StartManipulationNavigationGesture()
+        private void StartManipulation()
         {
             if (!manipulationInProgress)
             {
                 InputSystem?.RaiseGestureStarted(this, manipulationAction);
-                InputSystem?.RaiseGestureStarted(this, navigationAction);
                 manipulationInProgress = true;
+            }
+        }
+
+        private void UpdateManipulation()
+        {
+            if (manipulationInProgress)
+            {
+                InputSystem?.RaiseGestureUpdated(this, manipulationAction, cumulativeDelta);
+            }
+        }
+
+        private void CompleteManipulation()
+        {
+            if (manipulationInProgress)
+            {
+                InputSystem?.RaiseGestureCompleted(this, manipulationAction, cumulativeDelta);
+                manipulationInProgress = false;
+            }
+        }
+
+        private void CancelManipulation()
+        {
+            if (manipulationInProgress)
+            {
+                InputSystem?.RaiseGestureCanceled(this, manipulationAction);
+                manipulationInProgress = false;
+            }
+        }
+
+        private void StartNavigation()
+        {
+            if (!navigationInProgress)
+            {
+                InputSystem?.RaiseGestureStarted(this, navigationAction);
+                navigationInProgress = true;
 
                 currentRailsUsed = Vector3.one;
                 UpdateNavigationRails();
             }
         }
 
-        private void UpdateManipulationNavigationGesture()
+        private void UpdateNavigation()
         {
-            InputSystem?.RaiseGestureUpdated(this, manipulationAction, cumulativeDelta);
-
-            UpdateNavigationRails();
-            InputSystem?.RaiseGestureUpdated(this, navigationAction, navigationDelta);
-        }
-
-        private void CompleteManipulationNavigationGesture()
-        {
-            if (manipulationInProgress)
+            if (navigationInProgress)
             {
-                InputSystem?.RaiseGestureCompleted(this, manipulationAction, cumulativeDelta);
-                InputSystem?.RaiseGestureCompleted(this, navigationAction, navigationDelta);
-                manipulationInProgress = false;
+                UpdateNavigationRails();
+                InputSystem?.RaiseGestureUpdated(this, navigationAction, navigationDelta);
             }
         }
 
-        private void CancelManipulationNavigationGesture()
+        private void CompleteNavigation()
         {
-            if (manipulationInProgress)
+            if (navigationInProgress)
             {
-                InputSystem?.RaiseGestureCanceled(this, manipulationAction);
+                InputSystem?.RaiseGestureCompleted(this, navigationAction, navigationDelta);
+                navigationInProgress = false;
+            }
+        }
+
+        private void CancelNavigation()
+        {
+            if (navigationInProgress)
+            {
                 InputSystem?.RaiseGestureCanceled(this, navigationAction);
-                manipulationInProgress = false;
+                navigationInProgress = false;
             }
         }
 
