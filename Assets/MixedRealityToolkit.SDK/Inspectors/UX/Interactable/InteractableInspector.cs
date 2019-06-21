@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             InspectorUIUtility.DrawTitle("Interactable");
 
             EditorGUILayout.BeginVertical("Box");
-            GUI.enabled = !EditorApplication.isPlaying && !EditorApplication.isPaused;
+            bool isPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
 
             // States
             bool showStates = false;
@@ -126,7 +126,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (showStates)
             {
+                GUI.enabled = !isPlayMode;
                 EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+                GUI.enabled = true;
             }
 
             if (drawerStarted)
@@ -139,7 +141,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 InspectorUIUtility.DrawError("Please assign a States object!");
                 EditorGUILayout.EndVertical();
                 serializedObject.ApplyModifiedProperties();
-                GUI.enabled = true;
                 return;
             }
 
@@ -170,11 +171,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // check speech commands profile for a list of commands
             if (speechKeywords == null)
             {
-                bool wasEnabled = GUI.enabled;
                 GUI.enabled = false;
                 EditorGUILayout.Popup("Speech Command", 0, new string[] { "Missing Speech Commands" });
                 InspectorUIUtility.DrawNotice("Create speech commands in the MRTK/Input/Speech Commands Profile");
-                GUI.enabled = wasEnabled;
+                GUI.enabled = true;
             }
             else
             {
@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // this string should be empty if we are not listening to speech commands
                 // will return zero if empty, to match the inserted off value.
                 int currentIndex = SpeechKeywordLookup(voiceCommands.stringValue, speechKeywords);
-
+                GUI.enabled = !isPlayMode;
                 position = EditorGUILayout.GetControlRect();
                 GUIContent label = new GUIContent("Speech Command", "Speech Commands to use with Interactable, pulled from MRTK/Input/Speech Commands Profile");
                 EditorGUI.BeginProperty(position, label, voiceCommands);
@@ -199,6 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
                 EditorGUI.EndProperty();
+                GUI.enabled = true;
             }
             
             // show requires gaze because voice command has a value
@@ -211,9 +212,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
-
+            
             SerializedProperty dimensions = serializedObject.FindProperty("Dimensions");
+            GUI.enabled = !isPlayMode;
             EditorGUILayout.PropertyField(dimensions, new GUIContent("Dimensions", "Toggle or sequence button levels"));
+            GUI.enabled = true;
 
             if (dimensions.intValue > 1)
             {
@@ -227,9 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
-
-            GUI.enabled = true;
-
+            
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
             InspectorUIUtility.DrawDivider();
@@ -500,13 +501,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             EditorGUILayout.PropertyField(onClick, new GUIContent("OnClick"));
 
             SerializedProperty events = serializedObject.FindProperty("Events");
-
-            GUI.enabled = !EditorApplication.isPlaying && !EditorApplication.isPaused;
+            GUI.enabled = !isPlayMode;
             for (int i = 0; i < events.arraySize; i++)
             {
                 SerializedProperty eventItem = events.GetArrayElementAtIndex(i);
                 InteractableReceiverListInspector.RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, RemoveEvent);
             }
+            GUI.enabled = true;
 
             if (eventOptions.ClassNames.Length > 1)
             {
@@ -515,7 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     AddEvent(events.arraySize);
                 }
             }
-            GUI.enabled = true;
+            
             serializedObject.ApplyModifiedProperties();
         }
 
