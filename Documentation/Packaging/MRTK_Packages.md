@@ -11,7 +11,7 @@ The MRTK currently has two packages:
 
 The Mixed Reality Toolkit Foundation is the set of packages that enable your application to leverage common functionality across Mixed Reality Platforms. These packages are released and supported by Microsoft from source code in the [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) branch on GitHub.
 
-<img src="../../Documentation/Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;margin-left:auto;margin-right:auto;">
+<img src="../../Documentation/Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;"><br/>
 <sup>MRTK Foundation Package</sup>
 
 The MRTK Foundation is comprised of:
