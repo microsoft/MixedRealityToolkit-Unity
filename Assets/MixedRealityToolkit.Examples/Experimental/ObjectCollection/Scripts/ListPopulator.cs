@@ -69,22 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             }
         }
 
-        private float initTime;
-        private bool firstRun = true;
         private void Start()
         {
             scrollCollection.UpdateCollection();
-
-            initTime = Time.time;
-        }
-
-        private void Update()
-        {
-            if(initTime < Time.time && firstRun)
-            {
-               // scrollCollection.UpdateCollection();
-                firstRun = false;
-            }
         }
 
     }
