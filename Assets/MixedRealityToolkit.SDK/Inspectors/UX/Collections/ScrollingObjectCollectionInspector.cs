@@ -265,7 +265,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 if (scrollContainer.ClippingObject != null)
                 {
                     center = scrollContainer.ClippingObject.transform.position;
-                    //center.z = scrollContainer.transform.InverseTransformPoint(scrollContainer.ClippingObject.transform.position + scrollContainer.ClippingObject.transform.localScale).z;// * (scrollContainer.transform.InverseTransformPoint(ScrollingObjectCollection.AxisOrientationToDirection(scrollContainer.CollectionForward)).z * 0.5f);
                 }
                 else
                 {

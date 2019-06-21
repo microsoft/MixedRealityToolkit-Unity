@@ -297,22 +297,28 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
+        /// The UnityEvent type the ScrollingObjectCollection sends 
+        /// </summary>
+        [System.Serializable]
+        public class ScrollEvent : UnityEvent<GameObject> { }
+
+        /// <summary>
         /// Event that is fired on the target object when the ScrollingObjectCollection deems event as a Click.
         /// </summary>
         [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection deems event as a Click.")]
-        public UnityEvent ClickEvent = new UnityEvent();
+        public ScrollEvent ClickEvent = new ScrollEvent();
 
         /// <summary>
         /// Event that is fired on the target object when the ScrollingObjectCollection is touched.
         /// </summary>
         [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is touched.")]
-        public UnityEvent TouchStarted = new UnityEvent();
+        public ScrollEvent TouchStarted = new ScrollEvent();
 
         /// <summary>
         /// Event that is fired on the target object when the ScrollingObjectCollection is no longer touched.
         /// </summary>
         [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is no longer touched.")]
-        public UnityEvent TouchEnded = new UnityEvent();
+        public ScrollEvent TouchEnded = new ScrollEvent();
 
         /// <summary>
         /// Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity
@@ -794,14 +800,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             //Use the first element for collection bounds -> for occluder positioning
             //temporarily zero out the rotation so we can get an accurate bounds
-            Quaternion origRot = NodeList[FirstItemInView].Transform.rotation;
+            Quaternion origRot = NodeList[FirstItemInView].Transform.rotation;            
             NodeList[FirstItemInView].Transform.rotation = Quaternion.identity;
 
-            clippingBounds.center = NodeList[FirstItemInView].Transform.GetColliderBounds().center;
+            clippingBounds.size = Vector3.zero;
+            
+            List<Vector3> boundsPoints = new List<Vector3>();
+            BoundsExtensions.GetColliderBoundsPoints(NodeList[FirstItemInView].GameObject, boundsPoints, 0);
+
+            clippingBounds.center = boundsPoints[0];
+
+            foreach (Vector3 point in boundsPoints)
+            {
+                clippingBounds.Encapsulate(point);
+            }
 
             // lets check whether the collection cell dimensions are a better fit
             // this prevents negative offset from ruining the scroll effect
-            Vector3 tempClippingSize = NodeList[FirstItemInView].Transform.GetColliderBounds().size;
+            Vector3 tempClippingSize = clippingBounds.size;
 
             //put the rotation back
             NodeList[FirstItemInView].Transform.rotation = origRot;
@@ -810,8 +826,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             tempClippingSize.y = (tempClippingSize.y > CellHeight) ? tempClippingSize.y : CellHeight;
 
             clippingBounds.size = tempClippingSize;
+            clippingBounds.center = clippingBounds.size * 0.5f;
 
-            //set it back
+            //set the first item back to its original state
             if (resetActiveState)
             {
                 NodeList[FirstItemInView].Transform.gameObject.SetActive(false);
@@ -828,12 +845,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     //apply the viewable area and column/row multiplier
                     //use a dummy bounds of one to get the local scale to match;
                     clippingBounds.size = new Vector3((clippingBounds.size.x * Tiers), (clippingBounds.size.y * ViewableArea), clippingBounds.size.z);
-                    clipBox.transform.localScale = CalculateScale(new Bounds(Vector3.zero, Vector3.one), clippingBounds, occlusionScalePadding);
+                    clipBox.transform.localScale = CalculateScale(new Bounds(Vector3.zero, Vector3.one), clippingBounds, OcclusionScalePadding);
 
                     //adjust where the center of the clipping box is
-                    viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (occlusionScalePadding.x * 0.5f) + occlusionPositionPadding.x;
-                    viewableCenter.y = (((clipBox.transform.localScale.y * 0.5f) - (occlusionScalePadding.y * 0.5f)) * -1) + occlusionPositionPadding.y;
-                    viewableCenter.z = occlusionPositionPadding.z;
+                    viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (OcclusionScalePadding.x * 0.5f) + OcclusionPositionPadding.x;
+                    viewableCenter.y = (((clipBox.transform.localScale.y * 0.5f) - (OcclusionScalePadding.y * 0.5f)) * -1) + OcclusionPositionPadding.y;
+                    viewableCenter.z = OcclusionPositionPadding.z;
                     break;
 
                 case ScrollDirectionType.LeftAndRight:
@@ -843,14 +860,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     clipBox.transform.localScale = CalculateScale(new Bounds(Vector3.zero, Vector3.one), clippingBounds) + OcclusionScalePadding;
 
                     //Same as above for L <-> R
-                    viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (occlusionScalePadding.x * 0.5f) + occlusionPositionPadding.x;
-                    viewableCenter.y = ((clipBox.transform.localScale.y * 0.5f) - (occlusionScalePadding.y * 0.5f) + occlusionPositionPadding.y) * -1.0f;
-                    viewableCenter.z = occlusionPositionPadding.z;
+                    viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (OcclusionScalePadding.x * 0.5f) + OcclusionPositionPadding.x;
+                    viewableCenter.y = ((clipBox.transform.localScale.y * 0.5f) - (OcclusionScalePadding.y * 0.5f) + OcclusionPositionPadding.y) * -1.0f;
+                    viewableCenter.z = OcclusionPositionPadding.z;
                     break;
             }
 
             //Apply our new values
             clipBox.transform.localPosition = viewableCenter;
+
+           //transform.rotation = origScrollRot;
 
             //add our objects to the clippingBox queue
             AddAllItemsToClippingObject();
@@ -963,7 +982,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         if (isColliderActive)
                         {
                             //Fire the UnityEvent
-                            ClickEvent?.Invoke();
+                            ClickEvent?.Invoke(focusedObject);
                         }
                     }
                     else
@@ -980,11 +999,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         currentPointer = null;
                     }
 
+                    //Let everyone know the scroller is no longer engaged
+                    TouchEnded?.Invoke(focusedObject);
+
                     focusedObject = null;
                     scrollChild = null;
-
-                    //Let everyone know the scroller is no longer engaged
-                    TouchEnded?.Invoke();
 
                     //Clear our states
                     isTouched = false;
@@ -2253,7 +2272,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     return Vector3.zero;
             }
         }
-
+        
         #endregion
 
         #region IMixedRealityPointerHandler implementation
@@ -2336,9 +2355,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             if (TryGetPokePointer(eventData.InputSource.Pointers, out currentPointer))
             {
 
-                //Let everyone know the scroller has been engaged
-                TouchStarted?.Invoke();
-
                 StopAllCoroutines();
                 animatingToPosition = false;
 
@@ -2357,6 +2373,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
 
             focusedObject = currentPointer.Result.CurrentPointerTarget;
+
+            //Let everyone know the scroller has been engaged
+            TouchStarted?.Invoke(focusedObject);
 
             if (!isTouched && !isEngaged)
             {
@@ -2463,7 +2482,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
 
                 //Let everyone know the scroller is no longer engaged
-                TouchEnded?.Invoke();
+                TouchEnded?.Invoke(focusedObject);
 
                 //Clear our states
                 isTouched = false;

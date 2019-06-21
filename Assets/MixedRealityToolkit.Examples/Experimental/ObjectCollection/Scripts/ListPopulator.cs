@@ -1,7 +1,5 @@
 ﻿using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
@@ -17,14 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         /// </summary>
         public ScrollingObjectCollection ScrollCollection
         {
-            get
-            {
-                return scrollCollection;
-            }
-            set
-            {
-                scrollCollection = value;
-            }
+            get => scrollCollection;
+            set => scrollCollection = value;
         }
 
         [SerializeField]
@@ -36,14 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         /// </summary>
         public Material ItemMaterial
         {
-            get
-            {
-                return itemMaterial;
-            }
-            set
-            {
-                itemMaterial = value;
-            }
+            get => itemMaterial;
+            set => itemMaterial = value;
         }
 
         [SerializeField]
@@ -55,14 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         /// </summary>
         public int NumItems
         {
-            get
-            {
-                return numItems;
-            }
-            set
-            {
-                numItems = value;
-            }
+            get => numItems;
+            set => numItems = value;
         }
 
         [SerializeField]
@@ -74,28 +54,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         /// </summary>
         public Vector3 ItemScale
         {
-            get
-            {
-                return itemScale;
-            }
-            set
-            {
-                itemScale = value;
-            }
+            get => itemScale;
+            set => itemScale = value;
         }
 
         private void OnEnable()
         {
             //make sure we find a collection
-            if(scrollCollection == null)
+            if (scrollCollection == null)
             {
                 scrollCollection = GetComponentInChildren<ScrollingObjectCollection>();
             }
-        }
 
-        // Start is called before the first frame update
-        void Start()
-        {
             if (scrollCollection == null) { return; }
 
             for (int i = 0; i < numItems; i++)
@@ -115,10 +85,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
                 item.transform.localRotation = Quaternion.identity;
                 item.transform.localScale = itemScale;
             }
+        }
 
+        private void Start()
+        {
             scrollCollection.UpdateCollection();
-
         }
 
     }
+
 }
