@@ -1,0 +1,8 @@
+# CI build for developer builds.
+
+steps:
+- template: common.yml
+- ${{ if eq(variables['packagingEnabled'], true) }}:
+  - template: package.yml
+  - template: publishpackages.yml
+- template: end.yml
