@@ -800,7 +800,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             //Use the first element for collection bounds -> for occluder positioning
             //temporarily zero out the rotation so we can get an accurate bounds
-            Quaternion origRot = NodeList[FirstItemInView].Transform.rotation;            
+            Quaternion origRot = NodeList[FirstItemInView].Transform.rotation;
             NodeList[FirstItemInView].Transform.rotation = Quaternion.identity;
 
             clippingBounds.size = Vector3.zero;
@@ -868,8 +868,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             //Apply our new values
             clipBox.transform.localPosition = viewableCenter;
-
-           //transform.rotation = origScrollRot;
 
             //add our objects to the clippingBox queue
             AddAllItemsToClippingObject();
@@ -958,7 +956,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                 //get a point in front of the scrollContainer to use for the dot product check
                 finalOffset = (AxisOrientationToTransformDirection(collectionForward) * -1.0f) * thresholdOffset;
-                thresholdPoint = transform.position - finalOffset;
+                thresholdPoint = transform.InverseTransformPoint(transform.localPosition - finalOffset);
 
                 //Make sure we're actually (near) touched and not a pointer event, do a dot product check
                 if (isTouched && DetectScrollRelease((AxisOrientationToTransformDirection(collectionForward) * 1), thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection))

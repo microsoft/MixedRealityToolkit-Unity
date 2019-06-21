@@ -19,18 +19,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             set => scrollCollection = value;
         }
 
+
         [SerializeField]
-        [Tooltip("The material to apply to the primative for the list")]
-        private Material itemMaterial;
+        [Tooltip("Object to duplicate in list")]
+        private GameObject dynamicItem;
 
         /// <summary>
-        /// The material to apply to the primative for the list
+        /// Object to duplicate in list 
         /// </summary>
-        public Material ItemMaterial
+        public GameObject DynamicItem
         {
-            get => itemMaterial;
-            set => itemMaterial = value;
+            get { return dynamicItem; }
+            set { dynamicItem = value; }
         }
+
 
         [SerializeField]
         [Tooltip("Number of items to generate")]
@@ -45,19 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             set => numItems = value;
         }
 
-        [SerializeField]
-        [Tooltip("Default scale of each item in the list")]
-        private Vector3 itemScale = new Vector3(0.04f, 0.04f, 0.04f);
-
-        /// <summary>
-        /// Default scale of each item in the list
-        /// </summary>
-        public Vector3 ItemScale
-        {
-            get => itemScale;
-            set => itemScale = value;
-        }
-
         private void OnEnable()
         {
             //make sure we find a collection
@@ -70,26 +59,32 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
 
             for (int i = 0; i < numItems; i++)
             {
-                GameObject item = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-                if (itemMaterial != null)
-                {
-                    item.GetComponent<Renderer>().sharedMaterial = itemMaterial;
-                }
-
-                item.AddComponent<NearInteractionTouchable>();
+                GameObject item = Instantiate(dynamicItem);
 
                 item.transform.parent = scrollCollection.transform;
 
                 item.transform.localPosition = Vector3.zero;
                 item.transform.localRotation = Quaternion.identity;
-                item.transform.localScale = itemScale;
+                item.SetActive(true);
             }
         }
 
+        private float initTime;
+        private bool firstRun = true;
         private void Start()
         {
             scrollCollection.UpdateCollection();
+
+            initTime = Time.time;
+        }
+
+        private void Update()
+        {
+            if(initTime < Time.time && firstRun)
+            {
+               // scrollCollection.UpdateCollection();
+                firstRun = false;
+            }
         }
 
     }
