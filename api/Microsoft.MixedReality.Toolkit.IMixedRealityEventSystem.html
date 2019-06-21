@@ -159,6 +159,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_EventListeners_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This collection is obsolete and is replaced by handler-based internal storage. It will be removed in a future release.</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   
@@ -225,7 +228,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void Register(GameObject listener)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Register using a game object causes all components of this object to receive global events of all types. Use RegisterHandler&lt;&gt; methods instead to avoid unexpected behavior.&quot;)]
+void Register(GameObject listener)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -304,7 +308,8 @@ you must call this function for each interface type.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void Unregister(GameObject listener)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Unregister using a game object will disable listening of global events for all components of this object. Use UnregisterHandler&lt;&gt; methods instead to avoid unexpected behavior.&quot;)]
+void Unregister(GameObject listener)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

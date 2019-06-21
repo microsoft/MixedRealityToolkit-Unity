@@ -92,7 +92,7 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html">InputSystemGlobalListener</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html">InputSystemGlobalHandlerListener</a></div>
     <div class="level2"><span class="xref">ControllerPoseSynchronizer</span></div>
       <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html">BaseControllerPointer</a></div>
       <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizer.html">MixedRealityControllerVisualizer</a></div>
@@ -114,26 +114,26 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_InputSystem">InputSystemGlobalListener.InputSystem</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_InputSystem">InputSystemGlobalHandlerListener.InputSystem</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_OnEnable">InputSystemGlobalListener.OnEnable()</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_OnEnable">InputSystemGlobalHandlerListener.OnEnable()</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_Start">InputSystemGlobalListener.Start()</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_Start">InputSystemGlobalHandlerListener.Start()</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_OnDisable">InputSystemGlobalListener.OnDisable()</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_OnDisable">InputSystemGlobalHandlerListener.OnDisable()</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_EnsureInputSystemValid">InputSystemGlobalListener.EnsureInputSystemValid()</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_EnsureInputSystemValid">InputSystemGlobalHandlerListener.EnsureInputSystemValid()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ControllerPoseSynchronizer : InputSystemGlobalListener, IMixedRealityControllerPoseSynchronizer, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealityBaseInputHandler, IMixedRealityInputHandler&lt;float&gt;, IMixedRealityInputHandler&lt;Vector2&gt;, IMixedRealityInputHandler&lt;Vector3&gt;, IMixedRealityInputHandler&lt;Quaternion&gt;, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class ControllerPoseSynchronizer : InputSystemGlobalHandlerListener, IMixedRealityControllerPoseSynchronizer, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealityBaseInputHandler, IMixedRealityInputHandler&lt;float&gt;, IMixedRealityInputHandler&lt;Vector2&gt;, IMixedRealityInputHandler&lt;Vector3&gt;, IMixedRealityInputHandler&lt;Quaternion&gt;, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IEventSystemHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -712,6 +712,30 @@
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_RegisterHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.RegisterHandlers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_RegisterHandlers" data-uid="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.RegisterHandlers">RegisterHandlers()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void RegisterHandlers()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_RegisterHandlers">InputSystemGlobalHandlerListener.RegisterHandlers()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_UnregisterHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.UnregisterHandlers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_UnregisterHandlers" data-uid="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.UnregisterHandlers">UnregisterHandlers()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void UnregisterHandlers()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_UnregisterHandlers">InputSystemGlobalHandlerListener.UnregisterHandlers()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityControllerPoseSynchronizer.html">IMixedRealityControllerPoseSynchronizer</a>

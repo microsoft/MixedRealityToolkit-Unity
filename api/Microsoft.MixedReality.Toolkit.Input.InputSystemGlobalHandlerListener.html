@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class InputSystemGlobalListener
+    <title>Class InputSystemGlobalHandlerListener
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class InputSystemGlobalListener
+    <meta name="title" content="Class InputSystemGlobalHandlerListener
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.43.1.0">
     
@@ -81,32 +81,36 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener" class="text-break">Class InputSystemGlobalListener
+  <h1 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener" class="text-break">Class InputSystemGlobalHandlerListener
   </h1>
-  <div class="markdown level0 summary"><p>This component ensures that all input events are forwarded to this <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> when focus or gaze is not required.</p>
+  <div class="markdown level0 summary"><p>This component ensures that input events are forwarded to this component when focus or gaze is not required.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">InputSystemGlobalListener</span></div>
+    <div class="level1"><span class="xref">InputSystemGlobalHandlerListener</span></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html">BaseInputHandler</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html">ControllerPoseSynchronizer</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html">EyeTrackingTarget</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.GazeProvider.html">GazeProvider</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.GGVPointer.html">GGVPointer</a></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;InputSystemGlobalListener uses obsolete global input event registration API. Use RegisterHandler/UnregisterHandler API directly (preferred) or InputSystemGlobalHandlerListener instead.&quot;)]
-public class InputSystemGlobalListener : MonoBehaviour</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class InputSystemGlobalHandlerListener : MonoBehaviour</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_InputSystem_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.InputSystem*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_InputSystem" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.InputSystem">InputSystem</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_InputSystem_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.InputSystem*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_InputSystem" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.InputSystem">InputSystem</h4>
   <div class="markdown level1 summary"><p>The active instance of the input system.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -133,8 +137,8 @@ public class InputSystemGlobalListener : MonoBehaviour</code></pre>
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_EnsureInputSystemValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.EnsureInputSystemValid*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_EnsureInputSystemValid" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.EnsureInputSystemValid">EnsureInputSystemValid()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_EnsureInputSystemValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.EnsureInputSystemValid*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_EnsureInputSystemValid" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.EnsureInputSystemValid">EnsureInputSystemValid()</h4>
   <div class="markdown level1 summary"><p>A task that will only complete when the input system has in a valid state.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -157,14 +161,14 @@ public class InputSystemGlobalListener : MonoBehaviour</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_EnsureInputSystemValid_remarks">Remarks</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_EnsureInputSystemValid_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It's possible for this object to have been destroyed after the await, which
 implies that callers should check that this != null after awaiting this task.</p>
 </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_OnDisable_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.OnDisable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_OnDisable" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.OnDisable">OnDisable()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_OnDisable_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.OnDisable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_OnDisable" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.OnDisable">OnDisable()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -173,8 +177,8 @@ implies that callers should check that this != null after awaiting this task.</p
   </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.OnEnable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.OnEnable">OnEnable()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.OnEnable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.OnEnable">OnEnable()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -183,13 +187,37 @@ implies that callers should check that this != null after awaiting this task.</p
   </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_Start_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.Start*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_Start" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.Start">Start()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_RegisterHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.RegisterHandlers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_RegisterHandlers" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.RegisterHandlers">RegisterHandlers()</h4>
+  <div class="markdown level1 summary"><p>Overload this method to specify, which global events component wants to listen to.
+Use RegisterHandler API of InputSystem</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void RegisterHandlers()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_Start_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.Start*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_Start" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.Start">Start()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual void Start()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_UnregisterHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.UnregisterHandlers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_UnregisterHandlers" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.UnregisterHandlers">UnregisterHandlers()</h4>
+  <div class="markdown level1 summary"><p>Overload this method to specify, which global events component should stop listening to.
+Use UnregisterHandler API of InputSystem</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void UnregisterHandlers()</code></pre>
   </div>
 </article>
           </div>

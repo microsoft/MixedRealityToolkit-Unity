@@ -180,11 +180,12 @@
   
   <a id="Microsoft_MixedReality_Toolkit_BaseEventSystem_EventHandlersByType_" data-uid="Microsoft.MixedReality.Toolkit.BaseEventSystem.EventHandlersByType*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_BaseEventSystem_EventHandlersByType" data-uid="Microsoft.MixedReality.Toolkit.BaseEventSystem.EventHandlersByType">EventHandlersByType</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>List of all event handlers grouped by type that are registered to this Event System.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;Type, List&lt;IEventSystemHandler&gt;&gt; EventHandlersByType { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;Type, List&lt;BaseEventSystem.EventHandlerEntry&gt;&gt; EventHandlersByType { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -196,7 +197,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Dictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <span class="xref">List</span>&lt;<span class="xref">IEventSystemHandler</span>&gt;&gt;</td>
+        <td><span class="xref">Dictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.EventHandlerEntry.html">BaseEventSystem.EventHandlerEntry</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -227,6 +228,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_BaseEventSystem_EventListeners_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This collection is obsolete and is replaced by handler-based internal storage. It will be removed in a future release.</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   

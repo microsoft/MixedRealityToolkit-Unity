@@ -101,7 +101,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxTest_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class BoundingBoxTest : MonoBehaviour, IMixedRealitySpeechHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -225,8 +225,56 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxTest_InputSystem_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxTest.InputSystem*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxTest_InputSystem" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxTest.InputSystem">InputSystem</h4>
+  <div class="markdown level1 summary"><p>The active instance of the input system.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IMixedRealityInputSystem InputSystem { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityInputSystem</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxTest_OnDisable_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxTest.OnDisable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxTest_OnDisable" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxTest.OnDisable">OnDisable()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnDisable()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxTest_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxTest.OnEnable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxTest_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxTest.OnEnable">OnEnable()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnEnable()</code></pre>
+  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxTest_OnSpeechKeywordRecognized_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxTest.OnSpeechKeywordRecognized*"></a>
@@ -262,7 +310,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void Start()</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void Start()</code></pre>
   </div>
   <h3 id="implements">Implements</h3>
   <div>
