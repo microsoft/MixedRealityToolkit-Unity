@@ -82,7 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 t = Mathf.PingPong(Time.time, duration) / duration;
             }
         }
-        public void OnTouchCancelled() { }
 
     }
 }

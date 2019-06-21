@@ -252,6 +252,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
+
+            //TODO:Implement PassThroughMode to enable events to continue up the hierarchy
+            /*
             if (PassThroughMode && eventData.Sender == null)
             {
                 //start the bubble one step above this object to guarantee it goes upwards
@@ -262,6 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
                 return;
             }
+            */
 
             if (touchPoints.ContainsKey(eventData.Controller))
             {
@@ -305,6 +309,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
+            //TODO:Implement PassThroughMode to enable events to continue up the hierarchy
+            /*
+
             if (PassThroughMode && eventData.Sender == null)
             {
                 //start the bubble one step above this object to guarantee it goes upwards
@@ -315,6 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
                 return;
             }
+            */
 
             if (touchPoints.ContainsKey(eventData.Controller))
             {
@@ -327,6 +335,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            //TODO:Implement PassThroughMode to enable events to continue up the hierarchy
+            /*
+
             if (PassThroughMode && eventData.Sender == null)
             {
                 //start the bubble one step above this object to guarantee it goes upwards
@@ -337,6 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
                 return;
             }
+            */
 
             if (touchPoints.ContainsKey(eventData.Controller))
             {
@@ -344,17 +356,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 IsTouching = (touchPoints.Count > 0);
                 eventData.Use();
             }
-        }
-
-        /// <inheritdoc />
-        public void OnTouchCancelled()
-        {
-            // clear touch points in case we get disabled and can't receive the touch end event anymore
-            touchPoints.Clear();
-
-            // make sure button doesn't stay in a pressed state in case we disable the button while pressing it
-            currentPushDistance = startPushDistance;
-            UpdateMovingVisualsPosition();
         }
 
         #endregion OnTouch

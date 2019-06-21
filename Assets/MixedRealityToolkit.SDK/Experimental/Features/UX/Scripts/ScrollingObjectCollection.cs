@@ -681,7 +681,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     NodeList.Add(new ObjectCollectionNode { Name = child.name, Transform = child, GameObject = child.gameObject, Colliders = child.GetComponentsInChildren<Collider>() });
                 }
             }
-
+            /*
+            //TODO: Use a passthrough for objects that use input
             //Check for Pressable buttons and Interactables, then set passthrough mode
             //eventually we should be adding Passthrough to the IMixedRealityTouchHandler (maybe even all Input events)
             foreach (ObjectCollectionNode node in NodeList)
@@ -698,7 +699,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     ixble.PassThroughMode = true;
                 }
             }
-
+            */
             if (NodeList.Count <= 0)
             {
                 Debug.LogWarning(gameObject.name + " ScrollingObjectCollection needs a NodeList greater than zero");
@@ -980,6 +981,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         if (isColliderActive)
                         {
                             //Fire the UnityEvent
+                            //TODO: Use existing InputInterfaces to make a call back to the child object
                             ClickEvent?.Invoke(focusedObject);
                         }
                     }
@@ -1011,10 +1013,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
                 else if (isDragging)
                 {
-                    if (scrollChild != null)
-                    {
-                        scrollChild.OnTouchCancelled();
-                    }
 
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
@@ -2342,7 +2340,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             //we ignore this event and calculate click in the Update() loop;
         }
-
         #endregion IMixedRealityPointerHandler implementation
 
         #region IMixedRealityTouchHandler implementation
@@ -2358,6 +2355,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                 if (focusedObject != currentPointer.Result.CurrentPointerTarget || focusedObject == null)
                 {
+                    //TODO: Send input back down to child with a new sender so PassThroughMode knows to handle it properly
+                    /*
                     HandTrackingInputEventData newTouchData = eventData;
                     newTouchData.Sender = this;
 
@@ -2367,6 +2366,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     {
                         scrollChild.OnTouchStarted(newTouchData);
                     }
+                    */
                 }
             }
 
@@ -2397,6 +2397,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             {
                 if (focusedObject != currentPointer.Result.CurrentPointerTarget || focusedObject == null)
                 {
+                    //TODO: Send input back down to child with a new sender so PassThroughMode knows to handle it properly
+                    /*
+
                     HandTrackingInputEventData newTouchData = eventData;
                     newTouchData.Sender = this;
 
@@ -2406,6 +2409,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     {
                         scrollChild.OnTouchCompleted(newTouchData);
                     }
+                    */
                 }
             }
         }
@@ -2418,6 +2422,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             {
                 if (!isDragging & p == currentPointer)
                 {
+                    //TODO: Send input back down to child with a new sender so PassThroughMode knows to handle it properly
+                    /*
 
                     HandTrackingInputEventData newTouchData = eventData;
                     newTouchData.Sender = this;
@@ -2443,19 +2449,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     {
                         scrollChild.OnTouchUpdated(newTouchData);
                     }
+                    */
                 }
             }
         }
-
-        public void OnTouchCancelled() { }
 
         #endregion IMixedRealityTouchHandler implementation
 
         #region IMixedRealitySourceStateHandler implementation
 
-        void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { /* */ }
+        void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { /* */
+                }
 
-        void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
+                void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             //We'll consider this a drag release
             if (isEngaged && !animatingToPosition)

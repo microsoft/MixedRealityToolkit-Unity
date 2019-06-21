@@ -30,7 +30,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             OnTouchUpdated.Invoke(eventData);
         }
-
-        public void OnTouchCancelled() { }
     }
 }

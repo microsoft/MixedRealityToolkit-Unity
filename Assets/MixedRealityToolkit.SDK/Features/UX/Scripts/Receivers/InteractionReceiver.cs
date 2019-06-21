@@ -333,8 +333,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         }
 
-        public void OnTouchCancelled() { }
-
         #endregion IMixedRealityHandTrackingHandler Implementation
 
         #region Protected Virtual Callback Functions

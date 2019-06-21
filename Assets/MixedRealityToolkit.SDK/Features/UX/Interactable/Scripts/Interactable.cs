@@ -1044,6 +1044,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
+            //TODO:Implement PassThroughMode to enable events to continue up the hierarchy
+            /*
+
             if (PassThroughMode && eventData.Sender == null)
             {
                 //start the bubble one step above this object to guarantee it goes upwards
@@ -1054,7 +1057,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
                 return;
             }
-
+            */
             SetPress(true);
             SetPhysicalTouch(true);
             eventData.Use();
@@ -1062,6 +1065,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            //TODO:Implement PassThroughMode to enable events to continue up the hierarchy
+            /*
+
             if (PassThroughMode && eventData.Sender == null)
             {
                 //start the bubble one step above this object to guarantee it goes upwards
@@ -1072,6 +1078,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
                 return;
             }
+            */
 
             SetPress(false);
             SetPhysicalTouch(false);
@@ -1080,6 +1087,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
+            //TODO:Implement PassThroughMode to enable events to continue up the hierarchy
+            /*
+
             if (PassThroughMode && eventData.Sender == null)
             {
                 //start the bubble one step above this object to guarantee it goes upwards
@@ -1090,9 +1100,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
                 return;
             }
+            */
         }
-
-        public void OnTouchCancelled() { }
 
         #endregion TouchHandlers
 
