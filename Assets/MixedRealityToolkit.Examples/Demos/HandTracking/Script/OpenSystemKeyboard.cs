@@ -18,8 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 #if !UNITY_EDITOR && UNITY_WSA
             // Windows mixed reality keyboard initialization goes here
             wmrKeyboard = gameObject.AddComponent<MixedRealityKeyboard>();
-            wmrKeyboard.TextChanged.AddListener((eventData) => debugMessage.text = "typing... " + keyboard.Text);
-            wmrKeyboard.KeyboardHidden.AddListener(() => debugMessage.text = "typed " + keyboard.Text);
+            wmrKeyboard.TextChanged.AddListener((eventData) => debugMessage.text = "typing... " + wmrKeyboard.Text);
+            wmrKeyboard.KeyboardHidden.AddListener(() => debugMessage.text = "typed " + wmrKeyboard.Text);
 #else
             // non-Windows mixed reality keyboard initialization goes here
 #endif
