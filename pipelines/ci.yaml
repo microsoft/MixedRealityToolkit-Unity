@@ -16,3 +16,5 @@ jobs:
     - SDK_18362 -equals TRUE
   steps:
   - template: templates/ci-common.yml
+    parameters:
+      packagingEnabled: false
