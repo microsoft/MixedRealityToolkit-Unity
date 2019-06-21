@@ -1875,17 +1875,6 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Input/Diagrams.vsdx",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/Input/Diagrams.vsdx"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "Documentation/Images/Input/DictationDataProvider.png",
       "output": {
         "resource": {
@@ -1919,10 +1908,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Input/EventFlow.png",
+      "source_relative_path": "Documentation/Images/Input/GestureProfile.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Input/EventFlow.png"
+          "relative_path": "Documentation/Images/Input/GestureProfile.png"
         }
       },
       "is_incremental": false,
@@ -1930,10 +1919,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Input/GestureProfile.png",
+      "source_relative_path": "Documentation/Images/Input/HandTrackingProfile.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Input/GestureProfile.png"
+          "relative_path": "Documentation/Images/Input/HandTrackingProfile.png"
         }
       },
       "is_incremental": false,
@@ -1978,6 +1967,39 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Input/InputActionsExample.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/MRTK_InputSystem.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/MRTK_InputSystem.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/MRTK_Input_EventFlow.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/MRTK_Input_EventFlow.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/MRTK_Package_Foundation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/MRTK_Package_Foundation.png"
         }
       },
       "is_incremental": false,
@@ -4212,7 +4234,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Dictation.html",
-          "hash": "JBqdLTlOZV9cPrjFpDOjHg=="
+          "hash": "R+AgDHKW3i843qBnmfQdXA=="
         }
       },
       "is_incremental": false,
@@ -4224,7 +4246,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Gestures.html",
-          "hash": "cBjy41sLqQf6valH6bSSSA=="
+          "hash": "t7u9xU3wSYmle4jdasITsw=="
         }
       },
       "is_incremental": false,
@@ -4260,7 +4282,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputProviders.html",
-          "hash": "XYdhFZGss6J7iY0LPLLWSg=="
+          "hash": "mGBxafS7FoVOaN7LKEZQKQ=="
         }
       },
       "is_incremental": false,
@@ -4272,7 +4294,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Overview.html",
-          "hash": "vDtXel/ryONWwJAEh8TYXA=="
+          "hash": "0gvgKkHX/hBZlkBbssIdMg=="
         }
       },
       "is_incremental": false,
@@ -4284,7 +4306,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Pointers.html",
-          "hash": "513eQfXlvOv83A5M52LAxw=="
+          "hash": "ytU3npbioxCqFhYdY8kSvg=="
         }
       },
       "is_incremental": false,
@@ -4296,7 +4318,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Speech.html",
-          "hash": "ubKQw5Gu4hRJUX09lZ09Ww=="
+          "hash": "+Kd+YQyD3Pb9ID4xHPuL/w=="
         }
       },
       "is_incremental": false,
@@ -4320,7 +4342,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSystem/HandTracking.html",
-          "hash": "ISuUoW1jwzigzhrOB8sJ9Q=="
+          "hash": "eAQwfP89mdPilmBAfbmZTw=="
         }
       },
       "is_incremental": false,
@@ -4344,7 +4366,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MixedRealityConfigurationGuide.html",
-          "hash": "4o6fMWDYTBBo0aBf+qngww=="
+          "hash": "GpG/r+xGxcIT79ho2cyFfw=="
         }
       },
       "is_incremental": false,
@@ -4380,7 +4402,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Packaging/MRTK_Packages.html",
-          "hash": "18LkzJ4eHBecXBKBz82K3g=="
+          "hash": "TM7j+umTKGp80S00n5pCrg=="
         }
       },
       "is_incremental": false,
@@ -4404,7 +4426,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Profiles/Profiles.html",
-          "hash": "zXLEs/xufZybXPPiEpJKMg=="
+          "hash": "Hoh4YtiVADVtDSoMtRxZZQ=="
         }
       },
       "is_incremental": false,
@@ -4740,7 +4762,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "acN96R+r6KOd/mKA4V5Fpw=="
+          "hash": "iWf9uVxSFzOPr1Y3oLNd+Q=="
         }
       },
       "is_incremental": false,
@@ -16383,13 +16405,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -16405,6 +16420,13 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0

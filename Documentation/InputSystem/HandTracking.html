@@ -83,28 +83,16 @@
 <h1 id="hand-tracking-profile">Hand Tracking Profile</h1>
 
 <p>The <em>Hand Tracking profile</em> is found under the <em>Input System profile</em>. It contains settings for customizing hand representation.</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_Core_Input_Hands_HandTrackingProfile.png">
-  <img src="../Images/InputSimulation/MRTK_Core_Input_Hands_HandTrackingProfile.png" title="Hand Tracking Profile" width="50%" class="center">
-</a>
+<img src="../Images/Input/HandTrackingProfile.png" width="650px" style="display:block;">
 <h2 id="joint-prefabs">Joint Prefabs</h2>
 <p>Joint prefabs are visualized using simple prefabs. The <em>Palm</em> and <em>Index Finger</em> joints are of special importance and have their own prefab, while all other joints share the same prefab.</p>
 <p>By default the hand joint prefabs are simple geometric primitives. These can be replaced if desired. If no prefab is specified at all, empty <a href="href:https://docs.unity3d.com/ScriptReference/GameObject.html">GameObjects</a> are created instead.</p>
-<table>
-<thead>
-<tr>
-<th>Warning: Avoid using complex scripts or expensive rendering in joint prefabs, since joint objects are transformed on every frame and can have significant performance cost!</th>
-</tr>
-</thead>
-</table>
-<a target="_blank" href="../Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png">
-  <img src="../Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png" title="Hand Joint Visualizers" width="50%" class="center">
-</a>
+<p><strong>Warning: Avoid using complex scripts or expensive rendering in joint prefabs, since joint objects are transformed on every frame and can have significant performance cost!</strong></p>
+<img src="../Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png" width="350px" style="display:block;">
 <h2 id="hand-mesh-prefab">Hand Mesh Prefab</h2>
 <p>The hand mesh is used if fully defined mesh data is provided by the hand tracking device. The mesh renderable in the prefab is replaced by data from the device, so a dummy mesh such as a cube is sufficient. The material of the prefab is used for the hand mesh.</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png">
-  <img src="../Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png" title="Full Hand Mesh" width="50%" class="center">
-</a>
-<p>Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely using the <em>Enable Hand Mesh Updates</em> option.</p>
+<img src="../Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png" width="350px" style="display:block;">
+<p>Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely by unchecking <strong>Enable Hand Mesh Visualization</strong> option.</p>
 <h1 id="scripting">Scripting</h1>
 <p>Position and rotation can be requested from the input system for each individual hand joint as a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html">MixedRealityPose</a>.</p>
 <p>Alternatively the system allows access to <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObjects</a> that follow the joints. This can be useful if another GameObject should track a joint continuously.</p>
