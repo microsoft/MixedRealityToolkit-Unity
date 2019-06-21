@@ -373,39 +373,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   selectAction:
     id: 0
     description: 
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 0
-  OnLookAtStart:
+  voiceSelect: []
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnLookAway:
+  onLookAway:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  onDwell:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onSelected:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 0
 --- !u!65 &6659678
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1277,7 +1276,6 @@ GameObject:
   - component: {fileID: 90523960}
   - component: {fileID: 90523959}
   - component: {fileID: 90523958}
-  - component: {fileID: 90523957}
   - component: {fileID: 90523956}
   m_Layer: 0
   m_Name: Rotate Target by Eye Gaze (2)
@@ -1319,7 +1317,7 @@ MonoBehaviour:
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 90523957}
+        - m_Target: {fileID: 0}
           m_MethodName: TransitionToUser
           m_Mode: 1
           m_Arguments:
@@ -1336,7 +1334,7 @@ MonoBehaviour:
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 90523957}
+        - m_Target: {fileID: 0}
           m_MethodName: ReturnHome
           m_Mode: 1
           m_Arguments:
@@ -1350,27 +1348,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   persistentKeywords: 0
---- !u!114 &90523957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 90523954}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a63b3115ec2c45e419f15ed309df5bc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
-  ActivateBehaviorsWhenInFront:
-  - {fileID: 90523958}
-  DistanceToCamera: 0.75
-  speed: 3
-  isEnabled: 1
-  minDistToStopTransition: 0.1
-  setToAutoRotateIfFocused: 1
 --- !u!114 &90523958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1386,7 +1363,7 @@ MonoBehaviour:
   focusEnabled: 1
   timeToTriggerDwellInSec: 5
   speedX: 0
-  speedY: 4
+  speedY: 2
   inverseX: 0
   inverseY: 1
   rotationThreshInDegrees: 5
@@ -1406,41 +1383,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   selectAction:
     id: 1
     description: Select
     axisConstraint: 2
-  voice_select:
+  voiceSelect:
   - id: 1
     description: Select
     axisConstraint: 2
-  cursor_snapToCenter: 0
-  OnLookAtStart:
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnLookAway:
+  onLookAway:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  onDwell:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onSelected:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 90523957}
+      - m_Target: {fileID: 0}
         m_MethodName: OnSelect
         m_Mode: 1
         m_Arguments:
@@ -1453,6 +1428,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 0
 --- !u!135 &90523960
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2278,39 +2254,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   selectAction:
     id: 0
     description: 
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 0
-  OnLookAtStart:
+  voiceSelect: []
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnLookAway:
+  onLookAway:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  onDwell:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onSelected:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 0
 --- !u!65 &151708623
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3261,16 +3236,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 5223252673842981081, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
       propertyPath: m_Mesh
@@ -3291,6 +3256,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2701345762782396268, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
@@ -6321,15 +6296,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   selectAction:
     id: 0
     description: 
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 0
-  OnLookAtStart:
+  voiceSelect: []
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1198226477}
@@ -6345,12 +6318,12 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnLookAway:
+  onLookAway:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1198226477}
@@ -6366,16 +6339,17 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  onDwell:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onSelected:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 0
 --- !u!65 &1198226480
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7178,16 +7152,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 5223252673842981081, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
       propertyPath: m_Mesh
@@ -7208,6 +7172,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2701345762782396268, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
@@ -7390,15 +7364,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   selectAction:
     id: 0
     description: 
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 0
-  OnLookAtStart:
+  voiceSelect: []
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1380263301}
@@ -7414,12 +7386,12 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnLookAway:
+  onLookAway:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1380263301}
@@ -7435,16 +7407,17 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  onDwell:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onSelected:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 0
 --- !u!65 &1380263303
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8738,16 +8711,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 5223252673842981081, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
       propertyPath: m_Mesh
@@ -8768,6 +8731,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2701345762782396268, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
@@ -9674,16 +9647,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 5223252673842981081, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
       propertyPath: m_Mesh
@@ -9704,6 +9667,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4980266941201998803, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2701345762782396268, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
@@ -10008,38 +9981,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   selectAction:
     id: 1
     description: Select
     axisConstraint: 2
-  voice_select:
+  voiceSelect:
   - id: 1
     description: Select
     axisConstraint: 2
-  cursor_snapToCenter: 0
-  OnLookAtStart:
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnLookAway:
+  onLookAway:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  onDwell:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1882516434}
@@ -10055,6 +10026,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 0
 --- !u!135 &1882516431
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10572,39 +10544,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusEnabled: 1
-  timeToTriggerDwellInSec: 5
   selectAction:
     id: 0
     description: 
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 0
-  OnLookAtStart:
+  voiceSelect: []
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnLookAway:
+  onLookAway:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  onDwell:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onSelected:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  eyeCursorSnapToTargetCenter: 0
 --- !u!65 &2086128683
 BoxCollider:
   m_ObjectHideFlags: 0

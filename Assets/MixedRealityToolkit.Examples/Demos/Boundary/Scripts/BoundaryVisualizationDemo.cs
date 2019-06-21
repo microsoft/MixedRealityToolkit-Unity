@@ -80,12 +80,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void OnEnable()
         {
-            BoundarySystem?.Register(gameObject);
+            BoundarySystem?.RegisterHandler<IMixedRealityBoundaryHandler>(this);
         }
 
         private void OnDisable()
         {
-            BoundarySystem?.Unregister(gameObject);
+            BoundarySystem?.UnregisterHandler<IMixedRealityBoundaryHandler>(this);
         }
 
         #endregion MonoBehaviour Implementation

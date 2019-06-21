@@ -48,6 +48,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityFocusProvider FocusProvider { get; }
 
         /// <summary>
+        /// The current Raycast Provider that's been implemented by this Input System.
+        /// </summary>
+        IMixedRealityRaycastProvider RaycastProvider { get; }
+
+        /// <summary>
         /// The current Gaze Provider that's been implemented by this Input System.
         /// </summary>
         IMixedRealityGazeProvider GazeProvider { get; }

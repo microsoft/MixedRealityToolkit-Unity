@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 Debug.LogWarning("PressableButton will not work if game object layer is set to 'Ignore Raycast'.");
             }
 
-            initialOffsetMovingVisuals = PushSpaceSourceTransform.localPosition;
+            initialOffsetMovingVisuals = PushSpaceSourceTransform.position - PushSpaceSourceTransform.parent.position;
         }
 
         void OnDisable()
