@@ -130,20 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set { visibleSourcesCount = value; }
         }
 
-        [Flags]
-        public enum CursorAction
-        {
-            None = 0,
-            Move = 1 << 0,
-            Rotate = 1 << 1,
-            Scale = 1 << 2
-        }
-
-        public CursorAction CurrentCursorActions = CursorAction.None;
-
-        public Transform handleRigTransform = null;
-        public Vector3 handleRigBounds = Vector3.zero;
-
         private Vector3 targetPosition;
         private Vector3 targetScale;
         private Quaternion targetRotation;
@@ -201,6 +187,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public GameObject GameObjectReference => gameObject;
+
+        private FocusDetails focusDetails;
 
         #endregion IMixedRealityCursor Implementation
 
@@ -321,6 +309,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
+            if (!InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
+            {
+                if (InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                {
+                    Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
+                }
+            }
+
             UpdateCursorState();
             UpdateCursorTransform();
         }
@@ -387,18 +383,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (Pointer == null)
             {
                 Debug.LogError($"[BaseCursor.{name}] No Pointer has been assigned!");
-                return;
-            }
-
-            FocusDetails focusDetails;
-
-            if (!InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
-            {
-                if (InputSystem.FocusProvider.IsPointerRegistered(Pointer))
-                {
-                    Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
-                }
-
                 return;
             }
 
@@ -518,80 +502,50 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public virtual CursorContextEnum CheckCursorContext()
         {
-            // Temp implementation
             if (CursorContext != CursorContextEnum.Contextual)
             {
-                if ((CurrentCursorActions & CursorAction.Move) != 0)
+                var cursorAction = CursorContextInfo.CursorAction.None;
+                Transform contextCenter = null;
+                if (TargetedObject)
+                {
+                    var contextInfo = TargetedObject.GetComponent<CursorContextInfo>();
+                    if (contextInfo != null)
+                    {
+                        cursorAction = contextInfo.CurrentCursorAction;
+                        contextCenter = contextInfo.ObjectCenter;
+                    }
+                }
+
+                if (cursorAction == CursorContextInfo.CursorAction.Move)
                 {
                     return CursorContextEnum.MoveCross;
                 }
-                else if ((CurrentCursorActions & CursorAction.Scale) != 0)
+                else if (cursorAction == CursorContextInfo.CursorAction.Scale)
                 {
-                    if (handleRigTransform != null)
+                    Vector3 forward = focusDetails.Normal.normalized;
+                    Vector3 right = Vector3.Cross(Vector3.up, forward).normalized;
+                    if (right == Vector3.zero)
                     {
-                        Vector3 adjustedHandlePos = handleRigTransform.InverseTransformVector(Position - handleRigTransform.position);
-                        adjustedHandlePos.x /= handleRigBounds.x;
-                        adjustedHandlePos.y /= handleRigBounds.y;
-                        adjustedHandlePos.z /= handleRigBounds.z;
+                        right = Vector3.Cross(contextCenter.TransformDirection(Vector3.forward), forward).normalized;
+                    }
+                    Vector3 up = Vector3.Cross(forward, right).normalized;
 
+                    Vector3 cross = Vector3.Cross(focusDetails.Normal, Position - contextCenter.position);
 
-                        if (adjustedHandlePos.y > 0)
-                        {
-                            if (adjustedHandlePos.x * adjustedHandlePos.z > 0) // 1st or 3rd quadrant
-                            {
-                                if (Math.Abs(adjustedHandlePos.x) < Math.Abs(adjustedHandlePos.z))
-                                {
-                                    return CursorContextEnum.MoveNorthwestSoutheast;
-                                }
-                                else
-                                {
-                                    return CursorContextEnum.MoveNortheastSouthwest;
-                                }
-                            }
-                            else // 2nd or 4th quadrant
-                            {
-                                if (Math.Abs(adjustedHandlePos.x) < Math.Abs(adjustedHandlePos.z))
-                                {
-                                    return CursorContextEnum.MoveNortheastSouthwest;
-                                }
-                                else
-                                {
-                                    return CursorContextEnum.MoveNorthwestSoutheast;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (adjustedHandlePos.x * adjustedHandlePos.z > 0) // 1st or 3rd quadrant
-                            {
-                                if (Math.Abs(adjustedHandlePos.x) < Math.Abs(adjustedHandlePos.z))
-                                {
-                                    return CursorContextEnum.MoveNortheastSouthwest;
-                                }
-                                else
-                                {
-                                    return CursorContextEnum.MoveNorthwestSoutheast;
-                                }
-                            }
-                            else // 2nd or 4th quadrant
-                            {
-                                if (Math.Abs(adjustedHandlePos.x) < Math.Abs(adjustedHandlePos.z))
-                                {
-                                    return CursorContextEnum.MoveNorthwestSoutheast;
-                                }
-                                else
-                                {
-                                    return CursorContextEnum.MoveNortheastSouthwest;
-                                }
-                            }
-                        }
+                    if (Vector3.Dot(cross, up) * Vector3.Dot(cross, right) > 0) // quadrant 1 and 3
+                    {
+                        return CursorContextEnum.MoveNortheastSouthwest;
+                    }
+                    else // quadrant 2 and 4
+                    {
+                        return CursorContextEnum.MoveNorthwestSoutheast;
                     }
                 }
-                else if ((CurrentCursorActions & CursorAction.Rotate) != 0)
+                else if (cursorAction == CursorContextInfo.CursorAction.Rotate)
                 {
-                    if (handleRigTransform != null)
+                    if (contextCenter != null)
                     {
-                        Vector3 adjustedHandlePos = handleRigTransform.InverseTransformVector(Position - handleRigTransform.position);
+                        Vector3 adjustedHandlePos = contextCenter.InverseTransformPoint(Position);
 
                         if (Math.Abs(adjustedHandlePos.y) > Math.Abs(adjustedHandlePos.x) &&
                         Math.Abs(adjustedHandlePos.y) > Math.Abs(adjustedHandlePos.z))

@@ -992,6 +992,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     cornerVisualScaleToMatchHandleSize = scaleHandleSize;
                     cube.transform.position = boundsCorners[i];
 
+                    var contextInfo = cube.EnsureComponent<CursorContextInfo>();
+                    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Scale;
+                    contextInfo.ObjectCenter = rigRoot.transform;
+
                     // In order for the cube to be grabbed using near interaction we need
                     // to add NearInteractionGrabbable;
                     var g = cube.EnsureComponent<NearInteractionGrabbable>();
@@ -1025,6 +1029,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     BoxCollider collider = corner.AddComponent<BoxCollider>();
                     collider.size = scaleHandleSize * Vector3.one;
+
+                    var contextInfo = corner.EnsureComponent<CursorContextInfo>();
+                    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Scale;
+                    contextInfo.ObjectCenter = rigRoot.transform;
 
                     // In order for the corner to be grabbed using near interaction we need
                     // to add NearInteractionGrabbable;
@@ -1116,6 +1124,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     ball.transform.position = edgeCenters[i];
                     ball.transform.parent = rigRoot.transform;
 
+                    var contextInfo = ball.EnsureComponent<CursorContextInfo>();
+                    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Rotate;
+                    contextInfo.ObjectCenter = rigRoot.transform;
+
                     // In order for the ball to be grabbed using near interaction we need
                     // to add NearInteractionGrabbable;
                     var g = ball.EnsureComponent<NearInteractionGrabbable>();
@@ -1151,6 +1163,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         BoxCollider collider = ball.AddComponent<BoxCollider>();
                         collider.size = rotationHandleDiameter * Vector3.one;
                     }
+
+                    var contextInfo = ball.EnsureComponent<CursorContextInfo>();
+                    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Rotate;
+                    contextInfo.ObjectCenter = rigRoot.transform;
 
                     // In order for the ball to be grabbed using near interaction we need
                     // to add NearInteractionGrabbable;
@@ -1891,53 +1907,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
-            if (activation != BoundingBoxActivationType.ActivateManually && activation != BoundingBoxActivationType.ActivateOnStart)
+            if (activation == BoundingBoxActivationType.ActivateManually || activation == BoundingBoxActivationType.ActivateOnStart)
             {
-                if (DoesActivationMatchFocus(eventData))
-                {
-                    bool handInProximity = eventData.NewFocusedObject != null && eventData.NewFocusedObject.transform.IsChildOf(transform);
-                    if (handInProximity == wireframeOnly)
-                    {
-                        wireframeOnly = !handInProximity;
-                        ResetHandleVisibility();
-                    }
-                }
+                return;
             }
 
-            if (eventData.NewFocusedObject != null && eventData.NewFocusedObject.transform.IsChildOf(transform))
+            if (!DoesActivationMatchFocus(eventData))
             {
-                GameObject grabbedHandle = eventData.Pointer.Result.CurrentPointerTarget;
-                if (grabbedHandle)
-                {
-                    currentHandleType = GetHandleType(grabbedHandle.transform);
-
-                    var bc = eventData.Pointer.BaseCursor as BaseCursor;
-                    if (bc != null)
-                    {
-                        bc.handleRigTransform = rigRoot.transform;
-                        bc.handleRigBounds = currentBoundsExtents;
-                        switch (currentHandleType)
-                        {
-                            case HandleType.Rotation:
-                                bc.CurrentCursorActions |= BaseCursor.CursorAction.Rotate;
-                                break;
-                            case HandleType.Scale:
-                                bc.CurrentCursorActions |= BaseCursor.CursorAction.Scale;
-                                break;
-                            case HandleType.None:
-                                bc.CurrentCursorActions &= ~(BaseCursor.CursorAction.Rotate | BaseCursor.CursorAction.Scale);
-                                break;
-                        }
-                    }
-                }
+                return;
             }
-            else
+
+            bool handInProximity = eventData.NewFocusedObject != null && eventData.NewFocusedObject.transform.IsChildOf(transform);
+            if (handInProximity == wireframeOnly)
             {
-                var bc = eventData.Pointer.BaseCursor as BaseCursor;
-                if (bc != null)
-                {
-                    bc.CurrentCursorActions &= ~(BaseCursor.CursorAction.Rotate | BaseCursor.CursorAction.Scale);
-                }
+                wireframeOnly = !handInProximity;
+                ResetHandleVisibility();
             }
         }
 
