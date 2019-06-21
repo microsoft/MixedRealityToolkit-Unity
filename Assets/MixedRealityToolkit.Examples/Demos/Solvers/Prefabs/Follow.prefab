@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1644659546057122}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.0375}
+  m_LocalScale: {x: 0.13333334, y: 0.13333334, z: 0.025}
   m_Children:
   - {fileID: 3529533068135414235}
   m_Father: {fileID: 0}
@@ -121,9 +121,9 @@ MonoBehaviour:
   SolverHandler: {fileID: 114474594170136286}
   moveToDefaultDistanceLerpTime: 0.1
   orientationType: 6
-  minDistance: 1
-  maxDistance: 2
-  defaultDistance: 1
+  minDistance: 0.4
+  maxDistance: 0.8
+  defaultDistance: 0.6
   maxViewHorizontalDegrees: 30
   maxViewVerticalDegrees: 30
   orientToControllerDeadzoneDegrees: 60
