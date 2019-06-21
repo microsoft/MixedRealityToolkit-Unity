@@ -71,7 +71,7 @@ namespace Assets.MRTK.Tools.Scripts
             }
         }
 
-        public static bool TryIOWithRetries(Action operation, int numRetries, TimeSpan sleepBetweenRetrie)
+        public static bool TryIOWithRetries(Action operation, int numRetries, TimeSpan sleepBetweenRetrie, bool throwOnLastRetry = false)
         {
             do
             {
@@ -80,7 +80,20 @@ namespace Assets.MRTK.Tools.Scripts
                     operation();
                     return true;
                 }
-                catch (UnauthorizedAccessException) { }
+                catch (UnauthorizedAccessException)
+                {
+                    if (throwOnLastRetry && numRetries == 0)
+                    {
+                        throw;
+                    }
+                }
+                catch (IOException)
+                {
+                    if (throwOnLastRetry && numRetries == 0)
+                    {
+                        throw;
+                    }
+                }
 
                 Thread.Sleep(sleepBetweenRetrie);
                 numRetries--;
@@ -107,7 +120,7 @@ namespace Assets.MRTK.Tools.Scripts
                 DeleteDirectory(dir, waitForDirectoryDelete);
             }
 
-            Directory.Delete(targetDir, false);
+            TryIOWithRetries(() => Directory.Delete(targetDir, false), 2, TimeSpan.FromMilliseconds(100), true);
 
             if (waitForDirectoryDelete)
             {

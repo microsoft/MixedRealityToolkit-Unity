@@ -1,20 +1,12 @@
 <Project>
   <PropertyGroup>
     <ProjectGuid><!--PROJECT_GUID_TOKEN--></ProjectGuid>
-    <!--<TargetFrameworks>netstandard2.0;uap10.0;net46</TargetFrameworks> --><!--TODO: This is a weird thing, it is a required property, although immediately changed when common props are loaded, before the sdk.props are loaded-->
+    <!--<TargetFrameworks>netstandard2.0;uap10.0;net46</TargetFrameworks> --><!--TODO: This is a weird thing, it is a required property (even if commented)-->
     <AllowUnsafeBlocks><!--ALLOW_UNSAFE_TOKEN--></AllowUnsafeBlocks>
     <Configurations><!--PROJECT_CONFIGURATIONS_TOKEN--></Configurations>
   </PropertyGroup>
   
   <Import Project="##COMMON_PROPS_FILE_PATH##" />
-
-  <!--POST common import-->
-  <PropertyGroup>
-    <BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)$(ProjectGuid)\obj\$(Configuration)\</BaseIntermediateOutputPath>
-    <OutputPath>$(OutputPath)$(ProjectGuid)\bin\</OutputPath>
-    <OutDir>$(OutputPath)$(Configuration)\$(UnityPlatform)\</OutDir>
-  </PropertyGroup>
-  
   <Import Project="##PLATFORM_PROPS_FOLDER_PATH_TOKEN##\$(UnityPlatform).$(UnityConfiguration).props"/>
 
   <!--IMPORT SDK.props manually to be able to set the BaseIntermediateOutputPath path-->
@@ -46,6 +38,7 @@
     <OriginalBuildDependsOn>$(BuildDependsOn)</OriginalBuildDependsOn>
     <BuildDependsOn></BuildDependsOn>
   </PropertyGroup>
+  
   <Target Name="OriginalBuild" DependsOnTargets="$(OriginalBuildDependsOn)">
   </Target>
 

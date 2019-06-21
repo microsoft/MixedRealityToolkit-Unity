@@ -5,40 +5,15 @@
     <DefineConstants>$(DefineConstants);<!--PLATFORM_COMMON_DEFINE_CONSTANTS--></DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)obj\$(ProjectGuid)\$(Configuration)\</BaseIntermediateOutputPath>
+    <OutputPath>$(OutputPath)$(UnityConfiguration)\$(UnityPlatform)\$(ProjectName)\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+
   <ItemGroup>
 <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
-    <Reference Include="##REFERENCE_TOKEN##">
-      <HintPath><!--REFERENCE_HINT_PATH_TOKEN--></HintPath>  
-    </Reference>
+    <Reference Include="##REFERENCE_TOKEN##"/>
 <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
-  
-  <!--<Choose>
-    <When Condition="$(PlayerConfiguration)">
-      <PropertyGroup>
-        <AssemblySearchPaths>--><!--PLATFORM_PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN--><!--;$(AssemblySearchPaths)</AssemblySearchPaths>
-        <DefineConstants>$(DefineConstants);--><!--PLATFORM_PLAYER_DEFINE_CONSTANTS--><!--</DefineConstants>
-      </PropertyGroup>
-      <ItemGroup>
---><!--PLATFORM_PLAYER_REFERENCE_TEMPLATE_START--><!--
-        <Reference Include="##REFERENCE_TOKEN##">
-          <HintPath>--><!--REFERENCE_HINT_PATH_TOKEN--><!--</HintPath>  
-        </Reference>
---><!--PLATFORM_PLAYER_REFERENCE_TEMPLATE_END--><!--
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <AssemblySearchPaths>--><!--PLATFORM_INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN--><!--;$(AssemblySearchPaths)</AssemblySearchPaths>
-        <DefineConstants>$(DefineConstants);--><!--PLATFORM_INEDITOR_DEFINE_CONSTANTS--><!--</DefineConstants>
-      </PropertyGroup>
-      <ItemGroup>
---><!--PLATFORM_INEDITOR_REFERENCE_TEMPLATE_START--><!--
-        <Reference Include="##REFERENCE_TOKEN##">
-          <HintPath>--><!--REFERENCE_HINT_PATH_TOKEN--><!--</HintPath>  
-        </Reference>
---><!--PLATFORM_INEDITOR_REFERENCE_TEMPLATE_END--><!--
-      </ItemGroup>
-    </Otherwise>
-  </Choose>-->
 </Project>
