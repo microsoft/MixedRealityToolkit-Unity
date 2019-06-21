@@ -196,6 +196,32 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_PrimaryPointer_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.PrimaryPointer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_PrimaryPointer" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.PrimaryPointer">PrimaryPointer</h4>
+  <div class="markdown level1 summary"><p>Current primary pointer. Determined by the primary pointer selector in use (see MixedRealityPointerProfile.PrimaryPointerSelector).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IMixedRealityPointer PrimaryPointer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_UIRaycastCamera_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.UIRaycastCamera*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_UIRaycastCamera" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.UIRaycastCamera">UIRaycastCamera</h4>
   <div class="markdown level1 summary"><p>The Camera the <a href="https://docs.unity3d.com/ScriptReference/EventSystems.EventSystem.html">EventSystem</a> uses to raycast against.</p>
@@ -431,6 +457,42 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_SubscribeToPrimaryPointerChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.SubscribeToPrimaryPointerChanged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_SubscribeToPrimaryPointerChanged_Microsoft_MixedReality_Toolkit_Input_PrimaryPointerChangedHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.SubscribeToPrimaryPointerChanged(Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler,System.Boolean)">SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Subscribes to primary pointer changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler handler, bool invokeHandlerWithCurrentPointer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler.html">PrimaryPointerChangedHandler</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>Handler to be called when the primary pointer changes</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">invokeHandlerWithCurrentPointer</span></td>
+        <td><p>When true, the passed in handler will be invoked immediately with the current primary pointer
+before subscribing. This is useful to avoid having to manually poll the current value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_TryGetFocusDetails_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.TryGetFocusDetails*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_TryGetFocusDetails_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_FocusDetails__" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.TryGetFocusDetails(Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer,FocusDetails@)">TryGetFocusDetails(IMixedRealityPointer, out FocusDetails)</h4>
   <div class="markdown level1 summary"><p>Gets the currently focused object for the pointing source.</p>
@@ -517,6 +579,35 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><p>True, if the pointer was unregistered, false if the pointer was not registered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_UnsubscribeFromPrimaryPointerChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.UnsubscribeFromPrimaryPointerChanged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_UnsubscribeFromPrimaryPointerChanged_Microsoft_MixedReality_Toolkit_Input_PrimaryPointerChangedHandler_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.UnsubscribeFromPrimaryPointerChanged(Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler)">UnsubscribeFromPrimaryPointerChanged(PrimaryPointerChangedHandler)</h4>
+  <div class="markdown level1 summary"><p>Unsubscribes from primary pointer changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void UnsubscribeFromPrimaryPointerChanged(PrimaryPointerChangedHandler handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler.html">PrimaryPointerChangedHandler</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>Handler to unsubscribe</p>
 </td>
       </tr>
     </tbody>

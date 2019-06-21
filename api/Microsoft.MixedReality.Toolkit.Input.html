@@ -145,6 +145,14 @@ focused by a <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRe
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator.html">DefaultPointerMediator</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.DefaultPrimaryPointerSelector.html">DefaultPrimaryPointerSelector</a></h4>
+      <section><p>Default primary pointer selector. The primary pointer is chosen among all interaction enabled ones using the following rules in order:</p>
+<ol>
+<li>Currently pressed pointer that has been pressed for the longest</li>
+<li>Pointer that was released most recently</li>
+<li>Pointer that became interaction enabled most recently</li>
+</ol>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.DefaultRaycastProvider.html">DefaultRaycastProvider</a></h4>
       <section><p>The default implementation of IMixedRealityRaycastProvider.</p>
 </section>
@@ -561,6 +569,11 @@ All replacement systems for providing Input System functionality should derive f
       <section><p>Interface for handling groups of pointers resolving conflicts between them.
 E.g., ensuring that far pointers are disabled when a near pointer is active.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPrimaryPointerSelector.html">IMixedRealityPrimaryPointerSelector</a></h4>
+      <section><p>Interface used by the focus provider to select the pointer that will be considered as primary.
+The current primary pointer can we obtained via <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_PrimaryPointer">PrimaryPointer</a> or
+subscribing to the primary pointer changed event via <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_SubscribeToPrimaryPointerChanged_Microsoft_MixedReality_Toolkit_Input_PrimaryPointerChangedHandler_System_Boolean_">SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler, Boolean)</a>.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityRaycastProvider.html">IMixedRealityRaycastProvider</a></h4>
       <section><p>Interface to handle raycasts into the scene. Used by FocusProvider to perform ray and sphere cast queries for pointers.</p>
 </section>
@@ -624,6 +637,10 @@ Initially, this lists proposed SDKs, not all may be implemented at this time (pl
 </section>
     <h3 id="delegates">Delegates
   </h3>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler.html">PrimaryPointerChangedHandler</a></h4>
+      <section><p>Delegate type used to handle primary pointer changes.
+Old and new pointer values can be null to indicate transition from or to no primary pointer, but they won't both be null simultaneously.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.HandJointDataGenerator.html">SimulatedHandData.HandJointDataGenerator</a></h4>
       <section></section>
 </article>

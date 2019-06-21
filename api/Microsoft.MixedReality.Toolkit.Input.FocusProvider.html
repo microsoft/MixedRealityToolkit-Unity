@@ -363,6 +363,31 @@ are active (IsInteractionEnabled == true), excluding the gaze cursor</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_PrimaryPointer_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.PrimaryPointer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_PrimaryPointer" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.PrimaryPointer">PrimaryPointer</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMixedRealityPointer PrimaryPointer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_Priority_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.Priority*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_Priority" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.Priority">Priority</h4>
   <div class="markdown level1 summary"><p>Optional Priority to reorder registered managers based on their respective priority, reduces the risk of race conditions by prioritizing the order in which managers are evaluated.</p>
@@ -735,6 +760,38 @@ This method is called once all services have been registered in the Mixed Realit
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_SubscribeToPrimaryPointerChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.SubscribeToPrimaryPointerChanged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_SubscribeToPrimaryPointerChanged_Microsoft_MixedReality_Toolkit_Input_PrimaryPointerChangedHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.SubscribeToPrimaryPointerChanged(Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler,System.Boolean)">SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler handler, bool invokeHandlerWithCurrentPointer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler.html">PrimaryPointerChangedHandler</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">invokeHandlerWithCurrentPointer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_TryGetFocusDetails_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.TryGetFocusDetails*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_TryGetFocusDetails_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_FocusDetails__" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.TryGetFocusDetails(Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer,FocusDetails@)">TryGetFocusDetails(IMixedRealityPointer, out FocusDetails)</h4>
   <div class="markdown level1 summary"><p>Gets the currently focused object for the pointing source.</p>
@@ -822,6 +879,33 @@ This method is called once all services have been registered in the Mixed Realit
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><p>True, if the pointer was unregistered, false if the pointer was not registered.</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_UnsubscribeFromPrimaryPointerChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.UnsubscribeFromPrimaryPointerChanged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_UnsubscribeFromPrimaryPointerChanged_Microsoft_MixedReality_Toolkit_Input_PrimaryPointerChangedHandler_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.UnsubscribeFromPrimaryPointerChanged(Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler)">UnsubscribeFromPrimaryPointerChanged(PrimaryPointerChangedHandler)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnsubscribeFromPrimaryPointerChanged(PrimaryPointerChangedHandler handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler.html">PrimaryPointerChangedHandler</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
