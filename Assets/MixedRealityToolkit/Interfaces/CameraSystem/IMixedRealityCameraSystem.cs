@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     /// The camera system is expected to manage settings on the main camera.
     /// It should update the camera's clear settings, render mask, etc based on platform.
     /// </summary>
-    public interface IMixedRealityCameraSystem : IMixedRealityEventSystem, IMixedRealityEventSource, IMixedRealityDataProvider
+    public interface IMixedRealityCameraSystem : IMixedRealityEventSystem, IMixedRealityEventSource, IMixedRealityService
     {
         /// <summary>
         /// Typed representation of the ConfigurationProfile property.

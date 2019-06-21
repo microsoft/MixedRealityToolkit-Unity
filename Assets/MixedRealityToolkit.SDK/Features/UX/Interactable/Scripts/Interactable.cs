@@ -251,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (IsGlobal)
             {
-                InputSystem.Register(gameObject);
+                InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
             }
 
             focusingPointers.RemoveAll((focusingPointer) => (Interactable)focusingPointer.FocusTarget != this);
@@ -266,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (IsGlobal)
             {
-                InputSystem.Unregister(gameObject);
+                InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
             }
         }
 
