@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// Follow solver positions an element relative in front of the forward axis of the reference.
@@ -506,25 +504,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             {
                 case SolverOrientationType.YawOnly:
                     float targetYRotation = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.eulerAngles.y : 0.0f;
-                    desiredRot = Quaternion.Euler(0f, targetYRotation, 0f);
+                    orientation = Quaternion.Euler(0f, targetYRotation, 0f);
                     break;
                 case SolverOrientationType.Unmodified:
-                    desiredRot = transform.rotation;
+                    orientation = transform.rotation;
                     break;
                 case SolverOrientationType.CameraAligned:
-                    desiredRot = CameraCache.Main.transform.rotation;
+                    orientation = CameraCache.Main.transform.rotation;
                     break;
                 case SolverOrientationType.FaceTrackedObject:
-                    desiredRot = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(SolverHandler.TransformTarget.position - desiredPos) : Quaternion.identity;
+                    orientation = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(goalPosition - ReferencePosition) : Quaternion.identity;
                     break;
                 case SolverOrientationType.CameraFacing:
-                    desiredRot = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(CameraCache.Main.transform.position - desiredPos) : Quaternion.identity;
+                    orientation = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(goalPosition - CameraCache.Main.transform.position) : Quaternion.identity;
                     break;
                 case SolverOrientationType.FollowTrackedObject:
-                    desiredRot = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.identity;
+                    orientation = SolverHandler.TransformTarget != null ? ReferenceRotation : Quaternion.identity;
                     break;
                 case SolverOrientationType.MaintainGoal:
-                    desiredRot = previousGoalRotation;
+                    orientation = previousGoalRotation;
                     break;
                 default:
                     Debug.LogError($"Invalid OrientationType for Orbital Solver on {gameObject.name}");
