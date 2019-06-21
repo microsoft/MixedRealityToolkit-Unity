@@ -59,3 +59,6 @@ MonoBehaviour:
       type: 3}
   pointerMediator:
     reference: Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator, Microsoft.MixedReality.Toolkit.SDK
+  primaryPointerSelector:
+    reference: Microsoft.MixedReality.Toolkit.Input.DefaultPrimaryPointerSelector,
+      Microsoft.MixedReality.Toolkit.SDK

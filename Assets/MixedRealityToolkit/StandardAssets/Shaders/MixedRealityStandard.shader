@@ -814,7 +814,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(SHADER_API_D3D11) && !defined(_ALPHA_CLIP) && !defined(_TRANSPARENT)
             [earlydepthstencil]
 #endif
-            fixed4 frag(v2f i) : SV_Target
+            fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
 #if defined(_INSTANCED_COLOR)
                 UNITY_SETUP_INSTANCE_ID(i);
@@ -1043,10 +1043,10 @@ Shader "Mixed Reality Toolkit/Standard"
                 worldNormal.x = dot(i.tangentX, tangentNormal);
                 worldNormal.y = dot(i.tangentY, tangentNormal);
                 worldNormal.z = dot(i.tangentZ, tangentNormal);
-                worldNormal = normalize(worldNormal);
+                worldNormal = normalize(worldNormal) * facing;
 #endif
 #else
-                worldNormal = normalize(i.worldNormal);
+                worldNormal = normalize(i.worldNormal) * facing;
 #endif
 #endif
 
