@@ -123,7 +123,7 @@ namespace Assets.MRTK.Tools.Scripts
 
             if (returnAllPlatforms)
             {
-                return new ReadOnlyDictionary<BuildTarget, CompilationSettings.CompilationPlatform>(CompilationSettings.Instance.AvailablePlatforms.ToDictionary(t => t.Key.BuildTarget, t => t.Value));
+                return new ReadOnlyDictionary<BuildTarget, CompilationSettings.CompilationPlatform>(CompilationSettings.Instance.AvailablePlatforms.ToDictionary(t => t.Key, t => t.Value));
             }
 
             bool returnNoPlatforms = (!inEditor && ProjectType == ProjectType.PredefinedEditorAssembly)
@@ -135,14 +135,14 @@ namespace Assets.MRTK.Tools.Scripts
             }
 
             // We only are an asmdef at this point, as we handle all predefined assembly at line 130, inEditor && predefined editor assembly at line 130, and !inEditor && predefined editor assembly at line 139
-            Func<KeyValuePair<AssemblyDefinitionPlatform, CompilationSettings.CompilationPlatform>, bool> predicate = AssemblyDefinitionInfo.includePlatforms.Length > 0
-                ? predicate = (t) => AssemblyDefinitionInfo.includePlatforms.Contains(t.Key.Name)
-                : predicate = (t) => !AssemblyDefinitionInfo.excludePlatforms.Contains(t.Key.Name);
+            Func<KeyValuePair<BuildTarget, CompilationSettings.CompilationPlatform>, bool> predicate = AssemblyDefinitionInfo.includePlatforms.Length > 0
+                ? predicate = (t) => AssemblyDefinitionInfo.includePlatforms.Contains(t.Value.Name)
+                : predicate = (t) => !AssemblyDefinitionInfo.excludePlatforms.Contains(t.Value.Name);
 
             return new ReadOnlyDictionary<BuildTarget, CompilationSettings.CompilationPlatform>(
                 CompilationSettings.Instance.AvailablePlatforms
                     .Where(predicate)
-                    .ToDictionary(t => t.Key.BuildTarget, t => t.Value));
+                    .ToDictionary(t => t.Key, t => t.Value));
         }
 
         internal void AddDependency(CSProjectInfo csProjectInfo)
@@ -152,7 +152,7 @@ namespace Assets.MRTK.Tools.Scripts
                 new HashSet<BuildTarget>(PlayerPlatforms.Keys.Intersect(csProjectInfo.PlayerPlatforms.Keys))));
         }
 
-        internal void ExportProject(string projectFileTemplateText, string commonPropsFilePath)
+        internal void ExportProject(string projectFileTemplateText, string propsOutputFolder)
         {
             if (File.Exists(ProjectFilePath))
             {
@@ -184,16 +184,20 @@ namespace Assets.MRTK.Tools.Scripts
                 PopulateSupportedPlatformBuildConditions(supportedPlatformBuildConditions, suportedPlatformBuildConditionTemplate, "InEditor", InEditorPlatforms);
                 PopulateSupportedPlatformBuildConditions(supportedPlatformBuildConditions, suportedPlatformBuildConditionTemplate, "Player", PlayerPlatforms);
 
-                projectFileTemplateText = Utilities.ReplaceTokens(projectFileTemplateText, new Dictionary<string, string>()
+                Dictionary<string, string> tokens = new Dictionary<string, string>()
                 {
                     { "<!--PROJECT_GUID_TOKEN-->", Guid.ToString() },
-                    { "##COMMON_PROPS_FILE_PATH##", commonPropsFilePath },
+                    { "##COMMON_PROPS_FILE_PATH##", Path.Combine(propsOutputFolder, Compilation.CommonPropsFileName) },
+                    //{ "##DEFAULT_PLATFORM_PROPS_FILE_PATH##", Path.Combine(propsOutputFolder, Compilation.GetPlatformCommonPropsFileName(CompilationSettings.Instance.AvailablePlatforms[BuildTarget.StandaloneWindows])) },
                     { "<!--ALLOW_UNSAFE_TOKEN-->", Assembly.compilerOptions.AllowUnsafeCode.ToString() },
                     { "<!--PROJECT_CONFIGURATIONS_TOKEN-->", bothConfigurations ? "InEditor;Player" : "InEditor" },
                     { projectReferenceSetTemplate, string.Join("\r\n", CreateProjectReferenceSet(projectReferenceSetTemplate, true), CreateProjectReferenceSet(projectReferenceSetTemplate, false)) },
                     { sourceIncludeTemplate, string.Join("\r\n", sourceIncludes) },
-                    { suportedPlatformBuildConditionTemplate, string.Join("\r\n", supportedPlatformBuildConditions) }
-                });
+                    { suportedPlatformBuildConditionTemplate, string.Join("\r\n", supportedPlatformBuildConditions) },
+                    { "##PLATFORM_PROPS_FOLDER_PATH_TOKEN##", propsOutputFolder }
+                };
+
+                projectFileTemplateText = Utilities.ReplaceTokens(projectFileTemplateText, tokens);
             }
             else
             {

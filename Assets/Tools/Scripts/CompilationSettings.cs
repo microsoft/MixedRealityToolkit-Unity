@@ -44,6 +44,8 @@ namespace Assets.MRTK.Tools.Scripts
 
             public TargetFramework TargetFramework { get; }
 
+            public string Name => AssemblyDefinitionPlatform.Name;
+
             /// <summary>
             ///  These defines are specific for this platform and common or player/editor.
             /// </summary>
@@ -124,7 +126,7 @@ namespace Assets.MRTK.Tools.Scripts
 
         public static CompilationSettings Instance { get; } = new CompilationSettings();
 
-        private readonly Dictionary<AssemblyDefinitionPlatform, CompilationPlatform> compilationPlatforms = new Dictionary<AssemblyDefinitionPlatform, CompilationPlatform>();
+        private readonly Dictionary<BuildTarget, CompilationPlatform> compilationPlatforms = new Dictionary<BuildTarget, CompilationPlatform>();
 
         private HashSet<string> commonDefines;
         private HashSet<string> commonDevelopmentDefines;
@@ -168,13 +170,13 @@ namespace Assets.MRTK.Tools.Scripts
         /// </summary>
         public IReadOnlyList<string> InEditorBuildAdditionalReferences { get; }
 
-        public IReadOnlyDictionary<AssemblyDefinitionPlatform, CompilationPlatform> AvailablePlatforms { get; }
+        public IReadOnlyDictionary<BuildTarget, CompilationPlatform> AvailablePlatforms { get; }
 
         private CompilationSettings()
         {
             supportedPlatforms = CompilationPipeline.GetAssemblyDefinitionPlatforms().Where(t => supportedBuildTargets.Contains(t.BuildTarget)).ToList();
 
-            AvailablePlatforms = new ReadOnlyDictionary<AssemblyDefinitionPlatform, CompilationPlatform>(compilationPlatforms);
+            AvailablePlatforms = new ReadOnlyDictionary<BuildTarget, CompilationPlatform>(compilationPlatforms);
 
             // NOTE: builder.defaultDefines and builder.defaultReferences fetches the data each request based on settings of the builder
             // We will use that to understand all of configuration we need.
@@ -354,7 +356,7 @@ namespace Assets.MRTK.Tools.Scripts
                     platformCommonDefines.ToList(), playerDefines.ToList(), inEditorDefines.ToList(),
                     platformCommonReferences.ToList(), playerReferences.ToList(), inEditorRefernces.ToList());
 
-                compilationPlatforms.Add(supportedPlatform, compilationPlatform);
+                compilationPlatforms.Add(supportedPlatform.BuildTarget, compilationPlatform);
             }
         }
 

@@ -1,0 +1,70 @@
+<Project>
+  <PropertyGroup>
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->;C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5;C:\Program Files (x86)\Windows Kits\10\UnionMetadata;C:\Program Files (x86)\Windows Kits\10\References\10.0.18362.0\Windows.Foundation.UniversalApiContract\8.0.0.0\;C:\Program Files (x86)\Windows Kits\10\References\10.0.18362.0\Windows.Foundation.FoundationContract\3.0.0.0\</AssemblySearchPaths>
+    <TargetFramework>uap10.0</TargetFramework>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefineConstants>$(DefineConstants);<!--PLATFORM_COMMON_DEFINE_CONSTANTS-->;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NugetTargetMoniker>UAP,Version=v10.0</NugetTargetMoniker>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion><!--UWP_TARGET_PLATFORM_VERSION_TOKEN--></TargetPlatformVersion>
+    <TargetPlatformMinVersion><!--UWP_MIN_PLATFORM_VERSION_TOKEN--></TargetPlatformMinVersion>
+    <TargetFrameworkIdentifier>.NETCore</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <LanguageTargets>$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.0.0" />
+    <Reference Include="System.Runtime.WindowsRuntime">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5\System.Runtime.WindowsRuntime.dll</HintPath>
+    </Reference>
+    <!--<Reference Include="Windows">
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\UnionMetadata\Windows.winmd</HintPath>
+      <IsWinMD>True</IsWinMD>
+    </Reference>
+    <Reference Include="Windows.Foundation.UniversalApiContract">
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.18362.0\Windows.Foundation.UniversalApiContract\8.0.0.0\Windows.Foundation.UniversalApiContract.winmd</HintPath>
+      <IsWinMD>True</IsWinMD>
+    </Reference>
+    <Reference Include="Windows.Foundation.FoundationContract">
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.18362.0\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
+      <IsWinMD>True</IsWinMD>
+    </Reference>-->
+<!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
+    <Reference Include="##REFERENCE_TOKEN##">
+      <HintPath><!--REFERENCE_HINT_PATH_TOKEN--></HintPath>  
+    </Reference>
+<!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+  
+  <!--<Choose>
+    <When Condition="$(PlayerConfiguration)">
+      <PropertyGroup>
+        <AssemblySearchPaths>--><!--PLATFORM_PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN--><!--;$(AssemblySearchPaths)</AssemblySearchPaths>
+        <DefineConstants>$(DefineConstants);--><!--PLATFORM_PLAYER_DEFINE_CONSTANTS--><!--</DefineConstants>
+      </PropertyGroup>
+      <ItemGroup>
+        <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.0.0" />
+--><!--PLATFORM_PLAYER_REFERENCE_TEMPLATE_START--><!--
+        <Reference Include="##REFERENCE_TOKEN##">
+          <HintPath>--><!--REFERENCE_HINT_PATH_TOKEN--><!--</HintPath>  
+        </Reference>
+--><!--PLATFORM_PLAYER_REFERENCE_TEMPLATE_END--><!--
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <AssemblySearchPaths>--><!--PLATFORM_INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN--><!--;$(AssemblySearchPaths)</AssemblySearchPaths>
+        <DefineConstants>$(DefineConstants);--><!--PLATFORM_INEDITOR_DEFINE_CONSTANTS--><!--</DefineConstants>
+      </PropertyGroup>
+      <ItemGroup>
+--><!--PLATFORM_INEDITOR_REFERENCE_TEMPLATE_START--><!--
+        <Reference Include="##REFERENCE_TOKEN##">
+          <HintPath>--><!--REFERENCE_HINT_PATH_TOKEN--><!--</HintPath>  
+        </Reference>
+--><!--PLATFORM_INEDITOR_REFERENCE_TEMPLATE_END--><!--
+      </ItemGroup>
+    </Otherwise>
+  </Choose>-->
+</Project>

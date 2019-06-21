@@ -90,7 +90,7 @@ namespace Assets.MRTK.Tools.Scripts
 
         }
 
-        public void ExportSolution(string solutionTemplateText, string projectFileTemplateText, string commonPropsFilePath)
+        public void ExportSolution(string solutionTemplateText, string projectFileTemplateText, string propsOutputFolder)
         {
             string solutionFilePath = Path.Combine(Application.dataPath.Replace("Assets", "MSBuild"), "MRTK.sln");
 
@@ -100,7 +100,9 @@ namespace Assets.MRTK.Tools.Scripts
             }
 
             if (Utilities.TryGetTextTemplate(solutionTemplateText, "PROJECT", out string projectEntryTemplate)
-                && Utilities.TryGetTextTemplate(solutionTemplateText, "CONFIGURATION_PLATFORM", out string configurationPlatformEntry))
+                && Utilities.TryGetTextTemplate(solutionTemplateText, "CONFIGURATION_PLATFORM", out string configurationPlatformEntry)
+                && Utilities.TryGetTextTemplate(solutionTemplateText, "CONFIGURATION_PLATFORM_MAPPING", out string configurationPlatformMappingTemplate)
+                && Utilities.TryGetTextTemplate(solutionTemplateText, "CONFIGURATION_PLATFORM_ENABLED", out string configurationPlatformEnabledTemplate))
             {
                 IEnumerable<string> projectEntries = CSProjects.Select(t =>
                     Utilities.ReplaceTokens(projectEntryTemplate, new Dictionary<string, string>() {
@@ -114,13 +116,49 @@ namespace Assets.MRTK.Tools.Scripts
                     configurationPlatformEntry.Replace("#CONFIGURATION_PLATFORM_TEMPLATE ", string.Empty).Replace("<Configuration>", "Player")
                 };
 
-                IEnumerable<string> configPlatforms = CompilationSettings.Instance.AvailablePlatforms.Keys
+                IEnumerable<string> configPlatforms = CompilationSettings.Instance.AvailablePlatforms.Values
                     .SelectMany(p => twoConfigs.Select(t => t.Replace("<Platform>", p.Name.ToString())));
+
+                List<string> configurationMappings = new List<string>();
+                List<string> enabledConfigurations = new List<string>();
+
+                foreach (CSProjectInfo project in CSProjects.Values)
+                {
+                    string ConfigurationTemplateReplace(string template, string guid, string configuration, string platform)
+                    {
+                        return Utilities.ReplaceTokens(template, new Dictionary<string, string>()
+                        {
+                            { "<PROJECT_GUID_TOKEN>", guid },
+                            { "<PROJECT_CONFIGURATION_TOKEN>", configuration },
+                            { "<PROJECT_PLATFORM_TOKEN>", platform },
+                            { "<SOLUTION_CONFIGURATION_TOKEN>", configuration },
+                            { "<SOLUTION_PLATFORM_TOKEN>", platform },
+                        });
+                    }
+
+                    void ProcessMappings(Guid guid, string configuration, IReadOnlyDictionary<BuildTarget, CompilationSettings.CompilationPlatform> platforms)
+                    {
+                        foreach (KeyValuePair<BuildTarget, CompilationSettings.CompilationPlatform> platform in CompilationSettings.Instance.AvailablePlatforms)
+                        {
+                            configurationMappings.Add(ConfigurationTemplateReplace(configurationPlatformMappingTemplate, guid.ToString(), configuration, platform.Value.Name));
+
+                            if (!platforms.ContainsKey(platform.Key))
+                            {
+                                enabledConfigurations.Add(ConfigurationTemplateReplace(configurationPlatformEnabledTemplate, guid.ToString(), configuration, platform.Value.Name));
+                            }
+                        }
+                    }
+
+                    ProcessMappings(project.Guid, "InEditor", project.InEditorPlatforms);
+                    ProcessMappings(project.Guid, "Player", project.PlayerPlatforms);
+                }
 
                 solutionTemplateText = Utilities.ReplaceTokens(solutionTemplateText, new Dictionary<string, string>()
                 {
-                    {projectEntryTemplate, string.Join(string.Empty, projectEntries)},
-                    {configurationPlatformEntry, string.Join(string.Empty, configPlatforms)}
+                    { projectEntryTemplate, string.Join(string.Empty, projectEntries)},
+                    { configurationPlatformEntry, string.Join(string.Empty, configPlatforms)},
+                    { configurationPlatformMappingTemplate, string.Join(string.Empty, configurationMappings) },
+                    { configurationPlatformEnabledTemplate, string.Join(string.Empty, enabledConfigurations) }
                 });
             }
             else
@@ -130,7 +168,7 @@ namespace Assets.MRTK.Tools.Scripts
 
             foreach (CSProjectInfo project in CSProjects.Values)
             {
-                project.ExportProject(projectFileTemplateText, commonPropsFilePath);
+                project.ExportProject(projectFileTemplateText, propsOutputFolder);
             }
 
             File.WriteAllText(solutionFilePath, solutionTemplateText);
