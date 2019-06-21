@@ -2,21 +2,17 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// This component ensures that all input events are forwarded to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> when focus or gaze is not required.
+    /// This component ensures that input events are forwarded to this component when focus or gaze is not required.
     /// </summary>
-    [Obsolete("InputSystemGlobalListener uses obsolete global input event registration API. " +
-        "Use RegisterHandler/UnregisterHandler API directly (preferred) or InputSystemGlobalHandlerListener instead.")]
-    public class InputSystemGlobalListener : MonoBehaviour
+    public abstract class InputSystemGlobalHandlerListener : MonoBehaviour
     {
         private bool lateInitialize = true;
-
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
@@ -38,9 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (InputSystem != null && !lateInitialize)
             {
-            #pragma warning disable 0618
-                InputSystem.Register(gameObject);
-            #pragma warning restore 0618
+                RegisterHandlers();
             }
         }
 
@@ -57,17 +51,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 lateInitialize = false;
-            #pragma warning disable 0618
-                InputSystem.Register(gameObject);
-            #pragma warning restore 0618
+                RegisterHandlers();
             }
         }
 
         protected virtual void OnDisable()
         {
-        #pragma warning disable 0618
-            InputSystem?.Unregister(gameObject);
-        #pragma warning restore 0618
+            UnregisterHandlers();
         }
 
         /// <summary>
@@ -84,5 +74,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 await new WaitUntil(() => InputSystem != null);
             }
         }
+
+        /// <summary>
+        /// Overload this method to specify, which global events component wants to listen to.
+        /// Use RegisterHandler API of InputSystem
+        /// </summary>
+        protected abstract void RegisterHandlers();
+
+        /// <summary>
+        /// Overload this method to specify, which global events component should stop listening to.
+        /// Use UnregisterHandler API of InputSystem
+        /// </summary>
+        protected abstract void UnregisterHandlers();
     }
 }
