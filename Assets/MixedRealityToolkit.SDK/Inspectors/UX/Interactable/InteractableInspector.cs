@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected string[] shaderOptions;
 
         protected string[] actionOptions = null;
-        protected string[] speechKeywords = null;
+        protected GUIContent[] speechKeywords = null;
         protected static bool ProfilesSetup = false;
 
         // indent tracker
@@ -83,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             InspectorUIUtility.DrawTitle("Interactable");
 
             EditorGUILayout.BeginVertical("Box");
+            GUI.enabled = !EditorApplication.isPlaying && !EditorApplication.isPaused;
 
             // States
             bool showStates = false;
@@ -138,6 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 InspectorUIUtility.DrawError("Please assign a States object!");
                 EditorGUILayout.EndVertical();
                 serializedObject.ApplyModifiedProperties();
+                GUI.enabled = true;
                 return;
             }
 
@@ -168,9 +170,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // check speech commands profile for a list of commands
             if (speechKeywords == null)
             {
+                bool wasEnabled = GUI.enabled;
                 GUI.enabled = false;
                 EditorGUILayout.Popup("Speech Command", 0, new string[] { "Missing Speech Commands" });
-                GUI.enabled = true;
+                InspectorUIUtility.DrawNotice("Create speech commands in the MRTK/Input/Speech Commands Profile");
+                GUI.enabled = wasEnabled;
             }
             else
             {
@@ -180,24 +184,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 int currentIndex = SpeechKeywordLookup(voiceCommands.stringValue, speechKeywords);
 
                 position = EditorGUILayout.GetControlRect();
-                GUIContent label = new GUIContent("Speech Command", "speech keyword to trigger Interactable");
+                GUIContent label = new GUIContent("Speech Command", "Speech Commands to use with Interactable, pulled from MRTK/Input/Speech Commands Profile");
                 EditorGUI.BeginProperty(position, label, voiceCommands);
                 {
-                    currentIndex = EditorGUI.Popup(position, label.text, currentIndex, speechKeywords);
+                    currentIndex = EditorGUI.Popup(position, label, currentIndex, speechKeywords);
 
                     if (currentIndex > 0)
                     {
-                        voiceCommands.stringValue = speechKeywords[currentIndex];
+                        voiceCommands.stringValue = speechKeywords[currentIndex].text;
                     }
                     else
                     {
                         voiceCommands.stringValue = "";
-                        InspectorUIUtility.DrawNotice("Create speech commands in the MRTK/Input/Speech Commands Profile");
                     }
                 }
                 EditorGUI.EndProperty();
             }
-
+            
             // show requires gaze because voice command has a value
             if (!string.IsNullOrEmpty(voiceCommands.stringValue))
             {
@@ -224,6 +227,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
+
+            GUI.enabled = true;
 
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
@@ -496,6 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             SerializedProperty events = serializedObject.FindProperty("Events");
 
+            GUI.enabled = !EditorApplication.isPlaying && !EditorApplication.isPaused;
             for (int i = 0; i < events.arraySize; i++)
             {
                 SerializedProperty eventItem = events.GetArrayElementAtIndex(i);
@@ -509,7 +515,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     AddEvent(events.arraySize);
                 }
             }
-
+            GUI.enabled = true;
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -715,12 +721,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="option"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected int SpeechKeywordLookup(string option, string[] options)
+        protected int SpeechKeywordLookup(string option, GUIContent[] options)
         {
             // starting on 1 to skip the blank value
             for (int i = 1; i < options.Length; i++)
             {
-                if (options[i] == option)
+                if (options[i].text == option)
                 {
                     return i;
                 }

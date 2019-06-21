@@ -340,34 +340,51 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        /// Try to get a list of speech commands from the MRTK/Input/SpeechCommands profile
+        /// </summary>
+        /// <param name="commands"></param>
+        /// <returns></returns>
+        public static bool TryGetMixedRealitySpeechCommands(out SpeechCommands[] commands)
+        {
+            if (!MixedRealityToolkit.ConfirmInitialized() || !MixedRealityToolkit.Instance.HasActiveProfile)
+            {
+                commands = null;
+                return false;
+            }
+
+            commands = InputSystem.InputSystemProfile.SpeechCommandsProfile?.SpeechCommands;
+
+            if (commands == null || commands.Length < 1)
+            {
+                commands = null;
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Look for speech commands in the MRTK Speech Command profile
         /// Adds a blank value at index zero so the developer can turn the feature off.
         /// </summary>
         /// <param name="keywords"></param>
         /// <returns></returns>
-        public static bool TryGetSpeechKeywords(out string[] keywords)
+        public static bool TryGetSpeechKeywords(out GUIContent[] keywords)
         {
-            if (!MixedRealityToolkit.ConfirmInitialized() || !MixedRealityToolkit.Instance.HasActiveProfile)
+            SpeechCommands[] commands;
+            if (!TryGetMixedRealitySpeechCommands(out commands))
             {
                 keywords = null;
                 return false;
             }
 
-            SpeechCommands[] commands = InputSystem.InputSystemProfile.SpeechCommandsProfile?.SpeechCommands;
-
-            if (commands == null || commands.Length < 1)
-            {
-                keywords = null;
-                return false;
-            }
-
-            List<string> keys = new List<string>();
+            List<GUIContent> keys = new List<GUIContent>();
             for (var i = 0; i < commands.Length; i++)
             {
-                keys.Add(commands[i].Keyword);
+                keys.Add(new GUIContent(commands[i].Keyword));
             }
 
-            keys.Insert(0, "(No Selection)");
+            keys.Insert(0, new GUIContent("(No Selection)"));
             keywords = keys.ToArray();
             return true;
         }
