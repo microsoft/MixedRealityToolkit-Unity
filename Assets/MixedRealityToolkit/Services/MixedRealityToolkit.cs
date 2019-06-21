@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (concreteType == null)
             {
-                Debug.LogError("Unable to register a service with a null concrete type.");
+                Debug.LogError($"Unable to register a {typeof(T).Name} service with a null concrete type.");
                 return false;
             }
 
