@@ -67,6 +67,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private IMixedRealityPointer primaryPointer;
+
+        public IMixedRealityPointer PrimaryPointer
+        {
+            get { return primaryPointer; }
+            private set
+            {
+                if (value != PrimaryPointer)
+                {
+                    IMixedRealityPointer oldPointer = primaryPointer;
+                    primaryPointer = value;
+                    PrimaryPointerChanged?.Invoke(oldPointer, primaryPointer);
+                }
+            }
+        }
+
         #region IFocusProvider Properties
 
         /// <inheritdoc />
@@ -173,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private class PointerHitResult
         {
-            public RaycastHit raycastHit;
+            public MixedRealityRaycastHit raycastHit;
             public RaycastResult graphicsRaycastResult;
 
             public GameObject hitObject;
@@ -186,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public void Clear()
             {
-                raycastHit = default(RaycastHit);
+                raycastHit = default(MixedRealityRaycastHit);
                 graphicsRaycastResult = default(RaycastResult);
 
                 hitObject = null;
@@ -203,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public void Set(GameObject hitObject, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
-                raycastHit = default(RaycastHit);
+                raycastHit = default(MixedRealityRaycastHit);
                 graphicsRaycastResult = default(RaycastResult);
 
                 this.hitObject = hitObject;
@@ -218,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Set hit focus information from a physics raycast.
             /// </summary>
-            public void Set(RaycastHit hit, RayStep ray, int rayStepIndex, float rayDistance)
+            public void Set(MixedRealityRaycastHit hit, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = hit;
                 graphicsRaycastResult = default(RaycastResult);
@@ -237,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public void Set(RaycastResult result, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
-                raycastHit = default(RaycastHit);
+                raycastHit = default(MixedRealityRaycastHit);
                 graphicsRaycastResult = result;
 
                 this.hitObject = result.gameObject;
@@ -445,6 +461,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
 
+        /// <summary>
+        /// Interface used for selecting the primary pointer.
+        /// </summary>
+        private IMixedRealityPrimaryPointerSelector primaryPointerSelector;
+
+        /// <summary>
+        /// Event raised on primary pointer changes.
+        /// </summary>
+        private event PrimaryPointerChangedHandler PrimaryPointerChanged;
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
@@ -458,6 +484,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 FindOrCreateUiRaycastCamera();
             }
 
+            var primaryPointerSelectorType = InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
+            if (primaryPointerSelectorType != null)
+            {
+                primaryPointerSelector = Activator.CreateInstance(primaryPointerSelectorType) as IMixedRealityPrimaryPointerSelector;
+                primaryPointerSelector.Initialize();
+            }
+
             foreach (var inputSource in InputSystem.DetectedInputSources)
             {
                 RegisterPointers(inputSource);
@@ -466,6 +499,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void Destroy()
         {
+            if (primaryPointerSelector != null)
+            {
+                primaryPointerSelector.Destroy();
+            }
+
             CleanUpUiRaycastCamera();
             base.Destroy();
         }
@@ -477,6 +515,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             UpdatePointers();
             UpdateFocusedObjects();
+
+            PrimaryPointer = primaryPointerSelector?.Update();
         }
 
         #endregion IMixedRealityService Implementation
@@ -610,6 +650,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (IsPointerRegistered(pointer)) { return false; }
 
             pointers.Add(new PointerData(pointer));
+
+            if (primaryPointerSelector != null)
+            {
+                primaryPointerSelector.RegisterPointer(pointer);
+            }
+
             return true;
         }
 
@@ -682,6 +728,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             pointers.Remove(pointerData);
+
+            if (primaryPointerSelector != null)
+            {
+                primaryPointerSelector.UnregisterPointer(pointer);
+                PrimaryPointer = primaryPointerSelector.Update();
+            }
+
             return true;
         }
 
@@ -699,6 +752,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             return typePointers;
+        }
+
+        public void SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler handler, bool invokeHandlerWithCurrentPointer)
+        {
+            if (invokeHandlerWithCurrentPointer)
+            {
+                handler(null, PrimaryPointer);
+            }
+
+            PrimaryPointerChanged += handler;
+        }
+
+        public void UnsubscribeFromPrimaryPointerChanged(PrimaryPointerChangedHandler handler)
+        {
+            PrimaryPointerChanged -= handler;
         }
 
         /// <summary>
@@ -796,8 +864,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     LayerMask[] prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
 
                     // Perform raycast to determine focused object
+                    var raycastProvider = InputSystem.RaycastProvider;
                     hitResult3d.Clear();
-                    QueryScene(pointer.Pointer, prioritizedLayerMasks, hitResult3d);
+                    QueryScene(pointer.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d);
                     PointerHitResult hit = hitResult3d;
 
                     // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
@@ -909,10 +978,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="pointerData"></param>
         /// <param name="prioritizedLayerMasks"></param>
-        private static void QueryScene(IMixedRealityPointer pointer, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
+        private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
         {
             float rayStartDistance = 0;
-            RaycastHit physicsHit;
+            MixedRealityRaycastHit hitInfo;
             RayStep[] pointerRays = pointer.Rays;
 
             if (pointerRays == null)
@@ -933,9 +1002,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 switch (pointer.SceneQueryType)
                 {
                     case SceneQueryType.SimpleRaycast:
-                        if (MixedRealityRaycaster.RaycastSimplePhysicsStep(pointerRays[i], prioritizedLayerMasks, out physicsHit))
+                        if (raycastProvider.Raycast(pointerRays[i], prioritizedLayerMasks, out hitInfo))
                         {
-                            UpdatePointerRayOnHit(pointerRays, physicsHit, i, rayStartDistance, hit);
+                            UpdatePointerRayOnHit(pointerRays, hitInfo, i, rayStartDistance, hit);
                             return;
                         }
                         break;
@@ -943,9 +1012,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
                         break;
                     case SceneQueryType.SphereCast:
-                        if (MixedRealityRaycaster.RaycastSpherePhysicsStep(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, out physicsHit))
+                        if (raycastProvider.SphereCast(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, out hitInfo))
                         {
-                            UpdatePointerRayOnHit(pointerRays, physicsHit, i, rayStartDistance, hit);
+                            UpdatePointerRayOnHit(pointerRays, hitInfo, i, rayStartDistance, hit);
                             return;
                         }
                         break;
@@ -996,7 +1065,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static void UpdatePointerRayOnHit(RayStep[] raySteps, RaycastHit physicsHit, int hitRayIndex, float rayStartDistance, PointerHitResult hit)
+        private static void UpdatePointerRayOnHit(RayStep[] raySteps, MixedRealityRaycastHit physicsHit, int hitRayIndex, float rayStartDistance, PointerHitResult hit)
         {
             Vector3 origin = raySteps[hitRayIndex].Origin;
             Vector3 terminus = physicsHit.point;

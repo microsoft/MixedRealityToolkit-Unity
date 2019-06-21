@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHandler
+    public class BoundingBoxTest : MonoBehaviour, IMixedRealitySpeechHandler
     {
 
         public TextMesh statusText;
@@ -24,10 +24,36 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 cubePosition = new Vector3(0, 0, 2);
         private BoundingBox bbox;
 
-        // Start is called before the first frame update
-        protected override void Start()
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
         {
-            base.Start();
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
+        protected virtual void OnEnable()
+        {
+            InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+
+        protected virtual void OnDisable()
+        {
+            InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+
+        // Start is called before the first frame update
+        protected virtual void Start()
+        {
             StartCoroutine(Sequence());
         }
 
@@ -54,6 +80,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 bbox.HideElementsInInspector = false;
                 bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
                 var mh = cube.AddComponent<ManipulationHandler>();
+                yield return WaitForSpeechCommand();
+
+                SetStatus("Set Target bounds override");
+                var newObject = new GameObject();
+                var bc = newObject.AddComponent<BoxCollider>();
+                bc.center = new Vector3(.25f, 0, 0);
+                bc.size = new Vector3(0.162f, 0.1f, 1);
+                bbox.BoundsOverride = bc;
+                yield return WaitForSpeechCommand();
+
+                SetStatus("Change target bounds override size");
+                bc.size = new Vector3(0.5f, 0.1f, 1);
+                yield return WaitForSpeechCommand();
+
+                SetStatus("Remove target bounds override");
+                bbox.BoundsOverride = null;
+                Destroy(newObject);
+                newObject = null;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("HideElementsInInspector true");

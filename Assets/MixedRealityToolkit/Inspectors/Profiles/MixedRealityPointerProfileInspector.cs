@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty gazeProviderType;
         private SerializedProperty showCursorWithEyeGaze;
         private SerializedProperty pointerMediator;
+        private SerializedProperty primaryPointerSelector;
 
         private int currentlySelectedPointerOption = -1;
 
@@ -45,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             gazeProviderType = serializedObject.FindProperty("gazeProviderType");
             showCursorWithEyeGaze = serializedObject.FindProperty("showCursorWithEyeGaze");
             pointerMediator = serializedObject.FindProperty("pointerMediator");
+            primaryPointerSelector = serializedObject.FindProperty("primaryPointerSelector");
 
             pointerOptionList = new ReorderableList(serializedObject, pointerOptions, false, false, true, true)
             {
@@ -85,6 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.PropertyField(pointingExtent);
                     EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
                     EditorGUILayout.PropertyField(pointerMediator);
+                    EditorGUILayout.PropertyField(primaryPointerSelector);
 
                     EditorGUILayout.Space();
                     showPointerOptionProperties = EditorGUILayout.Foldout(showPointerOptionProperties, "Pointer Options", true);

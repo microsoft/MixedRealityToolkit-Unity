@@ -386,6 +386,13 @@ namespace Microsoft.MixedReality.Toolkit
                     Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
                     return;
                 }
+
+                args = new object[] { this, InputSystem, ActiveProfile.InputSystemProfile };
+                if (!RegisterDataProvider<IMixedRealityRaycastProvider>(ActiveProfile.InputSystemProfile.RaycastProviderType, args: args))
+                {
+                    Debug.LogError("Failed to register the raycast provider! The input system will not function without it.");
+                    return;
+                }
             }
             else
             {
@@ -790,7 +797,6 @@ namespace Microsoft.MixedReality.Toolkit
             if (!isInitializing)
             {
                 serviceInstance.Initialize();
-                //serviceInstance.Enable();
             }
 
             return true;
@@ -869,7 +875,7 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            IReadOnlyList<IMixedRealityService> services =  GetAllServicesByNameInternal<IMixedRealityService>(interfaceType, serviceName);
+            IReadOnlyList<IMixedRealityService> services = GetAllServicesByNameInternal<IMixedRealityService>(interfaceType, serviceName);
             for (int i = 0; i < services.Count; i++)
             {
                 services[i].Disable();
@@ -1028,6 +1034,7 @@ namespace Microsoft.MixedReality.Toolkit
             return typeof(IMixedRealityInputSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityCameraSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityFocusProvider).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityRaycastProvider).IsAssignableFrom(type) ||
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||
