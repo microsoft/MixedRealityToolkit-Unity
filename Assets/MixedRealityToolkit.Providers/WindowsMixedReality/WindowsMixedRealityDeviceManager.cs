@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 navigationSettings = value;
 
-                if (Application.isPlaying)
+                if (Application.isPlaying && !useRailsNavigation)
                 {
                     navigationGestureRecognizer?.UpdateAndResetGestures(WSANavigationSettings);
                 }
@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 railsNavigationSettings = value;
 
-                if (Application.isPlaying)
+                if (Application.isPlaying && useRailsNavigation)
                 {
                     navigationGestureRecognizer?.UpdateAndResetGestures(WSARailsNavigationSettings);
                 }
@@ -275,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 if (Application.isPlaying)
                 {
-                    navigationGestureRecognizer?.UpdateAndResetGestures(useRailsNavigation ? WSANavigationSettings : WSARailsNavigationSettings);
+                    navigationGestureRecognizer?.UpdateAndResetGestures(useRailsNavigation ? WSARailsNavigationSettings : WSANavigationSettings);
                 }
             }
         }
@@ -402,6 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     gestureRecognizer = null;
                     return;
                 }
+                gestureRecognizer.SetRecognizableGestures(WSAGestureSettings);
             }
 
             if (holdAction != MixedRealityInputAction.None)
@@ -466,6 +467,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         navigationGestureRecognizer = null;
                         return;
                     }
+                    navigationGestureRecognizer.SetRecognizableGestures(useRailsNavigation ? WSARailsNavigationSettings : WSANavigationSettings);
                 }
 
                 navigationGestureRecognizer.NavigationStarted += NavigationGestureRecognizer_NavigationStarted;
