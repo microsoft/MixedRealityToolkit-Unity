@@ -21,16 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     public class MixedRealityKeyboard : MonoBehaviour
     {
         [Experimental]
-        #region Serialized fields
-        [SerializeField]
-        [Tooltip("Event raised when the text has changed")]
-        public KeyboardTextEvent TextChanged = new KeyboardTextEvent();
-        [Tooltip("Event raised when the keyboard is shown")]
-        public UnityEvent KeyboardShown = new UnityEvent();
-        [Tooltip("Event raised when the keyboard is hidden")]
-        public UnityEvent KeyboardHidden = new UnityEvent();
-        #endregion
-
         #region Properties
         private string text;
         public string Text
@@ -46,11 +36,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     var oldValue = text;
                     text = value;
-                    TextChanged?.Invoke(new KeyboardTextData(oldValue, value));
                 }
             }
         }
-        
+
+        public bool Visible { get { return state == KeyboardState.Showing; } }
+
+
         private KeyboardState State
         {
             get
@@ -63,14 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 if (state != value)
                 {
                     state = value;
-                    if (state == KeyboardState.showing)
-                    {
-                        KeyboardShown.Invoke();
-                    }
-                    else if (state == KeyboardState.hidden)
-                    {
-                        KeyboardHidden.Invoke();
-                    }
                 }
             }
         }
@@ -80,18 +64,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private TouchScreenKeyboard keyboard;
 
 #if !UNITY_EDITOR && UNITY_WSA
-    private InputPane inputPane = null;
+        private InputPane inputPane = null;
 #endif //!UNITY_EDITOR && UNITY_WSA
 
-        private KeyboardState state = KeyboardState.hidden;
+        private KeyboardState state = KeyboardState.Hidden;
         #endregion private fields
 
         #region Private enums
         private enum KeyboardState
         {
-            hidden,
-            showing,
-            hiding
+            Hiding,
+            Hidden,
+            Showing,
         }
         #endregion Private enums
 
@@ -99,12 +83,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private void Start()
         {
 #if !UNITY_EDITOR && UNITY_WSA
-        UnityEngine.WSA.Application.InvokeOnUIThread(() =>
-        {
-            inputPane = InputPane.GetForCurrentView();
-            inputPane.Hiding += (inputPane, args) => OnKeyboardHiding();
-            inputPane.Showing += (inputPane, args) => OnKeyboardShowing();
-        }, false);
+            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+            {
+                inputPane = InputPane.GetForCurrentView();
+                inputPane.Hiding += (inputPane, args) => OnKeyboardHiding();
+                inputPane.Showing += (inputPane, args) => OnKeyboardShowing();
+            }, false);
 #endif //!UNITY_EDITOR && UNITY_WSA
         }
 
@@ -112,16 +96,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             switch (State)
             {
-                case KeyboardState.showing:
+                case KeyboardState.Showing:
                     CommitText();
                     break;
 
-                case KeyboardState.hiding:
+                case KeyboardState.Hiding:
                     ClearText();
-                    State = KeyboardState.hidden;
+                    State = KeyboardState.Hidden;
                     break;
 
-                case KeyboardState.hidden:
+                case KeyboardState.Hidden:
                 default:
                     break;
             }
@@ -131,28 +115,28 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public void HideKeyboard()
         {
             ClearText();
-            State = KeyboardState.hidden;
+            State = KeyboardState.Hidden;
 
 #if !UNITY_EDITOR && UNITY_WSA
-        UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryHide(), false);
+            UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryHide(), false);
 #endif //!UNITY_EDITOR && UNITY_WSA
         }
 
         public void ShowKeyboard()
         {
-            if (state == KeyboardState.showing)
+            if (state == KeyboardState.Showing)
             {
                 Debug.Log($"MixedRealityKeyboard.ShowKeyboard called but keyboard already visible");
                 return;
             }
 
-            State = KeyboardState.showing;
+            State = KeyboardState.Showing;
 
             if (keyboard != null)
             {
                 keyboard.text = string.Empty;
 #if !UNITY_EDITOR && UNITY_WSA
-               UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryShow(), false);
+                UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryShow(), false);
 #endif
             }
             else
@@ -182,9 +166,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #region Input pane event handlers 
         private void OnKeyboardHiding()
         {
-            if (State != KeyboardState.hidden)
+            if (State != KeyboardState.Hidden)
             {
-                State = KeyboardState.hiding;
+                State = KeyboardState.Hiding;
             }
         }
 
@@ -192,5 +176,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
         }
         #endregion Input pane event handlers
-    } 
+    }
 }

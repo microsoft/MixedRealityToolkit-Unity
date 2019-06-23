@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    public class OpenSystemKeyboard : MonoBehaviour
+    public class SystemKeyboardExample : MonoBehaviour
     {
         private MixedRealityKeyboard wmrKeyboard;
         private TouchScreenKeyboard touchscreenKeyboard;
@@ -18,14 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 #if !UNITY_EDITOR && UNITY_WSA
             // Windows mixed reality keyboard initialization goes here
             wmrKeyboard = gameObject.AddComponent<MixedRealityKeyboard>();
-            wmrKeyboard.TextChanged.AddListener((eventData) => debugMessage.text = "typing... " + wmrKeyboard.Text);
-            wmrKeyboard.KeyboardHidden.AddListener(() => debugMessage.text = "typed " + wmrKeyboard.Text);
 #else
             // non-Windows mixed reality keyboard initialization goes here
 #endif
         }
 
-        public void Open()
+        public void OpenSystemKeyboard()
         {
 #if !UNITY_EDITOR && UNITY_WSA
             wmrKeyboard.ShowKeyboard();
@@ -38,6 +36,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
 #if !UNITY_EDITOR && UNITY_WSA
             // Windows mixed reality keyboard update goes here
+            keyboardText = wmrKeyboard.Text;
+            if (wmrKeyboard.Visible)
+            {
+                debugMessage.text = "typing... " + keyboardText;
+            }
+            else
+            {
+                if (keyboardText == null || keyboardText.Length == 0)
+                {
+                    debugMessage.text = "open keyboard to type text";
+                }
+                else
+                {
+                    debugMessage.text = "typed " + keyboardText;
+                }
+            }
 #else
             // non-Windows mixed reality keyboard initialization goes here
             // for non-Windows mixed reality keyboards just use Unity's default
