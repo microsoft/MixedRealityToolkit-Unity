@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// A custom shader inspector for the "Mixed Reality Toolkit/Wireframe" shader.
+    /// A custom base shader inspector for Mixed Reality Toolkit shaders.
     /// </summary>
     public abstract class MixedRealityShaderGUI : ShaderGUI
     {
@@ -70,6 +70,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent cullMode = new GUIContent("Cull Mode", "Triangle Culling Mode");
             public static GUIContent renderQueueOverride = new GUIContent("Render Queue Override", "Manually Override the Render Queue");
         }
+
+        protected const string LegacyShadersPath = "Legacy Shaders/";
+        protected const string TransparentShadersPath = "/Transparent/";
+        protected const string TransparentCutoutShadersPath = "/Transparent/Cutout/";
 
         protected static void SetupMaterialWithRenderingMode(Material material, RenderingMode mode, CustomRenderingMode customMode, int renderQueueOverride)
         {
@@ -200,11 +204,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Check whether shader feature is enabled
+        /// </summary>
+        /// <param name="property">float property to check against</param>
+        /// <returns>false if 0.0f, true otherwise</returns>
         protected static bool PropertyEnabled(MaterialProperty property)
         {
             return !property.floatValue.Equals(0.0f);
         }
 
+        /// <summary>
+        /// Get the value of a given float property for a material
+        /// </summary>
+        /// <param name="material">material to check</param>
+        /// <param name="propertyName">name of property against material</param>
+        /// <returns>if has property, then value of that property for current material, null otherwise</returns>
         protected static float? GetFloatProperty(Material material, string propertyName)
         {
             if (material.HasProperty(propertyName))
@@ -215,6 +230,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return null;
         }
 
+        /// <summary>
+        /// Get the value of a given vector property for a material
+        /// </summary>
+        /// <param name="material">material to check</param>
+        /// <param name="propertyName">name of property against material</param>
+        /// <returns>if has property, then value of that property for current material, null otherwise</returns>
         protected static Vector4? GetVectorProperty(Material material, string propertyName)
         {
             if (material.HasProperty(propertyName))
@@ -225,6 +246,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return null;
         }
 
+        /// <summary>
+        /// Get the value of a given color property for a material
+        /// </summary>
+        /// <param name="material">material to check</param>
+        /// <param name="propertyName">name of property against material</param>
+        /// <returns>if has property, then value of that property for current material, null otherwise</returns>
         protected static Color? GetColorProperty(Material material, string propertyName)
         {
             if (material.HasProperty(propertyName))
@@ -235,7 +262,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return null;
         }
 
-        protected static void SetFloatProperty(Material material, string keywordName, string propertyName, float? propertyValue)
+        /// <summary>
+        /// Sets the shader feature controlled by keyword & property name parameters active or inactive
+        /// </summary>
+        /// <param name="material">Material to modify</param>
+        /// <param name="keywordName">Keyword of shader feature</param>
+        /// <param name="propertyName">Associated property name for shader feature</param>
+        /// <param name="propertyValue">boolean toggle of active/inactive wrapped through float</param>
+        protected static void SetShaderFeatureActive(Material material, string keywordName, string propertyName, float? propertyValue)
         {
             if (propertyValue.HasValue)
             {
@@ -255,6 +289,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Sets vector property against associated material
+        /// </summary>
+        /// <param name="material">material to control</param>
+        /// <param name="propertyName">name of property to set</param>
+        /// <param name="propertyValue">value of property to set</param>
         protected static void SetVectorProperty(Material material, string propertyName, Vector4? propertyValue)
         {
             if (propertyValue.HasValue)
@@ -263,6 +303,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Set color property against associated material
+        /// </summary>
+        /// <param name="material">material to control</param>
+        /// <param name="propertyName">name of property to set</param>
+        /// <param name="propertyValue">value of property to set</param>
         protected static void SetColorProperty(Material material, string propertyName, Color? propertyValue)
         {
             if (propertyValue.HasValue)

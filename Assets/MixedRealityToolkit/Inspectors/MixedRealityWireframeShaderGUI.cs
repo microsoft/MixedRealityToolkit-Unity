@@ -55,8 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             materialEditor.ShaderProperty(wireThickness, Styles.wireThickness);
 
             AdvancedOptions(materialEditor, material);
-
-            //base.OnGUI(materialEditor, props);
         }
 
         protected void FindProperties(MaterialProperty[] props)
@@ -86,10 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             base.AssignNewShaderToMaterial(material, oldShader, newShader);
    
-            SetFloatProperty(material, null, "_CullMode", cullMode);
+            SetShaderFeatureActive(material, null, "_CullMode", cullMode);
 
             // Setup the rendering mode based on the old shader.
-            if (oldShader == null || !oldShader.name.Contains("Legacy Shaders/"))
+            if (oldShader == null || !oldShader.name.Contains(LegacyShadersPath))
             {
                 SetupMaterialWithRenderingMode(material, (RenderingMode)material.GetFloat(BaseStyles.renderingModeName), CustomRenderingMode.Opaque, -1);
             }
@@ -97,11 +95,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 RenderingMode mode = RenderingMode.Opaque;
 
-                if (oldShader.name.Contains("/Transparent/Cutout/"))
+                if (oldShader.name.Contains(TransparentCutoutShadersPath))
                 {
                     mode = RenderingMode.TransparentCutout;
                 }
-                else if (oldShader.name.Contains("/Transparent/"))
+                else if (oldShader.name.Contains(TransparentShadersPath))
                 {
                     mode = RenderingMode.Transparent;
                 }
@@ -129,7 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 (int)renderQueueOverride.floatValue);
         }
 
-        // TODO: Merge this out? with StandardShaderGUI
         protected void RenderingModeOptions(MaterialEditor materialEditor)
         {
             EditorGUI.BeginChangeCheck();

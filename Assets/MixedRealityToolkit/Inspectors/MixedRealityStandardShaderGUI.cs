@@ -361,26 +361,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             base.AssignNewShaderToMaterial(material, oldShader, newShader);
 
             // Apply old shader properties to the new shader.
-            SetFloatProperty(material, null, "_Smoothness", smoothness);
-            SetFloatProperty(material, "_DIRECTIONAL_LIGHT", "_DirectionalLight", diffuse);
-            SetFloatProperty(material, "_SPECULAR_HIGHLIGHTS", "_SpecularHighlights", specularHighlights);
-            SetFloatProperty(material, "_NORMAL_MAP", "_EnableNormalMap", normalMap);
+            SetShaderFeatureActive(material, null, "_Smoothness", smoothness);
+            SetShaderFeatureActive(material, "_DIRECTIONAL_LIGHT", "_DirectionalLight", diffuse);
+            SetShaderFeatureActive(material, "_SPECULAR_HIGHLIGHTS", "_SpecularHighlights", specularHighlights);
+            SetShaderFeatureActive(material, "_NORMAL_MAP", "_EnableNormalMap", normalMap);
 
             if (normalMapTexture)
             {
                 material.SetTexture("_NormalMap", normalMapTexture);
             }
 
-            SetFloatProperty(material, null, "_NormalMapScale", normalMapScale);
-            SetFloatProperty(material, "_EMISSION", "_EnableEmission", emission);
+            SetShaderFeatureActive(material, null, "_NormalMapScale", normalMapScale);
+            SetShaderFeatureActive(material, "_EMISSION", "_EnableEmission", emission);
             SetColorProperty(material, "_EmissiveColor", emissionColor);
-            SetFloatProperty(material, "_REFLECTIONS", "_Reflections", reflections);
-            SetFloatProperty(material, "_RIM_LIGHT", "_RimLight", rimLighting);
+            SetShaderFeatureActive(material, "_REFLECTIONS", "_Reflections", reflections);
+            SetShaderFeatureActive(material, "_RIM_LIGHT", "_RimLight", rimLighting);
             SetVectorProperty(material, "_MainTex_ST", textureScaleOffset);
-            SetFloatProperty(material, null, "_CullMode", cullMode);
+            SetShaderFeatureActive(material, null, "_CullMode", cullMode);
 
             // Setup the rendering mode based on the old shader.
-            if (oldShader == null || !oldShader.name.Contains("Legacy Shaders/"))
+            if (oldShader == null || !oldShader.name.Contains(LegacyShadersPath))
             {
                 SetupMaterialWithRenderingMode(material, (RenderingMode)material.GetFloat(BaseStyles.renderingModeName), CustomRenderingMode.Opaque, -1);
             }
@@ -388,11 +388,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 RenderingMode mode = RenderingMode.Opaque;
 
-                if (oldShader.name.Contains("/Transparent/Cutout/"))
+                if (oldShader.name.Contains(TransparentCutoutShadersPath))
                 {
                     mode = RenderingMode.TransparentCutout;
                 }
-                else if (oldShader.name.Contains("/Transparent/"))
+                else if (oldShader.name.Contains(TransparentShadersPath))
                 {
                     mode = RenderingMode.Transparent;
                 }
@@ -789,7 +789,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             else
             {
                 // When instancing is disable, disable instanced color.
-                SetFloatProperty(material, Styles.instancedColorFeatureName, Styles.instancedColorName, 0.0f);
+                SetShaderFeatureActive(material, Styles.instancedColorFeatureName, Styles.instancedColorName, 0.0f);
             }
 
             materialEditor.ShaderProperty(stencil, Styles.stencil);
