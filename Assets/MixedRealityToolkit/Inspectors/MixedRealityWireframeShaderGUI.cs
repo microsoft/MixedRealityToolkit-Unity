@@ -21,21 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent wireThickness = new GUIContent("Wire Thickness", "Thickness of wires");
         }
 
-        protected bool initialized;
-
-        protected MaterialProperty renderingMode;
-        protected MaterialProperty customRenderingMode;
-        protected MaterialProperty sourceBlend;
-        protected MaterialProperty destinationBlend;
-        protected MaterialProperty blendOperation;
-        protected MaterialProperty depthTest;
-        protected MaterialProperty depthWrite;
-        protected MaterialProperty depthOffsetFactor;
-        protected MaterialProperty depthOffsetUnits;
-        protected MaterialProperty colorWriteMask;
-        protected MaterialProperty cullMode;
-        protected MaterialProperty renderQueueOverride;
-
         protected MaterialProperty baseColor;
         protected MaterialProperty wireColor;
         protected MaterialProperty wireThickness;
@@ -44,10 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             Material material = (Material)materialEditor.target;
 
-            FindProperties(props);
-            Initialize(material);
-
-            RenderingModeOptions(materialEditor);
+            base.OnGUI(materialEditor, props);
 
             GUILayout.Label(Styles.mainPropertiesTitle, EditorStyles.boldLabel);
             materialEditor.ShaderProperty(baseColor, Styles.baseColor);
@@ -57,21 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             AdvancedOptions(materialEditor, material);
         }
 
-        protected void FindProperties(MaterialProperty[] props)
+        protected override void FindProperties(MaterialProperty[] props)
         {
-            renderingMode = FindProperty(BaseStyles.renderingModeName, props);
-            customRenderingMode = FindProperty(BaseStyles.customRenderingModeName, props);
-            sourceBlend = FindProperty(BaseStyles.sourceBlendName, props);
-            destinationBlend = FindProperty(BaseStyles.destinationBlendName, props);
-            blendOperation = FindProperty(BaseStyles.blendOperationName, props);
-            depthTest = FindProperty(BaseStyles.depthTestName, props);
-            depthWrite = FindProperty(BaseStyles.depthWriteName, props);
-            depthOffsetFactor = FindProperty(BaseStyles.depthOffsetFactorName, props);
-            depthOffsetUnits = FindProperty(BaseStyles.depthOffsetUnitsName, props);
-            colorWriteMask = FindProperty(BaseStyles.colorWriteMaskName, props);
-
-            cullMode = FindProperty("_CullMode", props);
-            renderQueueOverride = FindProperty("_RenderQueueOverride", props);
+            base.FindProperties(props);
 
             baseColor = FindProperty("_BaseColor", props);
             wireColor = FindProperty("_WireColor", props);
@@ -108,77 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 MaterialChanged(material);
             }
-        }
-
-        protected void Initialize(Material material)
-        {
-            if (!initialized)
-            {
-                MaterialChanged(material);
-                initialized = true;
-            }
-        }
-
-        protected void MaterialChanged(Material material)
-        {
-            SetupMaterialWithRenderingMode(material, 
-                (RenderingMode)renderingMode.floatValue, 
-                (CustomRenderingMode)customRenderingMode.floatValue, 
-                (int)renderQueueOverride.floatValue);
-        }
-
-        protected void RenderingModeOptions(MaterialEditor materialEditor)
-        {
-            EditorGUI.BeginChangeCheck();
-
-            EditorGUI.showMixedValue = renderingMode.hasMixedValue;
-            RenderingMode mode = (RenderingMode)renderingMode.floatValue;
-            EditorGUI.BeginChangeCheck();
-            mode = (RenderingMode)EditorGUILayout.Popup(renderingMode.displayName, (int)mode, BaseStyles.renderingModeNames);
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                materialEditor.RegisterPropertyChangeUndo(renderingMode.displayName);
-                renderingMode.floatValue = (float)mode;
-            }
-
-            EditorGUI.showMixedValue = false;
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                Object[] targets = renderingMode.targets;
-
-                foreach (Object target in targets)
-                {
-                    MaterialChanged((Material)target);
-                }
-            }
-
-            if ((RenderingMode)renderingMode.floatValue == RenderingMode.Custom)
-            {
-                EditorGUI.indentLevel += 2;
-                customRenderingMode.floatValue = EditorGUILayout.Popup(customRenderingMode.displayName, (int)customRenderingMode.floatValue, BaseStyles.customRenderingModeNames);
-                materialEditor.ShaderProperty(sourceBlend, BaseStyles.sourceBlend);
-                materialEditor.ShaderProperty(destinationBlend, BaseStyles.destinationBlend);
-                materialEditor.ShaderProperty(blendOperation, BaseStyles.blendOperation);
-                materialEditor.ShaderProperty(depthTest, BaseStyles.depthTest);
-                depthWrite.floatValue = EditorGUILayout.Popup(depthWrite.displayName, (int)depthWrite.floatValue, BaseStyles.depthWriteNames);
-                materialEditor.ShaderProperty(depthOffsetFactor, BaseStyles.depthOffsetFactor);
-                materialEditor.ShaderProperty(depthOffsetUnits, BaseStyles.depthOffsetUnits);
-                materialEditor.ShaderProperty(colorWriteMask, BaseStyles.colorWriteMask);
-                EditorGUI.indentLevel -= 2;
-            }
-
-            if (!PropertyEnabled(depthWrite))
-            {
-                if (MixedRealityToolkitShaderGUIUtilities.DisplayDepthWriteWarning(materialEditor))
-                {
-                    renderingMode.floatValue = (float)RenderingMode.Custom;
-                    depthWrite.floatValue = (float)DepthWrite.On;
-                }
-            }
-
-            materialEditor.ShaderProperty(cullMode, BaseStyles.cullMode);
         }
 
         protected void AdvancedOptions(MaterialEditor materialEditor, Material material)
