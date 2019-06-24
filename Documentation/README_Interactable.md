@@ -25,20 +25,20 @@ The basic features allow for button style interactions, such as pointer focus an
 **Input Actions**
 Select the action, from the input configuration or controller mapping profile, that the interactable should react to.
 See [Overview of the input system in MRTK](./Input/Overview.md) for more on how input actions are setup and intended to be used in the application.
- 
+
 **Enabled**
 Sets the interactables enabled state, which will disable some input handling and update the themes to reflect the current state which is disabled.
 
 This is different from disabling input all together (using *Enable Input*). It means that a specific button that would normally be interactive will be disabled and has a visual look and feel to denote its disabled state. A typical example of this would be a submit button waiting for all the required input fields to be completed.
- 
+
 **IsGlobal**
 Focus is not required to detect input actions, default behavior is false.
- 
+
 **Voice Commands**
 A voice command to trigger an OnClick event. This will also trigger a quick state change to drive any themes visuals.
  
 Note: Make sure there is a unique voice command on each button. The voice recognizer is global (even if the interactable is not) and will not register the same voice command twice; in this case an error will be thrown.
- 
+
 **Requires Gaze (Only available when the voice command field has a value)**
 The voice command requires the interactable to have focus to listen for the voice command. There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts. Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.
 
@@ -141,11 +141,8 @@ The InteractableStates State Model will handle any state list with a layered ran
 The DefaultInteractableStates list contains 4 states:
 
 - **Default**: Nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.
-
 - **Focus**: The object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.
-
 - **Press**: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus. This state will also get set as a fallback to Physcial Press.
-
 - **Disabled**: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.
 
 A bit value (#) is assigned to the state depending on the order in the list.
@@ -183,10 +180,10 @@ public NewCustomTheme()
 }
 ```
 
-**Name**: The display name of the property, this will display next to the property field under each state title.
-**Types**: Allow filtering based on components on the object. In this case, this theme will show up in the list when assigned to an object with a Transform.
-**Name**: The name that will show up in the inspector.
-**ThemeProperties**: A list of properties that theme will store to be used when the state changes.
+- **Name**: The display name of the property, this will display next to the property field under each state title.
+- **Types**: Allow filtering based on components on the object. In this case, this theme will show up in the list when assigned to an object with a Transform.
+- **Name**: The name that will show up in the inspector.
+- **ThemeProperties**: A list of properties that theme will store to be used when the state changes.
 
 Each Theme Property has a name, type (defining the fields to display for each state), a set of values for each state and a default value for the fields. The state fields can also be hidden in the inspector, if the theme does not require them to be visible.
 
@@ -226,11 +223,33 @@ public override void SetValue(InteractableThemeProperty property, int index, flo
 ```
 
 The SetValue function is used to set the property value based on the current state.
-**Property**: A list of property values per state, set through the theme inspector.
-**Index**: Correlates to the current state.
-**Percentage**: A float value between 0 and 1. It will be the eased value if an Animation curve is used.
+- **Property**: A list of property values per state, set through the theme inspector.
+- **Index**: Correlates to the current state.
+- **Percentage**: A float value between 0 and 1. It will be the eased value if an Animation curve is used.
 
 Custom Settings added to the new class will also be displayed in the inspector. If there are properties that need to be exposed in the inspector but do not need to be based on states, they should be added to the Custom Settings list.
+
+### Extending shader themes
+
+If creating a custom interactable theme to modify shader properties, it is advised to extend the `InteractableShaderTheme` class. Please see the `InteractableColorTheme` class as an example to extend the `InteractableShaderTheme` class.
+
+Regardless of whether extending the `InteractableShaderTheme` class or not, it is highly recommended to set shader properties 1) via [**MaterialPropertyBlock**](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) and 2) using the shader properties integer keys instead of string keys. Unity assigns integer keys for all shader properties in a project at runtime.See [**Shader.PropertyToID**](https://docs.unity3d.com/ScriptReference/Shader.PropertyToID.html) for more details on. The integer key for an interactable property can be accessed via  `InteractableThemeProperty.GetShaderPropertyId()`. 
+
+Both of these two steps will help with performance. [**MaterialPropertyBlock**](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) will ensure a new material instance is not created for every object modifying a shader property and integer shader property IDs will eliminate the string-to-int lookup step performed by Unity when using string keys (i.e "_Color") on set/get functions.
+
+``` csharp
+public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+{
+     renderer.GetPropertyBlock(propertyBlock);
+
+     int propId = property.GetShaderPropertyId();
+     
+     Color newColor = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
+     block.SetColor(propId, color);
+             
+     renderer.SetPropertyBlock(propertyBlock);
+ }
+```
 
 ## Extending events ##
 Like Themes, events can be extended to detect any state pattern or to expose functionality. 
@@ -323,3 +342,6 @@ public override State CompareStates()
     return currentState;
 }
 ```
+
+## See also
+- [MRTK Standard Shader](README_MRTKStandardShader.md)
