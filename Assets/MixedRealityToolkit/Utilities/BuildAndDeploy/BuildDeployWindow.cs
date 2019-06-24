@@ -522,8 +522,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 EditorUserBuildSettings.wsaArchitecture = newBuildArchitectureString;
             }
 
-            // The 'Gaze Input' capability is newly added for the Windows SDK 18362, but existing versions
-            // of Unity don't have support for automatically adding the capability to the generated
+            // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
+            // existing versions of Unity don't have support for automatically adding the capability to the generated
             // AppX manifest during the build. This option provides a mechanism for people using the
             // MRTK build tools to auto-append this capability if desired, instead of having to manually
             // do this each time on their own.
