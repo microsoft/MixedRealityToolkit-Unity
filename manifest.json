@@ -5465,11 +5465,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Diagnostics.VisualProfilerControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Diagnostics.VisualProfilerControl.html",
+          "hash": "w13pqa/0RDy9nRTVV29wyQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Diagnostics.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Diagnostics.html",
-          "hash": "/vD6q/hnOOdf9rgUAv1dsw=="
+          "hash": "HbmTPS4+Dk4erGyba4JnBA=="
         }
       },
       "is_incremental": false,
@@ -7157,18 +7169,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.OpenKeyboard.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.OpenKeyboard.html",
-          "hash": "G9Il2VYi7+v6nyaEFDHI4Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter.PhysicalPressEventBehavior.yml",
       "output": {
         ".html": {
@@ -7301,6 +7301,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.SystemKeyboardExample.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.SystemKeyboardExample.html",
+          "hash": "i2Av8imDeKifRL33IlWPTA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ToggleBoundingBox.yml",
       "output": {
         ".html": {
@@ -7353,7 +7365,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "LW+iyy4S7JP7dwXUwLa1Cg=="
+          "hash": "xp7ndmJyXh6bL8knUSWXBw=="
         }
       },
       "is_incremental": false,
@@ -7402,6 +7414,30 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.html",
           "hash": "oz7Fh0w/0jNbEslRLsyFLA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboard.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboard.html",
+          "hash": "cRpJeHOIeVodCaTpSC7YhA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.html",
+          "hash": "tfSbwkU1wGTLrUSfDHos2Q=="
         }
       },
       "is_incremental": false,
@@ -16353,7 +16389,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "FAiHHk7YkEFUa9VNx7LJZw=="
+          "hash": "DuAH2b7G1A0jBKbTtRxbPg=="
         }
       },
       "is_incremental": false,
@@ -16414,7 +16450,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 963,
+          "total_file_count": 966,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
