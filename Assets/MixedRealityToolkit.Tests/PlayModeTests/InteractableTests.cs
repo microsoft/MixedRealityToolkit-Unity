@@ -40,29 +40,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Instantiates a push button prefab and uses simulated hands to press it.
+        /// Instantiates a push button prefab and uses simulated hand input to press it.
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator TestInstantiateAndInteractWithPrefab()
+        public IEnumerator TestSimulatedHandInputOnPrefab()
         {
             // instantiate scene
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
             // Load interactable prefab
-            Object interactablePrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab", typeof(Object));
-            GameObject interactableObject = Object.Instantiate(interactablePrefab) as GameObject;
-            Interactable interactable = interactableObject.GetComponent<Interactable>();
-            Assert.IsNotNull(interactable);
+            GameObject interactableObject;
+            Interactable interactable;
+            Transform translateTargetObject;
 
-            // Find the target object for the interactable transformation
-            Transform translateTargetObject = interactableObject.transform.Find("Cylinder");
-            Assert.IsNotNull(translateTargetObject, "Object 'Cylinder' could not be found under example object Model_PushButton.");
-
-            // Move the interactable into its press position
-            interactableObject.transform.localPosition = new Vector3(0.025f, 0.05f, 0.5f);
-            interactableObject.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
+            InstantiateDefaultInteractablePrefab(
+                new Vector3(0.025f, 0.05f, 0.5f),
+                new Vector3(-90f, 0f, 0f),
+                out interactableObject, 
+                out interactable,
+                out translateTargetObject);
 
             // Move the camera to origin looking at +z to more easily see the button.
             MixedRealityPlayspace.PerformTransformation(
@@ -102,25 +100,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator TestConfigureInteractableButton()
+        public IEnumerator TestSimulatedMenuInputOnPrefab()
         {
             // instantiate scene
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
             // Load interactable prefab
-            Object interactablePrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab", typeof(Object));
-            GameObject interactableObject = Object.Instantiate(interactablePrefab) as GameObject;
-            Interactable interactable = interactableObject.GetComponent<Interactable>();
-            Assert.IsNotNull(interactable);
+            GameObject interactableObject;
+            Interactable interactable;
+            Transform translateTargetObject;
 
-            // Find the target object for the interactable transformation
-            Transform translateTargetObject = interactableObject.transform.Find("Cylinder");
-            Assert.IsNotNull(translateTargetObject, "Object 'Cylinder' could not be found under example object Model_PushButton.");
-
-            // Move the interactable into position
-            interactableObject.transform.localPosition = new Vector3(0.0f, 0.0f, 0.5f);
-            interactableObject.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
+            InstantiateDefaultInteractablePrefab(
+                new Vector3(0.0f, 0.0f, 0.5f),
+                new Vector3(-90f, 0f, 0f),
+                out interactableObject,
+                out interactable,
+                out translateTargetObject);
 
             // Move the camera to origin looking at +z to more easily see the button.
             MixedRealityPlayspace.PerformTransformation(
@@ -163,35 +159,284 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Assembled a push button prefab from primitives and uses simulated hands to press it.
+        /// Instantiates a push button prefab and uses simulated voice input events to press it.
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator TestAssemblePushButtonFromScratch()
+        public IEnumerator TestSimulatedVoiceInputOnPrefab()
         {
             // instantiate scene
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
+            // Load interactable prefab
+            GameObject interactableObject;
+            Interactable interactable;
+            Transform translateTargetObject;
+
+            InstantiateDefaultInteractablePrefab(
+                new Vector3(0.0f, 0.0f, 0.5f),
+                new Vector3(-90f, 0f, 0f),
+                out interactableObject,
+                out interactable,
+                out translateTargetObject);
+
+            // Set up its voice command
+            interactable.VoiceCommand = "Select";
+            Assert.IsTrue(interactable.HasVoiceCommand, "Interactable does not have a voice command.");
+
+            // Move the camera to origin looking at +z to more easily see the button.
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            Vector3 targetStartPosition = translateTargetObject.localPosition;
+
+            yield return null;
+
+            // Find an input source to associate with the input event (doesn't matter which one)
+            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
+
+            // Raise a voice select input event, then wait for transition to take place
+            MixedRealityToolkit.InputSystem.RaiseDictationResult(defaultInputSource, "Select");
+            yield return new WaitForSeconds(1f);
+
+            Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
+
+            Object.Destroy(interactableObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Instantiates a push button prefab and uses simulated global input events to press it.
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestSimulatedGlobalSelectInputOnPrefab()
+        {
+            // instantiate scene
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+            TestUtilities.InitializePlayspace();
+
+            // Load interactable prefab
+            GameObject interactableObject;
+            Interactable interactable;
+            Transform translateTargetObject;
+
+            // Place out of the way of any pointers
+            InstantiateDefaultInteractablePrefab(
+                new Vector3(10f, 0.0f, 0.5f),
+                new Vector3(-90f, 0f, 0f),
+                out interactableObject,
+                out interactable,
+                out translateTargetObject);
+
+            // Set interactable to global
+            interactable.IsGlobal = true;
+
+            Vector3 targetStartPosition = translateTargetObject.localPosition;
+
+            yield return null;
+
+            // Find an input source to associate with the input event (doesn't matter which one)
+            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
+
+            // Add interactable as a global listener
+            MixedRealityToolkit.InputSystem.PushModalInputHandler(interactableObject);
+
+            // Raise a select down input event, then wait for transition to take place
+            MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
+            yield return new WaitForSeconds(1f);
+
+            Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
+
+            // Raise a select up input event, then wait for transition to take place
+            MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, interactable.InputAction);
+            yield return new WaitForSeconds(1f);
+
+            Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
+
+            // Remove as global listener
+            MixedRealityToolkit.InputSystem.PopModalInputHandler();
+
+            Object.Destroy(interactableObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Assembles a push button from primitives and uses simulated hand input to press it.
+        /// </summary>
+        /// <returns></returns>
+        //[UnityTest] Temporarily ignoring this test until we can get animation working
+        public IEnumerator TestSimulatedHandInputOnRuntimeAssembled()
+        {
+            // instantiate scene
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+            TestUtilities.InitializePlayspace();
+
+            // Load interactable prefab
+            GameObject interactableObject;
+            Interactable interactable;
+            Transform translateTargetObject;
+
+            AssembleInteractableButton(
+                out interactableObject,
+                out interactable,
+                out translateTargetObject);
+
+            Vector3 targetStartPosition = translateTargetObject.transform.localPosition;
+
+            yield return null;
+
+            // Add a touchable and configure for touch events
+            NearInteractionTouchable touchable = interactableObject.AddComponent<NearInteractionTouchable>();
+            touchable.EventsToReceive = TouchableEventType.Touch;
+            touchable.Bounds = Vector2.one;
+            touchable.SetLocalForward(Vector3.up);
+            touchable.SetLocalUp(Vector3.forward);
+            touchable.LocalCenter = Vector3.up * 2.75f;
+
+            // Add a touch handler and link touch started / touch completed events
+            TouchHandler touchHandler = interactableObject.AddComponent<TouchHandler>();
+            touchHandler.OnTouchStarted.AddListener((HandTrackingInputEventData e) => interactable.SetInputDown());
+            touchHandler.OnTouchCompleted.AddListener((HandTrackingInputEventData e) => interactable.SetInputDown());
+
+            touchHandler.OnTouchStarted.AddListener((HandTrackingInputEventData e) => Debug.Log("SetInputDown"));
+            touchHandler.OnTouchCompleted.AddListener((HandTrackingInputEventData e) => Debug.Log("SetInputUp"));
+
+            // Move the camera to origin looking at +z to more easily see the button.
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            // Move the hand forward to intersect the interactable
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            int numSteps = 32;
+            Vector3 p1 = new Vector3(0.0f, 0f, 0f);
+            Vector3 p2 = new Vector3(0.05f, 0f, 0.51f);
+            Vector3 p3 = new Vector3(0.0f, 0f, 0.0f);
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return new WaitForSeconds(1f);
+
+            Assert.AreNotEqual(targetStartPosition, translateTargetObject.transform.localPosition, "Translate target object was not translated by action.");
+
+            // Move the hand back
+            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+            yield return new WaitForSeconds(1f);
+
+            Assert.AreEqual(targetStartPosition, translateTargetObject.transform.localPosition, "Translate target object was not translated back by action.");
+
+            Object.Destroy(interactableObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Assembles a push button from primitives and uses simulated input events to press it.
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestSimulatedSelectInputOnRuntimeAssembled()
+        {
+            // instantiate scene
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+            TestUtilities.InitializePlayspace();
+
+            // Load interactable prefab
+            GameObject interactableObject;
+            Interactable interactable;
+            Transform translateTargetObject;
+
+            InstantiateDefaultInteractablePrefab(
+                new Vector3(0.0f, 0.0f, 0.5f),
+                new Vector3(-90f, 0f, 0f),
+                out interactableObject,
+                out interactable,
+                out translateTargetObject);
+
+            // Move the camera to origin looking at +z to more easily see the button.
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            Vector3 targetStartPosition = translateTargetObject.localPosition;
+
+            yield return null;
+            
+            // Find an input source to associate with the input event (doesn't matter which one)
+            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
+
+            // Raise an input down event, then wait for transition to take place
+            MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, interactable.InputAction);
+            yield return new WaitForSeconds(1f);
+
+            Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
+
+            // Raise an input up event, then wait for transition to take place
+            MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, interactable.InputAction);
+            yield return new WaitForSeconds(1f);
+
+            Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
+
+            Object.Destroy(interactableObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
+        /// <summary>
+        /// Generates an interactable from primitives and assigns a select action.
+        /// </summary>
+        /// <param name="interactableObject"></param>
+        /// <param name="interactable"></param>
+        /// <param name="translateTargetObject"></param>
+        /// <param name="selectActionDescription"></param>
+        private void AssembleInteractableButton(out GameObject interactableObject, out Interactable interactable, out Transform translateTargetObject, string selectActionDescription = "Select")
+        {
             // Assemble an interactable out of a set of primitives
             // This will be the button housing
-            GameObject mainObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            mainObject.transform.position = new Vector3(0.05f, 0.05f, 0.625f);
-            mainObject.transform.localScale = new Vector3(0.15f, 0.025f, 0.15f);
-            mainObject.transform.eulerAngles = new Vector3(90f, 0f, 180f);
+            interactableObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            interactableObject.name = "RuntimeInteractable";
+            interactableObject.transform.position = new Vector3(0.05f, 0.05f, 0.625f);
+            interactableObject.transform.localScale = new Vector3(0.15f, 0.025f, 0.15f);
+            interactableObject.transform.eulerAngles = new Vector3(90f, 0f, 180f);
 
             // This will be the part that gets scaled
             GameObject childObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             childObject.GetComponent<Renderer>().material.color = Color.blue;
-            childObject.transform.parent = mainObject.transform;
+            childObject.transform.parent = interactableObject.transform;
             childObject.transform.localScale = new Vector3(0.9f, 1f, 0.9f);
             childObject.transform.localPosition = new Vector3(0f, 1.5f, 0f);
             childObject.transform.localRotation = Quaternion.identity;
             // Only use a collider on the main object
             GameObject.Destroy(childObject.GetComponent<Collider>());
 
+            translateTargetObject = childObject.transform;
+
             // Add an interactable
-            Interactable interactable = mainObject.AddComponent<Interactable>();
+            interactable = interactableObject.AddComponent<Interactable>();
 
             #region create interactable theme
 
@@ -228,73 +473,35 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             #endregion
 
-            // Set the interactable to respond to select actions
-            MixedRealityInputAction selectAction = MixedRealityToolkit.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == "Select").FirstOrDefault();
-            Assert.NotNull(selectAction.Description, "Couldn't find select input action in input system profile.");
+            // Set the interactable to respond to the requested inut action
+            MixedRealityInputAction selectAction = MixedRealityToolkit.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();
+            Assert.NotNull(selectAction.Description, "Couldn't find " + selectActionDescription + " input action in input system profile.");
             interactable.InputAction = selectAction;
-
-            // Add a touchable and configure for touch events
-            NearInteractionTouchable touchable = mainObject.AddComponent<NearInteractionTouchable>();
-            touchable.EventsToReceive = TouchableEventType.Touch;
-            touchable.Bounds = Vector2.one;
-            touchable.SetLocalForward(Vector3.up);
-            touchable.SetLocalUp(Vector3.forward);
-            touchable.LocalCenter = Vector3.up * 2.75f;
-
-            // Add a touch handler and link touch started / touch completed events
-            TouchHandler touchHandler = mainObject.AddComponent<TouchHandler>();
-            touchHandler.OnTouchStarted.AddListener((HandTrackingInputEventData e) => interactable.SetInputDown());
-            touchHandler.OnTouchCompleted.AddListener((HandTrackingInputEventData e) => interactable.SetInputDown());
-
-            // Disable the child object, then re-enable to force registration
-            mainObject.SetActive(false);
-            yield return null;
-            mainObject.SetActive(true);
-            yield return null;
-
-            // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
-
-            // Move the hand forward to intersect the interactable
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            int numSteps = 32;
-            Vector3 p1 = new Vector3(0.0f, 0f, 0f);
-            Vector3 p2 = new Vector3(0.05f, 0f, 0.51f);
-            Vector3 p3 = new Vector3(0.0f, 0f, 0.0f);
-
-            Vector3 targetStartPosition = childObject.transform.localPosition;
-
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
-
-            yield return new WaitForSeconds(5f);
-
-            Assert.AreNotEqual(targetStartPosition, childObject.transform.localPosition, "Translate target object was not translated by action.");
-
-            yield return new WaitForSeconds(5f);
-
-            // Move the hand back
-            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
-
-            yield return new WaitForSeconds(5f);
-
-            Assert.AreEqual(targetStartPosition, childObject.transform.localPosition, "Translate target object was not translated back by action.");
-
-            Object.Destroy(mainObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
         }
 
-        [TearDown]
-        public void ShutdownMrtk()
+        /// <summary>
+        /// Instantiates the default interactable buttom.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <param name="interactableObject"></param>
+        /// <param name="interactable"></param>
+        /// <param name="translateTargetObject"></param>
+        private void InstantiateDefaultInteractablePrefab(Vector3 position, Vector3 rotation, out GameObject interactableObject, out Interactable interactable, out Transform translateTargetObject)
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            // Load interactable prefab
+            Object interactablePrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab", typeof(Object));
+            interactableObject = Object.Instantiate(interactablePrefab) as GameObject;
+            interactable = interactableObject.GetComponent<Interactable>();
+            Assert.IsNotNull(interactable);
+
+            // Find the target object for the interactable transformation
+            translateTargetObject = interactableObject.transform.Find("Cylinder");
+            Assert.IsNotNull(translateTargetObject, "Object 'Cylinder' could not be found under example object Model_PushButton.");
+
+            // Move the object into position
+            interactableObject.transform.position = position;
+            interactableObject.transform.eulerAngles = rotation;
         }
     }
 }

@@ -68,7 +68,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             instances.Add(this);
 
-            touchableCollider = GetComponent<Collider>();
+            if (touchableCollider == null)
+            {
+                touchableCollider = GetComponent<Collider>();
+            }
+
             usesCollider = touchableCollider != null;
         }
 
@@ -83,7 +87,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             distFront = Math.Max(distFront, 0);
             debounceThreshold = Math.Max(debounceThreshold, 0);
 
-            touchableCollider = GetComponent<Collider>();
+            if (touchableCollider == null)
+            {
+                touchableCollider = GetComponent<Collider>();
+            }
+
             usesCollider = touchableCollider != null;
         }
 
