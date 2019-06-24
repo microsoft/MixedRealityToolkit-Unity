@@ -14,6 +14,8 @@ using NUnit.Framework;
 using System.Collections;
 using System.IO;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
+using System.Reflection;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using TMPro;
@@ -51,6 +53,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return inputSimulationService;
         }
 
+        /// <summary>
+        /// Initializes the MRTK such that there are no other input system listeners
+        /// (global or per-interface).
+        /// </summary>
         internal static IEnumerator SetupMrtkWithoutGlobalInputHandlers()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
@@ -76,6 +82,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Let objects be destroyed
             yield return null;
+
+            // Forcibly unregister all other input event listeners.
+            BaseEventSystem baseEventSystem = inputSystem as BaseEventSystem;
+            MethodInfo unregisterHandler = baseEventSystem.GetType().GetMethod("UnregisterHandler");
+
+            // Since we are iterating over and removing these values, we need to snapshot them
+            // before calling UnregisterHandler on each handler.
+            var eventHandlersByType = new Dictionary<System.Type, List<BaseEventSystem.EventHandlerEntry>>(((BaseEventSystem)inputSystem).EventHandlersByType);
+            foreach (var typeToEventHandlers in eventHandlersByType)
+            {
+                var handlerEntries = new List<BaseEventSystem.EventHandlerEntry>(typeToEventHandlers.Value);
+                foreach (var handlerEntry in handlerEntries)
+                {
+                    unregisterHandler.MakeGenericMethod(typeToEventHandlers.Key)
+                        .Invoke(baseEventSystem, 
+                                new object[] { handlerEntry.handler });
+                }
+            }
 
             // Check that input system is clean
             CollectionAssert.IsEmpty(((BaseEventSystem)inputSystem).EventListeners,      "Input event system handler registry is not empty in the beginning of the test.");

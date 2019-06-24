@@ -34,6 +34,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public PointerUnityEvent OnPointerDragged;
 
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
+
         #region IMixedRealityPointerHandler
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
