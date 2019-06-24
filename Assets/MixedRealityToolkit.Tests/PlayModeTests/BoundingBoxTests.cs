@@ -60,6 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        /// <summary>
+        /// Test that if we update the bounds of a box collider, that the corners will move correctly
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
         public IEnumerator BBoxOverride()
         {
@@ -71,24 +75,43 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             var newObject = new GameObject();
+            newObject.name = "newObject";
             var bc = newObject.AddComponent<BoxCollider>();
             bc.center = new Vector3(.25f, 0, 0);
             bc.size = new Vector3(0.162f, 0.1f, 1);
             bbox.BoundsOverride = bc;
+            yield return null;
 
+            // Get the dimensions of the corners
             List<GameObject> corners = FindDescendantsContainingName(go, "corner_");
+
             Bounds b = new Bounds();
             b.center = corners[0].transform.position;
             foreach (var c in corners.Skip(1))
             {
-                b.Expand(c.transform.position);
+                b.Encapsulate(c.transform.position);
             }
 
-            Debug.Assert(b.center == new Vector3(.25f, 0, 0), "bounds center should be (.25f, 0, 0)");
-            Debug.Assert(b.size == new Vector3(0.162f, 0.1f, 1), "bounds size should be (0.162f, 0.1f, 1)");
+            Debug.Assert(b.center == new Vector3(.25f, 0, 0), $"bounds center should be {bc.center} but they are {b.center}");
+            Debug.Assert(b.size == new Vector3(0.162f, 0.1f, 1), $"bounds size should be {bc.size} but they are {b.size}");
 
             yield return null;
         }
+
+        /// <summary>
+        /// Waits for the user to press the enter key before a test continues.
+        /// Not actually used by any test, but it is useful when debugging since you can 
+        /// pause the state of the test and inspect the scene.
+        /// </summary>
+        private IEnumerator WaitForEnterKey()
+        {
+            Debug.Log(Time.time + "Press Enter...");
+            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
+            {
+                yield return null;
+            }
+        }
+
 
         private List<GameObject> FindDescendantsContainingName(GameObject rigRoot, string v)
         {
@@ -100,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 var cur = toExplore.Dequeue();
                 if (cur.name.Contains(v))
                 {
-                    result.Append(cur.gameObject);
+                    result.Add(cur.gameObject);
                 }
                 for (int i = 0; i < cur.childCount; i++)
                 {
