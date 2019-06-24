@@ -266,6 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected Coroutine clickValidTimer;
         // how many clicks does it take?
         protected int clickCount = 0;
+        protected float globalFeedbackClickTime = 0.3f;
 
         /// <summary>
         /// how many times this interactable was clicked
@@ -421,9 +422,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            if (IsGlobal || RequiresFocus)
+            if (!RequiresFocus)
             {
-                InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
+                RegisterGlobalSpeechHandler(true);
+            }
+
+            if (IsGlobal)
+            {
+                RegisterGlobalInputHandler(true);
             }
 
             requiresFocusValueCheck = RequiresFocus;
@@ -439,17 +445,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnDisable()
         {
-            if (IsGlobal || RequiresFocus)
+            if (!RequiresFocus)
             {
-                InputSystem.Unregister(gameObject);
+                RegisterGlobalSpeechHandler(false);
+            }
+
+            if (IsGlobal)
+            {
+                RegisterGlobalInputHandler(false);
             }
         }
 
-        private void RegisterGlobalListeners(bool register)
+        private void RegisterGlobalInputHandler(bool globalInput)
         {
-            if (register)
+            if (globalInput)
             {
-                InputSystem.Register(gameObject);
+                InputSystem.RegisterHandler<IMixedRealityInputHandler>(this);
+            }
+            else
+            {
+                InputSystem.UnregisterHandler<IMixedRealityInputHandler>(this);
+            }
+        }
+
+        private void RegisterGlobalSpeechHandler(bool globalSpeech)
+        {
+            if (globalSpeech)
+            {
+                InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
             }
             else
             {
@@ -508,12 +531,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             lastState = StateManager.CurrentState();
 
-            if (requiresFocusValueCheck != RequiresFocus || isGlobalValueCheck != IsGlobal)
+            if (isGlobalValueCheck != IsGlobal)
+            {
+                isGlobalValueCheck = IsGlobal;
+                RegisterGlobalInputHandler(IsGlobal);
+            }
+
+            if (requiresFocusValueCheck != RequiresFocus)
             {
                 requiresFocusValueCheck = RequiresFocus;
-                isGlobalValueCheck = IsGlobal;
-
-                RegisterGlobalListeners(RequiresFocus || IsGlobal);
+                RegisterGlobalSpeechHandler(!RequiresFocus);
             }
         }
 
@@ -1192,7 +1219,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 StopCoroutine(globalTimer);
             }
 
-            globalTimer = StartCoroutine(GlobalVisualReset(clickTime));
+            globalTimer = StartCoroutine(GlobalVisualReset(globalFeedbackClickTime));
         }
 
         /// <summary>
