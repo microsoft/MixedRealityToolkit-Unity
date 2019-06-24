@@ -98,20 +98,17 @@
 <img src="Images/Interactable/InputFeatures_short.png" width="450">
 <p><strong>Input Actions</strong>
 Select the action, from the input configuration or controller mapping profile, that the interactable should react to.
-See <a href="Input/Overview.html">Overview of the input system in MRTK</a> for more on how input actions are setup and intended to be used in the application.
- 
-<strong>Enabled</strong>
+See <a href="Input/Overview.html">Overview of the input system in MRTK</a> for more on how input actions are setup and intended to be used in the application.</p>
+<p><strong>Enabled</strong>
 Sets the interactables enabled state, which will disable some input handling and update the themes to reflect the current state which is disabled.</p>
 <p>This is different from disabling input all together (using <em>Enable Input</em>). It means that a specific button that would normally be interactive will be disabled and has a visual look and feel to denote its disabled state. A typical example of this would be a submit button waiting for all the required input fields to be completed.</p>
 <p><strong>IsGlobal</strong>
-Focus is not required to detect input actions, default behavior is false.
- 
-<strong>Voice Commands</strong>
+Focus is not required to detect input actions, default behavior is false.</p>
+<p><strong>Voice Commands</strong>
 A voice command to trigger an OnClick event. This will also trigger a quick state change to drive any themes visuals.
  
-Note: Make sure there is a unique voice command on each button. The voice recognizer is global (even if the interactable is not) and will not register the same voice command twice; in this case an error will be thrown.
- 
-<strong>Requires Gaze (Only available when the voice command field has a value)</strong>
+Note: Make sure there is a unique voice command on each button. The voice recognizer is global (even if the interactable is not) and will not register the same voice command twice; in this case an error will be thrown.</p>
+<p><strong>Requires Gaze (Only available when the voice command field has a value)</strong>
 The voice command requires the interactable to have focus to listen for the voice command. There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts. Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.</p>
 <p><strong>Public Properties</strong>
 ClickCount - a read only value that tracks how many clicks have occured.</p>
@@ -171,14 +168,10 @@ SetDimensionIndex(0);
 <p>The InteractableStates State Model will handle any state list with a layered ranking system, starting with the most isolated state and ending with the state that could contain all other states.</p>
 <p>The DefaultInteractableStates list contains 4 states:</p>
 <ul>
-<li><p><strong>Default</strong>: Nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.</p>
-</li>
-<li><p><strong>Focus</strong>: The object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.</p>
-</li>
-<li><p><strong>Press</strong>: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus. This state will also get set as a fallback to Physcial Press.</p>
-</li>
-<li><p><strong>Disabled</strong>: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.</p>
-</li>
+<li><strong>Default</strong>: Nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.</li>
+<li><strong>Focus</strong>: The object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.</li>
+<li><strong>Press</strong>: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus. This state will also get set as a fallback to Physcial Press.</li>
+<li><strong>Disabled</strong>: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.</li>
 </ul>
 <p>A bit value (#) is assigned to the state depending on the order in the list.</p>
 <p>There are currently 17 states total that you can used to drive themes, though some are meant to be driven by other components. Here's a list of those with built-in functionality.</p>
@@ -209,10 +202,12 @@ SetDimensionIndex(0);
         });
 }
 </code></pre>
-<p><strong>Name</strong>: The display name of the property, this will display next to the property field under each state title.
-<strong>Types</strong>: Allow filtering based on components on the object. In this case, this theme will show up in the list when assigned to an object with a Transform.
-<strong>Name</strong>: The name that will show up in the inspector.
-<strong>ThemeProperties</strong>: A list of properties that theme will store to be used when the state changes.</p>
+<ul>
+<li><strong>Name</strong>: The display name of the property, this will display next to the property field under each state title.</li>
+<li><strong>Types</strong>: Allow filtering based on components on the object. In this case, this theme will show up in the list when assigned to an object with a Transform.</li>
+<li><strong>Name</strong>: The name that will show up in the inspector.</li>
+<li><strong>ThemeProperties</strong>: A list of properties that theme will store to be used when the state changes.</li>
+</ul>
 <p>Each Theme Property has a name, type (defining the fields to display for each state), a set of values for each state and a default value for the fields. The state fields can also be hidden in the inspector, if the theme does not require them to be visible.</p>
 <pre><code class="lang-csharp">    // custom settings will appear in the configuration section of the theme inspector
     // expose properties to allow more customization to the theme
@@ -241,11 +236,29 @@ SetDimensionIndex(0);
     Host.transform.localScale = Vector3.Lerp(property.StartValue.Vector3, property.Values[index].Vector3, percentage);
 }
 </code></pre>
-<p>The SetValue function is used to set the property value based on the current state.
-<strong>Property</strong>: A list of property values per state, set through the theme inspector.
-<strong>Index</strong>: Correlates to the current state.
-<strong>Percentage</strong>: A float value between 0 and 1. It will be the eased value if an Animation curve is used.</p>
+<p>The SetValue function is used to set the property value based on the current state.</p>
+<ul>
+<li><strong>Property</strong>: A list of property values per state, set through the theme inspector.</li>
+<li><strong>Index</strong>: Correlates to the current state.</li>
+<li><strong>Percentage</strong>: A float value between 0 and 1. It will be the eased value if an Animation curve is used.</li>
+</ul>
 <p>Custom Settings added to the new class will also be displayed in the inspector. If there are properties that need to be exposed in the inspector but do not need to be based on states, they should be added to the Custom Settings list.</p>
+<h3 id="extending-shader-themes">Extending shader themes</h3>
+<p>If creating a custom interactable theme to modify shader properties, it is advised to extend the <code>InteractableShaderTheme</code> class. Please see the <code>InteractableColorTheme</code> class as an example to extend the <code>InteractableShaderTheme</code> class.</p>
+<p>Regardless of whether extending the <code>InteractableShaderTheme</code> class or not, it is highly recommended to set shader properties 1) via <a href="https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html"><strong>MaterialPropertyBlock</strong></a> and 2) using the shader properties integer keys instead of string keys. Unity assigns integer keys for all shader properties in a project at runtime.See <a href="https://docs.unity3d.com/ScriptReference/Shader.PropertyToID.html"><strong>Shader.PropertyToID</strong></a> for more details on. The integer key for an interactable property can be accessed via  <code>InteractableThemeProperty.GetShaderPropertyId()</code>.</p>
+<p>Both of these two steps will help with performance. <a href="https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html"><strong>MaterialPropertyBlock</strong></a> will ensure a new material instance is not created for every object modifying a shader property and integer shader property IDs will eliminate the string-to-int lookup step performed by Unity when using string keys (i.e &quot;_Color&quot;) on set/get functions.</p>
+<pre><code class="lang-csharp">public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+{
+     renderer.GetPropertyBlock(propertyBlock);
+
+     int propId = property.GetShaderPropertyId();
+     
+     Color newColor = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
+     block.SetColor(propId, color);
+             
+     renderer.SetPropertyBlock(propertyBlock);
+ }
+</code></pre>
 <h2 id="extending-events">Extending events</h2>
 <p>Like Themes, events can be extended to detect any state pattern or to expose functionality. </p>
 <p>Custom events can be created and used in two main ways:</p>
@@ -323,6 +336,10 @@ public virtual void OnClick(InteractableStates state, Interactable source, IMixe
     return currentState;
 }
 </code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="README_MRTKStandardShader.html">MRTK Standard Shader</a></li>
+</ul>
 </article>
           </div>
           
