@@ -318,11 +318,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private void Update()
-        {
-            Repaint();
-        }
-
         private static void OpenPlayerSettingsGUI()
         {
             if (GUILayout.Button("Open Player Settings"))
