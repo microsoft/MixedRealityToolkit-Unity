@@ -183,7 +183,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Set up its voice command
             interactable.VoiceCommand = "Select";
-            Assert.IsTrue(interactable.HasVoiceCommand, "Interactable does not have a voice command.");
 
             // Move the camera to origin looking at +z to more easily see the button.
             MixedRealityPlayspace.PerformTransformation(
@@ -202,7 +201,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Raise a voice select input event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseDictationResult(defaultInputSource, "Select");
+            SpeechCommands commands = new SpeechCommands("Select", KeyCode.None, interactable.InputAction);
+            MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(defaultInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(1000), System.DateTime.Now, commands);
             yield return new WaitForSeconds(1f);
 
             Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
