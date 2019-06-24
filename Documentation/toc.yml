@@ -7,6 +7,8 @@
   items:
   - name: Upgrading from the HoloToolkit (HTK)
     href: HTKToMRTKPortingGuide.md
+  - name: Updating from RC2 to GA
+    href: UpdatingToGA.md
 - name: Feature Overviews
   href: MixedRealityServices.md
   items:
