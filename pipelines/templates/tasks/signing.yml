@@ -4,12 +4,9 @@ parameters:
   ConfigName: ""
 
 steps:
-- task: DownloadSecureFile@1
-  inputs:
-    secureFile: "${{ parameters.ConfigName }}"
 - task: PkgESCodeSign@10
   inputs:
-    signConfigXml: $(Agent.TempDirectory)\${{ parameters.ConfigName }}
+    signConfigXml: ${{ parameters.ConfigName }}
     inPathRoot: $(Build.SourcesDirectory)
     outPathRoot: $(Build.SourcesDirectory)  
   env:

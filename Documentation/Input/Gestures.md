@@ -19,7 +19,7 @@ Both of these input sources use the _Gesture Settings_ profile to translate Unit
 
 Gesture events are received by implementing one of the gesture handler interfaces: [`IMixedRealityGestureHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler) or [`IMixedRealityGestureHandler<TYPE>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) (see table of [event handlers](InputEvents.md)).
 
-See [GestureTester](#example-gesture-tester) for an example implementation of a gesture event handler.
+See [Example Scene](#example-scene) for an example implementation of a gesture event handler.
 
 When implementing the generic version, the *OnGestureCompleted* and *OnGestureUpdated* events can receive typed data of the following types:
 - `Vector2` - 2D position gesture. Produced by touch screens to inform of their [`deltaPosition`](https://docs.unity3d.com/ScriptReference/Touch-deltaPosition.html).
@@ -54,6 +54,8 @@ There are two principal chains of events, depending on user input:
         * complete _Manipulation_
         * complete _Navigation_
 
-## Example: Gesture Tester
+## Example Scene
 
-[Gesture Tester script](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Script/GestureTester.cs) is an example implementation to visualize gesture events via GameObjects. It is used in the MRTK example scenes. The handler functions change the color of indicator objects and display the last recorded event in text objects in the scene.
+The **HandInteractionGestureEventsExample** scene in `MixedRealityToolkit.Examples\Demos\HandTracking\Scenes` shows how to use the pointer Result to spawn an object at the hit location.
+
+[Gesture Tester script](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Script/GestureTester.cs) is an example implementation to visualize gesture events via GameObjects. The handler functions change the color of indicator objects and display the last recorded event in text objects in the scene.
