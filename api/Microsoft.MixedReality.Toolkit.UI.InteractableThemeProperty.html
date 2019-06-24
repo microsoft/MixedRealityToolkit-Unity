@@ -347,13 +347,44 @@ public class InteractableThemeProperty</code></pre>
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_GetShaderPropId_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.GetShaderPropId*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_GetShaderPropId" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.GetShaderPropId">GetShaderPropId()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_GetShaderPropertyId_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.GetShaderPropertyId*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_GetShaderPropertyId" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.GetShaderPropertyId">GetShaderPropertyId()</h4>
+  <div class="markdown level1 summary"><p>This method gets the integer key assigned by Unity at runtime for the current shader property.
+It will also lazy load the array of possible key values on first access using Unity's Shader.PropertyToID()
+It is generally preferred to use the integer key over the string key with Unity to avoid perf cost for the dictionary lookup on every get/set.
+ex: On SetFloat(string key), Unity will perform Shader.PropertyToID() itself every call</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string GetShaderPropId()</code></pre>
+    <pre><code class="lang-csharp hljs">public int GetShaderPropertyId()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>integer key for current shader property to get/set shader values. Returns default backup property in case of failure</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_GetShaderPropertyName_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.GetShaderPropertyName*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_GetShaderPropertyName" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.GetShaderPropertyName">GetShaderPropertyName()</h4>
+  <div class="markdown level1 summary"><p>Get the current shader property name. Again it is preferred to utilize the integer key over the string key in Unity</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetShaderPropertyName()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -366,7 +397,8 @@ public class InteractableThemeProperty</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>string name of current property. Returns default backup property in case of failure</p>
+</td>
       </tr>
     </tbody>
   </table>
