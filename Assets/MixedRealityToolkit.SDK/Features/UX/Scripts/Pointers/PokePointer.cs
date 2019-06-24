@@ -138,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(Position, touchableDistance, queryBuffer, layerMask, triggerInteraction);
             if (numColliders == queryBuffer.Length)
             {
-                Debug.LogWarning("Maximum number of colliders found in PokePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
+                Debug.LogWarning($"Maximum number of {numColliders} colliders found in PokePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
             }
 
             for (int i = 0; i < numColliders; ++i)
