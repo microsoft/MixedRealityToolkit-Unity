@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private MixedRealityInputAction manipulationAction = MixedRealityInputAction.None;
         private bool useRailsNavigation = false;
         float holdStartDuration = 0.0f;
-        float manipulationStartThreshold = 0.0f;
+        float navigationStartThreshold = 0.0f;
 
         private float SelectDownStartTime = 0.0f;
         private bool holdInProgress = false;
@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (inputSimProfile != null)
             {
                 holdStartDuration = inputSimProfile.HoldStartDuration;
-                manipulationStartThreshold = inputSimProfile.ManipulationStartThreshold;
+                navigationStartThreshold = inputSimProfile.NavigationStartThreshold;
             }
         }
 
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 UpdateNavigation();
                             }
 
-                            if (cumulativeDelta.magnitude > manipulationStartThreshold)
+                            if (cumulativeDelta.magnitude > navigationStartThreshold)
                             {
                                 TryCancelHold();
                                 TryStartNavigation();
@@ -307,15 +307,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (useRailsNavigation && currentRailsUsed == Vector3.one)
             {
-                if (Mathf.Abs(cumulativeDelta.x) >= manipulationStartThreshold)
+                if (Mathf.Abs(cumulativeDelta.x) >= navigationStartThreshold)
                 {
                     currentRailsUsed = new Vector3(1, 0, 0);
                 }
-                else if (Mathf.Abs(cumulativeDelta.y) > manipulationStartThreshold)
+                else if (Mathf.Abs(cumulativeDelta.y) > navigationStartThreshold)
                 {
                     currentRailsUsed = new Vector3(0, 1, 0);
                 }
-                else if (Mathf.Abs(cumulativeDelta.z) > manipulationStartThreshold)
+                else if (Mathf.Abs(cumulativeDelta.z) > navigationStartThreshold)
                 {
                     currentRailsUsed = new Vector3(0, 0, 1);
                 }
