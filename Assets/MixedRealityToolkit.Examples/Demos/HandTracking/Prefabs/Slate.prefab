@@ -567,8 +567,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.99999946, z: 0.6223597}
-  m_Center: {x: -0.00000003580839, y: -0.00000047640293, z: 0.16594146}
+  m_Size: {x: 1, y: 0.99999946, z: 0.5373085}
+  m_Center: {x: -0.000000035977287, y: -0.0000004786908, z: 0.20846602}
 --- !u!114 &7779420038095343085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,7 +600,7 @@ MonoBehaviour:
   debounceThreshold: 0.01
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: -0.00000003580839, y: -0.00000047640293, z: -0.14523838}
+  localCenter: {x: -0.000000035977287, y: -0.0000004786908, z: -0.060188234}
   touchableSurface: 0
   bounds: {x: 1, y: 0.99999946}
 --- !u!114 &6478522880476602763
@@ -630,8 +630,8 @@ MonoBehaviour:
   panZoomSmoothing: 80
   panEventReceivers: []
   centerPoint: {fileID: 0}
-  leftPoint: {fileID: 4531382727374914902}
-  rightPoint: {fileID: 5073403802680592322}
+  leftPoint: {fileID: 0}
+  rightPoint: {fileID: 0}
   proximityLightCenterColor: {r: 0.25, g: 0.25, b: 0.25, a: 0}
   currentScale: 0
   PanStarted:
@@ -1335,12 +1335,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4531939656581354502}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4531382727374914902 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1719147374072144, guid: eb3627b069d8e8044a4ce84651787f6a,
-    type: 3}
-  m_PrefabInstance: {fileID: 4531939656581354502}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5075066873870603922
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1412,12 +1406,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: fc1d56dcfc4950949a5b56a1399a1822, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb3627b069d8e8044a4ce84651787f6a, type: 3}
---- !u!1 &5073403802680592322 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1719147374072144, guid: eb3627b069d8e8044a4ce84651787f6a,
-    type: 3}
-  m_PrefabInstance: {fileID: 5075066873870603922}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5079580712678985924 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4514388706903638, guid: eb3627b069d8e8044a4ce84651787f6a,
