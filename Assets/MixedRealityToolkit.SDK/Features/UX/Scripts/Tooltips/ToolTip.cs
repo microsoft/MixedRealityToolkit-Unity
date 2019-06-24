@@ -185,6 +185,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("The font size of the tooltip.")]
         private int fontSize = 30;
 
+        /// <summary>
+        /// The font size of the tooltip.
+        /// </summary>
+        public int FontSize
+        {
+            get { return fontSize; }
+            set
+            {
+                fontSize = value;
+                RefreshLocalContent();
+            }
+        }
+
         [SerializeField]
         [Tooltip("Determines where the line will attach to the tooltip content.")]
         private ToolTipAttachPoint attachPointType = ToolTipAttachPoint.Closest;
@@ -239,6 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private TextMeshPro cachedLabelText;
         private int prevTextLength = -1;
         private int prevTextHash = -1;
+        private int prevFontSize = -1;
 
         /// <summary>
         /// point about which ToolTip pivots to face camera
@@ -420,15 +434,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // Set the content using a text mesh by default
             // This function can be overridden for tooltips that use Unity UI
 
-            // Has content changed?
+            // Has content or fontSize changed?
             int currentTextLength = toolTipText.Length;
             int currentTextHash = toolTipText.GetHashCode();
+            int currentFontSize = fontSize;
 
             // If it has, update the content
-            if (currentTextLength != prevTextLength || currentTextHash != prevTextHash)
+            if (currentTextLength != prevTextLength || currentTextHash != prevTextHash || currentFontSize != prevFontSize)
             {
                 prevTextHash = currentTextHash;
                 prevTextLength = currentTextLength;
+                prevFontSize = currentFontSize;
 
                 if (cachedLabelText == null)
                     cachedLabelText = label.GetComponent<TextMeshPro>();

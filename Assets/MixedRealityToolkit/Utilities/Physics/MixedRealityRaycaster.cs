@@ -122,25 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         }
 
         /// <summary>
-        /// Intersection test of ray step with given plane.
-        /// </summary>
-        /// <returns>Whether the ray step intersects the ray step.</returns>
-        public static bool RaycastPlanePhysicsStep(RayStep step, Plane plane, out Vector3 hitPoint)
-        {
-            if (plane.Raycast(step, out float intersectDistance))
-            {
-                if (intersectDistance <= step.Length)
-                {
-                    hitPoint = ((Ray)step).GetPoint(intersectDistance);
-                    return true;
-                }
-            }
-
-            hitPoint = Vector3.zero;
-            return false;
-        }
-
-        /// <summary>
         /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> within a specified maximum distance.
         /// </summary>
         /// <param name="step"></param>
@@ -157,7 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 // Raycast across all layers and prioritize
                 : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.SphereCastAll(step.Origin, radius, step.Direction, maxDistance, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, out physicsHit);
         }
-
 
         /// <summary>
         /// Tries to get the prioritized physics raycast hit based on the prioritized layer masks.
@@ -197,6 +177,25 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 }
             }
 
+            return false;
+        }
+
+        /// <summary>
+        /// Intersection test of ray step with given plane.
+        /// </summary>
+        /// <returns>Whether the ray step intersects the ray step.</returns>
+        public static bool RaycastPlanePhysicsStep(RayStep step, Plane plane, out Vector3 hitPoint)
+        {
+            if (plane.Raycast(step, out float intersectDistance))
+            {
+                if (intersectDistance <= step.Length)
+                {
+                    hitPoint = ((Ray)step).GetPoint(intersectDistance);
+                    return true;
+                }
+            }
+
+            hitPoint = Vector3.zero;
             return false;
         }
     }

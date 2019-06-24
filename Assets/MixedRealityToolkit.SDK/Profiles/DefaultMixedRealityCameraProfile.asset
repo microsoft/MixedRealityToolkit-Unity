@@ -14,10 +14,12 @@ MonoBehaviour:
   isCustomProfile: 0
   isCameraPersistent: 0
   nearClipPlaneOpaqueDisplay: 0.1
+  farClipPlaneOpaqueDisplay: 1000
   cameraClearFlagsOpaqueDisplay: 1
   backgroundColorOpaqueDisplay: {r: 0, g: 0, b: 0, a: 1}
   opaqueQualityLevel: 5
   nearClipPlaneTransparentDisplay: 0.1
+  farClipPlaneTransparentDisplay: 50
   cameraClearFlagsTransparentDisplay: 2
   backgroundColorTransparentDisplay: {r: 0, g: 0, b: 0, a: 0}
   holoLensQualityLevel: 0

@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent destinationBlend = new GUIContent("Destination Blend", "Blend Mode of Existing Color");
             public static GUIContent blendOperation = new GUIContent("Blend Operation", "Operation for Blending New Color With Existing Color");
             public static GUIContent depthTest = new GUIContent("Depth Test", "How Should Depth Testing Be Performed.");
-            public static GUIContent depthWrite = new GUIContent("Depth Write", "Controls Whether Pixels From This Object Are Written to the Depth Buffer");
+            public static GUIContent depthWrite = new GUIContent("Depth Write", "Controls Whether Pixels From This Material Are Written to the Depth Buffer");
             public static GUIContent depthOffsetFactor = new GUIContent("Depth Offset Factor", "Scales the Maximum Z Slope, with Respect to X or Y of the Polygon");
             public static GUIContent depthOffsetUnits = new GUIContent("Depth Offset Units", "Scales the Minimum Resolvable Depth Buffer Value");
             public static GUIContent colorWriteMask = new GUIContent("Color Write Mask", "Color Channel Writing Mask");
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent cullMode = new GUIContent("Cull Mode", "Triangle Culling Mode");
             public static GUIContent renderQueueOverride = new GUIContent("Render Queue Override", "Manually Override the Render Queue");
             public static GUIContent albedo = new GUIContent("Albedo", "Albedo (RGB) and Transparency (Alpha)");
-            public static GUIContent albedoAssignedAtRuntime = new GUIContent("Albedo Assigned at Runtime", "As an optimization albedo operations are disabled when no albedo texture is specified. If a albedo texture will be specified at runtime enable this option.");
+            public static GUIContent albedoAssignedAtRuntime = new GUIContent("Assigned at Runtime", "As an optimization albedo operations are disabled when no albedo texture is specified. If a albedo texture will be specified at runtime enable this option.");
             public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Threshold for Alpha Cutoff");
             public static GUIContent metallic = new GUIContent("Metallic", "Metallic Value");
             public static GUIContent smoothness = new GUIContent("Smoothness", "Smoothness Value");
@@ -127,9 +127,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent fadeCompleteDistance = new GUIContent("Fade Complete", "Distance From Camera When Fade is Fully In");
             public static GUIContent fadeMinValue = new GUIContent("Fade Min Value", "Clamps the Fade Amount to a Minimum Value");
             public static GUIContent hoverLight = new GUIContent("Hover Light", "Enable utilization of Hover Light(s)");
-            public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Light Color");
+            public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Light Color for this Material");
             public static GUIContent hoverColorOverride = new GUIContent("Color", "Override Hover Light Color");
             public static GUIContent proximityLight = new GUIContent("Proximity Light", "Enable utilization of Proximity Light(s)");
+            public static GUIContent enableProximityLightColorOverride = new GUIContent("Override Color", "Override Global Proximity Light Color for this Material");
+            public static GUIContent proximityLightCenterColorOverride = new GUIContent("Center Color", "The Override Color of the ProximityLight Gradient at the Center (RGB) and (A) is Gradient Extent");
+            public static GUIContent proximityLightMiddleColorOverride = new GUIContent("Middle Color", "The Override Color of the ProximityLight Gradient at the Middle (RGB) and (A) is Gradient Extent");
+            public static GUIContent proximityLightOuterColorOverride = new GUIContent("Outer Color", "The Override Color of the ProximityLight Gradient at the Outer Edge (RGB) and (A) is Gradient Extent");
+            public static GUIContent proximityLightSubtractive = new GUIContent("Subtractive", "Proximity Lights Remove Light from a Surface, Used to Mimic a Shadow");
             public static GUIContent proximityLightTwoSided = new GUIContent("Two Sided", "Proximity Lights Apply to Both Sides of a Surface");
             public static GUIContent roundCorners = new GUIContent("Round Corners", "(Assumes UVs Specify Borders of Surface, Works Best on Unity Cube, Quad, and Plane)");
             public static GUIContent roundCornerRadius = new GUIContent("Unit Radius", "Rounded Rectangle Corner Unit Sphere Radius");
@@ -221,6 +226,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty enableHoverColorOverride;
         protected MaterialProperty hoverColorOverride;
         protected MaterialProperty proximityLight;
+        protected MaterialProperty enableProximityLightColorOverride;
+        protected MaterialProperty proximityLightCenterColorOverride;
+        protected MaterialProperty proximityLightMiddleColorOverride;
+        protected MaterialProperty proximityLightOuterColorOverride;
+        protected MaterialProperty proximityLightSubtractive;
         protected MaterialProperty proximityLightTwoSided;
         protected MaterialProperty roundCorners;
         protected MaterialProperty roundCornerRadius;
@@ -311,6 +321,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             enableHoverColorOverride = FindProperty("_EnableHoverColorOverride", props);
             hoverColorOverride = FindProperty("_HoverColorOverride", props);
             proximityLight = FindProperty("_ProximityLight", props);
+            enableProximityLightColorOverride = FindProperty("_EnableProximityLightColorOverride", props);
+            proximityLightCenterColorOverride = FindProperty("_ProximityLightCenterColorOverride", props);
+            proximityLightMiddleColorOverride = FindProperty("_ProximityLightMiddleColorOverride", props);
+            proximityLightOuterColorOverride = FindProperty("_ProximityLightOuterColorOverride", props);
+            proximityLightSubtractive = FindProperty("_ProximityLightSubtractive", props);
             proximityLightTwoSided = FindProperty("_ProximityLightTwoSided", props);
             roundCorners = FindProperty("_RoundCorners", props);
             roundCornerRadius = FindProperty("_RoundCornerRadius", props);
@@ -493,6 +508,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUI.indentLevel -= 2;
             }
 
+            if (!PropertyEnabled(depthWrite))
+            {
+                if (MixedRealityToolkitShaderGUIUtilities.DisplayDepthWriteWarning(materialEditor))
+                {
+                    renderingMode.floatValue = (float)RenderingMode.Custom;
+                    depthWrite.floatValue = (float)DepthWrite.On;
+                }
+            }
+
             materialEditor.ShaderProperty(cullMode, Styles.cullMode);
         }
 
@@ -501,6 +525,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUILayout.Label(Styles.primaryMapsTitle, EditorStyles.boldLabel);
 
             materialEditor.TexturePropertySingleLine(Styles.albedo, albedoMap, albedoColor);
+
+            if (albedoMap.textureValue == null)
+            {
+                materialEditor.ShaderProperty(albedoAssignedAtRuntime, Styles.albedoAssignedAtRuntime, 2);
+            }
+
             materialEditor.ShaderProperty(enableChannelMap, Styles.enableChannelMap);
 
             if (PropertyEnabled(enableChannelMap))
@@ -517,7 +547,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 albedoAlphaMode.floatValue = EditorGUILayout.Popup(albedoAlphaMode.displayName, (int)albedoAlphaMode.floatValue, Styles.albedoAlphaModeNames);
 
-                if ((RenderingMode)renderingMode.floatValue == RenderingMode.TransparentCutout)
+                if ((RenderingMode)renderingMode.floatValue == RenderingMode.TransparentCutout || 
+                    (RenderingMode)renderingMode.floatValue == RenderingMode.Custom)
                 {
                     materialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoff.text);
                 }
@@ -682,6 +713,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (PropertyEnabled(proximityLight))
             {
+                materialEditor.ShaderProperty(enableProximityLightColorOverride, Styles.enableProximityLightColorOverride, 2);
+
+                if (PropertyEnabled(enableProximityLightColorOverride))
+                {
+                    materialEditor.ShaderProperty(proximityLightCenterColorOverride, Styles.proximityLightCenterColorOverride, 4);
+                    materialEditor.ShaderProperty(proximityLightMiddleColorOverride, Styles.proximityLightMiddleColorOverride, 4);
+                    materialEditor.ShaderProperty(proximityLightOuterColorOverride, Styles.proximityLightOuterColorOverride, 4);
+                }
+
+                materialEditor.ShaderProperty(proximityLightSubtractive, Styles.proximityLightSubtractive, 2);
                 materialEditor.ShaderProperty(proximityLightTwoSided, Styles.proximityLightTwoSided, 2);
                 GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ProximityLight), Styles.proximityLight.text), EditorStyles.helpBox, new GUILayoutOption[0]);
             }
@@ -784,11 +825,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!GUI.enabled && !material.enableInstancing)
             {
                 material.enableInstancing = true;
-            }
-
-            if (albedoMap.textureValue == null)
-            {
-                materialEditor.ShaderProperty(albedoAssignedAtRuntime, Styles.albedoAssignedAtRuntime);
             }
 
             materialEditor.EnableInstancingField();

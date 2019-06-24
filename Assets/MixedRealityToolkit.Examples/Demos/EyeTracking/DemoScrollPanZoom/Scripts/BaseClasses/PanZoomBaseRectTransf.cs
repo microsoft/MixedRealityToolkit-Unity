@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
             try
             {
-                if (myEyeTarget.HasFocus)
+                if (myEyeTarget.IsLookedAt)
                 {
                     objIsHit = true;
 

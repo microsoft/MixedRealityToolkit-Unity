@@ -25,3 +25,7 @@ When implementing the generic version, the *OnGestureCompleted* and *OnGestureUp
   - [`normalizedOffset`](https://docs.unity3d.com/ScriptReference/XR.WSA.Input.NavigationUpdatedEventArgs-normalizedOffset.html) of a navigation event
 - `Quaternion` - 3D rotation gesture. Available to custom input sources but not currently produced by any of the existing ones.
 - `MixedRealityPose` - Combined 3D position/rotation gesture. Available to custom input sources but not currently produced by any of the existing ones.
+
+## Example Scene
+
+The **HandInteractionGestureEventsExample** scene in `MixedRealityToolkit.Examples\Demos\HandTracking\Scenes` shows how to use the pointer Result to spawn an object at the hit location.

@@ -89,7 +89,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Building the solution requires first restoring NuGet packages - when built through
             // Visual Studio, VS does this automatically - when building via msbuild like we're doing here,
             // we have to do that step manually.
-            int exitCode = await Run(msBuildPath, $"\"{solutionProjectPath}\" /t:restore", !Application.isBatchMode, cancellationToken);
+            int exitCode = await Run(msBuildPath,
+                $"\"{solutionProjectPath}\" /t:restore {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "nugetRestore.log")}",
+                !Application.isBatchMode,
+                cancellationToken);
             if (exitCode != 0)
             {
                 IsBuilding = false;
@@ -98,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             // Now that NuGet packages have been restored, we can run the actual build process.
             exitCode = await Run(msBuildPath, 
-                $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} /verbosity:m",
+                $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
                 !Application.isBatchMode,
                 cancellationToken);
             AssetDatabase.SaveAssets();
@@ -304,6 +307,24 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     new XAttribute("MinVersion", minVersion),
                     new XAttribute("MaxVersionTested", maxVersionTested)));
             }
+        }
+
+        /// <summary>
+        /// Gets the subpart of the msbuild.exe command to save log information
+        /// in the given logFileName.
+        /// </summary>
+        /// <remarks>
+        /// Will return an empty string if logDirectory is not set.
+        /// </remarks>
+        private static string GetMSBuildLoggingCommand(string logDirectory, string logFileName)
+        {
+            if (String.IsNullOrEmpty(logDirectory))
+            {
+                Debug.Log($"Not logging {logFileName} because no logDirectory was provided");
+                return "";
+            }
+
+            return $"-fl -flp:logfile={Path.Combine(logDirectory, logFileName)};verbosity=detailed";
         }
     }
 }

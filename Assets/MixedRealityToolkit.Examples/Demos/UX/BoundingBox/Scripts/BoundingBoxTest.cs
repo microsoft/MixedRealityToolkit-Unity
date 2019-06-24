@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    public class BoundingBoxTest : InputSystemGlobalListener, IMixedRealitySpeechHandler
+    public class BoundingBoxTest : MonoBehaviour, IMixedRealitySpeechHandler
     {
 
         public TextMesh statusText;
@@ -25,10 +25,36 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private Vector3 cubePosition = new Vector3(0, 0, 2);
         private BoundingBox bbox;
 
-        // Start is called before the first frame update
-        protected override void Start()
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
         {
-            base.Start();
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
+        protected virtual void OnEnable()
+        {
+            InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+
+        protected virtual void OnDisable()
+        {
+            InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+
+        // Start is called before the first frame update
+        protected virtual void Start()
+        {
             StartCoroutine(Sequence());
         }
 

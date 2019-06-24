@@ -69,6 +69,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         protected Vector3 localPoint = Vector3.zero;
 
+        public void SetLocalNormal(Vector3 newLocalNormal)
+        {
+            localNormal = newLocalNormal.normalized;
+        }
+
+        public void SetLocalPoint(Vector3 newLocalPoint)
+        {
+            localPoint = newLocalPoint;
+        }
+
         protected new void OnValidate()
         {
             base.OnValidate();
