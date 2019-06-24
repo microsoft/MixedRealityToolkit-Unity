@@ -30,11 +30,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [FormerlySerializedAs("distBack")]
         protected float pokeThreshold = 0.25f;
+        /// <summary>
+        /// Distance behind the surface at which the touchable becomes active.
+        /// </summary>
+        /// <remarks>
+        /// When the pointer distance to the touchable object becomes less than -PokeThreshold (i.e. behind the surface),
+        /// then the Touch Started event is raised and the touchable object becomes tracked by the pointer.
+        /// </remarks>
         public float PokeThreshold => pokeThreshold;
 
         [Tooltip("Distance in front of the surface at which you will receive a touch completed event")]
         [SerializeField]
         protected float debounceThreshold = 0.01f;
+        /// <summary>
+        /// Distance in front of the surface at which you will receive a touch completed event.
+        /// </summary>
+        /// <remarks>
+        /// When the touchable is active and the pointer distance becomes greater than +DebounceThreshold (i.e. in front of the surface),
+        /// then the Touch Completed event is raised and the touchable object is released by the pointer.
+        /// </remarks>
         public float DebounceThreshold => debounceThreshold;
 
         protected void OnValidate()
