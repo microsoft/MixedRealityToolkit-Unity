@@ -6293,6 +6293,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ChangeManipulation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.ChangeManipulation.html",
+          "hash": "gqU1iepD1HH9dquSipFZqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ColorChanger.yml",
       "output": {
         ".html": {
@@ -7365,7 +7377,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "xp7ndmJyXh6bL8knUSWXBw=="
+          "hash": "0hrlb0m7Xa/fU+VxR1IGqg=="
         }
       },
       "is_incremental": false,
@@ -11805,7 +11817,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.html",
-          "hash": "8dm80vmQqFIngZ6S0Z18aA=="
+          "hash": "fTr50rGgHH1qxPu1ZW2buA=="
         }
       },
       "is_incremental": false,
@@ -12981,7 +12993,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.html",
-          "hash": "mMXaL971Mdje9QTvI2N6/A=="
+          "hash": "C9YGKzpcs4rBvGYaIYkfpA=="
         }
       },
       "is_incremental": false,
@@ -16389,7 +16401,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "DuAH2b7G1A0jBKbTtRxbPg=="
+          "hash": "vKwvODgvKrgWu8kVipZ6/A=="
         }
       },
       "is_incremental": false,
@@ -16450,7 +16462,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 966,
+          "total_file_count": 967,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
