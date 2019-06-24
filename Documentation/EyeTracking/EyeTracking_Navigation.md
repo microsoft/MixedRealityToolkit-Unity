@@ -10,9 +10,7 @@ Another interesting application is the hands-free observation of 3D holograms by
 These are some of the examples that are described on this page in context of eye-supported navigation. 
 
 The following descriptions assume that you are already familiar with how to 
-[set up Eye Tracking in your MRTK scene](EyeTracking_BasicSetup.md) and with the basics of accessing Eye Tracking data in Unity including the 
-[EyeTrackingTarget](EyeTracking_TargetSelection.md#use-eye-gaze-specific-eyetrackingtarget) 
-component.
+[set up eye tracking in your MRTK scene](EyeTracking_BasicSetup.md) and with the basics of [accessing eye tracking data](EyeTracking_TargetSelection.md) in MRTK Unity.
 The examples discussed in the following are all part of the 
 [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity)
 scene. 
@@ -50,16 +48,12 @@ SkimProofUpdateSpeed | The lower the value, the slower the scrolling will speed 
 ### EyeTrackingTarget
 Attaching the _EyeTrackingTarget_ component allows for flexibly handle eye-gaze-related events.
 The scroll sample demonstrates scrolling text that starts when the user *looks* at the panel and stops when the user is *looking away* from it.
-Alternatively, please use the 
-[BaseEyeFocusHandler](EyeTracking_TargetSelection.md#use-eye-gaze-specific-baseeyefocushandler) 
-to handle Eye Tracking events directly in your code to trigger the *StartFocusing* and *StopFocusing* methods in [ScrollRectTransf](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ScrollRectTransf).
-
 ![Eye-supported scroll setup in Unity: EyeTrackingTarget](../../Documentation/Images/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg)
 
 
 ## Gaze-supported Pan and Zoom
 Who hasn't used a virtual map before to search for their home or to explore entirely new places? 
-Eye Tracking allows you to directly dive into exactly the parts that you're interested in and once zoomed in, you can smoothly follow the course of a street to explore your neighborhood!
+Eye tracking allows you to directly dive into exactly the parts that you're interested in and once zoomed in, you can smoothly follow the course of a street to explore your neighborhood!
 This is not only useful for exploring geographical maps, but also to checking out details in photographs, data visualizations or even live-streamed medical imagery. 
 To use this capability in your app is easy! 
 For content rendered to a [Texture]( https://docs.unity3d.com/ScriptReference/Texture.html) (e.g., a photo, streamed data), simply add the [PanZoomTexture](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomTexture) script.
@@ -116,14 +110,14 @@ MaxRotX | Maximum horizontal rotation angle. This is to limit the rotation in di
 MinRotY | Minimal vertical rotation angle to limit the rotation around the x axis.
 MaxRotY | Maximum vertical rotation angle to limit the rotation around the y axis.
 
-![Eye-supported 3D rotation setup in Unity](../../Documentation/Images/EyeTracking/mrtk_et_nav_rotate.jpg)
+![Eye-supported 3D rotation setup in Unity](../Images/EyeTracking/mrtk_et_nav_rotate.jpg)
 
 In summary, the above scripts should enable you to  get started to use eye gaze for various input navigation tasks such as scrolling texts, zooming and panning textures as well as rotating investigating 3D holograms.
 
 
 ### Related Topics
-- [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)
-- [Eye-Supported Target Selection](EyeTracking_TargetSelection.md)
+- [Basic MRTK setup to use eye tracking](EyeTracking_BasicSetup.md)
+- [Eye-supported target selection](EyeTracking_TargetSelection.md)
 
 ---
-[Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)

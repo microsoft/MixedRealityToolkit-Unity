@@ -184,6 +184,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var profile = target as BaseMixedRealityProfile;
             if (!RenderAsSubProfile)
             {
+                CheckEditorPlayMode();
+
                 if (!profile.IsCustomProfile)
                 {
                     EditorGUILayout.HelpBox("Default MRTK profiles cannot be edited. Create a clone of this profile to modify settings.", MessageType.Warning);
@@ -230,6 +232,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
+        }
+
+        /// <summary>
+        /// If application is playing, then show warning to the user and disable inspector GUI
+        /// </summary>
+        /// <returns>true if application is playing, false otherwise</returns>
+        protected bool CheckEditorPlayMode()
+        {
+            if (Application.isPlaying)
+            {
+                EditorGUILayout.HelpBox("Mixed Reality Toolkit settings cannot be edited while in play mode.", MessageType.Warning);
+                GUI.enabled = false;
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

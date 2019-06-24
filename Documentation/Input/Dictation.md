@@ -13,6 +13,8 @@ Once you have a dictation service set up, you can use the [`DictationHandler`](x
 - **Dictation Complete** is raised at the end of the recording session with the full, final transcription of the audio.
 - **Dictation Error** is raised to inform of errors in the dictation service. The transcription in this case contains a description of the error.
 
-Have a look at `MixedRealityToolkit.Examples\Demos\Input\Scenes\Dictation` to see the `DictationHandler` script in use. If you need more control, you can either extend this script or create your own implementing [`IMixedRealityDictationHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationHandler) to receive dictation events directly.
+
+## Example Scene
+**Dictation** scene in `MixedRealityToolkit.Examples\Demos\Input\Scenes\Dictation` shows the `DictationHandler` script in use. If you need more control, you can either extend this script or create your own implementing [`IMixedRealityDictationHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationHandler) to receive dictation events directly.
 
 <img src="../../Documentation/Images/Input/DictationDemo.png" width="80%" class="center">
