@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             currentPushDistance = startPushDistance;    
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             if (gameObject.layer == 2)
             {
