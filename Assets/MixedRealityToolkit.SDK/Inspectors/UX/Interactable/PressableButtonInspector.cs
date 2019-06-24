@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [CustomEditor(typeof(PressableButton))]
+    [CustomEditor(typeof(PressableButton), true)]
     public class PressableButtonInspector : UnityEditor.Editor
     {
         // Struct used to store state of preview.
@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (editingEnabled && EditorGUI.EndChangeCheck())
             {
-                Undo.RecordObject(target, "Modify PressableButton");
+                Undo.RecordObject(target, string.Concat("Modify Button Planes of ", button.name));
 
                 startPushDistance.floatValue = info.StartPushDistance;
                 maxPushDistance.floatValue = info.MaxPushDistance; 
@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         private void OnTriggerPlaneDistanceConversion()
         {
-            Undo.RecordObject(target, "Modify PressableButton");
+            Undo.RecordObject(target, string.Concat("Trigger Plane Distance Conversion of ", button.name));
             button.DistanceSpaceMode = (button.DistanceSpaceMode == PressableButton.SpaceMode.World) 
                 ? PressableButton.SpaceMode.Local : PressableButton.SpaceMode.World;
             serializedObject.ApplyModifiedProperties();
