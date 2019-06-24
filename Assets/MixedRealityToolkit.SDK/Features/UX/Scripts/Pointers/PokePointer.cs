@@ -6,6 +6,19 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// A near interaction pointer that generates touch events based on touchables in close proximity.
+    /// </summary>
+    /// <remarks>
+    /// _Reachable Objects_ are objects with a both a [BaseNearInteractionTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable) and a collider within [TouchableDistance](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.TouchableDistance) from the poke pointer (based on [OverlapSphere](https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html)).
+    ///
+    /// If a poke pointer has no [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown), then it will try to select one from the Reachable Objects based on:
+    /// 1. Layer mask priority: Lower-priority layer masks will only be considered if higher-priority layers don't contain any Reachable Objects.
+    /// 1. Distance: the closest object in the highest priority layers is selected based on [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*).
+    /// 1. Poke Threshold: The object becomes the [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) once it crosses the [PokeThreshold](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.PokeThreshold) distance (behind the surface). At this point the [OnTouchStarted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchStarted*) or [OnPointerDown](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerDown*) event is raised.
+    ///
+    /// If a poke pointer _does_  have a [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) it will not consider any other object, until the [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*) exceeds the [DebounceThreshold](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DebounceThreshold) (in front of the surface). At this point the active object is cleared and the [OnTouchCompleted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchCompleted*) or [OnPointerUp](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerUp*) event is raised.
+    /// </remarks>
     public class PokePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
         [SerializeField]
@@ -53,13 +66,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private Vector3 closestNormal = Vector3.forward;
 
-        // The closest touchable component limits the set of objects which are currently touchable.
-        // These are all the game objects in the subtree of the closest touchable component's owner object.
         private BaseNearInteractionTouchable closestProximityTouchable = null;
-        // The current object that is being touched. We need to make sure to consistently fire 
-        // poke-down / poke-up events for this object. This is also the case when the object within
-        // the same current closest touchable component's changes (e.g. Unity UI control elements).
+        /// <summary>
+        /// The closest touchable component that has been detected.
+        /// </summary>
+        /// <remarks>
+        /// The closest touchable component limits the set of objects which are currently touchable.
+        /// These are all the game objects in the subtree of the closest touchable component's owner object.
+        /// </remarks>
+        public BaseNearInteractionTouchable ClosestProximityTouchable => closestProximityTouchable;
+
         private GameObject currentTouchableObjectDown = null;
+        /// <summary>
+        /// The current object that is being touched.
+        /// </summary>
+        /// We need to make sure to consistently fire 
+        /// poke-down / poke-up events for this object. This is also the case when the object within
+        /// the same current closest touchable component's changes (e.g. Unity UI control elements).
+        public GameObject CurrentTouchableObjectDown => currentTouchableObjectDown;
 
         protected override void Start()
         {
