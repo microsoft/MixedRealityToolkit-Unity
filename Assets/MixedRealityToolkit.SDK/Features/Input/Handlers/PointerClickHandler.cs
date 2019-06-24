@@ -23,6 +23,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The input actions to be recognized on pointer clicked.")]
         private InputActionEventPair onPointerClickedActionEvent;
 
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
+
         #region IMixedRealityPointerHandler Implementation
 
         /// <inheritdoc />

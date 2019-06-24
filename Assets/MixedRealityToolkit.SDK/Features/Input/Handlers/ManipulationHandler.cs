@@ -216,6 +216,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion
 
         #region MonoBehaviour Functions
+
+        /// <summary>
+        /// Releases the object that is currently manipulated
+        /// </summary>
+        public void ForceEndManipulation()
+        {
+            // release rigidbody and clear pointers
+            ReleaseRigidBody();
+            pointerIdToPointerMap.Clear();
+
+            // end manipulation
+            State newState = State.Start;
+            InvokeStateUpdateFunctions(currentState, newState);
+            currentState = newState;
+        }
+
         private void Awake()
         {
             moveLogic = new TwoHandMoveLogic(constraintOnMovement);
@@ -292,62 +308,63 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             var handsPressedCount = pointerIdToPointerMap.Count;
             State newState = currentState;
-            switch (currentState)
+            // early out for no hands or one hand if TwoHandedOnly is active
+            if (handsPressedCount == 0 || (handsPressedCount == 1 && manipulationType == HandMovementType.TwoHandedOnly))
             {
-                case State.Start:
-                case State.Moving:
-                    if (handsPressedCount == 0)
-                    {
-                        newState = State.Start;
-                    }
-                    else if (handsPressedCount == 1 && manipulationType != HandMovementType.TwoHandedOnly)
-                    {
-                        newState = State.Moving;
-                    }
-                    else if (handsPressedCount > 1 && manipulationType != HandMovementType.OneHandedOnly)
-                    {
-                        switch (twoHandedManipulationType)
+                newState = State.Start;
+            }
+            else
+            {
+                switch (currentState)
+                {
+                    case State.Start:
+                    case State.Moving:
+                        if (handsPressedCount == 1)
                         {
-                            case TwoHandedManipulation.Scale:
-                                newState = State.Scaling;
-                                break;
-                            case TwoHandedManipulation.Rotate:
-                                newState = State.Rotating;
-                                break;
-                            case TwoHandedManipulation.MoveRotate:
-                                newState = State.MovingRotating;
-                                break;
-                            case TwoHandedManipulation.MoveScale:
-                                newState = State.MovingScaling;
-                                break;
-                            case TwoHandedManipulation.RotateScale:
-                                newState = State.RotatingScaling;
-                                break;
-                            case TwoHandedManipulation.MoveRotateScale:
-                                newState = State.MovingRotatingScaling;
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
+                            newState = State.Moving;
                         }
-                    }
-                    break;
-                case State.Scaling:
-                case State.Rotating:
-                case State.MovingScaling:
-                case State.MovingRotating:
-                case State.RotatingScaling:
-                case State.MovingRotatingScaling:
-                    if (handsPressedCount == 0)
-                    {
-                        newState = State.Start;
-                    }
-                    else if (handsPressedCount == 1)
-                    {
-                        newState = State.Moving;
-                    }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                        else if (handsPressedCount > 1 && manipulationType != HandMovementType.OneHandedOnly)
+                        {
+                            switch (twoHandedManipulationType)
+                            {
+                                case TwoHandedManipulation.Scale:
+                                    newState = State.Scaling;
+                                    break;
+                                case TwoHandedManipulation.Rotate:
+                                    newState = State.Rotating;
+                                    break;
+                                case TwoHandedManipulation.MoveRotate:
+                                    newState = State.MovingRotating;
+                                    break;
+                                case TwoHandedManipulation.MoveScale:
+                                    newState = State.MovingScaling;
+                                    break;
+                                case TwoHandedManipulation.RotateScale:
+                                    newState = State.RotatingScaling;
+                                    break;
+                                case TwoHandedManipulation.MoveRotateScale:
+                                    newState = State.MovingRotatingScaling;
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                        break;
+                    case State.Scaling:
+                    case State.Rotating:
+                    case State.MovingScaling:
+                    case State.MovingRotating:
+                    case State.RotatingScaling:
+                    case State.MovingRotatingScaling:
+                        // one hand only supports move for now
+                        if (handsPressedCount == 1)
+                        {
+                            newState = State.Moving;
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
 
             InvokeStateUpdateFunctions(currentState, newState);
@@ -468,21 +485,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             uint id = eventData.Pointer.PointerId;
             if (pointerIdToPointerMap.ContainsKey(id))
             {
-                if (pointerIdToPointerMap.Count == 1 && rigidBody != null)
+                if (pointerIdToPointerMap.Count == 1)
                 {
-                    rigidBody.isKinematic = wasKinematic;
-
-                    if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
-                    {
-                        rigidBody.velocity = GetPointersVelocity();
-                    }
-
-                    if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
-                    {
-                        rigidBody.angularVelocity = GetPointersAngularVelocity();
-                    }
-
-                    rigidBody = null;
+                    ReleaseRigidBody();
                 }
 
                 pointerIdToPointerMap.Remove(id);
@@ -730,6 +735,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 OnHoverExited.Invoke(new ManipulationEventData { IsNearInteraction = !isFar }); 
             }
         }
+
+        private void ReleaseRigidBody()
+        {
+            if (rigidBody != null)
+            {
+                rigidBody.isKinematic = wasKinematic;
+
+                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
+                {
+                    rigidBody.velocity = GetPointersVelocity();
+                }
+
+                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
+                {
+                    rigidBody.angularVelocity = GetPointersAngularVelocity();
+                }
+
+                rigidBody = null;
+            }
+        }
+
         #endregion
     }
 }

@@ -51,8 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private const string EMPTY_IP_ADDRESS = "0.0.0.0";
 
-        private const float UPDATE_BUILDS_PERIOD = 1.0f;
-
         private readonly string[] tabNames = { "Unity Build Options", "Appx Build Options", "Deploy Options" };
 
         private readonly string[] scriptingBackendNames = { "IL2CPP", ".NET" };
@@ -167,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private Vector2 scrollPosition;
 
         private BuildDeployTab currentTab = BuildDeployTab.UnityBuildOptions;
+        private BuildDeployTab lastTab = BuildDeployTab.UnityBuildOptions;
 
         private static bool isBuilding;
         private static bool isAppRunning;
@@ -292,7 +291,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             #endregion Quick Options
 
+            lastTab = currentTab;
             currentTab = (BuildDeployTab)GUILayout.Toolbar(SessionState.GetInt("_BuildWindow_Tab", (int)currentTab), tabNames);
+            if (currentTab != lastTab && currentTab == BuildDeployTab.DeployOptions)
+            {
+                UpdateBuilds();
+            }
+
             SessionState.SetInt("_BuildWindow_Tab", (int)currentTab);
 
             GUILayout.Space(10);
@@ -311,16 +316,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        private void Update()
-        {
-            if (Time.realtimeSinceStartup - timeLastUpdatedBuilds > UPDATE_BUILDS_PERIOD)
-            {
-                UpdateBuilds();
-            }
-
-            Repaint();
         }
 
         private static void OpenPlayerSettingsGUI()
@@ -776,6 +771,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             GUILayout.EndHorizontal();
 
+            GUILayout.Space(10f);
+
+            if (GUILayout.Button("Refresh builds", GUILayout.Width(128f)))
+            {
+                UpdateBuilds();
+            }
+
             // Build list
             if (Builds.Count == 0)
             {
@@ -796,7 +798,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                     GUILayout.Space(2);
                     EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(12);
 
                     GUI.enabled = CanInstall;
                     if (GUILayout.Button("Install", GUILayout.Width(96)))

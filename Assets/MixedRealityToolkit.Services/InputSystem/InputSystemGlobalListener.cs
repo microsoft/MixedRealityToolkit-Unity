@@ -11,6 +11,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// This component ensures that all input events are forwarded to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> when focus or gaze is not required.
     /// </summary>
+    [Obsolete("InputSystemGlobalListener uses obsolete global input event registration API. " +
+        "Use RegisterHandler/UnregisterHandler API directly (preferred) or InputSystemGlobalHandlerListener instead.")]
     public class InputSystemGlobalListener : MonoBehaviour
     {
         private bool lateInitialize = true;
@@ -36,7 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (InputSystem != null && !lateInitialize)
             {
+            #pragma warning disable 0618
                 InputSystem.Register(gameObject);
+            #pragma warning restore 0618
             }
         }
 
@@ -53,13 +57,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 lateInitialize = false;
+            #pragma warning disable 0618
                 InputSystem.Register(gameObject);
+            #pragma warning restore 0618
             }
         }
 
         protected virtual void OnDisable()
         {
+        #pragma warning disable 0618
             InputSystem?.Unregister(gameObject);
+        #pragma warning restore 0618
         }
 
         /// <summary>

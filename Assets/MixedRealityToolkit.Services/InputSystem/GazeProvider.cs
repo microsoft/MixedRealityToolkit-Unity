@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [DisallowMultipleComponent]
     public class GazeProvider :
-        InputSystemGlobalListener,
+        InputSystemGlobalHandlerListener,
         IMixedRealityGazeProvider,
         IMixedRealityEyeGazeProvider,
         IMixedRealityInputHandler
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public GameObject GazeTarget { get; private set; }
 
         /// <inheritdoc />
-        public RaycastHit HitInfo { get; private set; }
+        public MixedRealityRaycastHit HitInfo { get; private set; }
 
         /// <inheritdoc />
         public Vector3 HitPosition { get; private set; }
@@ -163,6 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private Ray latestEyeGaze = default(Ray);
         private DateTime latestEyeTrackingUpdate = DateTime.MinValue;
+        private bool? isEyeCalibrated = null;
 
         private readonly float maxEyeTrackingTimeoutInSeconds = 2.0f;
 
@@ -427,10 +428,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnDisable();
             GazePointer?.BaseCursor?.SetVisibility(false);
-            InputSystem?.RaiseSourceLost(GazeInputSource);
+
+            // if true, component has never started and never fired onSourceDetected event
+            if (!delayInitialization)
+            {
+                InputSystem?.RaiseSourceLost(GazeInputSource);
+            }
         }
 
         #endregion MonoBehaviour Implementation
+
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
 
         #region IMixedRealityInputHandler Implementation
 
@@ -517,12 +537,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Timestamp = timestamp;
         }
 
+        public void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool userIsEyeCalibrated)
+        {
+            this.isEyeCalibrated = userIsEyeCalibrated;
+        }
+
         /// <summary>
         /// Ensure that we work with recent Eye Tracking data. Return false if we haven't received any
         /// new Eye Tracking data for more than 'maxETTimeoutInSeconds' seconds.
         /// </summary>
         private bool IsEyeTrackingAvailable => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
 
+        /// <summary>
+        /// Boolean to check whether the user went through the eye tracking calibration. 
+        /// Initially the parameter will return null until it has received valid information from the eye tracking system.
+        /// </summary>
+        public bool? IsEyeCalibrationValid => isEyeCalibrated;
         #endregion Utilities
     }
 }

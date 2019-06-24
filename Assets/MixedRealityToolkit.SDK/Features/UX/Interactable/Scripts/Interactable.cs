@@ -423,7 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (IsGlobal || RequiresFocus)
             {
-                InputSystem.Register(gameObject);
+                InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
             }
 
             requiresFocusValueCheck = RequiresFocus;
@@ -453,7 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                InputSystem.Unregister(gameObject);
+                InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
             }
         }
 

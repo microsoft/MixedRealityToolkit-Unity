@@ -6,10 +6,10 @@ MRTK is a Microsoft driven open source project.
 
 MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity. The latest Release of MRTK (V2) supports HoloLens/HoloLens 2, Windows Mixed Reality, and OpenVR platforms.
  
-* Provides the **basic building blocks for unity development on HoloLens, Windows Mixed Reality, and OpenVR**.
+* Provides the **basic building blocks for Unity development on HoloLens, Windows Mixed Reality, and OpenVR**.
 * Showcases UX best practices with **UI controls that match Windows Mixed Reality and HoloLens Shell**. 
-* **Enables rapid prototyping** via in-editor simulation that allows you to see changes immediately.
-* Is **extensible**. Provides devs ability to swap out core components and extend the framework.
+* Enables **rapid prototyping** via in-editor simulation that allows you to see changes immediately.
+* **Extensible framework** provides developers ability to swap out core components and extend.
 * **Supports a wide range of platforms**, including
   * Microsoft HoloLens
   * Microsoft HoloLens 2
@@ -24,20 +24,22 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 
 # Required Software
 
- | [![Windows SDK 18362+](Documentation/Images/MRTK170802_Short_17.png)](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk) [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk)| [![Unity](Documentation/Images/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 2018.3.x](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2017](Documentation/Images/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2017](http://dev.windows.com/downloads)| [![Simulator (optional)](Documentation/Images/MRTK170802_Short_20.png)](https://go.microsoft.com/fwlink/?linkid=852626) [Simulator (optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
+ | [![Windows SDK 18362+](Documentation/Images/MRTK170802_Short_17.png)](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk) [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk)| [![Unity](Documentation/Images/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 2018.4.x](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2017](Documentation/Images/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2017](http://dev.windows.com/downloads)| [![Simulator (optional)](Documentation/Images/MRTK170802_Short_20.png)](https://go.microsoft.com/fwlink/?linkid=852626) [Simulator (optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
 | :--- | :--- | :--- | :--- |
-| To build apps with MRTK v2, you need the Windows 10 May 2019 Update SDK. <br> To run apps for Windows Mixed Reality immersive headsets, you need the Windows 10 Fall Creators Update. | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
+| To build apps with MRTK v2, you need the Windows 10 May 2019 Update SDK. <br> To run apps for immersive headsets, you need the Windows 10 Fall Creators Update. | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
 # Feature Areas
-| ![](Documentation/Images/MRTK_Icon_InputSystem.png) Input System<br/>&nbsp;  | ![](Documentation/Images/MRTK_Icon_HandTracking.png) Hand Tracking (HoloLens 2) | ![](Documentation/Images/MRTK_Icon_EyeTracking.png) Eye Tracking (HoloLens 2) | ![](Documentation/Images/MRTK_Icon_VoiceCommand.png) Voice Commanding | ![](Documentation/Images/MRTK_Icon_GazeSelect.png) Gaze + Select (HoloLens) | ![](Documentation/Images/MRTK_Icon_Teleportation.png) Teleportation<br/>&nbsp; |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| ![](Documentation/Images/MRTK_Icon_UIControls.png) UI Controls<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_Solver.png) Solver and Interactions | ![](Documentation/Images/MRTK_Icon_ControllerVisualization.png) Controller Visualization | ![](Documentation/Images/MRTK_Icon_SpatialUnderstanding.png) Spatial Understanding | ![](Documentation/Images/MRTK_Icon_Diagnostics.png) Diagnostic Tool<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_StandardShader.png) MRTK Standard Shader |
+| ![](Documentation/Images/MRTK_Icon_InputSystem.png) [Input System](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html)<br/>&nbsp;  | ![](Documentation/Images/MRTK_Icon_HandTracking.png) [Hand Tracking<br/> (HoloLens 2)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSystem/HandTracking.html) | ![](Documentation/Images/MRTK_Icon_EyeTracking.png) [Eye Tracking<br/> (HoloLens 2)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/EyeTracking/EyeTracking_Main.html) | ![](Documentation/Images/MRTK_Icon_Profiles.png) [Profiles](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html)<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_GazeSelect.png) [Gaze + Gesture<br/> (HoloLens)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Gestures.html) |
+| :--- | :--- | :--- | :--- | :--- |
+| ![](Documentation/Images/MRTK_Icon_UIControls.png) [UI Controls](https://microsoft.github.io/MixedRealityToolkit-Unity/README.html#ui-and-interaction-building-blocks)<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_Solver.png) [Solvers](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Solver.html)<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_SceneSystem.png) [Multi-Scene<br/> Manager](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html) | ![](Documentation/Images/MRTK_Icon_SpatialUnderstanding.png) [Spatial<br/> Awareness](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html) | ![](Documentation/Images/MRTK_Icon_Diagnostics.png) [Diagnostic<br/> Tool](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html) |
+| ![](Documentation/Images/MRTK_Icon_StandardShader.png) [MRTK Standard Shader](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_MRTKStandardShader.html?q=shader) | ![](Documentation/Images/MRTK_Icon_VoiceCommand.png) [Speech](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Speech.html)<br/> & [Dictation](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Dictation.html) | ![](Documentation/Images/MRTK_Icon_Boundary.png) [Boundary<br/>System](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html)| ![](Documentation/Images/MRTK_Icon_InputSystem.png) [In-Editor<br/>Simulation](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html) | ![](Documentation/Images/MRTK_Icon_Experimental.png) [Experimental<br/>Features](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/ExperimentalFeatures.html)|
+
+
 
 # Getting Started with MRTK 
-Please check out the [Getting Started Guide](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)
+| [![Getting Started](Documentation/Images/MRTK_Icon_GettingStarted.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)<br/>[MRTK Getting Started Guide](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)| [![Getting Started](Documentation/Images/MRTK_Icon_Documentation.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/)<br/>[MRTK Documentation](https://microsoft.github.io/MixedRealityToolkit-Unity/)|
+|:---|:---|
 
-### More Documentation
-Find this readme, other documentation articles and the MRTK api reference on our [MRTK Dev Portal on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
 
 # UI and Interaction Building blocks
 |  [![Button](Documentation/Images/Button/MRTK_Button_Main.png)](Documentation/README_Button.md) [Button](Documentation/README_Button.md) | [![Bounding Box](Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)](Documentation/README_BoundingBox.md) [Bounding Box](Documentation/README_BoundingBox.md) | [![Manipulation Handler](Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)](Documentation/README_ManipulationHandler.md) [Manipulation Handler](Documentation/README_ManipulationHandler.md) |
@@ -60,6 +62,11 @@ Explore MRTK's various types of interactions and UI controls in [this example sc
 You can find  other example scenes under [**Assets/MixedRealityToolkit.Examples/Demos**](/Assets/MixedRealityToolkit.Examples/Demos) folder.
 
 [![Example Scene](Documentation/Images/MRTK_Examples.png)](Documentation/README_HandInteractionExamples.md)
+
+# Sample App
+Periodic Table of the Elements is an open-source sample app which demonstrates how to use Mixed Reality Toolkit(MRTK)'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. Read the porting story: [Bringing the Periodic Table of the Elements app to HoloLens 2 with MRTK v2](https://medium.com/@dongyoonpark/bringing-the-periodic-table-of-the-elements-app-to-hololens-2-with-mrtk-v2-a6e3d8362158)
+
+[![Periodic Table of the Elements](Documentation/Images/MRDL_PeriodicTable.jpg)](https://medium.com/@dongyoonpark/bringing-the-periodic-table-of-the-elements-app-to-hololens-2-with-mrtk-v2-a6e3d8362158)
 
 # Engage with the Community
 

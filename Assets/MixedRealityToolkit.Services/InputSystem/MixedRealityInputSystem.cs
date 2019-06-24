@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/>
     /// </summary>
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
-    public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem, IMixedRealityDataProviderAccess
+    public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem, IMixedRealityDataProviderAccess, IMixedRealityCapabilityCheck
     {
         public MixedRealityInputSystem(
             IMixedRealityServiceRegistrar registrar,
@@ -58,6 +58,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = Registrar.GetService<IMixedRealityFocusProvider>());
 
+        private IMixedRealityRaycastProvider raycastProvider = null;
+
+        /// <inheritdoc />
+        public IMixedRealityRaycastProvider RaycastProvider => raycastProvider ?? (raycastProvider = Registrar.GetService<IMixedRealityRaycastProvider>());
+
         /// <inheritdoc />
         public IMixedRealityGazeProvider GazeProvider { get; private set; }
 
@@ -98,6 +103,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private HandTrackingInputEventData handTrackingInputEventData;
 
         private MixedRealityInputActionRulesProfile CurrentInputActionRulesProfile { get; set; }
+
+        #region IMixedRealityCapabilityCheck Implementation
+
+        /// <inheritdoc />
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            for (int i = 0; i < deviceManagers.Count; i++)
+            {
+                IMixedRealityCapabilityCheck capabilityChecker = deviceManagers[i] as IMixedRealityCapabilityCheck;
+
+                // If one of the running data providers supports the requested capability, 
+                // the application has the needed support to leverage the desired functionality.
+                if ((capabilityChecker != null) &&
+                    capabilityChecker.CheckCapability(capability))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
 
         #region IMixedRealityService Implementation
 
@@ -242,17 +270,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Disable()
         {
-            GazeProvider = null;
-
-            if (!Application.isPlaying)
+            // Input System adds a gaze provider component on the main camera, which needs to be removed when the input system is disabled/removed.
+            // Otherwise the component would keep references to dead objects.
+            // Unity's way to remove component is to destroy it.
+            if (GazeProvider != null)
             {
-                var component = CameraCache.Main.GetComponent<IMixedRealityGazeProvider>() as Component;
-
-                if (component != null)
+                if (Application.isPlaying)
                 {
-                    UnityEngine.Object.DestroyImmediate(component);
+                    UnityEngine.Object.Destroy(GazeProvider as Component);
                 }
+                else
+                {
+                    UnityEngine.Object.DestroyImmediate(GazeProvider as Component);
+                }
+
+                GazeProvider = null;
             }
+
 
             if (deviceManagers.Count > 0)
             {
@@ -933,7 +967,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
 
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
-            
+
             HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
         }
 

@@ -2870,6 +2870,19 @@ MonoBehaviour:
       axisCodeY: AXIS_18
       invertXAxis: 0
       invertYAxis: 0
+    - id: 12
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX:
+      axisCodeY:
+      invertXAxis: 0
+      invertYAxis: 0
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
@@ -3029,6 +3042,19 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: AXIS_19
       axisCodeY: AXIS_20
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 12
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX:
+      axisCodeY:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:

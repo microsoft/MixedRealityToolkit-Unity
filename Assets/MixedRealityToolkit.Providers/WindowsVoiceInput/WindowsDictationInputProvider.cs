@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
         "Windows Dictation Input")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Dictation.html")]
-    public class WindowsDictationInputProvider : BaseInputDeviceManager, IMixedRealityDictationSystem
+    public class WindowsDictationInputProvider : BaseInputDeviceManager, IMixedRealityDictationSystem, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -37,6 +37,16 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
         /// <inheritdoc />
         public bool IsListening { get; private set; } = false;
+
+        #region IMixedRealityCapabilityCheck Implementation
+
+        /// <inheritdoc />
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            return (capability == MixedRealityCapability.VoiceDictation);
+        }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
         public async void StartRecording(GameObject listener, float initialSilenceTimeout = 5, float autoSilenceTimeout = 20, int recordingTime = 10, string micDeviceName = "")
@@ -235,8 +245,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
             catch (System.Exception ex)
             {
-                Debug.LogError($"Failed to start dictation recognizer. Are microphone permissions granted? Exception: {ex}");
+                Debug.LogWarning($"Failed to start dictation recognizer. Are microphone permissions granted? Exception: {ex}");
                 Disable();
+                dictationRecognizer = null;
             }
         }
 
@@ -245,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-            if (!Application.isPlaying || inputSystem == null) { return; }
+            if (!Application.isPlaying || inputSystem == null || dictationRecognizer == null) { return; }
 
             if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {

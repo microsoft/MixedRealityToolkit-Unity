@@ -1,115 +1,129 @@
-- name: About MRTK
-  items:
-  - name: Authors
-    href: Authors.md
 - name: Getting Started with MRTK
   href: GettingStartedWithTheMRTK.md
-  items:
-  - name: Upgrading from the HoloToolkit (HTK)
-    href: HTKToMRTKPortingGuide.md
+- name: Upgrading from HTK
+  href: HTKToMRTKPortingGuide.md
 - name: Feature Overviews
-  href: MixedRealityServices.md
   items:
-  - name: Core Features
+  - name: Profiles
+    href: Profiles/Profiles.md
+  - name: Profiles Configuration
+    href: MixedRealityConfigurationGuide.md
+  - name: Input
     items:
-    - name: Packages
-      href: Packaging/MRTK_Packages.md
-      items:
-      - name: Mixed Reality Toolkit Componentization
-        href: Packaging/MRTK_Modularization.md
-    - name: Input
+    - name: Input Overview
       href: Input/Overview.md
-      items:
-      - name: Input Providers
-        href: Input/InputProviders.md
-      - name: Input Events
-        href: Input/InputEvents.md
-      - name: Input Actions
-        href: Input/InputActions.md
-      - name: Controllers
-        href: Input/Controllers.md
-      - name: Pointers
-        href: Input/Pointers.md
-      - name: Gestures
-        href: Input/Gestures.md
-      - name: Speech
-        href: Input/Speech.md
-      - name: Dictation
-        href: Input/Dictation.md
-      - name: Hands
-        href: InputSystem/HandTracking.md
-      - name: Eyes
-        href: EyeTracking/EyeTracking_Main.md
-    - name: Interactions and UX Building Blocks
-      items:
-      - name: Interactable
-        href: README_Interactable.md
-      - name: Object Manipulation
-        href: README_ManipulationHandler.md
-      - name: Fingertip Visualization
-        href: README_FingertipVisualization.md
-      - name: App Bar
-        href: README_AppBar.md
-      - name: Bounding Box
-        href: README_BoundingBox.md
-      - name: Button
-        href: README_Button.md
-      - name: Sliders
-        href: README_Sliders.md
-      - name: Object Collection
-        href: README_ObjectCollection.md
-      - name: Pointers
-        href: README_Pointers.md
-      - name: Slate
-        href: README_Slate.md
-      - name: System Keyboard
-        href: README_SystemKeyboard.md
-      - name: Tooltips
-        href: README_Tooltip.md
-      - name: Solvers
-        href: README_Solver.md
-      - name: Hand Interaction Example
-        href: README_HandInteractionExamples.md
-      - name: Eye Tracking Interaction Example
-        href: EyeTracking/EyeTracking_ExamplesOverview.md
-    - name: Spatial Awareness
+    - name: Input Providers
+      href: Input/InputProviders.md
+    - name: Input Events
+      href: Input/InputEvents.md
+    - name: Input Actions
+      href: Input/InputActions.md
+    - name: Controllers
+      href: Input/Controllers.md
+    - name: Pointers
+      href: Input/Pointers.md
+    - name: Gestures
+      href: Input/Gestures.md
+    - name: Speech(Voice command)
+      href: Input/Speech.md
+    - name: Dictation
+      href: Input/Dictation.md
+    - name: Hands
+      href: InputSystem/HandTracking.md
+    - name: Eyes
+      href: EyeTracking/EyeTracking_Main.md
+  - name: In-Editor Input Simulation
+    href: InputSimulation/InputSimulationService.md
+  - name: UX Building Blocks
+    items:
+    - name: Interactable
+      href: README_Interactable.md
+    - name: Button
+      href: README_Button.md
+    - name: Bounding Box
+      href: README_BoundingBox.md
+    - name: Object Manipulation
+      href: README_ManipulationHandler.md
+    - name: Sliders
+      href: README_Sliders.md
+    - name: Fingertip Visualization
+      href: README_FingertipVisualization.md
+    - name: App Bar
+      href: README_AppBar.md
+    - name: Object Collection
+      href: README_ObjectCollection.md
+    - name: Pointers
+      href: README_Pointers.md
+    - name: Slate
+      href: README_Slate.md
+    - name: System Keyboard
+      href: README_SystemKeyboard.md
+    - name: Tooltips
+      href: README_Tooltip.md
+    - name: Solvers
+      href: README_Solver.md
+    - name: Hand Interaction Example
+      href: README_HandInteractionExamples.md
+    - name: Eye Tracking Interaction Example
+      href: EyeTracking/EyeTracking_ExamplesOverview.md
+  - name: MRTK Standard Shader
+    href: README_MRTKStandardShader.md
+  - name: Spatial Awareness
+    items:
+    - name: Spatial Awareness Overview
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
-      items:
-      - name: Configuring the Spatial Awareness Mesh Observer
-        href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
-    - name: Boundary System
+    - name: Configuring the Spatial Awareness Mesh Observer
+      href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
+    - name: Usage Guide
+      href: SpatialAwareness/UsageGuide.md
+  - name: Multi Scene System
+    items:
+    - name: Multi Scene System Overview
+      href: SceneSystem/SceneSystemGettingStarted.md
+    - name: Scene Types
+      href: SceneSystem/SceneSystemSceneTypes.md
+    - name: Content Scene Loading
+      href: SceneSystem/SceneSystemContentLoading.md
+    - name: Monitoring Content Loading
+      href: SceneSystem/SceneSystemLoadProgress.md
+    - name: Lighting Scene Operations
+      href: SceneSystem/SceneSystemLightingScenes.md
+  - name: Boundary System
+    items:
+    - name: Boundary System Overview
       href: Boundary/BoundarySystemGettingStarted.md
-      items:
-      - name: Configuring the Boundary Visualization
-        href: Boundary/ConfiguringBoundaryVisualization.md
-    - name: Performance
-      href: Performance/PerfGettingStarted.md
-  - name: Utility
+    - name: Configuring the Boundary Visualization
+      href: Boundary/ConfiguringBoundaryVisualization.md
+  - name: Diagnostics System
     items:
-    - name: In-Editor Input Simulation
-      href: InputSimulation/InputSimulationService.md
-    - name: Diagnostics System
+    - name: Diagnostics System Overview
       href: Diagnostics/DiagnosticsSystemGettingStarted.md
-      items:
-      - name: Configuring the Diagnostics System
-        href: Diagnostics/ConfiguringDiagnostics.md
-      - name: Using the Visual Profiler
-        href: Diagnostics/UsingVisualProfiler.md
-    - name: Extension Service Creation Wizard
-      href: Utilities/ExtensionServiceCreationWizard.md
-  - name: Experimental Features
+    - name: Configuring the Diagnostics System
+      href: Diagnostics/ConfiguringDiagnostics.md
+    - name: Using the Visual Profiler
+      href: Diagnostics/UsingVisualProfiler.md
+  - name: Services
+    href: MixedRealityServices.md
+  - name: Packages
     items:
-    - name: QR Tracking
-      href: TODO.md
-    - name: Spatial Audio
-      href: TODO.md
+    - name: MRTK Packages
+      href: Packaging/MRTK_Packages.md
+    - name: MRTK Componentization
+      href: Packaging/MRTK_Modularization.md
+  - name: Performance
+    href: Performance/PerfGettingStarted.md
+  - name: Extension Service Creation Wizard
+    href: Utilities/ExtensionServiceCreationWizard.md
+  - name: Experimental Features
+    href: ExperimentalFeatures.md
   - name: Advanced topics
     items:
     - name: Shared Experiences
       href: TODO.md
 - name: Contributing
-  href: Contributing/CONTRIBUTING.md
   items:
+  - name: Contributing Overview
+    href: Contributing/CONTRIBUTING.md
   - name: Feature Contribution Process
     href: Contributing/Feature_Contribution_Process.md
   - name: Coding Guidelines
@@ -124,3 +138,6 @@
     href: Contributing/Roadmap.md
 - name: Notice
   href: Legal/NOTICE.md
+- name: Authors
+  href: Authors.md
+

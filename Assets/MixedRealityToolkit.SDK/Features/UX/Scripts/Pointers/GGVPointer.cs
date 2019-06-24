@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class GGVPointer : InputSystemGlobalListener, IMixedRealityPointer, IMixedRealityInputHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler
+    public class GGVPointer : InputSystemGlobalHandlerListener, IMixedRealityPointer, IMixedRealityInputHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler
     {
         [Header("Pointer")]
         [SerializeField]
@@ -247,9 +247,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion  IMixedRealityInputHandler Implementation
 
-        protected override void Start()
+        protected override void OnEnable()
         {
-            base.Start();
+            base.OnEnable();
             this.gazeProvider = InputSystem.GazeProvider as GazeProvider;
             BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
             if (c != null)
@@ -257,6 +257,44 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 c.VisibleSourcesCount++;
             }
         }
+
+        protected override void Start()
+        {
+            base.Start();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            if (gazeProvider != null)
+            {
+                BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
+                if (c != null)
+                {
+                    c.VisibleSourcesCount--;
+                }
+            }
+        }
+
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
+            InputSystem?.RegisterHandler<IMixedRealitySourcePoseHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
+            InputSystem?.UnregisterHandler<IMixedRealitySourcePoseHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
 
         #region IMixedRealitySourcePoseHandler
 
@@ -301,15 +339,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     // Raise OnInputUp if pointer is lost while select is pressed
                     InputSystem.RaisePointerUp(this, selectAction, lastControllerHandedness);
-                }
-
-                if (gazeProvider != null)
-                {
-                    BaseCursor c = gazeProvider.GazePointer as BaseCursor;
-                    if (c != null)
-                    {
-                        c.VisibleSourcesCount--;
-                    }
                 }
                 
                 // Destroy the pointer since nobody else is destroying us
