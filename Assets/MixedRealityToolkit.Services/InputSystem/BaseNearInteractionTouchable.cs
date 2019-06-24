@@ -27,7 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The type of event to receive.
         /// </summary>
-        public TouchableEventType EventsToReceive => eventsToReceive;
+        public TouchableEventType EventsToReceive
+        {
+            get => eventsToReceive;
+            set => eventsToReceive = value;
+        }
 
         public bool ColliderEnabled { get { return !usesCollider || touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
 
@@ -63,6 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected void OnEnable()
         {
             instances.Add(this);
+
+            touchableCollider = GetComponent<Collider>();
+            usesCollider = touchableCollider != null;
         }
 
         protected void OnDisable()
