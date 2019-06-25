@@ -10,8 +10,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -20,10 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class NearInteractionTouchableTests
     {
         [SetUp]
-        public void SetupMrtk()
+        public void Setup()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
+            PlayModeTestUtilities.Setup();
 
             inputSim = PlayModeTestUtilities.GetInputSimulationService();
             Assert.NotNull(inputSim);
@@ -46,9 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [TearDown]
-        public void ShutdownMrtk()
+        public void TearDown()
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
 
         /// <summary>

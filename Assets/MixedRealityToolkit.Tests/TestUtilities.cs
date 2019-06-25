@@ -5,7 +5,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using System;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
@@ -27,45 +26,43 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static Scene primaryTestScene;
         public static Scene[] additiveTestScenes = new Scene[0];
 
-        public static void InitializeMixedRealityToolkit()
-        {
-            MixedRealityToolkit.ConfirmInitialized();
-        }
-
         /// <summary>
-        /// Destroys all scene assets that were created over the course of testing
+        /// Destroys all scene assets that were created over the course of testing.
+        /// Used only in editor tests.
         /// </summary>
-        public static void TearDownScenes()
+        public static void EditorTearDownScenes()
         {
 #if UNITY_EDITOR
-            // If any of our scenes were saved, tear down the assets
-            SceneAsset primaryTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(primaryTestSceneTemporarySavePath);
-            if (primaryTestSceneAsset != null)
+            if (!EditorApplication.isPlaying)
             {
-                AssetDatabase.DeleteAsset(primaryTestSceneTemporarySavePath);
-            }
-
-            for (int i = 0; i < additiveTestScenes.Length; i++)
-            {
-                string path = additiveTestSceneTemporarySavePath.Replace("#", i.ToString());
-                SceneAsset additiveTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
-                if (additiveTestSceneAsset != null)
+                // If any of our scenes were saved, tear down the assets
+                SceneAsset primaryTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(primaryTestSceneTemporarySavePath);
+                if (primaryTestSceneAsset != null)
                 {
-                    AssetDatabase.DeleteAsset(path);
+                    AssetDatabase.DeleteAsset(primaryTestSceneTemporarySavePath);
                 }
+
+                for (int i = 0; i < additiveTestScenes.Length; i++)
+                {
+                    string path = additiveTestSceneTemporarySavePath.Replace("#", i.ToString());
+                    SceneAsset additiveTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+                    if (additiveTestSceneAsset != null)
+                    {
+                        AssetDatabase.DeleteAsset(path);
+                    }
+                }
+                AssetDatabase.Refresh();
             }
-            AssetDatabase.Refresh();
 #endif
         }
 
         /// <summary>
         /// Creates a number of scenes and loads them additively for testing. Must create a minimum of 1.
+        /// Used only in editor stests.
         /// </summary>
         /// <param name="numScenesToCreate"></param>
-        public static void CreateScenes(int numScenesToCreate = 1)
+        public static void EditorCreateScenes(int numScenesToCreate = 1)
         {
-            Debug.Assert(numScenesToCreate > 0);
-
             // Create default test scenes.
             // In the editor this can be done using EditorSceneManager with a default setup.
             // In playmode the scene needs to be set up manually.
@@ -98,12 +95,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 }
 
                 additiveTestScenes = additiveTestScenesList.ToArray();
-
-                return;
             }
 #endif
         }
 
+        /// <summary>
+        /// Creates a playspace and moves it into a default position.
+        /// </summary>
         public static void InitializePlayspace()
         {
             MixedRealityPlayspace.PerformTransformation(
@@ -114,6 +112,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
         }
 
+        /// <summary>
+        /// Forces the playspace camera to face forward.
+        /// </summary>
         public static void FaceCameraForward()
         {
             // Move the camera to origin looking at +z to more easily see the a target at 0,0,0
@@ -133,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void InitializeMixedRealityToolkitAndCreateScenes(bool useDefaultProfile = false, int numScenesToCreate = 1)
         {
             // Setup
-            CreateScenes(numScenesToCreate);
+            EditorCreateScenes(numScenesToCreate);
             InitializeMixedRealityToolkit(useDefaultProfile);
         }
 

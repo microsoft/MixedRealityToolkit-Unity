@@ -3,8 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
@@ -13,6 +11,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void Test()
         {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+
             var selector = new DefaultPrimaryPointerSelector();
             selector.Initialize();
 

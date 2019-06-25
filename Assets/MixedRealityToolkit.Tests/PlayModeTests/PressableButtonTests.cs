@@ -18,9 +18,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class PressableButtonTests : IPrebuildSetup
     {
+        [SetUp]
         public void Setup()
         {
+            PlayModeTestUtilities.Setup();
             PlayModeTestUtilities.EnsureTextMeshProEssentials();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
         }
 
         #region Utilities
@@ -49,12 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 yield return null;
             }
-        }
-
-        [TearDown]
-        public void ShutdownMrtk()
-        {
-            TestUtilities.ShutdownMixedRealityToolkit();
         }
 
         #endregion

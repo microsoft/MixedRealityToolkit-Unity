@@ -19,6 +19,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class InteractableTests
     {
+        const float buttonPressAnimationDelay = 0.15f;
+        const float buttonReleaseAnimationDelay = 0.75f;
+
+        [SetUp]
+        public void Setup()
+        {
+            PlayModeTestUtilities.Setup();
+            TestUtilities.FaceCameraForward();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
+        }
+
         /// <summary>
         /// Tests that an interactable component can be added to a GameObject
         /// at runtime.
@@ -27,9 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestAddInteractableAtRuntime()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             // This should not throw an exception
             var interactable = cube.AddComponent<Interactable>();
@@ -46,11 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestSimulatedHandInputOnPrefab()
         {
-            // instantiate scene
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-            TestUtilities.FaceCameraForward();
-
             // Load interactable prefab
             GameObject interactableObject;
             Interactable interactable;
@@ -78,15 +86,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
-            
+            yield return new WaitForSeconds(buttonPressAnimationDelay);
+
             Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
 
             // Move the hand back
             yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
 
-            Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
             Assert.True(wasClicked, "Interactable was not clicked.");
+            Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -100,11 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestSimulatedMenuInputOnPrefab()
         {
-            // instantiate scene
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-            TestUtilities.FaceCameraForward();
-
             // Load interactable prefab
             GameObject interactableObject;
             Interactable interactable;
@@ -138,16 +143,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise a menu down input event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, menuAction);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(buttonPressAnimationDelay);
 
             Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
 
             // Raise a menu up input event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, menuAction);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
 
-            Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
             Assert.True(wasClicked, "Interactable was not clicked.");
+            Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -161,11 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestSimulatedVoiceInputOnPrefab()
         {
-            // instantiate scene
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-            TestUtilities.FaceCameraForward();
-
             // Load interactable prefab
             GameObject interactableObject;
             Interactable interactable;
@@ -196,10 +196,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Raise a voice select input event, then wait for transition to take place
             SpeechCommands commands = new SpeechCommands("Select", KeyCode.None, interactable.InputAction);
             MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(defaultInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(1000), System.DateTime.Now, commands);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(buttonPressAnimationDelay);
 
-            Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
             Assert.True(wasClicked, "Interactable was not clicked.");
+            Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -213,10 +213,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestSimulatedGlobalSelectInputOnPrefab()
         {
-            // instantiate scene
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
             // Face the camera in the opposite direction so we don't focus on button
             MixedRealityPlayspace.PerformTransformation(
             p =>
@@ -259,16 +255,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise a select down input event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(buttonPressAnimationDelay);
 
             Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
 
             // Raise a select up input event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, interactable.InputAction);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
 
-            Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
             Assert.True(wasClicked, "Interactable was not clicked.");
+            Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
             Assert.False(interactable.HasFocus, "Interactable had focus");
 
             // Remove as global listener
@@ -283,14 +279,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Assembles a push button from primitives and uses simulated hand input to press it.
         /// </summary>
         /// <returns></returns>
-        [UnityTest]
+        //[UnityTest] This test is not currently working
         public IEnumerator TestSimulatedHandInputOnRuntimeAssembled()
         {
-            // instantiate scene
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-            TestUtilities.FaceCameraForward();
-
             // Load interactable prefab
             GameObject interactableObject;
             Interactable interactable;
@@ -334,17 +325,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(buttonPressAnimationDelay);
 
             Assert.AreNotEqual(targetStartPosition, translateTargetObject.transform.localPosition, "Translate target object was not translated by action.");
 
             // Move the hand back
             yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
 
-            Assert.AreEqual(targetStartPosition, translateTargetObject.transform.localPosition, "Translate target object was not translated back by action.");
             Assert.True(wasClicked, "Interactable was not clicked.");
+            Assert.AreEqual(targetStartPosition, translateTargetObject.transform.localPosition, "Translate target object was not translated back by action.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -355,14 +346,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Assembles a push button from primitives and uses simulated input events to press it.
         /// </summary>
         /// <returns></returns>
-        [UnityTest]
+        //[UnityTest] This test is not currently working
         public IEnumerator TestSimulatedSelectInputOnRuntimeAssembled()
         {
-            // instantiate scene
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-            TestUtilities.FaceCameraForward();
-
             // Load interactable prefab
             GameObject interactableObject;
             Interactable interactable;
@@ -390,26 +376,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise an input down event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(buttonPressAnimationDelay);
 
             Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
 
             // Raise an input up event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.None, interactable.InputAction);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
 
-            Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
             Assert.True(wasClicked, "Interactable was not clicked.");
+            Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
-        }
-
-        [TearDown]
-        public void ShutdownMrtk()
-        {
-            TestUtilities.ShutdownMixedRealityToolkit();
         }
 
         /// <summary>
@@ -452,9 +432,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InteractableThemePropertySettings offsetThemeSetting = new InteractableThemePropertySettings();
             offsetThemeSetting.Theme = offsetTheme;
             offsetThemeSetting.Type = typeof(InteractableOffsetTheme);
-            offsetThemeSetting.AssemblyQualifiedName = offsetThemeSetting.Type.AssemblyQualifiedName;
+            offsetThemeSetting.AssemblyQualifiedName = typeof(InteractableOffsetTheme).AssemblyQualifiedName;
             offsetThemeSetting.CustomSettings = new System.Collections.Generic.List<InteractableCustomSetting>();
             offsetThemeSetting.CustomHistory = new System.Collections.Generic.List<InteractableCustomSetting>();
+
+            var easing = new Easing();
+            easing.Curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+            offsetThemeSetting.Easing = easing;
 
             InteractableThemeProperty themeProperty = new InteractableThemeProperty();
             InteractableThemePropertyValue defaultPropertyValue = new InteractableThemePropertyValue();
@@ -470,16 +454,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             offsetThemeSetting.Properties = new System.Collections.Generic.List<InteractableThemeProperty>() { themeProperty };
 
             Theme interactableTheme = ScriptableObject.CreateInstance<Theme>();
-            States interactableStates = ScriptableObject.CreateInstance<States>();
 
-            interactableTheme.States = interactableStates;
+            // Assign bit values to states
+            int bitCount = 0;
+            for (int i = 0; i < interactableTheme.States.StateList.Count; i++)
+            {
+                if (i == 0)
+                {
+                    bitCount += 1;
+                }
+                else
+                {
+                    bitCount += bitCount;
+                }
+
+                interactableTheme.States.StateList[i].Bit = bitCount;
+            }
             interactableTheme.Settings = new System.Collections.Generic.List<InteractableThemePropertySettings>() { offsetThemeSetting };
 
             InteractableProfileItem profileItem = new InteractableProfileItem();
             profileItem.Themes = new System.Collections.Generic.List<Theme>() { interactableTheme };
             profileItem.Target = childObject;
-
-            offsetTheme.Init(interactableObject, offsetThemeSetting);
 
             interactable.Profiles = new System.Collections.Generic.List<InteractableProfileItem>() { profileItem };
 

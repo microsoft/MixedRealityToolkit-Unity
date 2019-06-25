@@ -6,14 +6,10 @@
 // Unity doesn't include the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
-using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
 using System.Collections;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Linq;
@@ -22,6 +18,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class FocusProviderTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            PlayModeTestUtilities.Setup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
+        }
+
         /// <summary>
         /// </summary>
         /// <returns></returns>
@@ -59,19 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             inputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
             yield return null;
             Assert.IsTrue(inputSystem.GazeProvider.GazePointer.IsInteractionEnabled, "Gaze cursor should be visible after select command");
-        }
-
-        [SetUp]
-        public void SetupMrtk()
-        {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-        }
-
-        [TearDown]
-        public void ShutdownMrtk()
-        {
-            TestUtilities.ShutdownMixedRealityToolkit();
         }
     }
 }

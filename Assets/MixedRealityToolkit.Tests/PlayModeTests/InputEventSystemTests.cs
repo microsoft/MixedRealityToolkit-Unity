@@ -5,7 +5,6 @@
 // Unity doesn't include the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
-using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
@@ -14,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -25,10 +23,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
     class InputEventSystemTests
     {
-        [TearDown]
-        public void ShutdownMrtk()
+        [SetUp]
+        public void Setup()
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.Setup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
         }
 
         /// <summary>
