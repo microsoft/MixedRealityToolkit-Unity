@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 return handJointCurvesRight.TryGetValue(joint, out curves);
             }
-            curves = new PoseCurves();
+            curves = null;
             return false;
         }
 
