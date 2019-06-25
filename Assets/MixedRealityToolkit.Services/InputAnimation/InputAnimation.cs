@@ -297,13 +297,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return curve.AddKey(keyframe);
         }
 
+        /// Arbitrarily large weight for representing a boolean value in float curves.
+        const float boolOutWeight = 1.0e6f;
+
         /// Utility function that creates a non-interpolated keyframe suitable for boolean values.
         /// Returns the index of the newly added keyframe.
         private static int AddBoolKey(AnimationCurve curve, float time, bool value)
         {
             float fvalue = value ? 1.0f : 0.0f;
             // Set tangents and weights such than the the input value is cut off and out tangent is constant.
-            var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, 1.0e6f);
+            var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, boolOutWeight);
             keyframe.weightedMode = WeightedMode.Both;
 
             return curve.AddKey(keyframe);
@@ -316,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             float fvalue = value ? 1.0f : 0.0f;
             // Set tangents and weights such than the the input value is cut off and out tangent is constant.
-            var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, 1.0e6f);
+            var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, boolOutWeight);
             keyframe.weightedMode = WeightedMode.Both;
 
             int insertAfter = FindKeyframeInterval(curve, time);
