@@ -5,6 +5,9 @@
 // Unity doesn't include the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
+#if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Editor;
+#endif
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -279,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Assembles a push button from primitives and uses simulated hand input to press it.
         /// </summary>
         /// <returns></returns>
-        //[UnityTest] This test is not currently working
+        [UnityTest]
         public IEnumerator TestSimulatedHandInputOnRuntimeAssembled()
         {
             // Load interactable prefab
@@ -346,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Assembles a push button from primitives and uses simulated input events to press it.
         /// </summary>
         /// <returns></returns>
-        //[UnityTest] This test is not currently working
+        [UnityTest]
         public IEnumerator TestSimulatedSelectInputOnRuntimeAssembled()
         {
             // Load interactable prefab
@@ -424,63 +427,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Add an interactable
             interactable = interactableObject.AddComponent<Interactable>();
 
-            #region create interactable theme
+#if UNITY_EDITOR
+            // Find our states and themes via the asset database
+            Theme cylinderTheme = ScriptableObjectExtensions.GetAllInstances<Theme>().FirstOrDefault(profile => profile.name.Equals($"CylinderTheme"));
+            States defaultStates = ScriptableObjectExtensions.GetAllInstances<States>().FirstOrDefault(profile => profile.name.Equals($"DefaultInteractableStates"));
 
-            // Create a new theme for the profile that translates the child object
-            InteractableOffsetTheme offsetTheme = new InteractableOffsetTheme();
-
-            InteractableThemePropertySettings offsetThemeSetting = new InteractableThemePropertySettings();
-            offsetThemeSetting.Theme = offsetTheme;
-            offsetThemeSetting.Type = typeof(InteractableOffsetTheme);
-            offsetThemeSetting.AssemblyQualifiedName = typeof(InteractableOffsetTheme).AssemblyQualifiedName;
-            offsetThemeSetting.CustomSettings = new System.Collections.Generic.List<InteractableCustomSetting>();
-            offsetThemeSetting.CustomHistory = new System.Collections.Generic.List<InteractableCustomSetting>();
-
-            var easing = new Easing();
-            easing.Curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
-            offsetThemeSetting.Easing = easing;
-
-            InteractableThemeProperty themeProperty = new InteractableThemeProperty();
-            InteractableThemePropertyValue defaultPropertyValue = new InteractableThemePropertyValue();
-            InteractableThemePropertyValue pressedPropertyValue = new InteractableThemePropertyValue();
-
-            defaultPropertyValue.Vector3 = new Vector3(0f, 1.5f, 0f);
-            pressedPropertyValue.Vector3 = new Vector3(0f, 0.3f, 0f);
-
-            themeProperty.StartValue = defaultPropertyValue;
-            themeProperty.Values = new System.Collections.Generic.List<InteractableThemePropertyValue>() { defaultPropertyValue, defaultPropertyValue, pressedPropertyValue, defaultPropertyValue };
-            themeProperty.Type = InteractableThemePropertyValueTypes.Vector3;
-
-            offsetThemeSetting.Properties = new System.Collections.Generic.List<InteractableThemeProperty>() { themeProperty };
-
-            Theme interactableTheme = ScriptableObject.CreateInstance<Theme>();
-
-            // Assign bit values to states
-            int bitCount = 0;
-            for (int i = 0; i < interactableTheme.States.StateList.Count; i++)
-            {
-                if (i == 0)
-                {
-                    bitCount += 1;
-                }
-                else
-                {
-                    bitCount += bitCount;
-                }
-
-                interactableTheme.States.StateList[i].Bit = bitCount;
-            }
-            interactableTheme.Settings = new System.Collections.Generic.List<InteractableThemePropertySettings>() { offsetThemeSetting };
-
+            interactable.States = defaultStates;
             InteractableProfileItem profileItem = new InteractableProfileItem();
-            profileItem.Themes = new System.Collections.Generic.List<Theme>() { interactableTheme };
-            profileItem.Target = childObject;
+            profileItem.Themes = new System.Collections.Generic.List<Theme>() { cylinderTheme };
+            profileItem.HadDefaultTheme = true;
+            profileItem.Target = translateTargetObject.gameObject;
 
             interactable.Profiles = new System.Collections.Generic.List<InteractableProfileItem>() { profileItem };
-
             interactable.ForceUpdateThemes();
-
-            #endregion
+#endif
 
             // Set the interactable to respond to the requested input action
             MixedRealityInputAction selectAction = MixedRealityToolkit.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();
