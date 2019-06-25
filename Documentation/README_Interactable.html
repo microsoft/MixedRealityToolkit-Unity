@@ -103,12 +103,12 @@ See <a href="Input/Overview.html">Overview of the input system in MRTK</a> for m
 Sets the interactables enabled state, which will disable some input handling and update the themes to reflect the current state which is disabled.</p>
 <p>This is different from disabling input all together (using <em>Enable Input</em>). It means that a specific button that would normally be interactive will be disabled and has a visual look and feel to denote its disabled state. A typical example of this would be a submit button waiting for all the required input fields to be completed.</p>
 <p><strong>IsGlobal</strong>
-Focus is not required to detect input actions, default behavior is false.</p>
-<p><strong>Voice Commands</strong>
-A voice command to trigger an OnClick event. This will also trigger a quick state change to drive any themes visuals.
+Focus is not required to detect input actions, default behavior is false.
  
-Note: Make sure there is a unique voice command on each button. The voice recognizer is global (even if the interactable is not) and will not register the same voice command twice; in this case an error will be thrown.</p>
-<p><strong>Requires Gaze (Only available when the voice command field has a value)</strong>
+<strong>Voice Commands</strong>
+Select a Speech Command that has been setup in the MRTK Speech Commands Profile to trigger an OnClick event. This will also provide an automated Focus and Press state change to drive any theme feedback.
+ 
+<strong>Requires Gaze (Only available when a speech command is selected)</strong>
 The voice command requires the interactable to have focus to listen for the voice command. There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts. Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.</p>
 <p><strong>Public Properties</strong>
 ClickCount - a read only value that tracks how many clicks have occured.</p>
@@ -180,7 +180,7 @@ SetDimensionIndex(0);
 <li>Visited: the Interactable has been clicked.</li>
 <li>Toggled: The button is in a toggled state or Dimension idex is an odd number.</li>
 <li>Gesture: The hand or controller was pressed and has moved from the original position.</li>
-<li>VoiceCommand: The internal voice command was used, or if using global voice commands, set this manually.</li>
+<li>VoiceCommand: A speech command was used to trigger an Interactable.</li>
 <li>PhyscialTouch: A touch input is currently detected, use NearInteractionTouchable to enable.</li>
 <li>Grab: A hand is currently grabbing in the bounds of the object, use NearInteractionGrabbable to enable</li>
 </ul>
