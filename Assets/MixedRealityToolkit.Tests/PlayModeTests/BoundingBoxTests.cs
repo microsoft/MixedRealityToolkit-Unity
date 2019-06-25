@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class BoundingBoxTests
     {
+        private readonly float distanceEpsilon = 0.001f;
         #region Utilities
         [TearDown]
         public void ShutdownMrtk()
@@ -46,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position = Vector3.forward * 1.5f;
-            BoundingBox result = cube.AddComponent<BoundingBox>();
+            BoundingBox bbox = cube.AddComponent<BoundingBox>();
 
             MixedRealityPlayspace.PerformTransformation(
             p =>
@@ -55,7 +56,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(cube.transform.position);
             });
 
-            return result;
+            bbox.transform.localScale *= 0.5f;
+            bbox.Active = true;
+
+            return bbox;
         }
         #endregion
 
@@ -115,33 +119,37 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScaleViaNearInteration()
         {
             var bbox = InstantiateSceneAndDefaultBbox();
-            // make the box smaller so we can see it
-            bbox.transform.localScale *= 0.5f;
-            bbox.Active = true;
-            bbox.HideElementsInInspector = false;
-            var bounds = bbox.GetComponent<BoxCollider>().bounds;
-            Debug.Assert(bounds.center == Vector3.zero);
-            Debug.Log($"Start bounds: {bounds}");
             yield return null;
-            List<GameObject> corners = FindDescendantsContainingName(bbox.gameObject, "corner_");
+            var bounds = bbox.GetComponent<BoxCollider>().bounds;
+            Debug.Assert(bounds.center == new Vector3(0, 0, 1.5f));
+            Debug.Assert(bounds.size == new Vector3(.5f, .5f, .5f));
 
+            List<GameObject> corners = FindDescendantsContainingName(bbox.gameObject, "corner_");
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             // front right corner is corner 3
             var frontRightCornerPos = corners[3].transform.position;
 
-            Debug.Log("Show hand at " + frontRightCornerPos);
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, frontRightCornerPos);
-            yield return WaitForEnterKey();
-            Debug.Log("Pinch hand");
             yield return PlayModeTestUtilities.SetHandState(frontRightCornerPos, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
-            yield return WaitForEnterKey();
-            Debug.Log("Move hand");
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, 10, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
-            yield return WaitForEnterKey();
-            Debug.Log($"End bounds: {bbox.GetComponent<BoxCollider>().bounds}");
-
+            var endBounds = bbox.GetComponent<BoxCollider>().bounds;
+            AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
+            AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
         }
+
+        private void AssertAboutEqual(Vector3 actual, Vector3 expected, string message)
+        {
+            var dist = (actual - expected).magnitude;
+            Debug.Assert(dist < distanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}, distance {dist}");
+        }
+
+        //public IEnumerator ScaleViaFarInteraction()
+        //{
+        //    var bbox = InstantiateSceneAndDefaultBbox();
+        //    // make the box smaller so we can see it
+
+        //}
 
         /// <summary>
         /// Waits for the user to press the enter key before a test continues.
