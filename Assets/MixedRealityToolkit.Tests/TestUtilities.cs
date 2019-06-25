@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
+        const float vector3DistanceEpsilon = 0.01f;
+
         const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
         public static Scene primaryTestScene;
@@ -162,6 +164,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #else
             return ScriptableObject.CreateInstance<T>();
 #endif
+        }
+
+        public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message)
+        {
+            var dist = (actual - expected).magnitude;
+            Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}, distance {dist}");
         }
     }
 }
