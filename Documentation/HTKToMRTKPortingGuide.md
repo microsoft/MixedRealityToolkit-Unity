@@ -1,4 +1,4 @@
-# Porting Guide
+﻿# Porting Guide
 
 ## Controller and hand input
 
@@ -7,10 +7,8 @@
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | Type                      | Specific events for buttons, with input type info when relevant. | Action / Gesture based input, passed along via events. |
-| Setup                     | Place the InputManager in the scene. | Enable the input system in the Configuration Profile and specify a concrete input system type. |
+| Setup                     | Place the InputManager in the scene. | Enable the input system in the [Configuration Profile](MixedRealityConfigurationGuide.md) and specify a concrete input system type. |
 | Configuration             | Configured in the Inspector, on each individual script in the scene. | Configured via the Mixed Reality Input System Profile and its related profile, listed below. |
-
-Learn more about the [new configuration system here](MixedRealityConfigurationGuide.md).
 
 Related profiles:
 * Mixed Reality Controller Mapping Profile
@@ -26,9 +24,12 @@ Platform support components (e.g., Windows Mixed Reality Device Manager) must be
 
 ### Interface and event mappings
 
-Some events no longer have unique events and now contain a MixedRealityInputAction. These actions are specified in the Input Actions profile and mapped to specific controllers and platforms in the Controller Mapping profile. Events like `OnInputDown` should now check the MixedRealityInputAction type.
+Some events no longer have unique events and now contain a [MixedRealityInputAction](Input/InputActions.md). These actions are specified in the Input Actions profile and mapped to specific controllers and platforms in the Controller Mapping profile. Events like `OnInputDown` should now check the MixedRealityInputAction type.
 
-Learn more about the [new input system here](/Input/Overview.md).
+Related input systems:
+* [Input Overview](/Input/Overview.md)
+* [Input Events](/Input/InputEvents.md)
+* [Input Pointers](/Input/Pointers.md)
 
 | HTK 2017 |  MRTK v2  | Action Mapping |
 |----------|-----------|----------------|
@@ -129,9 +130,9 @@ Some Utilities have been reconciled as duplicates with the Solver system. Please
 
 | HTK 2017 |  MRTK v2  |
 |----------|-----------|
-| Billboard | [`Billboard`](xref:Microsoft.MixedReality.Toolkit.UI.Billboard) (Need to add new component with new namespace.) |
+| Billboard | [`Billboard`](xref:Microsoft.MixedReality.Toolkit.UI.Billboard) |
 | Tagalong | [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) or [`Orbital`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital) [Solver](README_Solver.md) |
 | FixedAngularSize | [`ConstantViewSize`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize) [Solver](README_Solver.md) |
 | FpsDisplay | [Diagnostics System](Diagnostics/DiagnosticsSystemGettingStarted.md) (in Configuration Profile) |
-| NearFade | Built-in to MixedRealityStandard.shader |
+| NearFade | Built-in to [Mixed Reality Toolkit Standard shader](README_MRTKStandardShader.md) |
 
