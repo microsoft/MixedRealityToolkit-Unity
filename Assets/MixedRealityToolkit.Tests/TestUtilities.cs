@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
@@ -110,6 +111,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 p.position = new Vector3(1.0f, 1.5f, -2.0f);
                 p.LookAt(Vector3.zero);
+            });
+        }
+
+        public static void FaceCameraForward()
+        {
+            // Move the camera to origin looking at +z to more easily see the a target at 0,0,0
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
             });
         }
 

@@ -49,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // instantiate scene
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
+            TestUtilities.FaceCameraForward();
 
             // Load interactable prefab
             GameObject interactableObject;
@@ -62,13 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out interactable,
                 out translateTargetObject);
 
-            // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
 
             Vector3 targetStartPosition = translateTargetObject.localPosition;
             
@@ -89,6 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
             Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
+            Assert.True(wasClicked, "Interactable was not clicked.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -105,6 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // instantiate scene
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
+            TestUtilities.FaceCameraForward();
 
             // Load interactable prefab
             GameObject interactableObject;
@@ -118,13 +117,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out interactable,
                 out translateTargetObject);
 
-            // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
 
             Vector3 targetStartPosition = translateTargetObject.localPosition;
 
@@ -152,6 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(1f);
 
             Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
+            Assert.True(wasClicked, "Interactable was not clicked.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -168,6 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // instantiate scene
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
+            TestUtilities.FaceCameraForward();
 
             // Load interactable prefab
             GameObject interactableObject;
@@ -181,16 +178,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out interactable,
                 out translateTargetObject);
 
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
             // Set up its voice command
             interactable.VoiceCommand = "Select";
-
-            // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
 
             Vector3 targetStartPosition = translateTargetObject.localPosition;
 
@@ -206,6 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(1f);
 
             Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
+            Assert.True(wasClicked, "Interactable was not clicked.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -223,6 +217,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
+            // Face the camera in the opposite direction so we don't focus on button
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.back);
+            });
+
             // Load interactable prefab
             GameObject interactableObject;
             Interactable interactable;
@@ -236,6 +238,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out interactable,
                 out translateTargetObject);
 
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
             // Set interactable to global
             interactable.IsGlobal = true;
 
@@ -248,6 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Add interactable as a global listener
+            // This is only necessary if IsGlobal is being set manually. If it's set in the inspector, interactable will register itself in OnEnable automatically.
             MixedRealityToolkit.InputSystem.PushModalInputHandler(interactableObject);
 
             // Raise a select down input event, then wait for transition to take place
@@ -261,6 +268,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(1f);
 
             Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
+            Assert.True(wasClicked, "Interactable was not clicked.");
+            Assert.False(interactable.HasFocus, "Interactable had focus");
 
             // Remove as global listener
             MixedRealityToolkit.InputSystem.PopModalInputHandler();
@@ -280,6 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // instantiate scene
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
+            TestUtilities.FaceCameraForward();
 
             // Load interactable prefab
             GameObject interactableObject;
@@ -290,6 +300,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out interactableObject,
                 out interactable,
                 out translateTargetObject);
+
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
 
             Vector3 targetStartPosition = translateTargetObject.transform.localPosition;
 
@@ -307,17 +321,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TouchHandler touchHandler = interactableObject.AddComponent<TouchHandler>();
             touchHandler.OnTouchStarted.AddListener((HandTrackingInputEventData e) => interactable.SetInputDown());
             touchHandler.OnTouchCompleted.AddListener((HandTrackingInputEventData e) => interactable.SetInputDown());
-
-            touchHandler.OnTouchStarted.AddListener((HandTrackingInputEventData e) => Debug.Log("SetInputDown"));
-            touchHandler.OnTouchCompleted.AddListener((HandTrackingInputEventData e) => Debug.Log("SetInputUp"));
-
-            // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
 
             // Move the hand forward to intersect the interactable
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
@@ -338,6 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(1f);
 
             Assert.AreEqual(targetStartPosition, translateTargetObject.transform.localPosition, "Translate target object was not translated back by action.");
+            Assert.True(wasClicked, "Interactable was not clicked.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -354,6 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // instantiate scene
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
+            TestUtilities.FaceCameraForward();
 
             // Load interactable prefab
             GameObject interactableObject;
@@ -367,13 +372,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out interactable,
                 out translateTargetObject);
 
-            // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
 
             Vector3 targetStartPosition = translateTargetObject.localPosition;
 
@@ -394,6 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(1f);
 
             Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
+            Assert.True(wasClicked, "Interactable was not clicked.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
