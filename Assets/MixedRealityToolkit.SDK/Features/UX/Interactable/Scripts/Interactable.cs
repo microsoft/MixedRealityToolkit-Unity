@@ -763,6 +763,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        public void ForceUpdateThemes()
+        {
+            SetupThemes();
+        }
+
         #endregion DimensionsUtilities
 
         #region InteractableUtilities

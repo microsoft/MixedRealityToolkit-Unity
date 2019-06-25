@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Assembles a push button from primitives and uses simulated hand input to press it.
         /// </summary>
         /// <returns></returns>
-        //[UnityTest] Temporarily ignoring this test until we can get animation working
+        [UnityTest]
         public IEnumerator TestSimulatedHandInputOnRuntimeAssembled()
         {
             // instantiate scene
@@ -300,6 +300,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out interactableObject,
                 out interactable,
                 out translateTargetObject);
+
+            interactableObject.transform.position = new Vector3(0.025f, 0.05f, 0.65f);
+            interactableObject.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -320,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Add a touch handler and link touch started / touch completed events
             TouchHandler touchHandler = interactableObject.AddComponent<TouchHandler>();
             touchHandler.OnTouchStarted.AddListener((HandTrackingInputEventData e) => interactable.SetInputDown());
-            touchHandler.OnTouchCompleted.AddListener((HandTrackingInputEventData e) => interactable.SetInputDown());
+            touchHandler.OnTouchCompleted.AddListener((HandTrackingInputEventData e) => interactable.SetInputUp());
 
             // Move the hand forward to intersect the interactable
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
@@ -365,12 +368,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Interactable interactable;
             Transform translateTargetObject;
 
-            InstantiateDefaultInteractablePrefab(
-                new Vector3(0.0f, 0.0f, 0.5f),
-                new Vector3(-90f, 0f, 0f),
+            AssembleInteractableButton(
                 out interactableObject,
                 out interactable,
                 out translateTargetObject);
+
+            interactableObject.transform.position = new Vector3(0.0f, 0.0f, 0.5f);
+            interactableObject.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -379,20 +383,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 targetStartPosition = translateTargetObject.localPosition;
 
             yield return null;
-            
+
             // Find an input source to associate with the input event (doesn't matter which one)
             IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Raise an input down event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, interactable.InputAction);
-            yield return new WaitForSeconds(1f);
+            MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
+            yield return new WaitForSeconds(5f);
 
             Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
 
             // Raise an input up event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, interactable.InputAction);
-            yield return new WaitForSeconds(1f);
+            MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.None, interactable.InputAction);
+            yield return new WaitForSeconds(5f);
 
             Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
             Assert.True(wasClicked, "Interactable was not clicked.");
@@ -447,6 +451,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             InteractableThemePropertySettings offsetThemeSetting = new InteractableThemePropertySettings();
             offsetThemeSetting.Theme = offsetTheme;
+            offsetThemeSetting.Type = typeof(InteractableOffsetTheme);
+            offsetThemeSetting.AssemblyQualifiedName = offsetThemeSetting.Type.AssemblyQualifiedName;
+            offsetThemeSetting.CustomSettings = new System.Collections.Generic.List<InteractableCustomSetting>();
+            offsetThemeSetting.CustomHistory = new System.Collections.Generic.List<InteractableCustomSetting>();
 
             InteractableThemeProperty themeProperty = new InteractableThemeProperty();
             InteractableThemePropertyValue defaultPropertyValue = new InteractableThemePropertyValue();
@@ -471,11 +479,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             profileItem.Themes = new System.Collections.Generic.List<Theme>() { interactableTheme };
             profileItem.Target = childObject;
 
+            offsetTheme.Init(interactableObject, offsetThemeSetting);
+
             interactable.Profiles = new System.Collections.Generic.List<InteractableProfileItem>() { profileItem };
+
+            interactable.ForceUpdateThemes();
 
             #endregion
 
-            // Set the interactable to respond to the requested inut action
+            // Set the interactable to respond to the requested input action
             MixedRealityInputAction selectAction = MixedRealityToolkit.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();
             Assert.NotNull(selectAction.Description, "Couldn't find " + selectActionDescription + " input action in input system profile.");
             interactable.InputAction = selectAction;
