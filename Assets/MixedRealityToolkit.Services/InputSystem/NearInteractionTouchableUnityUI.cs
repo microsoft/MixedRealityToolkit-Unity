@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {
-            normal = transform.forward;
+            normal = -transform.forward;
 
             Vector3 localPoint = transform.InverseTransformPoint(samplePoint);
 
