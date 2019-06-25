@@ -38,7 +38,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {}
 
         private IInputSimulationService inputSimService = null;
-        private IInputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
+        private IInputSimulationService InputSimService
+        {
+            get
+            {
+                if (inputSimService == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IInputSimulationService>(out inputSimService);
+                }
+                return inputSimService;
+            }
+        }
 
         private InputAnimation animation = null;
         /// <inheritdoc />
