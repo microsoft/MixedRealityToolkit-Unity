@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         void SuspendObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
-        /// Clears all registered observer's observations.
+        /// Clears all registered observers' observations.
         /// </summary>
         void ClearObservations();
 
