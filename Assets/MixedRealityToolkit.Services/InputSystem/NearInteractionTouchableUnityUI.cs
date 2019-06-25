@@ -17,6 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private RectTransform rectTransform;
 
+        public static IReadOnlyCollection<NearInteractionTouchableUnityUI> Instances { get { return instances.AsReadOnly(); } }
+        private static readonly List<NearInteractionTouchableUnityUI> instances = new List<NearInteractionTouchableUnityUI>();
+
         /// <inheritdoc />
         void Start()
         {
@@ -40,6 +43,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             localPoint = transform.TransformSize(localPoint);
 
             return Math.Abs(localPoint.z);
+        }
+
+        protected void OnEnable()
+        {
+            instances.Add(this);
+        }
+
+        protected void OnDisable()
+        {
+            instances.Remove(this);
         }
     }
 }
