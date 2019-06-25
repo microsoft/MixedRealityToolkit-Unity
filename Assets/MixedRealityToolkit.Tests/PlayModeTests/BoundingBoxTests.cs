@@ -32,7 +32,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.ShutdownMixedRealityToolkit();
         }
 
-        private GameObject InstantiateSceneAndDefaultBbox()
+        /// <summary>
+        /// Instantiates a bounding box at 0, 0, -1.5f
+        /// box is at scale 1,1,1
+        /// </summary>
+        /// <returns></returns>
+        private BoundingBox InstantiateSceneAndDefaultBbox()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
@@ -40,22 +45,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             RenderSettings.skybox = null;
 
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = Vector3.forward * -1.5f;
-            cube.AddComponent<BoundingBox>();
+            cube.transform.position = Vector3.forward * 1.5f;
+            BoundingBox result = cube.AddComponent<BoundingBox>();
 
-            return cube;
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(cube.transform.position);
+            });
+
+            return result;
         }
         #endregion
 
         [UnityTest]
         public IEnumerator BBoxInstantiate()
         {
-            GameObject bbox = InstantiateSceneAndDefaultBbox();
+            var bbox = InstantiateSceneAndDefaultBbox();
             yield return null;
-            BoundingBox bboxComponent = bbox.GetComponent<BoundingBox>();
-            Assert.IsNotNull(bboxComponent);
+            Assert.IsNotNull(bbox);
 
-            GameObject.Destroy(bbox);
+            GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
@@ -67,15 +78,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator BBoxOverride()
         {
-            var go = InstantiateSceneAndDefaultBbox();
+            var bbox = InstantiateSceneAndDefaultBbox();
             yield return null;
-            var bbox = go.GetComponent<BoundingBox>();
             bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
             bbox.HideElementsInInspector = false;
             yield return null;
 
             var newObject = new GameObject();
-            newObject.name = "newObject";
             var bc = newObject.AddComponent<BoxCollider>();
             bc.center = new Vector3(.25f, 0, 0);
             bc.size = new Vector3(0.162f, 0.1f, 1);
@@ -83,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Get the dimensions of the corners
-            List<GameObject> corners = FindDescendantsContainingName(go, "corner_");
+            List<GameObject> corners = FindDescendantsContainingName(bbox.gameObject, "corner_");
 
             Bounds b = new Bounds();
             b.center = corners[0].transform.position;
@@ -92,10 +101,46 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 b.Encapsulate(c.transform.position);
             }
 
-            Debug.Assert(b.center == new Vector3(.25f, 0, 0), $"bounds center should be {bc.center} but they are {b.center}");
-            Debug.Assert(b.size == new Vector3(0.162f, 0.1f, 1), $"bounds size should be {bc.size} but they are {b.size}");
+            Debug.Assert(b.center == bc.center, $"bounds center should be {bc.center} but they are {b.center}");
+            Debug.Assert(b.size == bc.size, $"bounds size should be {bc.size} but they are {b.size}");
 
             yield return null;
+        }
+
+        /// <summary>
+        /// Uses near interaction to scale the bounding box by directly grabbing corner
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration()
+        {
+            var bbox = InstantiateSceneAndDefaultBbox();
+            // make the box smaller so we can see it
+            bbox.transform.localScale *= 0.5f;
+            bbox.Active = true;
+            bbox.HideElementsInInspector = false;
+            var bounds = bbox.GetComponent<BoxCollider>().bounds;
+            Debug.Assert(bounds.center == Vector3.zero);
+            Debug.Log($"Start bounds: {bounds}");
+            yield return null;
+            List<GameObject> corners = FindDescendantsContainingName(bbox.gameObject, "corner_");
+
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            // front right corner is corner 3
+            var frontRightCornerPos = corners[3].transform.position;
+
+            Debug.Log("Show hand at " + frontRightCornerPos);
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, frontRightCornerPos);
+            yield return WaitForEnterKey();
+            Debug.Log("Pinch hand");
+            yield return PlayModeTestUtilities.SetHandState(frontRightCornerPos, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return WaitForEnterKey();
+            Debug.Log("Move hand");
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+            yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, 10, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return WaitForEnterKey();
+            Debug.Log($"End bounds: {bbox.GetComponent<BoxCollider>().bounds}");
+
         }
 
         /// <summary>
@@ -118,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Queue<Transform> toExplore = new Queue<Transform>();
             toExplore.Enqueue(rigRoot.transform);
             List<GameObject> result = new List<GameObject>();
-            while(toExplore.Count > 0)
+            while (toExplore.Count > 0)
             {
                 var cur = toExplore.Dequeue();
                 if (cur.name.Contains(v))
