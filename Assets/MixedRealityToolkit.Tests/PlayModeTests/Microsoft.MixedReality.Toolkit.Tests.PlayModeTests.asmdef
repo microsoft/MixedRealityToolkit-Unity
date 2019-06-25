@@ -2,9 +2,8 @@
     "name": "Microsoft.MixedReality.Toolkit.Tests.PlayModeTests",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Core.Build",
         "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy",
-        "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions",
+        "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
