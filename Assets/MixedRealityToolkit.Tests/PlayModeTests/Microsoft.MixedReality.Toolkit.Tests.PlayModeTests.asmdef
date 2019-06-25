@@ -1,22 +1,20 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Tests.EditModeTests",
+    "name": "Microsoft.MixedReality.Toolkit.Tests.PlayModeTests",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Core.Build",
+        "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy",
         "Microsoft.MixedReality.Toolkit.SDK",
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
-        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor",
-        "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions",
+        "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
-        "Microsoft.MixedReality.Toolkit.Tests"
+        "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
+        "Microsoft.MixedReality.Toolkit.Tests",
+        "Unity.TextMeshPro"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

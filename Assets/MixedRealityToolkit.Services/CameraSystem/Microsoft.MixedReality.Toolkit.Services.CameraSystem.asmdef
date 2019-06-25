@@ -1,9 +1,7 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf",
+    "name": "Microsoft.MixedReality.Toolkit.Services.CameraSystem",
     "references": [
-        "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async",
-        "Microsoft.MixedReality.Toolkit.Utilities.Gltf"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

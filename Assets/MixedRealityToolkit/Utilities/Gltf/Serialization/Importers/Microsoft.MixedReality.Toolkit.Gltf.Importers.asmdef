@@ -1,12 +1,15 @@
 {
-    "name": "MixedRealityToolkit.Examples.Demos.UX.Interactables",
+    "name": "Microsoft.MixedReality.Toolkit.Gltf.Importers",
     "references": [
-        "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.SDK.Inspectors"
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit.Gltf",
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

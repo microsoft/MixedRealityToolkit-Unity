@@ -1,14 +1,14 @@
 {
-    "name": "MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields.Inspectors",
+    "name": "Microsoft.MixedReality.Toolkit.SDK",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Core.Inspectors",
         "Microsoft.MixedReality.Toolkit",
-        "MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields"
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Unity.TextMeshPro"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

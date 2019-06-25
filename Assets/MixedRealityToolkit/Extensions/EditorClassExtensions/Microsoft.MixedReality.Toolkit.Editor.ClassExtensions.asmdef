@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor",
+    "name": "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
     "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [

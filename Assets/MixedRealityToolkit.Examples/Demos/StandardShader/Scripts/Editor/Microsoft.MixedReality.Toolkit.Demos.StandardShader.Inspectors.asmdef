@@ -1,6 +1,8 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions",
-    "references": [],
+    "name": "Microsoft.MixedReality.Toolkit.Demos.StandardShader.Inspectors",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Examples"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"

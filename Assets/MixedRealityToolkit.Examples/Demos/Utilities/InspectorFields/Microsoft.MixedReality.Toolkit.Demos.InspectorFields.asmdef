@@ -1,12 +1,10 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
+    "name": "Microsoft.MixedReality.Toolkit.Demos.InspectorFields",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

@@ -1,8 +1,6 @@
 {
-    "name": "MixedRealityToolkit.Services.SceneSystem",
-    "references": [
-        "Microsoft.MixedReality.Toolkit"
-    ],
+    "name": "Microsoft.MixedReality.Toolkit.Async",
+    "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],

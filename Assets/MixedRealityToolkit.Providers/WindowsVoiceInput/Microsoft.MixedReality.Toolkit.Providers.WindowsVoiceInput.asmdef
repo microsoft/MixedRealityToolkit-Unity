@@ -1,14 +1,15 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Utilities.Gltf.Importers",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async",
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
-        "Microsoft.MixedReality.Toolkit.Utilities.Gltf"
+        "Microsoft.MixedReality.Toolkit.Async"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
-        "Editor"
+        "Editor",
+        "WSA",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

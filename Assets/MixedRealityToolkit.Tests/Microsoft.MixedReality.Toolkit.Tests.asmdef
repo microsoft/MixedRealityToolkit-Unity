@@ -1,9 +1,12 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Utilities.Gltf",
+    "name": "Microsoft.MixedReality.Toolkit.Tests",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions"
     ],
-    "optionalUnityReferences": [],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

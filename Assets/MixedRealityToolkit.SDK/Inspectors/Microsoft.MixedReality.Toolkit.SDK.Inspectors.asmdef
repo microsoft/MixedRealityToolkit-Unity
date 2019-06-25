@@ -1,13 +1,14 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Tests",
+    "name": "Microsoft.MixedReality.Toolkit.SDK.Inspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions"
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
+        "Microsoft.MixedReality.Toolkit.SDK",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem"
     ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ],
+    "optionalUnityReferences": [],
     "includePlatforms": [
+        "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
