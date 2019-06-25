@@ -95,8 +95,9 @@
 <p>Both of these input sources use the <em>Gesture Settings</em> profile to translate Unity's Touch and Gesture events respectively into MRTK's <a href="InputActions.html">Input Actions</a>. This profile can be found under the <em>Input System Settings</em> profile.</p>
 <img src="../Images/Input/GestureProfile.png" style="max-width:100%;">
 <h2 id="gesture-events">Gesture Events</h2>
-<p>Gesture events are received by implementing one of the gesture handler interfaces: <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler.html"><code>IMixedRealityGestureHandler</code></a>  and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler-1.html"><code>IMixedRealityGestureHandler&lt;TYPE&gt;</code></a> (see table of <a href="InputEvents.html">event handlers</a>).
-When implementing the generic version, the <em>OnGestureCompleted</em> and <em>OnGestureUpdated</em> events can receive typed data of the following types:</p>
+<p>Gesture events are received by implementing one of the gesture handler interfaces: <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler.html"><code>IMixedRealityGestureHandler</code></a> or <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler-1.html"><code>IMixedRealityGestureHandler&lt;TYPE&gt;</code></a> (see table of <a href="InputEvents.html">event handlers</a>).</p>
+<p>See <a href="#example-scene">Example Scene</a> for an example implementation of a gesture event handler.</p>
+<p>When implementing the generic version, the <em>OnGestureCompleted</em> and <em>OnGestureUpdated</em> events can receive typed data of the following types:</p>
 <ul>
 <li><code>Vector2</code> - 2D position gesture. Produced by touch screens to inform of their <a href="https://docs.unity3d.com/ScriptReference/Touch-deltaPosition.html"><code>deltaPosition</code></a>.</li>
 <li><code>Vector3</code> - 3D position gesture. Produced by HoloLens to inform of:
@@ -108,8 +109,59 @@ When implementing the generic version, the <em>OnGestureCompleted</em> and <em>O
 <li><code>Quaternion</code> - 3D rotation gesture. Available to custom input sources but not currently produced by any of the existing ones.</li>
 <li><code>MixedRealityPose</code> - Combined 3D position/rotation gesture. Available to custom input sources but not currently produced by any of the existing ones.</li>
 </ul>
+<h2 id="order-of-events">Order of events</h2>
+<p>There are two principal chains of events, depending on user input:</p>
+<ul>
+<li><p>&quot;Hold&quot;:</p>
+<ol>
+<li>Hold tap:
+<ul>
+<li>start <em>Manipulation</em></li>
+</ul>
+</li>
+<li>Hold tap beyond <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.html#Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSimulationProfile_HoldStartDuration">HoldStartDuration</a>:
+<ul>
+<li>start <em>Hold</em></li>
+</ul>
+</li>
+<li>Release tap:
+<ul>
+<li>complete <em>Hold</em></li>
+<li>complete <em>Manipulation</em></li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>&quot;Move&quot;:</p>
+<ol>
+<li>Hold tap:
+<ul>
+<li>start <em>Manipulation</em></li>
+</ul>
+</li>
+<li>Hold tap beyond <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.html#Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSimulationProfile_HoldStartDuration">HoldStartDuration</a>:
+<ul>
+<li>start <em>Hold</em></li>
+</ul>
+</li>
+<li>Move hand beyond <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.html#Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSimulationProfile_NavigationStartThreshold">NavigationStartThreshold</a>:
+<ul>
+<li>cancel <em>Hold</em></li>
+<li>start <em>Navigation</em></li>
+</ul>
+</li>
+<li>Release tap:
+<ul>
+<li>complete <em>Manipulation</em></li>
+<li>complete <em>Navigation</em></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
 <h2 id="example-scene">Example Scene</h2>
 <p>The <strong>HandInteractionGestureEventsExample</strong> scene in <code>MixedRealityToolkit.Examples\Demos\HandTracking\Scenes</code> shows how to use the pointer Result to spawn an object at the hit location.</p>
+<p><a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Script/GestureTester.cs">Gesture Tester script</a> is an example implementation to visualize gesture events via GameObjects. The handler functions change the color of indicator objects and display the last recorded event in text objects in the scene.</p>
 </article>
           </div>
           
