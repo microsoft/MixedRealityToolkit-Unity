@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var layerMasks = PrioritizedLayerMasksOverride ?? PokeLayerMasks;
 
             // Find closest touchable
-            ColliderNearInteractionTouchable newClosestTouchable = null;
+            BaseNearInteractionTouchable newClosestTouchable = null;
             foreach (var layerMask in layerMasks)
             {
                 if (FindClosestTouchableForLayerMask(layerMask, out newClosestTouchable, out closestDistance, out closestNormal))
@@ -156,11 +156,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             visuals.SetActive(IsActive);
         }
 
-        private bool FindClosestTouchableForLayerMask(LayerMask layerMask, out ColliderNearInteractionTouchable closest, out float distance, out Vector3 normal)
+        private bool FindClosestTouchableForLayerMask(LayerMask layerMask, out BaseNearInteractionTouchable closest, out float closestDistance, out Vector3 closestNormal)
         {
             closest = null;
-            distance = float.PositiveInfinity;
-            normal = Vector3.zero;
+            closestDistance = float.PositiveInfinity;
+            closestNormal = Vector3.zero;
 
             int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(Position, touchableDistance, queryBuffer, layerMask, triggerInteraction);
             if (numColliders == queryBuffer.Length)
@@ -173,11 +173,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var touchable = queryBuffer[i].GetComponent<ColliderNearInteractionTouchable>();
                 if (touchable)
                 {
-                    float dist = touchable.DistanceToTouchable(Position, out normal);
-                    if (dist < distance)
+                    float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
+                    if (distance < closestDistance)
                     {   
                         closest = touchable;
-                        distance = dist;
+                        closestDistance = distance;
+                        closestNormal = normal;
                     }
                 }
             }
