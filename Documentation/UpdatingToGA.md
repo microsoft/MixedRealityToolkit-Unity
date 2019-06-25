@@ -2,9 +2,9 @@
 
 Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the GA release.
 
-- [Assembly Name Changes](#assembly_name_changes)
+- [Assembly name changes](#assembly-name-changes)
 
-## Assembly Name Changes
+## Assembly name changes
 
 In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.
 
