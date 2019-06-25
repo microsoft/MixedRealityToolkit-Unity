@@ -207,6 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         private Vector3 PushSpaceSourceParentPosition => (PushSpaceSourceTransform.parent != null) ? PushSpaceSourceTransform.parent.position : Vector3.zero;
+
         protected virtual void Start()
         {
             if (gameObject.layer == 2)
