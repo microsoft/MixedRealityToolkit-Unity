@@ -50,6 +50,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the touchable objects.
         /// </summary>
+        /// <remarks>
+        /// Only [BaseNearInteractionTouchables](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable) in one of the LayerMasks will raise touch events.
+        /// </remarks>
         public LayerMask[] PokeLayerMasks => pokeLayerMasks;
 
         [SerializeField]

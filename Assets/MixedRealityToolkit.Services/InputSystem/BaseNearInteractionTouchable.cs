@@ -10,12 +10,12 @@ using UnityEngine.Serialization;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Base class for all NearInteractionTouchables
-    ///
-    /// Technical details:
-    /// Provides a listing of near field touch proximity bounds.
-    /// This is used to detect if a contact point is near an object to turn on near field interactions
+    /// Base class for all NearInteractionTouchables.
     /// </summary>
+    /// <remarks>
+    /// Add this component to objects to raise touch events when in [PokePointer](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) proximity.
+    /// The object layer must be included of the [PokeLayerMasks](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.PokeLayerMasks).
+    /// </remarks>
     public abstract class BaseNearInteractionTouchable : MonoBehaviour
     {
         [SerializeField]
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     }
 
     /// <summary>
-    /// Base class for all touchables using colliders
+    /// Base class for all touchables using colliders.
     /// </summary>
     [RequireComponent(typeof(Collider))]
     public abstract class ColliderNearInteractionTouchable : BaseNearInteractionTouchable
