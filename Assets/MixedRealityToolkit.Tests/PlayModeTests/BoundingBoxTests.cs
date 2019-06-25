@@ -160,10 +160,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var iss = PlayModeTestUtilities.GetInputSimulationService();
             var oldIsp = iss.InputSimulationProfile;
-            var isp = new MixedRealityInputSimulationProfile
-            {
-                HandSimulationMode = HandSimulationMode.Gestures
-            };
+            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
+            isp.HandSimulationMode = HandSimulationMode.Gestures;
             iss.InputSimulationProfile = isp;
 
             CameraCache.Main.transform.LookAt(bbox.ScaleCorners[3].transform);
