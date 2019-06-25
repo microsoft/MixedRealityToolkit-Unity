@@ -635,6 +635,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             var writer = new BinaryWriter(stream);
 
+            InputAnimationSerializationUtils.WriteHeader(writer);
+
             PoseCurvesToStream(writer, cameraCurves, startTime);
 
             InputAnimationSerializationUtils.WriteBoolCurve(writer, handTrackedCurveLeft, startTime);
@@ -668,6 +670,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void FromStream(Stream stream)
         {
             var reader = new BinaryReader(stream);
+
+            InputAnimationSerializationUtils.ReadHeader(reader, out int versionMajor, out int versionMinor);
+            if (versionMajor != 1 || versionMinor != 0)
+            {
+                Debug.LogError("Only version 1.0 of input animation file format is supported.");
+                return;
+            }
 
             PoseCurvesFromStream(reader, cameraCurves);
 
