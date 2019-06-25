@@ -47,6 +47,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Values for user-friendly dimensions settings
+        /// </summary>
+        public enum SelectionTypes { Button, Toggle, MultiDimension};
+        
         protected readonly List<IMixedRealityPointer> focusingPointers = new List<IMixedRealityPointer>();
         /// <summary>
         /// Pointers that are focusing the interactable
@@ -75,6 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool IsGlobal = false;
         // a way of adding more layers of states for toggles
         public int Dimensions = 1;
+        // the value to set on start, instead of zero
+        public int StartDimensionIndex = 0;
         // is the interactive selectable
         public bool CanSelect = true;
         // can deselect a toggle, a radial button or tab would set this to false
@@ -83,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public string VoiceCommand = "";
         // does the voice command require this to have focus?
         public bool RequiresFocus = true;
-
+        
         /// <summary>
         /// Does this interactable require focus
         /// </summary>
@@ -114,7 +121,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool HasObservationTargeted { get; private set; }
         public bool HasObservation { get; private set; }
         public bool IsVisited { get; private set; }
-        public bool IsToggled { get; private set; }
+        protected bool isToggled = false;
+        public bool IsToggled
+        {
+            get
+            {
+                return isToggled;
+            }
+            private set
+            {
+                isToggled = value;
+            }
+        }
         public bool HasGesture { get; private set; }
         public bool HasGestureMax { get; private set; }
         public bool HasCollision { get; private set; }
@@ -128,6 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected bool wasDisabled = false;
 
         // cache of current dimension
+        [SerializeField]
         protected int dimensionIndex = 0;
 
         // allows for switching colliders without firing a lose focus immediately
@@ -236,6 +255,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 States = States.GetDefaultInteractableStates();
             }
+
+            if(Dimensions > 1)
+            {
+                dimensionIndex = StartDimensionIndex;
+            }
+
             InputAction = ResolveInputAction(InputActionId);
             SetupEvents();
             SetupThemes();
@@ -470,6 +495,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             IsToggled = toggled;
             SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
+
+            // if in toggle mode
+            if (Dimensions == 2)
+            {
+                SetDimensionIndex(toggled ? 1 : 0);
+            }
         }
 
         public virtual void SetGesture(bool gesture)
