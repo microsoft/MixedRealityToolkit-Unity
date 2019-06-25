@@ -19,6 +19,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public const string Extension = "bin";
 
         /// <summary>
+        /// Generate a file name for export.
+        /// </summary>
+        public static string GetOutputFilename(string baseName="InputAnimation", bool appendTimestamp=true)
+        {
+            string filename;
+            if (appendTimestamp)
+            {
+                filename = String.Format("{0}-{1}.{2}", baseName, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), InputAnimationSerializationUtils.Extension);
+            }
+            else
+            {
+                filename = baseName;
+            }
+            return filename;
+        }
+
+        /// <summary>
         /// Serialize an animation curve with tangents as binary data.
         /// </summary>
         public static void WriteFloatCurve(BinaryWriter writer, AnimationCurve curve, float startTime)

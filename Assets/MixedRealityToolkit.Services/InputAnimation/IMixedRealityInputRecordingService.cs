@@ -64,10 +64,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="directory">Directory in which to create the file. If null the persistent data path of the app is used.</param>
         /// <returns>File path where input has been recorded.</returns>
         string SaveInputAnimation(string filename, string directory = null);
-
-        /// <summary>
-        /// Generate a file name for export.
-        /// </summary>
-        string GenerateOutputFilename();
     }
 }

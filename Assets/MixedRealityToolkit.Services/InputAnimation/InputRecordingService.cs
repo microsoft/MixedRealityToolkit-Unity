@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public string SaveInputAnimation(string directory = null)
         {
-            return SaveInputAnimation(GenerateOutputFilename(), directory);
+            return SaveInputAnimation(InputAnimationSerializationUtils.GetOutputFilename(), directory);
         }
 
         /// <inheritdoc />
@@ -289,23 +289,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
             return "";
-        }
-
-        /// <inheritdoc />
-        public string GenerateOutputFilename()
-        {
-            var profile = InputRecordingProfile;
-            string filename;
-            if (profile.AppendTimestamp)
-            {
-                filename = String.Format("{0}-{1}.{2}", profile.OutputFilename, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), InputAnimationSerializationUtils.Extension);
-            }
-            else
-            {
-                filename = profile.OutputFilename;
-            }
-
-            return filename;
         }
 
         /// Discard keyframes before the cutoff time.
