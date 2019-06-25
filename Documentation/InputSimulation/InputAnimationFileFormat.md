@@ -1,10 +1,23 @@
 # Input Animation Binary File Format Specification
 
+## Overall structure
+
+The input animation binary file begins with a 64 bit integer magic number. The value of this number in hexadecimal notation is `0x6a8faf6e0f9e42c6` and can be used to identify valid input animation files.
+
+The next eight bytes are two Int32 values declaring the major and minor version number of the file.
+
+The rest of the file is taken up by animation data, which may change between version numbers.
+
+| Section | Type |
+|---------|------|
+| Magic Number | Int64 |
+| Major Version Number | Int32 |
+| Minor Version Number | Int32 |
+| Animation Data | _see version section_ |
+
 ## Version 1.0
 
-The input animation file format consists of a sequence of animation curves. The number and meaning of animation curves is fixed, but each curve can have a different number of keyframes.
-
-### Overall structure
+The input animation data consists of a sequence of animation curves. The number and meaning of animation curves is fixed, but each curve can have a different number of keyframes.
 
 | Section | Type |
 |---------|------|
