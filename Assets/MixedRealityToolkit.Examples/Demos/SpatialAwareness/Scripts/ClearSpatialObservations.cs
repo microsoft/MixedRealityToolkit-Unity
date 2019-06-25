@@ -37,9 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         { }
 
         /// <summary>
-        /// Updates the state of the observers.
+        /// Toggles the state of the observers.
         /// </summary>
-        public void UpdateObservers()
+        public void ToggleObservers()
         {
             if (SpatialAwarenessSystem != null)
             {

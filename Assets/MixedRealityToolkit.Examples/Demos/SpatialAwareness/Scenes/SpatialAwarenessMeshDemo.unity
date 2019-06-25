@@ -486,7 +486,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 473057870}
-          m_MethodName: UpdateObservers
+          m_MethodName: ToggleObservers
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
