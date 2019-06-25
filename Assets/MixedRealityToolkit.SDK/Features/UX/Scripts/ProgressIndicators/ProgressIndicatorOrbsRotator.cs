@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         private void HandleStopping()
         {
             Color adjustedColor = propertyBlocks[orbs.Length - 1].GetColor("_Color");
-            if (stopRequested == true && adjustedColor.a <= 0.01f)
+            if (stopRequested && adjustedColor.a <= 0.01f)
             {
                 HasAnimationFinished = true;
             }
