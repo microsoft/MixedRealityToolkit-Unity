@@ -148,8 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                                 SelectDownStartTime = Time.time;
                                 cumulativeDelta = Vector3.zero;
-
-                                TryStartManipulation();
                             }
                             else
                             {
@@ -177,6 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 TryCancelHold();
                                 TryStartNavigation();
+                                TryStartManipulation();
                             }
                             else if (Time.time >= SelectDownStartTime + holdStartDuration)
                             {
