@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using UnityEngine.TestTools.Utils;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
@@ -21,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
-        const float vector3DistanceEpsilon = 0.01f;
+        const float vector3DistanceEpsilon = 0.02f;
 
         const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
@@ -113,6 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.position = new Vector3(1.0f, 1.5f, -2.0f);
                 p.LookAt(Vector3.zero);
             });
+            // Make sure to also zero out any camera transforms that may have been applied
+            CameraCache.Main.transform.localPosition = Vector3.zero;
+            CameraCache.Main.transform.localRotation = Quaternion.identity;
         }
 
         /// <summary>
@@ -168,8 +173,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message)
         {
-            var dist = (actual - expected).magnitude;
-            Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}, distance {dist}");
+            var comparer = new Vector3EqualityComparer(vector3DistanceEpsilon);
+            Assert.That(actual, 
+                Is.EqualTo(expected).Using(comparer), 
+                $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
     }
 }
