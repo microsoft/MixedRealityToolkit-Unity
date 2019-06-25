@@ -133,10 +133,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         internal static IEnumerator HideHand(Handedness handedness, InputSimulationService inputSimulationService)
         {
+            yield return new WaitForEndOfFrame();
             SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             inputSimulationService.HandDataRight.Update(false, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
             // Wait one frame for the hand to actually appear
             yield return null;
+            yield return new WaitForEndOfFrame();
         }
 
         /// <summary>
@@ -152,10 +154,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         internal static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService, ArticulatedHandPose.GestureId handPose, Vector3 handLocation)
         {
+            yield return new WaitForEndOfFrame();
             SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             inputSimulationService.HandDataRight.Update(true, false, GenerateHandPose(handPose, handedness, handLocation));
             // Wait one frame for the hand to actually go away
             yield return null;
+            yield return new WaitForEndOfFrame();
         }
 
         internal static void EnsureTextMeshProEssentials()

@@ -187,6 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Restore the input simulation profile
             iss.InputSimulationProfile = oldIsp;
+            yield return null;
         }
 
         /// <summary>
