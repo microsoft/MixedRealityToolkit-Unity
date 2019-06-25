@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class InteractableTests
     {
-        const float buttonPressAnimationDelay = 0.15f;
+        const float buttonPressAnimationDelay = 0.25f;
         const float buttonReleaseAnimationDelay = 0.75f;
 
         [SetUp]
