@@ -21,12 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("The duration of time it takes to animate in/out the highlight plate.")]
-        private float highlightPlateAnimationTime = 0.1f;
+        private float highlightPlateAnimationTime = 0.25f;
 
         #region Private Members
 
-        private int innerGlowColorID = 0;
-        private Color targetInnerGlowColor = Color.white;
+        private int fluentLightIntensityID = 0;
+        private float targetFluentLightIntensity = 1.0f;
         private MaterialPropertyBlock properties = null;
         private Coroutine highlightPlateAnimationRoutine = null;
 
@@ -36,15 +36,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.Start();
 
-            // Hide the highlight plate initially.
             if (highlightPlate != null)
             {
-                innerGlowColorID = Shader.PropertyToID("_InnerGlowColor");
+                // Cache the initial highlight plate state.
+                fluentLightIntensityID = Shader.PropertyToID("_FluentLightIntensity");
                 properties = new MaterialPropertyBlock();
-                targetInnerGlowColor = highlightPlate.sharedMaterial.GetColor(innerGlowColorID);
-                highlightPlate.GetPropertyBlock(properties);
-                properties.SetColor(innerGlowColorID, Color.black);
-                highlightPlate.SetPropertyBlock(properties);
+                targetFluentLightIntensity = highlightPlate.sharedMaterial.GetFloat(fluentLightIntensityID);
+
+                // Hide the highlight plate initially.
+                UpdateHightlightPlateVisuals(0.0f);
                 highlightPlate.enabled = false;
             }
         }
@@ -115,27 +115,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             highlightPlate.enabled = true;
 
-            var startColor = properties.GetColor(innerGlowColorID);
-            var endColor = fadeIn ? targetInnerGlowColor : Color.black;
-            var blendTime = fadeIn ? (1.0f - startColor.grayscale) * time : startColor.grayscale * time;
+            // Calculate how much time is left in the blend based on current intensity.
+            var normalizedIntensity = (targetFluentLightIntensity != 0.0f) ? properties.GetFloat(fluentLightIntensityID) / targetFluentLightIntensity : 1.0f;
+            var blendTime = fadeIn ? (1.0f - normalizedIntensity) * time : normalizedIntensity * time;
 
             while (blendTime > 0.0f)
             {
                 float t =  1.0f - (blendTime / time);
-                highlightPlate.GetPropertyBlock(properties);
-                properties.SetColor(innerGlowColorID, Color.Lerp(startColor, endColor, t));
-                highlightPlate.SetPropertyBlock(properties);
+                UpdateHightlightPlateVisuals(fadeIn ? t : 1.0f - t);
                 blendTime -= Time.deltaTime;
 
                 yield return null;
             }
 
-            properties.SetColor(innerGlowColorID, endColor);
+            UpdateHightlightPlateVisuals(fadeIn ? targetFluentLightIntensity : 0.0f);
 
+            // When completely faded out, hide the highlight plate.
             if (!fadeIn)
             {
                 highlightPlate.enabled = false;
             }
+        }
+
+        private void UpdateHightlightPlateVisuals(float lightIntensity)
+        {
+            highlightPlate.GetPropertyBlock(properties);
+            properties.SetFloat(fluentLightIntensityID, lightIntensity);
+            highlightPlate.SetPropertyBlock(properties);
         }
     }
 }

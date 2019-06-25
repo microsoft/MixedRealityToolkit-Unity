@@ -163,7 +163,7 @@ MonoBehaviour:
   currentPushDistance: 0
   movingButtonIconText: {fileID: 8352633413104042190}
   highlightPlate: {fileID: 304758184733692740}
-  highlightPlateAnimationTime: 0.1
+  highlightPlateAnimationTime: 0.25
 --- !u!114 &316800720
 MonoBehaviour:
   m_ObjectHideFlags: 0
