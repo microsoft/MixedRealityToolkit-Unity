@@ -102,33 +102,34 @@ public static class Compilation
             {"<!--OUTPUT_PATH_TOKEN-->", Path.Combine("..", "MRTKBuild") },
             {"<!--COMMON_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.CommonDefines) },
             {"<!--COMMON_DEVELOPMENT_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.DevelopmentBuildAdditionalDefines) },
-            {"<!--COMMON_INEDITOR_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.InEditorBuildAdditionalDefines) },
             {"<!--SUPPORTED_PLATFORMS_TOKEN-->", string.Join(";", CompilationSettings.Instance.AvailablePlatforms.Select(t=>t.Value.Name)) },
             {"<!--DEFAULT_PLATFORM_TOKEN-->", CompilationSettings.Instance.AvailablePlatforms[BuildTarget.StandaloneWindows].Name }
         };
 
         ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.CommonReferences, out HashSet<string> commonAssemblySearchPaths, out HashSet<string> commonAssemblyReferences);
         ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.DevelopmentBuildAdditionalReferences, out HashSet<string> developmentAssemblySearchPaths, out HashSet<string> developmentAssemblyReferences, commonAssemblySearchPaths);
-        ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.InEditorBuildAdditionalReferences, out HashSet<string> inEditorAssemblySearchPaths, out HashSet<string> inEditorAssemblyReferences, commonAssemblySearchPaths, developmentAssemblySearchPaths);
+        //ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.InEditorBuildAdditionalReferences, out HashSet<string> inEditorAssemblySearchPaths, out HashSet<string> inEditorAssemblyReferences, commonAssemblySearchPaths, developmentAssemblySearchPaths);
 
         foreach (CompilationSettings.CompilationPlatform platform in CompilationSettings.Instance.AvailablePlatforms.Values)
         {
             // Check for specialized template, otherwise get the common one
-            ProcessPlatformTemplateForConfiguration(platform, propsOutputFolder, true, commonAssemblySearchPaths, inEditorAssemblySearchPaths);
-            ProcessPlatformTemplateForConfiguration(platform, propsOutputFolder, false, commonAssemblySearchPaths, inEditorAssemblySearchPaths);
+            ProcessPlatformTemplateForConfiguration(platform, propsOutputFolder, true, commonAssemblySearchPaths/*, inEditorAssemblySearchPaths*/);
+            ProcessPlatformTemplateForConfiguration(platform, propsOutputFolder, false, commonAssemblySearchPaths/*, inEditorAssemblySearchPaths*/);
         }
+
+        ProcessPlatformTemplateForConfiguration(CompilationSettings.Instance.EditorPlatform, propsOutputFolder, true, commonAssemblySearchPaths);
 
         if (Utilities.TryGetXMLTemplate(templateText, "COMMON_REFERENCE", out string commonReferenceTemplate)
             && Utilities.TryGetXMLTemplate(templateText, "DEVELOPMENT_REFERENCE", out string developmentReferenceTemplate)
-            && Utilities.TryGetXMLTemplate(templateText, "INEDITOR_REFERENCE", out string inEditorReferenceTemplate))
+/*            && Utilities.TryGetXMLTemplate(templateText, "INEDITOR_REFERENCE", out string inEditorReferenceTemplate)*/)
         {
             tokensToReplace.Add("<!--COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", commonAssemblySearchPaths));
             tokensToReplace.Add("<!--DEVELOPMENT_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", developmentAssemblySearchPaths));
-            tokensToReplace.Add("<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", inEditorAssemblySearchPaths));
+            //tokensToReplace.Add("<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", inEditorAssemblySearchPaths));
 
             tokensToReplace.Add(commonReferenceTemplate, string.Join("\r\n", GetReferenceEntries(commonReferenceTemplate, commonAssemblyReferences)));
             tokensToReplace.Add(developmentReferenceTemplate, string.Join("\r\n", GetReferenceEntries(developmentReferenceTemplate, developmentAssemblyReferences)));
-            tokensToReplace.Add(inEditorReferenceTemplate, string.Join("\r\n", GetReferenceEntries(inEditorReferenceTemplate, inEditorAssemblyReferences)));
+            //tokensToReplace.Add(inEditorReferenceTemplate, string.Join("\r\n", GetReferenceEntries(inEditorReferenceTemplate, inEditorAssemblyReferences)));
         }
         else
         {
@@ -142,7 +143,7 @@ public static class Compilation
         return propsFilePath;
     }
 
-    private static void ProcessPlatformTemplateForConfiguration(CompilationSettings.CompilationPlatform platform, string propsOutputFolder, bool inEditorConfiguration, HashSet<string> commonAssemblySearchPaths, HashSet<string> inEditorAssemblySearchPaths)
+    private static void ProcessPlatformTemplateForConfiguration(CompilationSettings.CompilationPlatform platform, string propsOutputFolder, bool inEditorConfiguration, HashSet<string> commonAssemblySearchPaths/*, HashSet<string> inEditorAssemblySearchPaths*/)
     {
         string configuration = inEditorConfiguration ? "InEditor" : "Player";
 
@@ -169,7 +170,7 @@ public static class Compilation
         {
             platformPropsText = ProcessPlatformTemplate(platformTemplate, platform.Name, configuration, platform.AssemblyDefinitionPlatform.BuildTarget, platform.TargetFramework,
                 platform.CommonPlatformReferences.Concat(platform.AdditionalInEditorReferences), platform.CommonPlatformDefines.Concat(platform.AdditionalInEditorDefines),
-                commonAssemblySearchPaths, inEditorAssemblySearchPaths);
+                commonAssemblySearchPaths/*, inEditorAssemblySearchPaths*/);
         }
         else
         {
@@ -191,7 +192,7 @@ public static class Compilation
             {
                 {"<!--TARGET_FRAMEWORK_TOKEN-->", targetFramework.AsMSBuildString() },
                 {"<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", platformAssemblySearchPaths)},
-                {"<!--PLATFORM_COMMON_DEFINE_CONSTANTS-->", string.Join(";",   defines) },
+                {"<!--PLATFORM_COMMON_DEFINE_CONSTANTS-->", string.Join(";", defines) },
 
                 // These are UWP specific, but they will be no-op if not needed
                 { "<!--UWP_TARGET_PLATFORM_VERSION_TOKEN-->", UWPTargetPlatformVersion },

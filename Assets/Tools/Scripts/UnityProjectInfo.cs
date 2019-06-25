@@ -15,21 +15,18 @@ namespace Assets.MRTK.Tools.Scripts
     {
         private const string SDKProjectTypeGuid = "FAE04EC0-301F-11D3-BF4B-00C04F79EFBC";
 
-        private readonly Dictionary<string, Assembly> unityAssemblies;
-
         public static UnityProjectInfo CreateProjectInfo()
         {
             return new UnityProjectInfo();
         }
 
-        public IReadOnlyDictionary<string, Assembly> UnityAssemblies { get; }
+        public IReadOnlyDictionary<string, CSProjectInfo> CSProjects { get; }
 
-        public IReadOnlyDictionary<string, CSProjectInfo> CSProjects { get; private set; }
+        public IReadOnlyDictionary<string, PluginAssemblyInfo> Plugins { get; }
 
         private UnityProjectInfo()
         {
-            unityAssemblies = CompilationPipeline.GetAssemblies().ToDictionary(t => t.name);
-            UnityAssemblies = new ReadOnlyDictionary<string, Assembly>(unityAssemblies);
+            Dictionary<string, Assembly> unityAssemblies = CompilationPipeline.GetAssemblies().ToDictionary(t => t.name);
 
             Dictionary<string, CSProjectInfo> csProjects = new Dictionary<string, CSProjectInfo>();
             CSProjects = new ReadOnlyDictionary<string, CSProjectInfo>(csProjects);
@@ -68,6 +65,16 @@ namespace Assets.MRTK.Tools.Scripts
                 csProjects.Add(pair.Key, toAdd);
             }
 
+            Plugins = new ReadOnlyDictionary<string, PluginAssemblyInfo>(ScanForPluginDLLs());
+
+            foreach (PluginAssemblyInfo plugin in Plugins.Values)
+            {
+                if (plugin.Type == PluginType.Native)
+                {
+                    Debug.LogWarning($"Native plugin {plugin.ReferencePath.AbsolutePath} not yet supported for MSBuild project.");
+                }
+            }
+
             foreach (CSProjectInfo project in CSProjects.Values)
             {
                 // Get the assembly references first from AssemblyDefinitionInfo if available (it's actually more correct), otherwise fallback to Assemby
@@ -86,8 +93,26 @@ namespace Assets.MRTK.Tools.Scripts
                         Debug.LogError($"Failed to get dependency '{reference}' for project '{project.Name}'.");
                     }
                 }
+
+
+                // TODO Find a better way to filter which plugins should be included; project.Assembly.allReferences isn't correct 
+                foreach (PluginAssemblyInfo plugin in Plugins.Values)
+                {
+                    if (plugin.AutoReferenced && plugin.Type != PluginType.Native)
+                    {
+                        project.AddDependency(plugin);
+                    }
+                }
             }
 
+        }
+
+        private Dictionary<string, PluginAssemblyInfo> ScanForPluginDLLs()
+        {
+            return Directory.GetFiles(Application.dataPath, "*.dll", SearchOption.AllDirectories)
+                .Select(t => new { FullPath = t, AssetsRelativePath = Utilities.AbsolutePathToAssetsRelative(t) })
+                .Select(t => new PluginAssemblyInfo(Guid.Parse(AssetDatabase.AssetPathToGUID(t.AssetsRelativePath)), t.AssetsRelativePath, t.FullPath))
+                .ToDictionary(t => t.AssetsRelativePath);
         }
 
         public void ExportSolution(string solutionTemplateText, string projectFileTemplateText, string propsOutputFolder)
@@ -108,7 +133,7 @@ namespace Assets.MRTK.Tools.Scripts
                     Utilities.ReplaceTokens(projectEntryTemplate, new Dictionary<string, string>() {
                         {"#PROJECT_TEMPLATE ", string.Empty },
                         { "<PROJECT_NAME>", t.Value.Name },
-                        { "<PROJECT_RELATIVE_PATH>", Path.GetFileName(t.Value.ProjectFilePath) },
+                        { "<PROJECT_RELATIVE_PATH>", Path.GetFileName(t.Value.ReferencePath.AbsolutePath) },
                         { "<PROJECT_GUID>", t.Value.Guid.ToString() } }));
 
                 string[] twoConfigs = new string[] {
@@ -173,6 +198,16 @@ namespace Assets.MRTK.Tools.Scripts
 
             File.WriteAllText(solutionFilePath, solutionTemplateText);
         }
+    }
+}
+#endif
+
+#if !UNITY_EDITOR
+namespace Test
+{
+    internal class Test2
+    {
+        public UnityAgnostic.Common.SomeComponent a;
     }
 }
 #endif

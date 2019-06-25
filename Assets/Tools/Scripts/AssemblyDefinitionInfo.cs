@@ -27,6 +27,8 @@ namespace Assets.MRTK.Tools.Scripts
 
         public bool EditorPlatformSupported { get; private set; }
 
+        public bool NonEditorPlatformSupported { get; private set; }
+
         public bool TestAssembly { get; private set; }
 
         public void Validate()
@@ -40,6 +42,10 @@ namespace Assets.MRTK.Tools.Scripts
             EditorPlatformSupported =
                 (includePlatforms.Length > 0 && includePlatforms.Contains(EditorPlatform))
                 || (excludePlatforms.Length > 0 && !excludePlatforms.Contains(EditorPlatform));
+
+            NonEditorPlatformSupported =
+                (includePlatforms.Length > 0 && !includePlatforms.Contains(EditorPlatform))
+                || (excludePlatforms.Length > 0 && excludePlatforms.Contains(EditorPlatform));
 
             TestAssembly = optionalUnityReferences?.Contains(TestAssembliesReference) ?? false;
         }

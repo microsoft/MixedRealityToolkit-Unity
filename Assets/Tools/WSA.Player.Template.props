@@ -15,20 +15,18 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)obj\$(UnityConfiguration)\$(UnityPlatform)\$(ProjectGuid)\</BaseIntermediateOutputPath>
+    <!--<BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)obj\$(UnityConfiguration)\$(UnityPlatform)\$(ProjectGuid)\</BaseIntermediateOutputPath>
     <OutputPath>$(OutputPath)$(UnityConfiguration)\$(UnityPlatform)\$(ProjectName)\</OutputPath>
-    <OutDir>$(OutputPath)</OutDir>
+    <OutDir>$(OutputPath)</OutDir>-->
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(IsEditorOnlyTarget)' == 'false' OR '$(IsEditorOnlyTarget)' == ''">
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.0.0" />
     <Reference Include="System.Runtime.WindowsRuntime">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5\System.Runtime.WindowsRuntime.dll</HintPath>
     </Reference>
 <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
-    <Reference Include="##REFERENCE_TOKEN##">
-      <HintPath><!--REFERENCE_HINT_PATH_TOKEN--></HintPath>  
-    </Reference>
+    <Reference Include="##REFERENCE_TOKEN##"/>
 <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
 </Project>

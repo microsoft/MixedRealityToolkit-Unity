@@ -10,17 +10,17 @@ using UnityEngine;
 
 namespace Assets.MRTK.Tools.Scripts
 {
-    public class CSProjectDependency
+    public class ProjectDependencyBase<T>
     {
-        public CSProjectInfo DependencyProject { get; }
+        public T Dependency { get; }
 
         public HashSet<BuildTarget> InEditorSupportedPlatforms { get; }
 
         public HashSet<BuildTarget> PlayerSupportedPlatforms { get; }
 
-        public CSProjectDependency(CSProjectInfo dependencyProject, HashSet<BuildTarget> inEditorSupportedPlatforms, HashSet<BuildTarget> playerSupportedPlatforms)
+        public ProjectDependencyBase(T dependency, HashSet<BuildTarget> inEditorSupportedPlatforms, HashSet<BuildTarget> playerSupportedPlatforms)
         {
-            DependencyProject = dependencyProject;
+            Dependency = dependency;
             InEditorSupportedPlatforms = inEditorSupportedPlatforms;
             PlayerSupportedPlatforms = playerSupportedPlatforms;
         }
@@ -34,6 +34,11 @@ namespace Assets.MRTK.Tools.Scripts
         AsmDef,
 
         /// <summary>
+        /// The project is backed by an Assembly-Definition file that only targets editor.
+        /// </summary>
+        EditorAsmDef,
+
+        /// <summary>
         /// The project is one of the pre-defined editor assemblies (Assembly-CSharp-Editor, etc).
         /// </summary>
         PredefinedEditorAssembly,
@@ -44,17 +49,13 @@ namespace Assets.MRTK.Tools.Scripts
         PredefinedAssembly
     }
 
-    public class CSProjectInfo
+    public class ReferenceInfo
     {
-        private readonly List<CSProjectDependency> dependencies = new List<CSProjectDependency>();
-
         public Guid Guid { get; }
 
-        public Assembly Assembly { get; }
+        public Uri ReferencePath { get; }
 
-        public AssemblyDefinitionInfo AssemblyDefinitionInfo { get; }
-
-        public ProjectType ProjectType { get; }
+        public string Name { get; }
 
         /// <summary>
         /// </summary>
@@ -62,7 +63,7 @@ namespace Assets.MRTK.Tools.Scripts
         /// In the editor, we can support all patforms if it's a pre-defined assembly, or an asmdef with Editor platform checked. 
         /// Otherwise we fallback to just the platforms specified in the editor.
         /// </remarks>
-        public IReadOnlyDictionary<BuildTarget, CompilationSettings.CompilationPlatform> InEditorPlatforms { get; }
+        public IReadOnlyDictionary<BuildTarget, CompilationSettings.CompilationPlatform> InEditorPlatforms { get; protected set; }
 
         /// <summary>
         /// 
@@ -70,18 +71,32 @@ namespace Assets.MRTK.Tools.Scripts
         /// <remarks>
         /// In the player, we support any platform if pre-defined assembly, or the ones explicitly specified in the AsmDef player.
         /// </remarks>
-        public IReadOnlyDictionary<BuildTarget, CompilationSettings.CompilationPlatform> PlayerPlatforms { get; }
+        public IReadOnlyDictionary<BuildTarget, CompilationSettings.CompilationPlatform> PlayerPlatforms { get; protected set; }
 
-        public string Name => Assembly.name;
-
-        public string ProjectFilePath { get; private set; }
-
-        internal CSProjectInfo(Guid guid, AssemblyDefinitionInfo assemblyDefinitionInfo, Assembly assembly, string baseOutputPath)
+        public ReferenceInfo(Guid guid, Uri referencePath, string name)
         {
             Guid = guid;
+            ReferencePath = referencePath;
+            Name = name;
+        }
+    }
+
+    public class CSProjectInfo : ReferenceInfo
+    {
+        private readonly List<ProjectDependencyBase<CSProjectInfo>> csProjectDependencies = new List<ProjectDependencyBase<CSProjectInfo>>();
+        private readonly List<ProjectDependencyBase<PluginAssemblyInfo>> pluginAssemblyDependencies = new List<ProjectDependencyBase<PluginAssemblyInfo>>();
+
+        public Assembly Assembly { get; }
+
+        public AssemblyDefinitionInfo AssemblyDefinitionInfo { get; }
+
+        public ProjectType ProjectType { get; }
+
+        internal CSProjectInfo(Guid guid, AssemblyDefinitionInfo assemblyDefinitionInfo, Assembly assembly, string baseOutputPath)
+            : base(guid, new Uri(Path.Combine(baseOutputPath, $"{assembly.name}.csproj")), assembly.name)
+        {
             AssemblyDefinitionInfo = assemblyDefinitionInfo;
             Assembly = assembly;
-            ProjectFilePath = Path.Combine(baseOutputPath, $"{assembly.name}.csproj");
 
             ProjectType = GetProjectType(assemblyDefinitionInfo, assembly);
 
@@ -98,7 +113,7 @@ namespace Assets.MRTK.Tools.Scripts
         {
             if (assemblyDefinitionInfo != null)
             {
-                return ProjectType.AsmDef;
+                return assemblyDefinitionInfo.EditorPlatformSupported && !assemblyDefinitionInfo.NonEditorPlatformSupported ? ProjectType.EditorAsmDef : ProjectType.AsmDef;
             }
 
             switch (assembly.name)
@@ -119,6 +134,7 @@ namespace Assets.MRTK.Tools.Scripts
         {
             bool returnAllPlatforms = ProjectType == ProjectType.PredefinedAssembly
                 || (inEditor && ProjectType == ProjectType.PredefinedEditorAssembly)
+                || (inEditor && ProjectType == ProjectType.EditorAsmDef)
                 || (inEditor && ProjectType == ProjectType.AsmDef && AssemblyDefinitionInfo.EditorPlatformSupported);
 
             if (returnAllPlatforms)
@@ -127,6 +143,7 @@ namespace Assets.MRTK.Tools.Scripts
             }
 
             bool returnNoPlatforms = (!inEditor && ProjectType == ProjectType.PredefinedEditorAssembly)
+                || (!inEditor && ProjectType == ProjectType.EditorAsmDef)
                 || (!inEditor && ProjectType == ProjectType.AsmDef && AssemblyDefinitionInfo.TestAssembly);
 
             if (returnNoPlatforms)
@@ -147,16 +164,26 @@ namespace Assets.MRTK.Tools.Scripts
 
         internal void AddDependency(CSProjectInfo csProjectInfo)
         {
-            dependencies.Add(new CSProjectDependency(csProjectInfo,
-                new HashSet<BuildTarget>(InEditorPlatforms.Keys.Intersect(csProjectInfo.InEditorPlatforms.Keys)),
-                new HashSet<BuildTarget>(PlayerPlatforms.Keys.Intersect(csProjectInfo.PlayerPlatforms.Keys))));
+            AddDependency(csProjectDependencies, csProjectInfo);
+        }
+
+        internal void AddDependency(PluginAssemblyInfo pluginAssemblyInfo)
+        {
+            AddDependency(pluginAssemblyDependencies, pluginAssemblyInfo);
+        }
+
+        private void AddDependency<T>(List<ProjectDependencyBase<T>> items, T referenceInfo) where T : ReferenceInfo
+        {
+            items.Add(new ProjectDependencyBase<T>(referenceInfo,
+                new HashSet<BuildTarget>(InEditorPlatforms.Keys.Intersect(referenceInfo.InEditorPlatforms.Keys)),
+                new HashSet<BuildTarget>(PlayerPlatforms.Keys.Intersect(referenceInfo.PlayerPlatforms.Keys))));
         }
 
         internal void ExportProject(string projectFileTemplateText, string propsOutputFolder)
         {
-            if (File.Exists(ProjectFilePath))
+            if (File.Exists(ReferencePath.AbsolutePath))
             {
-                File.Delete(ProjectFilePath);
+                File.Delete(ReferencePath.AbsolutePath);
             }
 
             if (Utilities.TryGetXMLTemplate(projectFileTemplateText, "PROJECT_REFERENCE_SET", out string projectReferenceSetTemplate)
@@ -184,17 +211,20 @@ namespace Assets.MRTK.Tools.Scripts
                 PopulateSupportedPlatformBuildConditions(supportedPlatformBuildConditions, suportedPlatformBuildConditionTemplate, "InEditor", InEditorPlatforms);
                 PopulateSupportedPlatformBuildConditions(supportedPlatformBuildConditions, suportedPlatformBuildConditionTemplate, "Player", PlayerPlatforms);
 
+                HashSet<string> inEditorSearchPaths = new HashSet<string>(), playerSearchPaths = new HashSet<string>();
                 Dictionary<string, string> tokens = new Dictionary<string, string>()
                 {
                     { "<!--PROJECT_GUID_TOKEN-->", Guid.ToString() },
                     { "##COMMON_PROPS_FILE_PATH##", Path.Combine(propsOutputFolder, Compilation.CommonPropsFileName) },
-                    //{ "##DEFAULT_PLATFORM_PROPS_FILE_PATH##", Path.Combine(propsOutputFolder, Compilation.GetPlatformCommonPropsFileName(CompilationSettings.Instance.AvailablePlatforms[BuildTarget.StandaloneWindows])) },
                     { "<!--ALLOW_UNSAFE_TOKEN-->", Assembly.compilerOptions.AllowUnsafeCode.ToString() },
                     { "<!--PROJECT_CONFIGURATIONS_TOKEN-->", bothConfigurations ? "InEditor;Player" : "InEditor" },
-                    { projectReferenceSetTemplate, string.Join("\r\n", CreateProjectReferenceSet(projectReferenceSetTemplate, true), CreateProjectReferenceSet(projectReferenceSetTemplate, false)) },
+                    { projectReferenceSetTemplate, string.Join("\r\n", CreateProjectReferencesSet(projectReferenceSetTemplate, inEditorSearchPaths, true), CreateProjectReferencesSet(projectReferenceSetTemplate, playerSearchPaths, false)) },
                     { sourceIncludeTemplate, string.Join("\r\n", sourceIncludes) },
                     { suportedPlatformBuildConditionTemplate, string.Join("\r\n", supportedPlatformBuildConditions) },
-                    { "##PLATFORM_PROPS_FOLDER_PATH_TOKEN##", propsOutputFolder }
+                    { "##PLATFORM_PROPS_FOLDER_PATH_TOKEN##", propsOutputFolder },
+                    { "<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", inEditorSearchPaths) },
+                    { "<!--PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", playerSearchPaths) },
+                    { "<!--IS_EDITOR_ONLY_TARGET_TOKEN-->", (ProjectType ==  ProjectType.EditorAsmDef || ProjectType == ProjectType.PredefinedEditorAssembly).ToString() }
                 };
 
                 projectFileTemplateText = Utilities.ReplaceTokens(projectFileTemplateText, tokens);
@@ -204,7 +234,7 @@ namespace Assets.MRTK.Tools.Scripts
                 Debug.LogError("Failed to find ProjectReferenceSet and/or Source_Include templates in the project template file.");
             }
 
-            File.WriteAllText(ProjectFilePath, projectFileTemplateText);
+            File.WriteAllText(ReferencePath.AbsolutePath, projectFileTemplateText);
         }
 
         private void PopulateSupportedPlatformBuildConditions(List<string> supportedPlatformBuildConditions, string template, string configuration, IReadOnlyDictionary<BuildTarget, CompilationSettings.CompilationPlatform> platforms)
@@ -219,26 +249,48 @@ namespace Assets.MRTK.Tools.Scripts
             }
         }
 
-        private string CreateProjectReferenceSet(string template, bool inEditor)
+        private string CreateProjectReferencesSet(string template, HashSet<string> additionalSearchPaths, bool inEditor)
         {
-            if (Utilities.TryGetXMLTemplate(template, "PROJECT_REFERENCE", out string projectReferenceTemplate))
+            if (Utilities.TryGetXMLTemplate(template, "PROJECT_REFERENCE", out string projectReferenceTemplate)
+                && Utilities.TryGetXMLTemplate(template, "PLUGIN_REFERENCE", out string pluginReferenceTemplate))
             {
                 List<string> projectReferences = new List<string>();
-                foreach (CSProjectDependency dependency in dependencies)
+                foreach (ProjectDependencyBase<CSProjectInfo> dependency in csProjectDependencies)
                 {
                     List<string> platformConditions = GetPlatformConditions(inEditor ? InEditorPlatforms : PlayerPlatforms, inEditor ? dependency.InEditorSupportedPlatforms : dependency.PlayerSupportedPlatforms);
 
                     projectReferences.Add(Utilities.ReplaceTokens(projectReferenceTemplate, new Dictionary<string, string>()
                     {
-                        { "##REFERENCE_TOKEN##", $"{dependency.DependencyProject.Name}.csproj" },
+                        { "##REFERENCE_TOKEN##", $"{dependency.Dependency.Name}.csproj" },
                         {"##CONDITION_TOKEN##", platformConditions.Count == 0 ? "false" : string.Join(" OR ", platformConditions)}
                     }));
+                }
+
+                List<string> pluginReferences = new List<string>();
+                foreach (ProjectDependencyBase<PluginAssemblyInfo> dependency in pluginAssemblyDependencies)
+                {
+                    if (dependency.Dependency.Type == PluginType.Native)
+                    {
+                        //TODO Native plugins aren't yet supported
+                        continue;
+                    }
+                    List<string> platformConditions = GetPlatformConditions(inEditor ? InEditorPlatforms : PlayerPlatforms, inEditor ? dependency.InEditorSupportedPlatforms : dependency.PlayerSupportedPlatforms);
+
+                    pluginReferences.Add(Utilities.ReplaceTokens(pluginReferenceTemplate, new Dictionary<string, string>()
+                    {
+                        { "##REFERENCE_TOKEN##", dependency.Dependency.Name },
+                        { "##CONDITION_TOKEN##", platformConditions.Count == 0 ? "'false'" : string.Join(" OR ", platformConditions)},
+                        { "<!--HINT_PATH_TOKEN-->", dependency.Dependency.ReferencePath.AbsolutePath }
+                    }));
+
+                    additionalSearchPaths.Add(Path.GetDirectoryName(dependency.Dependency.ReferencePath.AbsolutePath));
                 }
 
                 return Utilities.ReplaceTokens(template, new Dictionary<string, string>()
                 {
                     {"##REFERENCE_CONFIGURATION_TOKEN##", inEditor ? "InEditor" : "Player" },
-                    {projectReferenceTemplate, string.Join("\r\n", projectReferences) }
+                    { projectReferenceTemplate, string.Join("\r\n", projectReferences) },
+                    { pluginReferenceTemplate, string.Join("\r\n", pluginReferences) }
                 });
             }
             else
@@ -257,7 +309,7 @@ namespace Assets.MRTK.Tools.Scripts
                 if (dependencyPlatforms.Contains(pair.Key))
                 {
                     string platformName = pair.Value.AssemblyDefinitionPlatform.Name;
-                    toReturn.Add($"'$(Platform)' == '{platformName}'");
+                    toReturn.Add($"'$(UnityPlatform)' == '{platformName}'");
                 }
             }
 

@@ -49,17 +49,17 @@ namespace Assets.MRTK.Tools.Scripts
             /// <summary>
             ///  These defines are specific for this platform and common or player/editor.
             /// </summary>
-            public IReadOnlyList<string> CommonPlatformDefines { get; }
+            public HashSet<string> CommonPlatformDefines { get; }
 
             /// <summary>
             ///  These defines are specific for this platform player build.
             /// </summary>
-            public IReadOnlyList<string> AdditionalPlayerDefines { get; }
+            public HashSet<string> AdditionalPlayerDefines { get; }
 
             /// <summary>
             ///  These defines are specific for this platform editor build.
             /// </summary>
-            public IReadOnlyList<string> AdditionalInEditorDefines { get; }
+            public HashSet<string> AdditionalInEditorDefines { get; }
 
             /// <summary>
             ///  These references are specific for this platform and common or player/editor.
@@ -77,7 +77,7 @@ namespace Assets.MRTK.Tools.Scripts
             public IReadOnlyList<string> AdditionalInEditorReferences { get; }
 
             public CompilationPlatform(AssemblyDefinitionPlatform assemblyDefinitionPlatform, BuildTargetGroup buildTargetGroup, TargetFramework targetFramework,
-                IReadOnlyList<string> commonPlatformDefines, IReadOnlyList<string> additionalPlayerDefines, IReadOnlyList<string> additionalInEditorDefines,
+                HashSet<string> commonPlatformDefines, HashSet<string> additionalPlayerDefines, HashSet<string> additionalInEditorDefines,
                 IReadOnlyList<string> commonPlatformReferences, IReadOnlyList<string> additionalPlayerReferences, IReadOnlyList<string> additionalInEditorReferences)
             {
                 AssemblyDefinitionPlatform = assemblyDefinitionPlatform;
@@ -114,7 +114,7 @@ namespace Assets.MRTK.Tools.Scripts
 
         private static readonly HashSet<BuildTarget> supportedBuildTargets = new HashSet<BuildTarget>()
         {
-            //BuildTarget.NoTarget, // This is the Unity Editor build target
+            BuildTarget.NoTarget, // This is the Unity Editor build target
             BuildTarget.StandaloneWindows,
             BuildTarget.StandaloneWindows64,
             BuildTarget.iOS,
@@ -130,30 +130,19 @@ namespace Assets.MRTK.Tools.Scripts
 
         private HashSet<string> commonDefines;
         private HashSet<string> commonDevelopmentDefines;
-        private HashSet<string> commonInEditorDefines;
-
-        private HashSet<string> nonPlayerDefines;
 
         private HashSet<string> commonReferences;
         private HashSet<string> commonDevelopmentReferences;
-        private HashSet<string> commonInEditorReferences;
-
-        private HashSet<string> nonPlayerReferences;
 
         /// <summary>
         /// These defines are common accross all platforms, and exclude development and in-editor builds
         /// </summary>
-        public IReadOnlyList<string> CommonDefines { get; }
+        public HashSet<string> CommonDefines { get; }
 
         /// <summary>
         /// These defines are common accross all platforms for the development builds.
         /// </summary>
-        public IReadOnlyList<string> DevelopmentBuildAdditionalDefines { get; }
-
-        /// <summary>
-        /// These defines are common accross all platforms for the in-editor builds
-        /// </summary>
-        public IReadOnlyList<string> InEditorBuildAdditionalDefines { get; }
+        public HashSet<string> DevelopmentBuildAdditionalDefines { get; }
 
         /// <summary>
         /// These defines are common accross all platforms, and exclude development and in-editor builds
@@ -165,12 +154,12 @@ namespace Assets.MRTK.Tools.Scripts
         /// </summary>
         public IReadOnlyList<string> DevelopmentBuildAdditionalReferences { get; }
 
-        /// <summary>
-        /// These defines are common accross all platforms for the in-editor builds
-        /// </summary>
-        public IReadOnlyList<string> InEditorBuildAdditionalReferences { get; }
-
         public IReadOnlyDictionary<BuildTarget, CompilationPlatform> AvailablePlatforms { get; }
+
+        /// <summary>
+        /// This is for the .Editor assemblies, or the asmdef's that only contain "Editor" selected
+        /// </summary>
+        public CompilationPlatform EditorPlatform { get; private set; }
 
         private CompilationSettings()
         {
@@ -189,15 +178,13 @@ namespace Assets.MRTK.Tools.Scripts
 
             ProcessCommonDefines(builder);
 
-            CommonDefines = new ReadOnlyCollection<string>(commonDefines.ToList());
-            DevelopmentBuildAdditionalDefines = new ReadOnlyCollection<string>(commonDevelopmentDefines.ToList());
-            InEditorBuildAdditionalDefines = new ReadOnlyCollection<string>(commonInEditorDefines.ToList());
+            CommonDefines = commonDefines;
+            DevelopmentBuildAdditionalDefines = commonDevelopmentDefines;
 
             ProcessCommonReferences(builder);
 
             CommonReferences = new ReadOnlyCollection<string>(commonReferences.ToList());
             DevelopmentBuildAdditionalReferences = new ReadOnlyCollection<string>(commonDevelopmentReferences.ToList());
-            InEditorBuildAdditionalReferences = new ReadOnlyCollection<string>(commonInEditorReferences.ToList());
 
             // Parse data for compilation platforms
             CreateCompilationPlatforms(builder);
@@ -215,7 +202,7 @@ namespace Assets.MRTK.Tools.Scripts
 
             // Set editor flag, and get in-editor references. Filter out commont to common
             builder.flags = AssemblyBuilderFlags.EditorAssembly;
-            commonInEditorReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
+            HashSet<string> commonInEditorReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
             commonReferences.RemoveWhere(t => !commonInEditorReferences.Contains(t));
 
             // Go through each platform weeding out common for each of the three
@@ -240,18 +227,14 @@ namespace Assets.MRTK.Tools.Scripts
                 builder.flags = AssemblyBuilderFlags.EditorAssembly;
                 other = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
                 commonReferences.RemoveWhere(t => !other.Contains(t));
-                commonInEditorReferences.RemoveWhere(t => !other.Contains(t)); // get only the common
             }
 
             // Remove common from dev/editor
             commonDevelopmentReferences.RemoveWhere(commonReferences.Contains);
-            commonInEditorReferences.RemoveWhere(commonReferences.Contains);
 
             // Reset
             builder.buildTarget = BuildTarget.NoTarget;
             builder.buildTargetGroup = BuildTargetGroup.Unknown;
-
-            nonPlayerReferences = new HashSet<string>(commonReferences.Concat(commonInEditorReferences).Concat(commonDevelopmentReferences));
         }
 
         private bool IsPlatformInstalled(AssemblyDefinitionPlatform platform)
@@ -271,7 +254,7 @@ namespace Assets.MRTK.Tools.Scripts
 
             // Set editor flag, and get in-editor defines. Filter out commont to common
             builder.flags = AssemblyBuilderFlags.EditorAssembly;
-            commonInEditorDefines = new HashSet<string>(builder.defaultDefines);
+            HashSet<string> commonInEditorDefines = new HashSet<string>(builder.defaultDefines);
             commonDefines.RemoveWhere(t => !commonInEditorDefines.Contains(t));
 
             // Go through each platform weeding out common for each of the three
@@ -297,67 +280,103 @@ namespace Assets.MRTK.Tools.Scripts
                 builder.flags = AssemblyBuilderFlags.EditorAssembly;
                 other = new HashSet<string>(builder.defaultDefines);
                 commonDefines.RemoveWhere(t => !other.Contains(t));
-                commonInEditorDefines.RemoveWhere(t => !other.Contains(t)); // get only the common
             }
 
             // Remove common from dev/editor
             commonDevelopmentDefines.RemoveWhere(commonDefines.Contains);
-            commonInEditorDefines.RemoveWhere(commonDefines.Contains);
 
             // Reset
             builder.buildTarget = BuildTarget.NoTarget;
             builder.buildTargetGroup = BuildTargetGroup.Unknown;
-
-            nonPlayerDefines = new HashSet<string>(commonDefines.Concat(commonInEditorDefines).Concat(commonDevelopmentDefines));
         }
 
         private void CreateCompilationPlatforms(AssemblyBuilder builder)
         {
             // Now go through and get defines for each platform
+            AssemblyDefinitionPlatform? editorPlatform = null;
             foreach (AssemblyDefinitionPlatform supportedPlatform in supportedPlatforms)
             {
+                if (supportedPlatform.BuildTarget == BuildTarget.NoTarget)
+                {
+                    // Don't add this as a platform, we will custom handle the editor one
+                    editorPlatform = supportedPlatform;
+                    continue;
+                }
+
                 BuildTargetGroup buildTargetGroup = GetBuildTargetGroup(supportedPlatform);
 
                 builder.buildTarget = supportedPlatform.BuildTarget;
                 builder.buildTargetGroup = buildTargetGroup;
+                builder.flags = AssemblyBuilderFlags.None;
+
                 HashSet<string> platformCommonDefines = new HashSet<string>(builder.defaultDefines);
                 HashSet<string> playerDefines = new HashSet<string>(builder.defaultDefines);
 
                 HashSet<string> platformCommonReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
                 HashSet<string> playerReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
 
-
                 builder.flags = AssemblyBuilderFlags.EditorAssembly;
                 HashSet<string> inEditorDefines = new HashSet<string>(builder.defaultDefines);
-                HashSet<string> inEditorRefernces = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
-
-                // Remove the non player ones
-                platformCommonDefines.RemoveWhere(t => nonPlayerDefines.Contains(t));
-                playerDefines.RemoveWhere(t => nonPlayerDefines.Contains(t));
-                inEditorDefines.RemoveWhere(t => nonPlayerDefines.Contains(t));
-
-                platformCommonReferences.RemoveWhere(t => nonPlayerReferences.Contains(t));
-                playerReferences.RemoveWhere(t => nonPlayerReferences.Contains(t));
-                inEditorRefernces.RemoveWhere(t => nonPlayerReferences.Contains(t));
-
-                // Get common
                 platformCommonDefines.RemoveWhere(t => !inEditorDefines.Contains(t));
 
-                platformCommonReferences.RemoveWhere(t => !inEditorRefernces.Contains(t));
+                HashSet<string> inEditorReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
+                platformCommonReferences.RemoveWhere(t => !inEditorReferences.Contains(t));
+
+                // Remove the common
+                platformCommonDefines.RemoveWhere(t => commonDefines.Contains(t));
+                playerDefines.RemoveWhere(t => commonDefines.Contains(t) || platformCommonDefines.Contains(t));
+                inEditorDefines.RemoveWhere(t => commonDefines.Contains(t) || commonDevelopmentDefines.Contains(t) || platformCommonDefines.Contains(t));
+
+                platformCommonReferences.RemoveWhere(t => commonReferences.Contains(t));
+                playerReferences.RemoveWhere(t => commonReferences.Contains(t) || platformCommonReferences.Contains(t));
+                inEditorReferences.RemoveWhere(t => commonReferences.Contains(t) || commonDevelopmentReferences.Contains(t) || platformCommonReferences.Contains(t));
 
                 // Get specialized
                 playerDefines.RemoveWhere(t => platformCommonDefines.Contains(t));
                 inEditorDefines.RemoveWhere(t => platformCommonDefines.Contains(t));
 
                 playerReferences.RemoveWhere(t => platformCommonReferences.Contains(t));
-                inEditorRefernces.RemoveWhere(t => platformCommonReferences.Contains(t));
+                inEditorReferences.RemoveWhere(t => platformCommonReferences.Contains(t));
 
                 CompilationPlatform compilationPlatform = new CompilationPlatform(supportedPlatform, GetBuildTargetGroup(supportedPlatform), GetTargetFramework(buildTargetGroup),
-                    platformCommonDefines.ToList(), playerDefines.ToList(), inEditorDefines.ToList(),
-                    platformCommonReferences.ToList(), playerReferences.ToList(), inEditorRefernces.ToList());
+                    platformCommonDefines, playerDefines, inEditorDefines,
+                    platformCommonReferences.ToList(), playerReferences.ToList(), inEditorReferences.ToList());
 
                 compilationPlatforms.Add(supportedPlatform.BuildTarget, compilationPlatform);
             }
+
+            if (editorPlatform == null)
+            {
+                Debug.LogError("Editor platform not supported? Is this a configuration error.");
+            }
+            else
+            {
+                CreateEditorPlatform(editorPlatform.Value);
+            }
+        }
+
+        private void CreateEditorPlatform(AssemblyDefinitionPlatform editorPlatform)
+        {
+            ApiCompatibilityLevel cached = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.Unknown);
+            PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Unknown, ApiCompatibilityLevel.NET_4_6);
+            AssemblyBuilder builder = new AssemblyBuilder("editor.dll", new string[] { @"Editor\dummy.cs" })
+            {
+                buildTarget = BuildTarget.NoTarget,
+                buildTargetGroup = BuildTargetGroup.Unknown,
+                flags = AssemblyBuilderFlags.EditorAssembly
+            };
+
+            HashSet<string> inEditorDefines = new HashSet<string>(builder.defaultDefines);
+            HashSet<string> inEditorRefernces = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
+
+            inEditorDefines.RemoveWhere(t => commonDefines.Contains(t) || commonDevelopmentDefines.Contains(t));
+            inEditorRefernces.RemoveWhere(t => commonReferences.Contains(t) || commonDevelopmentReferences.Contains(t));
+
+            EditorPlatform = new CompilationPlatform(editorPlatform, BuildTargetGroup.Unknown, TargetFramework.Net46,
+                new HashSet<string>(), null, inEditorDefines,
+                new List<string>(), null, inEditorRefernces.ToList());
+
+            PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Unknown, cached);
         }
 
         private BuildTargetGroup GetBuildTargetGroup(AssemblyDefinitionPlatform assemblyDefinitionPlatform)
@@ -382,6 +401,12 @@ namespace Assets.MRTK.Tools.Scripts
 
         private TargetFramework GetTargetFramework(BuildTargetGroup buildTargetGroup)
         {
+            if (buildTargetGroup == BuildTargetGroup.Unknown)
+            {
+                //TODO this may be different on older unity versions
+                return TargetFramework.Net46;
+            }
+
             switch (PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup))
             {
                 case ApiCompatibilityLevel.NET_2_0:

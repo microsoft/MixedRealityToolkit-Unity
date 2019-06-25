@@ -7,8 +7,8 @@
     <AssemblySearchPaths>$(AssemblySearchPaths);<!--COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
     <Platforms><!--SUPPORTED_PLATFORMS_TOKEN--></Platforms>
     
-    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\</OutputPath>
-    <BaseIntermediateOutputPath>$(OutputPath)</BaseIntermediateOutputPath>
+    <!--<OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\</OutputPath>
+    <BaseIntermediateOutputPath>$(OutputPath)</BaseIntermediateOutputPath>-->
     <Configurations>InEditor;Player</Configurations>
   </PropertyGroup>
 
@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <Choose>
-    <When Condition="'$(Configuration)'=='Player'">
+    <When Condition="'$(UnityConfiguration)'=='Player'">
       <PropertyGroup>
         <EditorConfiguration>False</EditorConfiguration>
         <PlayerConfiguration>True</PlayerConfiguration>
@@ -38,8 +38,6 @@
         <EditorConfiguration>True</EditorConfiguration>
         <PlayerConfiguration>False</PlayerConfiguration>
 
-        <DefineConstants>$(DefineConstants);<!--COMMON_INEDITOR_DEFINE_CONSTANTS--></DefineConstants>
-        <AssemblySearchPaths>$(AssemblySearchPaths);<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
         <!--Overide development build if we are building an in-editor build-->
         <DevelopmentBuild>true</DevelopmentBuild>
       </PropertyGroup>
@@ -53,25 +51,13 @@
 
   <ItemGroup>
 <!--COMMON_REFERENCE_TEMPLATE_START-->
-    <Reference Include="##REFERENCE_TOKEN##">
-      <HintPath><!--REFERENCE_HINT_PATH_TOKEN--></HintPath>  
-    </Reference>
+    <Reference Include="##REFERENCE_TOKEN##"/>
 <!--COMMON_REFERENCE_TEMPLATE_END-->
-  </ItemGroup>
-  
-  <ItemGroup Condition="'$(Configuration)'=='InEditor'">
-<!--INEDITOR_REFERENCE_TEMPLATE_START-->
-    <Reference Include="##REFERENCE_TOKEN##">
-      <HintPath><!--REFERENCE_HINT_PATH_TOKEN--></HintPath>  
-    </Reference>
-<!--INEDITOR_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
   
   <ItemGroup Condition="'$(DevelopmentBuild)'=='true'">
 <!--DEVELOPMENT_REFERENCE_TEMPLATE_START-->
-    <Reference Include="##REFERENCE_TOKEN##">
-      <HintPath><!--REFERENCE_HINT_PATH_TOKEN--></HintPath>
-    </Reference>
+    <Reference Include="##REFERENCE_TOKEN##"/>
 <!--DEVELOPMENT_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
 </Project>

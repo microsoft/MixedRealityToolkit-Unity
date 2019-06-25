@@ -29,6 +29,18 @@ namespace Assets.MRTK.Tools.Scripts
             return path;
         }
 
+        public static string AbsolutePathToAssetsRelative(string absolutePath)
+        {
+            string forwardSlashPath = absolutePath.Replace('\\', '/');
+
+            if (!forwardSlashPath.Contains(Application.dataPath))
+            {
+                throw new ArgumentOutOfRangeException(nameof(absolutePath), $"Absolute path '{absolutePath}' is not a Unity Assets relative path ('{Application.dataPath}')");
+            }
+
+            return forwardSlashPath.Replace(Application.dataPath, "Assets");
+        }
+
         public static string NormalizePath(string path)
         {
             return path.Replace('/', '\\');

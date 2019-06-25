@@ -1,17 +1,23 @@
 <Project>
   <PropertyGroup>
-    <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
     <TargetFramework><!--TARGET_FRAMEWORK_TOKEN--></TargetFramework>
     <DefineConstants>$(DefineConstants);<!--PLATFORM_COMMON_DEFINE_CONSTANTS--></DefineConstants>
   </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(IsEditorOnlyTarget)' == 'false' OR '$(IsEditorOnlyTarget)' == ''">
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+  </PropertyGroup>
 
   <PropertyGroup>
-    <BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)obj\$(ProjectGuid)\$(Configuration)\</BaseIntermediateOutputPath>
+    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\</OutputPath>
+    <BaseIntermediateOutputPath>$(OutputPath)obj\$(ProjectGuid)\$(UnityConfiguration)\</BaseIntermediateOutputPath>
     <OutputPath>$(OutputPath)$(UnityConfiguration)\$(UnityPlatform)\$(ProjectName)\</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
   </PropertyGroup>
 
-  <ItemGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+  <ItemGroup Condition="'$(IsEditorOnlyTarget)' == 'false' OR '$(IsEditorOnlyTarget)' == ''">
 <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
     <Reference Include="##REFERENCE_TOKEN##"/>
 <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
