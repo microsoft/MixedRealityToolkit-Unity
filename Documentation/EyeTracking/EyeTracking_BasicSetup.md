@@ -12,10 +12,23 @@ We will go into detail on how to address each of them further below.
 1. An _'Eye Gaze Data Provider'_ must be added to the input system. This provides eye tracking data from the platform.
 2. The GazeProvider must have its _'Use Eye Tracking'_ property set to true. Note that true is the default value (so no special
    action is required unless you have actively unchecked this property.)
-3. The _'GazeInput'_ capability must be enabled in the application manifest. **Currently this is only available in Visual Studio.**
+3. The _'GazeInput'_ capability must be enabled in the application manifest. 
+   **Currently this is only available in Visual Studio and through the MRTK build tool**
 4. The HoloLens **must** be eye calibrated for the current user. Check out our [sample for detecting whether a user is eye calibrated or not](EyeTracking_IsUserCalibrated.md). 
 
 **IMPORTANT:** If any of the above requirements are not met, the application will automatically fall back to head-based gaze tracking.
+
+### A note on the GazeInput capability
+
+If you are using the MRTK-provided build tooling (i.e. by going to the Mixed Reality Toolkit -> Utilities -> Build Window)
+to build the AppX, the MRTK build tools can automatically enable the GazeInput capability for you. In order to this,
+you need to make sure that the 'Gaze Input Capability' is checked on the 'Appx Build Options' tab:
+
+![MRTK Build Tools](../Images/EyeTracking/mrtk_et_buildsetup.png)
+
+This tooling will find the AppX manifest after the Unity build is completed and manually add the GazeInput capability.
+**Note that this tooling is NOT active if you are using Unity's built-in Build Window** (i.e. File -> Build Settings).
+If you build using Unity's build window, you will need to manually add the capability after the Unity build.
 
 ## Setting up eye tracking step-by-step
 ### Setting up the scene
