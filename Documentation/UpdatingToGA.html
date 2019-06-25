@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Updating to the General Availability (GA) Release | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Updating to the General Availability (GA) Release | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.43.1.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="updating-to-the-general-availability-ga-release">Updating to the General Availability (GA) Release</h1>
+
+<p>Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the GA release.</p>
+<ul>
+<li><a href="#assembly-name-changes">Assembly name changes</a></li>
+</ul>
+<h2 id="assembly-name-changes">Assembly name changes</h2>
+<p>In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.</p>
+<pre><code>Microsoft.MixedReality.Toolkit[.&lt;name&gt;]
+</code></pre>
+<p>In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.</p>
+<p>The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name.</p>
+<h3 id="mixedrealitytookit">MixedRealityTookit</h3>
+<table>
+<thead>
+<tr>
+<th>RC2</th>
+<th>GA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.BuildAndDeploy.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.Definitions.Utilities.Editor.asmdef</td>
+<td>Removed, use Microsoft.MixedReality.Toolkit.Editor.Utilities.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.Extensions.EditorClassExtensions.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Editor.ClassExtensions.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.Inspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Editor.Inspectors.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.Inspectors.ServiceInspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Editor.ServiceInspectors.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.UtilitiesAsync.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Async.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.Utilities.Editor.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Editor.Utilities.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Utilities.Gltf.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Gltf.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Utilities.Gltf.Importers.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Gltf.Importers.asmdef</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mixedrealitytoolkitproviders">MixedRealityToolkit.Providers</h3>
+<table>
+<thead>
+<tr>
+<th>RC2</th>
+<th>GA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit.Providers.OpenVR.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Providers.OpenVR.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Providers.WindowsMixedReality.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Providers.WindowsVoiceInput.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput.asmdef</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mixedrealitytoolkitservices">MixedRealityToolkit.Services</h3>
+<table>
+<thead>
+<tr>
+<th>RC2</th>
+<th>GA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit.Services.BoundarySystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.BoundarySystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.CameraSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.CameraSystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.DiagnosticsSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.InputSimulation.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.InputSimulation.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.InputSimulation.Editor.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.InputSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.InputSystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.Inspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.InputSystem.Editor.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.SceneSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.SceneSystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.SpatialAwarenessSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.TeleportSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.TeleportSystem.asmdef</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mixedrealitytoolkitsdk">MixedRealityToolkit.SDK</h3>
+<table>
+<thead>
+<tr>
+<th>RC2</th>
+<th>GA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit.SDK.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.SDK.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.SDK.Inspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.SDK.Inspectors.asmdef</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mixedrealitytoolkitexamples">MixedRealityToolkit.Examples</h3>
+<table>
+<thead>
+<tr>
+<th>RC2</th>
+<th>GA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit.Examples.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Examples.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples.Demos.Gltf.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Demos.Gltf.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples.Demos.StandardShader.Inspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Demos.StandardShader.Inspectors.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Demos.InspectorFields.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields.Inspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Demos.InspectorFields.Inspectors.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples.Demos.UX.Interactables.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Demos.UX.Interactables.asmdef</td>
+</tr>
+</tbody>
+</table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/UpdatingToGA.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
