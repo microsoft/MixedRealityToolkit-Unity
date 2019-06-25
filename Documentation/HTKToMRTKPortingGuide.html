@@ -101,7 +101,7 @@
 <tr>
 <td>Setup</td>
 <td>Place the InputManager in the scene.</td>
-<td>Enable the input system in the Configuration Profile and specify a concrete input system type.</td>
+<td>Enable the input system in the <a href="MixedRealityConfigurationGuide.html">Configuration Profile</a> and specify a concrete input system type.</td>
 </tr>
 <tr>
 <td>Configuration</td>
@@ -122,7 +122,13 @@
 <p><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.GazeProvider.html">Gaze Provider</a> settings are modified on the Main Camera object in the scene.</p>
 <p>Platform support components (e.g., Windows Mixed Reality Device Manager) must be added to their corresponding service's data providers.</p>
 <h3 id="interface-and-event-mappings">Interface and event mappings</h3>
-<p>Some events no longer have unique events and now contain a MixedRealityInputAction. These actions are specified in the Input Actions profile and mapped to specific controllers and platforms in the Controller Mapping profile. Events like <code>OnInputDown</code> should now check the MixedRealityInputAction type.</p>
+<p>Some events no longer have unique events and now contain a <a href="Input/InputActions.html">MixedRealityInputAction</a>. These actions are specified in the Input Actions profile and mapped to specific controllers and platforms in the Controller Mapping profile. Events like <code>OnInputDown</code> should now check the MixedRealityInputAction type.</p>
+<p>Related input systems:</p>
+<ul>
+<li><a href="/Input/Overview.md">Input Overview</a></li>
+<li><a href="/Input/InputEvents.md">Input Events</a></li>
+<li><a href="/Input/Pointers.md">Input Pointers</a></li>
+</ul>
 <table>
 <thead>
 <tr>
@@ -461,7 +467,7 @@
 <tbody>
 <tr>
 <td>Billboard</td>
-<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView.html"><code>RadialView</code></a> <a href="README_Solver.html">Solver</a></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Billboard.html"><code>Billboard</code></a></td>
 </tr>
 <tr>
 <td>Tagalong</td>
@@ -477,7 +483,7 @@
 </tr>
 <tr>
 <td>NearFade</td>
-<td>Built-in to MixedRealityStandard.shader</td>
+<td>Built-in to <a href="README_MRTKStandardShader.html">Mixed Reality Toolkit Standard shader</a></td>
 </tr>
 </tbody>
 </table>
