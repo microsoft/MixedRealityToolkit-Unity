@@ -172,6 +172,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 #endif
         }
+
+        /// <summary>
+        /// Waits for the user to press the enter key before a test continues.
+        /// Not actually used by any test, but it is useful when debugging since you can 
+        /// pause the state of the test and inspect the scene.
+        /// </summary>
+        internal static IEnumerator WaitForEnterKey()
+        {
+            Debug.Log(Time.time + "Press Enter...");
+            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
+            {
+                yield return null;
+            }
+        }
+
     }
 }
 #endif
