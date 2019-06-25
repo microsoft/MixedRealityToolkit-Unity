@@ -100,9 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bbox.BoundsOverride = bc;
             yield return null;
 
-            // Get the dimensions of the corners
-            List<GameObject> corners = FindDescendantsContainingName(bbox.gameObject, "corner_");
-
             Bounds b = GetBoundingBoxRigBounds(bbox);
 
             Debug.Assert(b.center == bc.center, $"bounds center should be {bc.center} but they are {b.center}");
@@ -127,14 +124,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(bounds.center == new Vector3(0, 0, 1.5f));
             Debug.Assert(bounds.size == new Vector3(.5f, .5f, .5f));
 
-            List<GameObject> corners = FindDescendantsContainingName(bbox.gameObject, "corner_");
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             // front right corner is corner 3
-            var frontRightCornerPos = corners[3].transform.position;
+            var frontRightCornerPos = bbox.ScaleCorners[3].transform.position;
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, frontRightCornerPos);
             yield return PlayModeTestUtilities.SetHandState(frontRightCornerPos, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
             var delta = new Vector3(0.1f, 0.1f, 0f);
+
             yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, 10, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
@@ -169,19 +166,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
             iss.InputSimulationProfile = isp;
 
-            List<GameObject> corners = FindDescendantsContainingName(bbox.gameObject, "corner_");
-
-            CameraCache.Main.transform.LookAt(corners[3].transform);
+            CameraCache.Main.transform.LookAt(bbox.ScaleCorners[3].transform);
             var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, isp.DefaultHandDistance));
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, iss, ArticulatedHandPose.GestureId.Open, startHandPos);
             yield return PlayModeTestUtilities.SetHandState(startHandPos, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, iss);
+            var delta = new Vector3(0.1f, 0.1f, 0f);
 
             // After pinching, center should remain the same
             var afterPinchbounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(afterPinchbounds.center, startCenter, "bbox incorrect center after pinch");
             TestUtilities.AssertAboutEqual(afterPinchbounds.size, startSize, "bbox incorrect size after pinch");
 
-            var delta = new Vector3(0.1f, 0.1f, 0f);
 
             yield return PlayModeTestUtilities.MoveHandFromTo(startHandPos, startHandPos + delta, 10, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, iss);
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
@@ -230,8 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(afterTranslateBounds.center, afterTranslateCenter, "bbox incorrect center after translate");
             TestUtilities.AssertAboutEqual(afterTranslateBounds.size, scaledSize, "bbox incorrect size after translate");
 
-            List<GameObject> corners = FindDescendantsContainingName(bbox.gameObject, "corner_");
-            var c0 = corners[0];
+            var c0 = bbox.ScaleCorners[0];
             var bboxBottomCenter = afterTranslateBounds.center - Vector3.up * afterTranslateBounds.extents.y;
             Vector3 cc0 = c0.transform.position - bboxBottomCenter;
             float rotateAmount = 30;
@@ -243,26 +237,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(bbox.gameObject);
         }
 
-        private List<GameObject> FindDescendantsContainingName(GameObject rigRoot, string v)
-        {
-            Queue<Transform> toExplore = new Queue<Transform>();
-            toExplore.Enqueue(rigRoot.transform);
-            List<GameObject> result = new List<GameObject>();
-            while (toExplore.Count > 0)
-            {
-                var cur = toExplore.Dequeue();
-                if (cur.name.Contains(v))
-                {
-                    result.Add(cur.gameObject);
-                }
-                for (int i = 0; i < cur.childCount; i++)
-                {
-                    toExplore.Enqueue(cur.GetChild(i));
-                }
-            }
-            return result;
-        }
-
         /// <summary>
         /// Returns the AABB of the bounding box rig (corners, edges)
         /// that make up the bounding box by using the positions of the corners
@@ -271,10 +245,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <returns></returns>
         private Bounds GetBoundingBoxRigBounds(BoundingBox bbox)
         {
-            List<GameObject> corners = FindDescendantsContainingName(bbox.gameObject, "corner_");
+            var corners = bbox.ScaleCorners;
 
             Bounds b = new Bounds();
-            b.center = corners[0].transform.position;
+            b.center = corners[0].position;
             foreach (var c in corners.Skip(1))
             {
                 b.Encapsulate(c.transform.position);
