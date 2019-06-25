@@ -9,11 +9,9 @@ Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes 
 
 Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.
 
-- [Breaking changes](#breaking-changes)
+- [Spatial Awareness](#spatial-awareness)
 
-### Breaking changes
-
-#### Spatial Awareness
+### Spatial Awareness
 
 The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserver interfaces have taken multiple breaking changes as described below.
 
@@ -43,12 +41,6 @@ Microsoft.MixedReality.Toolkit[.<name>]
 In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.
 
 The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name. 
-
-- [MixedRealityToolkit](#mixedrealitytoolkit)
-- [MixeddRealityToolkit.Providers](#mixedrealitytoolkit.providers)
-- [MixeddRealityToolkit.Services](#mixedrealitytoolkit.services)
-- [MixeddRealityToolkit.SDK](#mixedrealitytoolkit.sdk)
-- [MixeddRealityToolkit.Examples](#mixedrealitytoolkit.Examples)
 
 ### MixedRealityToolkit
 
