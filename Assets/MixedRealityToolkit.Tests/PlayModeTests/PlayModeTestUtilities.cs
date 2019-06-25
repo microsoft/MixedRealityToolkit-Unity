@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             else
             {
                 // At the very start of testing, playmode may not be active. In this case, create a fresh scene
-                Scene playModeTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+                Scene playModeTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
                 EditorSceneManager.SetActiveScene(playModeTestScene);
             }
 
