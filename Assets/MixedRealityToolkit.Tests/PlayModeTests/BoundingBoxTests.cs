@@ -107,6 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(b.center == bc.center, $"bounds center should be {bc.center} but they are {b.center}");
             Debug.Assert(b.size == bc.size, $"bounds size should be {bc.size} but they are {b.size}");
 
+            GameObject.Destroy(bbox.gameObject);
+            GameObject.Destroy(newObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
 
@@ -135,6 +138,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
+
+            GameObject.Destroy(bbox.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
         }
 
         /// <summary>
@@ -153,6 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(bounds.size, startSize, "bbox incorrect size at start");
 
             var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldIsp = iss.InputSimulationProfile;
             var isp = new MixedRealityInputSimulationProfile
             {
                 HandSimulationMode = HandSimulationMode.Gestures
@@ -177,6 +186,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
+
+            GameObject.Destroy(bbox.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+            // Restore the input simulation profile
+            iss.InputSimulationProfile = oldIsp;
         }
 
         private List<GameObject> FindDescendantsContainingName(GameObject rigRoot, string v)
