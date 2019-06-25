@@ -35,6 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private bool maintainScale = true;
         [SerializeField]
         [Tooltip("If true, updates are smoothed to the target. Otherwise, they are snapped to the target")]
+        private bool smoothing = true;
+        public bool Smoothing 
+        { 
+            get => smoothing; 
+            set => smoothing = value; 
+        }
         public bool smoothing = true;
 
         [SerializeField]
