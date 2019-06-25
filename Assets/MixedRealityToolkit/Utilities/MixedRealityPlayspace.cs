@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -22,7 +23,10 @@ namespace Microsoft.MixedReality.Toolkit
         private const string NameEnabled = "MixedRealityPlayspace";
         private const string NameDisabled = "MixedRealityPlayspace (Inactive)";
 
+        // Cached reference to active playspace object / transform
         private static MixedRealityPlayspace mixedRealityPlayspace;
+        // Cached reference to camera service
+        private static IMixedRealityCameraSystem cameraService;
 
         public static void Destroy()
         {
@@ -204,8 +208,8 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     // Create a new mixed reality playspace
                     mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
-
-                    if (!MixedRealityToolkit.IsCameraSystemEnabled)
+                    // Is there an active camera system?
+                    if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityCameraSystem>(out cameraService))
                     {   // If the camera system is enabled, let it handle parenting the camera.
                         CameraCache.Main.transform.SetParent(mixedRealityPlayspace.transform);
                     }

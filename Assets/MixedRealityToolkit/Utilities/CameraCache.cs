@@ -14,6 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     public static class CameraCache
     {
         private static Camera cachedCamera;
+        // Cached reference to camera service
+        private static IMixedRealityCameraSystem cameraService;
 
         /// <summary>
         /// Returns a cached reference to the main camera. Uses the camera system's main camera, if available. Otherwise finds or creates a main camera.
@@ -24,9 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 // If the camera system is enabled, use the main camera.
                 // This allows developers to control exactly which camera will be returned by the cache.
-                if (MixedRealityToolkit.IsCameraSystemEnabled)
+                if (MixedRealityServiceRegistry.TryGetService<IMixedRealityCameraSystem>(out cameraService))
                 {
-                    return MixedRealityToolkit.CameraSystem.Main;
+                    return cameraService.Main;
                 }
 
                 // Otherwise, return a default camera
@@ -41,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             get
             {
-                if (MixedRealityToolkit.IsCameraSystemEnabled)
+                if (MixedRealityServiceRegistry.TryGetService<IMixedRealityCameraSystem>(out cameraService))
                 {   // The camera system is guaranteed to create a camera.
                     return true;
                 }
