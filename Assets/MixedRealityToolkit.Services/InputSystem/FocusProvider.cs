@@ -67,6 +67,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private IMixedRealityPointer primaryPointer;
+
+        public IMixedRealityPointer PrimaryPointer
+        {
+            get { return primaryPointer; }
+            private set
+            {
+                if (value != PrimaryPointer)
+                {
+                    IMixedRealityPointer oldPointer = primaryPointer;
+                    primaryPointer = value;
+                    PrimaryPointerChanged?.Invoke(oldPointer, primaryPointer);
+                }
+            }
+        }
+
         #region IFocusProvider Properties
 
         /// <inheritdoc />
@@ -445,6 +461,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
 
+        /// <summary>
+        /// Interface used for selecting the primary pointer.
+        /// </summary>
+        private IMixedRealityPrimaryPointerSelector primaryPointerSelector;
+
+        /// <summary>
+        /// Event raised on primary pointer changes.
+        /// </summary>
+        private event PrimaryPointerChangedHandler PrimaryPointerChanged;
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
@@ -458,6 +484,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 FindOrCreateUiRaycastCamera();
             }
 
+            var primaryPointerSelectorType = InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
+            if (primaryPointerSelectorType != null)
+            {
+                primaryPointerSelector = Activator.CreateInstance(primaryPointerSelectorType) as IMixedRealityPrimaryPointerSelector;
+                primaryPointerSelector.Initialize();
+            }
+
             foreach (var inputSource in InputSystem.DetectedInputSources)
             {
                 RegisterPointers(inputSource);
@@ -466,6 +499,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void Destroy()
         {
+            if (primaryPointerSelector != null)
+            {
+                primaryPointerSelector.Destroy();
+            }
+
             CleanUpUiRaycastCamera();
             base.Destroy();
         }
@@ -477,6 +515,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             UpdatePointers();
             UpdateFocusedObjects();
+
+            PrimaryPointer = primaryPointerSelector?.Update();
         }
 
         #endregion IMixedRealityService Implementation
@@ -610,6 +650,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (IsPointerRegistered(pointer)) { return false; }
 
             pointers.Add(new PointerData(pointer));
+
+            if (primaryPointerSelector != null)
+            {
+                primaryPointerSelector.RegisterPointer(pointer);
+            }
+
             return true;
         }
 
@@ -682,6 +728,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             pointers.Remove(pointerData);
+
+            if (primaryPointerSelector != null)
+            {
+                primaryPointerSelector.UnregisterPointer(pointer);
+                PrimaryPointer = primaryPointerSelector.Update();
+            }
+
             return true;
         }
 
@@ -699,6 +752,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             return typePointers;
+        }
+
+        public void SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler handler, bool invokeHandlerWithCurrentPointer)
+        {
+            if (invokeHandlerWithCurrentPointer)
+            {
+                handler(null, PrimaryPointer);
+            }
+
+            PrimaryPointerChanged += handler;
+        }
+
+        public void UnsubscribeFromPrimaryPointerChanged(PrimaryPointerChangedHandler handler)
+        {
+            PrimaryPointerChanged -= handler;
         }
 
         /// <summary>

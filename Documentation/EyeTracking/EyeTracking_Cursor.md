@@ -8,4 +8,4 @@ If you have any questions regarding this section please post in our [MRTK slack 
 
 
 ---
-[Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)

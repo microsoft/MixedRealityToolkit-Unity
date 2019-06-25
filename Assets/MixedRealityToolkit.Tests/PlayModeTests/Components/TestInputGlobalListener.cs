@@ -1,10 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
+// For InputSystemGlobalListener
+#pragma warning disable 0618
     internal class TestInputGlobalListener: InputSystemGlobalListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
     {
         // Parameters, which are set by child classes
@@ -124,4 +128,42 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             registerSpeechOnly = true;
         }
     }
+
+    internal class TestInputGlobalHandlerListener : InputSystemGlobalHandlerListener, IMixedRealityHandJointHandler, IMixedRealitySpeechHandler, IMixedRealityInputHandler<float>
+    {
+        // Values changed by class to validate event receiving
+        public int handJointCount = 0;
+        public int inputChangedCount = 0;
+        public int speechCount = 0;
+
+        public void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
+        {
+            handJointCount++;
+        }
+
+        public void OnInputChanged(InputEventData<float> eventData)
+        {
+            inputChangedCount++;
+        }
+
+        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
+        {
+            speechCount++;
+        }
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler<float>>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler<float>>(this);
+        }
+    }
+#pragma warning restore 0618
 }
