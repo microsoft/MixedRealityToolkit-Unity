@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Base class for the Mixed Reality Toolkit's SDK input handlers.
     /// </summary>
-    public abstract class BaseInputHandler : InputSystemGlobalListener
+    public abstract class BaseInputHandler : InputSystemGlobalHandlerListener
     {
         [SerializeField]
         [Tooltip("Is Focus required to receive input events on this GameObject?")]

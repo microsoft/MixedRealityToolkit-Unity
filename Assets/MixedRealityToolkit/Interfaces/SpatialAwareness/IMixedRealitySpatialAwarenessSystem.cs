@@ -15,15 +15,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         GameObject SpatialAwarenessObjectParent { get; }
 
         /// <summary>
-        /// Creates the a parent, that is a child if the Spatial Awareness System parent so that the scene hierarchy does not get overly cluttered.
+        /// Creates the a parent, that is a child of the Spatial Awareness System parent so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
         /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which spatial awareness objects will be parented.
         /// </returns>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, not by application code. It
+        /// is used to enable observations to be grouped by observer.
         /// </remarks>
-        GameObject CreateSpatialAwarenessObjectParent(string name);
+        GameObject CreateSpatialAwarenessObservationParent(string name);
 
         /// <summary>
         /// Generates a new source identifier for an <see cref="IMixedRealitySpatialAwarenessObserver"/> implementation.
@@ -119,6 +120,18 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
         /// <param name="name">The friendly name of the observer.</param>
         void SuspendObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver;
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        void ClearObservations();
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        void ClearObservations<T>(string name = null) where T : IMixedRealitySpatialAwarenessObserver;
 
         // TODO: make these (and future plane) events more generic
 
