@@ -44,8 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
-            RenderSettings.skybox = null;
-
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position = Vector3.forward * 1.5f;
             BoundingBox bbox = cube.AddComponent<BoundingBox>();
