@@ -31,6 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [TearDown]
         public void ShutdownMrtk()
         {
+            // Make sure to also zero out any camera transforms that may have been applied
+            CameraCache.Main.transform.localPosition = Vector3.zero;
+            CameraCache.Main.transform.localRotation = Quaternion.identity;
+
             TestUtilities.ShutdownMixedRealityToolkit();
         }
 

@@ -115,9 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.position = new Vector3(1.0f, 1.5f, -2.0f);
                 p.LookAt(Vector3.zero);
             });
-            // Make sure to also zero out any camera transforms that may have been applied
-            CameraCache.Main.transform.localPosition = Vector3.zero;
-            CameraCache.Main.transform.localRotation = Quaternion.identity;
         }
 
         /// <summary>
