@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public abstract class InputSystemGlobalHandlerListener : MonoBehaviour
     {
-        private bool lateInitialize = false;
+        private bool lateInitialize = true;
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
