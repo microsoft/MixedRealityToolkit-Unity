@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public MixedRealityInputRecordingProfile InputRecordingProfile
         {
             get
-                {
+            {
                 var profile = ConfigurationProfile as MixedRealityInputRecordingProfile;
                 if (!profile)
                 {

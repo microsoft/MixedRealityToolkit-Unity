@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public interface IMixedRealityInputRecordingService : IMixedRealityInputDeviceManager
     {
         /// <summary>
-        /// Input is being recorded.
+        /// True if input is being recorded.
         /// </summary>
         bool IsRecording { get; }
 
@@ -25,8 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool UseBufferTimeLimit { get; set; }
 
         /// <summary>
-        /// Size of the input recording buffer.
+        /// Maximum duration in seconds of the input recording if UseBufferTimeLimit is enabled.
         /// </summary>
+        /// <remarks>
+        /// If UseBufferTimeLimit is enabled then keyframes older than this limit will be discarded.
+        /// </remarks>
         float RecordingBufferTimeLimit { get; set; }
 
         /// <summary>

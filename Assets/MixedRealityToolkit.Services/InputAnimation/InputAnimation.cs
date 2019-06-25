@@ -100,6 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             markers = new List<InputAnimationMarker>();
         }
 
+        /// <summary>
+        /// Get animation curves for the pose of the given hand joint, if they exist.
+        /// </summary>
         public bool TryGetHandJointCurves(Handedness handedness, TrackedHandJoint joint, out PoseCurves curves)
         {
             if (handedness == Handedness.Left)
@@ -114,6 +117,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return false;
         }
 
+        /// <summary>
+        /// Make sure the pose animation curves for the given hand joint exist.
+        /// </summary>
         public PoseCurves CreateHandJointCurves(Handedness handedness, TrackedHandJoint joint)
         {
             if (handedness == Handedness.Left)
@@ -220,6 +226,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             AddRotationKeyFiltered(curves.RotationX, curves.RotationY, curves.RotationZ, curves.RotationW, time, pose.Rotation, rotationThreshold);
         }
 
+        // Add a vector keyframe to animation curve if the threshold distance to the previous value is exceeded.
+        // Otherwise replace the last keyframe instead of adding a new one.
         private static void AddPositionKeyFiltered(AnimationCurve curveX, AnimationCurve curveY, AnimationCurve curveZ, float time, Vector3 position, float threshold)
         {
             float sqrThreshold = threshold * threshold;
@@ -246,6 +254,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             AddFloatKey(curveZ, time, position.z);
         }
 
+        // Add a quaternion keyframe to animation curve if the threshold angular distance to the previous value is exceeded.
+        // Otherwise replace the last keyframe instead of adding a new one.
         private static void AddRotationKeyFiltered(AnimationCurve curveX, AnimationCurve curveY, AnimationCurve curveZ, AnimationCurve curveW, float time, Quaternion rotation, float threshold)
         {
             float sqrThreshold = threshold * threshold;
@@ -271,26 +281,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            // TODO make use of Bezier interpolation to allow more aggressive compression
-            // and use tangents and weights to accurately merge adjacent splines.
             AddFloatKey(curveX, time, rotation.x);
             AddFloatKey(curveY, time, rotation.y);
             AddFloatKey(curveZ, time, rotation.z);
             AddFloatKey(curveW, time, rotation.w);
         }
 
-        /// Add a float value to an animation curve
+        /// Add a float value to an animation curve.
+        /// Returns the index of the newly added keyframe.
         private static int AddFloatKey(AnimationCurve curve, float time, float value)
         {
-            // return curve.AddKey(time, value);
-
-            // Use linear interpolation to avoid overshooting from bezier tangents
+            // Use linear interpolation by setting tangents and weights to zero.
             var keyframe = new Keyframe(time, value, 0.0f, 0.0f, 0.0f, 0.0f);
             keyframe.weightedMode = WeightedMode.Both;
             return curve.AddKey(keyframe);
         }
 
-        /// Utility function that creates a non-interpolated keyframe suitable for boolean values
+        /// Utility function that creates a non-interpolated keyframe suitable for boolean values.
+        /// Returns the index of the newly added keyframe.
         private static int AddBoolKey(AnimationCurve curve, float time, bool value)
         {
             float fvalue = value ? 1.0f : 0.0f;
@@ -301,8 +309,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return curve.AddKey(keyframe);
         }
 
-        /// Utility function that creates a non-interpolated keyframe suitable for boolean values
-        /// Keys are only added if the value changes
+        /// Utility function that creates a non-interpolated keyframe suitable for boolean values.
+        /// Keys are only added if the value changes.
+        /// Returns the index of the newly added keyframe, or -1 if no keyframe has been added.
         private static int AddBoolKeyFiltered(AnimationCurve curve, float time, bool value)
         {
             float fvalue = value ? 1.0f : 0.0f;
@@ -327,6 +336,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return curve.AddKey(keyframe);
         }
 
+        /// <summary>
+        /// Remove all keyframes from all animation curves with time values before the given cutoff time.
+        /// </summary>
+        /// <remarks>
+        /// If keyframes exists before the cutoff time then one preceding keyframe will be retained,
+        /// so that interpolation at the cutoff time yields the same result.
+        /// </remarks>
         public void CutoffBeforeTime(float time)
         {
             foreach (var curve in AnimationCurves)
@@ -350,6 +366,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Remove all keyframes from all animation curves.
+        /// </summary>
         public void Clear()
         {
             foreach (var curve in AnimationCurves)
@@ -358,6 +377,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        // Helper class to enumerate all curves in the input animation
         internal class AnimationCurveEnumerable : IEnumerable<AnimationCurve>
         {
             private InputAnimation animation;
@@ -591,12 +611,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
             return lowIdx;
-        }
-
-        /// Sort marker array by time values.
-        private void SortMarkers()
-        {
-            markers.Sort(new CompareMarkers());
         }
 
         private void ComputeDuration()
