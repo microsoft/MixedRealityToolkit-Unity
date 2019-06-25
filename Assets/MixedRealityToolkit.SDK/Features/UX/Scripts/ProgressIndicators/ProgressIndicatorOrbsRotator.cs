@@ -13,9 +13,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     /// </summary>
     public class ProgressIndicatorOrbsRotator : MonoBehaviour, IProgressIndicator
     {
+        /// <inheritdoc/>
         public Transform MainTransform { get { return transform; } }
+
+        /// <inheritdoc/>
         public ProgressIndicatorState State { get { return state; } }
+
+        /// <inheritdoc/>
         public float Progress { set { progress = value; } }
+
+        /// <inheritdoc/>
         public string Message { set { messageText.text = value; } }
 
         [SerializeField]
@@ -48,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         private float rotationWhenStopped;
         private MaterialPropertyBlock[] propertyBlocks = null;
 
+        /// <inheritdoc/>
         public async Task OpenAsync()
         {
             gameObject.SetActive(true);
@@ -61,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             state = ProgressIndicatorState.Open;
         }
 
+        /// <inheritdoc/>
         public async Task CloseAsync()
         {
             state = ProgressIndicatorState.Closing;
