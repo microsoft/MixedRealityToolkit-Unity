@@ -84,7 +84,27 @@
 
 <p>Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the GA release.</p>
 <ul>
+<li><a href="#api-changes">API changes</a></li>
 <li><a href="#assembly-name-changes">Assembly name changes</a></li>
+</ul>
+<h2 id="api-changes">API changes</h2>
+<p>Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.</p>
+<ul>
+<li><a href="#spatial-awareness">Spatial Awareness</a></li>
+</ul>
+<h3 id="spatial-awareness">Spatial Awareness</h3>
+<p>The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserver interfaces have taken multiple breaking changes as described below.</p>
+<p><strong>Changes</strong></p>
+<p>The following method(s) have been renamed to better describe their usage.</p>
+<ul>
+<li>IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent has been renaned to IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent to clarify its usage.</li>
+</ul>
+<p><strong>Additions</strong></p>
+<p>Based on customer feedback, support for easy removal of previously observed spataial awareness data has been added.</p>
+<ul>
+<li>IMixedRealitySpatialAwarenessSystem.ClearObservations()</li>
+<li>IMixedRealitySpatialAwarenessSystem.ClearObservations&lt;T&gt;(string name)</li>
+<li>IMixedRealitySpatialAwarenessObserver.ClearObservations()</li>
 </ul>
 <h2 id="assembly-name-changes">Assembly name changes</h2>
 <p>In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.</p>
@@ -92,7 +112,7 @@
 </code></pre>
 <p>In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.</p>
 <p>The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name.</p>
-<h3 id="mixedrealitytookit">MixedRealityTookit</h3>
+<h3 id="mixedrealitytoolkit">MixedRealityToolkit</h3>
 <table>
 <thead>
 <tr>
