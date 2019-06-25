@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             if (state == ProgressIndicatorState.Closed)
                 return;
 
-            if (HasAnimationFinished == false)
+            if (!HasAnimationFinished)
             {
                 UpdateTime();
                 ControlDotStarts();
