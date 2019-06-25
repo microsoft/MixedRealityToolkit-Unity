@@ -2,7 +2,33 @@
 
 Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the GA release.
 
+- [API changes](#api-changes)
 - [Assembly name changes](#assembly-name-changes)
+
+## API changes
+
+Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.
+
+- [Spatial Awareness](#spatial-awareness)
+
+### Spatial Awareness
+
+The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserver interfaces have taken multiple breaking changes as described below.
+
+**Changes**
+
+The following method(s) have been renamed to better describe their usage.
+
+- IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent has been renaned to IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent to clarify its usage.
+
+**Additions**
+
+Based on customer feedback, support for easy removal of previously observed spataial awareness data has been added.
+
+- IMixedRealitySpatialAwarenessSystem.ClearObservations()
+- IMixedRealitySpatialAwarenessSystem.ClearObservations\<T\>(string name)
+- IMixedRealitySpatialAwarenessObserver.ClearObservations()
+
 
 ## Assembly name changes
 
@@ -16,8 +42,7 @@ In some instances, multiple assemblies have been merged to create better unity o
 
 The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name. 
 
-
-### MixedRealityTookit
+### MixedRealityToolkit
 
 | RC2 | GA |
 | --- | --- |
