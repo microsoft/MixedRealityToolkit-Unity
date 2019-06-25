@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("Enable hand simulation")]
         private HandSimulationMode handSimulationMode = HandSimulationMode.Articulated;
-        public HandSimulationMode HandSimulationMode => handSimulationMode;
+        public HandSimulationMode HandSimulationMode { get => handSimulationMode; set => handSimulationMode = value; }
 
         [Header("Hand Control Settings")]
         [SerializeField]
