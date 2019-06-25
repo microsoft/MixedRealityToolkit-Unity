@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Instantiates a bounding box at 0, 0, -1.5f
-        /// box is at scale 1,1,1
+        /// box is at scale .5, .5, .5
         /// </summary>
         /// <returns></returns>
         private BoundingBox InstantiateSceneAndDefaultBbox()
@@ -64,6 +64,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
         #endregion
 
+        /// <summary>
+        /// Verify that we can instantiate bounding box at runtime
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
         public IEnumerator BBoxInstantiate()
         {
