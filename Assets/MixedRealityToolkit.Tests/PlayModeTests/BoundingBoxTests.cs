@@ -25,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class BoundingBoxTests
     {
-        private readonly float distanceEpsilon = 0.001f;
         #region Utilities
         [TearDown]
         public void ShutdownMrtk()
@@ -134,37 +133,51 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, 10, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
-            AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
-            AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
+            TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
         }
-
-        private void AssertAboutEqual(Vector3 actual, Vector3 expected, string message)
-        {
-            var dist = (actual - expected).magnitude;
-            Debug.Assert(dist < distanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}, distance {dist}");
-        }
-
-        //public IEnumerator ScaleViaFarInteraction()
-        //{
-        //    var bbox = InstantiateSceneAndDefaultBbox();
-        //    // make the box smaller so we can see it
-
-        //}
 
         /// <summary>
-        /// Waits for the user to press the enter key before a test continues.
-        /// Not actually used by any test, but it is useful when debugging since you can 
-        /// pause the state of the test and inspect the scene.
+        /// Uses far interaction (HoloLens 1 style) to scale the bounding box
         /// </summary>
-        private IEnumerator WaitForEnterKey()
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator ScaleViaHoloLens1Interaction()
         {
-            Debug.Log(Time.time + "Press Enter...");
-            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
-            {
-                yield return null;
-            }
-        }
+            var bbox = InstantiateSceneAndDefaultBbox();
+            yield return null;
+            var bounds = bbox.GetComponent<BoxCollider>().bounds;
+            var startCenter = new Vector3(0, 0, 1.5f);
+            var startSize = new Vector3(.5f, .5f, .5f);
+            TestUtilities.AssertAboutEqual(bounds.center, startCenter, "bbox incorrect center at start");
+            TestUtilities.AssertAboutEqual(bounds.size, startSize, "bbox incorrect size at start");
 
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var isp = new MixedRealityInputSimulationProfile
+            {
+                HandSimulationMode = HandSimulationMode.Gestures
+            };
+            iss.InputSimulationProfile = isp;
+
+            List<GameObject> corners = FindDescendantsContainingName(bbox.gameObject, "corner_");
+
+            CameraCache.Main.transform.LookAt(corners[3].transform);
+            var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, isp.DefaultHandDistance));
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, iss, ArticulatedHandPose.GestureId.Open, startHandPos);
+            yield return PlayModeTestUtilities.SetHandState(startHandPos, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, iss);
+
+            // After pinching, center should remain the same
+            var afterPinchbounds = bbox.GetComponent<BoxCollider>().bounds;
+            TestUtilities.AssertAboutEqual(afterPinchbounds.center, startCenter, "bbox incorrect center after pinch");
+            TestUtilities.AssertAboutEqual(afterPinchbounds.size, startSize, "bbox incorrect size after pinch");
+
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+
+            yield return PlayModeTestUtilities.MoveHandFromTo(startHandPos, startHandPos + delta, 10, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, iss);
+            var endBounds = bbox.GetComponent<BoxCollider>().bounds;
+            TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
+        }
 
         private List<GameObject> FindDescendantsContainingName(GameObject rigRoot, string v)
         {
