@@ -29,6 +29,14 @@ Based on customer feedback, support for easy removal of previously observed spat
 - IMixedRealitySpatialAwarenessSystem.ClearObservations\<T\>(string name)
 - IMixedRealitySpatialAwarenessObserver.ClearObservations()
 
+### NearInteractionTouchable and PokePointer
+
+- NearInteractionTouchable does not handle Unity UI canvas touching any longer. The NearInteractionTouchableUnityUI class must be used for Unity UI touchables now.
+- ColliderNearInteractionTouchable is the new base class for touchables based on colliders, i.e. every touchable except NearInteractionTouchableUnityUI.
+- BaseNearInteractionTouchable.DistFront has been moved and renamed to PokePointer.TouchableDistance
+    This is the distance and which the PokePointer can interact with touchables. Previously each touchable had it's own maximum interaction distance, but now this is defined in the PokePointer which allows better optimization.
+- BaseNearInteractionTouchable.DistBack has been renamed to PokeThreshold
+    This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. A touchable is activated when the PokeThreshold is crossed, and released when DebounceThreshold is crossed.
 
 ## Assembly name changes
 
