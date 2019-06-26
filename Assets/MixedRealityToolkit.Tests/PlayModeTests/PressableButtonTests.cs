@@ -37,26 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
-            RenderSettings.skybox = null;
-
             Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab", typeof(Object));
             GameObject testButton = Object.Instantiate(pressableButtonPrefab) as GameObject;
 
             return testButton;
-        }
-
-        /// <summary>
-        /// Waits for the user to press the enter key before a test continues.
-        /// Not actually used by any test, but it is useful when debugging since you can 
-        /// pause the state of the test and inspect the scene.
-        /// </summary>
-        private IEnumerator WaitForEnterKey()
-        {
-            Debug.Log(Time.time + "Press Enter...");
-            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
-            {
-                yield return null;
-            }
         }
 
         #endregion
@@ -230,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 pressDistanceWorldLocal = buttonComponent.GetWorldPositionAlongPushDirection(pressDistanceLocal);
             Vector3 releaseDistanceWorldLocal = buttonComponent.GetWorldPositionAlongPushDirection(releaseDistanceLocal);
 
-            // compare world space distances -> local and world space mode should return us the same world space positions 
+            // compare world space distances -> local and world space mode should return us the same world space positions
             Assert.IsTrue(startPushDistanceWorld == startPushDistanceWorldLocal, "World and Local World positions don't match after switching pressable button distance mode");
             Assert.IsTrue(maxPushDistanceWorld == maxPushDistanceWorldLocal, "World and Local World positions don't match after switching pressable button distance mode");
             Assert.IsTrue(pressDistanceWorld == pressDistanceWorldLocal, "World and Local World positions don't match after switching pressable button distance mode");
@@ -239,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // switch back to world space
             buttonComponent.DistanceSpaceMode = PressableButton.SpaceMode.World;
 
-            // distances must match up with original values 
+            // distances must match up with original values
             Assert.IsTrue(startPushDistance == buttonComponent.StartPushDistance, "Conversion from local to world distances didn't return the correct world distances");
             Assert.IsTrue(maxPushDistance == buttonComponent.MaxPushDistance, "Conversion from local to world distances didn't return the correct world distances");
             Assert.IsTrue(pressDistance == buttonComponent.PressDistance, "Conversion from local to world distances didn't return the correct world distances");
