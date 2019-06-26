@@ -661,6 +661,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Used to determine if boundsOverride size has changed.
         private Bounds prevBoundsOverride = new Bounds();
 
+        // This is the local scale on the corner visual (both for default cubes and prefab)
+        // that needs to be used to ensure that corner always matched scaleHandleSize
+        // Gets updated whenever CreateRig() or AddCorners() is called
+        private float cornerVisualScaleToMatchHandleSize = 1f;
+
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
         public bool Active
@@ -959,6 +964,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     cube.name = "corner_" + i.ToString();
 
                     cube.transform.localScale = new Vector3(scaleHandleSize, scaleHandleSize, scaleHandleSize);
+                    cornerVisualScaleToMatchHandleSize = scaleHandleSize;
                     cube.transform.position = boundsCorners[i];
 
                     // In order for the cube to be grabbed using near interaction we need
@@ -1018,6 +1024,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     // we need to multiply by this amount to get to desired scale handle size
                     var invScale = scaleHandleSize / cornerbounds.size.x;
                     cornerVisuals.transform.localScale = new Vector3(invScale, invScale, invScale);
+                    cornerVisualScaleToMatchHandleSize = invScale;
 
                     if (isFlattened)
                     {
@@ -1695,7 +1702,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // Compute the local scale that produces the desired world space dimensions
                 Vector3 linkDimensions = Vector3.Scale(GetLinkDimensions(), invRootScale);
-                Vector3 cornerDimensions = Vector3.Scale(scaleHandleSize * Vector3.one, invRootScale);
+                Vector3 cornerDimensions = Vector3.Scale(cornerVisualScaleToMatchHandleSize * Vector3.one, invRootScale);
                 Vector3 ballDimenions = Vector3.Scale(rotationHandleDiameter * Vector3.one, invRootScale);
 
                 for (int i = 0; i < corners.Count; i++)
