@@ -33,20 +33,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return obj;
         }
 
-        private static GameObject CreateImage(Color color)
+        public static Image CreateImage(Color color)
         {
             var obj = CreateRenderableObject();
             var image = obj.AddComponent<Image>();
             image.color = color;
-            return obj;
-        }
-
-        private static void AdjustTouchableSettingsToRectTransform(NearInteractionTouchable t, RectTransform rt)
-        {
-            // Match bounds
-            t.Bounds = rt.sizeDelta;
-            // Match forward direction to Unity UI
-            t.SetLocalForward(new Vector3(0, 0, -1));
+            return image;
         }
 
         public static Canvas CreateCanvas(float scale)
@@ -60,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var raycaster = obj.AddComponent<GraphicRaycaster>();
             var touchable = obj.AddComponent<NearInteractionTouchable>();
             touchable.SurfaceType = NearInteractionTouchable.TouchableSurfaceType.UnityUI;
+            touchable.EventsToReceive = TouchableEventType.Pointer;
 
             AdjustTouchableSettingsToRectTransform(touchable, obj.transform as RectTransform);
             Assert.True(touchable.AreLocalVectorsOrthogonal);
@@ -77,19 +70,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static Button CreateButton(string text, Color normalColor, Color highlightColor, Color pressedColor)
         {
-            var obj = CreateImage(normalColor);
+            var img = CreateImage(normalColor);
 
-            var button = obj.AddComponent<Button>();
+            var button = img.gameObject.AddComponent<Button>();
+            button.targetGraphic = img;
             var colors = new ColorBlock();
             colors.normalColor = normalColor;
             colors.highlightedColor = highlightColor;
             colors.pressedColor = pressedColor;
+            colors.colorMultiplier = 1.0f;
             button.colors = colors;
 
             var textObj = CreateText(text);
-            textObj.transform.SetParent(obj.transform);
+            textObj.transform.SetParent(img.transform);
+            textObj.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+            textObj.alignment = TextAnchor.MiddleCenter;
 
             return button;
+        }
+
+        private static void AdjustTouchableSettingsToRectTransform(NearInteractionTouchable t, RectTransform rt)
+        {
+            // Match bounds
+            t.Bounds = rt.sizeDelta;
+            // Match forward direction to Unity UI
+            t.SetLocalForward(new Vector3(0, 0, -1));
         }
     }
 }

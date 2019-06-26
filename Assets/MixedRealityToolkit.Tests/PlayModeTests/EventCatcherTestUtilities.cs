@@ -10,6 +10,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -18,11 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public abstract class FocusedObjectEventCatcher<T> : MonoBehaviour, IDisposable where T : MonoBehaviour
     {
-        protected int eventsStarted = 0;
-        public int EventsStarted => eventsStarted;
-
-        protected int eventsCompleted = 0;
-        public int EventsCompleted => eventsCompleted;
+        public int EventsStarted { get; protected set; } = 0;
+        public int EventsCompleted { get; protected set; } = 0;
 
         public static T Create(GameObject gameObject)
         {
@@ -39,13 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Base class for counting global events.
     /// </summary>
-    public abstract class GlobalEventCatcher<T> : InputSystemGlobalListener, IDisposable where T : MonoBehaviour
+    public abstract class GlobalEventCatcher<T> : InputSystemGlobalHandlerListener, IDisposable where T : MonoBehaviour
     {
-        protected int eventsStarted = 0;
-        public int EventsStarted => eventsStarted;
-
-        protected int eventsCompleted = 0;
-        public int EventsCompleted => eventsCompleted;
+        public int EventsStarted { get; protected set; } = 0;
+        public int EventsCompleted { get; protected set; } = 0;
 
         public static T Create()
         {
@@ -74,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <inheritdoc />
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-            ++eventsCompleted;
+            ++EventsCompleted;
 
             OnTouchCompletedEvent.Invoke();
         }
@@ -82,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <inheritdoc />
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            ++eventsStarted;
+            ++EventsStarted;
 
             OnTouchStartedEvent.Invoke();
         }
@@ -90,6 +85,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <inheritdoc />
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
+        }
+    }
+
+    /// <summary>
+    /// Base class for counting Unity button events.
+    /// </summary>
+    public class UnityButtonEventCatcher : IDisposable
+    {
+        public int Click { get; protected set; } = 0;
+
+        private Button button;
+
+        public UnityButtonEventCatcher(Button button)
+        {
+            this.button = button;
+            button.onClick.AddListener(OnClick);
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            button.onClick.RemoveListener(OnClick);
+        }
+
+        private void OnClick()
+        {
+            ++Click;
         }
     }
 }

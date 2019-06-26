@@ -397,22 +397,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator NearInteractionTouchableUnityUiTest()
         {
             var canvas = UnityUiUtilities.CreateCanvas(0.002f);
-            var touchable = canvas.GetComponent<NearInteractionTouchable>();
-
-            var button = UnityUiUtilities.CreateButton("test", Color.gray, Color.blue, Color.green);
-            button.transform.SetParent(canvas.transform);
-
             canvas.transform.position = objectPosition;
 
-            UnityEditor.EditorApplication.isPaused = true;
+            var touchable = canvas.GetComponent<NearInteractionTouchable>();
+            touchable.SetLocalForward(touchNormal);
+
+            // var img = UnityUiUtilities.CreateImage(Color.blue);
+            // img.transform.SetParent(canvas.transform, false);
+            var button = UnityUiUtilities.CreateButton("test", Color.gray, Color.blue, Color.green);
+            button.transform.SetParent(canvas.transform, false);
+
+            canvas.transform.position = objectPosition;
 
             yield return new WaitForFixedUpdate();
             yield return null;
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, 1, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
 
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSim);
+            UnityEditor.EditorApplication.isPaused = true;
+            using (var catcher = new UnityButtonEventCatcher(button))
+            {
+                // Touch started and completed when entering and exiting
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.AreEqual(1, catcher.Click);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.AreEqual(1, catcher.Click);
+            }
 
             UnityEngine.Object.Destroy(touchable.gameObject);
         }
