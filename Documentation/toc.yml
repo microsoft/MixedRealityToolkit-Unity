@@ -5,6 +5,14 @@
     href: HTKToMRTKPortingGuide.md
   - name: Updating from RC2 to GA
     href: UpdatingToGA.md
+- name: Architecture
+  items:
+  - name: Overview
+    href: Architecture/Overview.md
+  - name: Framework and Runtime
+    href: Architecture/FrameworkAndRuntime.md
+  - name: Input System
+    href: Architecture/InputSystem.md
 - name: Feature Overviews
   items:
   - name: Profiles
