@@ -3,13 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using UnityEngine.Playables;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
