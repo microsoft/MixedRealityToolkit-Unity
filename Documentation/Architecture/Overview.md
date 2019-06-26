@@ -5,7 +5,7 @@ contained within the MRTK. After reading through the architecture documentation,
 documentation, the reader should understand:
 
 -  the large pieces of MRTK and how they connect,
-- What are the new concepts that the MRTK introduces that may not exist in vanilla Unity.
+- the concepts that MRTK introduces that may not exist in vanilla Unity,
 - A general understanding of how some of the larger systems (such as Input) work.
 
 This section isn't intended to teach the audience how to do things, but rather how things
