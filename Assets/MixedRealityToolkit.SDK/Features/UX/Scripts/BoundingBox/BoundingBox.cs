@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -107,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Enums
 
-        #region Serialized Fields
+        #region Serialized Fields and Properties
         [SerializeField]
         [Tooltip("The object that the bounding box rig will be modifying.")]
         private GameObject targetObject;
@@ -227,6 +228,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     CreateRig();
                 }
             }
+        }
+
+        public List<GameObject> GetCorner(int v)
+        {
+            throw new NotImplementedException();
         }
 
         [SerializeField]
@@ -595,7 +601,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public UnityEvent ScaleStopped = new UnityEvent();
         #endregion Serialized Fields
 
-        #region Private Properties
+        #region Private Fields
 
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
         private bool wireframeOnly = false;
@@ -666,6 +672,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Gets updated whenever CreateRig() or AddCorners() is called
         private float cornerVisualScaleToMatchHandleSize = 1f;
 
+        // True if this game object is a child of the Target one
+        private bool isChildOfTarget = false;
+        private static readonly string rigRootName = "rigRoot";
+
+        #endregion
+
+        #region public Properties
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
         public bool Active
@@ -703,11 +716,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return cachedTargetCollider; }
         }
 
-        // True if this game object is a child of the Target one
-        private bool isChildOfTarget = false;
-        private static readonly string rigRootName = "rigRoot";
+        /// <summary>
+        /// Returns list of transforms pointing to the scale handles of the bounding box.
+        /// </summary>
+        public IReadOnlyList<Transform> ScaleCorners
+        {
+            get { return corners; }
+        }
 
-        #endregion Private Properties
+        /// <summary>
+        /// Returns list of transforms pointing to the rotation handles of the bounding box.
+        /// </summary>
+        public IReadOnlyList<Transform> RotateMidpoints
+        {
+            get { return balls; }
+        }
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -774,6 +798,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             rigRoot.gameObject.SetActive(active);
             UpdateRigVisibilityInInspector();
         }
+
         #endregion
 
         #region MonoBehaviour Methods
