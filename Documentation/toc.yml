@@ -1,7 +1,10 @@
 - name: Getting Started with MRTK
   href: GettingStartedWithTheMRTK.md
-- name: Upgrading from HTK
-  href: HTKToMRTKPortingGuide.md
+  items:
+  - name: Upgrading from HTK
+    href: HTKToMRTKPortingGuide.md
+  - name: Updating from RC2 to GA
+    href: UpdatingToGA.md
 - name: Feature Overviews
   items:
   - name: Profiles
