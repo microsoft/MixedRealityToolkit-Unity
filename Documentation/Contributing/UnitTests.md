@@ -38,12 +38,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ExampleTest : IPrebuildSetup
     {
+
+        // only add this if your test is using a textmeshpro component
         public void Setup()
         {
             PlayModeTestUtilities.EnsureTextMeshProEssentials();
         }
 
 
+        // add a teardown if you created an mrtk gameobject in your test
         [TearDown]
         public void ShutdownMrtk()
         {
@@ -57,6 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// the name of this method will be used as test name in the unity test runner
         public IEnumerator TestMyFeature()
         {
+            // in most play mode test cases you would want to create an MRTK gameobject using the default profile
+            TestUtilities.InitializeMixedRealityToolkit(true);
+
             // write your test here
             yield return null;
         }
@@ -114,6 +120,9 @@ TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
 /// sets the initial playspace transform and camera position
 TestUtilities.InitializePlayspace();
+
+/// destroying previously created mrtk gameobject and playspace
+TestUtilities.ShutdownMixedRealityToolkit();
 ```
 
 Please refer to the API docs of [TestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.TestUtilities) and [PlayModeTestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities) for further methods of these util classes as they're extended on a regular basis while new tests get added to MRTK.
