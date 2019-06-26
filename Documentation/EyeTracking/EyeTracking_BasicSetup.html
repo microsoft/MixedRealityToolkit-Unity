@@ -93,10 +93,19 @@ We will go into detail on how to address each of them further below.</p>
 <li>An <em>'Eye Gaze Data Provider'</em> must be added to the input system. This provides eye tracking data from the platform.</li>
 <li>The GazeProvider must have its <em>'Use Eye Tracking'</em> property set to true. Note that true is the default value (so no special
 action is required unless you have actively unchecked this property.)</li>
-<li>The <em>'GazeInput'</em> capability must be enabled in the application manifest. <strong>Currently this is only available in Visual Studio.</strong></li>
+<li>The <em>'GazeInput'</em> capability must be enabled in the application manifest.
+<strong>Currently this is only available in Visual Studio and through the MRTK build tool</strong></li>
 <li>The HoloLens <strong>must</strong> be eye calibrated for the current user. Check out our <a href="EyeTracking_IsUserCalibrated.html">sample for detecting whether a user is eye calibrated or not</a>.</li>
 </ol>
 <p><strong>IMPORTANT:</strong> If any of the above requirements are not met, the application will automatically fall back to head-based gaze tracking.</p>
+<h3 id="a-note-on-the-gazeinput-capability">A note on the GazeInput capability</h3>
+<p>The MRTK-provided build tooling (i.e. Mixed Reality Toolkit -&gt; Utilities -&gt; Build Window)
+can automatically enable the GazeInput capability for you. In order to do this,
+you need to make sure that the 'Gaze Input Capability' is checked on the 'Appx Build Options' tab:</p>
+<p><img src="../Images/EyeTracking/mrtk_et_buildsetup.png" alt="MRTK Build Tools"></p>
+<p>This tooling will find the AppX manifest after the Unity build is completed and manually add the GazeInput capability.
+<strong>Note that this tooling is NOT active when using Unity's built-in Build Window</strong> (i.e. File -&gt; Build Settings).
+When using Unity's build window, the capability will need to manually added after the Unity build.</p>
 <h2 id="setting-up-eye-tracking-step-by-step">Setting up eye tracking step-by-step</h2>
 <h3 id="setting-up-the-scene">Setting up the scene</h3>
 <p>Set up the <em>MixedRealityToolkit</em> by simply clicking <em>'Mixed Reality Toolkit -&gt; Configure…'</em> in the menu bar.</p>
