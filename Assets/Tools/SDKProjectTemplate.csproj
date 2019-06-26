@@ -1,34 +1,94 @@
 <Project>
   <PropertyGroup>
+    <!--TODO: This is a weird thing, it is a required property (even if commented)-->
+    <!--<TargetFrameworks>netstandard2.0;uap10.0;net46</TargetFrameworks> -->
+    
     <ProjectGuid><!--PROJECT_GUID_TOKEN--></ProjectGuid>
-    <!--<TargetFrameworks>netstandard2.0;uap10.0;net46</TargetFrameworks> --><!--TODO: This is a weird thing, it is a required property (even if commented)-->
     <AllowUnsafeBlocks><!--ALLOW_UNSAFE_TOKEN--></AllowUnsafeBlocks>
-    <Configurations><!--PROJECT_CONFIGURATIONS_TOKEN--></Configurations>
+    <LangVersion><!--LANGUAGE_VERSION--></LangVersion>
+    
+    <DevelopmentBuild><!--DEVELOPMENT_BUILD--></DevelopmentBuild>
+	  <DefineConstants><!--COMMON_DEFINE_CONSTANTS--></DefineConstants>
+    
+    <RelativeBuildFolder><!--OUTPUT_PATH_TOKEN--></RelativeBuildFolder>
     <IsEditorOnlyTarget><!--IS_EDITOR_ONLY_TARGET_TOKEN--></IsEditorOnlyTarget>
+    <UnityEditorInstallFolder><!--UNITY_EDITOR_INSTALL_FOLDER--></UnityEditorInstallFolder>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Platform)' == ''">
+    <Platform><!--DEFAULT_PLATFORM_TOKEN--></Platform>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)' == ''">
+    <Configuration>InEditor</Configuration>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Configurations>InEditor;Player</Configurations>
+    <Platforms><!--SUPPORTED_PLATFORMS_TOKEN--></Platforms>
+    <UnityPlatform>$(Platform)</UnityPlatform>
+    <UnityConfiguration>$(Configuration)</UnityConfiguration>
   </PropertyGroup>
 
-  <!--IMPORT SDK.props manually to be able to set the BaseIntermediateOutputPath path-->
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <!-- This is special cased here for WSA player only-->
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\obj\$(UnityConfiguration)\$(UnityPlatform)\$(ProjectGuid)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+  </PropertyGroup>
   
-  <Import Project="##COMMON_PROPS_FILE_PATH##" />
+  <PropertyGroup Condition="'$(UnityConfiguration)|$(UnityPlatform)' == 'Player|WSA'">
+    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\$(UnityConfiguration)\$(UnityPlatform)\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(UnityConfiguration)|$(UnityPlatform)' != 'Player|WSA'">
+    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\$(UnityConfiguration)\$(UnityPlatform)\$(MSBuildProjectName)\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+
+  <!--IMPORT SDK.props manually to be able to set the BaseIntermediateOutputPath above path-->
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
   <Import Project="##PLATFORM_PROPS_FOLDER_PATH_TOKEN##\$(UnityPlatform).$(UnityConfiguration).props"/>
 
   <!-- This is a "special" platform that will override references -->
   <Import Project="##PLATFORM_PROPS_FOLDER_PATH_TOKEN##\Editor.InEditor.props" Condition="'$(IsEditorOnlyTarget)' == 'true'"/>
 
-  <PropertyGroup Condition="'$(EditorConfiguration)' == 'true'">
-    <AssemblySearchPaths>$(AssemblySearchPaths);<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+  <PropertyGroup Condition="'$(UnityConfiguration)'=='InEditor'">
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->;<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+    <DevelopmentBuild>true</DevelopmentBuild>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(PlayerConfiguration)' == 'true'">
-    <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+  <PropertyGroup Condition="'$(UnityConfiguration)'=='Player'">
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->;<!--PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(DevelopmentBuild)'=='true'">
+    <DefineConstants>$(DefineConstants);<!--COMMON_DEVELOPMENT_DEFINE_CONSTANTS--></DefineConstants>
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--DEVELOPMENT_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
   </PropertyGroup>
   
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);*.asmdef;*.asmdef.meta;<!--FOLDER_EXCLUDE_TOKEN--></DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes)obj;bin;*.asmdef;*.asmdef.meta;<!--FOLDER_EXCLUDE_TOKEN--></DefaultItemExcludes>
   </PropertyGroup>
-  
-<!--PROJECT_REFERENCE_SET_TEMPLATE_START-->
+
+  <!--COMMON REFERENCES-->
+  <ItemGroup>
+    <!--COMMON_REFERENCE_TEMPLATE_START-->
+    <Reference Include="##REFERENCE_TOKEN##">
+      <HintPath><!--HINT_PATH_TOKEN--></HintPath>
+    </Reference>
+    <!--COMMON_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(DevelopmentBuild)'=='true'">
+    <!--DEVELOPMENT_REFERENCE_TEMPLATE_START-->
+    <Reference Include="##REFERENCE_TOKEN##">
+      <HintPath><!--HINT_PATH_TOKEN--></HintPath>
+    </Reference>
+    <!--DEVELOPMENT_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+
+  <!--PROJECT_REFERENCE_SET_TEMPLATE_START-->
   <ItemGroup Condition="'$(UnityConfiguration)'=='##REFERENCE_CONFIGURATION_TOKEN##'">
 <!--PROJECT_REFERENCE_TEMPLATE_START-->
     <ProjectReference Include="##REFERENCE_TOKEN##" Condition="##CONDITION_TOKEN##">
@@ -72,4 +132,5 @@
     <CallTarget Targets="OriginalBuild" Condition="'$(UnityConfiguration)|$(UnityPlatform)'=='##SUPPORTED_CONFIGURATION_TOKEN##|##SUPPORTED_PLATFORM_TOKEN##'"/>
 <!--SUPPORTED_PLATFORM_BUILD_CONDITION_TEMPLATE_END-->
   </Target>
+
 </Project>

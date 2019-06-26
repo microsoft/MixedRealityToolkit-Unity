@@ -8,23 +8,28 @@ using UnityEngine;
 
 public static class Compilation
 {
-    private const string CSharpVersion = "7.3";
-    private const string UWPMinPlatformVersion = "10.0.14393.0";
-    private const string UWPTargetPlatformVersion = "10.0.18362.0";
+    public const string CSharpVersion = "7.3";
+    public const string UWPMinPlatformVersion = "10.0.14393.0";
+    public const string UWPTargetPlatformVersion = "10.0.18362.0";
 
-    private const string TemplateFolderPath = "Assets/MRTK/Tools";
-    private const string SolutionTemplate = "Assets/MRTK/Tools/SolutionTemplate.sln"; //TODO this won't work, as it's for my symlinked MRTK only
-    private const string SDKProjectTemplate = "Assets/MRTK/Tools/SDKProjectTemplate.csproj"; //TODO this won't work, as it's for my symlinked MRTK only
+    public const string TemplateFolderPath = "Assets/MRTK/Tools";
+    public const string SolutionTemplate = "Assets/MRTK/Tools/SolutionTemplate.sln"; //TODO this won't work, as it's for my symlinked MRTK only
+    public const string SDKProjectTemplate = "Assets/MRTK/Tools/SDKProjectTemplate.csproj"; //TODO this won't work, as it's for my symlinked MRTK only
 
-    private const string PropTemplateFilePath = "PropsFileTemplate.props"; //TODO this won't work, as it's for my symlinked MRTK only
-    private const string PlatformCommonTemplateFileName = "Platform.Configuration.Template.props"; //TODO this won't work, as it's for my symlinked MRTK only
-
-    public const string CommonPropsFileName = "MRTK.Common.props";
+    public const string PlatformCommonTemplateFileName = "Platform.Configuration.Template.props"; //TODO this won't work, as it's for my symlinked MRTK only
 
     public static string GetPlatformCommonPropsFileName(CompilationSettings.CompilationPlatform platform, string configuration)
     {
         return $"{platform.Name}.{configuration}.props";
     }
+
+    public static HashSet<string> CommonAssemblySearchPaths { get; private set; }
+
+    public static HashSet<string> DevelopmentAssemblySearchPaths { get; private set; }
+
+    public static HashSet<string> CommonAssemblyReferences { get; private set; }
+
+    public static HashSet<string> DevelopmentAssemblyReferences { get; private set; }
 
     [MenuItem("Assets/Compile Binaries")]
     public static void ProduceCompiledBinaries()
@@ -85,27 +90,8 @@ public static class Compilation
         }
     }
 
-    private static string CreateCommonPropsFile(string propsOutputFolder)
+    private static void CreateCommonPropsFile(string propsOutputFolder)
     {
-        string templateText = File.ReadAllText(Utilities.UnityFolderRelativeToAbsolutePath(Path.Combine(TemplateFolderPath, PropTemplateFilePath)));
-        string propsFilePath = Path.Combine(propsOutputFolder, CommonPropsFileName);
-
-        if (File.Exists(propsFilePath))
-        {
-            File.Delete(propsFilePath);
-        }
-
-        Dictionary<string, string> tokensToReplace = new Dictionary<string, string>()
-        {
-            {"<!--LANGUAGE_VERSION-->", CSharpVersion },
-            {"<!--DEVELOPMENT_BUILD-->", "false" }, // Default to false
-            {"<!--OUTPUT_PATH_TOKEN-->", Path.Combine("..", "MRTKBuild") },
-            {"<!--COMMON_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.CommonDefines) },
-            {"<!--COMMON_DEVELOPMENT_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.DevelopmentBuildAdditionalDefines) },
-            {"<!--SUPPORTED_PLATFORMS_TOKEN-->", string.Join(";", CompilationSettings.Instance.AvailablePlatforms.Select(t=>t.Value.Name)) },
-            {"<!--DEFAULT_PLATFORM_TOKEN-->", CompilationSettings.Instance.AvailablePlatforms[BuildTarget.StandaloneWindows].Name }
-        };
-
         ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.CommonReferences, out HashSet<string> commonAssemblySearchPaths, out HashSet<string> commonAssemblyReferences);
         ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.DevelopmentBuildAdditionalReferences, out HashSet<string> developmentAssemblySearchPaths, out HashSet<string> developmentAssemblyReferences, commonAssemblySearchPaths);
         //ProcessReferences(BuildTarget.NoTarget, CompilationSettings.Instance.InEditorBuildAdditionalReferences, out HashSet<string> inEditorAssemblySearchPaths, out HashSet<string> inEditorAssemblyReferences, commonAssemblySearchPaths, developmentAssemblySearchPaths);
@@ -119,28 +105,10 @@ public static class Compilation
 
         ProcessPlatformTemplateForConfiguration(CompilationSettings.Instance.EditorPlatform, propsOutputFolder, true, commonAssemblySearchPaths);
 
-        if (Utilities.TryGetXMLTemplate(templateText, "COMMON_REFERENCE", out string commonReferenceTemplate)
-            && Utilities.TryGetXMLTemplate(templateText, "DEVELOPMENT_REFERENCE", out string developmentReferenceTemplate)
-/*            && Utilities.TryGetXMLTemplate(templateText, "INEDITOR_REFERENCE", out string inEditorReferenceTemplate)*/)
-        {
-            tokensToReplace.Add("<!--COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", commonAssemblySearchPaths));
-            tokensToReplace.Add("<!--DEVELOPMENT_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", developmentAssemblySearchPaths));
-            //tokensToReplace.Add("<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", inEditorAssemblySearchPaths));
-
-            tokensToReplace.Add(commonReferenceTemplate, string.Join("\r\n", GetReferenceEntries(commonReferenceTemplate, commonAssemblyReferences)));
-            tokensToReplace.Add(developmentReferenceTemplate, string.Join("\r\n", GetReferenceEntries(developmentReferenceTemplate, developmentAssemblyReferences)));
-            //tokensToReplace.Add(inEditorReferenceTemplate, string.Join("\r\n", GetReferenceEntries(inEditorReferenceTemplate, inEditorAssemblyReferences)));
-        }
-        else
-        {
-            Debug.LogError($"Failed to get the correct default references template from {PropTemplateFilePath} with references");
-        }
-
-        // Replace tokens
-        templateText = Utilities.ReplaceTokens(templateText, tokensToReplace);
-
-        File.WriteAllText(propsFilePath, templateText);
-        return propsFilePath;
+        CommonAssemblySearchPaths = commonAssemblySearchPaths;
+        DevelopmentAssemblySearchPaths = developmentAssemblySearchPaths;
+        CommonAssemblyReferences = commonAssemblyReferences;
+        DevelopmentAssemblyReferences = developmentAssemblyReferences;
     }
 
     private static void ProcessPlatformTemplateForConfiguration(CompilationSettings.CompilationPlatform platform, string propsOutputFolder, bool inEditorConfiguration, HashSet<string> commonAssemblySearchPaths/*, HashSet<string> inEditorAssemblySearchPaths*/)
@@ -210,12 +178,12 @@ public static class Compilation
         }
     }
 
-    private static IEnumerable<string> GetReferenceEntries(string template, IEnumerable<string> references)
+    public static IEnumerable<string> GetReferenceEntries(string template, IEnumerable<string> references)
     {
         return references.Select(t => Utilities.ReplaceTokens(template, new Dictionary<string, string>()
         {
             { "##REFERENCE_TOKEN##", Path.GetFileNameWithoutExtension(t) },
-            { "<!--REFERENCE_HINT_PATH_TOKEN-->", t }
+            { "<!--HINT_PATH_TOKEN-->", t }
         }));
     }
 

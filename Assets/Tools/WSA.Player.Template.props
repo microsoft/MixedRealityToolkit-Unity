@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->;C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5</AssemblySearchPaths>
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->;C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5;$(UnityEditorInstallFolder)Data\PlaybackEngines\MetroSupport\Managed\UAP\</AssemblySearchPaths>
     <TargetFramework>uap10.0</TargetFramework>
     <DefaultLanguage>en-US</DefaultLanguage>
     <DefineConstants>$(DefineConstants);<!--PLATFORM_COMMON_DEFINE_CONSTANTS-->;NETFX_CORE;WINDOWS_UWP</DefineConstants>
@@ -14,19 +14,22 @@
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <!--<BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)obj\$(UnityConfiguration)\$(UnityPlatform)\$(ProjectGuid)\</BaseIntermediateOutputPath>
-    <OutputPath>$(OutputPath)$(UnityConfiguration)\$(UnityPlatform)\$(ProjectName)\</OutputPath>
-    <OutDir>$(OutputPath)</OutDir>-->
-  </PropertyGroup>
-
   <ItemGroup Condition="'$(IsEditorOnlyTarget)' == 'false' OR '$(IsEditorOnlyTarget)' == ''">
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.0.0" />
     <Reference Include="System.Runtime.WindowsRuntime">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5\System.Runtime.WindowsRuntime.dll</HintPath>
     </Reference>
-<!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
-    <Reference Include="##REFERENCE_TOKEN##"/>
+    <Reference Include="WinRTLegacy">
+      <HintPath>$(UnityEditorInstallFolder)Data\PlaybackEngines\MetroSupport\Managed\UAP\WinRTLegacy.dll</HintPath>
+    </Reference>
+    <!--<Reference Include="mscorlib">
+      <HintPath>$(UnityEditorInstallFolder)Data\PlaybackEngines\MetroSupport\Managed\UAP\UnityEngine.dll</HintPath>
+    </Reference>-->
+
+    <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
+    <Reference Include="##REFERENCE_TOKEN##">
+      <HintPath><!--HINT_PATH_TOKEN--></HintPath>
+    </Reference>
 <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
 </Project>

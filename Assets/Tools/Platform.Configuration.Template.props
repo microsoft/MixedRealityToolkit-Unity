@@ -8,18 +8,11 @@
     <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\</OutputPath>
-    <BaseIntermediateOutputPath>$(OutputPath)obj\$(ProjectGuid)\$(UnityConfiguration)\</BaseIntermediateOutputPath>
-    <OutputPath>$(OutputPath)$(UnityConfiguration)\$(UnityPlatform)\$(ProjectName)\</OutputPath>
-    <OutDir>$(OutputPath)</OutDir>
-  </PropertyGroup>
-
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
-
   <ItemGroup Condition="'$(IsEditorOnlyTarget)' == 'false' OR '$(IsEditorOnlyTarget)' == ''">
 <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
-    <Reference Include="##REFERENCE_TOKEN##"/>
+    <Reference Include="##REFERENCE_TOKEN##">
+      <HintPath><!--HINT_PATH_TOKEN--></HintPath>
+    </Reference>
 <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
   </ItemGroup>
 </Project>

@@ -187,7 +187,7 @@ namespace Assets.MRTK.Tools.Scripts
             DevelopmentBuildAdditionalReferences = new ReadOnlyCollection<string>(commonDevelopmentReferences.ToList());
 
             // Parse data for compilation platforms
-            CreateCompilationPlatforms(builder);
+            CreateCompilationPlatforms();
         }
 
         private void ProcessCommonReferences(AssemblyBuilder builder)
@@ -290,24 +290,26 @@ namespace Assets.MRTK.Tools.Scripts
             builder.buildTargetGroup = BuildTargetGroup.Unknown;
         }
 
-        private void CreateCompilationPlatforms(AssemblyBuilder builder)
+        private void CreateCompilationPlatforms()
         {
             // Now go through and get defines for each platform
             AssemblyDefinitionPlatform? editorPlatform = null;
             foreach (AssemblyDefinitionPlatform supportedPlatform in supportedPlatforms)
             {
-                if (supportedPlatform.BuildTarget == BuildTarget.NoTarget)
+                if (supportedPlatform.BuildTarget == BuildTarget.NoTarget) 
                 {
                     // Don't add this as a platform, we will custom handle the editor one
                     editorPlatform = supportedPlatform;
                     continue;
                 }
-
                 BuildTargetGroup buildTargetGroup = GetBuildTargetGroup(supportedPlatform);
 
-                builder.buildTarget = supportedPlatform.BuildTarget;
-                builder.buildTargetGroup = buildTargetGroup;
-                builder.flags = AssemblyBuilderFlags.None;
+                AssemblyBuilder builder = new AssemblyBuilder("dummy.dll", new string[] { @"Editor\dummy.cs" })
+                {
+                    buildTarget = supportedPlatform.BuildTarget,
+                    buildTargetGroup = buildTargetGroup,
+                    flags = AssemblyBuilderFlags.None
+                };
 
                 HashSet<string> platformCommonDefines = new HashSet<string>(builder.defaultDefines);
                 HashSet<string> playerDefines = new HashSet<string>(builder.defaultDefines);

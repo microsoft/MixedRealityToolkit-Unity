@@ -215,17 +215,33 @@ namespace Assets.MRTK.Tools.Scripts
                 Dictionary<string, string> tokens = new Dictionary<string, string>()
                 {
                     { "<!--PROJECT_GUID_TOKEN-->", Guid.ToString() },
-                    { "##COMMON_PROPS_FILE_PATH##", Path.Combine(propsOutputFolder, Compilation.CommonPropsFileName) },
+                    { "<!--LANGUAGE_VERSION-->", Compilation.CSharpVersion },
+                    { "<!--UNITY_EDITOR_INSTALL_FOLDER-->", Path.GetDirectoryName(EditorApplication.applicationPath) + "\\"},
+                    { "<!--DEVELOPMENT_BUILD-->", "false" }, // Default to false
+                    { "<!--OUTPUT_PATH_TOKEN-->", Path.Combine("..", "MRTKBuild") },
                     { "<!--ALLOW_UNSAFE_TOKEN-->", Assembly.compilerOptions.AllowUnsafeCode.ToString() },
                     { "<!--PROJECT_CONFIGURATIONS_TOKEN-->", bothConfigurations ? "InEditor;Player" : "InEditor" },
+                    { "<!--SUPPORTED_PLATFORMS_TOKEN-->", string.Join(";", CompilationSettings.Instance.AvailablePlatforms.Select(t=>t.Value.Name)) },
                     { projectReferenceSetTemplate, string.Join("\r\n", CreateProjectReferencesSet(projectReferenceSetTemplate, inEditorSearchPaths, true), CreateProjectReferencesSet(projectReferenceSetTemplate, playerSearchPaths, false)) },
                     { sourceIncludeTemplate, string.Join("\r\n", sourceIncludes) },
                     { suportedPlatformBuildConditionTemplate, string.Join("\r\n", supportedPlatformBuildConditions) },
                     { "##PLATFORM_PROPS_FOLDER_PATH_TOKEN##", propsOutputFolder },
                     { "<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", inEditorSearchPaths) },
                     { "<!--PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", playerSearchPaths) },
-                    { "<!--IS_EDITOR_ONLY_TARGET_TOKEN-->", (ProjectType ==  ProjectType.EditorAsmDef || ProjectType == ProjectType.PredefinedEditorAssembly).ToString() }
+                    { "<!--IS_EDITOR_ONLY_TARGET_TOKEN-->", (ProjectType ==  ProjectType.EditorAsmDef || ProjectType == ProjectType.PredefinedEditorAssembly).ToString() },
+                    { "<!--COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", Compilation.CommonAssemblySearchPaths) },
+                    { "<!--DEVELOPMENT_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", Compilation.DevelopmentAssemblySearchPaths) },
+                    { "<!--COMMON_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.CommonDefines) },
+                    { "<!--COMMON_DEVELOPMENT_DEFINE_CONSTANTS-->", string.Join(";", CompilationSettings.Instance.DevelopmentBuildAdditionalDefines) },
+                    { "<!--DEFAULT_PLATFORM_TOKEN-->", CompilationSettings.Instance.AvailablePlatforms[BuildTarget.StandaloneWindows].Name }
                 };
+
+                if (Utilities.TryGetXMLTemplate(projectFileTemplateText, "COMMON_REFERENCE", out string commonReferenceTemplate)
+                    && Utilities.TryGetXMLTemplate(projectFileTemplateText, "DEVELOPMENT_REFERENCE", out string developmentReferenceTemplate))
+                {
+                    tokens.Add(commonReferenceTemplate, string.Join("\r\n", Compilation.GetReferenceEntries(commonReferenceTemplate, Compilation.CommonAssemblyReferences)));
+                    tokens.Add(developmentReferenceTemplate, string.Join("\r\n", Compilation.GetReferenceEntries(developmentReferenceTemplate, Compilation.DevelopmentAssemblyReferences)));
+                }
 
                 projectFileTemplateText = Utilities.ReplaceTokens(projectFileTemplateText, tokens);
             }
@@ -262,7 +278,8 @@ namespace Assets.MRTK.Tools.Scripts
                     projectReferences.Add(Utilities.ReplaceTokens(projectReferenceTemplate, new Dictionary<string, string>()
                     {
                         { "##REFERENCE_TOKEN##", $"{dependency.Dependency.Name}.csproj" },
-                        {"##CONDITION_TOKEN##", platformConditions.Count == 0 ? "false" : string.Join(" OR ", platformConditions)}
+                        { "<!--HINT_PATH_TOKEN-->", dependency.Dependency.ReferencePath.AbsolutePath },
+                        { "##CONDITION_TOKEN##", platformConditions.Count == 0 ? "false" : string.Join(" OR ", platformConditions)}
                     }));
                 }
 
