@@ -23,6 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
+        public event Action OnRecordingStarted;
+        public event Action OnRecordingStopped;
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -162,12 +165,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 unlimitedRecordingStartTime = Time.time;
             }
+
+            OnRecordingStarted.Invoke();
         }
 
         /// <inheritdoc />
         public void StopRecording()
         {
             IsRecording = false;
+
+            OnRecordingStopped.Invoke();
         }
 
         /// <inheritdoc />
