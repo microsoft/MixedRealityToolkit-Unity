@@ -90,9 +90,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
-            yield return new WaitForSeconds(buttonPressAnimationDelay);
 
-            Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
+            float pressStartTime = Time.time;
+            bool wasTranslated = false;
+            while (Time.time < pressStartTime + buttonPressAnimationDelay)
+            {   // If the transform is moved at any point during this interval, we were successful
+                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
+                yield return null;
+            }
+
+            Assert.True(wasTranslated, "Transform target object was not translated by action.");
 
             // Move the hand back
             yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
@@ -147,9 +154,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise a menu down input event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, menuAction);
-            yield return new WaitForSeconds(buttonPressAnimationDelay);
 
-            Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
+            float pressStartTime = Time.time;
+            bool wasTranslated = false;
+            while (Time.time < pressStartTime + buttonPressAnimationDelay)
+            {   // If the transform is moved at any point during this interval, we were successful
+                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
+                yield return null;
+            }
+
+            Assert.True(wasTranslated, "Transform target object was not translated by action.");
 
             // Raise a menu up input event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, menuAction);
@@ -199,11 +213,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise a voice select input event, then wait for transition to take place
             SpeechCommands commands = new SpeechCommands("Select", KeyCode.None, interactable.InputAction);
-            MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(defaultInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(1000), System.DateTime.Now, commands);
-            yield return new WaitForSeconds(buttonPressAnimationDelay);
+            MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(defaultInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(100), System.DateTime.Now, commands);
 
+            float pressStartTime = Time.time;
+            bool wasTranslated = false;
+            while (Time.time < pressStartTime + buttonPressAnimationDelay)
+            {   // If the transform is moved at any point during this interval, we were successful
+                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
+                yield return null;
+            }
+
+            Assert.True(wasTranslated, "Transform target object was not translated by action.");
             Assert.True(wasClicked, "Interactable was not clicked.");
-            Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
 
             Object.Destroy(interactableObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -329,9 +350,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
-            yield return new WaitForSeconds(buttonPressAnimationDelay);
 
-            Assert.AreNotEqual(targetStartPosition, translateTargetObject.transform.localPosition, "Translate target object was not translated by action.");
+            float pressStartTime = Time.time;
+            bool wasTranslated = false;
+            while (Time.time < pressStartTime + buttonPressAnimationDelay)
+            {   // If the transform is moved at any point during this interval, we were successful
+                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
+                yield return null;
+            }
+
+            Assert.True(wasTranslated, "Transform target object was not translated by action.");
 
             // Move the hand back
             yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
@@ -380,9 +408,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise an input down event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
-            yield return new WaitForSeconds(buttonPressAnimationDelay);
 
-            Assert.AreNotEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated by action.");
+            float pressStartTime = Time.time;
+            bool wasTranslated = false;
+            while (Time.time < pressStartTime + buttonPressAnimationDelay)
+            {   // If the transform is moved at any point during this interval, we were successful
+                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
+                yield return null;
+            }
+                        
+            Assert.True(wasTranslated, "Transform target object was not translated by action.");
 
             // Raise an input up event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.None, interactable.InputAction);
