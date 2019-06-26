@@ -60,6 +60,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public HashSet<IMixedRealityInputSource> PressingInputSources => pressingInputSources;
 
         /// <summary>
+        /// Values for user-friendly dimensions settings
+        /// </summary>
+        public enum SelectionTypes { Button, Toggle, MultiDimension };
+
+        /// <summary>
         /// Is the interactable enabled?
         /// </summary>
         public bool Enabled = true;
@@ -92,6 +97,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// A way of adding more layers of states for controls like toggles
         /// </summary>
         public int Dimensions = 1;
+
+        /// <summary>
+        /// The Dimension value to set on start
+        /// </summary>
+        public int StartDimensionIndex = 0;
 
         /// <summary>
         /// Is the interactive selectable?
@@ -242,6 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected bool isGlobalValueCheck;
 
         // cache of current dimension
+        [SerializeField]
         protected int dimensionIndex = 0;
 
         // allows for switching colliders without firing a lose focus immediately
@@ -729,6 +740,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             IsToggled = toggled;
             SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
+
+            // if in toggle mode
+            if (Dimensions == 2)
+            {
+                SetDimensionIndex(toggled ? 1 : 0);
+            }
         }
 
         /// <summary>
@@ -1168,7 +1185,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void TriggerOnClick()
         {
-            IncreaseDimensionIndex();
+            if(Dimensions == 2)
+            {
+                SetToggled(dimensionIndex % 2 == 0);
+            }
+            else
+            {
+                IncreaseDimensionIndex();
+            }
+            
             SendOnClick(null);
             SetVisited(true);
         }

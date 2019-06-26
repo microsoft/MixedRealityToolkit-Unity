@@ -214,20 +214,91 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             
             SerializedProperty dimensions = serializedObject.FindProperty("Dimensions");
+            // should be 1 or more
+            dimensions.intValue = Mathf.Clamp(dimensions.intValue, 1, 9);
+            int minMultiDimensionValue = 3;
+
+            // user-friendly dimension settings
+            string[] EnumNames = Enum.GetNames(typeof(Interactable.SelectionTypes));
+            int selectionTypeLength = EnumNames.Length;
+            int selectionTypeIndex = Mathf.Clamp(dimensions.intValue, 1, selectionTypeLength) - 1;
+
+            Interactable.SelectionTypes selectionType = Interactable.SelectionTypes.Button;
+            position = EditorGUILayout.GetControlRect();
+            GUIContent selectionTypeLabel = new GUIContent("Selection Mode", "How the Interactable should react to input");
             GUI.enabled = !isPlayMode;
-            EditorGUILayout.PropertyField(dimensions, new GUIContent("Dimensions", "Toggle or sequence button levels"));
+            EditorGUI.BeginProperty(position, selectionTypeLabel, dimensions);
+            {
+                selectionType = (Interactable.SelectionTypes)EditorGUI.EnumPopup(position, selectionTypeLabel, (Interactable.SelectionTypes)(selectionTypeIndex));
+                selectionTypeIndex = (int)selectionType;
+
+                if (selectionTypeIndex >= minMultiDimensionValue - 1)
+                {
+                    // multi dimension mode
+                    if (dimensions.intValue < minMultiDimensionValue)
+                    {
+                        dimensions.intValue = minMultiDimensionValue;
+                    }
+
+                    EditorGUI.indentLevel = indentOnSectionStart + 1;
+                    position = EditorGUILayout.GetControlRect();
+                    selectionTypeLabel = new GUIContent("Dimensions", "The amount of theme layers for sequence button functionality (3-9)");
+                    dimensions.intValue = EditorGUI.IntField(position, selectionTypeLabel, dimensions.intValue);
+                }
+                else
+                {
+                    // button or toggle
+                    dimensions.intValue = selectionTypeIndex + 1;
+                }
+            }
+            EditorGUI.EndProperty();
             GUI.enabled = true;
 
             if (dimensions.intValue > 1)
             {
+                // toggle or multi dimensional button
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
 
                 SerializedProperty canSelect = serializedObject.FindProperty("CanSelect");
                 SerializedProperty canDeselect = serializedObject.FindProperty("CanDeselect");
+                SerializedProperty startDimensionIndex = serializedObject.FindProperty("StartDimensionIndex");
 
                 EditorGUILayout.PropertyField(canSelect, new GUIContent("Can Select", "The user can toggle this button"));
                 EditorGUILayout.PropertyField(canDeselect, new GUIContent("Can Deselect", "The user can untoggle this button, set false for a radial interaction."));
 
+                position = EditorGUILayout.GetControlRect();
+                bool appPlaying = EditorApplication.isPlaying || EditorApplication.isPaused;
+                GUIContent startDimensionLabel = new GUIContent("Start Dimension Index", "The dimension value to set on start.");
+                EditorGUI.BeginProperty(position, startDimensionLabel, startDimensionIndex);
+                {
+                    if (dimensions.intValue >= minMultiDimensionValue)
+                    {
+                        // multi dimensions
+                        GUI.enabled = !appPlaying;
+                        EditorGUI.IntField(position, startDimensionLabel, startDimensionIndex.intValue);
+                        GUI.enabled = true;
+                    }
+                    else if (dimensions.intValue == 2)
+                    {
+                        // toggle
+                        startDimensionLabel = new GUIContent("Is Toggled", "The toggled value to set on start.");
+                        if (!appPlaying)
+                        {
+                            bool isToggled = EditorGUI.Toggle(position, startDimensionLabel, startDimensionIndex.intValue > 0);
+                            startDimensionIndex.intValue = isToggled ? 1 : 0;
+                        }
+                        else
+                        {
+                            SerializedProperty dimensionIndex = serializedObject.FindProperty("dimensionIndex");
+                            GUI.enabled = false;
+                            bool isToggled = EditorGUI.Toggle(position, startDimensionLabel, dimensionIndex.intValue > 0);
+                            GUI.enabled = true;
+                        }
+                    }
+
+                    startDimensionIndex.intValue = Mathf.Clamp(startDimensionIndex.intValue, 0, dimensions.intValue - 1);
+                }
+                EditorGUI.EndProperty();
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
             
@@ -334,7 +405,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
                         EditorGUI.indentLevel = indentOnSectionStart + 2;
-                        EditorGUILayout.PropertyField(themeItem, new GUIContent("Theme", "Theme properties for interaction feedback"));
+                        string themeLabel = "Theme";
+                        if (dimensions.intValue > 1)
+                        {
+                            themeLabel = "Theme " + (t + 1);
+
+                            if (dimensions.intValue == 2 && t > 0)
+                            {
+                                themeLabel += " (Toggled)";
+                            }
+                        }
+                        EditorGUILayout.PropertyField(themeItem, new GUIContent(themeLabel, "Theme properties for interaction feedback"));
 
                         if (themeItem.objectReferenceValue != null && gameObject.objectReferenceValue)
                         {

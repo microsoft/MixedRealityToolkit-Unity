@@ -37,8 +37,11 @@ Focus is not required to detect input actions, default behavior is false.
 **Voice Commands**
 Select a Speech Command that has been setup in the MRTK Speech Commands Profile to trigger an OnClick event. This will also provide an automated Focus and Press state change to drive any theme feedback.
  
-**Requires Gaze (Only available when a speech command is selected)**
+**Requires Focus (Only available when a speech command is selected)**
 The voice command requires the interactable to have focus to listen for the voice command. There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts. Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.
+
+**Selection Mode**
+The ability to add multiple layers to Themes to create controls like Toggles or multi-dimensional (sequential) buttons. _See Creating Toggles._
 
 **Public Properties**
 ClickCount - a read only value that tracks how many clicks have occured.
@@ -68,12 +71,22 @@ The best way to save a profile of a button, with all the themes and targets setu
 Note that themes that manipulate mesh objects (color or shader themes) are able to detect the shader properties in the material assigned to the target object. A drop down list of shader properties will define how the values of the theme are applied and is a convenience of this ability. Conflicts can arise if the same theme is used on objects that do not share the same material shader setting. Best practice is to create a separate theme for objects with different shaders; this is not an issue when using the same color theme on a text object and a mesh object, because all the shader properties are ignored on text objects.
 
 
-### Creating Toggles
-Toggle or multi-step buttons can be created in the Profile using the Dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the Dimensions value is increased, slots for additional themes are provided for each Target in the Profile. This allows for a Normal Theme and a Toggled Theme to be used depending if the Interactable is toggled or not. 
+### Creating Toggles and Multi-Dimension buttons
+Toggle or multi-dimension buttons can be created in the Profile using the Selection Mode field. In the Toggle mode, a new toggled theme is added for each Target in the Profile. When the Interactable is toggled, the Toggled Theme will be used to provide an additional layer visual feedback.
+
+While the Selection Mode is set to Toggle, the Is Toggled check box can be used to set the default value of the control which will be visible during runtime.
+
+In the Toggle selection mode, Set the Interactable's toggled state during runtime by calling the Interactable's SetToggled(bool toggle) method to switch the IsToggled state and update the profile to use the correct theme.
 
 <img src="../Documentation/Images/Interactable/Profile_toggle.png" width="450">
 
-With dimensions being a numeric value, the options for adding themes or steps is endless. An example of a multi-step button with 3 dimensions is one that controls speed. We may only want to have the option for 3 values, Fast (1x), Faster (2x) or Fastest (3x). Dimensions are used to control the text or texture of the button for each individual speed setting, using 3 different themes for each of them. Developers can assess the *DimensionIndex* to determine which dimension is currently active.
+Multi-Dimension selection mode is used to create sequintial buttons, or a button that has more than two steps, like controlling speed with three values, Fast (1x), Faster (2x) or Fastest (3x).
+
+<img src="../Documentation/Images/Interactable/Profile_multiDimensions.png" width="450">
+
+With dimensions being a numeric value, there are plenty options (up to 9) for adding themes layers. Dimensions and themes can be used to control the text or texture of the button for each speed setting, using a different theme for each of step.
+
+Developers can assess the *DimensionIndex* to determine which dimension is currently active.
 
 ```
 //Access the current DimensionIndex
