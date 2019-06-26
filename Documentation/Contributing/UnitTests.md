@@ -71,7 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 ## Edit mode tests
 
-Edit mode tests are executed in Unity's edit mode and can be added in MixedRealityToolkit.Tests >
+Edit mode tests are executed in Unity's edit mode and can be added in MixedRealityToolkit.Tests > EditModeTests.
+To create a new test the following template can be used:
 
 ``` csharp
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -123,7 +124,10 @@ The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunne
 
 
 ## Executing tests on github / CI
-MRTK's public CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr`. CI runs can be seen in the 'checks' are of the PR. 
+MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' area of the PR. 
 
 Only after all of the tests passed successfully the PR can be merged into mrtk_development. 
+
+## See also
+* [Documentation portal generation guide](DevDocGuide.md)
 
