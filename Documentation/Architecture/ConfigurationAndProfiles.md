@@ -73,7 +73,7 @@ the system that will render the spatial meshes on an AR device). Primarily an AR
 This controls the visual profiler (note that profiler and profile don't refer to the same thing)
 that shows a framerate counter, along with basic memory utilization.
 
-### Scene System
+### Scene system
 
 This controls a currently not-enabled-by-default system that is designed to make multi-scene
 scenarios easier to work with.
