@@ -16,30 +16,27 @@ will apply different properties to the main camera, depending on whether or not 
 a [camera profile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit/Definitions/MixedRealityCameraProfile.cs),
 which contains those different transparent vs. opaque settings.
 
-While the camera service may be a simple example of how a profile is used, it is a poor one because of its
-simplity - in typical Unity usage, this configuration may just have been exposed as simple fields on the
-"Camera" MonoBehaviour itself. If all of the MRTK services had as few options as a camera profile, there
-would have been no reason to add the massive complexity introduced by profiles.
-
 Profiles can be more useful in more complicated cases, like in the [InputSystem](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit/Definitions/InputSystem/MixedRealityInputSystemProfile.cs).
 Some of the properties on that profile (such as the MixedRealityInputDataProviderConfiguration entities)
 control the objects that will be instantiated at runtime - this is how the input system knows how to create
 OpenVR, WMR and Unity input subsystems. This profile is not just a set of properties that configures if
-a subfeature is enabled or not - it's also an injection mechanism that the MRTK will use to "new" other classes
-at runtime.
+a particular input sub-feature is enabled or disabled - it's also an injection mechanism that the MRTK
+will use to "new" other classes at runtime (for example, the input system profile contains a list of
+'Input Data Providers' which has serialized type information - these objects are instantiated by the
+input system at runtime)
 
 Profiles also affect (and are no limited to) things like:
 
 1) What controller mappings are
 2) What types of pointers (these are discussed in the [Input System](InputSystem.md) overview)
    are associated with various controllers.
+3) Which subset of the diagnostic and performance visualization tools are enabled.
 
-Profiles can be tricky to navigate at first because of deeply nested they can be (especially the Input System).
-They can also be confusing because they seem immutable at first (all options are initially greyed out, until
-profiles are cloned - this was done to ensure that updates to the MRTK's default profiles wouldn't blow away
-client code changes during build-to-build updates).
+Profile configurations are initially greyed out because they're set up with MRTK's default profiles.
+They can only be modified after cloning to ensure that customized profiles won't be lost after a
+MRTK version update.
 
-## Where do I update profiles?
+## Where do I modify profiles?
 
 While profiles can be individually updated (by going to the serialized asset of the ScriptableObject),
 they are generally accessed through the MRTK inspector of the root MixedRealityToolkit scene object.
@@ -70,8 +67,8 @@ the system that will render the spatial meshes on an AR device). Primarily an AR
 
 ### Diagnostics
 
-This controls the visual profiler (note that profiler and profile don't refer to the same thing)
-that shows a framerate counter, along with basic memory utilization.
+This controls the visual performance tool that shows a framerate counter, along with basic
+memory utilization.
 
 ### Scene System
 

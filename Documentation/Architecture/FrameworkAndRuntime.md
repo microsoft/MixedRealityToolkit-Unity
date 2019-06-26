@@ -7,12 +7,11 @@ scene graph, whose script handles the initialization, runtime updates, and teard
 MRTK functionality. This is the object that gets added to the scene when you use the menu option:
 Mixed Reality Toolkit -> Add to Scene and Configure.
 
-The addition of the MRTK to the scene will also make a few more changes, beyond adding the
-MixedRealityToolkit scene object:
+Apart form adding the MRTK gameobject to the scene the menu option will also:
 
-- The addition of the MixedRealityPlayspace, which is used by many other MRTK components to reason over
+- Add the MixedRealityPlayspace, which is used by many other MRTK components to reason over
   world and local space transformations.
-- Moves the main Camera as a child of the MixedRealityPlayspace (and also adding some input and gaze
+- Move the main Camera as a child of the MixedRealityPlayspace (and also adding some input and gaze
   related scripts to the main Camera, which help power UnityUI and gaze related input
   functionality).
 
