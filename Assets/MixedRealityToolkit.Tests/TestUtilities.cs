@@ -5,10 +5,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using UnityEngine.TestTools.Utils;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_EDITOR
+using UnityEngine.TestTools.Utils;
 using Microsoft.MixedReality.Toolkit.Editor;
 using NUnit.Framework;
 using UnityEditor;
