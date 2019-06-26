@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -25,16 +26,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected string[] shaderOptions;
 
         protected string[] actionOptions = null;
-
+        protected GUIContent[] speechKeywords = null;
         protected static bool ProfilesSetup = false;
 
         // indent tracker
         protected static int indentOnSectionStart = 0;
 
         protected List<InspectorUIUtility.ListSettings> listSettings;
-
         protected GUIStyle boxStyle;
-
         private SerializedProperty tempSettings;
         
         protected virtual void OnEnable()
@@ -52,6 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             enabled = true;
         }
 
+        #region OnInspector
+
         protected virtual void RenderBaseInspector()
         {
             base.OnInspectorGUI();
@@ -63,11 +64,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </remarks>
         public sealed override void OnInspectorGUI()
         {
-            if (actionOptions == null && !Interactable.TryGetInputActions(out actionOptions))
+            if ((actionOptions == null && !Interactable.TryGetInputActions(out actionOptions)) || (speechKeywords == null && !Interactable.TryGetSpeechKeywords(out speechKeywords)))
             {
                 EditorGUILayout.HelpBox("Mixed Reality Toolkit is missing, configure it by invoking the 'Mixed Reality Toolkit > Add to Scene and Configure...' menu", MessageType.Error);
             }
-
+            
             //RenderBaseInspector()
             RenderCustomInspector();
         }
@@ -82,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             InspectorUIUtility.DrawTitle("Interactable");
 
             EditorGUILayout.BeginVertical("Box");
+            bool isPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
 
             // States
             bool showStates = false;
@@ -124,7 +126,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (showStates)
             {
+                GUI.enabled = !isPlayMode;
                 EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+                GUI.enabled = true;
             }
 
             if (drawerStarted)
@@ -156,15 +160,48 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 position = EditorGUILayout.GetControlRect();
                 DrawDropDownProperty(position, actionId, actionOptions, new GUIContent("Input Actions", "The input action filter"));
-
             }
 
+            EditorGUI.indentLevel = indentOnSectionStart + 1;												 
             SerializedProperty isGlobal = serializedObject.FindProperty("IsGlobal");
             EditorGUILayout.PropertyField(isGlobal, new GUIContent("Is Global", "Like a modal, does not require focus"));
-
+            EditorGUI.indentLevel = indentOnSectionStart;
             SerializedProperty voiceCommands = serializedObject.FindProperty("VoiceCommand");
-            EditorGUILayout.PropertyField(voiceCommands, new GUIContent("Voice Command", "A voice command to trigger the click event"));
 
+            // check speech commands profile for a list of commands
+            if (speechKeywords == null)
+            {
+                GUI.enabled = false;
+                EditorGUILayout.Popup("Speech Command", 0, new string[] { "Missing Speech Commands" });
+                InspectorUIUtility.DrawNotice("Create speech commands in the MRTK/Input/Speech Commands Profile");
+                GUI.enabled = true;
+            }
+            else
+            {
+                //look for items in the sppech commands list that match the voiceCommands string
+                // this string should be empty if we are not listening to speech commands
+                // will return zero if empty, to match the inserted off value.
+                int currentIndex = SpeechKeywordLookup(voiceCommands.stringValue, speechKeywords);
+                GUI.enabled = !isPlayMode;
+                position = EditorGUILayout.GetControlRect();
+                GUIContent label = new GUIContent("Speech Command", "Speech Commands to use with Interactable, pulled from MRTK/Input/Speech Commands Profile");
+                EditorGUI.BeginProperty(position, label, voiceCommands);
+                {
+                    currentIndex = EditorGUI.Popup(position, label, currentIndex, speechKeywords);
+
+                    if (currentIndex > 0)
+                    {
+                        voiceCommands.stringValue = speechKeywords[currentIndex].text;
+                    }
+                    else
+                    {
+                        voiceCommands.stringValue = "";
+                    }
+                }
+                EditorGUI.EndProperty();
+                GUI.enabled = true;
+            }
+            
             // show requires gaze because voice command has a value
             if (!string.IsNullOrEmpty(voiceCommands.stringValue))
             {
@@ -177,92 +214,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             
             SerializedProperty dimensions = serializedObject.FindProperty("Dimensions");
-            // should be 1 or more
-            dimensions.intValue = Mathf.Clamp(dimensions.intValue, 1, 9);
-            int minDimensionValue = 3;
-
-            // user-friendly dimension settings
-            string[] EnumNames = Enum.GetNames(typeof(Interactable.SelectionTypes));
-            int selectionTypeLength = EnumNames.Length;
-            int selectionTypeIndex = Mathf.Clamp(dimensions.intValue, 1, selectionTypeLength) - 1;
-
-            Interactable.SelectionTypes selectionType = Interactable.SelectionTypes.Button;
-            position = EditorGUILayout.GetControlRect();
-            GUIContent selectionTypeLabel = new GUIContent("Selection Mode", "How the Interactable should react to input");
-            EditorGUI.BeginProperty(position, selectionTypeLabel, dimensions);
-            {
-                selectionType = (Interactable.SelectionTypes)EditorGUI.EnumPopup(position, selectionTypeLabel, (Interactable.SelectionTypes)(selectionTypeIndex));
-                selectionTypeIndex = (int)selectionType;
-
-                if (selectionTypeIndex >= minDimensionValue-1)
-                {
-                    // multi dimension mode
-                    if (dimensions.intValue < minDimensionValue)
-                    {
-                        dimensions.intValue = minDimensionValue;
-                    }
-
-                    EditorGUI.indentLevel = indentOnSectionStart + 1;
-                    position = EditorGUILayout.GetControlRect();
-                    selectionTypeLabel = new GUIContent("Dimensions", "The amount of theme layers for sequence button functionality (3-9)");
-                    dimensions.intValue = EditorGUI.IntField(position, selectionTypeLabel, dimensions.intValue);
-                }
-                else
-                {
-                    // button or toggle
-                    dimensions.intValue = selectionTypeIndex + 1;
-                }
-            }
-            EditorGUI.EndProperty();
+            GUI.enabled = !isPlayMode;
+            EditorGUILayout.PropertyField(dimensions, new GUIContent("Dimensions", "Toggle or sequence button levels"));
+            GUI.enabled = true;
 
             if (dimensions.intValue > 1)
             {
-                // toggle or multi dimensional button
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
 
                 SerializedProperty canSelect = serializedObject.FindProperty("CanSelect");
                 SerializedProperty canDeselect = serializedObject.FindProperty("CanDeselect");
-                SerializedProperty startDimensionIndex = serializedObject.FindProperty("StartDimensionIndex");
 
                 EditorGUILayout.PropertyField(canSelect, new GUIContent("Can Select", "The user can toggle this button"));
                 EditorGUILayout.PropertyField(canDeselect, new GUIContent("Can Deselect", "The user can untoggle this button, set false for a radial interaction."));
 
-                position = EditorGUILayout.GetControlRect();
-                bool appPlaying = EditorApplication.isPlaying || EditorApplication.isPaused;
-                GUIContent startDimensionLabel = new GUIContent("Start Dimension Index", "The dimension value to set on start.");
-                EditorGUI.BeginProperty(position, startDimensionLabel, startDimensionIndex);
-                {
-                    if (dimensions.intValue >= minDimensionValue)
-                    {
-                        // multi dimensions
-                        GUI.enabled = !appPlaying;
-                        EditorGUI.IntField(position, startDimensionLabel, startDimensionIndex.intValue);
-                        GUI.enabled = true;
-                    }
-                    else if (dimensions.intValue == 2)
-                    {
-                        // toggle
-                        startDimensionLabel = new GUIContent("Is Toggled", "The toggled value to set on start.");
-                        if (!appPlaying)
-                        {
-                            bool isToggled = EditorGUI.Toggle(position, startDimensionLabel, startDimensionIndex.intValue > 0);
-                            startDimensionIndex.intValue = isToggled ? 1 : 0;
-                        }
-                        else
-                        {
-                            SerializedProperty dimensionIndex = serializedObject.FindProperty("dimensionIndex");
-                            GUI.enabled = false;
-                            bool isToggled = EditorGUI.Toggle(position, startDimensionLabel, dimensionIndex.intValue > 0);
-                            GUI.enabled = true;
-                        }
-                    }
-                    
-                    startDimensionIndex.intValue = Mathf.Clamp(startDimensionIndex.intValue, 0, dimensions.intValue - 1);
-                }
-                EditorGUI.EndProperty();
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
-
+            
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
             InspectorUIUtility.DrawDivider();
@@ -366,17 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
                         EditorGUI.indentLevel = indentOnSectionStart + 2;
-                        string themeLabel = "Theme";
-                        if(dimensions.intValue > 1)
-                        {
-                            themeLabel = "Theme " + (t+1);
-
-                            if (dimensions.intValue == 2 && t > 0)
-                            {
-                                themeLabel += " (Toggled)";
-                            }
-                        }
-                        EditorGUILayout.PropertyField(themeItem, new GUIContent(themeLabel, "Theme properties for interaction feedback"));
+                        EditorGUILayout.PropertyField(themeItem, new GUIContent("Theme", "Theme properties for interaction feedback"));
 
                         if (themeItem.objectReferenceValue != null && gameObject.objectReferenceValue)
                         {
@@ -427,13 +385,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                                 }
 
                                 int[] location = new int[] { i, t, 0 };
-
                                 State[] iStates = GetStates();
 
                                 ThemeInspector.RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location, iStates);
-
                                 InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), location, AddThemeProperty);
-
                                 ThemeInspector.RenderThemeStates(themeObjSettings, iStates, 30);
 
                                 themeObj.ApplyModifiedProperties();
@@ -463,13 +418,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
 
                             themeMsg += "above to add visual effects";
-
                             SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
 
                             if (!hadDefault.boolValue && t == 0)
                             {
                                 string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme");
-
                                 if (themeLocations.Length > 0)
                                 {
                                     for (int j = 0; j < themeLocations.Length; j++)
@@ -493,17 +446,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                                     InspectorUIUtility.DrawError("DefaultTheme missing from project!");
                                 }
                             }
-
                             InspectorUIUtility.DrawError(themeMsg);
                         }
                     }
 
                     EditorGUI.indentLevel = indentOnSectionStart;
-
                     EditorGUILayout.EndVertical();
-
                     themeCnt += themes.arraySize;
-
                 }
 
                 if (GUILayout.Button(new GUIContent("Add Profile")))
@@ -535,7 +484,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             hadDefault.boolValue = true;
                         }
                     }
-
                     themeCnt += themes.arraySize;
                 }
             }
@@ -553,12 +501,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             EditorGUILayout.PropertyField(onClick, new GUIContent("OnClick"));
 
             SerializedProperty events = serializedObject.FindProperty("Events");
-
+            GUI.enabled = !isPlayMode;
             for (int i = 0; i < events.arraySize; i++)
             {
                 SerializedProperty eventItem = events.GetArrayElementAtIndex(i);
                 InteractableReceiverListInspector.RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, RemoveEvent);
             }
+            GUI.enabled = true;
 
             if (eventOptions.ClassNames.Length > 1)
             {
@@ -567,20 +516,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     AddEvent(events.arraySize);
                 }
             }
-
+            
             serializedObject.ApplyModifiedProperties();
         }
 
-        protected virtual State[] GetStates()
-        {
-            return instance.GetStates();
-        }
-
-        protected string[] GetEventList()
-        {
-            return new string[] { };
-        }
-
+        #endregion OnInspector
+        
+        #region Profiles
         /*
          * PROFILES
          */
@@ -603,6 +545,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             profileList.DeleteArrayElementAtIndex(index);
         }
 
+        #endregion Profiles
+
+        #region Themes
         /*
          * THEMES
          */
@@ -671,16 +616,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             themeObjSettings.DeleteArrayElementAtIndex(index);
 
             themeObj.ApplyModifiedProperties();
-
         }
 
         protected virtual SerializedObject ChangeThemeProperty(int index, SerializedObject themeObj, SerializedProperty target, bool isNew = false)
         {
-
             SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
-
             themeObjSettings = ThemeInspector.ChangeThemeProperty(index, themeObjSettings, target, GetStates(), isNew);
-
             return themeObj;
         }
 
@@ -714,6 +655,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        protected virtual State[] GetStates()
+        {
+            return instance.GetStates();
+        }
+        
+        #endregion Themes
+
+        #region Events
         /*
          * EVENTS
          */
@@ -731,7 +680,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             SerializedProperty events = serializedObject.FindProperty("Events");
             events.InsertArrayElementAtIndex(events.arraySize);
-
         }
 
         protected void ChangeEvent(int[] indexArray, SerializedProperty prop = null)
@@ -758,6 +706,35 @@ namespace Microsoft.MixedReality.Toolkit.UI
             eventOptions = InteractableEvent.GetEventTypes();
         }
 
+        protected string[] GetEventList()
+        {
+            return new string[] { };
+        }
+
+        #endregion Events
+
+        #region PopupUtilities
+        /// <summary>
+        /// Get the index of the speech keyword array item based on its name, pop-up field helper
+        /// Skips the first item in the array (internal added blank value to turn feature off)
+        /// and returns a 0 if no match is found for the blank value
+        /// </summary>
+        /// <param name="option"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        protected int SpeechKeywordLookup(string option, GUIContent[] options)
+        {
+            // starting on 1 to skip the blank value
+            for (int i = 1; i < options.Length; i++)
+            {
+                if (options[i].text == option)
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }	
+        
         /// <summary>
         /// Draws a popup UI with PropertyField type features.
         /// Displays prefab pending updates
@@ -774,7 +751,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             EditorGUI.EndProperty();
         }
-
     }
+    #endregion KeywordUtilities
 #endif
 }

@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
-        private async void Start()
+        private void Start()
         {
             IMixedRealityCapabilityCheck capabilityChecker = InputSystem as IMixedRealityCapabilityCheck;
             if (capabilityChecker != null)
