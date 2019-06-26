@@ -86,19 +86,15 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable" class="text-break">Class BaseNearInteractionTouchable
   </h1>
-  <div class="markdown level0 summary"><p>Base class for all NearInteractionTouchables</p>
-<p>Technical details:
-Provides a listing of near field touch proximity bounds.
-This is used to detect if a contact point is near an object to turn on near field interactions</p>
+  <div class="markdown level0 summary"><p>Base class for all NearInteractionTouchables.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">BaseNearInteractionTouchable</span></div>
-      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html">NearInteractionTouchable</a></div>
-      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnboundedPlane.html">NearInteractionTouchableUnboundedPlane</a></div>
-      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume.html">NearInteractionTouchableVolume</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ColliderNearInteractionTouchable.html">ColliderNearInteractionTouchable</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI.html">NearInteractionTouchableUnityUI</a></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
@@ -106,6 +102,10 @@ This is used to detect if a contact point is near an object to turn on near fiel
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class BaseNearInteractionTouchable : MonoBehaviour</code></pre>
   </div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Add this component to objects to raise touch events when in <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html">PokePointer</a> proximity.
+The object layer must be included of the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html#Microsoft_MixedReality_Toolkit_Input_PokePointer_PokeLayerMasks">PokeLayerMasks</a>.</p>
+</div>
   <h3 id="fields">Fields
   </h3>
   
@@ -116,54 +116,6 @@ This is used to detect if a contact point is near an object to turn on near fiel
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected float debounceThreshold</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_distBack" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.distBack">distBack</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected float distBack</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_distFront" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.distFront">distFront</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected float distFront</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -206,13 +158,12 @@ This is used to detect if a contact point is near an object to turn on near fiel
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_touchableCollider" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.touchableCollider">touchableCollider</h4>
-  <div class="markdown level1 summary"><p>The collider used by this touchable.</p>
-</div>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_pokeThreshold" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.pokeThreshold">pokeThreshold</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Collider touchableCollider</code></pre>
+    <pre><code class="lang-csharp hljs">protected float pokeThreshold</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -224,33 +175,7 @@ This is used to detect if a contact point is near an object to turn on near fiel
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Collider</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_usesCollider" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.usesCollider">usesCollider</h4>
-  <div class="markdown level1 summary"><p>False if no collider is found on validate.
-This is used to avoid the perf cost of a null check with the collider.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool usesCollider</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -259,34 +184,10 @@ This is used to avoid the perf cost of a null check with the collider.</p>
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_ColliderEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.ColliderEnabled*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_ColliderEnabled" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.ColliderEnabled">ColliderEnabled</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ColliderEnabled { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DebounceThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DebounceThreshold*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DebounceThreshold" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DebounceThreshold">DebounceThreshold</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Distance in front of the surface at which you will receive a touch completed event.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -307,56 +208,10 @@ This is used to avoid the perf cost of a null check with the collider.</p>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistBack_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistBack*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistBack" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistBack">DistBack</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float DistBack { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistFront_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistFront*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistFront" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistFront">DistFront</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float DistFront { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DebounceThreshold_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>When the touchable is active and the pointer distance becomes greater than +DebounceThreshold (i.e. in front of the surface),
+then the Touch Completed event is raised and the touchable object is released by the pointer.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_EventsToReceive_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.EventsToReceive*"></a>
@@ -385,13 +240,14 @@ This is used to avoid the perf cost of a null check with the collider.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_Instances_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.Instances*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_Instances" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.Instances">Instances</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_PokeThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.PokeThreshold*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_PokeThreshold" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.PokeThreshold">PokeThreshold</h4>
+  <div class="markdown level1 summary"><p>Distance behind the surface at which the touchable becomes active.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IReadOnlyCollection&lt;BaseNearInteractionTouchable&gt; Instances { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float PokeThreshold { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -403,11 +259,15 @@ This is used to avoid the perf cost of a null check with the collider.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IReadOnlyCollection</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html">BaseNearInteractionTouchable</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_PokeThreshold_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>When the pointer distance to the touchable object becomes less than -PokeThreshold (i.e. behind the surface),
+then the Touch Started event is raised and the touchable object becomes tracked by the pointer.</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   
@@ -457,26 +317,6 @@ This is used to avoid the perf cost of a null check with the collider.</p>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_OnDisable_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.OnDisable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_OnDisable" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.OnDisable">OnDisable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnDisable()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.OnEnable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.OnEnable">OnEnable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnEnable()</code></pre>
-  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_OnValidate_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.OnValidate*"></a>

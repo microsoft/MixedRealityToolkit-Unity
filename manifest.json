@@ -4750,7 +4750,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/UpdatingToGA.html",
-          "hash": "eW+bwiAboZM4M8DGUz9MTw=="
+          "hash": "aOSIMz9PKxEUbvEU5xbF0Q=="
         }
       },
       "is_incremental": false,
@@ -7893,7 +7893,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html",
-          "hash": "UsEpY84C8l06rMkiJuE96A=="
+          "hash": "XuzPCVcEVGCECETnMnfI6w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.ColliderNearInteractionTouchable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ColliderNearInteractionTouchable.html",
+          "hash": "bTg2MwOwqlU/MYxQi8KNGQ=="
         }
       },
       "is_incremental": false,
@@ -9741,7 +9753,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html",
-          "hash": "Wr2WOP4GnuhEGFd/AGYmSw=="
+          "hash": "EfxkWZN48EmkPPOK7NAbXA=="
         }
       },
       "is_incremental": false,
@@ -9761,11 +9773,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnboundedPlane.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnboundedPlane.html",
-          "hash": "KLc6UBtn9fc1wqmjYDBHmg=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI.html",
+          "hash": "r5KrHL4D/Pxtwha3yhBgiA=="
         }
       },
       "is_incremental": false,
@@ -9777,7 +9789,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume.html",
-          "hash": "u/bGMxTvvbfLBCXJLPOAcA=="
+          "hash": "DV2R8UlIrkRtf67oZ+l9SQ=="
         }
       },
       "is_incremental": false,
@@ -9861,7 +9873,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html",
-          "hash": "kQh9pHaXR2Un2gkS6YhzIA=="
+          "hash": "dfTECJnIDUhh24qm4EMZzQ=="
         }
       },
       "is_incremental": false,
@@ -10317,7 +10329,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "x+gQ9orQktimRtj+PchrAA=="
+          "hash": "fvzokXxq8mODWMt6GhiyZg=="
         }
       },
       "is_incremental": false,
@@ -11757,7 +11769,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.GlobalEventCatcher-1.html",
-          "hash": "Z9dd2M3EcS8bF2q21uvCpg=="
+          "hash": "8zYbSuP3ZjonHddC9EmAKQ=="
         }
       },
       "is_incremental": false,
@@ -11853,7 +11865,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.html",
-          "hash": "5hePTfnVTrxL+MSv6Em4IQ=="
+          "hash": "iCi0V1ru7JMoJYViu107xg=="
         }
       },
       "is_incremental": false,
@@ -16425,7 +16437,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "ZjgD7SQUgTP4dUjF86La3g=="
+          "hash": "WSEFFxykUqiU7zB4v8e4YA=="
         }
       },
       "is_incremental": false,
@@ -16477,16 +16489,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 103,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 968,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -16496,11 +16509,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 969,
           "skipped_file_count": 0
         }
       }
