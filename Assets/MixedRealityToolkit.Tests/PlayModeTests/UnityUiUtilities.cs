@@ -10,9 +10,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.TestTools;
 using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -38,6 +36,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var obj = CreateRenderableObject();
             var image = obj.AddComponent<Image>();
             image.color = color;
+            var tex = new Texture2D(1, 1);
+            tex.SetPixel(0, 0, Color.white);
+            tex.Apply();
+            image.sprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f));
             return image;
         }
 
@@ -61,10 +63,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var obj = CreateRenderableObject();
             var textComp = obj.AddComponent<Text>();
             textComp.text = text;
+            textComp.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+            textComp.alignment = TextAnchor.MiddleCenter;
             return textComp;
         }
 
-        public static Button CreateButton(string text, Color normalColor, Color highlightColor, Color pressedColor)
+        public static Button CreateButton(Color normalColor, Color highlightColor, Color pressedColor)
         {
             var img = CreateImage(normalColor);
 
@@ -77,12 +81,35 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             colors.colorMultiplier = 1.0f;
             button.colors = colors;
 
-            var textObj = CreateText(text);
-            textObj.transform.SetParent(img.transform);
-            textObj.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
-            textObj.alignment = TextAnchor.MiddleCenter;
-
             return button;
+        }
+
+        public static Toggle CreateToggle(Color normalColor, Color highlightColor, Color pressedColor)
+        {
+            var img = CreateImage(normalColor);
+
+            var toggle = img.gameObject.AddComponent<Toggle>();
+            toggle.targetGraphic = img;
+            var colors = new ColorBlock();
+            colors.normalColor = normalColor;
+            colors.highlightedColor = highlightColor;
+            colors.pressedColor = pressedColor;
+            colors.colorMultiplier = 1.0f;
+            toggle.colors = colors;
+
+            return toggle;
+        }
+
+        /// <summary>
+        /// Make sure there is a MixedRealityInputModule on the main camera, which is needed for using Unity UI with MRTK.
+        /// </summary>
+        public static void EnsureInputModule()
+        {
+            Assert.IsNotNull(CameraCache.Main);
+            if (!CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>())
+            {
+                CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+            }
         }
     }
 }

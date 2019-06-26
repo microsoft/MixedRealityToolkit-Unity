@@ -114,5 +114,35 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             ++Click;
         }
     }
+
+    /// <summary>
+    /// Base class for counting Unity button events.
+    /// </summary>
+    public class UnityToggleEventCatcher : IDisposable
+    {
+        public int Changed { get; protected set; } = 0;
+        public bool Value { get; protected set; }
+
+        private Toggle toggle;
+
+        public UnityToggleEventCatcher(Toggle toggle)
+        {
+            this.toggle = toggle;
+            this.Value = toggle.isOn;
+            toggle.onValueChanged.AddListener(OnValueChanged);
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            toggle.onValueChanged.RemoveListener(OnValueChanged);
+        }
+
+        private void OnValueChanged(bool value)
+        {
+            ++Changed;
+            Value = toggle.isOn;
+        }
+    }
 }
 #endif

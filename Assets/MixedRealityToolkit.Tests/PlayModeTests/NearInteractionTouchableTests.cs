@@ -340,21 +340,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test Unity UI elements with touchables
+        /// Test Unity UI button
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator NearInteractionTouchableUnityUiTest()
+        public IEnumerator NearInteractionTouchableUnityUiButton()
         {
+            UnityUiUtilities.EnsureInputModule();
+
             var canvas = UnityUiUtilities.CreateCanvas(0.002f);
-            canvas.transform.position = objectPosition;
 
-            var touchable = canvas.GetComponent<NearInteractionTouchableUnityUI>();
-
-            // var img = UnityUiUtilities.CreateImage(Color.blue);
-            // img.transform.SetParent(canvas.transform, false);
-            var button = UnityUiUtilities.CreateButton("test", Color.gray, Color.blue, Color.green);
+            var button = UnityUiUtilities.CreateButton(Color.gray, Color.blue, Color.green);
             button.transform.SetParent(canvas.transform, false);
+            var text = UnityUiUtilities.CreateText("test");
+            text.transform.SetParent(button.transform);
 
             canvas.transform.position = objectPosition;
 
@@ -363,17 +362,53 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
 
-            UnityEditor.EditorApplication.isPaused = true;
             using (var catcher = new UnityButtonEventCatcher(button))
             {
                 // Touch started and completed when entering and exiting
                 yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                Assert.AreEqual(1, catcher.Click);
+                Assert.AreEqual(0, catcher.Click);
                 yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.AreEqual(1, catcher.Click);
             }
 
-            UnityEngine.Object.Destroy(touchable.gameObject);
+            UnityEngine.Object.Destroy(canvas.gameObject);
+        }
+
+        /// <summary>
+        /// Test Unity UI toggle button
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableUnityUiToggle()
+        {
+            UnityUiUtilities.EnsureInputModule();
+
+            var canvas = UnityUiUtilities.CreateCanvas(0.002f);
+
+            var toggle = UnityUiUtilities.CreateToggle(Color.gray, Color.blue, Color.green);
+            toggle.transform.SetParent(canvas.transform, false);
+            var text = UnityUiUtilities.CreateText("test");
+            text.transform.SetParent(toggle.transform);
+
+            canvas.transform.position = objectPosition;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
+
+            using (var catcher = new UnityToggleEventCatcher(toggle))
+            {
+                // Touch started and completed when entering and exiting
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.IsFalse(catcher.Value);
+                Assert.AreEqual(0, catcher.Changed);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.IsTrue(catcher.Value);
+                Assert.AreEqual(1, catcher.Changed);
+            }
+
+            UnityEngine.Object.Destroy(canvas.gameObject);
         }
 
     }
