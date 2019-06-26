@@ -6,7 +6,7 @@ system is what allows for the natural interactions like grab and rotate.
 
 The input system has some of its own terminology that are worth defining:
 
-- **Data Providers**
+- **Data providers**
 
     The input settings in the input profile have references to entities known as "data providers" - another word
     that describes these are “device managers”. These are components whose job is to extend the MRTK input system
