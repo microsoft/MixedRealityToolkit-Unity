@@ -17,7 +17,8 @@ steps:
    # each build will have a fresh destination folder.
    $outDir = "$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}"
    $logFile = New-Item -Path "$outDir\build\build.log" -ItemType File -Force
-   
+   $logDirectory = "$outDir\logs"
+
    $sceneList = "Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity"
    
    $extraArgs = ''
@@ -40,7 +41,7 @@ steps:
        $extraArgs += " -scriptingBackend 2"
    }
 
-   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild -sceneList $sceneList -logFile $($logFile.FullName) -batchMode -${{ parameters.Arch }} -buildOutput $outDir $extraArgs -CacheServerIPAddress $(Unity.CacheServer.Address)" -PassThru
+   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild -sceneList $sceneList -logFile $($logFile.FullName) -batchMode -${{ parameters.Arch }} -buildOutput $outDir $extraArgs -CacheServerIPAddress $(Unity.CacheServer.Address) -logDirectory $logDirectory" -PassThru
    $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
    
    while (-not $proc.HasExited -and $ljob.HasMoreData)
@@ -55,6 +56,16 @@ steps:
    Remove-Job $ljob
    Stop-Process $proc
   displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
+
+# The NuGet restore log is only relevant when the AppX is being built.
+- ${{ if eq(parameters.Platform, 'UWP') }}:
+  - script: 'Type %Build_ArtifactStagingDirectory%\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\logs\nugetRestore.log'
+    displayName: 'Print MSBuild-NugetRestore log'
+
+# The AppX build log is only relevant when the AppX is being built.
+- ${{ if eq(parameters.Platform, 'UWP') }}:
+  - script: 'Type %Build_ArtifactStagingDirectory%\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\logs\buildAppx.log'
+    displayName: 'Print MSBuild-BuildAppX log'
 
 - task: PublishBuildArtifacts@1
   enabled: ${{ parameters.PublishArtifacts }}
