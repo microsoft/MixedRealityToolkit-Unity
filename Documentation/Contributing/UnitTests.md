@@ -1,6 +1,6 @@
 
 # Writing tests for your code
-To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and some application in one of the example scenes.
+To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes.
 
 Preferrably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.
 
@@ -105,11 +105,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 This section shows some of the commonly used code snippets / methods when writing tests for MRTK.
 
-There's two Utility classes that help with setting up MRTK and testing interactions with components in MRTK
+There are two Utility classes that help with setting up MRTK and testing interactions with components in MRTK
 * [TestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.TestUtilities)
 * [PlayModeTestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities) 
 
-TestUtilities provide the following methods to set up your MRTK scene and gameobjects
+TestUtilities provide the following methods to set up your MRTK scene and gameobjects:
 
 ``` csharp
 /// creates the mrtk gameobject and sets the default profile if passed param is true
