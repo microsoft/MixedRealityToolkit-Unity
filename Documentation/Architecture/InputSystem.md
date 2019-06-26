@@ -42,7 +42,7 @@ The input system has some of its own terminology that are worth defining:
     A pointer’s events will be directed to the object that is focused. For example, this can be the object that is
     raycast from the shell hand ray pointer, or this could be the object that is closest in a sphere raycast away from
     the index finger tip. Focus is a particularly important concept because it controls where input events are
-    delivered (i.e. where IMixedRealityPointerHandler, IMixedRealityFocusHandler, and other input events are delivered)
+    delivered (i.e. where IMixedRealityPointerHandler, IMixedRealityFocusHandler, and other input events are delivered).
     Focus is especially interesting because it drives the object that gets input events (so instead of every single
     object needing to register globally for input events and then filter them out, focus helps narrow down the set of
     things that are poked to respond to input. Note that it's still possible to register for global input events,
