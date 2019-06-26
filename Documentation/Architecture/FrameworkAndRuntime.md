@@ -1,4 +1,4 @@
-# Framework and Runtime
+# Framework and runtime
 
 ## Changes to the scene
 
