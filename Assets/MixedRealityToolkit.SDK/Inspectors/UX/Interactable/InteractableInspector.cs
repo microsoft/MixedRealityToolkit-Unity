@@ -140,7 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 InspectorUIUtility.DrawSectionEnd(indentOnSectionStart);
             }
-            
             if (states.objectReferenceValue == null)
             {
                 InspectorUIUtility.DrawError("Please assign a States object!");
