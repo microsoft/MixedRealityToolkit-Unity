@@ -127,14 +127,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(bounds.size == new Vector3(.5f, .5f, .5f));
 
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+
             // front right corner is corner 3
             var frontRightCornerPos = bbox.ScaleCorners[3].transform.position;
 
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, frontRightCornerPos);
-            yield return PlayModeTestUtilities.SetHandState(frontRightCornerPos, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, initialHandPosition);
+            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, frontRightCornerPos, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, 10, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
@@ -167,6 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             iss.InputSimulationProfile = isp;
 
             CameraCache.Main.transform.LookAt(bbox.ScaleCorners[3].transform);
+
             var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, isp.DefaultHandDistance));
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, iss, ArticulatedHandPose.GestureId.Open, startHandPos);
             yield return PlayModeTestUtilities.SetHandState(startHandPos, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, iss);

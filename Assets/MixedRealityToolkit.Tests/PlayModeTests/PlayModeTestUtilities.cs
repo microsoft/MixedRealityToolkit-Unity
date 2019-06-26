@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         internal static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
-            yield return MoveHandFromTo(handPos, handPos, 1, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
+            yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
         }
 
         internal static IEnumerator MoveHandFromTo(Vector3 startPos, Vector3 endPos, int numSteps, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
