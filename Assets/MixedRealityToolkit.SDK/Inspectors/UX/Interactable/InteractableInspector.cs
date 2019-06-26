@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 drawerStarted = true;
                 if (showStates != prefsShowStates)
                 {
-                   EditorPrefs.SetBool(statesPrefKey, showStates);
+                    EditorPrefs.SetBool(statesPrefKey, showStates);
                 }
             }
             else
@@ -119,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         }
                     }
 
+                    EditorGUI.indentLevel = indentOnSectionStart + 1;
                     showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 2, prefsShowStates, FontStyle.Normal, false);
                     drawerStarted = true;
                 }
