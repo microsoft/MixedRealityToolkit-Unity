@@ -16,7 +16,7 @@ will apply different properties to the main camera, depending on whether or not 
 a [camera profile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit/Definitions/MixedRealityCameraProfile.cs),
 which contains those different transparent vs. opaque settings.
 
-Profiles can be more useful in more complicated cases, like in the [InputSystem](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit/Definitions/InputSystem/MixedRealityInputSystemProfile.cs).
+An example of a more complex profile is the the [InputSystem](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit/Definitions/InputSystem/MixedRealityInputSystemProfile.cs).
 Some of the properties on that profile (such as the MixedRealityInputDataProviderConfiguration entities)
 control the objects that will be instantiated at runtime - this is how the input system knows how to create
 OpenVR, WMR and Unity input subsystems. This profile is not just a set of properties that configures if
@@ -38,7 +38,7 @@ MRTK version update.
 
 ## Where do I modify profiles?
 
-While profiles can be individually updated (by going to the serialized asset of the ScriptableObject),
+While profiles can be individually modified (by going to the serialized asset of the ScriptableObject),
 they are generally accessed through the MRTK inspector of the root MixedRealityToolkit scene object.
 
 ![Profile](../../Documentation/Images/Profiles/input_profile.png)
