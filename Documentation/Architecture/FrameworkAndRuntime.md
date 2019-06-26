@@ -16,7 +16,7 @@ MixedRealityToolkit scene object:
   related scripts to the main Camera, which help power UnityUI and gaze related input
   functionality).
 
-## MixedRealityToolkit Object and Runtime
+## MixedRealityToolkit object and runtime
 
 The MRTK contains a multitude of different services that spin up at runtime and talk with each other (or don't talk
 with each other), and otherwise have some degree of coordination requirement in their startup, registration, update,
