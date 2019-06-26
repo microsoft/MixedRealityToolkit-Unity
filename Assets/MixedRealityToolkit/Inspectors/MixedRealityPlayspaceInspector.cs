@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static string description =
           "This is where the Toolkit instantiates objects like cursors, pointers and boundary visualizations." +
           "\n- Your main camera should be kept here (unless you are using a custom CameraSystem implementation.)" +
-          "\n- This transform can be moved, but it should not be parented under another object." +
+          "\n- If enabled, the teleport system may move this transform. You can parent it under another transform if you want more control over its placement." +
           "\n- If multiple MixedRealityPlayspace transforms are loaded in multiple scenes, all but the first loaded will be disabled and ignored.";
 
         public override void OnInspectorGUI()
