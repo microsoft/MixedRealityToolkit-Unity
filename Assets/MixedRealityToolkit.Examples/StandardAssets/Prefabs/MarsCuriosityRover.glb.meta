@@ -1,0 +1,102 @@
+fileFormatVersion: 2
+guid: ea9672e7fbf16e742865a5b27d5457b7
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: main/glTF Scene MarsCuriosityRover
+    100002: main/glTF Scene MarsCuriosityRover/root
+    100004: main/glTF Scene MarsCuriosityRover/root/node_id51
+    100006: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id31
+    100008: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id33
+    100010: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id35
+    100012: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id37
+    100014: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id39
+    100016: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id41
+    100018: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id43
+    100020: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id45
+    100022: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id47
+    100024: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id49
+    400000: main/glTF Scene MarsCuriosityRover/Transform
+    400002: main/glTF Scene MarsCuriosityRover/root/Transform
+    400004: main/glTF Scene MarsCuriosityRover/root/node_id51/Transform
+    400006: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id31/Transform
+    400008: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id33/Transform
+    400010: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id35/Transform
+    400012: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id37/Transform
+    400014: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id39/Transform
+    400016: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id41/Transform
+    400018: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id43/Transform
+    400020: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id45/Transform
+    400022: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id47/Transform
+    400024: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id49/Transform
+    2100000: 59
+    2100002: 51
+    2100004: 52
+    2100006: 53
+    2100008: 54
+    2100010: 55
+    2100012: 80
+    2100014: 57
+    2100016: 58
+    2100018: 82
+    2300000: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id31/MeshRenderer
+    2300002: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id33/MeshRenderer
+    2300004: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id35/MeshRenderer
+    2300006: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id37/MeshRenderer
+    2300008: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id39/MeshRenderer
+    2300010: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id41/MeshRenderer
+    2300012: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id43/MeshRenderer
+    2300014: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id45/MeshRenderer
+    2300016: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id47/MeshRenderer
+    2300018: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id49/MeshRenderer
+    2800000: texture6
+    2800002: 59_bc
+    2800004: 59_mr
+    2800006: texture5
+    2800008: 51_bc
+    2800010: 51_mr
+    2800012: texture7
+    2800014: 53_bc
+    2800016: 53_mr
+    2800018: texture8
+    2800020: 54_bc
+    2800022: 54_mr
+    2800024: texture9
+    2800026: 55_bc
+    2800028: 55_mr
+    2800030: texture200
+    2800032: texture201
+    2800034: 80_bc
+    2800036: 80_mr
+    2800038: texture10
+    2800040: 57_bc
+    2800042: 57_mr
+    2800044: texture202
+    2800046: 82_bc
+    2800048: 82_mr
+    3300000: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id31/MeshFilter
+    3300002: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id33/MeshFilter
+    3300004: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id35/MeshFilter
+    3300006: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id37/MeshFilter
+    3300008: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id39/MeshFilter
+    3300010: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id41/MeshFilter
+    3300012: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id43/MeshFilter
+    3300014: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id45/MeshFilter
+    3300016: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id47/MeshFilter
+    3300018: main/glTF Scene MarsCuriosityRover/root/node_id51/node_id49/MeshFilter
+    4300000: mesh_id32
+    4300002: mesh_id34
+    4300004: mesh_id36
+    4300006: mesh_id38
+    4300008: mesh_id40
+    4300010: mesh_id42
+    4300012: mesh_id44
+    4300014: mesh_id46
+    4300016: mesh_id48
+    4300018: mesh_id50
+    11400000: glTF data
+    100100000: main
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 75911c45f303c8f45927f5efeaa50cc4, type: 3}
