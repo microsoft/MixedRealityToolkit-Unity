@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var expected = new PointerHandler.State();
             handler.state.AssertEqual(expected);
 
-            // Show right hand far enough from the test collider to not give it focus
+            // Show left hand far enough from the test collider to not give it focus
             var leftHand = new Hand(Handedness.Left);
             Vector3 leftNoFocusPos = new Vector3(-0.05f, 0, 0.5f);
             yield return leftHand.Show(leftNoFocusPos);
