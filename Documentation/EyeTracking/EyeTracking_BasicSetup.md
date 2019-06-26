@@ -20,15 +20,15 @@ We will go into detail on how to address each of them further below.
 
 ### A note on the GazeInput capability
 
-If you are using the MRTK-provided build tooling (i.e. by going to the Mixed Reality Toolkit -> Utilities -> Build Window)
-to build the AppX, the MRTK build tools can automatically enable the GazeInput capability for you. In order to this,
+The MRTK-provided build tooling (i.e. Mixed Reality Toolkit -> Utilities -> Build Window)
+can automatically enable the GazeInput capability for you. In order to do this,
 you need to make sure that the 'Gaze Input Capability' is checked on the 'Appx Build Options' tab:
 
 ![MRTK Build Tools](../Images/EyeTracking/mrtk_et_buildsetup.png)
 
 This tooling will find the AppX manifest after the Unity build is completed and manually add the GazeInput capability.
-**Note that this tooling is NOT active if you are using Unity's built-in Build Window** (i.e. File -> Build Settings).
-If you build using Unity's build window, you will need to manually add the capability after the Unity build.
+**Note that this tooling is NOT active when using Unity's built-in Build Window** (i.e. File -> Build Settings).
+When using Unity's build window, the capability will need to manually added after the Unity build.
 
 ## Setting up eye tracking step-by-step
 ### Setting up the scene
