@@ -66,11 +66,13 @@ MonoBehaviour:
       reference: Microsoft.MixedReality.Toolkit.Input.InputSimulationService, Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor
     componentName: Input Simulation Service
     priority: 0
-    runtimePlatform: 16
+    runtimePlatform: 208
     deviceManagerProfile: {fileID: 11400000, guid: dbb7d9502608042489e0a90bd8c6e73a,
       type: 2}
   focusProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.FocusProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
+  raycastProviderType:
+    reference: Microsoft.MixedReality.Toolkit.Input.DefaultRaycastProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
   inputActionsProfile: {fileID: 11400000, guid: 8ffa03c424aa71d41899d49d751798b2,
     type: 2}
   inputActionRulesProfile: {fileID: 11400000, guid: 03945385d89102f41855bc8f5116b199,

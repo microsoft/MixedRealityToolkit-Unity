@@ -17,11 +17,13 @@ namespace Microsoft.MixedReality.Toolkit
     public class MixedRealityCameraProfile : BaseMixedRealityProfile
     {
         public float NearClipPlaneOpaqueDisplay => nearClipPlaneOpaqueDisplay;
+        public float FarClipPlaneOpaqueDisplay => farClipPlaneOpaqueDisplay;
         public CameraClearFlags CameraClearFlagsOpaqueDisplay => cameraClearFlagsOpaqueDisplay;
         public Color BackgroundColorOpaqueDisplay => backgroundColorOpaqueDisplay;
         public int OpaqueQualityLevel => opaqueQualityLevel;
 
         public float NearClipPlaneTransparentDisplay => nearClipPlaneTransparentDisplay;
+        public float FarClipPlaneTransparentDisplay => farClipPlaneTransparentDisplay;
         public CameraClearFlags CameraClearFlagsTransparentDisplay => cameraClearFlagsTransparentDisplay;
         public Color BackgroundColorTransparentDisplay => backgroundColorTransparentDisplay;
         public int HoloLensQualityLevel => holoLensQualityLevel;
@@ -29,6 +31,10 @@ namespace Microsoft.MixedReality.Toolkit
         [SerializeField]
         [Tooltip("The near clipping plane distance for an opaque display.")]
         private float nearClipPlaneOpaqueDisplay = 0.1f;
+
+        [SerializeField]
+        [Tooltip("The far clipping plane distance for an opaque display.")]
+        private float farClipPlaneOpaqueDisplay = 1000f;
 
         [SerializeField]
         [Tooltip("Values for Camera.clearFlags, determining what to clear when rendering a Camera for an opaque display.")]
@@ -45,6 +51,10 @@ namespace Microsoft.MixedReality.Toolkit
         [SerializeField]
         [Tooltip("The near clipping plane distance for a transparent display.")]
         private float nearClipPlaneTransparentDisplay = 0.85f;
+
+        [SerializeField]
+        [Tooltip("The far clipping plane distance for a transparent display.")]
+        private float farClipPlaneTransparentDisplay = 50f;
 
         [SerializeField]
         [Tooltip("Values for Camera.clearFlags, determining what to clear when rendering a Camera for an opaque display.")]

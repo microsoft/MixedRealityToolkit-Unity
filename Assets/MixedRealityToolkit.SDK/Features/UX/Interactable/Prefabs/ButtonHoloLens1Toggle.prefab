@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 65155074209115082}
   - component: {fileID: 114856665817931228}
   - component: {fileID: 4389918657735180436}
+  - component: {fileID: 1576028632456365133}
   m_Layer: 5
-  m_Name: HolographicButtonToggle
+  m_Name: ButtonHoloLens1Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +76,6 @@ MonoBehaviour:
   CanDeselect: 1
   VoiceCommand: Select
   RequiresFocus: 1
-  PhysicalPressOnClickTrigger: 0
   Profiles:
   - Target: {fileID: 1391235132048104}
     Themes:
@@ -214,7 +214,6 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
       Options: []
     HideUnityEvents: 1
-  PhysicalPressDistance: 0.05
 --- !u!114 &4389918657735180436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,13 +226,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  touchableCollider: {fileID: 65155074209115082}
+  distBack: 0.25
+  debounceThreshold: 0.01
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.01}
-  eventsToReceive: 1
   touchableSurface: 0
   bounds: {x: 0.12, y: 0.12}
-  touchableCollider: {fileID: 65155074209115082}
+--- !u!114 &1576028632456365133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107482477660006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 093b74c6a1bc6234b92de4381632b9e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnTouchStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114856665817931228}
+        m_MethodName: SetInputDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.TouchEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnTouchCompleted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114856665817931228}
+        m_MethodName: SetInputUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.TouchEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnTouchUpdated:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.TouchEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1 &1210628502256192
 GameObject:
   m_ObjectHideFlags: 0

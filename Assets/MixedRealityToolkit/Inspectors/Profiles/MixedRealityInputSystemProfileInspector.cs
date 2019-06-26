@@ -23,6 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private SerializedProperty focusProviderType;
 
+        private SerializedProperty raycastProviderType;
+
         private static bool showPointerProperties = false;
         private SerializedProperty pointerProfile;
 
@@ -54,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             dataProviderConfigurations = serializedObject.FindProperty("dataProviderConfigurations");
             focusProviderType = serializedObject.FindProperty("focusProviderType");
+            raycastProviderType = serializedObject.FindProperty("raycastProviderType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
@@ -81,6 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(focusProviderType);
+                EditorGUILayout.PropertyField(raycastProviderType);
                 EditorGUILayout.Space();
 
                 bool isSubProfile = RenderAsSubProfile;
@@ -135,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     }
                 });
 
-                RenderFoldout(ref showSpeechCommandsProperties, "Speech Commands", () =>
+                RenderFoldout(ref showSpeechCommandsProperties, "Speech", () =>
                 {
                     using (new EditorGUI.IndentLevelScope())
                     {
@@ -174,6 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             var profile = target as BaseMixedRealityProfile;
             return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
                    profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
         }
 
@@ -280,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         }
 
         private void ApplyDataProviderConfiguration(
-            System.Type type, 
+            System.Type type,
             SerializedProperty providerName,
             SerializedProperty configurationProfile,
             SerializedProperty runtimePlatform)

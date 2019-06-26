@@ -1,19 +1,18 @@
 # Mixed Reality Toolkit Packages
 
-The Mixed Reality Toolkit (MRTK) is a collection of packages that enable cross platform Mixed Reality application development by providing support for Mixed Reality hardware and platforms in a componentized manner.
+The Mixed Reality Toolkit (MRTK) is a collection of packages that enable cross platform Mixed Reality application development by providing support for Mixed Reality hardware and platforms.
 
-There are three categories of MRTK packages: 
+The MRTK currently has two packages:
 
-- [Foundation](#foundation-packages)
-- [Extension](#extension-packages)
-- [Experimental](#experimental-packages)
+- [Foundation](#foundation-package)
+- [Examples](#examples-package)
 
-## Foundation Packages
+## Foundation Package
 
 The Mixed Reality Toolkit Foundation is the set of packages that enable your application to leverage common functionality across Mixed Reality Platforms. These packages are released and supported by Microsoft from source code in the [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) branch on GitHub.
 
-![MRTK Foundation Packages](../../Documentation/Images/Packaging/MRTKFoundation.png)
-
+<img src="../../Documentation/Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;"><br/>
+<sup>MRTK Foundation Package</sup>
 
 The MRTK Foundation is comprised of:
 
@@ -127,25 +126,16 @@ Feature Assets are collections of related functionality delivered as Unity asset
 - Standard Assets
 - more
 
-## Extension Packages
+## Examples Package
 
-MRTK Extension packages are a collection of packages written by Microsoft and the Community that extend and enhance the functionality of the Mixed Reality Toolkit. Extension authors will state any required dependencies, mark the package as compatible with the Mixed Reality Toolkit and provide licensing and support statements.
+The examples package contains demos, sample scripts, and sample scenes that exercise functionality in the foundation package.
 
-Extension packages may provide new features and new platform support. Over time, extensions may, with the assistance and approval of the authors, be migrated into the MRTK Foundation at which time they will be released and supported by Microsoft.
+For example, this package contains the HandInteractionExample scene (pictured below) which contains sample objects
+that respond to various types of hand input (articulated and non-articulated).
 
-![MRTK Extension Package](../../Documentation/Images/Packaging/MRTKExtensions.png)
+![HandInteractionExample scene](../Images/MRTK_Examples.png)
 
-## Experimental Packages
+This package also contains eye tracking demos, which are [documented here](../EyeTracking/EyeTracking_ExamplesOverview.md)
 
-Experimental packages provide the ability to flight prototype features, pre-releases and exciting new ideas. The goal of most experimental packages is to try something new and to gauge customer interest. Many, though not all, experimental packages will be re-released as extensions once the prototyping and testing phase completes.
-
-![MRTK Experimental Packages](../../Documentation/Images/Packaging/MRTKExperimental.png)
-
-## Conclusion
-
-The Mixed Reality Toolkit packages and package management system are designed to enable a clean and simple method for you to additively build features into your experiences without requiring unnecessary components to be included into the project.
-
-## See also
-
-- [Downloading MRTK](../DownloadingTheMRTK.md)
-- [Getting Started](../GettingStartedWithTheMRTK.md)
+More generally, any new feature in the MRTK should contain a corresponding example in the examples package, roughly following
+the same folder structure and location.

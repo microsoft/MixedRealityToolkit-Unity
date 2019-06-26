@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
-    public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem
+    public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem, IMixedRealityDataProviderAccess, IMixedRealityCapabilityCheck
     {
         public MixedRealitySpatialAwarenessSystem(
             IMixedRealityServiceRegistrar registrar,
@@ -22,6 +22,29 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 Debug.LogError("The MixedRealitySpatialAwarenessSystem object requires a valid IMixedRealityServiceRegistrar instance.");
             }
         }
+
+        #region IMixedRealityCapabilityCheck Implementation
+
+        /// <inheritdoc />
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                IMixedRealityCapabilityCheck capabilityChecker = observers[i] as IMixedRealityCapabilityCheck;
+
+                // If one of the running data providers supports the requested capability, 
+                // the application has the needed support to leverage the desired functionality.
+                if ((capabilityChecker != null) &&
+                    capabilityChecker.CheckCapability(capability))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
 
         #region IMixedRealityToolkitService Implementation
 
@@ -147,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         private GameObject spatialAwarenessObjectParent = null;
 
         /// <inheritdoc />
-        public GameObject SpatialAwarenessObjectParent => spatialAwarenessObjectParent != null ? spatialAwarenessObjectParent : (spatialAwarenessObjectParent = CreateSpatialAwarenessParent);
+        public GameObject SpatialAwarenessObjectParent => spatialAwarenessObjectParent != null ? spatialAwarenessObjectParent : (spatialAwarenessObjectParent = CreateSpatialAwarenessObjectParent);
 
         /// <summary>
         /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
@@ -155,10 +178,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <returns>
         /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which spatial awareness created objects will be parented.
         /// </returns>
-        private GameObject CreateSpatialAwarenessParent => new GameObject("Spatial Awareness System");
+        private GameObject CreateSpatialAwarenessObjectParent
+        {
+            get
+            {
+                GameObject newParent = new GameObject("Spatial Awareness System");
+                MixedRealityPlayspace.AddChild(newParent.transform);
+
+                return newParent;
+            }
+        }
 
         /// <inheritdoc />
-        public GameObject CreateSpatialAwarenessObjectParent(string name)
+        public GameObject CreateSpatialAwarenessObservationParent(string name)
         {
             GameObject objectParent = new GameObject(name);
 
@@ -334,6 +366,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                     break;
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public void ClearObservations()
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].ClearObservations();
+            }
+        }
+
+        /// <inheritdoc />
+        public void ClearObservations<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
+        {
+            T observer = GetObserver<T>(name);
+            observer?.ClearObservations();
         }
 
         /// <inheritdoc />

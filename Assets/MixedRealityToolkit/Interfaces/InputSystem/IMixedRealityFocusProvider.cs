@@ -8,9 +8,15 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
+    /// Delegate type used to handle primary pointer changes. 
+    /// Old and new pointer values can be null to indicate transition from or to no primary pointer, but they won't both be null simultaneously.
+    /// </summary>
+    public delegate void PrimaryPointerChangedHandler(IMixedRealityPointer oldPointer, IMixedRealityPointer newPointer);
+
+    /// <summary>
     /// Implements the Focus Provider for handling focus of pointers.
     /// </summary>
-    public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider, IMixedRealitySpeechHandler
+    public interface IMixedRealityFocusProvider : IMixedRealityService, IMixedRealitySourceStateHandler, IMixedRealitySpeechHandler
     {
         /// <summary>
         /// Maximum distance at which all pointers can collide with a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>, unless it has an override extent.
@@ -27,6 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks>
         Camera UIRaycastCamera { get; }
+
+        /// <summary>
+        /// Current primary pointer. Determined by the primary pointer selector in use (see MixedRealityPointerProfile.PrimaryPointerSelector).
+        /// </summary>
+        IMixedRealityPointer PrimaryPointer { get; }
 
         /// <summary>
         /// Gets the currently focused object for the pointing source.
@@ -76,5 +87,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <typeparam name="T">The type of pointers to request. Use IMixedRealityPointer to access all pointers.</typeparam>
         /// <returns></returns>
         IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer;
+
+        /// <summary>
+        /// Subscribes to primary pointer changes.
+        /// </summary>
+        /// <param name="handler">Handler to be called when the primary pointer changes</param>
+        /// <param name="invokeHandlerWithCurrentPointer">When true, the passed in handler will be invoked immediately with the current primary pointer 
+        /// before subscribing. This is useful to avoid having to manually poll the current value.</param>
+        void SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler handler, bool invokeHandlerWithCurrentPointer);
+
+        /// <summary>
+        /// Unsubscribes from primary pointer changes.
+        /// </summary>
+        /// <param name="handler">Handler to unsubscribe</param>
+        void UnsubscribeFromPrimaryPointerChanged(PrimaryPointerChangedHandler handler);
     }
 }

@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 position;
                 if (TryGetNearGraspPoint(out position))
                 {
-                    return UnityEngine.Physics.CheckSphere(position, SphereCastRadius + 0.05f, ~UnityEngine.Physics.IgnoreRaycastLayer);
+                    return UnityEngine.Physics.CheckSphere(position, SphereCastRadius, ~UnityEngine.Physics.IgnoreRaycastLayer);
                 }
 
                 return false;

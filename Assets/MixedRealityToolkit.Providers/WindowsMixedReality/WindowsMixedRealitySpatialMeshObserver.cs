@@ -3,12 +3,17 @@
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
+
+#if WINDOWS_UWP
+using WindowsSpatialSurfaces = global::Windows.Perception.Spatial.Surfaces;
+#endif // WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 {
@@ -19,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset", 
         "MixedRealityToolkit.SDK")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
-    public class WindowsMixedRealitySpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver
+    public class WindowsMixedRealitySpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -69,6 +74,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             TrianglesPerCubicMeter = profile.TrianglesPerCubicMeter;
             VisibleMaterial = profile.VisibleMaterial;
         }
+
+        #region IMixedRealityCapabilityCheck Implementation
+
+        /// <inheritdoc />
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            {
+#if WINDOWS_UWP
+                return ((capability == MixedRealityCapability.SpatialAwarenessMesh) && WindowsSpatialSurfaces.SpatialSurfaceObserver.IsSupported());
+#endif // WINDOWS_UWP
+            }
+
+            return false;
+        }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
 
         #region IMixedRealityToolkit implementation
 
@@ -125,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <summary>
         /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which observed objects are parented.
         /// </summary>
-        private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
+        private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySpatialMeshObserver"));
 
 #if UNITY_WSA
         /// <inheritdoc />
@@ -191,11 +213,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
             set
             {
-                if (value != displayOption)
-                {
-                    displayOption = value;
-                    ApplyUpdatedMeshDisplayOption(displayOption);
-                }
+                displayOption = value;
+                ApplyUpdatedMeshDisplayOption(displayOption);
             }
         }
 
@@ -668,6 +687,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             {
                 SpatialAwarenessSystem?.RaiseMeshAdded(this, cookedData.id.handle, meshObject);
             }
+        }
+
+        /// <inheritdoc />
+        public override void ClearObservations()
+        {
+            if (IsRunning)
+            {
+                Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
+                Suspend();
+            }
+
+            IReadOnlyList<int> observations = new List<int>(Meshes.Keys);
+            foreach (int meshId in observations)
+            {
+                RemoveMeshObject(meshId);
+            }
+
+            if (spareMeshObject != null)
+            {
+                spareMeshObject.CleanObject();
+                spareMeshObject = null;
+            }
+
         }
 #endif // UNITY_WSA
 

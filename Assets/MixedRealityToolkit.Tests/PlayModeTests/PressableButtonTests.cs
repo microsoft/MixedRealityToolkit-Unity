@@ -12,11 +12,17 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
 using UnityEditor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class PressableButtonTests
+    public class PressableButtonTests : IPrebuildSetup
     {
+        public void Setup()
+        {
+            PlayModeTestUtilities.EnsureTextMeshProEssentials();
+        }
+
         #region Utilities
         private GameObject InstantiateSceneAndDefaultPressableButton()
         {
@@ -29,6 +35,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject testButton = Object.Instantiate(pressableButtonPrefab) as GameObject;
 
             return testButton;
+        }
+
+        /// <summary>
+        /// Waits for the user to press the enter key before a test continues.
+        /// Not actually used by any test, but it is useful when debugging since you can 
+        /// pause the state of the test and inspect the scene.
+        /// </summary>
+        private IEnumerator WaitForEnterKey()
+        {
+            Debug.Log(Time.time + "Press Enter...");
+            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
+            {
+                yield return null;
+            }
+        }
+
+        [TearDown]
+        public void ShutdownMrtk()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
         }
 
         #endregion
@@ -45,6 +71,57 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// This test reproduces P0 issue 4263 which caused null pointers when pressing buttons
+        /// See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4683
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PressButtonWithHand()
+        {
+            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+
+            // Move the camera to origin looking at +z to more easily see the button.
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            // For some reason, we would only get null pointers when the hand tries to click a button
+            // at specific positions, hence the unusal z value.
+            testButton.transform.position = new Vector3(0, 0, 1.067121f);
+            // The scale of the button was also unusual in the repro case
+            testButton.transform.localScale = Vector3.one * 1.5f;
+
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(buttonComponent);
+
+            bool buttonPressed = false;
+            buttonComponent.ButtonPressed.AddListener(() =>
+            {
+                buttonPressed = true;
+            });
+
+            // Move the hand forward to press button, then off to the right
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            int numSteps = 30;
+            Vector3 p1 = new Vector3(0, 0, 0.5f);
+            Vector3 p2 = new Vector3(0, 0, 1.08f);
+            Vector3 p3 = new Vector3(0.1f, 0, 1.08f);
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+
+            Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
+
+            Object.Destroy(testButton);
+
             yield return null;
         }
 
