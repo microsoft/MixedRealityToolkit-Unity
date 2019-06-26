@@ -50,4 +50,4 @@ influencers, smoothing utilities, and line renderers)
 
 The rest of the architecture documentation will build bottom up, starting from the framework
 and runtime, building up to more interesting and complex systems like input. Please reference the
-Table of Contents to the side to dive into the rest of the architectural overview.
+table of contents to the side to dive into the rest of the architectural overview.

@@ -20,27 +20,12 @@ Apart form adding the MRTK gameobject to the scene the menu option will also:
 The MRTK contains a multitude of different services that spin up at runtime and talk with each other (or don't talk
 with each other), and otherwise have some degree of coordination requirement in their startup, registration, update,
 and teardown loops. [This medium post](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)
-contains some of the background and motivation for why the system ended up written as it was. Rather than deal with
-the potential chaos of managing the startup, registration, and update dependencies between multiple components that
-each have their own update loop, the MRTK ended up with a single object that would manage the lifetime and runtime
-of each its services.
+contains some of the background and motivation for why the system ended up written as it was. MRTK has a single
+object that manages life and runtime of its services.
 
 This entity ensures that:
-- When the game starts, discovery and initialization of services happens in a pre-defined order.
-- Providing mechanisms for services to register themselves (i.e. “I support this service!”) and for other callers to get a hold of those services.
-- Wrapping the Update()/LateUpdate() calls and forwarding them onto the various services (i.e. via UpdateAllServices/LateUpdateAllServices)
-
-Note that design may not have a lot of other examples with past Unity work, though it was also written this way with
-the hopes that it could be more easily integrated in with future ECS/DOTS work that Unity is doing.
-
-Note that there have been downsides to doing things this way, which have come in feedback around:
-
-- Customer confusion about why there's a single 'monolithic' object that controls the lifetime of all objects
-- Not all of the services actually talk to each other - coordiation can be great when it's required, but in a lot
-  of our cases, they are relatively independent things that could have been spun off as separate MonoBehaviours.
-- Some of the rationale for ensuring a single Update() loop was based on performance concerns (i.e. ensuring a
-  single Update() MonoBehaviour call, instead of 6 different ones) where given the small number of services,
-  the benefits were minor. While there may be a benefit to doing things in this way, there has been
-  a corresponding increase to complexity.
-
-
+- when the game starts, discovery and initialization of services happens in a pre-defined order.
+- it provides a mechanism for services to register themselves (i.e. “I support this service!”) and for other
+  callers to get a hold of those services.
+- it provides the Update()/LateUpdate() calls and forwards them onto the various services
+  (i.e. via UpdateAllServices/LateUpdateAllServices).

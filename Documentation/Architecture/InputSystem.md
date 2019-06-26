@@ -1,6 +1,6 @@
 # Input System
 
-The input system and is the largest and most interesting system out of all the features offered by the MRTK.
+The input system is one of the largest systems out of all the features offered by the MRTK.
 So many things within the toolkit build on top of it (pointers, focus, prefabs). The code within the input
 system is what allows for the natural interactions like grab and rotate.
 
@@ -34,23 +34,22 @@ The input system has some of its own terminology that are worth defining:
     this doesn’t devolve into chaos, there is also a pointer mediator which controls which pointers are allowed to be
     active (for example, this will disable far interaction pointers when near interaction is detected).
 
-    Pointers can also belong to different categories like near interaction (useful for dealing with objects that are
-    close to the user) or far interaction (useful for dealing with objects that may not be close to the user).
-
 - **Focus**
 
     A pointer’s events will be directed to the object that is focused. For example, this can be the object that is
     raycast from the shell hand ray pointer, or this could be the object that is closest in a sphere raycast away from
     the index finger tip. Focus is a particularly important concept because it controls where input events are
     delivered (i.e. where IMixedRealityPointerHandler, IMixedRealityFocusHandler, and other input events are delivered)
-    Focus is especially interesting because it drives the object that gets input events (so instead of every single
+    Focus is especially interesting because it drives the object that gets input events, so instead of every single
     object needing to register globally for input events and then filter them out, focus helps narrow down the set of
     things that are poked to respond to input. Note that it's still possible to register for global input events,
-    though that event stream is typically very noisy).
+    though that event stream is typically very noisy.
 
 - **Cursor** 
 
-    An entity associated with a pointer that gives additional visual cues around pointer interaction. For example, the FingerCursor will render a ring around your finger, and may rotate that ring when your finger is close to ‘near interactable’ objects. A pointer can be associated with a single cursor at time.
+    An entity associated with a pointer that gives additional visual cues around pointer interaction. For example,
+    the FingerCursor will render a ring around your finger, and may rotate that ring when your finger is close to
+    ‘near interactable’ objects. A pointer can be associated with a single cursor at time.
 
 - **Interactable/Manipulation**
 
