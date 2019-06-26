@@ -27,7 +27,7 @@ The input system has some of its own terminology that are worth defining:
     In order to interact with the rest of the world, a controller is associated with pointers, which can interact with
     other game objects in specific ways. For example, the near interaction pointer is responsible to detecting when
     the hand (which is a controller) is close to objects that advertise themselves as supporting ‘near interaction’.
-    There are pointers that handle teleportation. There are far pointers (i.e. the shell hand ray pointer) that uses
+    Other examples for pointers are teleportation or far pointers (i.e. the shell hand ray pointer) that use
     far raycasts to engage with content that is longer than arms length from the user.
 
     Note that a controller can be associated with many different pointers at the same time – in order to ensure that
