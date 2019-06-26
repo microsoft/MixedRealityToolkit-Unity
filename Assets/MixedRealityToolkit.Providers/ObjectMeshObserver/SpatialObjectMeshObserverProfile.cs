@@ -14,8 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
     {
         [SerializeField]
         [Tooltip("The model containing the desired mesh data.")]
-        private Mesh objectMesh = null;
+        private GameObject spatialMeshObject = null;
 
-        public Mesh ObjectMesh => objectMesh;
+        public GameObject SpatialMeshObject => spatialMeshObject;
     }
 }

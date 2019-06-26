@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
+using UnityEngine.Experimental.XR;
 
 namespace Miicrosoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
 {
@@ -13,16 +14,36 @@ namespace Miicrosoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
     {
         public override void OnImportAsset(AssetImportContext context)
         {
-            string fileName = context.assetPath;
+            FileInfo fileInfo = new FileInfo(context.assetPath);
+            string name = fileInfo.Name.Split(new char[] { '.' })[0];
 
             IList<Mesh> meshes;
 
-            using (BinaryReader reader = OpenFileForRead(fileName))
+            using (BinaryReader reader = OpenFileForRead(fileInfo.FullName))
             {
                 meshes = RoomFileSerializer.Deserialize(reader);
             }
 
-            // todo
+            GameObject model = new GameObject(name, new System.Type[] { typeof(MeshRenderer), typeof(MeshFilter) });
+            context.AddObjectToAsset(name, model);
+
+            Mesh mesh = new Mesh();
+            mesh.name = name;
+            context.AddObjectToAsset(name, mesh);
+
+            context.SetMainObject(model);
+
+            CombineInstance[] meshesToCombine = new CombineInstance[meshes.Count];
+            for (int i = 0; i < meshesToCombine.Length; i++)
+            {
+                meshesToCombine[i].mesh = meshes[i];
+            }
+
+            mesh.CombineMeshes(meshesToCombine, true, false, false);
+
+           MeshFilter filter = model.GetComponent<MeshFilter>();
+            filter.sharedMesh = mesh;
+            // todo: default material?
         }
 
         /// <summary>

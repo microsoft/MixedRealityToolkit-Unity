@@ -25,4 +25,4 @@ MonoBehaviour:
   displayOption: 1
   visibleMaterial: {fileID: 2100000, guid: 47c3d3b0d8143e3489351498fceed55d, type: 2}
   occlusionMaterial: {fileID: 2100000, guid: a809c7ea182b699409443d46d5b42435, type: 2}
-  objectMesh: {fileID: 0}
+  spatialMeshObject: {fileID: 100000, guid: 21f67b217cee5494a9e7f0a65b083ed1, type: 3}

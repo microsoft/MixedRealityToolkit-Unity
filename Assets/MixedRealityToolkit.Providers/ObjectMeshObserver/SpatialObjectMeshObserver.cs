@@ -2,8 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Microsoft.MixedReality.Toolkit;
+using System.Runtime.Remoting.Services;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -38,9 +37,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             string name = null,
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, spatialAwarenessSystem, name, priority, profile)
-        { }
+        {
+            int i = 0;
+            i++;
+        }
 
         private bool sendObservations = true;
+
+        private GameObject spatialMeshObject = null;
+
+        private List<Mesh> observedMeshes = new List<Mesh>();
 
         /// <summary>
         /// Reads the settings from the configuration profile.
@@ -49,9 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         {
             SpatialObjectMeshObserverProfile profile = ConfigurationProfile as SpatialObjectMeshObserverProfile;
             if (profile == null) { return; }
-            
+
             // SpatialObjectMeshObserver settings
-            // todo
+            spatialMeshObject = profile.SpatialMeshObject;
 
             // IMixedRealitySpatialAwarenessObserver settings
             StartupBehavior = profile.StartupBehavior;
@@ -70,10 +76,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             VisibleMaterial = profile.VisibleMaterial;
         }
 
-        // todo
+        // todo: create 0 or more SpatialAwarenessMeshObjects from the model
         private void LoadObject()
         {
-            // todo
+            // Loading starts with a fresh mesh collection.
+            observedMeshes.Clear();
+
+            // todo error handling
+            if (spatialMeshObject == null) { return; }
+
+            MeshFilter filter = spatialMeshObject.GetComponentInChildren<MeshFilter>();
+            if (filter == null) { return; }
+
+            Mesh mesh = filter.sharedMesh;
+            if (mesh == null) { return; }
+
+            int subMeshCount = mesh.subMeshCount;
         }
 
         #region IMixedRealityCapabilityCheck Implementation

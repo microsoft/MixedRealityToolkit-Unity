@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Linq;
@@ -18,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         private const string ProfileDescription = "Configuration settings for how an object is used to simulate a spatial awareness mesh.";
 
         // Object settings
-        private SerializedProperty objectMesh;
+        private SerializedProperty spatialMeshObject;
 
         // General settings
         private SerializedProperty startupBehavior;
@@ -51,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             base.OnEnable();
 
             // Object mesh
-            objectMesh = serializedObject.FindProperty("objectMesh");
+            spatialMeshObject = serializedObject.FindProperty("spatialMeshObject");
 
             // General settings
             startupBehavior = serializedObject.FindProperty("startupBehavior");
@@ -78,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             {
                 serializedObject.Update();
 
-                EditorGUILayout.PropertyField(objectMesh);
+                EditorGUILayout.PropertyField(spatialMeshObject);
                 EditorGUILayout.Space();
 
                 EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
