@@ -15,6 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// <summary>
     /// Wrapper around world anchor store to streamline some of the persistence API busy work.
     /// </summary>
+    /// <remarks>
+    /// This class only functions when built for the WSA platform. It uses APIs that are only present
+    /// on that platform.
+    /// </remarks>
     public class WorldAnchorManager : MonoBehaviour
     {
         /// <summary>
@@ -53,13 +57,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// </summary>
         public bool PersistentAnchors => persistentAnchors;
 
+#if UNITY_WSA
         /// <summary>
         /// The WorldAnchorStore for the current application.
         /// Can be null when the application starts.
         /// </summary>
         public WorldAnchorStore AnchorStore { get; protected set; }
 
-#if UNITY_WSA
         /// <summary>
         /// To prevent initializing too many anchors at once
         /// and to allow for the WorldAnchorStore to load asynchronously
@@ -269,25 +273,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Called before creating anchor.  Used to check if import required.
-        /// </summary>
-        /// <remarks>
-        /// Return true from this function if import is required.
-        /// </remarks>
-        /// <param name="anchorId">Name of the anchor to import.</param>
-        /// <param name="objectToAnchor">GameObject to anchor.</param>
-        protected virtual bool ImportAnchor(string anchorId, GameObject objectToAnchor)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Called after creating a new anchor.
-        /// </summary>
-        /// <param name="anchor">The anchor to export.</param>
-        protected virtual void ExportAnchor(WorldAnchor anchor) { }
-
-        /// <summary>
         /// Removes the anchor from the game object and deletes the anchor
         /// from the anchor store.
         /// </summary>
@@ -365,6 +350,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
 #if UNITY_WSA
+        /// <summary>
+        /// Called before creating anchor.  Used to check if import required.
+        /// </summary>
+        /// <remarks>
+        /// Return true from this function if import is required.
+        /// </remarks>
+        /// <param name="anchorId">Name of the anchor to import.</param>
+        /// <param name="objectToAnchor">GameObject to anchor.</param>
+        protected virtual bool ImportAnchor(string anchorId, GameObject objectToAnchor)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Called after creating a new anchor.
+        /// </summary>
+        /// <param name="anchor">The anchor to export.</param>
+        protected virtual void ExportAnchor(WorldAnchor anchor) { }
+
         /// <summary>
         /// Executes the anchor operations from the localAnchorOperations queue.
         /// </summary>
