@@ -1,4 +1,4 @@
-# Configuration and Profiles
+# Configuration and profiles
 
 Not every single consumer of the MRTK will want it to behave the same way - some will want to have the spatial
 mesh running when on AR devices that support it. Some may want the diagnostic visualization on all the time,
