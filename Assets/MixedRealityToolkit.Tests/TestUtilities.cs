@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_EDITOR
-using UnityEngine.TestTools.Utils;
 using Microsoft.MixedReality.Toolkit.Editor;
 using NUnit.Framework;
 using UnityEditor;
@@ -23,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
-        const float vector3DistanceEpsilon = 0.02f;
+        const float vector3DistanceEpsilon = 0.01f;
 
         const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
@@ -170,10 +169,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message)
         {
-            var comparer = new Vector3EqualityComparer(vector3DistanceEpsilon);
-            Assert.That(actual, 
-                Is.EqualTo(expected).Using(comparer), 
-                $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            var dist = (actual - expected).magnitude;
+            Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
     }
 }
