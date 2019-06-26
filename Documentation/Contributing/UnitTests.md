@@ -1,6 +1,6 @@
 
 # Writing tests for your code
-To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and some application in one of the example scenes.
+To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes.
 
 Preferrably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.
 
