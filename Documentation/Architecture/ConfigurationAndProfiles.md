@@ -5,7 +5,7 @@ mesh running when on AR devices that support it. Some may want the diagnostic vi
 and some may only want it on when the user says a voice command. 
 
 The MRTK needs to be configurable in order to support a wide range of those requirements, and it uses a concept
-called 'Profiles' to accomplish this.
+called 'profiles' to accomplish this.
 
 ## What is a profile?
 
