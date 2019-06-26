@@ -1,4 +1,4 @@
-# Architecture Overview
+# Architecture overview
 
 The goal of this architectural overview is to give the reader an overall survey of what is
 contained within the MRTK. The goal is that after reading through the architecture of the
