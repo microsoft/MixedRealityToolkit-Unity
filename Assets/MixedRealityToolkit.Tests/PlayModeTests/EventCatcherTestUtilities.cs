@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Base class for counting global events.
     /// </summary>
-    public abstract class GlobalEventCatcher<T> : InputSystemGlobalListener, IDisposable where T : MonoBehaviour
+    public abstract class GlobalEventCatcher<T> : InputSystemGlobalHandlerListener, IDisposable where T : MonoBehaviour
     {
         protected int eventsStarted = 0;
         public int EventsStarted => eventsStarted;

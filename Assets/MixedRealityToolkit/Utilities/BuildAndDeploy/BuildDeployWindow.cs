@@ -74,6 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private readonly GUIContent buildDirectoryLabel = new GUIContent("Build Directory", "It's recommended to use 'UWP'");
 
         private readonly GUIContent useCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly available in .NET Scripting runtime.");
+        
+        private readonly GUIContent gazeInputCapabilityLabel =
+            new GUIContent("Gaze Input Capability", 
+                           "If checked, the 'Gaze Input' capability will be added to the AppX manifest after the Unity build.");
 
         private readonly GUIContent autoIncrementLabel = new GUIContent("Auto Increment", "Increases Version Build Number");
 
@@ -318,11 +322,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private void Update()
-        {
-            Repaint();
-        }
-
         private static void OpenPlayerSettingsGUI()
         {
             if (GUILayout.Button("Open Player Settings"))
@@ -518,6 +517,18 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 EditorUserBuildSettings.wsaArchitecture = newBuildArchitectureString;
             }
 
+            // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
+            // existing versions of Unity don't have support for automatically adding the capability to the generated
+            // AppX manifest during the build. This option provides a mechanism for people using the
+            // MRTK build tools to auto-append this capability if desired, instead of having to manually
+            // do this each time on their own.
+            bool curGazeInputCapabilityEnabled = UwpBuildDeployPreferences.GazeInputCapabilityEnabled;
+            bool newGazeInputCapabilityEnabled = EditorGUILayout.Toggle(gazeInputCapabilityLabel, curGazeInputCapabilityEnabled);
+            if (newGazeInputCapabilityEnabled != curGazeInputCapabilityEnabled)
+            {
+                UwpBuildDeployPreferences.GazeInputCapabilityEnabled = newGazeInputCapabilityEnabled;
+            }
+            
             GUILayout.BeginHorizontal();
 
             var prevFieldWidth = EditorGUIUtility.fieldWidth;
