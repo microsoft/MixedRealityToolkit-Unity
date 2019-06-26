@@ -1,4 +1,4 @@
-# Framework and Runtime
+# Framework and runtime
 
 ## Changes to the scene
 
@@ -15,9 +15,9 @@ Apart form adding the MRTK gameobject to the scene the menu option will also:
   related scripts to the main Camera, which help power UnityUI and gaze related input
   functionality).
 
-## MixedRealityToolkit Object and Runtime
+## MixedRealityToolkit object and runtime
 
-The MRTK contains a multitude of different services that spin up at runtime, that talk with each other (or don't talk
+The MRTK contains a multitude of different services that spin up at runtime and talk with each other (or don't talk
 with each other), and otherwise have some degree of coordination requirement in their startup, registration, update,
 and teardown loops. [This medium post](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)
 contains some of the background and motivation for why the system ended up written as it was. Rather than deal with

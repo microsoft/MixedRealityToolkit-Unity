@@ -1,11 +1,11 @@
-# Configuration and Profiles
+# Configuration and profiles
 
 Not every single consumer of the MRTK will want it to behave the same way - some will want to have the spatial
 mesh running when on AR devices that support it. Some may want the diagnostic visualization on all the time,
 and some may only want it on when the user says a voice command. 
 
 The MRTK needs to be configurable in order to support a wide range of those requirements, and it uses a concept
-called 'Profiles' to accomplish this.
+called 'profiles' to accomplish this.
 
 ## What is a profile?
 
@@ -60,7 +60,7 @@ be covered in the [Input System](InputSystem.md) documentation itself.
 
 This profile controls how the teleporation system works, which is primarily a VR concept.
 
-### Spatial Mapping
+### Spatial mapping
 
 This profile controls how the spatial mesh system works (i.e. this system is responsible for starting
 the system that will render the spatial meshes on an AR device). Primarily an AR concept.
@@ -70,7 +70,7 @@ the system that will render the spatial meshes on an AR device). Primarily an AR
 This controls the visual performance tool that shows a framerate counter, along with basic
 memory utilization.
 
-### Scene System
+### Scene system
 
 This controls a currently not-enabled-by-default system that is designed to make multi-scene
 scenarios easier to work with.
