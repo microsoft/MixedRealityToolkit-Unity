@@ -4,7 +4,7 @@ The goal of this architectural overview is to give the reader an overall survey 
 contained within the MRTK. After reading through the architecture documentation, the reader should understand:
 documentation, the reader should understand:
 
-- What are large pieces of the MRTK and how they connect.
+-  the large pieces of MRTK and how they connect,
 - What are the new concepts that the MRTK introduces that may not exist in vanilla Unity.
 - A general understanding of how some of the larger systems (such as Input) work.
 
