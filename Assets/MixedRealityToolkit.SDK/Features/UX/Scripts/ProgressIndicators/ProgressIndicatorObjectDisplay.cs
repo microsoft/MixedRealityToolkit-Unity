@@ -77,6 +77,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc/>
         public async Task OpenAsync()
         {
+            if (openCurve.length == 0)
+            {
+                Debug.LogWarning("Open curve length is zero - this may result in an infinite loop.");
+            }
+
+            float maxScale = openCurve.Evaluate(Mathf.Infinity);
+            if (maxScale < 1f)
+            {
+                Debug.LogWarning("Open curve value never reaches 1 - this may result in an infinite loop.");
+            }
+
             switch (state)
             {
                 case ProgressIndicatorState.Closed:
@@ -107,6 +118,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc/>
         public async Task CloseAsync()
         {
+            if (closeCurve.length == 0)
+            {
+                Debug.LogWarning("Open curve length is zero - this may result in an infinite loop.");
+            }
+
+            float minScale = closeCurve.Evaluate(Mathf.Infinity);
+            if (minScale > 0)
+            {
+                Debug.LogWarning("Open curve value never reaches 0 - this may result in an infinite loop.");
+            }
+
             switch (state)
             {
                 case ProgressIndicatorState.Open:
