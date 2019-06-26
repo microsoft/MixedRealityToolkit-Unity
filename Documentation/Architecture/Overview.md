@@ -6,7 +6,7 @@ documentation, the reader should understand:
 
 -  the large pieces of MRTK and how they connect,
 - the concepts that MRTK introduces that may not exist in vanilla Unity,
-- A general understanding of how some of the larger systems (such as Input) work.
+- how some of the larger systems (such as Input) work.
 
 This section isn't intended to teach the audience how to do things, but rather how things
 are structured and why.
