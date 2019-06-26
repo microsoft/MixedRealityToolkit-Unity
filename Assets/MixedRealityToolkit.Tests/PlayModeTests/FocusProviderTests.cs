@@ -28,8 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestGazeCursorArticulated()
         {
-            RenderSettings.skybox = null;
-
             IMixedRealityInputSystem inputSystem;
             MixedRealityServiceRegistry.TryGetService(out inputSystem);
             Assert.IsNotNull(inputSystem, "MixedRealityInputSystem is null!");
