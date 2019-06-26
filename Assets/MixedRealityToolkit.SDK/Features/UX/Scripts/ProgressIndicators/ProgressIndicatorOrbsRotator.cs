@@ -57,13 +57,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc/>
         public async Task OpenAsync()
         {
-            switch (state)
+            if (state != ProgressIndicatorState.Closed)
             {
-                case ProgressIndicatorState.Closed:
-                    break;
-
-                default:
-                    throw new System.Exception("Can't open in state " + state);
+                throw new System.Exception("Can't open in state " + state);
             }
 
             gameObject.SetActive(true);
@@ -80,13 +76,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc/>
         public async Task CloseAsync()
         {
-            switch (state)
+            if (state != ProgressIndicatorState.Open)
             {
-                case ProgressIndicatorState.Open:
-                    break;
-
-                default:
-                    throw new System.Exception("Can't close in state " + state);
+                throw new System.Exception("Can't close in state " + state);
             }
 
             state = ProgressIndicatorState.Closing;

@@ -122,12 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(progressIndicator.State == ProgressIndicatorState.Closed, "Progress indicator was not closed after close async call: " + progressIndicator.State);
         }
 
-        [TearDown]
-        public void ShutdownMrtk()
-        {
-            //TestUtilities.ShutdownMixedRealityToolkit();
-        }
-
         private void InstantiatePrefab(string path, out GameObject progressIndicatorObject, out IProgressIndicator progressIndicator)
         {
             progressIndicatorObject = null;

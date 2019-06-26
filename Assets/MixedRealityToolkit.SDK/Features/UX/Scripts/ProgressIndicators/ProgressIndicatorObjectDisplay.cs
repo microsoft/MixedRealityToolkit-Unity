@@ -88,13 +88,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 Debug.LogWarning("Open curve value never reaches 1 - this may result in an infinite loop.");
             }
 
-            switch (state)
+            if (state != ProgressIndicatorState.Closed)
             {
-                case ProgressIndicatorState.Closed:
-                    break;
-
-                default:
-                    throw new System.Exception("Can't open in state " + state);
+                throw new System.Exception("Can't open in state " + state);
             }
 
             gameObject.SetActive(true);
@@ -129,13 +125,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 Debug.LogWarning("Open curve value never reaches 0 - this may result in an infinite loop.");
             }
 
-            switch (state)
+            if (state != ProgressIndicatorState.Open)
             {
-                case ProgressIndicatorState.Open:
-                    break;
-
-                default:
-                    throw new System.Exception("Can't close in state " + state);
+                throw new System.Exception("Can't close in state " + state);
             }
 
             state = ProgressIndicatorState.Closing;
