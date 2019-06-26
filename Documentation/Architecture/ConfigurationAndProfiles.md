@@ -63,7 +63,7 @@ be covered in the [Input System](InputSystem.md) documentation itself.
 
 This profile controls how the teleporation system works, which is primarily a VR concept.
 
-### Spatial Mapping
+### Spatial mapping
 
 This profile controls how the spatial mesh system works (i.e. this system is responsible for starting
 the system that will render the spatial meshes on an AR device). Primarily an AR concept.
