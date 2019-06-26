@@ -1,7 +1,7 @@
 # Architecture overview
 
 The goal of this architectural overview is to give the reader an overall survey of what is
-contained within the MRTK. The goal is that after reading through the architecture of the
+contained within the MRTK. After reading through the architecture documentation, the reader should understand:
 documentation, the reader should understand:
 
 - What are large pieces of the MRTK and how they connect.
