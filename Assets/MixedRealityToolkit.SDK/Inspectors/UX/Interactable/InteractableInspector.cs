@@ -89,16 +89,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             bool showStates = false;
             SerializedProperty states = serializedObject.FindProperty("States");
             bool drawerStarted = false;
+            string statesPrefKey = "Settings_States";
+            bool prefsShowStates = EditorPrefs.GetBool(statesPrefKey);
+
             if (states.objectReferenceValue != null)
             {
-                string statesPrefKey = "Settings_States";
-                bool prefsShowStates = EditorPrefs.GetBool(statesPrefKey);
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
                 showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 2, prefsShowStates, FontStyle.Normal, false);
                 drawerStarted = true;
                 if (showStates != prefsShowStates)
                 {
-                    EditorPrefs.SetBool(statesPrefKey, showStates);
+                   EditorPrefs.SetBool(statesPrefKey, showStates);
                 }
             }
             else
@@ -117,6 +118,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             break;
                         }
                     }
+
+                    showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 2, prefsShowStates, FontStyle.Normal, false);
+                    drawerStarted = true;
                 }
                 else
                 {
@@ -135,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 InspectorUIUtility.DrawSectionEnd(indentOnSectionStart);
             }
-
+            
             if (states.objectReferenceValue == null)
             {
                 InspectorUIUtility.DrawError("Please assign a States object!");
