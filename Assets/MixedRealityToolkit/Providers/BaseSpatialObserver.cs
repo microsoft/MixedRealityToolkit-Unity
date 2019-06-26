@@ -115,6 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public virtual void Suspend() { }
 
+        /// <inheritdoc />
+        public virtual void ClearObservations() { }
+
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }
 }
