@@ -18,7 +18,7 @@ MixedRealityToolkit scene object:
 
 ## MixedRealityToolkit Object and Runtime
 
-The MRTK contains a multitude of different services that spin up at runtime, that talk with each other (or don't talk
+The MRTK contains a multitude of different services that spin up at runtime and talk with each other (or don't talk
 with each other), and otherwise have some degree of coordination requirement in their startup, registration, update,
 and teardown loops. [This medium post](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)
 contains some of the background and motivation for why the system ended up written as it was. Rather than deal with
