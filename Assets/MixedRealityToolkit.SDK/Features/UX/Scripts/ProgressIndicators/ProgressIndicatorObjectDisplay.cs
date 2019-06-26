@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// This class manages how a gameobject rotates and/or scales
@@ -77,6 +77,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <inheritdoc/>
         public async Task OpenAsync()
         {
+            switch (state)
+            {
+                case ProgressIndicatorState.Closed:
+                    break;
+
+                default:
+                    throw new System.Exception("Can't open in state " + state);
+            }
+
             gameObject.SetActive(true);
 
             Reset();
@@ -98,6 +107,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <inheritdoc/>
         public async Task CloseAsync()
         {
+            switch (state)
+            {
+                case ProgressIndicatorState.Open:
+                    break;
+
+                default:
+                    throw new System.Exception("Can't close in state " + state);
+            }
+
             state = ProgressIndicatorState.Closing;
 
             float startTime = Time.unscaledTime;

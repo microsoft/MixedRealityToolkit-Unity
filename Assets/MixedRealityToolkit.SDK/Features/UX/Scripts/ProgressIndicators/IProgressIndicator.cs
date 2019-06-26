@@ -4,7 +4,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public interface IProgressIndicator
     {

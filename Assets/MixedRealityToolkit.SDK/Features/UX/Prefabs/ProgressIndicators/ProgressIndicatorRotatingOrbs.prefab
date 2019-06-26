@@ -42,6 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1877138048077504}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 84168829751123045887f94604384d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -51,15 +52,14 @@ MonoBehaviour:
   - {fileID: 3583796066572053776}
   - {fileID: 5455315739319293649}
   - {fileID: 6729277882352215929}
-  orbMaterial: {fileID: 2100000, guid: ad63588c7e076084a90378e695622194, type: 2}
   messageText: {fileID: 5132018694597036767}
   state: 0
-  RotationSpeedRawDegrees: -200
-  SpacingDegrees: 22
-  Acceleration: 1.4
-  Revolutions: 3
-  TestStop: 0
-  HasAnimationFinished: 0
+  rotationSpeedRawDegrees: -200
+  spacingDegrees: 22
+  acceleration: 1.4
+  revolutions: 3
+  testStop: 0
+  hasAnimationFinished: 0
 --- !u!1 &634595234425014045
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,6 +196,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1617760416105332087}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
