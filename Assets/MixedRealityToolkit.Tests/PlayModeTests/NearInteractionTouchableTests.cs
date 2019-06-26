@@ -190,56 +190,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test creates an object with NearInteractionTouchableUnboundedPlane
-        /// </summary>
-        /// <returns></returns>
-        [UnityTest]
-        public IEnumerator NearInteractionTouchableUnboundedPlaneVariant()
-        {
-            var touchable = CreateTouchable<NearInteractionTouchableUnboundedPlane>(objectScale);
-            touchable.SetLocalNormal(touchNormal);
-
-            yield return new WaitForFixedUpdate();
-            yield return null;
-
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
-
-            using (var catcher = CreateEventCatcher(touchable))
-            {
-                // Touch started and completed when entering and exiting
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                Assert.AreEqual(1, catcher.EventsStarted);
-                Assert.AreEqual(0, catcher.EventsCompleted);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
-                Assert.AreEqual(1, catcher.EventsStarted);
-                Assert.AreEqual(1, catcher.EventsCompleted);
-
-                // Touch started and completed when entering and exiting behind the plane
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                Assert.AreEqual(2, catcher.EventsStarted);
-                Assert.AreEqual(1, catcher.EventsCompleted);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, backPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
-                Assert.AreEqual(2, catcher.EventsStarted);
-                Assert.AreEqual(2, catcher.EventsCompleted);
-
-                // No touch when moving at behind the plane
-                yield return PlayModeTestUtilities.MoveHandFromTo(backPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
-                Assert.AreEqual(2, catcher.EventsStarted);
-                Assert.AreEqual(2, catcher.EventsCompleted);
-
-                // Touch when moving off-center
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition + outOfBoundsOffset, objectPosition + outOfBoundsOffset, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition + outOfBoundsOffset, rightPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                Assert.AreEqual(3, catcher.EventsStarted);
-                Assert.AreEqual(3, catcher.EventsCompleted);
-            }
-
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSim);
-
-            UnityEngine.Object.Destroy(touchable.gameObject);
-        }
-
-        /// <summary>
         /// Test creates an object with NearInteractionTouchableVolume
         /// </summary>
         /// <returns></returns>
@@ -399,8 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var canvas = UnityUiUtilities.CreateCanvas(0.002f);
             canvas.transform.position = objectPosition;
 
-            var touchable = canvas.GetComponent<NearInteractionTouchable>();
-            touchable.SetLocalForward(touchNormal);
+            var touchable = canvas.GetComponent<NearInteractionTouchableUnityUI>();
 
             // var img = UnityUiUtilities.CreateImage(Color.blue);
             // img.transform.SetParent(canvas.transform, false);

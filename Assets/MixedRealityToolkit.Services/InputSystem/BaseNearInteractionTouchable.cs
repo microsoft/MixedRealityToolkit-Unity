@@ -10,17 +10,14 @@ using UnityEngine.Serialization;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Base class for all NearInteractionTouchables
-    ///
-    /// Technical details:
-    /// Provides a listing of near field touch proximity bounds.
-    /// This is used to detect if a contact point is near an object to turn on near field interactions
+    /// Base class for all NearInteractionTouchables.
     /// </summary>
+    /// <remarks>
+    /// Add this component to objects to raise touch events when in [PokePointer](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) proximity.
+    /// The object layer must be included of the [PokeLayerMasks](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.PokeLayerMasks).
+    /// </remarks>
     public abstract class BaseNearInteractionTouchable : MonoBehaviour
     {
-        public static IReadOnlyCollection<BaseNearInteractionTouchable> Instances { get { return instances.AsReadOnly(); } }
-        private static readonly List<BaseNearInteractionTouchable> instances = new List<BaseNearInteractionTouchable>();
-
         [SerializeField]
         protected TouchableEventType eventsToReceive = TouchableEventType.Touch;
 
@@ -29,57 +26,61 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public TouchableEventType EventsToReceive { get => eventsToReceive; set => eventsToReceive = value; }
 
-        public bool ColliderEnabled { get { return !usesCollider || touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
-
+        [Tooltip("Distance behind the surface at which you will receive a touch started event")]
+        [SerializeField]
+        [FormerlySerializedAs("distBack")]
+        protected float pokeThreshold = 0.25f;
         /// <summary>
-        /// False if no collider is found on validate.
-        /// This is used to avoid the perf cost of a null check with the collider.
+        /// Distance behind the surface at which the touchable becomes active.
         /// </summary>
-        protected bool usesCollider = false;
+        /// <remarks>
+        /// When the pointer distance to the touchable object becomes less than -PokeThreshold (i.e. behind the surface),
+        /// then the Touch Started event is raised and the touchable object becomes tracked by the pointer.
+        /// </remarks>
+        public float PokeThreshold => pokeThreshold;
+
+        [Tooltip("Distance in front of the surface at which you will receive a touch completed event")]
+        [SerializeField]
+        protected float debounceThreshold = 0.01f;
+        /// <summary>
+        /// Distance in front of the surface at which you will receive a touch completed event.
+        /// </summary>
+        /// <remarks>
+        /// When the touchable is active and the pointer distance becomes greater than +DebounceThreshold (i.e. in front of the surface),
+        /// then the Touch Completed event is raised and the touchable object is released by the pointer.
+        /// </remarks>
+        public float DebounceThreshold => debounceThreshold;
+
+        protected void OnValidate()
+        {
+            pokeThreshold = Math.Max(pokeThreshold, 0);
+            debounceThreshold = Math.Max(debounceThreshold, 0);
+        }
+
+        public abstract float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal);
+    }
+
+    /// <summary>
+    /// Base class for all touchables using colliders.
+    /// </summary>
+    [RequireComponent(typeof(Collider))]
+    public abstract class ColliderNearInteractionTouchable : BaseNearInteractionTouchable
+    {
+        public bool ColliderEnabled { get { return touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
 
         /// <summary>
         /// The collider used by this touchable.
         /// </summary>
         [SerializeField]
         [FormerlySerializedAs("collider")]
-        protected Collider touchableCollider;
+        private Collider touchableCollider;
+        public Collider TouchableCollider => touchableCollider;
 
-        protected float distFront = 0.2f;
-
-        [Tooltip("Distance behind the surface at which you will receive a touch up event")]
-        [SerializeField]
-        protected float distBack = 0.25f;
-
-        [Tooltip("Distance in front of the surface at which you will receive a touch up event")]
-        [SerializeField]
-        protected float debounceThreshold = 0.01f;
-
-        public float DistBack => distBack;
-
-        public float DistFront => distFront;
-
-        public float DebounceThreshold => debounceThreshold;
-
-        protected void OnEnable()
+        protected new void OnValidate()
         {
-            instances.Add(this);
-        }
-
-        protected void OnDisable()
-        {
-            instances.Remove(this);
-        }
-
-        protected void OnValidate()
-        {
-            distBack = Math.Max(distBack, 0);
-            distFront = Math.Max(distFront, 0);
-            debounceThreshold = Math.Max(debounceThreshold, 0);
+            base.OnValidate();
 
             touchableCollider = GetComponent<Collider>();
-            usesCollider = touchableCollider != null;
         }
-
-        public abstract float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal);
     }
 }

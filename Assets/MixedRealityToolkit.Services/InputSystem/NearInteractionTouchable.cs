@@ -13,21 +13,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Add a NearInteractionTouchable to your scene and configure a touchable surface
     /// in order to get PointerDown and PointerUp events whenever a PokePointer touches this surface.
     /// </summary>
-    public class NearInteractionTouchable : BaseNearInteractionTouchable
+    public class NearInteractionTouchable : ColliderNearInteractionTouchable
     {
-        public enum TouchableSurfaceType
-        {
-            BoxCollider,
-            UnityUI,
-            Custom = 100
-        }
-
         /// <summary>
         /// Local space forward direction
         /// </summary>
         [SerializeField]
         protected Vector3 localForward = Vector3.forward;
-
         public Vector3 LocalForward { get => localForward; }
 
         /// <summary>
@@ -45,12 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         protected Vector3 localCenter = Vector3.zero;
         public Vector3 LocalCenter { get => localCenter; set { localCenter = value; } }
-
-        [SerializeField]
-        [Tooltip("The type of surface to calculate the touch point on.")]
-        [FormerlySerializedAs("touchableSurface")]
-        private TouchableSurfaceType surfaceType = TouchableSurfaceType.BoxCollider;
-        public TouchableSurfaceType SurfaceType { get => surfaceType; set => surfaceType = value; }
 
         public Vector3 LocalRight
         {
@@ -102,21 +88,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.Assert(Vector3.Dot(localForward, localUp) == 0, $"localForward and localUp not perpendicular for object {hierarchy}. Did you set Local Forward correctly?");
             }
 
-            // Check initial setup
-            if (bounds == Vector2.zero)
-            {
-                if (surfaceType == TouchableSurfaceType.UnityUI)
-                {
-                    RectTransform rt = GetComponent<RectTransform>();
-                    if (rt != null)
-                    {
-                        // Initialize bounds to RectTransform SizeDelta
-                        bounds = rt.sizeDelta;
-                        localForward = new Vector3(0, 0, -1);
-                    }
-                }
-            }
-
             localForward = localForward.normalized;
             localUp = localUp.normalized;
 
@@ -151,6 +122,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return Math.Abs(planeSpacePoint.z);
         }
-
     }
 }

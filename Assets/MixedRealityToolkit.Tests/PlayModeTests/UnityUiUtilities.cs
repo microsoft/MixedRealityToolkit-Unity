@@ -50,12 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var canvasUtil = obj.AddComponent<CanvasUtility>();
             var canvasScaler = obj.AddComponent<CanvasScaler>();
             var raycaster = obj.AddComponent<GraphicRaycaster>();
-            var touchable = obj.AddComponent<NearInteractionTouchable>();
-            touchable.SurfaceType = NearInteractionTouchable.TouchableSurfaceType.UnityUI;
+            var touchable = obj.AddComponent<NearInteractionTouchableUnityUI>();
             touchable.EventsToReceive = TouchableEventType.Pointer;
-
-            AdjustTouchableSettingsToRectTransform(touchable, obj.transform as RectTransform);
-            Assert.True(touchable.AreLocalVectorsOrthogonal);
 
             return canvas;
         }
@@ -87,14 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             textObj.alignment = TextAnchor.MiddleCenter;
 
             return button;
-        }
-
-        private static void AdjustTouchableSettingsToRectTransform(NearInteractionTouchable t, RectTransform rt)
-        {
-            // Match bounds
-            t.Bounds = rt.sizeDelta;
-            // Match forward direction to Unity UI
-            t.SetLocalForward(new Vector3(0, 0, -1));
         }
     }
 }
