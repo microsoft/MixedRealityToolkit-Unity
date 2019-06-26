@@ -20,7 +20,7 @@ The input system has some of its own terminology that are worth defining:
     A representation of a physical controller (whether it’s a 6-degree-of-freedom controller, a HoloLens 1-style
     hand with gesture support, a fully articulated hand, a leap motion controller, etc.). Controllers are spawned
     by device managers (i.e. the WMR device manager will spawn a controller and manage its lifetime when it sees an
-    articulated hand coming into existence, for example).
+    articulated hand coming into existence).
 
 - **Pointer**
 
