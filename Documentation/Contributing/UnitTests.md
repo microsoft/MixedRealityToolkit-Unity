@@ -103,7 +103,7 @@ There are two Utility classes that help with setting up MRTK and testing interac
 * [TestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.TestUtilities)
 * [PlayModeTestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities) 
 
-TestUtilities provide the following methods to set up your MRTK scene and gameobjects
+TestUtilities provide the following methods to set up your MRTK scene and gameobjects:
 
 ``` csharp
 /// creates the mrtk gameobject and sets the default profile if passed param is true
