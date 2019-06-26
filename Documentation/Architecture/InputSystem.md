@@ -31,7 +31,7 @@ The input system has some of its own terminology that are worth defining:
     far raycasts to engage with content that is longer than arms length from the user.
 
     Note that a controller can be associated with many different pointers at the same time – in order to ensure that
-    this doesn’t devolve into chaos, there is also a pointer mediator which controls which pointers are allowed to be
+    this doesn’t devolve into chaos, there is a pointer mediator which controls which pointers are allowed to be
     active (for example, this will disable far interaction pointers when near interaction is detected).
 
     Pointers can also belong to different categories like near interaction (useful for dealing with objects that are
