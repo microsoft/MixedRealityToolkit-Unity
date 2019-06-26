@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Forces the playspace camera to face forward.
         /// </summary>
-        public static void FaceCameraForward()
+        public static void PlayspaceToOriginLookingForward()
         {
             // Move the camera to origin looking at +z to more easily see the a target at 0,0,0
             MixedRealityPlayspace.PerformTransformation(

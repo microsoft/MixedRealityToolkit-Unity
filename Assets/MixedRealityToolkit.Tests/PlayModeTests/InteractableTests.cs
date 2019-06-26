@@ -24,12 +24,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         const float buttonPressAnimationDelay = 0.25f;
         const float buttonReleaseAnimationDelay = 0.75f;
+        const string defaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
 
         [SetUp]
         public void Setup()
         {
             PlayModeTestUtilities.Setup();
-            TestUtilities.FaceCameraForward();
+            TestUtilities.PlayspaceToOriginLookingForward();
         }
 
         [TearDown]
@@ -459,7 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private void InstantiateDefaultInteractablePrefab(Vector3 position, Vector3 rotation, out GameObject interactableObject, out Interactable interactable, out Transform translateTargetObject)
         {
             // Load interactable prefab
-            Object interactablePrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab", typeof(Object));
+            Object interactablePrefab = AssetDatabase.LoadAssetAtPath(defaultInteractablePrefabAssetPath, typeof(Object));
             interactableObject = Object.Instantiate(interactablePrefab) as GameObject;
             interactable = interactableObject.GetComponent<Interactable>();
             Assert.IsNotNull(interactable);

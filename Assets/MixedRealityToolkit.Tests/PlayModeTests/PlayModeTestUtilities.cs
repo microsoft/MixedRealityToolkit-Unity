@@ -28,7 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class PlayModeTestUtilities
     {
-        const string playModeTestSceneName = "PlayModeTestScene";
+        // Unity's default scene name for a recently created scene
+        const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
 
         /// <summary>
         /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
@@ -37,22 +38,44 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             if (EditorApplication.isPlaying)
             {
-                Scene playModeTestScene = SceneManager.GetSceneByName(playModeTestSceneName);
-                if (!playModeTestScene.IsValid() || !playModeTestScene.isLoaded)
+                bool sceneExists = false;
+                for (int i = 0; i < SceneManager.sceneCount; i++)
                 {
-                    playModeTestScene = SceneManager.CreateScene(playModeTestSceneName);
+                    Scene playModeTestScene = SceneManager.GetSceneAt(i);
+                    if (playModeTestScene.name == playModeTestSceneName && playModeTestScene.isLoaded)
+                    {
+                        SceneManager.SetActiveScene(playModeTestScene);
+                        sceneExists = true;
+                    }
+                }
+
+                if (!sceneExists)
+                {
+                    Scene playModeTestScene = SceneManager.CreateScene(playModeTestSceneName);
                     SceneManager.SetActiveScene(playModeTestScene);
                 }
             }
             else
             {
-                // At the very start of testing, playmode may not be active. In this case, create a fresh scene
-                Scene playModeTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
-                EditorSceneManager.SetActiveScene(playModeTestScene);
-            }
+                // At the very start of testing, playmode may not be active.
+                // So we'll use the editor scene manager instead of the scene manaager.
+                bool sceneExists = false;
+                for (int i = 0; i < EditorSceneManager.sceneCount; i++)
+                {
+                    Scene playModeTestScene = EditorSceneManager.GetSceneAt(i);
+                    if (playModeTestScene.name == playModeTestSceneName && playModeTestScene.isLoaded)
+                    {
+                        EditorSceneManager.SetActiveScene(playModeTestScene);
+                        sceneExists = true;
+                    }
+                }
 
-            // Change our render settings so we can see what's going on more clearly
-            RenderSettings.skybox = null;
+                if (!sceneExists)
+                {   // In this case, create a fresh scene. This scene's name will be empty. We'll check for it on teardown.
+                    Scene playModeTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
+                    EditorSceneManager.SetActiveScene(playModeTestScene);
+                }
+            }
 
             // Create an MRTK instance and set up playspace
             TestUtilities.InitializeMixedRealityToolkit(true);
@@ -73,6 +96,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 foreach (GameObject gameObject in playModeTestScene.GetRootGameObjects())
                 {
                     GameObject.Destroy(gameObject);
+                }
+            }
+
+            // If we created a temporary untitled scene in edit mode to get us started, unload that now
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene editorScene = SceneManager.GetSceneAt(i);
+                if (string.IsNullOrEmpty(editorScene.name))
+                {   // We've found our editor scene. Unload it.
+                    SceneManager.UnloadSceneAsync(editorScene);
                 }
             }
         }
