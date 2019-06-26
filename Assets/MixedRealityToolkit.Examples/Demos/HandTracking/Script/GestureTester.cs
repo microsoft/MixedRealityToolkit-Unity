@@ -11,13 +11,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public GameObject HoldIndicator = null;
         public GameObject ManipulationIndicator = null;
         public GameObject NavigationIndicator = null;
-        public GameObject TapIndicator = null;
+        public GameObject SelectIndicator = null;
 
         public Material DefaultMaterial = null;
         public Material HoldMaterial = null;
         public Material ManipulationMaterial = null;
         public Material NavigationMaterial = null;
-        public Material TapMaterial = null;
+        public Material SelectMaterial = null;
 
         public GameObject RailsAxisX = null;
         public GameObject RailsAxisY = null;
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 ShowRails(Vector3.zero);
             }
             
-            SetIndicator(TapIndicator, "Tap:", DefaultMaterial);
+            SetIndicator(SelectIndicator, "Select:", DefaultMaterial);
         }
 
         public void OnGestureUpdated(InputEventData eventData)
@@ -99,9 +99,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             {
                 SetIndicator(HoldIndicator, "Hold: completed", DefaultMaterial);
             }
-            else if (action == "Tap")
+            else if (action == "Select")
             {
-                SetIndicator(TapIndicator, "Tap: completed", TapMaterial);
+                SetIndicator(SelectIndicator, "Select: completed", SelectMaterial);
             }
         }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7554812f08ec49e694a8d9d4ee235a9c, type: 3}
   m_Name: DefaultMixedRealityGesturesProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 0
+  isCustomProfile: 1
   manipulationGestures: 13
   navigationGestures: 112
   useRailsNavigation: 0
@@ -40,6 +40,6 @@ MonoBehaviour:
   - description: Tap
     gestureType: 4
     action:
-      id: 16
-      description: Tap
-      axisConstraint: 0
+      id: 1
+      description: Select
+      axisConstraint: 2

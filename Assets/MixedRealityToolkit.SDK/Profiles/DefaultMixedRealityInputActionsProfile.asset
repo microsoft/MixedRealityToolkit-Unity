@@ -59,6 +59,3 @@ MonoBehaviour:
   - id: 15
     description: Toggle Profiler
     axisConstraint: 0
-  - id: 16
-    description: Tap
-    axisConstraint: 0

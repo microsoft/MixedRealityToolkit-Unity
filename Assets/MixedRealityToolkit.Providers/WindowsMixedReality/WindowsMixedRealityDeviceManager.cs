@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private MixedRealityInputAction holdAction = MixedRealityInputAction.None;
         private MixedRealityInputAction navigationAction = MixedRealityInputAction.None;
         private MixedRealityInputAction manipulationAction = MixedRealityInputAction.None;
-        private MixedRealityInputAction tapAction = MixedRealityInputAction.None;
+        private MixedRealityInputAction selectAction = MixedRealityInputAction.None;
 
         private static GestureRecognizer gestureRecognizer;
         private static WsaGestureSettings WSAGestureSettings => (WsaGestureSettings)gestureSettings;
@@ -329,8 +329,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         case GestureInputType.Navigation:
                             navigationAction = gesture.Action;
                             break;
-                        case GestureInputType.Tap:
-                            tapAction = gesture.Action;
+                        case GestureInputType.Select:
+                            selectAction = gesture.Action;
                             break;
                     }
                 }
@@ -420,7 +420,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 gestureRecognizer.ManipulationCanceled += GestureRecognizer_ManipulationCanceled;
             }
 
-            if (tapAction != MixedRealityInputAction.None)
+            if (selectAction != MixedRealityInputAction.None)
             {
                 gestureRecognizer.Tapped += GestureRecognizer_Tapped;
             }
@@ -445,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 gestureRecognizer.ManipulationCanceled -= GestureRecognizer_ManipulationCanceled;
             }
 
-            if (tapAction != MixedRealityInputAction.None)
+            if (selectAction != MixedRealityInputAction.None)
             {
                 gestureRecognizer.Tapped -= GestureRecognizer_Tapped;
             }
@@ -797,7 +797,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (controller != null)
             {
                 IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-                inputSystem.RaiseGestureCompleted(controller, tapAction);
+                inputSystem.RaiseGestureCompleted(controller, selectAction);
             }
         }
 

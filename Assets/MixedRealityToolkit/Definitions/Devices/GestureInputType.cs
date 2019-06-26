@@ -12,6 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Hold,
         Navigation,
         Manipulation,
-        Tap
+        Select
     }
 }
