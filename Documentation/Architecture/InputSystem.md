@@ -12,7 +12,7 @@ The input system has some of its own terminology that are worth defining:
     that describes these are device managers. These are components whose job is to extend the MRTK input system
     by interfacing with a specific underlying system. An example of a provider is the Windows Mixed Reality provider,
     whose job it is to talk with the underlying Windows Mixed Reality APIs, and then translate the data from
-    those APIs into MRTK-specific input concepts below. Another example would be the OpenVR provider (who job it
+    those APIs into MRTK-specific input concepts below. Another example would be the OpenVR provider (whose job it
     is to talk to Unity-abstracted version of OpenVR APIs and then translate that data into MRTK input concepts).
 
 - **Controller**
