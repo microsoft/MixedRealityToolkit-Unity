@@ -46,9 +46,9 @@ Shader "Mixed Reality Toolkit/Wireframe"
             #pragma geometry geom
             #pragma fragment frag
 
-            // We only target the HoloLens (and the Unity editor), so take advantage of shader model 5.
+            #if defined(SHADER_API_D3D11)
             #pragma target 5.0
-            #pragma only_renderers d3d11 //D3D 11 & 12
+            #endif
 
             #include "UnityCG.cginc"
 

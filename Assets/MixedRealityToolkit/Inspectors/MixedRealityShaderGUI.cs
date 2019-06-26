@@ -53,6 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static string depthOffsetUnitsName = "_ZOffsetUnits";
             public static string colorWriteMaskName = "_ColorWriteMask";
 
+            public static string cullModeName = "_CullMode";
+            public static string renderQueueOverrideName = "_RenderQueueOverride";
+
             public static string alphaTestOnName = "_ALPHATEST_ON";
             public static string alphaBlendOnName = "_ALPHABLEND_ON";
 
@@ -113,8 +116,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             depthOffsetUnits = FindProperty(BaseStyles.depthOffsetUnitsName, props);
             colorWriteMask = FindProperty(BaseStyles.colorWriteMaskName, props);
 
-            cullMode = FindProperty("_CullMode", props);
-            renderQueueOverride = FindProperty("_RenderQueueOverride", props);
+            cullMode = FindProperty(BaseStyles.cullModeName, props);
+            renderQueueOverride = FindProperty(BaseStyles.renderQueueOverrideName, props);
         }
 
         protected void Initialize(Material material)
@@ -147,12 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 materialEditor.RegisterPropertyChangeUndo(renderingMode.displayName);
                 renderingMode.floatValue = (float)mode;
-            }
 
-            EditorGUI.showMixedValue = false;
-
-            if (EditorGUI.EndChangeCheck())
-            {
                 Object[] targets = renderingMode.targets;
 
                 foreach (Object target in targets)
@@ -160,6 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     MaterialChanged((Material)target);
                 }
             }
+
+            EditorGUI.showMixedValue = false;
 
             if ((RenderingMode)renderingMode.floatValue == RenderingMode.Custom)
             {
@@ -190,6 +190,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         protected static void SetupMaterialWithRenderingMode(Material material, RenderingMode mode, CustomRenderingMode customMode, int renderQueueOverride)
         {
+            // If we aren't switching to Custom, then set default values for all RenderingMode types. Otherwise keep whatever user had before
+            if (mode != RenderingMode.Custom)
+            {
+                material.SetInt(BaseStyles.blendOperationName, (int)BlendOp.Add);
+                material.SetInt(BaseStyles.depthTestName, (int)CompareFunction.LessEqual);
+                material.SetFloat(BaseStyles.depthOffsetFactorName, 0.0f);
+                material.SetFloat(BaseStyles.depthOffsetUnitsName, 0.0f);
+                material.SetInt(BaseStyles.colorWriteMaskName, (int)ColorWriteMask.All);
+            }
+
             switch (mode)
             {
                 case RenderingMode.Opaque:
@@ -198,12 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Opaque);
                         material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
                         material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.Zero);
-                        material.SetInt(BaseStyles.blendOperationName, (int)BlendOp.Add);
-                        material.SetInt(BaseStyles.depthTestName, (int)CompareFunction.LessEqual);
                         material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.On);
-                        material.SetFloat(BaseStyles.depthOffsetFactorName, 0.0f);
-                        material.SetFloat(BaseStyles.depthOffsetUnitsName, 0.0f);
-                        material.SetInt(BaseStyles.colorWriteMaskName, (int)ColorWriteMask.All);
                         material.DisableKeyword(BaseStyles.alphaTestOnName);
                         material.DisableKeyword(BaseStyles.alphaBlendOnName);
                         material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Geometry;
@@ -216,12 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.TransparentCutout);
                         material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
                         material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.Zero);
-                        material.SetInt(BaseStyles.blendOperationName, (int)BlendOp.Add);
-                        material.SetInt(BaseStyles.depthTestName, (int)CompareFunction.LessEqual);
                         material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.On);
-                        material.SetFloat(BaseStyles.depthOffsetFactorName, 0.0f);
-                        material.SetFloat(BaseStyles.depthOffsetUnitsName, 0.0f);
-                        material.SetInt(BaseStyles.colorWriteMaskName, (int)ColorWriteMask.All);
                         material.EnableKeyword(BaseStyles.alphaTestOnName);
                         material.DisableKeyword(BaseStyles.alphaBlendOnName);
                         material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.AlphaTest;
@@ -234,12 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Transparent);
                         material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.SrcAlpha);
                         material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.OneMinusSrcAlpha);
-                        material.SetInt(BaseStyles.blendOperationName, (int)BlendOp.Add);
-                        material.SetInt(BaseStyles.depthTestName, (int)CompareFunction.LessEqual);
                         material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.Off);
-                        material.SetFloat(BaseStyles.depthOffsetFactorName, 0.0f);
-                        material.SetFloat(BaseStyles.depthOffsetUnitsName, 0.0f);
-                        material.SetInt(BaseStyles.colorWriteMaskName, (int)ColorWriteMask.All);
                         material.DisableKeyword(BaseStyles.alphaTestOnName);
                         material.EnableKeyword(BaseStyles.alphaBlendOnName);
                         material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
@@ -252,12 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Transparent);
                         material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
                         material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.OneMinusSrcAlpha);
-                        material.SetInt(BaseStyles.blendOperationName, (int)BlendOp.Add);
-                        material.SetInt(BaseStyles.depthTestName, (int)CompareFunction.LessEqual);
                         material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.Off);
-                        material.SetFloat(BaseStyles.depthOffsetFactorName, 0.0f);
-                        material.SetFloat(BaseStyles.depthOffsetUnitsName, 0.0f);
-                        material.SetInt(BaseStyles.colorWriteMaskName, (int)ColorWriteMask.All);
                         material.DisableKeyword(BaseStyles.alphaTestOnName);
                         material.EnableKeyword(BaseStyles.alphaBlendOnName);
                         material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
@@ -270,12 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Transparent);
                         material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
                         material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.One);
-                        material.SetInt(BaseStyles.blendOperationName, (int)BlendOp.Add);
-                        material.SetInt(BaseStyles.depthTestName, (int)CompareFunction.LessEqual);
                         material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.Off);
-                        material.SetFloat(BaseStyles.depthOffsetFactorName, 0.0f);
-                        material.SetFloat(BaseStyles.depthOffsetUnitsName, 0.0f);
-                        material.SetInt(BaseStyles.colorWriteMaskName, (int)ColorWriteMask.All);
                         material.DisableKeyword(BaseStyles.alphaTestOnName);
                         material.EnableKeyword(BaseStyles.alphaBlendOnName);
                         material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;

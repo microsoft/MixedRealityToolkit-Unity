@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             public static string mainPropertiesTitle = "Main Properties";
             public static string advancedOptionsTitle = "Advanced Options";
+
             public static GUIContent baseColor = new GUIContent("Base Color", "Color of faces");
             public static GUIContent wireColor = new GUIContent("Wire Color", "Color of wires");
             public static GUIContent wireThickness = new GUIContent("Wire Thickness", "Thickness of wires");
@@ -54,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             base.AssignNewShaderToMaterial(material, oldShader, newShader);
    
-            SetShaderFeatureActive(material, null, "_CullMode", cullMode);
+            SetShaderFeatureActive(material, null, BaseStyles.cullModeName, cullMode);
 
             // Setup the rendering mode based on the old shader.
             if (oldShader == null || !oldShader.name.Contains(LegacyShadersPath))
