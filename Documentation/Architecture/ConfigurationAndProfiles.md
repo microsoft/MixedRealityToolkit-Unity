@@ -34,7 +34,7 @@ Profiles also affect (and are no limited to) things like:
 2) What types of pointers (these are discussed in the [Input System](InputSystem.md) overview)
    are associated with various controllers.
 
-Profiles can be tricky to navigate at first because of deeply nested they can be (especially the Input System).
+Profiles can be tricky to navigate at first because of how deeply nested they can be (especially the Input System).
 They can also be confusing because they seem immutable at first (all options are initially greyed out, until
 profiles are cloned - this was done to ensure that updates to the MRTK's default profiles wouldn't blow away
 client code changes during build-to-build updates).
