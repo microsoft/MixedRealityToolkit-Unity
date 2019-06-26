@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 This section shows some of the commonly used code snippets / methods when writing tests for MRTK.
 
-There's two Utility classes that help with setting up MRTK and testing interactions with components in MRTK
+There are two Utility classes that help with setting up MRTK and testing interactions with components in MRTK
 * [TestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.TestUtilities)
 * [PlayModeTestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities) 
 
