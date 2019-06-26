@@ -120,12 +120,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public BoxCollider BoundsOverride
         {
             get { return boundsOverride; }
-            set 
+            set
             {
                 if (boundsOverride != value)
                 {
                     boundsOverride = value;
-                    
+
                     if (boundsOverride == null)
                     {
                         prevBoundsOverride = new Bounds();
@@ -850,6 +850,42 @@ namespace Microsoft.MixedReality.Toolkit.UI
             prevBoundsOverride = curBounds;
             return result;
         }
+
+        private void OnValidate()
+        {
+            CheckBoundingBoxAboveManipulationHandler();
+        }
+
+        private void OnEnable()
+        {
+            CheckBoundingBoxAboveManipulationHandler();
+        }
+
+        private void CheckBoundingBoxAboveManipulationHandler()
+        {
+            int bboxIndex = int.MaxValue;
+            int manipHandlerIndex = int.MaxValue;
+            var behaviours = gameObject.GetComponents<Component>();
+            for (int i = 0; i < behaviours.Length; i++)
+            {
+                if (behaviours[i] is ManipulationHandler && i < manipHandlerIndex)
+                {
+                    manipHandlerIndex = i;
+                }
+                if (behaviours[i] is BoundingBox && i < bboxIndex)
+                {
+                    bboxIndex = i;
+                }
+            }
+            if (manipHandlerIndex < bboxIndex)
+            {
+                Debug.LogError($"You have a Bounding Box on gameObject {gameObject.name} that is below a ManipulationHandler. "
+                    + $"BoundingBox will not work. "
+                    + $"Move your ManipulationHandler below the BoundingBox. "
+                    + $"Bounding box index is {bboxIndex} and manipulation handler index is {manipHandlerIndex}.");
+            }
+        }
+
         #endregion MonoBehaviour Methods
 
         #region Private Methods
