@@ -12,14 +12,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     public class SurfaceMagnetism : Solver
     {
         #region Enums
-        public enum RaycastDirectionType
+
+        /// <summary>
+        /// Raycast direction mode for solver.
+        /// CameraFacing = cast from head in facing direction
+        /// ToObject = from head to object position
+        /// ToLinkedPosition = from head to linked solver position
+        /// </summary>
+        public enum RaycastDirectionMode
         {
             CameraFacing = 0,
             ToObject,
             ToLinkedPosition
         }
 
-        public enum OrientionMode
+        /// <summary>
+        /// Orientation mode for solver
+        /// None = no orienting
+        /// Vertical = Face head, but always oriented up/down
+        /// Full = Aligned to surface normal completely
+        /// Blend = Blend between head & surface orientation
+        /// </summary>
+        public enum OrientationMode
         {
             None = 0,
             Vertical,
@@ -31,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         #region SurfaceMagnetism Parameters
         [SerializeField]
         [Tooltip("Array of LayerMask to execute from highest to lowest priority. First layermask to provide a raycast hit will be used by component")]
-        protected LayerMask[] magneticSurfaces = { UnityEngine.Physics.DefaultRaycastLayers };
+        private LayerMask[] magneticSurfaces = { UnityEngine.Physics.DefaultRaycastLayers };
 
         /// <summary>
         /// Array of LayerMask to execute from highest to lowest priority. First layermask to provide a raycast hit will be used by component
@@ -44,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Max distance for raycast to check for surfaces")]
-        protected float maxDistance = 3.0f;
+        private float maxDistance = 3.0f;
 
         /// <summary>
         /// Max distance for raycast to check for surfaces
@@ -57,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Closest distance to bring object")]
-        protected float closeDistance = 0.5f;
+        private float closeDistance = 0.5f;
 
         /// <summary>
         /// Closest distance to bring object
@@ -70,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Offset from surface along surface normal")]
-        protected float surfaceNormalOffset = 0.5f;
+        private float surfaceNormalOffset = 0.5f;
 
         /// <summary>
         /// Offset from surface along surface normal
@@ -83,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Offset from surface along ray cast direction")]
-        protected float surfaceRayOffset = 0;
+        private float surfaceRayOffset = 0;
 
         /// <summary>
         /// Offset from surface along ray cast direction
@@ -96,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Surface raycast mode for solver")]
-        protected SceneQueryType raycastMode = SceneQueryType.SimpleRaycast;
+        private SceneQueryType raycastMode = SceneQueryType.SimpleRaycast;
 
         /// <summary>
         /// Surface raycast mode for solver
@@ -111,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Number of rays per edge, should be odd. Total casts is n^2")]
-        protected int boxRaysPerEdge = 3;
+        private int boxRaysPerEdge = 3;
 
         /// <summary>
         /// Number of rays per edge, should be odd. Total casts is n^2
@@ -124,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("If true, use orthographic casting for box lines instead of perspective")]
-        protected bool orthographicBoxCast = false;
+        private bool orthographicBoxCast = false;
 
         /// <summary>
         /// If true, use orthographic casting for box lines instead of perspective
@@ -137,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Align to ray cast direction if box cast hits many normals facing in varying directions")]
-        protected float maximumNormalVariance = 0.5f;
+        private float maximumNormalVariance = 0.5f;
 
         /// <summary>
         /// Align to ray cast direction if box cast hits many normals facing in varying directions
@@ -154,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Radius to use for sphere cast")]
-        protected float sphereSize = 1.0f;
+        private float sphereSize = 1.0f;
 
         /// <summary>
         /// Radius to use for sphere cast
@@ -169,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("When doing volume casts, use size override if non-zero instead of object's current scale")]
-        protected float volumeCastSizeOverride = 0;
+        private float volumeCastSizeOverride = 0;
 
         /// <summary>
         /// When doing volume casts, use size override if non-zero instead of object's current scale
@@ -182,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("When doing volume casts, use linked AltScale instead of object's current scale")]
-        protected bool useLinkedAltScaleOverride = false;
+        private bool useLinkedAltScaleOverride = false;
 
         /// <summary>
         /// When doing volume casts, use linked AltScale instead of object's current scale
@@ -195,25 +209,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Raycast direction. Can cast from head in facing direction, or cast from head to object position")]
-        protected RaycastDirectionType raycastDirectionOption = RaycastDirectionType.ToLinkedPosition;
+        private RaycastDirectionMode currentRaycastDirectionMode = RaycastDirectionMode.ToLinkedPosition;
 
         /// <summary>
-        /// Orientation Blend Value where 0.0 = All head and 1.0 = All surface
+        /// Raycast direction. Can cast from head in facing direction, or cast from head to object position
         /// </summary>
-        public RaycastDirectionType RaycastDirectionOption
+        public RaycastDirectionMode CurrentRaycastDirectionMode
         {
-            get { return raycastDirectionOption; }
-            set { raycastDirectionOption = value; }
+            get { return currentRaycastDirectionMode; }
+            set { currentRaycastDirectionMode = value; }
         }
 
         [SerializeField]
         [Tooltip("Orientation mode. None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely")]
-        protected OrientionMode orientationMode = OrientionMode.Vertical;
+        private OrientationMode orientationMode = OrientationMode.Vertical;
 
         /// <summary>
         /// Orientation mode. None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely
         /// </summary>
-        public OrientionMode OrientationMode
+        public OrientationMode CurrentOrientationMode
         {
             get { return orientationMode; }
             set { orientationMode = value; }
@@ -221,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Orientation Blend Value where 0.0 = All head and 1.0 = All surface")]
-        protected float orientationBlend = 0.65f;
+        private float orientationBlend = 0.65f;
 
         /// <summary>
         /// Orientation Blend Value where 0.0 = All head and 1.0 = All surface
@@ -234,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("If enabled, the debug lines will be drawn in the editor")]
-        protected bool debugEnabled = false;
+        private bool debugEnabled = false;
 
         /// <summary>
         /// If enabled, the debug lines will be drawn in the editor
@@ -270,17 +284,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 Vector3 origin = RaycastOrigin;
                 Vector3 endPoint = Vector3.forward;
 
-                switch (RaycastDirectionOption)
+                switch (CurrentRaycastDirectionMode)
                 {
-                    case RaycastDirectionType.CameraFacing:
+                    case RaycastDirectionMode.CameraFacing:
                         endPoint = SolverHandler.TransformTarget.position + SolverHandler.TransformTarget.forward;
                         break;
 
-                    case RaycastDirectionType.ToObject:
+                    case RaycastDirectionMode.ToObject:
                         endPoint = transform.position;
                         break;
 
-                    case RaycastDirectionType.ToLinkedPosition:
+                    case RaycastDirectionMode.ToLinkedPosition:
                         endPoint = SolverHandler.GoalPosition;
                         break;
                 }
@@ -298,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 Vector3 direction = Vector3.forward;
 
-                if (RaycastDirectionOption == RaycastDirectionType.CameraFacing)
+                if (CurrentRaycastDirectionMode == RaycastDirectionMode.CameraFacing)
                 {
                     if (SolverHandler.TransformTarget != null)
                     {
@@ -341,18 +355,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             var surfaceRot = Quaternion.LookRotation(newDirection, Vector3.up);
 
-            switch (OrientationMode)
+            switch (CurrentOrientationMode)
             {
-                case OrientionMode.None:
+                case OrientationMode.None:
                     return SolverHandler.GoalRotation;
 
-                case OrientionMode.Vertical:
+                case OrientationMode.Vertical:
                     return surfaceRot;
 
-                case OrientionMode.Full:
+                case OrientationMode.Full:
                     return Quaternion.LookRotation(-surfaceNormal, Vector3.up);
 
-                case OrientionMode.Blended:
+                case OrientationMode.Blended:
                     return Quaternion.Slerp(SolverHandler.GoalRotation, surfaceRot, orientationBlend);
                 default:
                     return Quaternion.identity;
@@ -465,7 +479,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             Vector3 scale = ScaleOverride > 0 ? transform.lossyScale.normalized * ScaleOverride : transform.lossyScale;
 
-            Quaternion orientation = orientationMode == OrientionMode.None ?
+            Quaternion orientation = orientationMode == OrientationMode.None ?
                 Quaternion.LookRotation(rayStep.Direction, Vector3.up) :
                 CalculateMagnetismOrientation(rayStep.Direction, Vector3.up);
 
@@ -490,7 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 float distance;
 
                 // Place an unconstrained plane down the ray. Don't use vertical constrain.
-                FindPlacementPlane(rayStep.Origin, rayStep.Direction, positions, normals, hits, boxCollider.size.x, maximumNormalVariance, false, orientationMode == OrientionMode.None, out plane, out distance);
+                FindPlacementPlane(rayStep.Origin, rayStep.Direction, positions, normals, hits, boxCollider.size.x, maximumNormalVariance, false, orientationMode == OrientationMode.None, out plane, out distance);
 
                 // If placing on a horizontal surface, need to adjust the calculated distance by half the app height
                 float verticalCorrectionOffset = 0;

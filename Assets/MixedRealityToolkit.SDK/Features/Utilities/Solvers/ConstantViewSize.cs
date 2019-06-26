@@ -138,7 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         #endregion
 
-        private const float ScalePower = 1f;
         private float fovScalar = 1f;
         private float objectSize = 1f;
 
@@ -163,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 // Calculate scale based on distance from view.  Do not interpolate so we can appear at a constant size if possible.  Borrowed from greybox.
                 Vector3 targetPosition = SolverHandler.TransformTarget.position;
                 float distance = Mathf.Clamp(Vector3.Distance(transform.position, targetPosition), minDistance, maxDistance);
-                float scale = Mathf.Clamp(fovScalar * Mathf.Pow(distance, ScalePower), minScale, maxScale);
+                float scale = Mathf.Clamp(fovScalar * distance, minScale, maxScale);
                 GoalScale = Vector3.one * scale;
 
                 // Save some state information for external use
