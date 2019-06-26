@@ -1702,12 +1702,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // Compute the local scale that produces the desired world space dimensions
                 Vector3 linkDimensions = Vector3.Scale(GetLinkDimensions(), invRootScale);
-                Vector3 cornerDimensions = Vector3.Scale(cornerVisualScaleToMatchHandleSize * Vector3.one, invRootScale);
                 Vector3 ballDimenions = Vector3.Scale(rotationHandleDiameter * Vector3.one, invRootScale);
 
+                Vector3 cornerDimensions = Vector3.Scale(cornerVisualScaleToMatchHandleSize * Vector3.one, invRootScale);
                 for (int i = 0; i < corners.Count; i++)
                 {
-                    corners[i].localScale = cornerDimensions;
+                    if (scaleHandlePrefab == null)
+                    {
+                        corners[i].localScale = cornerDimensions;
+                    }
+                    else
+                    {
+                        // If we are modifying a corner that has a prefab, it has a different structure
+                        // Modify the visuals root instead.
+                        corners[i].GetChild(0).GetChild(0).localScale = cornerDimensions;
+                    }
                 }
 
                 for (int i = 0; i < balls.Count; i++)

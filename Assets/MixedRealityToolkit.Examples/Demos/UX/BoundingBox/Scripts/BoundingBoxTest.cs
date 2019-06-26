@@ -136,8 +136,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 bbox.BoxPadding = Vector3.zero;
                 yield return WaitForSpeechCommand();
 
-                SetStatus("Set scale handle widget prefab");
+                SetStatus("Set scale handle size 0.3");
                 bbox.ScaleHandleSize = 0.3f;
+                yield return WaitForSpeechCommand();
+
+                SetStatus("Set scale handle widget prefab");
                 Debug.Assert(scaleWidget != null);
                 bbox.ScaleHandlePrefab = scaleWidget;
                 yield return WaitForSpeechCommand();
