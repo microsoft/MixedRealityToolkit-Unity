@@ -32,7 +32,7 @@ The input system has some of its own terminology that are worth defining:
 
     Note that a controller can be associated with many different pointers at the same time – in order to ensure that
     this doesn’t devolve into chaos, there is a pointer mediator which controls which pointers are allowed to be
-    active (for example, this will disable far interaction pointers when near interaction is detected).
+    active (for example, the mediator will disable far interaction pointers when near interaction is detected).
 
     Pointers can also belong to different categories like near interaction (useful for dealing with objects that are
     close to the user) or far interaction (useful for dealing with objects that may not be close to the user).
