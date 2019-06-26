@@ -6,108 +6,153 @@
 // Unity doesn't include the the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
-using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
 using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    class MyPointerHandler : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityPointerHandler
+    // Tests to verify that pointer events are being raised correctly
+    public class PointerEventsTests
     {
-        public struct State
+
+        // Helper script used to keep track of the number of pointer events raised
+        private class PointerHandler : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityPointerHandler
         {
-            public int numBeforeFocusChange;
-            public int numFocusChanged;
-            public int numFocusEnter;
-            public int numFocusExit;
-            public int numPointerDown;
-            public int numPointerUp;
-            public int numPointerClicked;
-            public int numPointerDragged;
-        }
-
-        public State state;
-        int numFocusing;
-
-        void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData)
-        {
-            Assert.AreNotSame(eventData.OldFocusedObject, eventData.NewFocusedObject);
-            Assert.AreEqual(state.numFocusChanged, state.numBeforeFocusChange);
-
-            Debug.Log("OnBeforeFocusChange");
-
-            state.numBeforeFocusChange++;
-
-            if (eventData.OldFocusedObject == gameObject)
+            public class State
             {
-                numFocusing--;
+                public int numBeforeFocusChange;
+                public int numFocusChanged;
+                public int numFocusEnter;
+                public int numFocusExit;
+                public int numPointerDown;
+                public int numPointerUp;
+                public int numPointerClicked;
+                public int numPointerDragged;
+
+                public void AssertEqual(State expected)
+                {
+                    Assert.AreEqual(expected.numBeforeFocusChange, numBeforeFocusChange);
+                    Assert.AreEqual(expected.numFocusChanged, numFocusChanged);
+                    Assert.AreEqual(expected.numFocusEnter, numFocusEnter);
+                    Assert.AreEqual(expected.numFocusExit, numFocusExit);
+                    Assert.AreEqual(expected.numPointerDown, numPointerDown);
+                    Assert.AreEqual(expected.numPointerUp, numPointerUp);
+                    Assert.AreEqual(expected.numPointerClicked, numPointerClicked);
+                    Assert.AreEqual(expected.numPointerDragged, numPointerDragged);
+                }
             }
-            else if (eventData.NewFocusedObject == gameObject)
+
+            public State state = new State();
+            private int numFocusing;
+
+            void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData)
             {
-                numFocusing++;
+                Assert.AreNotSame(eventData.OldFocusedObject, eventData.NewFocusedObject);
+                Assert.AreEqual(state.numFocusChanged, state.numBeforeFocusChange);
+
+                state.numBeforeFocusChange++;
+
+                if (eventData.OldFocusedObject == gameObject)
+                {
+                    numFocusing--;
+                }
+                else if (eventData.NewFocusedObject == gameObject)
+                {
+                    numFocusing++;
+                }
+            }
+
+            void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
+            {
+                Assert.AreNotSame(eventData.OldFocusedObject, eventData.NewFocusedObject);
+                Assert.AreEqual(state.numBeforeFocusChange, state.numFocusChanged + 1);
+
+                state.numFocusChanged++;
+            }
+
+            void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
+            {
+                Assert.AreEqual(1, numFocusing);
+
+                state.numFocusEnter++;
+            }
+
+            void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
+            {
+                Assert.AreEqual(0, numFocusing);
+
+                state.numFocusExit++;
+            }
+
+            void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
+            {
+                state.numPointerClicked++;
+            }
+
+            void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
+            {
+                state.numPointerDown++;
+            }
+
+            void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData)
+            {
+                state.numPointerDragged++;
+            }
+
+            void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
+            {
+                state.numPointerUp++;
             }
         }
 
-        void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
+        // Utility class to use a simulated hand
+        private class Hand
         {
-            Assert.AreNotSame(eventData.OldFocusedObject, eventData.NewFocusedObject);
-            Assert.AreEqual(state.numBeforeFocusChange, state.numFocusChanged + 1);
+            private Handedness handedness;
+            private Vector3 position;
+            private ArticulatedHandPose.GestureId gestureId = ArticulatedHandPose.GestureId.Open;
+            private InputSimulationService simulationService;
 
-            state.numFocusChanged++;
+            public Hand(Handedness handedness)
+            {
+                this.handedness = handedness;
+                simulationService = PlayModeTestUtilities.GetInputSimulationService();
+            }
+
+            public IEnumerator Show(Vector3 position)
+            {
+                this.position = position;
+                return PlayModeTestUtilities.ShowHand(handedness, simulationService, position);
+            }
+
+            public IEnumerator Hide()
+            {
+                return PlayModeTestUtilities.HideHand(handedness, simulationService);
+            }
+
+            public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30)
+            {
+                Vector3 oldPosition = position;
+                position = newPosition;
+                return PlayModeTestUtilities.MoveHandFromTo(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService);
+            }
+
+            public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId)
+            {
+                gestureId = newGestureId;
+                return PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService);
+            }
         }
 
-        void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
-        {
-            Assert.AreEqual(1, numFocusing);
-
-            state.numFocusEnter++;
-        }
-
-        void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
-        {
-            Assert.AreEqual(0, numFocusing);
-
-            state.numFocusExit++;
-        }
-
-        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
-        {
-            state.numPointerClicked++;
-        }
-
-        void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
-        {
-            state.numPointerDown++;
-        }
-
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData)
-        {
-            state.numPointerDragged++;
-        }
-
-        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
-        {
-            state.numPointerUp++;
-        }
-    }
-
-    public class PointerEventTests
-    {
-        private InputSimulationService inputSimulation;
-        private int numSteps = 30;
-
-        private MyPointerHandler SetupScene()
+        // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
+        private PointerHandler SetupScene()
         {
             TestUtilities.InitializeMixedRealityToolkit(true);
-
-            inputSimulation = PlayModeTestUtilities.GetInputSimulationService();
 
             var testContent = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/PointerEventsTests.prefab");
             Assert.IsNotNull(testContent);
@@ -116,117 +161,153 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var collider = testContent.GetComponentInChildren<Collider>();
             Assert.IsNotNull(collider);
 
-            return collider.gameObject.AddComponent<MyPointerHandler>();
+            return collider.gameObject.AddComponent<PointerHandler>();
         }
 
-        class Hand
-        {
-            public int numSteps = 30;
-            private Handedness handedness;
-            private Vector3 position;
-            private ArticulatedHandPose.GestureId gestureId = ArticulatedHandPose.GestureId.Open;
-            private InputSimulationService simulationService;
-
-            public Hand(Handedness handedness, Vector3 position)
-            {
-                this.handedness = handedness;
-                this.position = position;
-                simulationService = PlayModeTestUtilities.GetInputSimulationService();
-            }
-
-            public void Show()
-            {
-                PlayModeTestUtilities.ShowHand(handedness, simulationService);
-            }
-
-            public void Hide()
-            {
-                PlayModeTestUtilities.ShowHand(handedness, simulationService);
-            }
-
-            public IEnumerator Move(Vector3 newPosition)
-            {
-                Vector3 oldPosition = position;
-                position = newPosition;
-                return PlayModeTestUtilities.MoveHandFromTo(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService);
-            }
-
-            public void SetGesture(ArticulatedHandPose.GestureId newGestureId)
-            {
-                gestureId = newGestureId;
-                PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService);
-            }
-        }
-
-        private IEnumerator MoveHand(Handedness handedness, Vector3 from, Vector3 to, ArticulatedHandPose.GestureId gestureId)
-        {
-            return PlayModeTestUtilities.MoveHandFromTo(from, to, numSteps, gestureId, handedness, inputSimulation);
-        }
-
-        static IEnumerator Count(int count)
-        {
-            for (int i = 0; i < count; ++i)
-            {
-                Debug.Log($"Count {i}");
-                yield return null;
-            }
-        }
-
-        static IEnumerator Enumerate(int count)
-        {
-            for (int i = 0; i < count; ++i)
-            {
-                Debug.Log($"Enumerate {i}");
-                yield return Count(i);
-            }
-        }
-
+        // Tests that the right pointer events are raised when using a single pointer to interact with a collider
         [UnityTest]
-        public IEnumerator Test()
+        public IEnumerator TestOnePointer()
         {
             var handler = SetupScene();
+            var rightHand = new Hand(Handedness.Right);
 
-            var a = Enumerate(3);
-            while (a.MoveNext())
-            {
-                //Debug.Log($"Iteration {a.Current}");
-            }
+            // Show hand far enough from the test collider to not give it focus
+            Vector3 noFocusPos = new Vector3(0.05f, 0, 0.5f);
+            yield return rightHand.Show(noFocusPos);
 
-            Vector3 p1 = new Vector3(0.05f, 0, 0.5f);
-            Vector3 p2 = new Vector3(0.05f, 0, 1.5f);
+            // Make sure no events have been raised
+            var expected = new PointerHandler.State();
+            handler.state.AssertEqual(expected);
 
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulation);
-            yield return MoveHand(Handedness.Right, p1, p2, ArticulatedHandPose.GestureId.Open);
+            // Move hand closer to the collider so it gives it focus
+            Vector3 focusPos = new Vector3(0.05f, 0, 1.5f);
+            yield return rightHand.MoveTo(focusPos);
 
-            var expected = new MyPointerHandler.State();
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
             expected.numFocusEnter++;
-            Assert.AreEqual(expected, handler.state);
+            handler.state.AssertEqual(expected);
 
-            yield return MoveHand(Handedness.Right, p2, p2, ArticulatedHandPose.GestureId.Pinch);
+            // Trigger pinch
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
             expected.numPointerDown++;
-            expected.numPointerDragged += numSteps;
-            Assert.AreEqual(expected, handler.state);
+            expected.numPointerDragged++;
+            handler.state.AssertEqual(expected);
 
-            yield return MoveHand(Handedness.Right, p2, p2, ArticulatedHandPose.GestureId.Open);
+            // Maintain pinch for a number of frames
+            int numStepsPinching = 30;
+            yield return rightHand.MoveTo(focusPos, numStepsPinching);
+
+            expected.numPointerDragged += numStepsPinching;
+            handler.state.AssertEqual(expected);
+
+            // Release pinch
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 
             expected.numPointerUp++;
             expected.numPointerClicked++;
-            Assert.AreEqual(expected, handler.state);
+            handler.state.AssertEqual(expected);
 
-            yield return MoveHand(Handedness.Right, p1, p1, ArticulatedHandPose.GestureId.Open);
+            // Move back to no focus
+            yield return rightHand.MoveTo(noFocusPos);
 
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
             expected.numFocusExit++;
-            Assert.AreEqual(expected, handler.state);
+            handler.state.AssertEqual(expected);
 
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulation);
+            yield return rightHand.Hide();
+        }
+
+        // Tests that the right pointer events are raised when using two pointers to interact with a collider
+        [UnityTest]
+        public IEnumerator TestTwoPointers()
+        {
+            var handler = SetupScene();
+
+            // Show right hand far enough from the test collider to not give it focus
+            var rightHand = new Hand(Handedness.Right);
+            Vector3 rightNoFocusPos = new Vector3(0.05f, 0, 0.5f);
+            yield return rightHand.Show(rightNoFocusPos);
+
+            // Make sure no events have been raised
+            var expected = new PointerHandler.State();
+            handler.state.AssertEqual(expected);
+
+            // Show right hand far enough from the test collider to not give it focus
+            var leftHand = new Hand(Handedness.Left);
+            Vector3 leftNoFocusPos = new Vector3(-0.05f, 0, 0.5f);
+            yield return leftHand.Show(leftNoFocusPos);
+
+            // Make sure no events have been raised
+            handler.state.AssertEqual(expected);
+
+            // Move left hand to give focus
+            Vector3 leftFocusPos = new Vector3(-0.05f, 0, 1.5f);
+            yield return leftHand.MoveTo(leftFocusPos);
+
+            expected.numBeforeFocusChange++;
+            expected.numFocusChanged++;
+            expected.numFocusEnter++;
+            handler.state.AssertEqual(expected);
+
+            // Move right hand to give focus
+            Vector3 rightFocusPos = new Vector3(0.05f, 0, 1.5f);
+            yield return rightHand.MoveTo(rightFocusPos);
+
+            expected.numBeforeFocusChange++;
+            expected.numFocusChanged++;
+            handler.state.AssertEqual(expected);
+
+            // Pinch left
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            expected.numPointerDown++;
+            expected.numPointerDragged++;
+            handler.state.AssertEqual(expected);
+
+            // Pinch right
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            expected.numPointerDown++;
+            expected.numPointerDragged += 2; // One for each pointer down
+            handler.state.AssertEqual(expected);
+
+            // Open left
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+
+            expected.numPointerUp++;
+            expected.numPointerClicked++;
+            expected.numPointerDragged++; // Right pointer is still down
+            handler.state.AssertEqual(expected);
+
+            // Open right
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+
+            expected.numPointerUp++;
+            expected.numPointerClicked++;
+            handler.state.AssertEqual(expected);
+
+            // Move left out of focus
+            yield return leftHand.MoveTo(leftNoFocusPos);
+
+            expected.numBeforeFocusChange++;
+            expected.numFocusChanged++;
+            handler.state.AssertEqual(expected);
+
+            // Move right out of focus
+            yield return rightHand.MoveTo(rightNoFocusPos);
+
+            expected.numBeforeFocusChange++;
+            expected.numFocusChanged++;
+            expected.numFocusExit++;
+            handler.state.AssertEqual(expected);
+
+            yield return leftHand.Hide();
+            yield return rightHand.Hide();
         }
     }
 }
-
 
 #endif
