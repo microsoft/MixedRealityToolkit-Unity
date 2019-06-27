@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Writing tests for your code | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Writing tests for your code | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.43.1.0">
+    
+    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="writing-tests-for-your-code">Writing tests for your code</h1>
+
+<p>To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes.</p>
+<p>Preferrably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.</p>
+<p>Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when doing changes in code.</p>
+<p>MRTK uses the <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> which uses a Unity integration of <a href="https://nunit.org/">NUnit</a>.</p>
+<p>This guide will give a starting point on how to add tests to MRTK. It will not explain the <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> and <a href="https://nunit.org/">NUnit</a> which can be looked up in the links provided.</p>
+<p>There's two types of tests that can be added for new code</p>
+<ul>
+<li>Edit mode tests</li>
+<li>Play mode tests</li>
+</ul>
+<h2 id="play-mode-tests">Play mode tests</h2>
+<p>Play mode tests will be executed in Unity's play mode and should be added into MixedRealityToolkit.Tests &gt; PlaymodeTests.
+To create a new test the following template can be used:</p>
+<pre><code class="lang-csharp">// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+#if !WINDOWS_UWP
+// When the .NET scripting backend is enabled and C# projects are built
+// Unity doesn't include the the required assemblies (i.e. the ones below).
+// Given that the .NET backend is deprecated by Unity at this point it's we have
+// to work around this on our end.
+using NUnit.Framework;
+using UnityEngine.TestTools;
+using System.Collections;
+
+namespace Microsoft.MixedReality.Toolkit.Tests
+{
+    public class ExampleTest : IPrebuildSetup
+    {
+
+        // this method is called once before we enter play mode and execute any of the tests
+        // do any kind of setup here that can't be done in playmode
+        public void Setup()
+        {
+            // eg installing unity packages is only possible in edit mode 
+            // so if a test requires TextMeshPro we will need to check for the package before entering play mode
+            PlayModeTestUtilities.EnsureTextMeshProEssentials();
+        }
+
+        // do common setup for each of your tests here - this will be called for each individual test after entering playmode
+        [Setup]
+        public void Init()
+        {
+            // in most play mode test cases you would want to at least create an MRTK gameobject using the default profile
+            TestUtilities.InitializeMixedRealityToolkit(true);
+        }
+
+
+        // destroy commonly initialzed objects here - this will be called after each of your tests has finished
+        [TearDown]
+        public void Shutdown()
+        {
+            // call shutdown if you've created an mrtk gameobject in your test
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
+
+        #region Tests
+
+        [UnityTest]
+        /// the name of this method will be used as test name in the unity test runner
+        public IEnumerator TestMyFeature()
+        {
+            // write your test here
+            yield return null;
+        }
+
+        #endregion
+    }
+}
+
+#endif
+
+</code></pre>
+<h2 id="edit-mode-tests">Edit mode tests</h2>
+<p>Edit mode tests are executed in Unity's edit mode and can be added in MixedRealityToolkit.Tests &gt; EditModeTests.
+To create a new test the following template can be used:</p>
+<pre><code class="lang-csharp">// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using NUnit.Framework;
+
+namespace Microsoft.MixedReality.Toolkit.Tests
+{
+    class EditModeExampleTest
+    {
+        [Test]
+        /// the name of this method will be used as test name in the unity test runner
+        public void TestEditModeExampleFeature()
+        {
+            
+        }
+    }
+}
+
+</code></pre>
+<h2 id="mrtk-utility-methods">MRTK Utility methods</h2>
+<p>This section shows some of the commonly used code snippets / methods when writing tests for MRTK.</p>
+<p>There are two Utility classes that help with setting up MRTK and testing interactions with components in MRTK</p>
+<ul>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html">TestUtilities</a></li>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.html">PlayModeTestUtilities</a></li>
+</ul>
+<p>TestUtilities provide the following methods to set up your MRTK scene and gameobjects:</p>
+<pre><code class="lang-csharp">/// creates the mrtk gameobject and sets the default profile if passed param is true
+TestUtilities.InitializeMixedRealityToolkit()
+
+/// creates an empty scene prior to adding the mrtk gameobject to it
+TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
+
+/// sets the initial playspace transform and camera position
+TestUtilities.InitializePlayspace();
+
+/// destroys previously created mrtk gameobject and playspace
+TestUtilities.ShutdownMixedRealityToolkit();
+</code></pre>
+<p>Please refer to the API docs of <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html">TestUtilities</a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.html">PlayModeTestUtilities</a> for further methods of these util classes as they're extended on a regular basis while new tests get added to MRTK.</p>
+<h2 id="executing-tests-locally">Executing tests locally</h2>
+<p>The <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> can be found under Window &gt; General &gt; Test Runner and will show all available MRTK play and edit mode tests.</p>
+<h2 id="executing-tests-on-github--ci">Executing tests on github / CI</h2>
+<p>MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR <code>/azp run mrtk_pr</code> if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR.</p>
+<p>Only after all of the tests passed successfully the PR can be merged into mrtk_development.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="DevDocGuide.html">Documentation portal generation guide</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Contributing/UnitTests.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -82,7 +82,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="developer-portal-generation-guide">Developer portal generation guide</h1>
 
-<p>MRTK uses <a href="https://dotnet.github.io/docfx/index.html">docfx</a> to generate html documentation out of triple slash comments in code and .md files in the MRTK repository. Docfx documentation generation is automatically triggered by CI (soon) on completed PRs in the mrtk_development branch.
+<p>MRTK uses <a href="https://dotnet.github.io/docfx/index.html">docfx</a> to generate html documentation out of triple slash comments in code and .md files in the MRTK repository. Docfx documentation generation is automatically triggered by CI on completed PRs in the mrtk_development branch.
 The current state of the developer documentation can be found on the <a href="https://microsoft.github.io/MixedRealityToolkit-Unity/">MRTK github.io page</a></p>
 <p>Docfx supports DFM Docfx Flavored Markdown which includes GFM Github Flavored Markdown. The full documentation and feature list can be found <a href="https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html">here</a></p>
 <p>Docfx is not only converting but also checking all used local links in the documentation. If a path can't be resolved it won't be converted into it's html equivalent. Therefor it's important to only use relative paths when referring to other local files.</p>
@@ -103,6 +103,8 @@ The current state of the developer documentation can be found on the <a href="ht
 </ul>
 <p>Note that on executing the docfx command on the json build file docfx will show any broken links in the documentation as warning.
 Please make sure whenever you perform changes on any of the documentation files or API to update all links pointing to these articles or code.</p>
+<h2 id="verifying-docfx-on-github">Verifying docfx on github</h2>
+<p>Whenever a PR includes a change that might affect documentation CI has to be executed to run a check on docfx for broken links. This can be triggered by posting the command <code>/azp run mrtk_docs</code> into the PR if the user has sufficient rights to do so. The command will trigger a CI job which will add a docs build to the checks section of the PR.</p>
 <h2 id="using-crefs-and-hrefs-in--documented-code">Using crefs and hrefs in /// documented code</h2>
 <p>Docfx supports crefs in /// documented code. It will translate those references to links pointing to the generated api documentation or to external documentation websites.
 External xref services for resolving links to external libraries/apis can be added to the docfx.json build settings file in the property <em>xrefService</em>.</p>
