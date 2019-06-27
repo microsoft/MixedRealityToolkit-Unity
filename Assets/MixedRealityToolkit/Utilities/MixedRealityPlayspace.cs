@@ -201,51 +201,81 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void FindOrCreatePlayspace()
         {
-            // Make sure a camera exists before searching for its parent - don't create a camera unless necessary
-            if (CameraCache.MainExists)
+            if (mixedRealityPlayspace == null || !mixedRealityPlayspace.isActiveAndEnabled)
             {
-                if (CameraCache.Main.transform.parent == null)
+                // We're in need of a playspace - check to see if we can use the existing camera parent
+                // Make sure a camera exists before searching for its parent - don't create a camera unless necessary
+                if (CameraCache.MainExists)
                 {
-                    // Create a new mixed reality playspace
-                    mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
-                    // Is there an active camera system?
+                    // Is there an active camera system? If so, let it handle parenting
                     if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityCameraSystem>(out cameraService))
-                    {   // If the camera system is enabled, let it handle parenting the camera.
+                    {    // If not, we can use the main camera's parent as a playspace, if it exists
+                        if (CameraCache.Main.transform.parent != null)
+                        {
+                            // Since the scene is set up with a different camera parent, its likely
+                            // that there's an expectation that that parent is going to be used for
+                            // something else. We print a warning to call out the fact that we're
+                            // co-opting this object for use with teleporting and such, since that
+                            // might cause conflicts with the parent's intended purpose.
+                            Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {NameEnabled}. The existing parent will be renamed and used instead.");
+                            // If we rename it, we make it clearer that why it's being teleported around at runtime.
+                            mixedRealityPlayspace = CameraCache.Main.transform.parent.EnsureComponent<MixedRealityPlayspace>();
+                            mixedRealityPlayspace.name = NameEnabled;
+                        }
+                        else
+                        {
+                            // If the camera parent IS null, create a new playspace and parent the camera
+                            mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
+                            CameraCache.Main.transform.SetParent(mixedRealityPlayspace.transform);
+                        }
+                    }
+                }
+                else
+                {
+                    #if UNITY_EDITOR
+                    // If no camera exists, search for a playspace in loaded objects
+                    if (!SearchForAndEnableExistingPlayspace(Application.isPlaying ? RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes() : EditorSceneUtils.GetRootGameObjectsInLoadedScenes()))
+                    {   // If none is found, create one
+                        mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
+                    }
+                    #else
+                    // If no camera exists, search for a playspace in loaded objects
+                    if (!SearchForAndEnableExistingPlayspace(RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes()))
+                    {   // If none is found, create one
+                        mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
+                    }
+                    #endif
+                }
+            }
+            else
+            {
+                // We're not in need of a playspace - it exists and is enabled
+                // We just need to check whether we should parent the camera
+                // Make sure a camera exists before searching for its parent - don't create a camera unless necessary
+                if (CameraCache.MainExists)
+                {
+                    // Is there an active camera system? If so, let it handle parenting
+                    if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityCameraSystem>(out cameraService))
+                    {   // If not, we can set the main camera's parent, since it's a default camera
                         CameraCache.Main.transform.SetParent(mixedRealityPlayspace.transform);
                     }
                 }
                 else
                 {
-                    if (CameraCache.Main.transform.parent.name != NameEnabled)
-                    {
-                        // Since the scene is set up with a different camera parent, its likely
-                        // that there's an expectation that that parent is going to be used for
-                        // something else. We print a warning to call out the fact that we're
-                        // co-opting this object for use with teleporting and such, since that
-                        // might cause conflicts with the parent's intended purpose.
-                        Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {NameEnabled}. The existing parent will be renamed and used instead.");
-                        // If we rename it, we make it clearer that why it's being teleported around at runtime.
-                        CameraCache.Main.transform.parent.name = NameEnabled;
+                    #if UNITY_EDITOR
+                    // If no camera exists, search for a playspace in loaded objects
+                    if (!SearchForAndEnableExistingPlayspace(Application.isPlaying ? RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes() : EditorSceneUtils.GetRootGameObjectsInLoadedScenes()))
+                    {   // If none is found, create one
+                        mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
                     }
-
-                    mixedRealityPlayspace = CameraCache.Main.transform.parent.EnsureComponent<MixedRealityPlayspace>();
+                    #else
+                    // If no camera exists, search for a playspace in loaded objects
+                    if (!SearchForAndEnableExistingPlayspace(RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes()))
+                    {   // If none is found, create one
+                        mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
+                    }
+                    #endif
                 }
-            }
-            else if (mixedRealityPlayspace == null)
-            {
-#if UNITY_EDITOR
-                // If no camera exists, search for a playspace in loaded objects
-                if (!SearchForAndEnableExistingPlayspace(Application.isPlaying ? RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes() : EditorSceneUtils.GetRootGameObjectsInLoadedScenes()))
-                {   // If none is found, create one
-                    mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
-                }
-#else
-                  // If no camera exists, search for a playspace in loaded objects
-                if (!SearchForAndEnableExistingPlayspace(RuntimeSceneUtils.GetRootGameObjectsInLoadedScenes()))
-                {   // If none is found, create one
-                    mixedRealityPlayspace = new GameObject(NameEnabled).AddComponent<MixedRealityPlayspace>();
-                }
-#endif
             }
 
             // It's very important that the Playspace align with the tracked space,
@@ -261,6 +291,7 @@ namespace Microsoft.MixedReality.Toolkit
         private void OnEnable()
         {
             name = NameEnabled;
+            gameObject.SetActive(IsActivePlayspace(this));
         }
 
         private void OnDisable()
