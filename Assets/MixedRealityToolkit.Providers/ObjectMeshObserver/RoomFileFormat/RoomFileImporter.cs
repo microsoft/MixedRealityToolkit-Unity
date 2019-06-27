@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
-using UnityEngine.Experimental.XR;
 
 namespace Miicrosoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
 {
@@ -24,26 +23,27 @@ namespace Miicrosoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
                 meshes = RoomFileSerializer.Deserialize(reader);
             }
 
-            GameObject model = new GameObject(name, new System.Type[] { typeof(MeshRenderer), typeof(MeshFilter) });
+            GameObject model = new GameObject(name);
             context.AddObjectToAsset(name, model);
 
-            Mesh mesh = new Mesh();
-            mesh.name = name;
-            context.AddObjectToAsset(name, mesh);
-
-            context.SetMainObject(model);
-
-            CombineInstance[] meshesToCombine = new CombineInstance[meshes.Count];
-            for (int i = 0; i < meshesToCombine.Length; i++)
+            int i = 0;
+            foreach (Mesh mesh in meshes)
             {
-                meshesToCombine[i].mesh = meshes[i];
+                string meshName = $"{name}_{i}";
+                GameObject meshObject = new GameObject(meshName, new System.Type[] { typeof(MeshRenderer), typeof(MeshFilter) });
+
+                mesh.name = meshName;
+                meshObject.GetComponent<MeshFilter>().sharedMesh = mesh;
+
+                //context.AddObjectToAsset(meshName, meshObject);
+                context.AddObjectToAsset(meshName, mesh);
+
+                //               meshObjects.Add(meshObject);
+
+                meshObject.transform.parent = model.transform;
+
+                i++;
             }
-
-            mesh.CombineMeshes(meshesToCombine, true, false, false);
-
-           MeshFilter filter = model.GetComponent<MeshFilter>();
-            filter.sharedMesh = mesh;
-            // todo: default material?
         }
 
         /// <summary>
@@ -67,6 +67,5 @@ namespace Miicrosoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
 
             return new BinaryReader(stream);
         }
-
     }
 }

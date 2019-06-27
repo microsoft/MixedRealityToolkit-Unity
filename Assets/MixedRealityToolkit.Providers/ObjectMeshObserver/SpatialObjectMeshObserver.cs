@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using System.Runtime.Remoting.Services;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -79,19 +78,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         // todo: create 0 or more SpatialAwarenessMeshObjects from the model
         private void LoadObject()
         {
-            // Loading starts with a fresh mesh collection.
-            observedMeshes.Clear();
+            //// Loading starts with a fresh mesh collection.
+            //observedMeshes.Clear();
 
-            // todo error handling
-            if (spatialMeshObject == null) { return; }
+            //// todo error handling
+            //if (spatialMeshObject == null) { return; }
 
-            MeshFilter filter = spatialMeshObject.GetComponentInChildren<MeshFilter>();
-            if (filter == null) { return; }
+            //MeshFilter filter = spatialMeshObject.GetComponentInChildren<MeshFilter>();
+            //if (filter == null) { return; }
 
-            Mesh mesh = filter.sharedMesh;
-            if (mesh == null) { return; }
+            //Mesh mesh = filter.sharedMesh;
+            //if (mesh == null) { return; }
 
-            int subMeshCount = mesh.subMeshCount;
+            //int subMeshCount = mesh.subMeshCount;
         }
 
         #region IMixedRealityCapabilityCheck Implementation
@@ -198,6 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             sendObservations = true;
         }
 
+        private int baseMeshId = 7000000;
         /// <inheritdoc />
         public override void Resume()
         {
@@ -205,23 +205,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
             IsRunning = true;
 
-            // todo
-            //int i = 1000;
-            //foreach (Mesh mesh in fileContents)
-            //{
-            //    SpatialAwarenessMeshObject meshObject = SpatialAwarenessMeshObject.Create(
-            //        mesh,
-            //        MeshPhysicsLayer,
-            //        $"Room File Mesh {i}",
-            //        i,
-            //        ObservedObjectParent);
-            //    ApplyMeshMaterial(meshObject);
+            // Get the collection of MeshFilters
+            MeshFilter[] meshFilters= spatialMeshObject.GetComponentsInChildren<MeshFilter>();
+            for (int i = 0; i < meshFilters.Length; i++)
+            {
+                SpatialAwarenessMeshObject meshObject = SpatialAwarenessMeshObject.Create(
+                    meshFilters[i].sharedMesh,
+                    MeshPhysicsLayer,
+                    $"Spatial Object Mesh {baseMeshId}",
+                    baseMeshId,
+                    ObservedObjectParent);
+                ApplyMeshMaterial(meshObject);
 
-            //    meshes.Add(i, meshObject);
+                meshes.Add(baseMeshId, meshObject);
 
-            //    SpatialAwarenessSystem?.RaiseMeshAdded(this, i, meshObject);
-            //    i++;
-            //}
+                baseMeshId++;
+            }
 
             sendObservations = false;
         }
