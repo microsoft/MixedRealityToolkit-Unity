@@ -110,51 +110,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        // Utility class to use a simulated hand
-        private class Hand
-        {
-            private Handedness handedness;
-            private Vector3 position;
-            private ArticulatedHandPose.GestureId gestureId = ArticulatedHandPose.GestureId.Open;
-            private InputSimulationService simulationService;
-
-            public Hand(Handedness handedness)
-            {
-                this.handedness = handedness;
-                simulationService = PlayModeTestUtilities.GetInputSimulationService();
-            }
-
-            public IEnumerator Show(Vector3 position)
-            {
-                this.position = position;
-                return PlayModeTestUtilities.ShowHand(handedness, simulationService, position);
-            }
-
-            public IEnumerator Hide()
-            {
-                return PlayModeTestUtilities.HideHand(handedness, simulationService);
-            }
-
-            public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30)
-            {
-                Vector3 oldPosition = position;
-                position = newPosition;
-                return PlayModeTestUtilities.MoveHandFromTo(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService);
-            }
-
-            public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId)
-            {
-                gestureId = newGestureId;
-                return PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService);
-            }
-        }
+        private const string testContentPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/PointerEventsTests.prefab";
 
         // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
         private PointerHandler SetupScene()
         {
             TestUtilities.InitializeMixedRealityToolkit(true);
 
-            var testContent = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/PointerEventsTests.prefab");
+            var testContent = AssetDatabase.LoadAssetAtPath<GameObject>(testContentPath);
             Assert.IsNotNull(testContent);
 
             testContent = Object.Instantiate(testContent);
@@ -169,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestOnePointer()
         {
             var handler = SetupScene();
-            var rightHand = new Hand(Handedness.Right);
+            var rightHand = new TestHand(Handedness.Right);
 
             // Show hand far enough from the test collider to not give it focus
             Vector3 noFocusPos = new Vector3(0.05f, 0, 0.5f);
@@ -227,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var handler = SetupScene();
 
             // Show right hand far enough from the test collider to not give it focus
-            var rightHand = new Hand(Handedness.Right);
+            var rightHand = new TestHand(Handedness.Right);
             Vector3 rightNoFocusPos = new Vector3(0.05f, 0, 0.5f);
             yield return rightHand.Show(rightNoFocusPos);
 
@@ -236,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Show left hand far enough from the test collider to not give it focus
-            var leftHand = new Hand(Handedness.Left);
+            var leftHand = new TestHand(Handedness.Left);
             Vector3 leftNoFocusPos = new Vector3(-0.05f, 0, 0.5f);
             yield return leftHand.Show(leftNoFocusPos);
 
