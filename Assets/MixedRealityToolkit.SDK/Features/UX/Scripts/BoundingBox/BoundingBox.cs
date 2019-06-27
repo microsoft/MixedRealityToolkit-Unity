@@ -627,7 +627,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // List of corner root transforms. Use these to position corners
         private List<Transform> corners;
         // List of corner visuals. Use these to scale the corners to appropriate handle size
-        // Sometimes the actua visual transform for the corner (in case when you use prefabs)
+        // Sometimes the actual visual transform for the corner (in case when you use prefabs)
         // are below corner root transform.
         private List<Transform> cornerVisuals;
         private List<Transform> balls;
