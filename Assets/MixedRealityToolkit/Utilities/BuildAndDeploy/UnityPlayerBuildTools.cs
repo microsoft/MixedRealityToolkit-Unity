@@ -262,6 +262,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     case "-release":
                         buildInfo.Configuration = arguments[i].Substring(1).ToLower();
                         break;
+                    case "-logDirectory":
+                        buildInfo.LogDirectory = arguments[++i];
+                        break;
                 }
             }
         }
