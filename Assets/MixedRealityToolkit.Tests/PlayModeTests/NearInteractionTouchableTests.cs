@@ -399,13 +399,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             using (var catcher = new UnityToggleEventCatcher(toggle))
             {
-                // Touch started and completed when entering and exiting
+                // Turn on the toggle after exiting
                 yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.IsFalse(catcher.Value);
                 Assert.AreEqual(0, catcher.Changed);
                 yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.IsTrue(catcher.Value);
                 Assert.AreEqual(1, catcher.Changed);
+
+                // Turn off the toggle after exiting
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.IsTrue(catcher.Value);
+                Assert.AreEqual(1, catcher.Changed);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.IsFalse(catcher.Value);
+                Assert.AreEqual(2, catcher.Changed);
             }
 
             UnityEngine.Object.Destroy(canvas.gameObject);
