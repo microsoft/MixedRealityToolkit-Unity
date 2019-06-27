@@ -34,12 +34,7 @@ namespace Miicrosoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
 
                 mesh.name = meshName;
                 meshObject.GetComponent<MeshFilter>().sharedMesh = mesh;
-
-                //context.AddObjectToAsset(meshName, meshObject);
                 context.AddObjectToAsset(meshName, mesh);
-
-                //               meshObjects.Add(meshObject);
-
                 meshObject.transform.parent = model.transform;
 
                 i++;

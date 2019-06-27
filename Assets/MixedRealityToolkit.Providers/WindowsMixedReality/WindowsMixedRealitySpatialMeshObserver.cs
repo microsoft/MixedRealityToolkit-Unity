@@ -465,7 +465,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
             if (spareMeshObject == null)
             {
-                newMesh = SpatialAwarenessMeshObject.Create(null, MeshPhysicsLayer, meshName, surfaceId.handle);
+                newMesh = SpatialAwarenessMeshObject.Create(
+                    null, 
+                    MeshPhysicsLayer, 
+                    meshName, 
+                    surfaceId.handle,
+                    ObservedObjectParent);
 
                 // The WorldAnchor component places its object where the anchor is in the same space as the camera. 
                 // But since the camera is repositioned by the MixedRealityPlayspace's transform, the meshes' transforms

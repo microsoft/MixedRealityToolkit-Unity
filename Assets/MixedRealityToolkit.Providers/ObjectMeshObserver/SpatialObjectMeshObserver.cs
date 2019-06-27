@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         "Spatial Object Mesh Observer",
         "ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
         "MixedRealityToolkit.Providers")]
-    // [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class SpatialObjectMeshObserver : 
         BaseSpatialObserver, 
         IMixedRealitySpatialAwarenessMeshObserver, 
@@ -75,24 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             VisibleMaterial = profile.VisibleMaterial;
         }
 
-        // todo: create 0 or more SpatialAwarenessMeshObjects from the model
-        private void LoadObject()
-        {
-            //// Loading starts with a fresh mesh collection.
-            //observedMeshes.Clear();
-
-            //// todo error handling
-            //if (spatialMeshObject == null) { return; }
-
-            //MeshFilter filter = spatialMeshObject.GetComponentInChildren<MeshFilter>();
-            //if (filter == null) { return; }
-
-            //Mesh mesh = filter.sharedMesh;
-            //if (mesh == null) { return; }
-
-            //int subMeshCount = mesh.subMeshCount;
-        }
-
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
@@ -113,7 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         public override void Initialize()
         {
             ReadProfile();
-            LoadObject();
 
             if (StartupBehavior == AutoStartBehavior.AutoStart)
             {
@@ -138,12 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         }
 
         /// <inheritdoc />
-        public override void Update()
-        {
-            // todo UpdateObserver();
-        }
-
-        /// <inheritdoc />
         public override void Disable()
         {
             wasRunning = IsRunning;
@@ -165,9 +140,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             }
 
             ClearObservations();
-            // todo
-            //fileContents.Clear();
-            //fileContents = null;
+            if (spatialMeshObject != null)
+            {
+                Object.Destroy(spatialMeshObject);
+                spatialMeshObject = null;
+            }
         }
 
         #endregion IMixedRealityDataProvider implementation
@@ -197,7 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             sendObservations = true;
         }
 
-        private int baseMeshId = 7000000;
+        private int currentMeshId = 0;
+
         /// <inheritdoc />
         public override void Resume()
         {
@@ -206,22 +184,24 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             IsRunning = true;
 
             // Get the collection of MeshFilters
-            MeshFilter[] meshFilters= spatialMeshObject.GetComponentsInChildren<MeshFilter>();
-            for (int i = 0; i < meshFilters.Length; i++)
+            if (spatialMeshObject != null)
             {
-                SpatialAwarenessMeshObject meshObject = SpatialAwarenessMeshObject.Create(
-                    meshFilters[i].sharedMesh,
-                    MeshPhysicsLayer,
-                    $"Spatial Object Mesh {baseMeshId}",
-                    baseMeshId,
-                    ObservedObjectParent);
-                ApplyMeshMaterial(meshObject);
+                MeshFilter[] meshFilters = spatialMeshObject.GetComponentsInChildren<MeshFilter>();
+                for (int i = 0; i < meshFilters.Length; i++)
+                {
+                    SpatialAwarenessMeshObject meshObject = SpatialAwarenessMeshObject.Create(
+                        meshFilters[i].sharedMesh,
+                        MeshPhysicsLayer,
+                        $"Spatial Object Mesh {currentMeshId}",
+                        currentMeshId,
+                        ObservedObjectParent);
+                    ApplyMeshMaterial(meshObject);
 
-                meshes.Add(baseMeshId, meshObject);
+                    meshes.Add(currentMeshId, meshObject);
 
-                baseMeshId++;
+                    currentMeshId++;
+                }
             }
-
             sendObservations = false;
         }
 
@@ -309,8 +289,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public Material VisibleMaterial { get; set; } = null;
 
-        // todo
-        protected void ApplyMeshMaterial(SpatialAwarenessMeshObject meshObject)
+        /// <summary>
+        /// Applies the appropriate material, based on the current of the <see cref="SpatialAwarenessMeshDisplayOptions"/> property. 
+        /// </summary>
+        /// <param name="meshObject">The <see cref="SpatialAwarenessMeshObject"/> for which the material is to be applied.</param>
+        private void ApplyMeshMaterial(SpatialAwarenessMeshObject meshObject)
         {
             bool enable = (DisplayOption != SpatialAwarenessMeshDisplayOptions.None);
 
@@ -324,8 +307,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             meshObject.Renderer.enabled = enable;
         }
 
-        // todo
-        protected void ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions option)
+        /// <summary>
+        /// Updates the material for each observed mesh,.
+        /// </summary>
+        /// <param name="option">
+        /// The <see cref="SpatialAwarenessMeshDisplayOptions"/> value to be used to determine the appropriate material.
+        /// </param>
+        private void ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions option)
         {
             bool enable = (option != SpatialAwarenessMeshDisplayOptions.None);
 
