@@ -17,7 +17,6 @@ using Microsoft.MixedReality.Toolkit.Diagnostics;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
 
 #if UNITY_EDITOR
 using TMPro;
@@ -36,45 +35,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         public static void Setup()
         {
-            if (EditorApplication.isPlaying)
-            {
-                bool sceneExists = false;
-                for (int i = 0; i < SceneManager.sceneCount; i++)
-                {
-                    Scene playModeTestScene = SceneManager.GetSceneAt(i);
-                    if (playModeTestScene.name == playModeTestSceneName && playModeTestScene.isLoaded)
-                    {
-                        SceneManager.SetActiveScene(playModeTestScene);
-                        sceneExists = true;
-                    }
-                }
+            Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
 
-                if (!sceneExists)
+            bool sceneExists = false;
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene playModeTestScene = SceneManager.GetSceneAt(i);
+                if (playModeTestScene.name == playModeTestSceneName && playModeTestScene.isLoaded)
                 {
-                    Scene playModeTestScene = SceneManager.CreateScene(playModeTestSceneName);
                     SceneManager.SetActiveScene(playModeTestScene);
+                    sceneExists = true;
                 }
             }
-            else
-            {
-                // At the very start of testing, playmode may not be active.
-                // So we'll use the editor scene manager instead of the scene manaager.
-                bool sceneExists = false;
-                for (int i = 0; i < EditorSceneManager.sceneCount; i++)
-                {
-                    Scene playModeTestScene = EditorSceneManager.GetSceneAt(i);
-                    if (playModeTestScene.name == playModeTestSceneName && playModeTestScene.isLoaded)
-                    {
-                        EditorSceneManager.SetActiveScene(playModeTestScene);
-                        sceneExists = true;
-                    }
-                }
 
-                if (!sceneExists)
-                {   // In this case, create a fresh scene. This scene's name will be empty. We'll check for it on teardown.
-                    Scene playModeTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
-                    EditorSceneManager.SetActiveScene(playModeTestScene);
-                }
+            if (!sceneExists)
+            {
+                Scene playModeTestScene = SceneManager.CreateScene(playModeTestSceneName);
+                SceneManager.SetActiveScene(playModeTestScene);
             }
 
             // Create an MRTK instance and set up playspace

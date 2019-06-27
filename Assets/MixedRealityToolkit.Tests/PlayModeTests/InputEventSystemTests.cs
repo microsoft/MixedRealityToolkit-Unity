@@ -180,9 +180,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestPointerEventCallsForGlobalHandlers()
         {
             // We need Gaze Cursor in this test to use it as source to emit events.
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
             IMixedRealityInputSystem inputSystem = null;
             MixedRealityServiceRegistry.TryGetService(out inputSystem);
 
@@ -246,9 +243,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestSpeechEventCallsForGlobalHandlers()
         {
             // We need Gaze Cursor in this test to use it as source to emit events.
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
             IMixedRealityInputSystem inputSystem = null;
             MixedRealityServiceRegistry.TryGetService(out inputSystem);
 

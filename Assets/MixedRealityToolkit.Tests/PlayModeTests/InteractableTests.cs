@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class InteractableTests
     {
-        const float buttonPressAnimationDelay = 0.35f;
+        const float buttonPressAnimationDelay = 0.75f;
         const float buttonReleaseAnimationDelay = 0.75f;
         const string defaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
 
@@ -108,10 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(wasClicked, "Interactable was not clicked.");
             Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
-
-            Object.Destroy(interactableObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
         }
 
         /// <summary>
@@ -171,10 +167,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(wasClicked, "Interactable was not clicked.");
             Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
-
-            Object.Destroy(interactableObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
         }
 
         /// <summary>
@@ -225,10 +217,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(wasTranslated, "Transform target object was not translated by action.");
             Assert.True(wasClicked, "Interactable was not clicked.");
-
-            Object.Destroy(interactableObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
         }
 
         /// <summary>
@@ -294,10 +282,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Remove as global listener
             MixedRealityToolkit.InputSystem.PopModalInputHandler();
-
-            Object.Destroy(interactableObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
         }
 
         /// <summary>
@@ -368,10 +352,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(wasClicked, "Interactable was not clicked.");
             Assert.AreEqual(targetStartPosition, translateTargetObject.transform.localPosition, "Translate target object was not translated back by action.");
-
-            Object.Destroy(interactableObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
         }
 
         /// <summary>
@@ -425,10 +405,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(wasClicked, "Interactable was not clicked.");
             Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
-
-            Object.Destroy(interactableObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
         }
 
         /// <summary>
@@ -485,7 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Instantiates the default interactable buttom.
+        /// Instantiates the default interactable button.
         /// </summary>
         /// <param name="position"></param>
         /// <param name="rotation"></param>
