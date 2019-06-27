@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <param name="cancellationToken"></param>
         /// <param name="buildOnMultipleCores"></param>
         /// <returns>True, if the appx build was successful.</returns>
-        public static async Task<bool> BuildAppxAsync(UwpBuildInfo buildInfo, CancellationToken cancellationToken = defaul)
+        public static async Task<bool> BuildAppxAsync(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default)
         {
             if (!EditorAssemblyReloadManager.LockReloadAssemblies)
             {
@@ -88,7 +88,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Building the solution requires first restoring NuGet packages - when built through
             // Visual Studio, VS does this automatically - when building via msbuild like we're doing here,
             // we have to do that step manually.
-            int exitCode = await RunAsync(msBuildPath, $"\"{solutionProjectPath}\" /t:restore", false, cancellationToken);
+            int exitCode = await RunAsync(
+                msBuildPath, 
+                $"\"{solutionProjectPath}\" /t:restore {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "nugetRestore.log")}", 
+                !Application.isBatchMode,
+                cancellationToken);
             if (exitCode != 0)
             {
                 IsBuilding = false;
@@ -97,9 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             // Now that NuGet packages have been restored, we can run the actual build process.
             string args =
-                    $"{(buildInfo.Multicore ? "/m /nr:false" : "")} \"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} /verbosity:n";
-            exitCode = await RunAsync(msBuildPath,
-                args, false, cancellationToken
+                    $"{(buildInfo.Multicore ? "/m /nr:false" : "")} \"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}";
+            exitCode = await RunAsync(
+                msBuildPath,
+                args,
+                !Application.isBatchMode,
+                cancellationToken
                 );
             AssetDatabase.SaveAssets();
 
@@ -176,10 +183,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Visual Studio, VS does this automatically - when building via msbuild like we're doing here,
             // we have to do that step manually.
             Debug.Log("restore nuget packages through msbuild");
-            int exitCode = await Run(msBuildPath,
-                $"\"{solutionProjectPath}\" /t:restore {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "nugetRestore.log")}",
-                !Application.isBatchMode,
-                cancellationToken);
+            int exitCode = RunSimple(
+                msBuildPath,
+                $"\"{solutionProjectPath}\" /t:restore {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "nugetRestore.log")}"
+                );
             if (exitCode != 0)
             {
                 IsBuilding = false;
@@ -192,9 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             string args =
                     $"{(buildInfo.Multicore ? "/m /nr:false" : "")} \"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform}  {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}";
             exitCode = RunSimple(msBuildPath,
-                args,
-                !Application.isBatchMode,
-                cancellationToken);
+                args);
             AssetDatabase.SaveAssets();
 
             IsBuilding = false;
