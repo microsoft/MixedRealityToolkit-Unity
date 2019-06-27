@@ -1,6 +1,6 @@
 # Developer portal generation guide
 
-MRTK uses [docfx](https://dotnet.github.io/docfx/index.html) to generate html documentation out of triple slash comments in code and .md files in the MRTK repository. Docfx documentation generation is automatically triggered by CI (soon) on completed PRs in the mrtk_development branch.
+MRTK uses [docfx](https://dotnet.github.io/docfx/index.html) to generate html documentation out of triple slash comments in code and .md files in the MRTK repository. Docfx documentation generation is automatically triggered by CI on completed PRs in the mrtk_development branch.
 The current state of the developer documentation can be found on the [MRTK github.io page](https://microsoft.github.io/MixedRealityToolkit-Unity/)
 
 Docfx supports DFM Docfx Flavored Markdown which includes GFM Github Flavored Markdown. The full documentation and feature list can be found [here](https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html)
@@ -24,6 +24,10 @@ The docfx build files in the MRTK repo can be used to create a local version of 
 
 Note that on executing the docfx command on the json build file docfx will show any broken links in the documentation as warning. 
 Please make sure whenever you perform changes on any of the documentation files or API to update all links pointing to these articles or code.
+
+## Verifying docfx on github
+
+Whenever a PR includes a change that might affect documentation CI has to be executed to run a check on docfx for broken links. This can be triggered by posting the command `/azp run mrtk_docs` into the PR if the user has sufficient rights to do so. The command will trigger a CI job which will add a docs build to the checks section of the PR.
 
 ## Using crefs and hrefs in /// documented code
 Docfx supports crefs in /// documented code. It will translate those references to links pointing to the generated api documentation or to external documentation websites.
