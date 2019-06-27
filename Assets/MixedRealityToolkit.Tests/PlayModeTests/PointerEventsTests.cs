@@ -47,7 +47,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     Assert.AreEqual(expected.numPointerDown, numPointerDown);
                     Assert.AreEqual(expected.numPointerUp, numPointerUp);
                     Assert.AreEqual(expected.numPointerClicked, numPointerClicked);
-                    Assert.AreEqual(expected.numPointerDragged, numPointerDragged);
+
+                    // Note that numPointerDragged is not asserted equal, because depending on
+                    // how many frames elapse during the test, the number of times something is
+                    // dragged can vary.
                 }
             }
 
@@ -60,8 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.AreEqual(state.numFocusChanged, state.numBeforeFocusChange);
 
                 // Uncomment to help debugging issues
-                //var controllerPointer = eventData.Pointer as BaseControllerPointer;
-                //Debug.Log($"Pointer '{eventData.Pointer}' Game Object '{controllerPointer?.gameObject}' Old '{eventData.OldFocusedObject}' New '{eventData.NewFocusedObject}'");
+                // var controllerPointer = eventData.Pointer as BaseControllerPointer;
+                // Debug.Log($"Pointer '{eventData.Pointer}' Game Object '{controllerPointer?.gameObject}' Old '{eventData.OldFocusedObject}' New '{eventData.NewFocusedObject}'");
 
                 state.numBeforeFocusChange++;
 
@@ -118,7 +121,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        private const string testContentPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/PointerEventsTests.prefab";
         private PointerHandler handler;
 
         // Keeping this low by default so the test runs fast. Increase it to be able to see hand movements in the editor.
@@ -129,12 +131,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void SetUp()
         {
             TestUtilities.InitializeMixedRealityToolkit(true);
+            TestUtilities.PlayspaceToOriginLookingForward();
 
-            var testContent = AssetDatabase.LoadAssetAtPath<GameObject>(testContentPath);
-            Assert.IsNotNull(testContent);
+            // Target frame rate is set to 50 to match the physics
+            // tick rate. The rest of the test code needs to wait on a frame to have
+            // passed, and this is a rough way of ensuring that each WaitForFixedUpdate()
+            // will roughly wait for frame to also pass.
+            Application.targetFrameRate = 50;
 
-            testContent = Object.Instantiate(testContent);
-            var collider = testContent.GetComponentInChildren<Collider>();
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.localPosition = new Vector3(0, 0, 2);
+            cube.transform.localScale = new Vector3(.2f, .2f, .2f);
+
+            //testContent = Object.Instantiate(testContent);
+            var collider = cube.GetComponentInChildren<Collider>();
             Assert.IsNotNull(collider);
 
             handler = collider.gameObject.AddComponent<PointerHandler>();
@@ -183,16 +193,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Trigger pinch
+            int previousNumPointerDragged = handler.state.numPointerDragged;
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
             expected.numPointerDown++;
-            expected.numPointerDragged++;
             handler.state.AssertEqual(expected);
+            Assert.Greater(handler.state.numPointerDragged, previousNumPointerDragged);
 
             // Maintain pinch for a number of frames
+            previousNumPointerDragged = handler.state.numPointerDragged;
             yield return rightHand.MoveTo(rightFocusPos, numFramesPerMove);
 
-            expected.numPointerDragged += numFramesPerMove;
+            Assert.Greater(handler.state.numPointerDragged, previousNumPointerDragged);
             handler.state.AssertEqual(expected);
 
             // Release pinch
@@ -240,18 +252,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Pinch left
+            previousNumPointerDragged = handler.state.numPointerDragged;
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
             expected.numPointerDown++;
-            expected.numPointerDragged++;
             handler.state.AssertEqual(expected);
+            Assert.Greater(handler.state.numPointerDragged, previousNumPointerDragged);
 
             // Pinch right
+            previousNumPointerDragged = handler.state.numPointerDragged;
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
             expected.numPointerDown++;
-            expected.numPointerDragged += 2; // One for each pointer down
             handler.state.AssertEqual(expected);
+            // Should be at least two greater, because there are two pointers down.
+            // This is technically difficult to reason over because there can be arbitrary
+            // but this is the best effort aside from tracking per-pointer drag counts.
+            Assert.Greater(handler.state.numPointerDragged, previousNumPointerDragged + 1);
 
             // Open left
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
@@ -260,6 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             expected.numPointerClicked++;
             expected.numPointerDragged++; // Right pointer is still down
             handler.state.AssertEqual(expected);
+            Assert.Greater(handler.state.numPointerDragged, previousNumPointerDragged);
 
             // Open right
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);

@@ -34,25 +34,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator Show(Vector3 position)
         {
             this.position = position;
-            return PlayModeTestUtilities.ShowHand(handedness, simulationService, gestureId, position);
+            yield return PlayModeTestUtilities.ShowHand(handedness, simulationService, gestureId, position);
+            yield return new WaitForFixedUpdate();
         }
 
         public IEnumerator Hide()
         {
-            return PlayModeTestUtilities.HideHand(handedness, simulationService);
+            yield return PlayModeTestUtilities.HideHand(handedness, simulationService);
+            yield return new WaitForFixedUpdate();
         }
 
         public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30)
         {
             Vector3 oldPosition = position;
             position = newPosition;
-            return PlayModeTestUtilities.MoveHandFromTo(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService);
+            yield return new WaitForFixedUpdate();
         }
 
         public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId)
         {
             gestureId = newGestureId;
-            return PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService);
+            yield return new WaitForFixedUpdate();
         }
     }
 }
