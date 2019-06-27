@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class InteractableTests
     {
-        const float buttonPressAnimationDelay = 0.25f;
+        const float buttonPressAnimationDelay = 0.35f;
         const float buttonReleaseAnimationDelay = 0.75f;
         const string defaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
 

@@ -143,8 +143,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         internal static IEnumerator SetupMrtkWithoutGlobalInputHandlers()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                Debug.LogError("MixedRealityToolkit must be initialized before it can be configured.");
+                yield break;
+            }
 
             IMixedRealityInputSystem inputSystem = null;
             MixedRealityServiceRegistry.TryGetService(out inputSystem);
