@@ -406,16 +406,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("Scale override for custom Corner Handlers: Size of its collider")]
-        private float cornerHandleColliderScale = 2.0f;
+        private float scaleHandleColliderSize = 2.0f;
         public float HandleColliderScale
         {
             get
             {
-                return cornerHandleColliderScale;
+                return scaleHandleColliderSize;
             }
             set
             {
-                cornerHandleColliderScale = value;
+                scaleHandleColliderSize = value;
             }
         }
         [SerializeField]
@@ -436,15 +436,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("ballRadius")]
         [Tooltip("Radius of the handle geometry of rotation handles")]
-        private float rotationHandleDiameter = 0.035f;
-        public float RotationHandleDiameter
+        private float rotationHandleSize = 0.035f;
+        public float RotationHandleSize
         {
-            get { return rotationHandleDiameter; }
+            get { return rotationHandleSize; }
             set
             {
-                if (rotationHandleDiameter != value)
+                if (rotationHandleSize != value)
                 {
-                    rotationHandleDiameter = value;
+                    rotationHandleSize = value;
                     CreateRig();
                 }
             }
@@ -452,16 +452,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField] 
         [Tooltip("Radius of the SphereCollider used in detecting grabs on rotation handles")] 
-         private float rotationHandleColliderDiameter = 1.0f; 
+        private float rotationHandleColliderSize = 1.0f; 
  
         public float RotationHandleColliderDiameter 
         { 
-            get { return rotationHandleColliderDiameter; } 
+            get { return rotationHandleColliderSize; } 
             set 
             { 
-                if (rotationHandleColliderDiameter != value) 
+                if (rotationHandleColliderSize != value) 
                 { 
-                    rotationHandleColliderDiameter = value; 
+                    rotationHandleColliderSize = value; 
                     CreateRig(); 
                 } 
             } 
@@ -1179,7 +1179,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     corner.transform.localPosition = boundsCorners[i];
 
                     BoxCollider collider = corner.AddComponent<BoxCollider>();
-                    collider.size = (scaleHandleSize * cornerHandleColliderScale) * Vector3.one;
+                    collider.size = (scaleHandleSize * scaleHandleColliderSize) * Vector3.one;
 
                     float localScale = corner.transform.localScale.x;
                     (collider as BoxCollider).size = new Vector3(0.02f / localScale, 0.02f / localScale, 0.02f / localScale);
@@ -1274,7 +1274,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     GameObject ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     ball.name = "midpoint_" + i.ToString();
 
-                    ball.transform.localScale = new Vector3(rotationHandleDiameter, rotationHandleDiameter, rotationHandleDiameter);
+                    ball.transform.localScale = new Vector3(rotationHandleSize, rotationHandleSize, rotationHandleSize);
                     ball.transform.position = edgeCenters[i];
                     ball.transform.parent = rigRoot.transform;
 
@@ -1284,7 +1284,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
 
                     SphereCollider collider = ball.GetComponent<SphereCollider>();
-                    collider.radius *= 1.0f;
+                    collider.radius *= rotationHandleColliderSize;
                     balls.Add(ball.transform);
                     ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
                     ballRenderers.Add(ball.GetComponent<Renderer>());
@@ -1319,9 +1319,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Sphere)
                     {
                         SphereCollider sphereCollider = ball.AddComponent<SphereCollider>();
-                        sphereCollider.radius = 0.5f * rotationHandleDiameter;
+                        sphereCollider.radius = 0.5f * rotationHandleSize;
                         float localScale = ball.transform.localScale.x;
-                        //localScale = localScale == 0.0f ? 0.0001f : localScale;
                         sphereCollider.radius = 0.04f / localScale;
                     }
                     else if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
@@ -1329,7 +1328,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Debug.Assert(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box);
                         BoxCollider collider = ball.AddComponent<BoxCollider>();
                         float localScale = ball.transform.localScale.x;
-                        //localScale = localScale == 0.0f ? 0.0001f : localScale;
                         (collider as BoxCollider).size = new Vector3(0.02f / localScale, 0.02f / localScale, 0.02f / localScale);
                     }
 
@@ -2013,11 +2011,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (collider && collider is BoxCollider)
             {
                 newLocalScale = Mathf.Abs(newLocalScale);
+                newLocalScale /= scaleHandleColliderSize != 0.0f ? scaleHandleColliderSize : 1.0f;
                 (collider as BoxCollider).size = newLocalScale > 0.0f ? new Vector3(0.02f / newLocalScale, 0.02f / newLocalScale, 0.02f / newLocalScale) : Vector3.zero;
             }
             else if (collider && collider is SphereCollider)
             {
                 newLocalScale = Mathf.Abs(newLocalScale);
+                newLocalScale /= rotationHandleColliderSize != 0.0f ? rotationHandleColliderSize : 1.0f;
                 (collider as SphereCollider).radius = newLocalScale > 0.0f ? 0.02f / newLocalScale : 0.0f;
             }
         }
@@ -2055,7 +2055,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                         for (int i = 0; i < balls.Count; ++i)
                         {
-                            ballsProximate[i] = ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], inputPoints, rotationHandleDiameter);
+                            ballsProximate[i] = ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], inputPoints, rotationHandleSize);
                         }
                     }
                 }
@@ -2077,7 +2077,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             ballRenderers[i].material = handleMaterial;
                         }
-                        balls[i].transform.localScale = (scaleHandleSize * farScale * rotationHandleDiameter) * Vector3.one;
+                        balls[i].transform.localScale = (scaleHandleSize * farScale * rotationHandleSize) * Vector3.one;
                         ballsProximate[i] = HandleProximityState.FullsizeNoProximity;
                     }
                 }
