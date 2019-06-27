@@ -19,7 +19,7 @@ There's two types of tests that can be added for new code
 ## Play mode tests
 
 Play mode tests will be executed in Unity's play mode and should be added into MixedRealityToolkit.Tests > PlaymodeTests. 
-To create a new test the following template can be used: (todo: Setup() and teardown should be moved into a base class of mrtk tests)
+To create a new test the following template with the can be used:
 
 ``` csharp
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -39,17 +39,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class ExampleTest : IPrebuildSetup
     {
 
-        // only add this if your test is using a textmeshpro component
+        // this method is called once before we enter play mode and execute any of the tests
+        // do any kind of setup here that can't be done in playmode
         public void Setup()
         {
+            // eg installing unity packages is only possible in edit mode 
+            // so if a test requires TextMeshPro we will need to check for the package before entering play mode
             PlayModeTestUtilities.EnsureTextMeshProEssentials();
         }
 
+        // do common setup for each of your tests here - this will be called after entering playmode
+        [Setup]
+        public void InitMrtk()
+        {
+            // in most play mode test cases you would want to at least create an MRTK gameobject using the default profile
+            TestUtilities.InitializeMixedRealityToolkit(true);
+        }
 
-        // add a teardown if you created an mrtk gameobject in your test
+
+        // destroy commonly initialzed objects here - this will be called after each of your tests has finished
         [TearDown]
         public void ShutdownMrtk()
         {
+            // call shutdown if you've created an mrtk gameobject in your test
             TestUtilities.ShutdownMixedRealityToolkit();
         }
 
@@ -60,9 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// the name of this method will be used as test name in the unity test runner
         public IEnumerator TestMyFeature()
         {
-            // in most play mode test cases you would want to create an MRTK gameobject using the default profile
-            TestUtilities.InitializeMixedRealityToolkit(true);
-
             // write your test here
             yield return null;
         }
@@ -121,7 +130,7 @@ TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 /// sets the initial playspace transform and camera position
 TestUtilities.InitializePlayspace();
 
-/// destroying previously created mrtk gameobject and playspace
+/// destroys previously created mrtk gameobject and playspace
 TestUtilities.ShutdownMixedRealityToolkit();
 ```
 
@@ -133,7 +142,7 @@ The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunne
 
 
 ## Executing tests on github / CI
-MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' area of the PR. 
+MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR. 
 
 Only after all of the tests passed successfully the PR can be merged into mrtk_development. 
 
