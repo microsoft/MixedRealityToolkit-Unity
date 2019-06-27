@@ -389,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("cornerRadius")]
         [Tooltip("Size of the cube collidable used in scale handles")]
-        private float scaleHandleSize = 0.2f;
+        private float scaleHandleSize = 0.08f;
 
         public float ScaleHandleSize
         {
@@ -435,9 +435,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         [SerializeField]
         [FormerlySerializedAs("ballRadius")]
-        [Tooltip("Radius of the sphere collidable used in rotation handles")]
-        private float rotationHandleDiameter = 0.2f;
-
+        [Tooltip("Radius of the handle geometry of rotation handles")]
+        private float rotationHandleDiameter = 0.035f;
         public float RotationHandleDiameter
         {
             get { return rotationHandleDiameter; }
@@ -451,23 +450,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [SerializeField]
-        [FormerlySerializedAs("ballRadius")]
-        [Tooltip("Radius of the sphere collidable used in rotation handles")]
-        private float rotationHandleColliderDiameter = 1.0f;
+        [SerializeField] 
+        [Tooltip("Radius of the SphereCollider used in detecting grabs on rotation handles")] 
+         private float rotationHandleColliderDiameter = 1.0f; 
+ 
+        public float RotationHandleColliderDiameter 
+        { 
+            get { return rotationHandleColliderDiameter; } 
+            set 
+            { 
+                if (rotationHandleColliderDiameter != value) 
+                { 
+                    rotationHandleColliderDiameter = value; 
+                    CreateRig(); 
+                } 
+            } 
+        } 
 
-        public float RotationHandleColliderDiameter
-        {
-            get { return rotationHandleColliderDiameter; }
-            set
-            {
-                if (rotationHandleColliderDiameter != value)
-                {
-                    rotationHandleColliderDiameter = value;
-                    CreateRig();
-                }
-            }
-        }
 
         [SerializeField]
         [Tooltip("Only used if rotationHandlePrefab is specified. Determines the type of collider that will surround the rotation handle prefab.")]
@@ -593,15 +592,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
         [SerializeField]
-        [Tooltip("By a factor of how much do the handles grow when a hand gets close")]
+        [Tooltip("How far away should the hand be from a handle before it starts scaling the handle?")]
         [Range(0.005f, 0.1f)]
         private float handleMediumProximity = 0.005f;
         [SerializeField]
-        [Tooltip("How far away should the hand be before it starts scaling a handle")]
+        [Tooltip("How far away should the hand be from a handle before it activates the close-proximity scaling effect?")]
         [Range(0.001f, 0.01f)]
         private float handleCloseProximity = 0.0015f;
         [SerializeField]
-        private float farScale = 0.01f;
+        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range")]
+        private float farScale = 0.0f;//0.01f;
         public float FarScale
         {
             get
@@ -614,6 +614,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
         [SerializeField]
+        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Medium Proximity range")]
         private float mediumScale = 2.0f;
         public float MediumScale
         {
@@ -627,6 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
         [SerializeField]
+        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Close Proximity range")]
         private float closeScale = 3.0f;
         public float CloseScale
         {
@@ -640,12 +642,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
         [SerializeField]
+        [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves from Medium proximity to Far proximity?")]
         [Range(0.0f, 1.0f)]
         private float farGrowRate = 0.3f;
         [SerializeField]
+        [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves to a distance that activates Medium Scale ?")]
         [Range(0.0f, 1.0f)]
         private float mediumGrowRate = 0.2f;
         [SerializeField]
+        [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves to a distance that activates Close Scale ?")]
         [Range(0.0f, 1.0f)]
         private float closeGrowRate = 0.3f;
         [SerializeField]
@@ -803,6 +808,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // The size, position of boundsOverride object in the previous frame
         // Used to determine if boundsOverride size has changed.
         private Bounds prevBoundsOverride = new Bounds();
+        private Vector3 lastBounds;
 
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
@@ -922,13 +928,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion
 
         #region MonoBehaviour Methods
+
         private void Start()
         {
             //override Shell Parity settings if no prefab is specified for corner handles;
             if (scaleHandlePrefab == null)
             {
-                closeScale = 1.3f;
-                mediumScale = 1.2f;
+                closeScale = 1.8f;
+                mediumScale = 1.5f;
                 farScale = 1.0f;
             }
             farScale = Mathf.Max(farScale, 0.01f);
@@ -1172,12 +1179,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     corner.transform.localPosition = boundsCorners[i];
 
                     BoxCollider collider = corner.AddComponent<BoxCollider>();
-                    
                     collider.size = (scaleHandleSize * cornerHandleColliderScale) * Vector3.one;
 
                     float localScale = corner.transform.localScale.x;
-                    // When localScale is zero there is a divide error that caused code to be skipped over when the exception threw.
-                    localScale = Mathf.Max(0.0001f, localScale);
                     (collider as BoxCollider).size = new Vector3(0.02f / localScale, 0.02f / localScale, 0.02f / localScale);
 
                     // In order for the corner to be grabbed using near interaction we need
@@ -1217,7 +1221,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     corners.Add(corner.transform);
                     cornersProximate.Add(HandleProximityState.FullsizeNoProximity);
-                    cornerRenderers.Add(cornerVisuals.GetComponent<Renderer>());
+                    Renderer renderer = cornerVisuals.GetComponent<Renderer>();
+                    if (renderer != null)
+                    {
+                        cornerRenderers.Add(renderer);
+                    }
                 }
             }
         }
@@ -1276,7 +1284,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
 
                     SphereCollider collider = ball.GetComponent<SphereCollider>();
-                    collider.radius *= rotationHandleColliderDiameter;
+                    collider.radius *= 1.0f;
                     balls.Add(ball.transform);
                     ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
                     ballRenderers.Add(ball.GetComponent<Renderer>());
@@ -1313,17 +1321,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         SphereCollider sphereCollider = ball.AddComponent<SphereCollider>();
                         sphereCollider.radius = 0.5f * rotationHandleDiameter;
                         float localScale = ball.transform.localScale.x;
-                        localScale = Mathf.Max(0.0001f, localScale);
+                        //localScale = localScale == 0.0f ? 0.0001f : localScale;
                         sphereCollider.radius = 0.04f / localScale;
                     }
-                    else if( rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
+                    else if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
                     {
                         Debug.Assert(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box);
                         BoxCollider collider = ball.AddComponent<BoxCollider>();
                         float localScale = ball.transform.localScale.x;
-                        localScale = Mathf.Max(0.01f, localScale);
-                        float finalScale = rotationHandleColliderDiameter * 0.02f;
-                        (collider as BoxCollider).size = new Vector3(finalScale / localScale, finalScale / localScale, finalScale / localScale);
+                        //localScale = localScale == 0.0f ? 0.0001f : localScale;
+                        (collider as BoxCollider).size = new Vector3(0.02f / localScale, 0.02f / localScale, 0.02f / localScale);
                     }
 
                     // In order for the ball to be grabbed using near interaction we need
@@ -1335,7 +1342,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     balls.Add(ball.transform);
                     ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
-                    ballRenderers.Add(ball.GetComponent<Renderer>());
+                    Renderer renderer = ball.GetComponent<Renderer>();
+                    if (renderer != null)
+                    {
+                        ballRenderers.Add(renderer);
+                    }
                 }
             }
 
@@ -1599,6 +1610,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return bounds;
         }
+
         private void SetMaterials()
         {
             //ensure materials
@@ -1639,6 +1651,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 handleGrabbedMaterial.SetFloatArray("_InnerGlowColor", color);
             }
         }
+
         private void InitializeDataStructures()
         {
             rigRoot = new GameObject(rigRootName).transform;
@@ -1663,6 +1676,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             sourcesDetected = new List<IMixedRealityController>();
         }
+
         private void CalculateEdgeCenters()
         {
             if (boundsCorners != null && edgeCenters != null)
@@ -1683,6 +1697,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 edgeCenters[11] = (boundsCorners[3] + boundsCorners[7]) * 0.5f;
             }
         }
+
         private void CaptureInitialState()
         {
             var target = Target;
@@ -1819,6 +1834,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             SetHiddenHandles();
         }
+
         private void SetHighlighted(Transform activeHandle)
         {
             //turn off all balls
@@ -1955,13 +1971,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private HandleProximityState ScaleHandleByProximity(Transform handle, Renderer renderer, HandleType type, HandleProximityState state, List<Vector3> points, float defaultScale)
+        private HandleProximityState ScaleHandleByProximity(Transform handle, Renderer renderer, HandleProximityState state, List<Vector3> points, float defaultScale)
         {
             HandleProximityState newState = state;
             float closestDistanceSqr = float.MaxValue;
             foreach (Vector3 point in points)
             {
-                closestDistanceSqr = Mathf.Min(closestDistanceSqr,(handle.position - point).sqrMagnitude);
+                closestDistanceSqr = Mathf.Min(closestDistanceSqr, (handle.position - point).sqrMagnitude);
             }
 
             if (closestDistanceSqr < handleCloseProximity)
@@ -1977,7 +1993,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 newState = HandleProximityState.FullsizeNoProximity;
             }
 
-            ScaleHandle(handle, newState, defaultScale, type);
+            ScaleHandle(handle, newState, defaultScale);
 
             if (renderer != null && state != newState)
             {
@@ -1986,7 +2002,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return newState;
         }
 
-        private void ScaleHandle(Transform handle, HandleProximityState targetState, float defaultScale, HandleType type)
+        private void ScaleHandle(Transform handle, HandleProximityState targetState, float defaultScale)
         {
             float targetScale = targetState == HandleProximityState.CloseProximity ? closeScale : (targetState == HandleProximityState.MediumProximity ? mediumScale : farScale);
             float weight = (targetState == HandleProximityState.CloseProximity ? closeGrowRate : (targetState == HandleProximityState.MediumProximity ? mediumGrowRate : farGrowRate));
@@ -1994,21 +2010,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             handle.transform.localScale = new Vector3(newLocalScale, newLocalScale, newLocalScale);
 
             Collider collider = handle.gameObject.GetComponent<Collider>();
-
-            float colliderScalar = type == HandleType.Rotation ? rotationHandleColliderDiameter : cornerHandleColliderScale;
             if (collider && collider is BoxCollider)
             {
                 newLocalScale = Mathf.Abs(newLocalScale);
-                newLocalScale = newLocalScale == 0.0f ? 0.01f : newLocalScale;
-                float colliderScale = colliderScalar * 0.02f;
-                (collider as BoxCollider).size = new Vector3(colliderScale / newLocalScale, colliderScale / newLocalScale, colliderScale / newLocalScale);
+                (collider as BoxCollider).size = newLocalScale > 0.0f ? new Vector3(0.02f / newLocalScale, 0.02f / newLocalScale, 0.02f / newLocalScale) : Vector3.zero;
             }
             else if (collider && collider is SphereCollider)
             {
                 newLocalScale = Mathf.Abs(newLocalScale);
-                float colliderScale = colliderScalar * 0.02f;
-                newLocalScale = newLocalScale == 0.0f ? 0.01f : newLocalScale;
-                (collider as SphereCollider).radius = colliderScale / newLocalScale;
+                (collider as SphereCollider).radius = newLocalScale > 0.0f ? 0.02f / newLocalScale : 0.0f;
             }
         }
 
@@ -2040,12 +2050,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         for (int i = 0; i < corners.Count; ++i)
                         {
-                            cornersProximate[i] = ScaleHandleByProximity(corners[i], cornerRenderers.Count > 0 ? cornerRenderers[i] : null, HandleType.Scale, cornersProximate[i], inputPoints, scaleHandleSize);
+                            cornersProximate[i] = ScaleHandleByProximity(corners[i], cornerRenderers.Count > 0 ? cornerRenderers[i] : null, cornersProximate[i], inputPoints, scaleHandleSize);
                         }
 
                         for (int i = 0; i < balls.Count; ++i)
                         {
-                            ballsProximate[i] = ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, HandleType.Rotation, ballsProximate[i], inputPoints, rotationHandleDiameter);
+                            ballsProximate[i] = ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], inputPoints, rotationHandleDiameter);
                         }
                     }
                 }
@@ -2055,7 +2065,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         if (cornerRenderers[i] != null && cornersProximate[i] != HandleProximityState.FullsizeNoProximity)
                         {
-                           cornerRenderers[i].material = handleMaterial;
+                            cornerRenderers[i].material = handleMaterial;
                         }
                         corners[i].transform.localScale = (scaleHandleSize * farScale * scaleHandleSize) * Vector3.one;
                         cornersProximate[i] = HandleProximityState.FullsizeNoProximity;
@@ -2065,8 +2075,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         if (ballRenderers[i] != null && ballsProximate[i] != HandleProximityState.FullsizeNoProximity)
                         {
-                           ballRenderers[i].material = handleMaterial;
-                        }                      
+                            ballRenderers[i].material = handleMaterial;
+                        }
                         balls[i].transform.localScale = (scaleHandleSize * farScale * rotationHandleDiameter) * Vector3.one;
                         ballsProximate[i] = HandleProximityState.FullsizeNoProximity;
                     }
@@ -2222,7 +2232,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     return false;
             }
         }
+
+        private void DropController()
+        {
+            HandleType lastHandleType = currentHandleType;
+            currentPointer = null;
+            currentHandleType = HandleType.None;
+            ResetHandleVisibility();
+
+            if (lastHandleType == HandleType.Scale)
+            {
+                if (debugText != null) debugText.text = "OnPointerUp:ScaleStopped";
+                ScaleStopped?.Invoke();
+            }
+            else if (lastHandleType == HandleType.Rotation)
+            {
+                if (debugText != null) debugText.text = "OnPointerUp:RotateStopped";
+                RotateStopped?.Invoke();
+            }
+        }
+
         #endregion Private Methods
+
 
         #region Used Event Handlers
 
@@ -2261,27 +2292,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (currentPointer != null && eventData.Pointer == currentPointer)
             {
                 DropController();
-
                 eventData.Use();
-            }
-        }
-
-        void DropController()
-        {
-            HandleType lastHandleType = currentHandleType;
-            currentPointer = null;
-            currentHandleType = HandleType.None;
-            ResetHandleVisibility();
-
-            if (lastHandleType == HandleType.Scale)
-            {
-                if (debugText != null) debugText.text = "OnPointerUp:ScaleStopped";
-                ScaleStopped?.Invoke();
-            }
-            else if (lastHandleType == HandleType.Rotation)
-            {
-                if (debugText != null) debugText.text = "OnPointerUp:RotateStopped";
-                RotateStopped?.Invoke();
             }
         }
 
@@ -2292,7 +2303,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 GameObject grabbedHandle = eventData.Pointer.Result.CurrentPointerTarget;
                 Transform grabbedHandleTransform = grabbedHandle.transform;
                 currentHandleType = GetHandleType(grabbedHandleTransform);
-
                 if (currentHandleType != HandleType.None)
                 {
                     currentPointer = eventData.Pointer;
@@ -2342,9 +2352,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData)
-        {
-        }
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
@@ -2381,12 +2389,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
+
         #endregion Used Event Handlers
 
+
         #region Unused Event Handlers
+
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
+        
         #endregion Unused Event Handlers
     }
 }
