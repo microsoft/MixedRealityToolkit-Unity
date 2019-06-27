@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         IMixedRealityFocusHandler
     {
         #region Enums
+
         /// <summary>
         /// Enum which describes how an object's boundingbox is to be flattened.
         /// </summary>
@@ -114,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Box
         }
         #endregion Enums
+
 
         #region Serialized Fields and Properties
         [SerializeField]
@@ -730,6 +732,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public UnityEvent ScaleStopped = new UnityEvent();
         #endregion Serialized Fields
 
+       
         #region Private Fields
 
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
@@ -773,7 +776,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // List of corner visuals. Use these to scale the corners to appropriate handle size
         // Sometimes the actual visual transform for the corner (in case when you use prefabs)
         // are below corner root transform.
-        private List<Transform> cornerVisuals;
+        //private List<Transform> cornerVisuals;
         private List<Transform> balls;
         private List<Renderer> linkRenderers;
         private List<Renderer> cornerRenderers;
@@ -821,16 +824,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Bounds prevBoundsOverride = new Bounds();
         private Vector3 lastBounds;
 
-        // This is the local scale on the corner visual (both for default cubes and prefab)
-        // that needs to be used to ensure that corner always matched scaleHandleSize
-        // Gets updated whenever CreateRig() or AddCorners() is called
-        private float cornerVisualScaleToMatchHandleSize = 1f;
-
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
         private static readonly string rigRootName = "rigRoot";
 
         #endregion
+
 
         #region public Properties
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
@@ -894,6 +893,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         #endregion Public Properties
 
+       
         #region Public Methods
 
         /// <summary>
@@ -962,6 +962,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #endregion
+
 
         #region MonoBehaviour Methods
 
@@ -1044,6 +1045,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion MonoBehaviour Methods
 
+       
         #region Private Methods
 
         private void DestroyRig()
@@ -1086,12 +1088,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 links = null;
             }
 
-            if (cornerVisuals != null)
-            {
-                cornerVisuals.Clear();
-                cornerVisuals = null;
-            }
-
             if (corners != null)
             {
                 foreach (Transform transform in corners)
@@ -1101,9 +1097,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 corners.Clear();
                 cornersProximate.Clear();
                 cornerRenderers.Clear();
-
             }
-
 
             if (rigRoot != null)
             {
@@ -1184,9 +1178,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cube.name = "corner_" + i.ToString();
-
-                    cube.transform.localScale = new Vector3(scaleHandleSize, scaleHandleSize, scaleHandleSize);
-                    cornerVisualScaleToMatchHandleSize = scaleHandleSize;
+                    cube.transform.localScale = new Vector3(scaleHandleSize * scaleHandleSize, scaleHandleSize * scaleHandleSize, scaleHandleSize * scaleHandleSize);
                     cube.transform.position = boundsCorners[i];
 
                     // In order for the cube to be grabbed using near interaction we need
@@ -1197,16 +1189,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     cube.transform.parent = rigRoot.transform;
 
                     Renderer renderer = cube.GetComponent<Renderer>();
-
-                    BoxCollider collider = cube.GetComponent<BoxCollider>();
-                
+                    BoxCollider collider = cube.GetComponent<BoxCollider>();             
                     collider.size *= 1.35f;
 
                     corners.Add(cube.transform);
                     cornersProximate.Add(HandleProximityState.FullsizeNoProximity);
                     cornerRenderers.Add(renderer);
-                    // for default visuals, the corner visual == corner root transform
-                    cornerVisuals.Add(cube.transform);
 
                     if (handleMaterial != null)
                     {
@@ -1246,7 +1234,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         visualsScale.transform.localScale = new Vector3(Mathf.Sign(p[0]), Mathf.Sign(p[1]), Mathf.Sign(p[2]));
                     }
 
-                    // Instantiate proper prefab based on isFlattened. (2D slate handle vs 3D handle)
                     GameObject cornerVisual = Instantiate(isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab, visualsScale.transform);
                     cornerVisual.name = "visuals";
 
@@ -1255,25 +1242,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     // we need to multiply by this amount to get to desired scale handle size
                     var invScale = scaleHandleSize / cornerbounds.size.x;
                     cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
-                    cornerVisualScaleToMatchHandleSize = invScale;
 
                     if (isFlattened)
                     {
                         // Rotate 2D slate handle asset for proper orientation
-                        cornerVisual.transform.Rotate(0, 0, -90);
+                       cornerVisual.transform.Rotate(0, 0, -90);
                     }
 
                     ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
 
-
                     corners.Add(corner.transform);
                     cornersProximate.Add(HandleProximityState.FullsizeNoProximity);
                     Renderer renderer = cornerVisual.GetComponent<Renderer>();
-                    if (renderer != null)
-                    {
-                        cornerRenderers.Add(renderer);
-                    }
-                    cornerVisuals.Add(cornerVisual.transform);
+                    cornerRenderers.Add(renderer ?? null);
                 }
             }
         }
@@ -1322,7 +1303,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     GameObject ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     ball.name = "midpoint_" + i.ToString();
 
-                    ball.transform.localScale = new Vector3(rotationHandleSize, rotationHandleSize, rotationHandleSize);
+                    ball.transform.localScale = new Vector3(rotationHandleSize * rotationHandleSize, rotationHandleSize * rotationHandleSize, rotationHandleSize * rotationHandleSize);
                     ball.transform.position = edgeCenters[i];
                     ball.transform.parent = rigRoot.transform;
 
@@ -1389,10 +1370,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     balls.Add(ball.transform);
                     ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
                     Renderer renderer = ball.GetComponent<Renderer>();
-                    if (renderer != null)
-                    {
-                        ballRenderers.Add(renderer);
-                    }
+                    ballRenderers.Add(renderer ?? null);
                 }
             }
 
@@ -1709,7 +1687,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             corners = new List<Transform>();
             cornersProximate = new List<HandleProximityState>();
             cornerRenderers = new List<Renderer>();
-            cornerVisuals = new List<Transform>();
+            //cornerVisuals = new List<Transform>();
             balls = new List<Transform>();
             ballsProximate = new List<HandleProximityState>();
             ballRenderers = new List<Renderer>();
@@ -1968,6 +1946,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 rigRoot.rotation = Quaternion.identity;
                 rigRoot.position = Vector3.zero;
+                rigRoot.localScale = Vector3.one;
 
                 for (int i = 0; i < corners.Count; ++i)
                 {
@@ -1979,18 +1958,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // Compute the local scale that produces the desired world space dimensions
                 Vector3 linkDimensions = Vector3.Scale(GetLinkDimensions(), invRootScale);
-                Vector3 cornerDimensions = Vector3.Scale(cornerVisualScaleToMatchHandleSize * Vector3.one, invRootScale);
-                Vector3 ballDimenions = Vector3.Scale(rotationHandleSize * Vector3.one, invRootScale);
 
-                for (int i = 0; i < cornerVisuals.Count; i++)
-                {
-                   cornerVisuals[i].localScale = cornerDimensions;
-                }
-
-                for (int i = 0; i < balls.Count; i++)
-                {
-                    balls[i].localScale = ballDimenions;
-                }
+                //Vector3 cornerDimensions = Vector3.Scale(cornerVisualScaleToMatchHandleSize * Vector3.one, invRootScale);
+                //Vector3 ballDimenions = Vector3.Scale(rotationHandleSize * Vector3.one, invRootScale);
+                //for (int i = 0; i < cornerVisuals.Count; i++)
+                //{
+                //    cornerVisuals[i].localScale = cornerDimensions;
+                //}
+                //for (int i = 0; i < balls.Count; i++)
+                //{
+                //    balls[i].localScale = ballDimenions;
+                //}
 
                 for (int i = 0; i < edgeCenters.Length; ++i)
                 {
@@ -2024,7 +2002,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 //move rig into position and rotation
                 rigRoot.position = cachedTargetCollider.bounds.center;
                 rigRoot.rotation = Target.transform.rotation;
-
                 rigRoot.parent = transform;
             }
         }
