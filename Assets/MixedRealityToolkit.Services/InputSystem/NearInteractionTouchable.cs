@@ -29,6 +29,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected Vector3 localUp = Vector3.up;
         public Vector3 LocalUp { get => localUp; }
 
+        /// <summary>
+        /// Returns true if the LocalForward and LocalUp vectors are orthogonal.
+        /// </summary>
+        /// <remarks>
+        /// LocalRight is computed using the cross product and is always orthogonal to LocalForward and LocalUp.
+        /// </remarks>
         public bool AreLocalVectorsOrthogonal => Vector3.Dot(localForward, localUp) == 0;
 
         /// <summary>
