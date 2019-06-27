@@ -12,6 +12,7 @@ using UnityEngine.Assertions;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+
     /// <summary>
     /// This script allows for an object to be movable, scalable, and rotatable with one or two hands. 
     /// You may also configure the script on only enable certain manipulations. The script works with 
@@ -435,6 +436,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             if (!allowFarManipulation && eventData.Pointer as IMixedRealityNearPointer == null)
+            {
+                return;
+            }
+
+            // Events may have come from children objects which do not wish to be grabbed
+            // by the manipulation handler. Check if these children have contexts that tesll
+            // the handler to ignore them. For example: bounding box corners do not wish to be grabbed.
+            var targetObject = eventData.Pointer.Result.CurrentPointerTarget;
+            var manipContext = targetObject.GetComponent<ManipulationHandlerContext>();
+            if (manipContext != null && manipContext.IgnoredByManipulationHandler)
             {
                 return;
             }

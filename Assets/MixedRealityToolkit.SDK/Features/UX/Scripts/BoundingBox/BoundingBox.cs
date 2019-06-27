@@ -966,6 +966,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     var g = cube.EnsureComponent<NearInteractionGrabbable>();
                     g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
 
+                    var manipContext = cube.EnsureComponent<ManipulationHandlerContext>();
+                    manipContext.IgnoredByManipulationHandler = true;
+
                     cube.transform.parent = rigRoot.transform;
 
                     Renderer renderer = cube.GetComponent<Renderer>();
@@ -997,6 +1000,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     // to add NearInteractionGrabbable;
                     var g = corner.EnsureComponent<NearInteractionGrabbable>();
                     g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
+
+                    var manipContext = corner.EnsureComponent<ManipulationHandlerContext>();
+                    manipContext.IgnoredByManipulationHandler = true;
 
                     GameObject visualsScale = new GameObject();
                     visualsScale.name = "visualsScale";
@@ -1085,6 +1091,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     // to add NearInteractionGrabbable;
                     var g = ball.EnsureComponent<NearInteractionGrabbable>();
                     g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
+
+                    var manipContext = ball.EnsureComponent<ManipulationHandlerContext>();
+                    manipContext.IgnoredByManipulationHandler = true;
 
                     SphereCollider collider = ball.GetComponent<SphereCollider>();
                     collider.radius *= 1.2f;
