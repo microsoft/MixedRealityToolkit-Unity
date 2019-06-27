@@ -7264,6 +7264,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.PrimaryPointerHandlerExample.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.PrimaryPointerHandlerExample.html",
+          "hash": "Kd+IzlNFuUr0KLztnGYmwQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.Rotator.yml",
       "output": {
         ".html": {
@@ -7436,7 +7448,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "/17EZN4LpaPyktOphliMyA=="
+          "hash": "6ATj2Uk6jQBw00VMsI9wYw=="
         }
       },
       "is_incremental": false,
@@ -16484,7 +16496,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "qGIDnplFwvMGVgFgxgfmWg=="
+          "hash": "8ewibIv1Y4zDNCOni0K25A=="
         }
       },
       "is_incremental": false,
@@ -16543,6 +16555,12 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 972,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -16554,12 +16572,6 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 971,
           "skipped_file_count": 0
         }
       }
