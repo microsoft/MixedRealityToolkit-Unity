@@ -425,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("Only used if rotationHandlePrefab is specified. Determines the type of collider that will surround the rotation handle prefab.")]
-        private RotationHandlePrefabCollider rotationHandlePrefabColliderType = RotationHandlePrefabCollider.Sphere;
+        private RotationHandlePrefabCollider rotationHandlePrefabColliderType = RotationHandlePrefabCollider.Box;
         public RotationHandlePrefabCollider RotationHandlePrefabColliderType
         {
             get

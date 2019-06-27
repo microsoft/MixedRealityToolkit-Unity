@@ -498,6 +498,49 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
+        /// Gets three axes where the forward is as close to the provided normal as
+        /// possible but where the axes are aligned to the TargetObject's transform
+        /// </summary>
+        private bool GetCursorTargetAxes(Vector3 normal, ref Vector3 right, ref Vector3 up, ref Vector3 forward)
+        {
+            if (TargetedObject)
+            {
+                Vector3 objRight = TargetedObject.transform.TransformDirection(Vector3.right);
+                Vector3 objUp = TargetedObject.transform.TransformDirection(Vector3.up);
+                Vector3 objForward = TargetedObject.transform.TransformDirection(Vector3.forward);
+
+                float dotRight = Vector3.Dot(normal, objRight);
+                float dotUp = Vector3.Dot(normal, objUp);
+                float dotForward = Vector3.Dot(normal, objForward);
+
+                if (Math.Abs(dotRight) > Math.Abs(dotUp) && 
+                    Math.Abs(dotRight) > Math.Abs(dotForward))
+                {
+                    forward = (dotRight > 0 ? objRight : -objRight).normalized;
+                }
+                else if (Math.Abs(dotUp) > Math.Abs(dotForward))
+                {
+                    forward = (dotUp > 0 ? objUp : -objUp).normalized;
+                }
+                else
+                {
+                    forward = (dotForward > 0 ? objForward : -objForward).normalized;
+                }
+
+                right = Vector3.Cross(Vector3.up, forward).normalized;
+                if (right == Vector3.zero)
+                {
+                    right = Vector3.Cross(objForward, forward).normalized;
+                }
+                up = Vector3.Cross(forward, right).normalized;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Virtual function for checking cursor context changes.
         /// </summary>
         public virtual CursorContextEnum CheckCursorContext()
@@ -516,45 +559,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
+                Vector3 right = default;
+                Vector3 up = default;
+                Vector3 forward = default;
+                GetCursorTargetAxes(focusDetails.Normal, ref right, ref up, ref forward);
+
+                Vector3 adjustedCursorPos = Position - contextCenter.position;
+
                 if (cursorAction == CursorContextInfo.CursorAction.Move)
                 {
                     return CursorContextEnum.MoveCross;
                 }
                 else if (cursorAction == CursorContextInfo.CursorAction.Scale)
                 {
-                    Vector3 forward = focusDetails.Normal.normalized;
-                    Vector3 right = Vector3.Cross(Vector3.up, forward).normalized;
-                    if (right == Vector3.zero)
+                    if (contextCenter != null)
                     {
-                        right = Vector3.Cross(contextCenter.TransformDirection(Vector3.forward), forward).normalized;
-                    }
-                    Vector3 up = Vector3.Cross(forward, right).normalized;
-
-                    Vector3 cross = Vector3.Cross(focusDetails.Normal, Position - contextCenter.position);
-
-                    if (Vector3.Dot(cross, up) * Vector3.Dot(cross, right) > 0) // quadrant 1 and 3
-                    {
-                        return CursorContextEnum.MoveNortheastSouthwest;
-                    }
-                    else // quadrant 2 and 4
-                    {
-                        return CursorContextEnum.MoveNorthwestSoutheast;
+                        if (Vector3.Dot(adjustedCursorPos, up) * Vector3.Dot(adjustedCursorPos, right) > 0) // quadrant 1 and 3
+                        {
+                            return CursorContextEnum.MoveNorthwestSoutheast;
+                        }
+                        else // quadrant 2 and 4
+                        {
+                            return CursorContextEnum.MoveNortheastSouthwest;
+                        }
                     }
                 }
                 else if (cursorAction == CursorContextInfo.CursorAction.Rotate)
                 {
                     if (contextCenter != null)
                     {
-                        Vector3 adjustedCursorPos = contextCenter.InverseTransformPoint(Position);
-
-                        if (Math.Abs(adjustedCursorPos.y) > Math.Abs(adjustedCursorPos.x) &&
-                        Math.Abs(adjustedCursorPos.y) > Math.Abs(adjustedCursorPos.z))
+                        if (Math.Abs(Vector3.Dot(adjustedCursorPos, right)) > 
+                            Math.Abs(Vector3.Dot(adjustedCursorPos, up)))
                         {
-                            return CursorContextEnum.RotateNorthSouth;
+                            return CursorContextEnum.RotateEastWest;
                         }
                         else
                         {
-                            return CursorContextEnum.RotateEastWest;
+                            return CursorContextEnum.RotateNorthSouth;
                         }
                     }
                 }
