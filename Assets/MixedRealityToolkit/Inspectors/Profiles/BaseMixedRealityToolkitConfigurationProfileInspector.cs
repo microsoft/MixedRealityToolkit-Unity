@@ -80,7 +80,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             DocLinkAttribute docLink = profileObject.GetType().GetCustomAttribute<DocLinkAttribute>();
-            InspectorUIUtility.RenderDocLinkButton(docLink);
+            if (docLink != null)
+            {
+                InspectorUIUtility.RenderDocLinkButton(docLink.URL);
+            }
         }
 
         protected bool DrawBacktrackProfileButton(BackProfileType returnProfileTarget = BackProfileType.Configuration)

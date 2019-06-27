@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
 
-                InspectorUIUtility.RenderDocLinkButton(docLink);
+                InspectorUIUtility.RenderDocLinkButton(docLink.URL);
 
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();

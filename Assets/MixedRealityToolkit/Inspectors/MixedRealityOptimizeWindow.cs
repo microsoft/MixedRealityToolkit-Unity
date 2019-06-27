@@ -510,11 +510,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             // Section Title
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
-            if (!string.IsNullOrEmpty(url))
-            {
-                BuildHelpIconButton(() => Application.OpenURL(url));
-            }
+                EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
+                InspectorUIUtility.RenderDocLinkButton(url);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
         }

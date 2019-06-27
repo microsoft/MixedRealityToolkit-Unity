@@ -133,20 +133,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         /// <param name="docLink">doc link attribute information to build button</param>
         /// <returns>true if button clicked, false otherwise</returns>
-        public static bool RenderDocLinkButton(DocLinkAttribute docLink)
+        public static bool RenderDocLinkButton(string docURL)
         {
-            if (docLink != null)
+            if (!string.IsNullOrEmpty(docURL))
             {
                 var buttonContent = new GUIContent()
                 {
                     image = HelpIcon,
                     text = " Documentation",
-                    tooltip = docLink.URL,
+                    tooltip = docURL,
                 };
 
-                if (RenderIndentedButton(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(DocLinkWidth)))
+                if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(DocLinkWidth)))
                 {
-                    Application.OpenURL(docLink.URL);
+                    Application.OpenURL(docURL);
                     return true;
                 }
             }
