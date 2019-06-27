@@ -96,16 +96,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 foreach (var handlerEntry in handlerEntries)
                 {
                     unregisterHandler.MakeGenericMethod(typeToEventHandlers.Key)
-                        .Invoke(baseEventSystem, 
+                        .Invoke(baseEventSystem,
                                 new object[] { handlerEntry.handler });
                 }
             }
 
             // Check that input system is clean
-            CollectionAssert.IsEmpty(((BaseEventSystem)inputSystem).EventListeners,      "Input event system handler registry is not empty in the beginning of the test.");
+            CollectionAssert.IsEmpty(((BaseEventSystem)inputSystem).EventListeners, "Input event system handler registry is not empty in the beginning of the test.");
             CollectionAssert.IsEmpty(((BaseEventSystem)inputSystem).EventHandlersByType, "Input event system handler registry is not empty in the beginning of the test.");
 
             yield return null;
+        }
+
+        internal static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
+        {
+            yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
         }
 
         internal static IEnumerator MoveHandFromTo(Vector3 startPos, Vector3 endPos, int numSteps, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
@@ -128,6 +133,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         internal static IEnumerator HideHand(Handedness handedness, InputSimulationService inputSimulationService)
         {
+            yield return null;
+
             SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             handData.Update(false, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
 
@@ -135,6 +142,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        /// <summary>
+        /// Shows the hand in the open state, at the origin
+        /// </summary>
+        /// <param name="handedness"></param>
+        /// <param name="inputSimulationService"></param>
+        /// <returns></returns>
         internal static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService)
         {
             return ShowHand(handedness, inputSimulationService, Vector3.zero);
@@ -163,6 +176,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 #endif
         }
+
+        /// <summary>
+        /// Waits for the user to press the enter key before a test continues.
+        /// Not actually used by any test, but it is useful when debugging since you can 
+        /// pause the state of the test and inspect the scene.
+        /// </summary>
+        internal static IEnumerator WaitForEnterKey()
+        {
+            Debug.Log(Time.time + "Press Enter...");
+            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
+            {
+                yield return null;
+            }
+        }
+
     }
 }
 #endif

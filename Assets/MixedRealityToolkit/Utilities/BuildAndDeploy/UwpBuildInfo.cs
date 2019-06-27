@@ -23,5 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Force rebuilding the appx bundle?
         /// </summary>
         public bool RebuildAppx { get; set; } = false;
+
+        /// <summary>
+        /// If true, the 'Gaze Input' capability will be added to the AppX
+        /// manifest after the Unity build.
+        /// </summary>
+        public bool GazeInputCapabilityEnabled { get; set; } = false;
     }
 }
