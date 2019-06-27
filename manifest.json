@@ -11936,7 +11936,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.PointerEventsTests.html",
-          "hash": "QbJrs4gr5YtyUtX6KVvm6A=="
+          "hash": "VgbwxaEL/QnAjDuhZ8DMFQ=="
         }
       },
       "is_incremental": false,
@@ -16549,17 +16549,17 @@
           "total_file_count": 104,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 971,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 971,
           "skipped_file_count": 0
         }
       }
