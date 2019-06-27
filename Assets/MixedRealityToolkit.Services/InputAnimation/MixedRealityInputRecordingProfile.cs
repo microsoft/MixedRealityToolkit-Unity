@@ -14,16 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class MixedRealityInputRecordingProfile : BaseMixedRealityProfile
     {
         [SerializeField]
-        [Tooltip("File name for storing recorded input data")]
-        private string outputFilename = "InputAnimation";
-        public string OutputFilename => outputFilename;
-
-        [SerializeField]
-        [Tooltip("Append the current date and time to the output file name")]
-        private bool appendTimestamp = true;
-        public bool AppendTimestamp => appendTimestamp;
-
-        [SerializeField]
         [Tooltip("Minimum movement of hand joints to record a keyframe")]
         private float jointPositionThreshold = 0.001f;
         public float JointPositionThreshold => jointPositionThreshold;

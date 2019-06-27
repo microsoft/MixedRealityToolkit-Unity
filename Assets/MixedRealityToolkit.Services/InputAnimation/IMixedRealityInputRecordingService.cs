@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public interface IMixedRealityInputRecordingService : IMixedRealityInputDeviceManager
     {
         /// <summary>
-        /// Input is being recorded.
+        /// True if input is being recorded.
         /// </summary>
         bool IsRecording { get; }
 
@@ -25,8 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool UseBufferTimeLimit { get; set; }
 
         /// <summary>
-        /// Size of the input recording buffer.
+        /// Maximum duration in seconds of the input recording if UseBufferTimeLimit is enabled.
         /// </summary>
+        /// <remarks>
+        /// If UseBufferTimeLimit is enabled then keyframes older than this limit will be discarded.
+        /// </remarks>
         float RecordingBufferTimeLimit { get; set; }
 
         /// <summary>
@@ -61,10 +64,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="directory">Directory in which to create the file. If null the persistent data path of the app is used.</param>
         /// <returns>File path where input has been recorded.</returns>
         string SaveInputAnimation(string filename, string directory = null);
-
-        /// <summary>
-        /// Generate a file name for export.
-        /// </summary>
-        string GenerateOutputFilename();
     }
 }

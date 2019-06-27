@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -109,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Enums
 
-        #region Serialized Fields
+        #region Serialized Fields and Properties
         [SerializeField]
         [Tooltip("The object that the bounding box rig will be modifying.")]
         private GameObject targetObject;
@@ -118,6 +117,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("BoxColliderToUse")]
         private BoxCollider boundsOverride = null;
+        public BoxCollider BoundsOverride
+        {
+            get { return boundsOverride; }
+            set 
+            {
+                if (boundsOverride != value)
+                {
+                    boundsOverride = value;
+                    
+                    if (boundsOverride == null)
+                    {
+                        prevBoundsOverride = new Bounds();
+                    }
+                    CreateRig();
+                }
+            }
+        }
 
         [Header("Behavior")]
         [SerializeField]
@@ -212,6 +228,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     CreateRig();
                 }
             }
+        }
+
+        public List<GameObject> GetCorner(int v)
+        {
+            throw new NotImplementedException();
         }
 
         [SerializeField]
@@ -574,13 +595,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Header("Events")]
-        public UnityEvent RotateStarted;
-        public UnityEvent RotateStopped;
-        public UnityEvent ScaleStarted;
-        public UnityEvent ScaleStopped;
+        public UnityEvent RotateStarted = new UnityEvent();
+        public UnityEvent RotateStopped = new UnityEvent();
+        public UnityEvent ScaleStarted = new UnityEvent();
+        public UnityEvent ScaleStopped = new UnityEvent();
         #endregion Serialized Fields
 
-        #region Private Properties
+        #region Private Fields
 
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
         private bool wireframeOnly = false;
@@ -600,8 +621,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 currentBoundsExtents;
 
         private BoundsCalculationMethod boundsMethod;
-
-
 
         private List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
         private List<Transform> links;
@@ -643,8 +662,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 diagonalDir;
 
         private HandleType currentHandleType;
-        private Vector3 lastBounds;
 
+        // The size, position of boundsOverride object in the previous frame
+        // Used to determine if boundsOverride size has changed.
+        private Bounds prevBoundsOverride = new Bounds();
+
+        // True if this game object is a child of the Target one
+        private bool isChildOfTarget = false;
+        private static readonly string rigRootName = "rigRoot";
+
+        #endregion
+
+        #region public Properties
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
         public bool Active
@@ -682,11 +711,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return cachedTargetCollider; }
         }
 
-        // True if this game object is a child of the Target one
-        private bool isChildOfTarget = false;
-        private static readonly string rigRootName = "rigRoot";
+        /// <summary>
+        /// Returns list of transforms pointing to the scale handles of the bounding box.
+        /// </summary>
+        public IReadOnlyList<Transform> ScaleCorners
+        {
+            get { return corners; }
+        }
 
-        #endregion Private Properties
+        /// <summary>
+        /// Returns list of transforms pointing to the rotation handles of the bounding box.
+        /// </summary>
+        public IReadOnlyList<Transform> RotateMidpoints
+        {
+            get { return balls; }
+        }
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -753,6 +793,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             rigRoot.gameObject.SetActive(active);
             UpdateRigVisibilityInInspector();
         }
+
         #endregion
 
         #region MonoBehaviour Methods
@@ -788,6 +829,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 UpdateRigHandles();
                 Target.transform.hasChanged = false;
             }
+            else if (boundsOverride != null && HasBoundsOverrideChanged())
+            {
+                UpdateBounds();
+                UpdateRigHandles();
+            }
+        }
+
+        /// <summary>
+        /// Assumes that boundsOverride is not null
+        /// Returns true if the size / location of boundsOverride has changed.
+        /// If boundsOverride gets set to null, rig is re-created in BoundsOverride
+        /// property setter.
+        /// </summary>
+        private bool HasBoundsOverrideChanged()
+        {
+            Debug.Assert(boundsOverride != null, "HasBoundsOverrideChanged called but boundsOverride is null");
+            Bounds curBounds = boundsOverride.bounds;
+            bool result = curBounds != prevBoundsOverride;
+            prevBoundsOverride = curBounds;
+            return result;
         }
         #endregion MonoBehaviour Methods
 

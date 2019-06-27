@@ -18,6 +18,53 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public const string Extension = "bin";
 
+        const long Magic = 0x6a8faf6e0f9e42c6;
+
+        public const int VersionMajor = 1;
+        public const int VersionMinor = 0;
+
+        /// <summary>
+        /// Generate a file name for export.
+        /// </summary>
+        public static string GetOutputFilename(string baseName="InputAnimation", bool appendTimestamp=true)
+        {
+            string filename;
+            if (appendTimestamp)
+            {
+                filename = String.Format("{0}-{1}.{2}", baseName, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), InputAnimationSerializationUtils.Extension);
+            }
+            else
+            {
+                filename = baseName;
+            }
+            return filename;
+        }
+
+        /// <summary>
+        /// Write a header for the input animation file format into the stream.
+        /// </summary>
+        public static void WriteHeader(BinaryWriter writer)
+        {
+            writer.Write(Magic);
+            writer.Write(VersionMajor);
+            writer.Write(VersionMinor);
+        }
+
+        /// <summary>
+        /// Write a header for the input animation file format into the stream.
+        /// </summary>
+        public static void ReadHeader(BinaryReader reader, out int fileVersionMajor, out int fileVersionMinor)
+        {
+            long fileMagic = reader.ReadInt64();
+            if (fileMagic != Magic)
+            {
+                throw new Exception("File is not an input animation file");
+            }
+
+            fileVersionMajor = reader.ReadInt32();
+            fileVersionMinor = reader.ReadInt32();
+        }
+
         /// <summary>
         /// Serialize an animation curve with tangents as binary data.
         /// </summary>

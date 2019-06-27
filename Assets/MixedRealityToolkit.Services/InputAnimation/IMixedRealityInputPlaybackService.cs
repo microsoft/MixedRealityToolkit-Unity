@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool IsPlaying { get; }
 
         /// <summary>
-        /// The local time relative to the start of the animation.
+        /// The local time in seconds relative to the start of the animation.
         /// </summary>
         float LocalTime { get; set; }
 

@@ -14,20 +14,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class InputRecordingControls : MonoBehaviour
     {
-        private IMixedRealityInputRecordingService recordingService = null;
-        private IMixedRealityInputRecordingService RecordingService
+        private InputRecordingService recordingService = null;
+        private InputRecordingService RecordingService
         {
             get
             {
                 if (recordingService == null)
                 {
-                    recordingService = MixedRealityToolkit.Instance.GetService<IMixedRealityInputRecordingService>();
+                    if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out IMixedRealityInputSystem inputSystem))
+                    {
+                        recordingService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>() as InputRecordingService;
+                    }
                 }
                 return recordingService;
             }
         }
 
-        private bool wasRecording;
         /// <summary>
         /// Event raised when input recording is started.
         /// </summary>
@@ -41,31 +43,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             await new WaitUntil(() => RecordingService != null);
 
-            wasRecording = RecordingService.IsRecording;
-        }
-
-        public void Update()
-        {
-            bool isRecording = RecordingService.IsRecording;
-            if (isRecording != wasRecording)
-            {
-                if (isRecording)
-                {
-                    OnRecordingStarted.Invoke();
-                }
-                else
-                {
-                    OnRecordingStopped.Invoke();
-                }
-
-                wasRecording = isRecording;
-            }
+            RecordingService.OnRecordingStarted += () => OnRecordingStarted.Invoke();
+            RecordingService.OnRecordingStopped += () => OnRecordingStopped.Invoke();
         }
 
         /// <summary>
         /// Toggle input recording.
         /// </summary>
-        public void OnToggleRecording()
+        public void ToggleRecording()
         {
             if (RecordingService.IsRecording)
             {
@@ -81,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// <summary>
         /// Export recorded input
         /// </summary>
-        public void OnSaveRecordedInput()
+        public void SaveRecordedInput()
         {
             RecordingService.SaveInputAnimation();
             RecordingService.DiscardRecordedInput();

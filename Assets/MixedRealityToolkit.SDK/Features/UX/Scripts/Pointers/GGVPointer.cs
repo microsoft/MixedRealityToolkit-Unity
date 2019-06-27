@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class GGVPointer : InputSystemGlobalListener, IMixedRealityPointer, IMixedRealityInputHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler
+    public class GGVPointer : InputSystemGlobalHandlerListener, IMixedRealityPointer, IMixedRealityInputHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler
     {
         [Header("Pointer")]
         [SerializeField]
@@ -275,6 +275,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
+
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
+            InputSystem?.RegisterHandler<IMixedRealitySourcePoseHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
+            InputSystem?.UnregisterHandler<IMixedRealitySourcePoseHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
 
         #region IMixedRealitySourcePoseHandler
 

@@ -43,7 +43,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1507865967819406}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 2dfa7178ac1c18947adff71ef2792a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -71,7 +70,7 @@ MonoBehaviour:
   overrideGlobalPointerExtent: 0
   pointerExtent: 10
   defaultPointerExtent: 10
-  sphereCastRadius: 0.15
+  sphereCastRadius: 0.05
   debugMode: 0
 --- !u!114 &7376459786343609486
 MonoBehaviour:
@@ -82,7 +81,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1507865967819406}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 6682dc6245ac3fd4ea723a628fbee9ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -99,7 +97,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1507865967819406}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 889e684278db8a542aa634e254b665aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -149,7 +146,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3601038615599929105}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 81c169a39f8e430d869bbc5d938b0e5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -314,7 +310,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3601038615599929105}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 1287d4d138a242f794bcfc01354d3ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
