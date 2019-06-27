@@ -401,18 +401,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 // Turn on the toggle after exiting
                 yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                Assert.IsFalse(catcher.Value);
+                Assert.IsFalse(catcher.IsOn);
                 Assert.AreEqual(0, catcher.Changed);
                 yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
-                Assert.IsTrue(catcher.Value);
+                Assert.IsTrue(catcher.IsOn);
                 Assert.AreEqual(1, catcher.Changed);
 
                 // Turn off the toggle after exiting
                 yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                Assert.IsTrue(catcher.Value);
+                Assert.IsTrue(catcher.IsOn);
                 Assert.AreEqual(1, catcher.Changed);
                 yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
-                Assert.IsFalse(catcher.Value);
+                Assert.IsFalse(catcher.IsOn);
                 Assert.AreEqual(2, catcher.Changed);
             }
 

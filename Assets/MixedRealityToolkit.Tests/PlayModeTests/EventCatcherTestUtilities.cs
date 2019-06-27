@@ -121,14 +121,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class UnityToggleEventCatcher : IDisposable
     {
         public int Changed { get; protected set; } = 0;
-        public bool Value { get; protected set; }
+        public bool IsOn { get; protected set; }
 
         private Toggle toggle;
 
         public UnityToggleEventCatcher(Toggle toggle)
         {
             this.toggle = toggle;
-            this.Value = toggle.isOn;
+            this.IsOn = toggle.isOn;
             toggle.onValueChanged.AddListener(OnValueChanged);
         }
 
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private void OnValueChanged(bool value)
         {
             ++Changed;
-            Value = toggle.isOn;
+            IsOn = toggle.isOn;
         }
     }
 }
