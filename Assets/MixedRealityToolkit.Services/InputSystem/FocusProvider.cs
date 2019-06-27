@@ -869,6 +869,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     QueryScene(pointer.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d);
                     PointerHitResult hit = hitResult3d;
 
+                    int hitResult3dLayer = hitResult3d.hitObject?.layer ?? -1;
+                    if (hitResult3dLayer == 0)
+                    {
+                        // if we have a hit in the highest priority layer, we can go ahead and truncate the pointer before doing the UI raycast
+                        // (if it's not highest priority it's possible the UI raycast could produce a higher-priority hit that is further than the physics hit,
+                        // and we'd lose that hit if the pointer were truncated)
+                        TruncatePointerRayToHit(pointer.Pointer, hitResult3d);
+                    }
+
                     // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
                     if (EventSystem.current != null)
                     {
@@ -879,12 +888,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         hit = GetPrioritizedHitResult(hit, hitResultUi, prioritizedLayerMasks);
                     }
                     
-                    if (hit != null && hit.rayStepIndex >= 0)
+                    if (hit != hitResult3d || hitResult3dLayer > 0)
                     {
-                        RayStep rayStep = pointer.Pointer.Rays[hit.rayStepIndex];
-                        Vector3 origin = rayStep.Origin;
-                        Vector3 terminus = hit.raycastHit.point;
-                        rayStep.UpdateRayStep(ref origin, ref terminus);
+                        // truncate if we didn't already for this hit
+                        TruncatePointerRayToHit(pointer.Pointer, hitResult3d);
                     }
 
                     // Make sure to keep focus on the previous object if focus is locked (no target position lock here).
@@ -905,6 +912,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // This will give it a chance to respond to raycast results
             // e.g., by updating its appearance.
             pointer.Pointer.OnPostSceneQuery();
+        }
+
+        private void TruncatePointerRayToHit(IMixedRealityPointer pointer, PointerHitResult hit)
+        {
+            if (hit.rayStepIndex >= 0)
+            {
+                RayStep rayStep = pointer.Rays[hit.rayStepIndex];
+                Vector3 origin = rayStep.Origin;
+                Vector3 terminus = hit.raycastHit.point;
+                rayStep.UpdateRayStep(ref origin, ref terminus);
+            }
         }
 
         PointerHitResult GetPrioritizedHitResult(PointerHitResult hit1, PointerHitResult hit2, LayerMask[] prioritizedLayerMasks)
@@ -1012,7 +1030,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     case SceneQueryType.SimpleRaycast:
                         if (raycastProvider.Raycast(pointerRays[i], prioritizedLayerMasks, out hitInfo))
                         {
-                            hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + physicsHit.distance);
+                            hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance);
                             return;
                         }
                         break;
@@ -1022,7 +1040,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     case SceneQueryType.SphereCast:
                         if (raycastProvider.SphereCast(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, out hitInfo))
                         {
-                            hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + physicsHit.distance);
+                            hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance);
                             return;
                         }
                         break;
