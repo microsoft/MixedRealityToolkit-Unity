@@ -9,18 +9,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class TestPointer : GenericPointer
     {
+        private int preFrameCount = -1;
+        private int postFrameCount = -1;
+
         public TestPointer() : base("Test Pointer", null)
         {
-            IsActive = true;
         }
 
         public override Vector3 Position => throw new System.NotImplementedException();
 
         public override Quaternion Rotation => throw new System.NotImplementedException();
-
-        public override void OnPostSceneQuery()
-        {
-        }
 
         public override void OnPreCurrentPointerTargetChange()
         {
@@ -28,6 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public override void OnPreSceneQuery()
         {
+            preFrameCount = Time.frameCount;
+        }
+
+        public override void OnPostSceneQuery()
+        {
+            postFrameCount = Time.frameCount;
         }
 
         public void SetFromTestProxy(FocusRaycastTestProxy testProxy)
@@ -49,6 +53,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             PrioritizedLayerMasksOverride = testProxy.PrioritizedLayerMasks;
+            
+            IsActive = true;
+        }
+
+        private class WaitForPointerFocusUpdate : CustomYieldInstruction
+        {
+            private readonly TestPointer pointer;
+            private readonly int startFrame;
+
+            public override bool keepWaiting => pointer.postFrameCount <= startFrame;
+
+            public WaitForPointerFocusUpdate(TestPointer pointer) : base()
+            {
+                this.pointer = pointer;
+                startFrame = pointer.preFrameCount;
+            }
+        }
+
+        public CustomYieldInstruction WaitForFocusUpdate()
+        {
+            return new WaitForPointerFocusUpdate(this);
         }
     }
 }

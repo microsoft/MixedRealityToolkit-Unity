@@ -30,9 +30,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             foreach (var raycastTestProxy in raycastTestPrefabInstance.GetComponentsInChildren<FocusRaycastTestProxy>())
             {
                 pointer.SetFromTestProxy(raycastTestProxy);
-                yield return null;
-                yield return null;
+                yield return pointer.WaitForFocusUpdate();
                 Assert.AreSame(raycastTestProxy.ExpectedHitObject, pointer.Result?.CurrentPointerTarget, "FAILED: " + raycastTestProxy.name);
+
+                pointer.IsActive = false;
+                yield return pointer.WaitForFocusUpdate();
+                Assert.AreSame(null, pointer.Result?.CurrentPointerTarget, "Failed to clear pointer target after test.");
             }
         }
 
