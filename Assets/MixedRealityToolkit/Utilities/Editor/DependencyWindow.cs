@@ -61,6 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             EditorGUILayout.Space();
 
+            if (EditorSettings.serializationMode != SerializationMode.ForceText)
+            {
+                EditorGUILayout.HelpBox("Dependencies can only be tracked with text assets. Please change the project serialization mode to \"Force Text\" via Edit->Project Settings->Editor->Asset Serialization", MessageType.Error);
+            }
+
             assetSelection = EditorGUILayout.ObjectField("Asset Selection", assetSelection, typeof(Object), false);
             maxDisplayDepth = EditorGUILayout.IntSlider("Max Display Depth", maxDisplayDepth, 1, 32);
 
@@ -72,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
                 else
                 {
-                    GUILayout.Label(string.Format("The dependency graph contains {0} assets and took {1:0.00} seconds to build.", dependencyGraph.Count, assetGraphRefreshTime));
+                    GUILayout.Label(string.Format("The dependency graph contains {0:n0} assets and took {1:0.00} seconds to build.", dependencyGraph.Count, assetGraphRefreshTime));
                 }
 
                 if (GUILayout.Button("Refresh"))
@@ -125,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         }
                         else
                         {
-                            EditorGUILayout.HelpBox("Nothing, you could consider deleting this asset if it isn't loaded programmatically.", MessageType.Info);
+                            EditorGUILayout.HelpBox("Nothing, you could consider deleting this asset if it isn't referenced programmatically.", MessageType.Warning);
                         }
                     }
                     EditorGUILayout.EndScrollView();
@@ -159,8 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void RefreshAssetGraph()
         {
-            // TODO, check if text serialization is on.
-
             var beginTime = DateTime.UtcNow;
 
             dependencyGraph.Clear();
@@ -241,14 +244,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static string GetGuidFromMeta(string file)
         {
-            string[] lines = File.ReadAllLines(file);
-
-            foreach (var line in lines)
+            try
             {
-                if (line.StartsWith(guidPrefix))
+                string[] lines = File.ReadAllLines(file);
+
+                foreach (var line in lines)
                 {
-                    return line.Split(' ')[1];
+                    if (line.StartsWith(guidPrefix))
+                    {
+                        return line.Split(' ')[1];
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
             }
 
             return null;
@@ -258,19 +268,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             var guids = new List<string>();
 
-            foreach (var line in File.ReadAllLines(file))
+            try
             {
-                var index = line.IndexOf(guidPrefix);
-
-                if (index > 0)
+                foreach (var line in File.ReadAllLines(file))
                 {
-                    var guid = line.Substring(index + guidPrefix.Length, guidCharacterCount);
+                    var index = line.IndexOf(guidPrefix);
 
-                    if (IsGuidValid(guid) && !guids.Contains(guid))
+                    if (index > 0)
                     {
-                        guids.Add(guid);
+                        var guid = line.Substring(index + guidPrefix.Length, guidCharacterCount);
+
+                        if (IsGuidValid(guid) && !guids.Contains(guid))
+                        {
+                            guids.Add(guid);
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
             }
 
             return guids;
@@ -291,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         Selection.objects = new Object[] { AssetDatabase.LoadMainAssetAtPath(path) };
                     }
 
-                    GUILayout.Label(path, GUILayout.ExpandWidth(false));
+                    GUILayout.Label(string.IsNullOrEmpty(path) ? string.Format("Missing Asset: {0}", node.guid) : path, GUILayout.ExpandWidth(false));
                 }
                 else
                 {
