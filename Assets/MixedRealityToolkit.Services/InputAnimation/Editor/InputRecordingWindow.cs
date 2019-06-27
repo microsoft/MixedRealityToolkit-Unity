@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 outputPath = EditorUtility.SaveFilePanelInProject(
                     "Select output path",
-                    RecordingService.GenerateOutputFilename(),
+                    InputAnimationSerializationUtils.GetOutputFilename(),
                     InputAnimationSerializationUtils.Extension,
                     "Enter filename for exporting input animation");
             }
