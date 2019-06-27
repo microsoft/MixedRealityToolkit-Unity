@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         // do common setup for each of your tests here - this will be called after entering playmode
         [Setup]
-        public void InitMrtk()
+        public void Init()
         {
             // in most play mode test cases you would want to at least create an MRTK gameobject using the default profile
             TestUtilities.InitializeMixedRealityToolkit(true);
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         // destroy commonly initialzed objects here - this will be called after each of your tests has finished
         [TearDown]
-        public void ShutdownMrtk()
+        public void Shutdown()
         {
             // call shutdown if you've created an mrtk gameobject in your test
             TestUtilities.ShutdownMixedRealityToolkit();
