@@ -150,13 +150,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <returns></returns>
         internal static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService)
         {
-            return ShowHand(handedness, inputSimulationService, Vector3.zero);
+            yield return ShowHand(handedness, inputSimulationService, ArticulatedHandPose.GestureId.Open, Vector3.zero);
         }
 
-        internal static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService, Vector3 position)
+        internal static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService, ArticulatedHandPose.GestureId handPose, Vector3 handLocation)
         {
             SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
-            handData.Update(true, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, position));
+            handData.Update(true, false, GenerateHandPose(handPose, handedness, handLocation));
 
             // Wait one frame for the hand to actually appear
             yield return null;

@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator Show(Vector3 position)
         {
             this.position = position;
-            return PlayModeTestUtilities.ShowHand(handedness, simulationService, position);
+            return PlayModeTestUtilities.ShowHand(handedness, simulationService, gestureId, position);
         }
 
         public IEnumerator Hide()
