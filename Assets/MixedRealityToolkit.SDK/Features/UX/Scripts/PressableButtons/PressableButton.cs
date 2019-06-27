@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (Application.isPlaying && movingButtonVisuals) // we're using a cached position in play mode as the moving visuals will be moved during button interaction
                 {
-                    return PushSpaceSourceTransform.parent.position + initialOffsetMovingVisuals;
+                    return PushSpaceSourceParentPosition + initialOffsetMovingVisuals;
                 }
                 else
                 {
@@ -206,14 +206,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             currentPushDistance = startPushDistance;    
         }
 
-        private void Start()
+        private Vector3 PushSpaceSourceParentPosition => (PushSpaceSourceTransform.parent != null) ? PushSpaceSourceTransform.parent.position : Vector3.zero;
+
+        protected virtual void Start()
         {
             if (gameObject.layer == 2)
             {
                 Debug.LogWarning("PressableButton will not work if game object layer is set to 'Ignore Raycast'.");
             }
 
-            initialOffsetMovingVisuals = PushSpaceSourceTransform.position - PushSpaceSourceTransform.parent.position;
+            initialOffsetMovingVisuals = PushSpaceSourceTransform.position - PushSpaceSourceParentPosition;
         }
 
         void OnDisable()
