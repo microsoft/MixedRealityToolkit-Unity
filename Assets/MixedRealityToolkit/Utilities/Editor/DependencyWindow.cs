@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
-    public class DependencyTrackerWindow : EditorWindow
+    public class DependencyWindow : EditorWindow
     {
         private readonly string[] assetsWithDependencies =
         {
@@ -24,13 +23,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             ".controller"
         };
 
-        private const string windowTitle = "Dependency Tracker";
+        private const string windowTitle = "Dependency Window";
         private const string guidPrefix = "guid: ";
         private const string nullGuid = "00000000000000000000000000000000";
         private const int guidCharacterCount = 32;
-        private const int maxDepth = 8;
 
         private Object assetSelection = null;
+        private int maxDisplayDepth = 8;
         private Vector2 scrollPosition = Vector2.zero;
         private float assetGraphRefreshTime = 0.0f;
 
@@ -43,21 +42,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private Dictionary<string, AssetGraphNode> dependencyGraph = new Dictionary<string, AssetGraphNode>();
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Dependency Tracker", false, 3)]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Dependency Window", false, 3)]
         private static void ShowWindow()
         {
-            var window = GetWindow<DependencyTrackerWindow>();
+            var window = GetWindow<DependencyWindow>();
             window.titleContent = new GUIContent(windowTitle);
-            window.minSize = new Vector2(380.0f, 700.0f);
+            window.minSize = new Vector2(520.0f, 380.0f);
             window.RefreshAssetGraph();
             window.Show();
         }
 
         private void OnGUI()
         {
-            GUILayout.Label("Asset Selection", EditorStyles.boldLabel);
+            MixedRealityEditorUtility.RenderMixedRealityToolkitLogo();
 
-            assetSelection = EditorGUILayout.ObjectField("Asset", assetSelection, typeof(Object), false);
+            EditorGUILayout.LabelField("Mixed Reality Toolkit Dependency Window", new GUIStyle() {fontSize = 12, fontStyle = FontStyle.Bold });
+            EditorGUILayout.LabelField("This tool displays how assets reference and depend on each other. Dependencies are calculated by parsing guids within project YAML files.", EditorStyles.wordWrappedLabel);
+
+            EditorGUILayout.Space();
+
+            assetSelection = EditorGUILayout.ObjectField("Asset Selection", assetSelection, typeof(Object), false);
+            maxDisplayDepth = EditorGUILayout.IntSlider("Max Display Depth", maxDisplayDepth, 1, 32);
 
             EditorGUILayout.BeginHorizontal();
             {
@@ -70,59 +75,67 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
             EditorGUILayout.EndHorizontal();
 
-            GUILayout.Label("Dependency Graph", EditorStyles.boldLabel);
+            EditorGUILayout.Space();
 
-            var file = AssetDatabase.GetAssetPath(assetSelection);
-            AssetGraphNode node;
-
-            if (dependencyGraph.TryGetValue(AssetDatabase.AssetPathToGUID(file), out node))
+            GUILayout.BeginVertical("Box");
             {
-                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-                {
-                    GUILayout.Label("This asset depends on:", EditorStyles.boldLabel);
+                GUILayout.Label("Dependency Graph", EditorStyles.boldLabel);
 
-                    if (node.assetsThisDependsOn.Count != 0)
+                EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
+
+                var file = AssetDatabase.GetAssetPath(assetSelection);
+                AssetGraphNode node;
+
+                if (dependencyGraph.TryGetValue(AssetDatabase.AssetPathToGUID(file), out node))
+                {
+                    scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
                     {
-                        foreach (var guid in node.assetsThisDependsOn)
+                        GUILayout.Label("This asset depends on:", EditorStyles.boldLabel);
+
+                        if (node.assetsThisDependsOn.Count != 0)
                         {
-                            DrawDependency(guid, 0);
+                            foreach (var dependency in node.assetsThisDependsOn)
+                            {
+                                DrawDependency(dependency, 0, maxDisplayDepth);
+                            }
+                        }
+                        else
+                        {
+                            GUILayout.Label("Nothing.");
+                        }
+
+                        EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
+
+                        GUILayout.Label("Assets that depend on this:", EditorStyles.boldLabel);
+
+                        if (node.assetsDependentOnThis.Count != 0)
+                        {
+                            foreach (var dependency in node.assetsDependentOnThis)
+                            {
+                                DrawDependencyRecurse(dependency, 0, maxDisplayDepth);
+                                GUILayout.Space(8);
+                            }
+                        }
+                        else
+                        {
+                            GUILayout.Label("Nothing, you could consider deleting this asset if it isn't loaded programmatically.");
                         }
                     }
-                    else
-                    {
-                        GUILayout.Label("Nothing.");
-                    }
-
-                    EditorGUILayout.Separator();
-
-                    GUILayout.Label("Assets that depend on this:", EditorStyles.boldLabel);
-
-                    if (node.assetsDependentOnThis.Count != 0)
-                    {
-                        foreach (var guid in node.assetsDependentOnThis)
-                        {
-                            DrawDependencyRecurse(guid, 0);
-                            GUILayout.Space(8);
-                        }
-                    }
-                    else
-                    {
-                        GUILayout.Label("Nothing, you could consider deleting it if it isn't loaded programmatically.");
-                    }
-                }
-                EditorGUILayout.EndScrollView();
-            }
-            else
-            {
-                if (IsAsset(file))
-                {
-                    GUILayout.Box(string.Format("Failed to find data for {0} try refreshing the dependency graph.", file), EditorStyles.helpBox, new GUILayoutOption[0]);
+                    EditorGUILayout.EndScrollView();
                 }
                 else
                 {
-                    GUILayout.Box("Please select an asset above to see the dependency graph.", EditorStyles.helpBox, new GUILayoutOption[0]);
+                    if (IsAsset(file))
+                    {
+                        GUILayout.Box(string.Format("Failed to find data for {0} try refreshing the dependency graph.", file), EditorStyles.helpBox, new GUILayoutOption[0]);
+                    }
+                    else
+                    {
+                        GUILayout.Box("Please select an asset above to see the dependency graph.", EditorStyles.helpBox, new GUILayoutOption[0]);
+                    }
                 }
             }
+            GUILayout.EndVertical();
         }
 
         private void OnSelectionChange()
@@ -132,7 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (IsAsset(AssetDatabase.GetAssetPath(Selection.objects[0])))
                 {
                     assetSelection = Selection.objects[0];
-
                     Repaint();
                 }
             }
@@ -151,7 +163,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             for (int i = 0; i < metaFiles.Length; ++i)
             {
-                EditorUtility.DisplayProgressBar(windowTitle, "Building dependency graph...", (float)i / metaFiles.Length);
+                float progress = (float)i / metaFiles.Length;
+
+                if (EditorUtility.DisplayCancelableProgressBar(windowTitle, "Building dependency graph...", progress))
+                {
+                    break;
+                }
 
                 var metaFile = metaFiles[i];
                 var file = metaFile.Substring(0, metaFile.Length - metaExtension.Length);
@@ -252,41 +269,47 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return !string.IsNullOrEmpty(guid) && guid != nullGuid;
         }
 
-        private static void DrawDependency(AssetGraphNode node, int depth)
+        private static void DrawDependency(AssetGraphNode node, int depth, int maxDepth)
         {
             EditorGUILayout.BeginHorizontal();
             {
                 GUILayout.Space(depth * 16);
 
-                var path = AssetDatabase.GUIDToAssetPath(node.guid);
-
-                if (GUILayout.Button("Select", GUILayout.ExpandWidth(false)))
+                if (depth != maxDepth)
                 {
-                    Selection.objects = new Object[]  { AssetDatabase.LoadMainAssetAtPath(path) };
-                }
+                    var path = AssetDatabase.GUIDToAssetPath(node.guid);
 
-                GUILayout.Label(path, GUILayout.ExpandWidth(false));
+                    if (GUILayout.Button("Select", GUILayout.ExpandWidth(false)))
+                    {
+                        Selection.objects = new Object[] { AssetDatabase.LoadMainAssetAtPath(path) };
+                    }
+
+                    GUILayout.Label(path, GUILayout.ExpandWidth(false));
+                }
+                else
+                {
+                    GUILayout.Label("Max display depth was exceeded...", GUILayout.ExpandWidth(false));
+                }
             }
             EditorGUILayout.EndHorizontal();
         }
 
-        private static int DrawDependencyRecurse(AssetGraphNode node, int depth)
+        private static void DrawDependencyRecurse(AssetGraphNode node, int depth, int maxDepth)
         {
-            // To avoid infinite recursion of circular dependencies stop at a max depth.
-            if (depth == maxDepth)
+            // To avoid infinite recursion with circular dependencies, stop at a max depth.
+            if (depth != maxDepth)
             {
-                // TODO, notify max depth hit.
-                return depth;
+                DrawDependency(node, depth, maxDepth);
+
+                foreach (var dependency in node.assetsDependentOnThis)
+                {
+                    DrawDependencyRecurse(dependency, depth + 1, maxDepth);
+                }
             }
-
-            DrawDependency(node, depth);
-
-            foreach (var dependency in node.assetsDependentOnThis)
+            else
             {
-                DrawDependencyRecurse(dependency, depth + 1);
+                DrawDependency(null, depth, maxDepth);
             }
-
-            return depth;
         }
     }
 }
