@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -67,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            MixedRealityEditorUtility.RenderMixedRealityToolkitLogo();
+            MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
         }
 
         /// <summary>
@@ -80,40 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile)
-            {   // Can't proceed without an active profile
-                return;
-            }
-
-            // Find the service associated with this profile
-            MixedRealityServiceProfileAttribute profileAttribute = profileObject.GetType().GetCustomAttribute<MixedRealityServiceProfileAttribute>();
-            if (profileAttribute == null)
-            {   // Can't proceed without the profile attribute.
-                return;
-            }
-
-            IMixedRealityService service;
-            if (MixedRealityToolkit.Instance.ActiveSystems.TryGetValue(profileAttribute.ServiceType, out service))
-            {
-                DocLinkAttribute docLink = service.GetType().GetCustomAttribute<DocLinkAttribute>();
-
-                if (docLink != null)
-                {
-                    var buttonContent = new GUIContent()
-                    {
-                        image = MixedRealityEditorUtility.HelpIcon,
-                        text = " Documentation",
-                        tooltip = docLink.URL,
-                    };
-
-                    if (MixedRealityEditorUtility.RenderIndentedButton(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(MixedRealityInspectorUtility.DocLinkWidth)))
-                    {
-                        Application.OpenURL(docLink.URL);
-                    }
-                }
-
-                return;
-            }
+            DocLinkAttribute docLink = profileObject.GetType().GetCustomAttribute<DocLinkAttribute>();
+            InspectorUIUtility.RenderDocLinkButton(docLink);
         }
 
         protected bool DrawBacktrackProfileButton(BackProfileType returnProfileTarget = BackProfileType.Configuration)
@@ -189,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (!profile.IsCustomProfile)
                 {
                     EditorGUILayout.HelpBox("Default MRTK profiles cannot be edited. Create a clone of this profile to modify settings.", MessageType.Warning);
-                    if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Clone"), EditorStyles.miniButton))
+                    if (InspectorUIUtility.RenderIndentedButton(new GUIContent("Clone"), EditorStyles.miniButton))
                     {
                         MixedRealityProfileCloneWindow.OpenWindow(null, (BaseMixedRealityProfile)target, null);
                     }
@@ -205,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     if (!MixedRealityToolkit.IsInitialized)
                     {
                         EditorGUILayout.HelpBox("There is not a MRTK instance in your scene. Some properties may not be editable", MessageType.Error);
-                        if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Add Mixed Reality Toolkit instance to scene"), EditorStyles.miniButton))
+                        if (InspectorUIUtility.RenderIndentedButton(new GUIContent("Add Mixed Reality Toolkit instance to scene"), EditorStyles.miniButton))
                         {
                             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(MixedRealityInspectorUtility.GetDefaultConfigProfile());
                             // After the toolkit has been created, set the selection back to this item so the user doesn't get lost

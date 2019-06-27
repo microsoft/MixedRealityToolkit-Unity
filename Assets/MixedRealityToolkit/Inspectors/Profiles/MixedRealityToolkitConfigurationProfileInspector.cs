@@ -179,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!MixedRealityToolkit.IsInitialized)
             {
                 EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Warning);
-                if (MixedRealityEditorUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
+                if (InspectorUIUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
                 {
                     MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configurationProfile);
                 }

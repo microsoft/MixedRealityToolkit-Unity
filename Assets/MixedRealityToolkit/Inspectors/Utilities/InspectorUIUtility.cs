@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -18,9 +19,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly Color ColorTint50 = new Color(0.5f, 0.5f, 0.5f);
         public static readonly Color ColorTint25 = new Color(0.25f, 0.25f, 0.25f);
 
-        // default text sizes
+        // default UI sizes
         public const int TitleFontSize = 14;
         public const int DefaultFontSize = 10;
+        public const float DocLinkWidth = 175f;
 
         // special characters
         public static readonly string Minus = "\u2212";
@@ -34,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly string Heart = "\u2661";
         public static readonly string Star = "\u2606";
         public static readonly string Emoji = "\u263A";
+
+        public static readonly Texture HelpIcon = EditorGUIUtility.IconContent("_Help").image;
 
         /// <summary>
         /// A data container for managing scrolling lists or nested drawers in custom inspectors.
@@ -84,6 +88,70 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             labelStyle.fixedHeight = size * 2;
             labelStyle.normal.textColor = color;
             return labelStyle;
+        }
+
+        /// <summary>
+        /// Helper function to render buttons correctly indented according to EditorGUI.indentLevel since GUILayout component don't respond naturally
+        /// </summary>
+        /// <param name="buttonText">text to place in button</param>
+        /// <param name="options">layout options</param>
+        /// <returns>true if button clicked, false if otherwise</returns>
+        public static bool RenderIndentedButton(string buttonText, params GUILayoutOption[] options)
+        {
+            return RenderIndentedButton(() => { return GUILayout.Button(buttonText, options); });
+        }
+
+        /// <summary>
+        /// Helper function to render buttons correctly indented according to EditorGUI.indentLevel since GUILayout component don't respond naturally
+        /// </summary>
+        /// <param name="content">What to draw in button</param>
+        /// <param name="style">Style configuration for button</param>
+        /// <param name="options">layout options</param>
+        /// <returns>true if button clicked, false if otherwise</returns>
+        public static bool RenderIndentedButton(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
+        {
+            return RenderIndentedButton(() => { return GUILayout.Button(content, style, options); });
+        }
+
+        /// <summary>
+        /// Helper function to support primary overloaded version of this functionality
+        /// </summary>
+        /// <param name="renderButton">The code to render button correctly based on parameter types passed</param>
+        /// <returns>true if button clicked, false if otherwise</returns>
+        public static bool RenderIndentedButton(Func<bool> renderButton)
+        {
+            bool result = false;
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(EditorGUI.indentLevel * 15);
+            result = renderButton();
+            GUILayout.EndHorizontal();
+            return result;
+        }
+
+        /// <summary>
+        /// Render doc link attribute as clickable button routing to revelant URI
+        /// </summary>
+        /// <param name="docLink">doc link attribute information to build button</param>
+        /// <returns>true if button clicked, false otherwise</returns>
+        public static bool RenderDocLinkButton(DocLinkAttribute docLink)
+        {
+            if (docLink != null)
+            {
+                var buttonContent = new GUIContent()
+                {
+                    image = HelpIcon,
+                    text = " Documentation",
+                    tooltip = docLink.URL,
+                };
+
+                if (RenderIndentedButton(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(DocLinkWidth)))
+                {
+                    Application.OpenURL(docLink.URL);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             {
                                 EditorGUILayout.HelpBox("Your cached lighting settings may be out of date. This could result in unexpected appearances at runtime.", MessageType.Warning);
                             }
-                            if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Update Cached Lighting Settings"), EditorStyles.miniButton))
+                            if (InspectorUIUtility.RenderIndentedButton(new GUIContent("Update Cached Lighting Settings"), EditorStyles.miniButton))
                             {
                                 profile.EditorLightingCacheUpdateRequested = true;
                             }

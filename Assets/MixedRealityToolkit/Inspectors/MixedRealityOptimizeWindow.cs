@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -112,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             windowScrollPosition = EditorGUILayout.BeginScrollView(windowScrollPosition);
 
-            MixedRealityEditorUtility.RenderMixedRealityToolkitLogo();
+            MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
             // Render Title
             EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", BoldLargeTitle);
@@ -160,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (replacementShader == null)
                 {
                     EditorGUILayout.HelpBox("Please set a replacement shader to utilize this tool", MessageType.Error);
-                    if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Use MRTK Standard Shader", "Set Replacement Shader to MRKT Standard Shader"), EditorStyles.miniButton, GUILayout.Width(200f)))
+                    if (InspectorUIUtility.RenderIndentedButton(new GUIContent("Use MRTK Standard Shader", "Set Replacement Shader to MRKT Standard Shader"), EditorStyles.miniButton, GUILayout.Width(200f)))
                     {
                         FindShaders();
                     }
@@ -252,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         disableBakedGlobalIllumination = EditorGUILayout.ToggleLeft("Disable Baked Global Illumination", disableBakedGlobalIllumination);
                     }
 
-                    if (MixedRealityEditorUtility.RenderIndentedButton("Optimize Lighting"))
+                    if (InspectorUIUtility.RenderIndentedButton("Optimize Lighting"))
                     {
                         OptimizeScene();
                     }
@@ -374,7 +375,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     */
                 });
 
-                if (MixedRealityEditorUtility.RenderIndentedButton("Optimize Project"))
+                if (InspectorUIUtility.RenderIndentedButton("Optimize Project"))
                 {
                     OptimizeProject();
                 }
