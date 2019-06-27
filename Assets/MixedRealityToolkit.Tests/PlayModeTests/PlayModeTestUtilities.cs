@@ -155,6 +155,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         internal static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService, ArticulatedHandPose.GestureId handPose, Vector3 handLocation)
         {
+            yield return null;
+
             SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             handData.Update(true, false, GenerateHandPose(handPose, handedness, handLocation));
 
