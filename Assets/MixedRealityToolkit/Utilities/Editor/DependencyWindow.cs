@@ -13,21 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     public class DependencyWindow : EditorWindow
     {
-        private readonly string[] assetsWithDependencies =
-        {
-            ".unity",
-            ".prefab",
-            ".asset",
-            ".mat",
-            ".anim",
-            ".controller"
-        };
-
-        private const string windowTitle = "Dependency Window";
-        private const string guidPrefix = "guid: ";
-        private const string nullGuid = "00000000000000000000000000000000";
-        private const int guidCharacterCount = 32;
-
         private Object assetSelection = null;
         private int maxDisplayDepth = 8;
         private Vector2 scrollPosition = Vector2.zero;
@@ -41,6 +26,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         private Dictionary<string, AssetGraphNode> dependencyGraph = new Dictionary<string, AssetGraphNode>();
+
+        private const string windowTitle = "Dependency Window";
+        private const string guidPrefix = "guid: ";
+        private const string nullGuid = "00000000000000000000000000000000";
+        private const int guidCharacterCount = 32;
+
+        private readonly string[] assetsWithDependencies =
+        {
+            ".unity",
+            ".prefab",
+            ".asset",
+            ".mat",
+            ".anim",
+            ".controller"
+        };
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Dependency Window", false, 3)]
         private static void ShowWindow()
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             MixedRealityEditorUtility.RenderMixedRealityToolkitLogo();
 
             EditorGUILayout.LabelField("Mixed Reality Toolkit Dependency Window", new GUIStyle() {fontSize = 12, fontStyle = FontStyle.Bold });
-            EditorGUILayout.LabelField("This tool displays how assets reference and depend on each other. Dependencies are calculated by parsing guids within project YAML files.", EditorStyles.wordWrappedLabel);
+            EditorGUILayout.LabelField("This tool displays how assets reference and depend on each other. Dependencies are calculated by parsing guids within project YAML files, code dependencies are not considered.", EditorStyles.wordWrappedLabel);
 
             EditorGUILayout.Space();
 
@@ -66,7 +66,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             EditorGUILayout.BeginHorizontal();
             {
-                GUILayout.Label(string.Format("The dependency graph contains {0} assets and took {1:0.00} seconds to build.", dependencyGraph.Count, assetGraphRefreshTime));
+                if (dependencyGraph.Count == 0)
+                {
+                    GUILayout.Label(string.Format("The dependency graph contains 0 assets, please refresh the dependency graph.", dependencyGraph.Count));
+                }
+                else
+                {
+                    GUILayout.Label(string.Format("The dependency graph contains {0} assets and took {1:0.00} seconds to build.", dependencyGraph.Count, assetGraphRefreshTime));
+                }
 
                 if (GUILayout.Button("Refresh"))
                 {
@@ -101,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         }
                         else
                         {
-                            GUILayout.Label("Nothing.");
+                            EditorGUILayout.HelpBox("Nothing.", MessageType.Info);
                         }
 
                         EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
@@ -118,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         }
                         else
                         {
-                            GUILayout.Label("Nothing, you could consider deleting this asset if it isn't loaded programmatically.");
+                            EditorGUILayout.HelpBox("Nothing, you could consider deleting this asset if it isn't loaded programmatically.", MessageType.Info);
                         }
                     }
                     EditorGUILayout.EndScrollView();
@@ -127,11 +134,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     if (IsAsset(file))
                     {
-                        GUILayout.Box(string.Format("Failed to find data for {0} try refreshing the dependency graph.", file), EditorStyles.helpBox, new GUILayoutOption[0]);
+                        EditorGUILayout.HelpBox(string.Format("Failed to find data for {0} try refreshing the dependency graph.", file), MessageType.Warning);
                     }
                     else
                     {
-                        GUILayout.Box("Please select an asset above to see the dependency graph.", EditorStyles.helpBox, new GUILayoutOption[0]);
+                        EditorGUILayout.HelpBox("Please select an asset above to see the dependency graph.", MessageType.Info);
                     }
                 }
             }
@@ -227,6 +234,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return File.Exists(file);
         }
 
+        private static bool IsGuidValid(string guid)
+        {
+            return !string.IsNullOrEmpty(guid) && guid != nullGuid;
+        }
+
         private static string GetGuidFromMeta(string file)
         {
             string[] lines = File.ReadAllLines(file);
@@ -262,11 +274,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return guids;
-        }
-
-        private static bool IsGuidValid(string guid)
-        {
-            return !string.IsNullOrEmpty(guid) && guid != nullGuid;
         }
 
         private static void DrawDependency(AssetGraphNode node, int depth, int maxDepth)
