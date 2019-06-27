@@ -15,8 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         private Object assetSelection = null;
         private int maxDisplayDepth = 8;
-        private Vector2 scrollPosition = Vector2.zero;
         private float assetGraphRefreshTime = 0.0f;
+        private Vector2 scrollPosition = Vector2.zero;
 
         private class AssetGraphNode
         {
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static void ShowWindow()
         {
             var window = GetWindow<DependencyWindow>();
-            window.titleContent = new GUIContent(windowTitle);
+            window.titleContent = new GUIContent(windowTitle, EditorGUIUtility.IconContent("d_EditCollider").image);
             window.minSize = new Vector2(520.0f, 380.0f);
             window.RefreshAssetGraph();
             window.Show();
@@ -168,12 +168,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             dependencyGraph.Clear();
 
-            string metaExtension = ".meta";
+            var metaExtension = ".meta";
             string[] metaFiles = Directory.GetFiles(Application.dataPath, "*" + metaExtension, SearchOption.AllDirectories);
 
             for (int i = 0; i < metaFiles.Length; ++i)
             {
-                float progress = (float)i / metaFiles.Length;
+                var progress = (float)i / metaFiles.Length;
 
                 if (EditorUtility.DisplayCancelableProgressBar(windowTitle, "Building dependency graph...", progress))
                 {
@@ -195,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     continue;
                 }
 
-                AssetGraphNode node = EnsureNode(guid);
+                var node = EnsureNode(guid);
 
                 // Check if this asset can have dependencies.
                 var extension = Path.GetExtension(file).ToLowerInvariant();
