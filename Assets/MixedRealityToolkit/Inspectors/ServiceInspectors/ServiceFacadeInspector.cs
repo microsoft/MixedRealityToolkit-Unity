@@ -126,25 +126,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         /// <summary>
         /// Draws button linking to documentation.
         /// </summary>
-        /// <param name="serviceType"></param>
-        /// <returns></returns>
+        /// <param name="serviceType">type of service to target</param>
+        /// <returns>true if doc link is found, false otherwise</returns>
         private bool DrawDocLink(Type serviceType)
         {
             DocLinkAttribute docLink = serviceType.GetCustomAttribute<DocLinkAttribute>();
             if (docLink != null)
             {
-                GUIContent buttonContent = new GUIContent();
-                buttonContent.image = EditorGUIUtility.IconContent("_Help").image;
-                buttonContent.text = " Documentation";
-                buttonContent.tooltip = docLink.URL;
-
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(MixedRealityInspectorUtility.DocLinkWidth)))
-                {
-                    Application.OpenURL(docLink.URL);
-                }
+                InspectorUIUtility.RenderDocLinkButton(docLink);
 
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
