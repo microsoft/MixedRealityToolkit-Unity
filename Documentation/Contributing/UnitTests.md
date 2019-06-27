@@ -19,7 +19,7 @@ There's two types of tests that can be added for new code
 ## Play mode tests
 
 Play mode tests will be executed in Unity's play mode and should be added into MixedRealityToolkit.Tests > PlaymodeTests. 
-To create a new test the following template with the can be used:
+To create a new test the following template can be used:
 
 ``` csharp
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.EnsureTextMeshProEssentials();
         }
 
-        // do common setup for each of your tests here - this will be called after entering playmode
+        // do common setup for each of your tests here - this will be called for each individual test after entering playmode
         [Setup]
         public void Init()
         {
