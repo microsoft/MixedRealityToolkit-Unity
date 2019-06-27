@@ -55,6 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.AreNotSame(eventData.OldFocusedObject, eventData.NewFocusedObject);
                 Assert.AreEqual(state.numFocusChanged, state.numBeforeFocusChange);
 
+                // Uncomment to help debugging issues
+                //var controllerPointer = eventData.Pointer as BaseControllerPointer;
+                //Debug.Log($"Pointer '{eventData.Pointer}' Game Object '{controllerPointer?.gameObject}' Old '{eventData.OldFocusedObject}' New '{eventData.NewFocusedObject}'");
+
                 state.numBeforeFocusChange++;
 
                 if (eventData.OldFocusedObject == gameObject)
@@ -111,9 +115,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         private const string testContentPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/PointerEventsTests.prefab";
+        private PointerHandler handler;
+
+        // Keeping this low by default so the test runs fast. Increase it to be able to see hand movements in the editor.
+        private const int numFramesPerMove = 1;
 
         // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
-        private PointerHandler SetupScene()
+        [SetUp]
+        public void SetUp()
         {
             TestUtilities.InitializeMixedRealityToolkit(true);
 
@@ -124,27 +133,45 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var collider = testContent.GetComponentInChildren<Collider>();
             Assert.IsNotNull(collider);
 
-            return collider.gameObject.AddComponent<PointerHandler>();
+            handler = collider.gameObject.AddComponent<PointerHandler>();
         }
 
-        // Tests that the right pointer events are raised when using a single pointer to interact with a collider
-        [UnityTest]
-        public IEnumerator TestOnePointer()
+        [TearDown]
+        public void TearDown()
         {
-            var handler = SetupScene();
-            var rightHand = new TestHand(Handedness.Right);
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
+        [UnityTest]
+        public IEnumerator Test()
+        {
+            // Step once to receive focus events from gaze pointer
+            yield return null;
+
+            var expected = new PointerHandler.State();
+            expected.numBeforeFocusChange++;
+            expected.numFocusChanged++;
+            expected.numFocusEnter++;
+            handler.state.AssertEqual(expected);
+
+            //
+            // Test that the correct pointer events are raised when using a single pointer
+            //
 
             // Show hand far enough from the test collider to not give it focus
-            Vector3 noFocusPos = new Vector3(0.05f, 0, 0.5f);
-            yield return rightHand.Show(noFocusPos);
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 rightNoFocusPos = new Vector3(0.05f, 0, 1.0f);
+            yield return rightHand.Show(rightNoFocusPos);
 
-            // Make sure no events have been raised
-            var expected = new PointerHandler.State();
+            // Should receive focus left events from gaze pointer
+            expected.numBeforeFocusChange++;
+            expected.numFocusChanged++;
+            expected.numFocusExit++;
             handler.state.AssertEqual(expected);
 
             // Move hand closer to the collider so it gives it focus
-            Vector3 focusPos = new Vector3(0.05f, 0, 1.5f);
-            yield return rightHand.MoveTo(focusPos);
+            Vector3 rightFocusPos = new Vector3(0.05f, 0, 1.5f);
+            yield return rightHand.MoveTo(rightFocusPos, numFramesPerMove);
 
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
@@ -159,10 +186,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Maintain pinch for a number of frames
-            int numStepsPinching = 30;
-            yield return rightHand.MoveTo(focusPos, numStepsPinching);
+            yield return rightHand.MoveTo(rightFocusPos, numFramesPerMove);
 
-            expected.numPointerDragged += numStepsPinching;
+            expected.numPointerDragged += numFramesPerMove;
             handler.state.AssertEqual(expected);
 
             // Release pinch
@@ -173,34 +199,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Move back to no focus
-            yield return rightHand.MoveTo(noFocusPos);
+            yield return rightHand.MoveTo(rightNoFocusPos, numFramesPerMove);
 
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
             expected.numFocusExit++;
             handler.state.AssertEqual(expected);
 
-            yield return rightHand.Hide();
-        }
-
-        // Tests that the right pointer events are raised when using two pointers to interact with a collider
-        [UnityTest]
-        public IEnumerator TestTwoPointers()
-        {
-            var handler = SetupScene();
-
-            // Show right hand far enough from the test collider to not give it focus
-            var rightHand = new TestHand(Handedness.Right);
-            Vector3 rightNoFocusPos = new Vector3(0.05f, 0, 0.5f);
-            yield return rightHand.Show(rightNoFocusPos);
-
-            // Make sure no events have been raised
-            var expected = new PointerHandler.State();
-            handler.state.AssertEqual(expected);
+            //
+            // Test that the correct pointer events are raised when using two pointers
+            //
 
             // Show left hand far enough from the test collider to not give it focus
             var leftHand = new TestHand(Handedness.Left);
-            Vector3 leftNoFocusPos = new Vector3(-0.05f, 0, 0.5f);
+            Vector3 leftNoFocusPos = new Vector3(-0.05f, 0, 1.0f);
             yield return leftHand.Show(leftNoFocusPos);
 
             // Make sure no events have been raised
@@ -208,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move left hand to give focus
             Vector3 leftFocusPos = new Vector3(-0.05f, 0, 1.5f);
-            yield return leftHand.MoveTo(leftFocusPos);
+            yield return leftHand.MoveTo(leftFocusPos, numFramesPerMove);
 
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
@@ -216,9 +228,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Move right hand to give focus
-            Vector3 rightFocusPos = new Vector3(0.05f, 0, 1.5f);
-            yield return rightHand.MoveTo(rightFocusPos);
+            yield return rightHand.MoveTo(rightFocusPos, numFramesPerMove);
 
+            // Focus enter should not be raised as the object is already in focus.
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
             handler.state.AssertEqual(expected);
@@ -253,22 +265,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Move left out of focus
-            yield return leftHand.MoveTo(leftNoFocusPos);
+            yield return leftHand.MoveTo(leftNoFocusPos, numFramesPerMove);
 
+            // Focus exit should not be raised as the object is still in focus.
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
             handler.state.AssertEqual(expected);
 
             // Move right out of focus
-            yield return rightHand.MoveTo(rightNoFocusPos);
+            yield return rightHand.MoveTo(rightNoFocusPos, numFramesPerMove);
 
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
             expected.numFocusExit++;
             handler.state.AssertEqual(expected);
-
-            yield return leftHand.Hide();
-            yield return rightHand.Hide();
         }
     }
 }

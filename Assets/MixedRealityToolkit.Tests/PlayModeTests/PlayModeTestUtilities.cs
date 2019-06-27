@@ -113,13 +113,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
         }
 
-        internal static IEnumerator MoveHandFromTo(Vector3 startPos, Vector3 endPos, int numSteps, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
+        internal static IEnumerator MoveHandFromTo(
+            Vector3 startPos, Vector3 endPos, int numSteps, 
+            ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
             Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
             bool isPinching = gestureId == ArticulatedHandPose.GestureId.Grab || gestureId == ArticulatedHandPose.GestureId.Pinch || gestureId == ArticulatedHandPose.GestureId.PinchSteadyWrist;
-            for (int i = 0; i < numSteps; i++)
+
+            for (int i = 1; i <= numSteps; i++)
             {
-                float t = numSteps > 1 ? 1.0f / (numSteps - 1) * i : 1.0f;
+                float t = i / (float) numSteps;
                 Vector3 handPos = Vector3.Lerp(startPos, endPos, t);
                 var handDataGenerator = GenerateHandPose(
                         gestureId,
