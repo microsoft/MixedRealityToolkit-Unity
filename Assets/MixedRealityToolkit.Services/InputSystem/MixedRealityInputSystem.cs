@@ -412,7 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    Debug.LogError($"ArgumentException: Invalid type: {eventData.GetType().AssemblyQualifiedName} passed to event expecting {typeof(BaseInputEventData).AssemblyQualifiedName} or {typeof(FocusEventData).AssemblyQualifiedName}");
+                    Debug.LogException(new ArgumentException($"Invalid type: {eventData.GetType().AssemblyQualifiedName} passed to event expecting {typeof(BaseInputEventData).AssemblyQualifiedName} or {typeof(FocusEventData).AssemblyQualifiedName}"));
                     return;
                 }
             }
@@ -465,7 +465,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Debug.Assert(baseEventData != null);
             Debug.Assert(!baseEventData.used);
-            //Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}");
 
             // Send the event to global listeners
             base.HandleEvent(baseEventData, eventHandler);
@@ -946,12 +945,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             };
 
         /// <inheritdoc />
-        public void RaiseFocusEnter(IMixedRealityPointer pointer, GameObject focusedObject)
+        public void RaiseFocusEnter(IMixedRealityPointer pointer)
         {
             focusEventData.Initialize(pointer);
 
             HandleEvent(focusEventData, OnFocusEnterEventHandler);
-            //ExecuteEvents.ExecuteHierarchy(focusedObject, focusEventData, OnFocusEnterEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusEnterEventHandler =
@@ -962,12 +960,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 };
 
         /// <inheritdoc />
-        public void RaiseFocusExit(IMixedRealityPointer pointer, GameObject unfocusedObject)
+        public void RaiseFocusExit(IMixedRealityPointer pointer)
         {
             focusEventData.Initialize(pointer);
 
             HandleEvent(focusEventData, OnFocusExitEventHandler);
-            //ExecuteEvents.ExecuteHierarchy(unfocusedObject, focusEventData, OnFocusExitEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusExitEventHandler =

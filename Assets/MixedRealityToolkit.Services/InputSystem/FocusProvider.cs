@@ -721,7 +721,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (!objectIsStillFocusedByOtherPointer)
                 {
                     // Policy: only raise focus exit if no other pointers are still focusing the object
-                    InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
+                    InputSystem?.RaiseFocusExit(pointer);
                 }
 
                 InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
@@ -1228,14 +1228,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
+                        InputSystem.RaiseFocusExit(change.Pointer);
                         pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
                     }
                 }
 
                 if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
                 {
-                    InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
+                    InputSystem.RaiseFocusEnter(change.Pointer);
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
