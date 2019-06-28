@@ -1,14 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the required assemblies (i.e. the ones below).
-// Given that the .NET backend is deprecated by Unity at this point it's we have
-// to work around this on our end.
-#if UNITY_EDITOR
-using Microsoft.MixedReality.Toolkit.Editor;
-#endif
-using Microsoft.MixedReality.Toolkit.Input;
+// The assembly that this file is part of is still built for the player,
+// even though the assembly itself is marked as a test assembly (this is not
+// expected because test assemblies should not be included in player builds).
+// Because the .NET backend is deprecated in 2018 and removed in 2019 and this
+// issue will likely persist for 2018, this issue is worked around by wrapping all
+// play mode tests in this check.
+
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
@@ -71,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InstantiateDefaultInteractablePrefab(
                 new Vector3(0.025f, 0.05f, 0.5f),
                 new Vector3(-90f, 0f, 0f),
-                out interactableObject, 
+                out interactableObject,
                 out interactable,
                 out translateTargetObject);
 
@@ -80,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             interactable.OnClick.AddListener(() => { wasClicked = true; });
 
             Vector3 targetStartPosition = translateTargetObject.localPosition;
-            
+
             // Move the hand forward to intersect the interactable
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             int numSteps = 32;
@@ -397,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return new WaitForFixedUpdate();
                 wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
             }
-                        
+
             // Raise an input up event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.None, interactable.InputAction);
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);

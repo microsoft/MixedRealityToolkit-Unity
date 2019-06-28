@@ -1,10 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the required assemblies (i.e. the ones below).
-// Given that the .NET backend is deprecated by Unity at this point it's we have
-// to work around this on our end.
+// The assembly that this file is part of is still built for the player,
+// even though the assembly itself is marked as a test assembly (this is not
+// expected because test assemblies should not be included in player builds).
+// Because the .NET backend is deprecated in 2018 and removed in 2019 and this
+// issue will likely persist for 2018, this issue is worked around by wrapping all
+// play mode tests in this check.
+
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
@@ -156,18 +161,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handlerBasedListener1.enabled = false;
 
             CollectionAssert.AreEquivalent(
-                new List<System.Type> { typeof(IMixedRealitySpeechHandler), typeof(IMixedRealityBaseInputHandler) }, 
-                inputSystem.EventHandlersByType.Keys, 
+                new List<System.Type> { typeof(IMixedRealitySpeechHandler), typeof(IMixedRealityBaseInputHandler) },
+                inputSystem.EventHandlersByType.Keys,
                 "Input event system doesn't contain expected event handler types.");
 
             CollectionAssert.AreEquivalent(
                 new HandleList { new Handle(handlerBasedListener2) },
-                inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)], 
+                inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)],
                 "Input event system doesn't contain expected IMixedRealitySpeechHandler handlers.");
 
             CollectionAssert.AreEquivalent(
                 new HandleList { new Handle(handlerBasedListener2) },
-                inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)], 
+                inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)],
                 "Input event system doesn't contain expected IMixedRealityBaseInputHandler handlers.");
 
             Object.Destroy(object1);
@@ -210,14 +215,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.Zero(objectBasedListener.pointerUpCount,             "Pointer up event is received by old API handler.");
             Assert.Zero(objectBasedListener.pointerDraggedCount,        "Pointer dragged event is received by old API handler.");
             Assert.Zero(objectBasedListener.speechCount,                "Speech event is received by old API handler.");
-            
+
             // Wrong behavior, preserved for backward compatibility
             Assert.AreEqual(handlerBasedListener.pointerClickedCount, 1, "Pointer clicked event is not received by new API handler.");
             Assert.Zero(handlerBasedListener.pointerDownCount,           "Pointer down event is received by new  API handler.");
             Assert.Zero(handlerBasedListener.pointerUpCount,             "Pointer up event is received by new API handler.");
             Assert.Zero(handlerBasedListener.pointerDraggedCount,        "Pointer dragged event is received by new API handler.");
             Assert.Zero(handlerBasedListener.speechCount,                "Speech event is received by new API handler.");
-            
+
             Assert.AreEqual(handlerBasedListener1.pointerClickedCount, 1, "Pointer clicked event is not received by all-handlers component.");
             Assert.Zero(handlerBasedListener1.pointerDownCount,           "Pointer down event is received by all-handlers component.");
             Assert.Zero(handlerBasedListener1.pointerUpCount,             "Pointer up event is received by all-handlers component.");
@@ -265,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Emit speech event, which should be received by all handlers.
             var gazeInputSource = inputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
             inputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands("menu", KeyCode.Alpha1, MixedRealityInputAction.None));
-            
+
             Assert.Zero(objectBasedListener.pointerClickedCount, "Pointer clicked event is received by old API handler.");
             Assert.Zero(objectBasedListener.pointerDownCount,    "Pointer down event is received by old API handler.");
             Assert.Zero(objectBasedListener.pointerUpCount,      "Pointer up event is received by old API handler.");
@@ -277,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.Zero(handlerBasedListener.pointerUpCount,      "Pointer up event is received by new API handler.");
             Assert.Zero(handlerBasedListener.pointerDraggedCount, "Pointer dragged event is received by new API handler.");
             Assert.AreEqual(handlerBasedListener.speechCount, 1,  "Speech event is not received by new API handler.");
-            
+
             Assert.Zero(handlerBasedListener1.pointerClickedCount, "Pointer clicked event is received by all-handlers component.");
             Assert.Zero(handlerBasedListener1.pointerDownCount,    "Pointer down event is received by all-handlers component.");
             Assert.Zero(handlerBasedListener1.pointerUpCount,      "Pointer up event is received by all-handlers component.");
