@@ -80,7 +80,7 @@ steps:
    # The NuGet and AppX logs are only relevant for UWP builds.
    If ("${{ parameters.Platform }}" -eq "UWP")
    {
-        $nugetRestoreLogFileName = '$logDirectory\nugetRestore.log'
+        $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
         If (Test-Path $nugetRestoreLogFileName)
         {
             Write-Output '====================================================='
@@ -95,10 +95,10 @@ steps:
         }
         Else
         {
-            Write-Output 'NuGet Restore Log Missing!'
+            Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
         }
 
-        $appxBuildLogFileName = '$logDirectory\buildAppx.log'
+        $appxBuildLogFileName = "$logDirectory\buildAppx.log"
         If (Test-Path $appxBuildLogFileName)
         {
             Write-Output '====================================================='
@@ -113,7 +113,7 @@ steps:
         }
         Else
         {
-            Write-Output 'AppX Build Log Missing!'
+            Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
         }
    }
 
