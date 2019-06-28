@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// The Profile can be swapped out at any time to meet the needs of your project.
     /// </summary>
     [DisallowMultipleComponent]
+    [ExecuteAlways]
     public class MixedRealityToolkit : MonoBehaviour, IMixedRealityServiceRegistrar
     {
 #region Mixed Reality Toolkit Profile configuration
@@ -644,6 +645,11 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void OnEnable()
         {
+            if (!Application.isPlaying)
+            {   // This is only necessary in edit mode.
+                RegisterInstance(this);
+            }
+
             if (IsActiveInstance)
             {
                 EnableAllServices();
@@ -1526,20 +1532,6 @@ namespace Microsoft.MixedReality.Toolkit
                     }
                 };
             }
-        }
-
-        /// <summary>
-        /// Used to register newly created instances in edit mode.
-        /// Initially handled by using ExecuteAlways, but this attribute causes the instance to be destroyed as we enter play mode, which is disruptive to services.
-        /// </summary>
-        private void OnValidate()
-        {
-            if (EditorApplication.isPlayingOrWillChangePlaymode || BuildPipeline.isBuildingPlayer)
-            {   // This check is only necessary in edit mode
-                return;
-            }
-
-            RegisterInstance(this);
         }
 
 #endif // UNITY_EDITOR
