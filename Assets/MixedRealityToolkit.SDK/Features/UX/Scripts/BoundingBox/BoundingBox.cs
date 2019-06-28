@@ -773,10 +773,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private List<Transform> links;
         // List of corner root transforms. Use these to position corners
         private List<Transform> corners;
-        // List of corner visuals. Use these to scale the corners to appropriate handle size
-        // Sometimes the actual visual transform for the corner (in case when you use prefabs)
-        // are below corner root transform.
-        //private List<Transform> cornerVisuals;
         private List<Transform> balls;
         private List<Renderer> linkRenderers;
         private List<Renderer> cornerRenderers;
@@ -2296,6 +2292,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
+            if (proximityEffectActive)
+            {
+                HandleProximityScaling(true);
+            }
+
             if (activation == BoundingBoxActivationType.ActivateManually || activation == BoundingBoxActivationType.ActivateOnStart)
             {
                 return;
