@@ -326,6 +326,54 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Architecture/ConfigurationAndProfiles.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Architecture/ConfigurationAndProfiles.html",
+          "hash": "Wec5EiBJVwEg8dpSkEYWeQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Architecture/FrameworkAndRuntime.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Architecture/FrameworkAndRuntime.html",
+          "hash": "OocCjGnTHpksVbXlT5OpQQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Architecture/InputSystem.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Architecture/InputSystem.html",
+          "hash": "70vRvQ2WMF2AADHHos594Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Architecture/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Architecture/Overview.html",
+          "hash": "lOZFa5g3zHwK6xM+h/MlqA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessSystemArchitecture.md",
       "output": {
         ".html": {
@@ -736,6 +784,28 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/AppBar/MRTK_AppBar_Setup2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Architecture/OverviewDiagramPart1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Architecture/OverviewDiagramPart1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Architecture/OverviewDiagramPart2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Architecture/OverviewDiagramPart2.png"
         }
       },
       "is_incremental": false,
@@ -4797,7 +4867,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "sZmKU3RaEpHeuwBK5FyWtQ=="
+          "hash": "1N0P4kuuiB7mzuhG9K412Q=="
         }
       },
       "is_incremental": false,
@@ -16596,9 +16666,9 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
@@ -16606,20 +16676,20 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 104,
+          "total_file_count": 108,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 976,
-          "skipped_file_count": 0
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }

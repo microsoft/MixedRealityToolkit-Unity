@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Input System | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Input System | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.43.1.0">
+    
+    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="input-system">Input System</h1>
+
+<p>The input system is one of the largest systems out of all the features offered by the MRTK.
+So many things within the toolkit build on top of it (pointers, focus, prefabs). The code within the input
+system is what allows for natural interactions like grab and rotate across platforms.</p>
+<p>The input system has some of its own terminology that are worth defining:</p>
+<ul>
+<li><p><strong>Data providers</strong></p>
+<p>The input settings in the input profile have references to entities known as data providers - another word
+that describes these are device managers. These are components whose job is to extend the MRTK input system
+by interfacing with a specific underlying system. An example of a provider is the Windows Mixed Reality provider,
+whose job it is to talk with the underlying Windows Mixed Reality APIs, and then translate the data from
+those APIs into MRTK-specific input concepts below. Another example would be the OpenVR provider (whose job it
+is to talk to Unity-abstracted version of OpenVR APIs and then translate that data into MRTK input concepts).</p>
+</li>
+<li><p><strong>Controller</strong></p>
+<p>A representation of a physical controller (whether it’s a 6-degree-of-freedom controller, a HoloLens 1-style
+hand with gesture support, a fully articulated hand, a leap motion controller, etc.). Controllers are spawned
+by device managers (i.e. the WMR device manager will spawn a controller and manage its lifetime when it sees an
+articulated hand coming into existence).</p>
+</li>
+<li><p><strong>Pointer</strong></p>
+<p>Controller use pointers to interact with game objects. For example, the near interaction pointer is
+responsible to detecting when the hand (which is a controller) is close to objects that advertise
+themselves as supporting ‘near interaction’. Other examples for pointers are teleportation or far
+pointers (i.e. the shell hand ray pointer) that use far raycasts to engage with content that is
+longer than arms length from the user.</p>
+<p>Pointers are created by the device manager, and then attached to an input source. To get all of the
+pointers for a controller, do: <code>controller.InputSource.Pointers</code></p>
+<p>Note that a controller can be associated with many different pointers at the same time – in order
+to ensure that this doesn’t devolve into chaos, there is a pointer mediator which controls which
+pointers are allowed to be active (for example, the mediator will disable far interaction pointers
+when near interaction is detected).</p>
+</li>
+<li><p><strong>Focus</strong></p>
+<p>Pointer events are sent to objects in <strong>focus</strong>. Focus selection will vary by pointer type - a hand ray
+pointer will use raycasts, while a poke pointer will use spherecasts. An object must implement
+IMixedRealityFocusHandler to receive focus. It's possible to globally register an object to receive
+unfiltered pointer events, but this approach is not recommended.</p>
+<p>The component that updates which objects are in focus is the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/FocusProvider.cs">FocusProvider</a></p>
+</li>
+<li><p><strong>Cursor</strong></p>
+<p>An entity associated with a pointer that gives additional visual cues around pointer interaction. For example,
+the FingerCursor will render a ring around your finger, and may rotate that ring when your finger is close to
+‘near interactable’ objects. A pointer can be associated with a single cursor at time.</p>
+</li>
+<li><p><strong>Interaction and Manipulation</strong></p>
+<p>Objects can be tagged with an interaction or manipulation script (this may be Interactable.cs, or something like
+NearInteractionGrabbable.cs/ManipulationHandler.cs).</p>
+<p>For example, NearInteractionGrabbable and NearInteractionTouchable allow for certain pointers (especially
+near interaction pointers) to know which objects can be focused on.</p>
+<p>Interactable and ManipulationHandler, are examples of components that listen to pointer events to modify
+UI visuals or move/scale/rotate game objects.</p>
+</li>
+</ul>
+<p>The image below captures the high level build up (from bottom up) of the MRTK input stack:</p>
+<p><img src="../Images/Input/MRTK_InputSystem.png" alt="Input System Diagram"></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Architecture/InputSystem.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
