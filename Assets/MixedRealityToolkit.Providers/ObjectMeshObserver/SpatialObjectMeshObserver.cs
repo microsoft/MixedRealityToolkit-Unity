@@ -140,11 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             }
 
             ClearObservations();
-            if (spatialMeshObject != null)
-            {
-                Object.DestroyImmediate(spatialMeshObject);
-                spatialMeshObject = null;
-            }
         }
 
         #endregion IMixedRealityDataProvider implementation
