@@ -1420,6 +1420,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Make the handle colliders ignore specified collider. (e.g. spatial mapping's floor collider to avoid the object get lifted up)
+        /// </summary>
         private void HandleIgnoreCollider()
         {
             if (handlesIgnoreCollider != null)
