@@ -201,13 +201,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderFoldout_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderFoldout*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderFoldout_System_Boolean__System_String_System_Action_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderFoldout(System.Boolean@,System.String,System.Action)">RenderFoldout(ref Boolean, String, Action)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderFoldout_System_Boolean__System_String_System_Action_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.RenderFoldout(System.Boolean@,System.String,System.Action,System.String)">RenderFoldout(ref Boolean, String, Action, String)</h4>
   <div class="markdown level1 summary"><p>Render Bold/HelpBox style Foldout</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected static void RenderFoldout(ref bool currentState, string title, Action renderContent)</code></pre>
+    <pre><code class="lang-csharp hljs">protected static void RenderFoldout(ref bool currentState, string title, Action renderContent, string preferenceKey = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -235,6 +235,12 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
         <td><span class="parametername">renderContent</span></td>
         <td><p>code to execute to render inside of foldout</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">preferenceKey</span></td>
+        <td><p>optional argument, current show/hide state will be tracked associated with provided preference key</p>
 </td>
       </tr>
     </tbody>
