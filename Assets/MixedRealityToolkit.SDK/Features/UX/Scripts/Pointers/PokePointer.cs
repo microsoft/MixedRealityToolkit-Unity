@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float closestDistance = 0.0f;
 
         private Vector3 closestNormal = Vector3.forward;
+        // previous frame pointer position
+        public Vector3 PreviousPosition { get; private set; } = Vector3.zero;
 
         // The closest touchable component limits the set of objects which are currently touchable.
         // These are all the game objects in the subtree of the closest touchable component's owner object.
@@ -137,6 +139,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 line.endColor = line.startColor = new Color(0, 0, 1, 0.75f);
             }
+
+            PreviousPosition = Position;
         }
 
         public override void OnPreCurrentPointerTargetChange()
