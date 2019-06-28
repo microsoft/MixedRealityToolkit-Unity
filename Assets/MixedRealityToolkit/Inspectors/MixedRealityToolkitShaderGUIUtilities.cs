@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,34 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Checks if the project has depth buffer sharing enabled.
-        /// </summary>
-        /// <returns>True if the project has depth buffer sharing enabled, false otherwise.</returns>
-        public static bool IsDepthBufferSharingEnabled()
-        {
-            if (PlayerSettings.VROculus.sharedDepthBuffer)
-            {
-                return true;
-            }
-
-#if UNITY_2019_1_OR_NEWER
-            if (PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled)
-            {
-                return true;
-            }
-#else
-            var playerSettings = MixedRealityOptimizeUtils.GetSettingsObject("PlayerSettings");
-            var property = playerSettings?.FindProperty("vrSettings.hololens.depthBufferSharingEnabled");
-            if (property != null && property.boolValue)
-            {
-                return true;
-            }
-#endif
-
-            return false;
-        }
-
-        /// <summary>
         /// Displays a depth write warning and fix button if depth buffer sharing is enabled.
         /// </summary>
         /// <param name="materialEditor">The material editor to display the warning in.</param>
@@ -60,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             bool dialogConfirmed = false;
 
-            if (IsDepthBufferSharingEnabled())
+            if (MixedRealityOptimizeUtils.IsDepthBufferSharingEnabled())
             {
                 var defaultValue = EditorStyles.helpBox.richText;
                 EditorStyles.helpBox.richText = true;
