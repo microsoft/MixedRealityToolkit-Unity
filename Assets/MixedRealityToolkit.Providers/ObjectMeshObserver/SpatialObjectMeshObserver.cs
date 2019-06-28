@@ -190,6 +190,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                         $"Spatial Object Mesh {currentMeshId}",
                         currentMeshId,
                         ObservedObjectParent);
+
+                    meshObject.GameObject.transform.localPosition = meshFilters[i].transform.position;
+                    meshObject.GameObject.transform.localRotation = meshFilters[i].transform.rotation;
+
                     ApplyMeshMaterial(meshObject);
 
                     meshes.Add(currentMeshId, meshObject);
