@@ -441,12 +441,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             // Events may have come from children objects which do not wish to be grabbed
-            // by the manipulation handler. Check if these children have contexts that tesll
-            // the handler to ignore them. For example: bounding box corners do not wish to be grabbed.
+            // by the manipulation handler. Check if these children have contexts.
+            // If yes, ignore collidables where ManipulationHandler type is not specified.
+            // If no context it present, allow object to be manipulated
             var targetObject = eventData.Pointer.Result.CurrentPointerTarget;
-            var manipContext = targetObject.GetComponent<ManipulationHandlerContext>();
-            if (manipContext != null && manipContext.IgnoredByManipulationHandler)
+            var manipContext = targetObject.GetComponent<InteractiveColliderContext>();
+            if (manipContext != null 
+                && manipContext.PointerHandlerTypes != null
+                && Array.IndexOf(manipContext.PointerHandlerTypes, new SystemType(this.GetType())) < 0)
             {
+                Debug.Log($"Ignoring object {targetObject.name}");
                 return;
             }
 
