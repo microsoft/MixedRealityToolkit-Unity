@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 bool result = await global::Windows.System.Launcher.LaunchUriAsync(new System.Uri(uri));
                 if (!result)
                 {
-                    Debug.LogError("Browser failed to launch.");
+                    Debug.LogError("Launching URI failed to launch.");
                 }
             }, false);
 #else
