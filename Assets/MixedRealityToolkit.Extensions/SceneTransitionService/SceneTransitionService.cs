@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using Microsoft.MixedReality.Toolkit.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
