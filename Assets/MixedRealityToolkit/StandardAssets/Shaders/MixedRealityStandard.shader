@@ -54,7 +54,13 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_HOVER_COLOR_OVERRIDE)] _EnableHoverColorOverride("Hover Color Override", Float) = 0.0
         _HoverColorOverride("Hover Color Override", Color) = (1.0, 1.0, 1.0, 1.0)
         [Toggle(_PROXIMITY_LIGHT)] _ProximityLight("Proximity Light", Float) = 0.0
+        [Toggle(_PROXIMITY_LIGHT_COLOR_OVERRIDE)] _EnableProximityLightColorOverride("Proximity Light Color Override", Float) = 0.0
+        [HDR]_ProximityLightCenterColorOverride("Proximity Light Center Color Override", Color) = (1.0, 0.0, 0.0, 0.0)
+        [HDR]_ProximityLightMiddleColorOverride("Proximity Light Middle Color Override", Color) = (0.0, 1.0, 0.0, 0.5)
+        [HDR]_ProximityLightOuterColorOverride("Proximity Light Outer Color Override", Color) = (0.0, 0.0, 1.0, 1.0)
+        [Toggle(_PROXIMITY_LIGHT_SUBTRACTIVE)] _ProximityLightSubtractive("Proximity Light Subtractive", Float) = 0.0
         [Toggle(_PROXIMITY_LIGHT_TWO_SIDED)] _ProximityLightTwoSided("Proximity Light Two Sided", Float) = 0.0
+        _FluentLightIntensity("Fluent Light Intensity", Range(0.0, 1.0)) = 1.0
         [Toggle(_ROUND_CORNERS)] _RoundCorners("Round Corners", Float) = 0.0
         _RoundCornerRadius("Round Corner Radius", Range(0.0, 0.5)) = 0.25
         _RoundCornerMargin("Round Corner Margin", Range(0.0, 0.5)) = 0.01
@@ -238,6 +244,8 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _HOVER_LIGHT
             #pragma shader_feature _HOVER_COLOR_OVERRIDE
             #pragma shader_feature _PROXIMITY_LIGHT
+            #pragma shader_feature _PROXIMITY_LIGHT_COLOR_OVERRIDE
+            #pragma shader_feature _PROXIMITY_LIGHT_SUBTRACTIVE
             #pragma shader_feature _PROXIMITY_LIGHT_TWO_SIDED
             #pragma shader_feature _ROUND_CORNERS
             #pragma shader_feature _BORDER_LIGHT
@@ -481,7 +489,16 @@ Shader "Mixed Reality Toolkit/Standard"
 #define PROXIMITY_LIGHT_COUNT 2
 #define PROXIMITY_LIGHT_DATA_SIZE 6
             float4 _ProximityLightData[PROXIMITY_LIGHT_COUNT * PROXIMITY_LIGHT_DATA_SIZE];
-#endif     
+#if defined(_PROXIMITY_LIGHT_COLOR_OVERRIDE)
+            float4 _ProximityLightCenterColorOverride;
+            float4 _ProximityLightMiddleColorOverride;
+            float4 _ProximityLightOuterColorOverride;
+#endif
+#endif
+
+#if defined(_HOVER_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_BORDER_LIGHT)
+            fixed _FluentLightIntensity;
+#endif
 
 #if defined(_ROUND_CORNERS)
             fixed _RoundCornerRadius;
@@ -554,12 +571,12 @@ Shader "Mixed Reality Toolkit/Standard"
             inline float ProximityLight(float4 proximityLight, float4 proximityLightParams, float4 proximityLightPulseParams, float3 worldPosition, float3 worldNormal, out fixed colorValue)
             {
                 float proximityLightDistance = dot(proximityLight.xyz - worldPosition, worldNormal);
-                float normalizedProximityLightDistance = saturate(proximityLightDistance * proximityLightParams.y);
 #if defined(_PROXIMITY_LIGHT_TWO_SIDED)
-                float3 projectedProximityLight = proximityLight.xyz - (worldNormal * proximityLightDistance);
-#else
-                float3 projectedProximityLight = proximityLight.xyz - (worldNormal * saturate(proximityLightDistance));
+                worldNormal = IF(proximityLightDistance < 0.0, -worldNormal, worldNormal);
+                proximityLightDistance = abs(proximityLightDistance);
 #endif
+                float normalizedProximityLightDistance = saturate(proximityLightDistance * proximityLightParams.y);
+                float3 projectedProximityLight = proximityLight.xyz - (worldNormal * abs(proximityLightDistance));
                 float projectedProximityLightDistance = length(projectedProximityLight - worldPosition);
                 float attenuation = (1.0 - pow(normalizedProximityLightDistance, 2.0)) * proximityLight.w;
                 colorValue = saturate(projectedProximityLightDistance * proximityLightParams.z);
@@ -802,7 +819,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(SHADER_API_D3D11) && !defined(_ALPHA_CLIP) && !defined(_TRANSPARENT)
             [earlydepthstencil]
 #endif
-            fixed4 frag(v2f i) : SV_Target
+            fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
 #if defined(_INSTANCED_COLOR)
                 UNITY_SETUP_INSTANCE_ID(i);
@@ -910,7 +927,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
                 fixed pointToLight = 1.0;
-                fixed3 lightColor = fixed3(0.0, 0.0, 0.0);
+                fixed3 fluentLightColor = fixed3(0.0, 0.0, 0.0);
 
                 // Hover light.
 #if defined(_HOVER_LIGHT)
@@ -923,11 +940,11 @@ Shader "Mixed Reality Toolkit/Standard"
                     fixed hoverValue = HoverLight(_HoverLightData[dataIndex], _HoverLightData[dataIndex + 1].w, i.worldPosition.xyz);
                     pointToLight += hoverValue;
 #if !defined(_HOVER_COLOR_OVERRIDE)
-                    lightColor += lerp(fixed3(0.0, 0.0, 0.0), _HoverLightData[dataIndex + 1].rgb, hoverValue);
+                    fluentLightColor += lerp(fixed3(0.0, 0.0, 0.0), _HoverLightData[dataIndex + 1].rgb, hoverValue);
 #endif
                 }
 #if defined(_HOVER_COLOR_OVERRIDE)
-                lightColor = _HoverColorOverride.rgb;
+                fluentLightColor = _HoverColorOverride.rgb * pointToLight;
 #endif
 #endif
 
@@ -943,8 +960,16 @@ Shader "Mixed Reality Toolkit/Standard"
                     fixed colorValue;
                     fixed proximityValue = ProximityLight(_ProximityLightData[dataIndex], _ProximityLightData[dataIndex + 1], _ProximityLightData[dataIndex + 2], i.worldPosition.xyz, i.worldNormal, colorValue);
                     pointToLight += proximityValue;
+#if defined(_PROXIMITY_LIGHT_COLOR_OVERRIDE)
+                    fixed3 proximityColor = MixProximityLightColor(_ProximityLightCenterColorOverride, _ProximityLightMiddleColorOverride, _ProximityLightOuterColorOverride, colorValue);
+#else
                     fixed3 proximityColor = MixProximityLightColor(_ProximityLightData[dataIndex + 3], _ProximityLightData[dataIndex + 4], _ProximityLightData[dataIndex + 5], colorValue);
-                    lightColor += lerp(fixed3(0.0, 0.0, 0.0), proximityColor, proximityValue);
+#endif  
+#if defined(_PROXIMITY_LIGHT_SUBTRACTIVE)
+                    fluentLightColor -= lerp(fixed3(0.0, 0.0, 0.0), proximityColor, proximityValue);
+#else
+                    fluentLightColor += lerp(fixed3(0.0, 0.0, 0.0), proximityColor, proximityValue);
+#endif    
                 }
 #endif    
 
@@ -966,14 +991,14 @@ Shader "Mixed Reality Toolkit/Standard"
 #else
                 fixed3 borderColor = fixed3(1.0, 1.0, 1.0);
 #endif
-                fixed3 borderContribution = borderColor * borderValue * _BorderMinValue;
+                fixed3 borderContribution = borderColor * borderValue * _BorderMinValue * _FluentLightIntensity;
 #if defined(_BORDER_LIGHT_REPLACES_ALBEDO)
                 albedo.rgb = lerp(albedo.rgb, borderContribution, borderValue);
 #else
                 albedo.rgb += borderContribution;
 #endif
 #if defined(_HOVER_LIGHT) || defined(_PROXIMITY_LIGHT)
-                albedo.rgb += (lightColor * borderValue * pointToLight) * 2.0;
+                albedo.rgb += (fluentLightColor * borderValue * pointToLight * _FluentLightIntensity) * 2.0;
 #endif
 #if defined(_BORDER_LIGHT_OPAQUE)
                 albedo.a = max(albedo.a, borderValue * _BorderLightOpaqueAlpha);
@@ -1023,10 +1048,10 @@ Shader "Mixed Reality Toolkit/Standard"
                 worldNormal.x = dot(i.tangentX, tangentNormal);
                 worldNormal.y = dot(i.tangentY, tangentNormal);
                 worldNormal.z = dot(i.tangentZ, tangentNormal);
-                worldNormal = normalize(worldNormal);
+                worldNormal = normalize(worldNormal) * facing;
 #endif
 #else
-                worldNormal = normalize(i.worldNormal);
+                worldNormal = normalize(i.worldNormal) * facing;
 #endif
 #endif
 
@@ -1131,7 +1156,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
                 // Hover and proximity lighting should occur after near plane fading.
 #if defined(_HOVER_LIGHT) || defined(_PROXIMITY_LIGHT)
-                output.rgb += lightColor * pointToLight;
+                output.rgb += fluentLightColor * _FluentLightIntensity * pointToLight;
 #endif
                 return output;
             }

@@ -25,7 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         static ServiceFacadeEditor()
         {
             // Register this on startup so we can update whether a facade inspector is updated or not
+#if UNITY_2019_1_OR_NEWER
+            SceneView.duringSceneGui += DrawSceneGUI;
+#else
             SceneView.onSceneGUIDelegate += DrawSceneGUI;
+#endif
         }
 
         private static List<string> dataProviderList = new List<string>();
