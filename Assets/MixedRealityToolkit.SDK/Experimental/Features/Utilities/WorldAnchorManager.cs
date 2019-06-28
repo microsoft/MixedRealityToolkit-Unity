@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// The data structure for anchor operations.
+        /// Enumeration defining the types of anchor operations.
         /// </summary>
         private enum AnchorOperation
         {
