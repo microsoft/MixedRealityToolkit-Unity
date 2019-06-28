@@ -2292,11 +2292,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
-            if (proximityEffectActive)
-            {
-                HandleProximityScaling(true);
-            }
-
             if (activation == BoundingBoxActivationType.ActivateManually || activation == BoundingBoxActivationType.ActivateOnStart)
             {
                 return;
