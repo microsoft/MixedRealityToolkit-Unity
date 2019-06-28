@@ -29,8 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private const string windowTitle = "Dependency Window";
         private const string guidPrefix = "guid: ";
-        private const string nullGuid = "00000000000000000000000000000000";
         private const int guidCharacterCount = 32;
+        private static readonly string nullGuid = new string('0', guidCharacterCount);
 
         private readonly string[] assetsWithDependencies =
         {
@@ -47,33 +47,75 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             var window = GetWindow<DependencyWindow>();
             window.titleContent = new GUIContent(windowTitle, EditorGUIUtility.IconContent("d_EditCollider").image);
-            window.minSize = new Vector2(520.0f, 380.0f);
+            window.minSize = new Vector2(580.0f, 380.0f);
             window.RefreshAssetGraph();
             window.Show();
         }
 
         private void OnGUI()
         {
-            MixedRealityEditorUtility.RenderMixedRealityToolkitLogo();
-
-            EditorGUILayout.LabelField("Mixed Reality Toolkit Dependency Window", new GUIStyle() {fontSize = 12, fontStyle = FontStyle.Bold });
-            EditorGUILayout.LabelField("This tool displays how assets reference and depend on each other. Dependencies are calculated by parsing guids within project YAML files, code dependencies are not considered.", EditorStyles.wordWrappedLabel);
-
-            EditorGUILayout.Space();
-
-            if (EditorSettings.serializationMode != SerializationMode.ForceText)
+            // Don't allow the dependency window to be used when the editor is playing.
+            if (EditorApplication.isPlaying || EditorApplication.isPaused)
             {
-                EditorGUILayout.HelpBox("Dependencies can only be tracked with text assets. Please change the project serialization mode to \"Force Text\" via Edit->Project Settings->Editor->Asset Serialization", MessageType.Error);
+                GUI.enabled = false;
             }
+
+            DrawHeader();
+            DrawVerifyAssetSerializationMode();
 
             assetSelection = EditorGUILayout.ObjectField("Asset Selection", assetSelection, typeof(Object), false);
             maxDisplayDepth = EditorGUILayout.IntSlider("Max Display Depth", maxDisplayDepth, 1, 32);
 
+            DrawAssetGraphStatistics();
+            DrawAssetGraphForSelection();
+        }
+
+        private void OnSelectionChange()
+        {
+            if (Selection.objects.Length != 0)
+            {
+                if (IsAsset(AssetDatabase.GetAssetPath(Selection.objects[0])))
+                {
+                    assetSelection = Selection.objects[0];
+                    Repaint();
+                }
+            }
+        }
+
+        private static void DrawHeader()
+        {
+            MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
+
+            EditorGUILayout.LabelField("Mixed Reality Toolkit Dependency Window", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("This tool displays how assets reference and depend on each other. Dependencies are calculated by parsing guids within project YAML files, code dependencies are not considered.", EditorStyles.wordWrappedLabel);
+
+            EditorGUILayout.Space();
+        }
+
+        private static void DrawVerifyAssetSerializationMode()
+        {
+            if (EditorSettings.serializationMode != SerializationMode.ForceText)
+            {
+                EditorGUILayout.BeginHorizontal();
+                {
+                    EditorGUILayout.HelpBox("Dependencies can only be tracked with text assets. Please change the project serialization mode to \"Force Text\"", MessageType.Error);
+
+                    if (GUILayout.Button("Fix Now"))
+                    {
+                        EditorSettings.serializationMode = SerializationMode.ForceText;
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+
+        private void DrawAssetGraphStatistics()
+        {
             EditorGUILayout.BeginHorizontal();
             {
                 if (dependencyGraph.Count == 0)
                 {
-                    GUILayout.Label(string.Format("The dependency graph contains 0 assets, please refresh the dependency graph.", dependencyGraph.Count));
+                    GUILayout.Label(string.Format("The dependency graph contains 0 assets, please refresh the dependency graph.", dependencyGraph.Count), EditorStyles.boldLabel);
                 }
                 else
                 {
@@ -86,12 +128,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
             }
             EditorGUILayout.EndHorizontal();
+        }
 
+        private void DrawAssetGraphForSelection()
+        {
             EditorGUILayout.Space();
 
-            GUILayout.BeginVertical("Box");
+            EditorGUILayout.BeginVertical("Box");
             {
-                GUILayout.Label("Dependency Graph", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Dependency Graph", EditorStyles.boldLabel);
 
                 EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
 
@@ -102,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
                     {
-                        GUILayout.Label("This asset depends on:", EditorStyles.boldLabel);
+                        EditorGUILayout.LabelField("This asset depends on:", EditorStyles.boldLabel);
 
                         if (node.assetsThisDependsOn.Count != 0)
                         {
@@ -118,14 +163,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                         EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
 
-                        GUILayout.Label("Assets that depend on this:", EditorStyles.boldLabel);
+                        EditorGUILayout.LabelField("Assets that depend on this:", EditorStyles.boldLabel);
 
                         if (node.assetsDependentOnThis.Count != 0)
                         {
                             foreach (var dependency in node.assetsDependentOnThis)
                             {
                                 DrawDependencyRecurse(dependency, 0, maxDisplayDepth);
-                                GUILayout.Space(8);
                             }
                         }
                         else
@@ -147,19 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     }
                 }
             }
-            GUILayout.EndVertical();
-        }
-
-        private void OnSelectionChange()
-        {
-            if (Selection.objects.Length != 0)
-            {
-                if (IsAsset(AssetDatabase.GetAssetPath(Selection.objects[0])))
-                {
-                    assetSelection = Selection.objects[0];
-                    Repaint();
-                }
-            }
+            EditorGUILayout.EndVertical();
         }
 
         private void RefreshAssetGraph()
@@ -297,22 +329,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             EditorGUILayout.BeginHorizontal();
             {
-                GUILayout.Space(depth * 16);
+                GUILayout.Space(depth * 8);
 
                 if (depth != maxDepth)
                 {
                     var path = AssetDatabase.GUIDToAssetPath(node.guid);
 
-                    if (GUILayout.Button("Select", GUILayout.ExpandWidth(false)))
+                    if (string.IsNullOrEmpty(path))
                     {
-                        Selection.objects = new Object[] { AssetDatabase.LoadMainAssetAtPath(path) };
+                        EditorGUILayout.LabelField(string.Format("Missing Asset: {0}", node.guid));
                     }
-
-                    GUILayout.Label(string.IsNullOrEmpty(path) ? string.Format("Missing Asset: {0}", node.guid) : path, GUILayout.ExpandWidth(false));
+                    else
+                    {
+                        EditorGUILayout.ObjectField(string.Empty, AssetDatabase.LoadMainAssetAtPath(path), typeof(Object), false);
+                    }
                 }
                 else
                 {
-                    GUILayout.Label("Max display depth was exceeded...", GUILayout.ExpandWidth(false));
+                    EditorGUILayout.LabelField("Max display depth was exceeded...");
                 }
             }
             EditorGUILayout.EndHorizontal();
@@ -328,6 +362,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 foreach (var dependency in node.assetsDependentOnThis)
                 {
                     DrawDependencyRecurse(dependency, depth + 1, maxDepth);
+
+                    // Only draw the first child at max depth.
+                    if ((depth + 1) == maxDepth)
+                    {
+                        break;
+                    }
                 }
             }
             else
