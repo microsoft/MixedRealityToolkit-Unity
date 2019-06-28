@@ -33,38 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Renderer representing the ring attached to the thumb using an MRTK/Standard material with the round corner feature enabled.")]
         protected Renderer thumbRingRenderer;
 
-        [SerializeField]
-        [Tooltip("Beginning margin of the ring.")]
-        protected float farAlignWithSurfaceMargin = 0.01f;
-
-        [SerializeField]
-        [Tooltip("Final margin of the ring.")]
-        protected float nearAlignWithSurfaceMargin = 0.3f;
-
-        [SerializeField]
-        [Tooltip("Beginning thickness of the ring.")]
-        protected float farAlignWithSurfaceWidth = 0.1f;
-
-        [SerializeField]
-        [Tooltip("Final thickness of the ring.")]
-        protected float nearAlignWithSurfaceWidth = 1.0f;
-
-        [SerializeField]
-        [Tooltip("How quickly to interpolate the alpha value.")]
-        protected float alphaFadeSpeed = 10.0f;
-
         private MaterialPropertyBlock materialPropertyBlock;
-        private int roundCornerMarginID;
-        private int borderWidthID;
-        private int borderLightOpaqueAlphaID;
+        private int proximityDistanceID;
         private readonly Quaternion fingerPadRotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
 
         protected virtual void Awake()
         {
             materialPropertyBlock = new MaterialPropertyBlock();
-            roundCornerMarginID = Shader.PropertyToID("_RoundCornerMargin");
-            borderWidthID = Shader.PropertyToID("_BorderWidth");
-            borderLightOpaqueAlphaID = Shader.PropertyToID("_BorderLightOpaqueAlpha");
+            proximityDistanceID = Shader.PropertyToID("_Proximity_Distance_");
         }
 
         /// <summary>
@@ -117,19 +93,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if ((distance < alignWithSurfaceDistance) &&
                             nearPointer.TryGetNormalToNearestSurface(out surfaceNormal))
                         {
-                            RotateToSurfaceNormal(indexFingerRingRenderer.transform, deltaTime, surfaceNormal);
+                            RotateToSurfaceNormal(indexFingerRingRenderer.transform, surfaceNormal, indexFingerRotation, distance, false);
                         }
                         else
                         {
                             RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation, false);
                         }
 
-                        UpdateVisuals(indexFingerRingRenderer, deltaTime, distance, true);
+                        UpdateVisuals(indexFingerRingRenderer, distance, true);
                     }
 
                     if (thumbRingRenderer != null)
                     {
-                        UpdateVisuals(thumbRingRenderer, deltaTime, distance, false);
+                        UpdateVisuals(thumbRingRenderer, distance, false);
                     }
                 }
                 else
@@ -144,14 +120,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexFingerRotation, nearGrabbable);
                         RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation, nearGrabbable);
-                        UpdateVisuals(indexFingerRingRenderer, deltaTime, distance, nearGrabbable);
+                        UpdateVisuals(indexFingerRingRenderer, distance, nearGrabbable);
                     }
 
                     if (thumbRingRenderer != null)
                     {
                         TranslateToFinger(thumbRingRenderer.transform, deltaTime, thumbPosition, thumbRotation, true);
                         RotateToFinger(thumbRingRenderer.transform, deltaTime, thumbRotation, true);
-                        UpdateVisuals(thumbRingRenderer, deltaTime, distance, nearGrabbable);
+                        UpdateVisuals(thumbRingRenderer, distance, nearGrabbable);
                     }
                 }
             }
@@ -165,20 +141,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Applies material overrides to a ring renderer.
         /// </summary>
         /// <param name="ringRenderer">Renderer using an MRTK/Standard material with the round corner feature enabled.</param>
-        /// <param name="deltaTime">Scaled or unscaled delta time.</param>
         /// <param name="distance">Distance between the ring and surface.</param>
         /// <param name="visible">Should the ring be visible?</param>
-        protected virtual void UpdateVisuals(Renderer ringRenderer, float deltaTime, float distance, bool visible)
+        protected virtual void UpdateVisuals(Renderer ringRenderer, float distance, bool visible)
         {
             ringRenderer.GetPropertyBlock(materialPropertyBlock);
-
-            float t = Mathf.Clamp(distance, 0.0f, alignWithSurfaceDistance) / alignWithSurfaceDistance;
-            materialPropertyBlock.SetFloat(roundCornerMarginID, Mathf.Lerp(nearAlignWithSurfaceMargin, farAlignWithSurfaceMargin, t));
-            materialPropertyBlock.SetFloat(borderWidthID, Mathf.Lerp(nearAlignWithSurfaceWidth, farAlignWithSurfaceWidth, t));
-
-            float currentAlpha = materialPropertyBlock.GetFloat(borderLightOpaqueAlphaID);
-            materialPropertyBlock.SetFloat(borderLightOpaqueAlphaID, Mathf.Lerp(currentAlpha, (visible) ? 1.0f : 0.0f, deltaTime * alphaFadeSpeed));
-
+            materialPropertyBlock.SetFloat(proximityDistanceID, visible ? distance : 1.0f);
             ringRenderer.SetPropertyBlock(materialPropertyBlock);
         }
 
@@ -238,22 +206,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void TranslateToFinger(Transform target, float deltaTime, Vector3 fingerPosition, Quaternion fingerRoation, bool useFingerPad)
         {
-            Vector3 targetPosition = (useFingerPad) ? fingerPosition + (fingerRoation * -Vector3.up) * skinSurfaceOffset :
+            var targetPosition = (useFingerPad) ? fingerPosition + (fingerRoation * -Vector3.up) * skinSurfaceOffset :
                                                       fingerPosition + (fingerRoation * Vector3.forward) * skinSurfaceOffset;
             target.position = Vector3.Lerp(target.position, targetPosition, deltaTime / PositionLerpTime);
         }
 
         private void RotateToFinger(Transform target, float deltaTime, Quaternion pointerRotation, bool useFingerPad)
         {
-
-            Quaternion targetRotation = (useFingerPad) ? pointerRotation * fingerPadRotation : pointerRotation;
+            var targetRotation = (useFingerPad) ? pointerRotation * fingerPadRotation : pointerRotation;
             target.rotation = Quaternion.Lerp(target.rotation, targetRotation, deltaTime / RotationLerpTime);
         }
 
-        private void RotateToSurfaceNormal(Transform target, float deltaTime, Vector3 surfaceNormal)
+        private void RotateToSurfaceNormal(Transform target, Vector3 surfaceNormal, Quaternion pointerRotation, float distance, bool useFingerPad)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(-surfaceNormal);
-            target.rotation = Quaternion.Lerp(target.rotation, targetRotation, deltaTime / RotationLerpTime);
+            var t = distance / alignWithSurfaceDistance;
+            var initialRotation = (useFingerPad) ? pointerRotation * fingerPadRotation : pointerRotation;
+            var targetRotation = Quaternion.LookRotation(-surfaceNormal);
+            target.rotation = Quaternion.Slerp(targetRotation, initialRotation, t);
         }
     }
 }

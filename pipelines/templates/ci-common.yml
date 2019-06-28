@@ -1,0 +1,10 @@
+# CI build for developer builds.
+parameters:
+  packagingEnabled: true
+
+steps:
+- template: common.yml
+- ${{ if eq(parameters.packagingEnabled, true) }}:
+  - template: package.yml
+  - template: publishpackages.yml
+- template: end.yml

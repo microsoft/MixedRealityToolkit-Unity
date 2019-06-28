@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 using (new GUIEnabledWrapper(addButtonEnable, false))
                 {
-                    if (MixedRealityEditorUtility.RenderIndentedButton(RuleAddButtonContent, EditorStyles.miniButton))
+                    if (InspectorUIUtility.RenderIndentedButton(RuleAddButtonContent, EditorStyles.miniButton))
                     {
                         AddRule();
                         ResetCriteria();

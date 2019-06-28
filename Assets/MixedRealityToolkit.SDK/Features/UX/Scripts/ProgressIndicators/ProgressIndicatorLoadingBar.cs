@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Displays progress bar and (optionally) percentage text.
@@ -15,9 +15,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     {
         const float SmoothProgressSpeed = 0.25f;
 
+        /// <inheritdoc/>
         public Transform MainTransform { get { return transform; } }
+
+        /// <inheritdoc/>
         public ProgressIndicatorState State { get { return state; } }
+
+        /// <inheritdoc/>
         public float Progress { set { targetProgress = value; } }
+
+        /// <inheritdoc/>
         public string Message { set { messageText.text = value; } }
 
         // The animated progress bar object
@@ -39,8 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         [Tooltip("Whether to display the percentage as text in addition to the loading bar.")]
         [SerializeField]
         private bool displayPercentage = true;
-        
+
         private float smoothProgress = 0f;
+        private float lastSmoothProgress = -1;
         private ProgressIndicatorState state = ProgressIndicatorState.Closed;
         private Vector3 barScale = Vector3.one;
 
@@ -50,9 +58,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         [SerializeField]
         [Range(0f, 1f)]
         private float targetProgress = 0f;
-        
+
+        /// <inheritdoc/>
         public async Task OpenAsync()
         {
+            if (state != ProgressIndicatorState.Closed)
+            {
+                throw new System.Exception("Can't open in state " + state);
+            }
+
             gameObject.SetActive(true);
 
             state = ProgressIndicatorState.Opening;
@@ -62,8 +76,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             state = ProgressIndicatorState.Open;
         }
 
+        /// <inheritdoc/>
         public async Task CloseAsync()
         {
+            if (state != ProgressIndicatorState.Open)
+            {
+                throw new System.Exception("Can't close in state " + state);
+            }
+
             state = ProgressIndicatorState.Closing;
 
             await Task.Yield();
@@ -76,18 +96,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         private void Update()
         {
             if (state != ProgressIndicatorState.Open)
+            {
                 return;
+            }
 
             smoothProgress = Mathf.Lerp(smoothProgress, targetProgress, SmoothProgressSpeed);
 
             if (smoothProgress > 0.99f)
+            {
                 smoothProgress = 1f;
+            }
 
             barScale.x = Mathf.Clamp(smoothProgress, 0.01f, 1f);
             progressBar.localScale = barScale;
 
             progressText.gameObject.SetActive(displayPercentage);
-            progressText.text = string.Format(progressStringFormat, smoothProgress);
+
+            if (lastSmoothProgress != smoothProgress)
+            {
+                progressText.text = string.Format(progressStringFormat, smoothProgress);
+                lastSmoothProgress = smoothProgress;
+            }
 
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// This class manages the 'rotating circle of dots' effect
@@ -13,41 +13,55 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     /// </summary>
     public class ProgressIndicatorOrbsRotator : MonoBehaviour, IProgressIndicator
     {
+        /// <inheritdoc/>
         public Transform MainTransform { get { return transform; } }
+
+        /// <inheritdoc/>
         public ProgressIndicatorState State { get { return state; } }
+
+        /// <inheritdoc/>
         public float Progress { set { progress = value; } }
+
+        /// <inheritdoc/>
         public string Message { set { messageText.text = value; } }
 
         [SerializeField]
         private GameObject[] orbs = null;
-        
         [SerializeField]
         private TextMeshPro messageText = null;
-
         [SerializeField]
         private ProgressIndicatorState state = ProgressIndicatorState.Closed;
-        
-        public float RotationSpeedRawDegrees;
-        public float SpacingDegrees;
-        public float Acceleration;
-        public int Revolutions;
-        public bool TestStop = false;
-        public bool HasAnimationFinished = false;
+        [SerializeField]
+        public float rotationSpeedRawDegrees = -200f;
+        [SerializeField]
+        public float spacingDegrees = 22f;
+        [SerializeField]
+        public float acceleration = 1.4f;
+        [SerializeField]
+        public int revolutions = 3;
+        [SerializeField]
+        public bool testStop = false;
+        [SerializeField]
+        public bool hasAnimationFinished = false;
 
         private float progress;
         private float timeElapsed;
         private int deployedCount;
-        private bool timeUpdated;
         private float[] angles;
         private float timeSlice;
-        private float deg2rad = Mathf.PI / 180.0f;
         private Renderer[] dots = null;
         private bool stopRequested;
         private float rotationWhenStopped;
         private MaterialPropertyBlock[] propertyBlocks = null;
 
+        /// <inheritdoc/>
         public async Task OpenAsync()
         {
+            if (state != ProgressIndicatorState.Closed)
+            {
+                throw new System.Exception("Can't open in state " + state);
+            }
+
             gameObject.SetActive(true);
 
             state = ProgressIndicatorState.Opening;
@@ -59,13 +73,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             state = ProgressIndicatorState.Open;
         }
 
+        /// <inheritdoc/>
         public async Task CloseAsync()
         {
+            if (state != ProgressIndicatorState.Open)
+            {
+                throw new System.Exception("Can't close in state " + state);
+            }
+
             state = ProgressIndicatorState.Closing;
 
             StopOrbs();
 
-            while (!HasAnimationFinished)
+            while (!hasAnimationFinished)
             {
                 await Task.Yield();
             }
@@ -79,19 +99,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         {
             rotationWhenStopped = 0.0f;
             stopRequested = false;
-            timeSlice = 0;
-            timeUpdated = false;
+            timeSlice = 0.0f;
+            timeElapsed = 0.0f;
             deployedCount = 1;
             timeElapsed = 0.0f;
-            angles = new float[orbs.Length];
-            for (int i = 0; i < angles.Length; ++i)
+
+            if (angles == null || angles.Length != orbs.Length)
             {
-                angles[i] = 0;
+                angles = new float[orbs.Length];
+                for (int i = 0; i < angles.Length; ++i)
+                {
+                    angles[i] = 0;
+                }
             }
 
-            dots = new Renderer[5];
-            propertyBlocks = new MaterialPropertyBlock[dots.Length];
-            
+            dots = new Renderer[orbs.Length];
+            propertyBlocks = new MaterialPropertyBlock[orbs.Length];
+
             for (int i = 0; i < orbs.Length; ++i)
             {
                 propertyBlocks[i] = new MaterialPropertyBlock();
@@ -110,97 +134,62 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         private void Update()
         {
             if (state == ProgressIndicatorState.Closed)
+            {
                 return;
+            }
 
-            if (HasAnimationFinished == false)
-            {
-                UpdateTime();
-                ControlDotStarts();
-                IncrementOrbs();
-                HandleTestStop();
-                HandleStopping();
-            }
-        }
-        
-        private void UpdateTime()
-        {
-            if (timeUpdated == false)
-            {
-                timeSlice = 0.0f;
-                timeElapsed = 0.0f;
-                timeUpdated = true;
-            }
-            else
+            if (!hasAnimationFinished)
             {
                 timeSlice = Time.unscaledDeltaTime;
                 timeElapsed += timeSlice;
-            }
-        }
 
-        private void ControlDotStarts()
-        {
-            if (deployedCount < orbs.Length)
-            {
-                if (angles[deployedCount - 1] >= SpacingDegrees)
+                if (deployedCount < orbs.Length)
                 {
-                    deployedCount++;
+                    if (angles[deployedCount - 1] >= spacingDegrees)
+                    {
+                        deployedCount++;
+                    }
                 }
-            }
-        }
 
-        private void IncrementOrbs()
-        {
-            for (int i = 0; i < deployedCount; ++i)
-            {
-                IncrementOrb(i);
-            }
-        }
+                for (int index = 0; index < deployedCount; ++index)
+                {
+                    float acceleratedDegrees = (rotationSpeedRawDegrees * (acceleration + -Mathf.Cos(Mathf.Deg2Rad * angles[index]))) * timeSlice;
+                    orbs[index].gameObject.transform.Rotate(0, 0, acceleratedDegrees);
+                    angles[index] += Mathf.Abs(acceleratedDegrees);
 
-        private void IncrementOrb(int index)
-        {
-            float acceleratedDegrees = (RotationSpeedRawDegrees * (Acceleration + -Mathf.Cos(deg2rad * angles[index]))) * timeSlice;
-            orbs[index].gameObject.transform.Rotate(0, 0, acceleratedDegrees);
-            angles[index] += Mathf.Abs(acceleratedDegrees);
+                    Color orbColor = propertyBlocks[index].GetColor("_Color");
 
-            HandleFade(index);
-        }
+                    //fade in
+                    if (!stopRequested && orbColor.a < 1.0f)
+                    {
+                        orbColor.a += (1.0f * timeSlice);
+                        orbColor.a = Mathf.Min(1.0f, orbColor.a);
+                        propertyBlocks[index].SetColor("_Color", orbColor);
+                        dots[index].SetPropertyBlock(propertyBlocks[index]);
+                    }
+                    //fade out
+                    else if (stopRequested && angles[index] > rotationWhenStopped)
+                    {
+                        orbColor.a -= (1.0f * timeSlice);
+                        orbColor.a = Mathf.Max(0.0f, orbColor.a);
+                        propertyBlocks[index].SetColor("_Color", orbColor);
+                        dots[index].SetPropertyBlock(propertyBlocks[index]);
+                    }
+                }
 
-        private void HandleFade(int index)
-        {
-            Color adjustedColor = propertyBlocks[index].GetColor("_Color");
+                Color adjustedColor = propertyBlocks[orbs.Length - 1].GetColor("_Color");
+                if (stopRequested == true && adjustedColor.a <= 0.01f)
+                {
+                    hasAnimationFinished = true;
+                }
 
-            //fade in
-            if (stopRequested == false && adjustedColor.a < 1.0f)
-            {
-                adjustedColor.a += (1.0f * timeSlice);
-                adjustedColor.a = Mathf.Min(1.0f, adjustedColor.a);
-                propertyBlocks[index].SetColor("_Color", adjustedColor);
-                dots[index].SetPropertyBlock(propertyBlocks[index]);
-            }
-            //fade out
-            else if (stopRequested && angles[index] > rotationWhenStopped)
-            {
-                adjustedColor.a -= (1.0f * timeSlice);
-                adjustedColor.a = Mathf.Max(0.0f, adjustedColor.a);
-                propertyBlocks[index].SetColor("_Color", adjustedColor);
-                dots[index].SetPropertyBlock(propertyBlocks[index]);
-            }
-        }
-
-        private void HandleTestStop()
-        {
-            if (TestStop == true && stopRequested == false)
-            {
-                StopOrbs();
-            }
-        }
-
-        private void HandleStopping()
-        {
-            Color adjustedColor = propertyBlocks[orbs.Length - 1].GetColor("_Color");
-            if (stopRequested == true && adjustedColor.a <= 0.01f)
-            {
-                HasAnimationFinished = true;
+#if UNITY_EDITOR
+                if (testStop && !stopRequested)
+                {
+                    stopRequested = true;
+                    rotationWhenStopped = angles[0];
+                }
+#endif
             }
         }
     }

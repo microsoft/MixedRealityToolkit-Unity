@@ -4,7 +4,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public interface IProgressIndicator
     {
@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         string Message { set; }
 
         /// <summary>
-        /// Loading progress value from 0-1
+        /// Loading progress value from 0 (just started) to 1 (complete)
         /// </summary>
         float Progress { set; }
 

@@ -1,8 +1,9 @@
-// History:
-// 
-// 19-01-16:
-//      Removed gradient within each face
-//      Removed sRGB option for Unity
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+/// <summary>
+/// Note, this shader is generated from a tool and is not formated for user readability.
+/// </summary>
 
 Shader "Mixed Reality Toolkit/HandTriangles" {
 
@@ -148,7 +149,6 @@ SubShader {
 
     FragmentInput vxOut[Geo_Max_Out_Vertices];
     int stripVxCount[Geo_Max_Out_Vertices];
-    float4x4 matrixVP;
     int vxOutCount;
     int stripCount;
 
@@ -611,9 +611,6 @@ SubShader {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(vxIn[0]);
         //huxEye = _WorldSpaceCameraPos;
         //workaround for Unity's auto updater in 5.6
-        float4x4 tmp = UNITY_MATRIX_MVP;
-        matrixVP = mul(tmp, unity_WorldToObject);
-        //matrixVP = mul(UNITY_MATRIX_MVP, _World2Object);
         vxOutCount=0;
         stripCount=0;
         stripVxCount[0]=0;
@@ -692,6 +689,7 @@ SubShader {
 
         int vxix=0;
         int strip=0;
+        [unroll]
         while (strip<stripCount) {
             int i=0;
             while (i<stripVxCount[strip]) {

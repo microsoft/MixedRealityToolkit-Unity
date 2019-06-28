@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// This class manages how a gameobject rotates and/or scales
@@ -13,9 +13,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     /// </summary>
     public class ProgressIndicatorObjectDisplay : MonoBehaviour, IProgressIndicator
     {
+        /// <inheritdoc/>
         public Transform MainTransform { get { return transform; } }
+
+        /// <inheritdoc/>
         public ProgressIndicatorState State { get { return state; } }
+
+        /// <inheritdoc/>
         public float Progress { set { progress = value; } }
+
+        /// <inheritdoc/>
         public string Message { set { messageText.text = value; } }
 
         [SerializeField]
@@ -66,10 +73,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         private float progress;
 
         private float currentScale;
-        private float elapsedTime;
 
+        /// <inheritdoc/>
         public async Task OpenAsync()
         {
+            if (openCurve.length == 0)
+            {
+                Debug.LogWarning("Open curve length is zero - this may result in an infinite loop.");
+            }
+
+            float maxScale = openCurve.Evaluate(Mathf.Infinity);
+            if (maxScale < 1f)
+            {
+                Debug.LogWarning("Open curve value never reaches 1 - this may result in an infinite loop.");
+            }
+
+            if (state != ProgressIndicatorState.Closed)
+            {
+                throw new System.Exception("Can't open in state " + state);
+            }
+
             gameObject.SetActive(true);
 
             Reset();
@@ -88,8 +111,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             state = ProgressIndicatorState.Open;
         }
 
+        /// <inheritdoc/>
         public async Task CloseAsync()
         {
+            if (closeCurve.length == 0)
+            {
+                Debug.LogWarning("Open curve length is zero - this may result in an infinite loop.");
+            }
+
+            float minScale = closeCurve.Evaluate(Mathf.Infinity);
+            if (minScale > 0)
+            {
+                Debug.LogWarning("Open curve value never reaches 0 - this may result in an infinite loop.");
+            }
+
+            if (state != ProgressIndicatorState.Open)
+            {
+                throw new System.Exception("Can't close in state " + state);
+            }
+
             state = ProgressIndicatorState.Closing;
 
             float startTime = Time.unscaledTime;
@@ -108,14 +148,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
         private void Reset()
         {
-            elapsedTime = 0.0f;
             currentScale = minScale;
         }
 
         private void Update()
         {
-            elapsedTime += Time.unscaledDeltaTime;
-
             if (state == ProgressIndicatorState.Open)
             {
                 // Only scale while we're not opening or closing

@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // Create a Input System Profiles
             var inputSystemProfile = ScriptableObject.CreateInstance<MixedRealityInputSystemProfile>();
             inputSystemProfile.FocusProviderType = typeof(FocusProvider);
+            inputSystemProfile.RaycastProviderType = typeof(DefaultRaycastProvider);
             inputSystemProfile.InputActionsProfile = ScriptableObject.CreateInstance<MixedRealityInputActionsProfile>();
             inputSystemProfile.InputActionRulesProfile = ScriptableObject.CreateInstance<MixedRealityInputActionRulesProfile>();
             inputSystemProfile.PointerProfile = ScriptableObject.CreateInstance<MixedRealityPointerProfile>();
