@@ -143,7 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             cube.transform.localPosition = new Vector3(0, 0, 2);
             cube.transform.localScale = new Vector3(.2f, .2f, .2f);
 
-            //testContent = Object.Instantiate(testContent);
             var collider = cube.GetComponentInChildren<Collider>();
             Assert.IsNotNull(collider);
 
