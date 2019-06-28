@@ -13,7 +13,7 @@ using UnityEngine.XR.WSA.Persistence;
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
     /// <summary>
-    /// Wrapper around world anchor store to streamline some of the persistence API busy work.
+    /// Wrapper around Unity's WorldAnchorStore to simplify usage of persistence operations.
     /// </summary>
     /// <remarks>
     /// This class only functions when built for the WSA platform. It uses APIs that are only present
@@ -22,27 +22,35 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     public class WorldAnchorManager : MonoBehaviour
     {
         /// <summary>
-        /// Debug text for displaying information.
+        /// If non-null, verbose logging messages will be displayed on this TextMesh.
         /// </summary>
-        [Tooltip("Debug text for displaying information.")]
+        [Tooltip("If non-null, verbose logging messages will be displayed on this TextMesh.")]
         [SerializeField]
         private TextMesh anchorDebugText = null;
 
         /// <summary>
-        /// Debug text for displaying information.
+        /// If non-null, verbose logging messages will be displayed on this TextMesh.
         /// </summary>
+        /// <remarks>
+        /// Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
+        /// to be displayed.
+        /// </remarks>
         public TextMesh AnchorDebugText => anchorDebugText;
 
         /// <summary>
-        /// Enables detailed logs in console window.
+        /// If true, more verbose logging messages will be written to the console window.
         /// </summary>
-        [Tooltip("Enables detailed logs in console window.")]
+        [Tooltip("If true, more verbose logging messages will be written to the console window.")]
         [SerializeField]
         private bool showDetailedLogs = false;
 
         /// <summary>
-        /// Enables detailed logs in console window.
+        /// If true, more verbose logging messages will be written to the console window.
         /// </summary>
+        /// <remarks>
+        /// Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
+        /// to be displayed.
+        /// </remarks>
         public bool ShowDetailedLogs;
 
         /// <summary>
