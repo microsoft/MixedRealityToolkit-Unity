@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             ClearObservations();
             if (spatialMeshObject != null)
             {
-                Object.Destroy(spatialMeshObject);
+                Object.DestroyImmediate(spatialMeshObject);
                 spatialMeshObject = null;
             }
         }
