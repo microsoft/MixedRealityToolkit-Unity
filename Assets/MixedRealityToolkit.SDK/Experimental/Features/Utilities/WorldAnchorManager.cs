@@ -334,7 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return;
             }
 
-            for (var i = 0; i < anchors.Length; i++)
+            for (int i = 0; i < anchors.Length; i++)
             {
                 // Let's check to see if there are anchors we weren't accounting for.
                 // Maybe they were created without using the WorldAnchorManager.
