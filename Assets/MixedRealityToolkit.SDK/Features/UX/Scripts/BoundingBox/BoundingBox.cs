@@ -162,25 +162,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Public property for the scale maximum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
-        public float ScaleMaximum
-        {
-            get
-            {
-                return maximumScale != null ? maximumScale.x : scaleMaximum;
-            }
-        }
+        public float ScaleMaximum => maximumScale.x;
 
         /// <summary>
         /// Public property for the scale minimum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
-        public float ScaleMinimum
-        {
-            get
-            {
-                return minimumScale != null ? minimumScale.x : scaleMinimum;
-            }
-        }
+        public float ScaleMinimum => minimumScale.x;
 
         [Header("Box Display")]
         [SerializeField]
