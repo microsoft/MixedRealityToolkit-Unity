@@ -19,6 +19,7 @@ using System.IO;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using System.Reflection;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using TMPro;
@@ -29,6 +30,67 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class PlayModeTestUtilities
     {
+
+        // Unity's default scene name for a recently created scene
+        const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
+
+        /// <summary>
+        /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
+        /// </summary>
+        public static void Setup()
+        {
+            Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
+
+            bool sceneExists = false;
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene playModeTestScene = SceneManager.GetSceneAt(i);
+                if (playModeTestScene.name == playModeTestSceneName && playModeTestScene.isLoaded)
+                {
+                    SceneManager.SetActiveScene(playModeTestScene);
+                    sceneExists = true;
+                }
+            }
+
+            if (!sceneExists)
+            {
+                Scene playModeTestScene = SceneManager.CreateScene(playModeTestSceneName);
+                SceneManager.SetActiveScene(playModeTestScene);
+            }
+
+            // Create an MRTK instance and set up playspace
+            TestUtilities.InitializeMixedRealityToolkit(true);
+            TestUtilities.InitializePlayspace();
+        }
+
+        /// <summary>
+        /// Destroys all objects in the play mode test scene, if it has been loaded, and shuts down MRTK instance.
+        /// </summary>
+        /// <returns></returns>
+        public static void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+
+            Scene playModeTestScene = SceneManager.GetSceneByName(playModeTestSceneName);
+            if (playModeTestScene.isLoaded)
+            {
+                foreach (GameObject gameObject in playModeTestScene.GetRootGameObjects())
+                {
+                    GameObject.Destroy(gameObject);
+                }
+            }
+
+            // If we created a temporary untitled scene in edit mode to get us started, unload that now
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene editorScene = SceneManager.GetSceneAt(i);
+                if (string.IsNullOrEmpty(editorScene.name))
+                {   // We've found our editor scene. Unload it.
+                    SceneManager.UnloadSceneAsync(editorScene);
+                }
+            }
+        }
+
         public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 worldPosition)
         {
             return (jointsOut) =>
