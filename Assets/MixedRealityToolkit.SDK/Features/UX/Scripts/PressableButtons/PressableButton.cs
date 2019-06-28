@@ -54,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
         private bool enforceFrontPush = true;
+        public bool EnforceFrontPush { get => enforceFrontPush; private set => enforceFrontPush = value; }
 
         public enum SpaceMode
         {

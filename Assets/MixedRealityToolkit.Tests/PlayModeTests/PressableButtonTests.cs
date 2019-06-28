@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// This test reproduces P0 issue 4566 which didn't trigger a button with enabled backpressprotection 
-        /// if hands were moving too fast in low framrate
+        /// if hands were moving too fast in low framerate
         /// </summary>
         [UnityTest]
         public IEnumerator PressButtonFast()
@@ -142,10 +142,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(Vector3.forward);
             });
 
-            //testButton.transform.position = new Vector3(0, 0, 1.067121f);
-
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
+            Assert.IsTrue(buttonComponent.EnforceFrontPush, "Button default behavior should have enforce front push enabled");
 
             bool buttonPressed = false;
             buttonComponent.ButtonPressed.AddListener(() =>
