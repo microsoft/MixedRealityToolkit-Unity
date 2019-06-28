@@ -128,20 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Forces the playspace camera to face forward.
-        /// </summary>
-        public static void PlayspaceToOriginLookingForward()
-        {
-            // Move the camera to origin looking at +z to more easily see the a target at 0,0,0
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
-        }
-
-        /// <summary>
         /// Creates the requested number of scenes, then creates one instance of the MixedRealityToolkit in the active scene.
         /// </summary>
         /// <param name="useDefaultProfile"></param>
