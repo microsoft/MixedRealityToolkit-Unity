@@ -22,10 +22,36 @@ steps:
    
    Remove-Job $ljob
    Stop-Process $proc
+
+   Write-Output '====================================================='
+   Write-Output '           Unity Build Player Finished               '
+   Write-Output '====================================================='
+
+   $unityLogFileName = '$(Build.ArtifactStagingDirectory)\build\build\retargeting_log.log'
+   If (Test-Path $unityLogFileName)
+   {
+      Write-Output '====================================================='
+      Write-Output '           Begin Unity Player Log                    '
+      Write-Output '====================================================='
+
+      Get-Content $unityLogFileName
+
+      Write-Output '====================================================='
+      Write-Output '           End Unity Player Log                      '
+      Write-Output '====================================================='
+   }
+   Else
+   {
+      Write-Output 'Unity Player Log missing!'
+   }
+
+   Write-Output '====================================================='
+   Write-Output '           Begin Retargeted Directory                '
+   Write-Output '====================================================='
+
+   dir /s/b NuGet
+
+   Write-Output '====================================================='
+   Write-Output '           End Retargeted Directory                  '
+   Write-Output '====================================================='
   displayName: 'Run Asset Retargetting'
-
-- script: 'Type %Build_ArtifactStagingDirectory%\build\build\retargeting_log.log'
-  displayName: 'Print Unity Log'
-
-- script: 'dir /s/b NuGet'
-  displayName: 'Print Retargeted Directory'
