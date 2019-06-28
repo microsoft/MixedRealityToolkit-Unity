@@ -8,11 +8,13 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    using SpatialAwarenessHandler = IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>;
+
     /// <summary>
     /// This class is an example of the <see cref="SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler{T}"/> interface. It keeps track
     /// of the IDs of each mesh and tracks the number of updates they have received.
     /// </summary>
-    public class DemoSpatialMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>
+    public class DemoSpatialMeshHandler : MonoBehaviour, SpatialAwarenessHandler
     {
         private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
@@ -35,12 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private async void OnEnable()
         {
             await new WaitUntil(() => SpatialAwarenessSystem != null);
-            SpatialAwarenessSystem.Register(gameObject);
+            SpatialAwarenessSystem.RegisterHandler<SpatialAwarenessHandler>(this);
         }
 
         private void OnDisable()
         {
-            SpatialAwarenessSystem?.Unregister(gameObject);
+            SpatialAwarenessSystem?.UnregisterHandler<SpatialAwarenessHandler>(this);
         }
 
         /// <inheritdoc />

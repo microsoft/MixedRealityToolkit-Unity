@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         private GameObject spatialAwarenessObjectParent = null;
 
         /// <inheritdoc />
-        public GameObject SpatialAwarenessObjectParent => spatialAwarenessObjectParent != null ? spatialAwarenessObjectParent : (spatialAwarenessObjectParent = CreateSpatialAwarenessParent);
+        public GameObject SpatialAwarenessObjectParent => spatialAwarenessObjectParent != null ? spatialAwarenessObjectParent : (spatialAwarenessObjectParent = CreateSpatialAwarenessObjectParent);
 
         /// <summary>
         /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
@@ -183,10 +183,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <returns>
         /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which spatial awareness created objects will be parented.
         /// </returns>
-        private GameObject CreateSpatialAwarenessParent => new GameObject("Spatial Awareness System");
+        private GameObject CreateSpatialAwarenessObjectParent
+        {
+            get
+            {
+                GameObject newParent = new GameObject("Spatial Awareness System");
+                MixedRealityPlayspace.AddChild(newParent.transform);
+
+                return newParent;
+            }
+        }
 
         /// <inheritdoc />
-        public GameObject CreateSpatialAwarenessObjectParent(string name)
+        public GameObject CreateSpatialAwarenessObservationParent(string name)
         {
             GameObject objectParent = new GameObject(name);
 
@@ -362,6 +371,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                     break;
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public void ClearObservations()
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].ClearObservations();
+            }
+        }
+
+        /// <inheritdoc />
+        public void ClearObservations<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
+        {
+            T observer = GetObserver<T>(name);
+            observer?.ClearObservations();
         }
 
         /// <inheritdoc />

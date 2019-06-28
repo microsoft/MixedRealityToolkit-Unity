@@ -84,7 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     OnSourceDetected(inputSource);
                 }
 
-                InputSystem.Register(gameObject);
+                InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
+                InputSystem.RegisterHandler<IMixedRealitySourceStateHandler>(this);
             }
         }
 
@@ -92,7 +93,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (InputSystem != null)
             {
-                InputSystem.Unregister(gameObject);
+                InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
+                InputSystem.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
 
                 foreach (var p in pointerDataToUpdate)
                 {

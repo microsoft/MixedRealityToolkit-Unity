@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
@@ -21,6 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
+        const float vector3DistanceEpsilon = 0.01f;
+
         const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
         public static Scene primaryTestScene;
@@ -112,6 +115,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(Vector3.zero);
             });
         }
+        /// <summary>
+        /// Forces the playspace camera to face forward.
+        /// </summary>
+        public static void PlayspaceToOriginLookingForward()
+        {
+            // Move the camera to origin looking at +z to more easily see the a target at 0,0,0
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+        }
 
         /// <summary>
         /// Creates the requested number of scenes, then creates one instance of the MixedRealityToolkit in the active scene.
@@ -162,6 +178,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #else
             return ScriptableObject.CreateInstance<T>();
 #endif
+        }
+
+        public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message)
+        {
+            var dist = (actual - expected).magnitude;
+            Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
     }
 }
