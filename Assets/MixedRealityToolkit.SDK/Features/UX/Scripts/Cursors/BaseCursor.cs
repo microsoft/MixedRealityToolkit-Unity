@@ -562,7 +562,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 right = default;
                 Vector3 up = default;
                 Vector3 forward = default;
-                GetCursorTargetAxes(focusDetails.Normal, ref right, ref up, ref forward);
+                if (!GetCursorTargetAxes(focusDetails.Normal, ref right, ref up, ref forward))
+                {
+                    return CursorContextEnum.None;
+                }
 
                 Vector3 adjustedCursorPos = Position - contextCenter.position;
 
