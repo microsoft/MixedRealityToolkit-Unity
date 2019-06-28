@@ -8,8 +8,6 @@
 // to work around this on our end.
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -98,18 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             toggle.colors = colors;
 
             return toggle;
-        }
-
-        /// <summary>
-        /// Make sure there is a MixedRealityInputModule on the main camera, which is needed for using Unity UI with MRTK.
-        /// </summary>
-        public static void EnsureInputModule()
-        {
-            Assert.IsNotNull(CameraCache.Main);
-            if (!CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>())
-            {
-                CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
-            }
         }
     }
 }

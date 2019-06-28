@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
+            PlayModeTestUtilities.EnsureInputModule();
 
             inputSim = PlayModeTestUtilities.GetInputSimulationService();
             Assert.NotNull(inputSim);
@@ -48,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [TearDown]
         public void ShutdownMrtk()
         {
+            PlayModeTestUtilities.TeardownInputModule();
             TestUtilities.ShutdownMixedRealityToolkit();
         }
 
@@ -346,7 +348,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator NearInteractionTouchableUnityUiButton()
         {
-            UnityUiUtilities.EnsureInputModule();
 
             var canvas = UnityUiUtilities.CreateCanvas(0.002f);
 
@@ -381,7 +382,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator NearInteractionTouchableUnityUiToggle()
         {
-            UnityUiUtilities.EnsureInputModule();
 
             var canvas = UnityUiUtilities.CreateCanvas(0.002f);
 

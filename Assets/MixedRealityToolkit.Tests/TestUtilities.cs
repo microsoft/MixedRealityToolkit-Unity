@@ -5,7 +5,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
