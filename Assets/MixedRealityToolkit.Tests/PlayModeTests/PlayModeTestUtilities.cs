@@ -3,9 +3,12 @@
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the the required assemblies (i.e. the ones below).
-// Given that the .NET backend is deprecated by Unity at this point it's we have
-// to work around this on our end.
+// The assembly that this file is part of is still built for the player,
+// even though the assembly itself is marked as a test assembly (this is not
+// expected because test assemblies should not be included in player builds).
+// Because the .NET backend is deprecated in 2018 and removed in 2019 and this
+// issue will likely persist for 2018, this issue is worked around by wrapping all
+// play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
@@ -113,20 +116,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
         }
 
-        internal static IEnumerator MoveHandFromTo(Vector3 startPos, Vector3 endPos, int numSteps, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
+        internal static IEnumerator MoveHandFromTo(
+            Vector3 startPos, Vector3 endPos, int numSteps, 
+            ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
             Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
             bool isPinching = gestureId == ArticulatedHandPose.GestureId.Grab || gestureId == ArticulatedHandPose.GestureId.Pinch || gestureId == ArticulatedHandPose.GestureId.PinchSteadyWrist;
-            for (int i = 0; i < numSteps; i++)
+
+            for (int i = 1; i <= numSteps; i++)
             {
-                float t = numSteps > 1 ? 1.0f / (numSteps - 1) * i : 1.0f;
+                float t = i / (float) numSteps;
                 Vector3 handPos = Vector3.Lerp(startPos, endPos, t);
                 var handDataGenerator = GenerateHandPose(
                         gestureId,
                         handedness,
                         handPos);
-                SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
-                inputSimulationService.HandDataRight.Update(true, isPinching, handDataGenerator);
+                SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
+                handData.Update(true, isPinching, handDataGenerator);
                 yield return null;
             }
         }
@@ -134,9 +140,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         internal static IEnumerator HideHand(Handedness handedness, InputSimulationService inputSimulationService)
         {
             yield return null;
-            SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
-            inputSimulationService.HandDataRight.Update(false, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
-            // Wait one frame for the hand to actually appear
+
+            SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
+            handData.Update(false, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
+
+            // Wait one frame for the hand to actually disappear
             yield return null;
         }
 
@@ -154,9 +162,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         internal static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService, ArticulatedHandPose.GestureId handPose, Vector3 handLocation)
         {
             yield return null;
-            SimulatedHandData toUpdate = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
-            inputSimulationService.HandDataRight.Update(true, false, GenerateHandPose(handPose, handedness, handLocation));
-            // Wait one frame for the hand to actually go away
+
+            SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
+            handData.Update(true, false, GenerateHandPose(handPose, handedness, handLocation));
+
+            // Wait one frame for the hand to actually appear
             yield return null;
         }
 
