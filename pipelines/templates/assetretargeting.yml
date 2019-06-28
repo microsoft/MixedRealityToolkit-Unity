@@ -49,9 +49,14 @@ steps:
    Write-Output '           Begin Retargeted Directory                '
    Write-Output '====================================================='
 
-   dir /s/b NuGet
+   cmd /r dir /s/b NuGet
 
    Write-Output '====================================================='
    Write-Output '           End Retargeted Directory                  '
    Write-Output '====================================================='
+   
+   if ($proc.ExitCode -ne 0)
+   {
+       exit $proc.ExitCode
+   }
   displayName: 'Run Asset Retargetting'
