@@ -9,47 +9,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: b81dae1d46879b444aa9847f7961649f, type: 3}
   m_Name: DefaultMixedRealitySceneSystemProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
-  useManagerScene: 0
+  useManagerScene: 1
   managerScene:
     Name: DefaultManagerScene
     Path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultManagerScene.unity
     Included: 1
-    BuildIndex: -1
+    BuildIndex: 0
     Tag: Untagged
     Asset: {fileID: 102900000, guid: ae7bb08d297fb69408695d8de0962524, type: 3}
-  useLightingScene: 0
+  useLightingScene: 1
   defaultLightingSceneIndex: 0
   lightingScenes:
   - Name: DefaultLightingScene
     Path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultLightingScene.unity
     Included: 1
-    BuildIndex: -1
+    BuildIndex: 1
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 7e54e36c44f826c438c95da79f8de638, type: 3}
-  contentScenes:
-  - Name: HandInteractionExamples
-    Path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
-    Included: 1
-    BuildIndex: 2
-    Tag: Untagged
-    Asset: {fileID: 3671201678493226958, guid: 3dd4a396b5225f8469b9a1eb608bfa57, type: 3}
-  - Name: BoundingBoxRuntimeExample
-    Path: Assets/MixedRealityToolkit.Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxRuntimeExample.unity
-    Included: 1
-    BuildIndex: 3
-    Tag: Untagged
-    Asset: {fileID: 3671201678493226958, guid: a7d9284da176d9542af67603dab6088c, type: 3}
-  - Name: HandBasedMenuExample
-    Path: Assets/MixedRealityToolkit.Examples/Experimental/HandTracking/Scenes/HandBasedMenuExample.unity
-    Included: 1
-    BuildIndex: 4
-    Tag: Untagged
-    Asset: {fileID: 3671201678493226958, guid: b456277ac9c031c42a26c564af362d39, type: 3}
+  contentScenes: []
   permittedLightingSceneComponentTypes:
   - reference: UnityEngine.Transform, UnityEngine.CoreModule
   - reference: UnityEngine.GameObject, UnityEngine.CoreModule
@@ -95,8 +76,8 @@ MonoBehaviour:
       XRotation: 50
       YRotation: 330
       ZRotation: 0
-  editorManageBuildSettings: 0
-  editorEnforceSceneOrder: 0
-  editorManageLoadedScenes: 0
-  editorEnforceLightingSceneTypes: 0
+  editorManageBuildSettings: 1
+  editorEnforceSceneOrder: 1
+  editorManageLoadedScenes: 1
+  editorEnforceLightingSceneTypes: 1
   editorLightingCacheOutOfDate: 1
