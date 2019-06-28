@@ -213,6 +213,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             });
 
             serializedObject.ApplyModifiedProperties();
+
+            // Keep this inspector perpetually refreshed
+            EditorUtility.SetDirty(target);
         }
 
         protected override bool IsProfileInActiveInstance()
