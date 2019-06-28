@@ -7634,6 +7634,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.html",
+          "hash": "VSWjZN6aQy+MCiMXHZhirQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.html",
+          "hash": "jkRWuRI5KR0ZHtWcDfo1xw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.ExperimentalAttribute.yml",
       "output": {
         ".html": {
@@ -16614,7 +16638,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "xxzwyo2EWPHd+AhyTA3h5g=="
+          "hash": "r/H5z0kXaKfq8p//DePNNw=="
         }
       },
       "is_incremental": false,
@@ -16673,16 +16697,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 976,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 108,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 978,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WorldAnchorManager
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WorldAnchorManager
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.43.1.0">
+    
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager" class="text-break">Class WorldAnchorManager
+  </h1>
+  <div class="markdown level0 summary"><p>Wrapper around Unity's WorldAnchorStore to simplify usage of persistence operations.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">WorldAnchorManager</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Utilities.html">Microsoft.MixedReality.Toolkit.Experimental.Utilities</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class WorldAnchorManager : MonoBehaviour</code></pre>
+  </div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>This class only functions when built for the WSA platform. It uses APIs that are only present
+on that platform.</p>
+</div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_ShowDetailedLogs" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.ShowDetailedLogs">ShowDetailedLogs</h4>
+  <div class="markdown level1 summary"><p>If true, more verbose logging messages will be written to the console window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowDetailedLogs</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_ShowDetailedLogs_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
+to be displayed.</p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_AnchorDebugText_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.AnchorDebugText*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_AnchorDebugText" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.AnchorDebugText">AnchorDebugText</h4>
+  <div class="markdown level1 summary"><p>If non-null, verbose logging messages will be displayed on this TextMesh.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextMesh AnchorDebugText { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TextMesh</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_AnchorDebugText_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
+to be displayed.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_PersistentAnchors_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.PersistentAnchors*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_PersistentAnchors" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.PersistentAnchors">PersistentAnchors</h4>
+  <div class="markdown level1 summary"><p>Enables anchors to be stored from subsequent game sessions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool PersistentAnchors { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_AttachAnchor_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.AttachAnchor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_AttachAnchor_GameObject_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.AttachAnchor(GameObject,System.String)">AttachAnchor(GameObject, String)</h4>
+  <div class="markdown level1 summary"><p>Attaches an anchor to the GameObject.
+If the anchor store has an anchor with the specified name it will load the anchor,
+otherwise a new anchor will be saved under the specified name.
+If no anchor name is provided, the name of the anchor will be the same as the GameObject.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string AttachAnchor(GameObject gameObjectToAnchor, string anchorName = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">gameObjectToAnchor</span></td>
+        <td><p>The GameObject to attach the anchor to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">anchorName</span></td>
+        <td><p>Name of the anchor. If none provided, the name of the GameObject will be used.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The name of the newly attached anchor.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_RemoveAllAnchors_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.RemoveAllAnchors*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_RemoveAllAnchors" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.RemoveAllAnchors">RemoveAllAnchors()</h4>
+  <div class="markdown level1 summary"><p>Removes all anchors from the scene and deletes them from the anchor store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveAllAnchors()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_RemoveAnchor_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.RemoveAnchor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_RemoveAnchor_GameObject_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.RemoveAnchor(GameObject)">RemoveAnchor(GameObject)</h4>
+  <div class="markdown level1 summary"><p>Removes the anchor component from the GameObject and deletes the anchor from the anchor store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveAnchor(GameObject gameObjectToUnanchor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">gameObjectToUnanchor</span></td>
+        <td><p>The GameObject reference with valid anchor to remove from the anchor store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_RemoveAnchor_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.RemoveAnchor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_WorldAnchorManager_RemoveAnchor_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.RemoveAnchor(System.String)">RemoveAnchor(String)</h4>
+  <div class="markdown level1 summary"><p>Removes the anchor from the anchor store, without a GameObject reference.
+If a GameObject reference can be found, the anchor component will be removed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveAnchor(string anchorName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">anchorName</span></td>
+        <td><p>The name of the anchor to remove from the anchor store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
