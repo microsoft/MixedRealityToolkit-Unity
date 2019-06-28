@@ -2,10 +2,10 @@
 
 ## Changes to the scene
 
-In order to use any of the MRTK functionality, you need to have a MixedRealityToolkit object in the
-scene graph, whose script handles the initialization, runtime updates, and teardown of all of the
-MRTK functionality. This is the object that gets added to the scene when you use the menu option:
-Mixed Reality Toolkit -> Add to Scene and Configure.
+To use the toolkit an instance of the MixedRealityToolkit script must be in your scene.
+To add one use the menu option: Mixed Reality Toolkit -> Add to Scene and Configure. This
+instance is responsible for registering, updating and tearing down services. It's also
+where your configuration profile is chosen.
 
 Apart form adding the MRTK gameobject to the scene the menu option will also:
 
@@ -17,10 +17,11 @@ Apart form adding the MRTK gameobject to the scene the menu option will also:
 
 ## MixedRealityToolkit object and runtime
 
-The MRTK contains a multitude of different services that spin up at runtime and talk with each other (or don't talk
-with each other), and otherwise have some degree of coordination requirement in their startup, registration, update,
-and teardown loops. [This medium post](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)
-contains some of the background and motivation for why the system ended up written as it was. MRTK has a single
+The MRTK has several core services. Some coordinate with one another; others are independent.
+All share the same life cycle - startup, registration, update and teardown - and this life
+cycle stands apart from Unity's MonoBehavior life cycle. This
+[medium post](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2) explains
+some of the background and motivation behind this approach. MRTK has a single
 object that manages life and runtime of its services.
 
 This entity ensures that:

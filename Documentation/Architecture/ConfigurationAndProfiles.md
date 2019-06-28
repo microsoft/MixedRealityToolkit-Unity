@@ -9,10 +9,13 @@ called 'profiles' to accomplish this.
 
 ## What is a profile?
 
-A profile is a serialized asset (an instance of a ScriptableObject) which contains properties that configure
-the initialization and runtime behavior of an MRTK service. For example, the MRTK has a camera service, which
-will apply different properties to the main camera, depending on whether or not the display is transparent
-(like in the case of a HoloLens) or opaque (like in the case of a VR headset). The camera service is given
+Profiles store configuration settings for services. You use them to control which services are run and
+how those services behave while running. They're stored as [ScriptableObject](https://docs.unity3d.com/Manual/class-ScriptableObject.html)
+assets in your project. You can view and edit a profile by selecting it in your project window.
+
+For example, the MRTK has a camera service, which will apply different properties to the main camera,
+depending on whether or not the display is transparent (like in the case of a HoloLens) or opaque
+(like in the case of a VR headset). The camera service is given
 a [camera profile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit/Definitions/MixedRealityCameraProfile.cs),
 which contains those different transparent vs. opaque settings.
 
@@ -24,13 +27,6 @@ a particular input sub-feature is enabled or disabled - it's also an injection m
 will use to "new" other classes at runtime (for example, the input system profile contains a list of
 'Input Data Providers' which has serialized type information - these objects are instantiated by the
 input system at runtime)
-
-Profiles also affect (and are no limited to) things like:
-
-1) What controller mappings are
-2) What types of pointers (these are discussed in the [Input System](InputSystem.md) overview)
-   are associated with various controllers.
-3) Which subset of the diagnostic and performance visualization tools are enabled.
 
 Profile configurations are initially greyed out because they're set up with MRTK's default profiles.
 They can only be modified after cloning to ensure that customized profiles won't be lost after a

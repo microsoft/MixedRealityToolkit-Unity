@@ -2,7 +2,7 @@
 
 The input system is one of the largest systems out of all the features offered by the MRTK.
 So many things within the toolkit build on top of it (pointers, focus, prefabs). The code within the input
-system is what allows for the natural interactions like grab and rotate.
+system is what allows for natural interactions like grab and rotate across platforms.
 
 The input system has some of its own terminology that are worth defining:
 
@@ -24,26 +24,28 @@ The input system has some of its own terminology that are worth defining:
 
 - **Pointer**
 
-    In order to interact with the rest of the world, a controller is associated with pointers, which can interact with
-    other game objects in specific ways. For example, the near interaction pointer is responsible to detecting when
-    the hand (which is a controller) is close to objects that advertise themselves as supporting ‘near interaction’.
-    Other examples for pointers are teleportation or far pointers (i.e. the shell hand ray pointer) that use
-    far raycasts to engage with content that is longer than arms length from the user.
+    Controller use pointers to interact with game objects. For example, the near interaction pointer is 
+    responsible to detecting when the hand (which is a controller) is close to objects that advertise 
+    themselves as supporting ‘near interaction’. Other examples for pointers are teleportation or far
+    pointers (i.e. the shell hand ray pointer) that use far raycasts to engage with content that is
+    longer than arms length from the user.
 
-    Note that a controller can be associated with many different pointers at the same time – in order to ensure that
-    this doesn’t devolve into chaos, there is a pointer mediator which controls which pointers are allowed to be
-    active (for example, the mediator will disable far interaction pointers when near interaction is detected).
+    Pointers are created by the device manager, and then attached to an input source. To get all of the
+    pointers for a controller, do: ```controller.InputSource.Pointers```
+
+    Note that a controller can be associated with many different pointers at the same time – in order
+    to ensure that this doesn’t devolve into chaos, there is a pointer mediator which controls which
+    pointers are allowed to be active (for example, the mediator will disable far interaction pointers
+    when near interaction is detected).
 
 - **Focus**
 
-    A pointer’s events will be directed to the object that is focused. For example, this can be the object that is
-    raycast from the shell hand ray pointer, or this could be the object that is closest in a sphere raycast away from
-    the index finger tip. Focus is a particularly important concept because it controls where input events are
-    delivered (i.e. where IMixedRealityPointerHandler, IMixedRealityFocusHandler, and other input events are delivered).
-    Focus is especially interesting because it drives the object that gets input events, so instead of every single
-    object needing to register globally for input events and then filter them out, focus helps narrow down the set of
-    things that are poked to respond to input. Note that it's still possible to register for global input events,
-    though that event stream is typically very noisy.
+    Pointer events are sent to objects in **focus**. Focus selection will vary by pointer type - a hand ray
+    pointer will use raycasts, while a poke pointer will use spherecasts. An object must implement
+    IMixedRealityFocusHandler to receive focus. It's possible to globally register an object to receive
+    unfiltered pointer events, but this approach is not recommended.
+
+    The component that updates which objects are in focus is the [FocusProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/FocusProvider.cs)
 
 - **Cursor** 
 
@@ -51,13 +53,17 @@ The input system has some of its own terminology that are worth defining:
     the FingerCursor will render a ring around your finger, and may rotate that ring when your finger is close to
     ‘near interactable’ objects. A pointer can be associated with a single cursor at time.
 
-- **Interactable/Manipulation**
+- **Interaction and Manipulation**
 
     Objects can be tagged with an interaction or manipulation script (this may be Interactable.cs, or something like
-    NearInteractionGrabbable.cs). This allows for certain pointers (especially near interaction pointers) to know
-    which objects can be focused on (i.e. this could allow a near interaction pointer to know that a particular
-    object is grabbable, so during the ‘what has focus’ update loop, this pointer could spherecast and discover
-    the grabbable object, and thus any grab gesture will be then forwarded onto that object).
+    NearInteractionGrabbable.cs/ManipulationHandler.cs).
+    
+    For example, NearInteractionGrabbable and NearInteractionTouchable allow for certain pointers (especially
+    near interaction pointers) to know which objects can be focused on.
+
+    Interactable and ManipulationHandler, are examples of components that listen to pointer events to modify
+    UI visuals or move/scale/rotate game objects.
+     
 
 The image below captures the high level build up (from bottom up) of the MRTK input stack:
 
