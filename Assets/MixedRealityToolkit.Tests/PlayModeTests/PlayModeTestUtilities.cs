@@ -58,10 +58,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Make sure there is a MixedRealityInputModule on the main camera, which is needed for using Unity UI with MRTK.
-        /// <summary>
+        /// </summary>
         /// <remarks>
         /// Workaround for #5061
-        /// <remarks>
+        /// </remarks>
         public static void EnsureInputModule()
         {
             if (CameraCache.Main && !CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>())
@@ -72,10 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Destroy the input module to ensure it gets initialized cleanly for the next test.
-        /// <summary>
+        /// </summary>
         /// <remarks>
         /// Workaround for #5116
-        /// <remarks>
+        /// </remarks>
         public static void TeardownInputModule()
         {
             if (CameraCache.Main)
