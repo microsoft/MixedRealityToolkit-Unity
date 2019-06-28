@@ -60,6 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Awareness", "Diagnostics", "Scene System", "Extensions", "Editor" };
         private static int SelectedProfileTab = 0;
+        private const string SelectedTabPreferenceKey = "SelectedProfileTab";
 
         protected override void OnEnable()
         {
@@ -106,6 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Editor settings
             useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
+
+            SelectedProfileTab = EditorPrefs.GetInt(SelectedTabPreferenceKey, SelectedProfileTab);
 
             if (this.RenderProfileFuncs == null)
             {
@@ -179,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!MixedRealityToolkit.IsInitialized)
             {
                 EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Warning);
-                if (MixedRealityEditorUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
+                if (InspectorUIUtility.RenderIndentedButton("Add Mixed Reality Toolkit instance to scene"))
                 {
                     MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configurationProfile);
                 }
@@ -237,7 +240,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(100));
             GUI.enabled = true; // Force enable so we can view profile defaults
-            SelectedProfileTab = GUILayout.SelectionGrid(SelectedProfileTab, ProfileTabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
+
+            int prefsSelectedTab = EditorPrefs.GetInt(SelectedTabPreferenceKey);
+            SelectedProfileTab = GUILayout.SelectionGrid(prefsSelectedTab, ProfileTabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
+            if (SelectedProfileTab != prefsSelectedTab)
+            {
+                EditorPrefs.SetInt(SelectedTabPreferenceKey, SelectedProfileTab);
+            }
+
             GUI.enabled = isGUIEnabled;
             EditorGUILayout.EndVertical();
 
