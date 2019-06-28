@@ -151,6 +151,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise a menu down input event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, menuAction);
+            // Wait for at least one frame explicitly to ensure the input goes through
+            yield return new WaitForFixedUpdate();
 
             float pressStartTime = Time.time;
             bool wasTranslated = false;
@@ -162,6 +164,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise a menu up input event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, menuAction);
+            // Wait for at least one frame explicitly to ensure the input goes through
+            yield return new WaitForFixedUpdate();
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
@@ -205,6 +209,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Raise a voice select input event, then wait for transition to take place
             SpeechCommands commands = new SpeechCommands("Select", KeyCode.None, interactable.InputAction);
             MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(defaultInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(100), System.DateTime.Now, commands);
+            // Wait for at least one frame explicitly to ensure the input goes through
+            yield return new WaitForFixedUpdate();
 
             float pressStartTime = Time.time;
             bool wasTranslated = false;
@@ -270,6 +276,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise a select down input event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
+            // Wait for at least one frame explicitly to ensure the input goes through
+            yield return new WaitForFixedUpdate();
+
             float pressStartTime = Time.time;
             bool wasTranslated = false;
             while (Time.time < pressStartTime + buttonPressAnimationDelay)
@@ -280,6 +289,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise a select up input event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, interactable.InputAction);
+            // Wait for at least one frame explicitly to ensure the input goes through
+            yield return new WaitForFixedUpdate();
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
@@ -392,6 +403,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise an input down event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
+            // Wait for at least one frame explicitly to ensure the input goes through
+            yield return new WaitForFixedUpdate();
 
             float pressStartTime = Time.time;
             bool wasTranslated = false;
@@ -403,6 +416,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Raise an input up event, then wait for transition to take place
             MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.None, interactable.InputAction);
+            // Wait for at least one frame explicitly to ensure the input goes through
+            yield return new WaitForFixedUpdate();
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
