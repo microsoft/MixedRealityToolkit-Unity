@@ -1534,7 +1534,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         private void OnValidate()
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            if (EditorApplication.isPlayingOrWillChangePlaymode || BuildPipeline.isBuildingPlayer)
             {   // This check is only necessary in edit mode
                 return;
             }
