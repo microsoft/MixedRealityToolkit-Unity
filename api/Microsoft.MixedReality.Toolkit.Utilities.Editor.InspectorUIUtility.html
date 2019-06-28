@@ -296,6 +296,30 @@
   </table>
   
   
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DocLinkWidth" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DocLinkWidth">DocLinkWidth</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const float DocLinkWidth = 175F</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_Down" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.Down">Down</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -362,6 +386,30 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_HelpIcon" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.HelpIcon">HelpIcon</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Texture HelpIcon</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Texture</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1290,6 +1338,203 @@
       <tr>
         <td><span class="xref">GUIStyle</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocLinkButton_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocLinkButton*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocLinkButton_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocLinkButton(System.String)">RenderDocLinkButton(String)</h4>
+  <div class="markdown level1 summary"><p>Render doc link attribute as clickable button routing to revelant URI</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool RenderDocLinkButton(string docURL)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">docURL</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if button clicked, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderIndentedButton_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderIndentedButton*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderIndentedButton_GUIContent_GUIStyle_GUILayoutOption___" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderIndentedButton(GUIContent,GUIStyle,GUILayoutOption[])">RenderIndentedButton(GUIContent, GUIStyle, GUILayoutOption[])</h4>
+  <div class="markdown level1 summary"><p>Helper function to render buttons correctly indented according to EditorGUI.indentLevel since GUILayout component don't respond naturally</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool RenderIndentedButton(GUIContent content, GUIStyle style, params GUILayoutOption[] options)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GUIContent</span></td>
+        <td><span class="parametername">content</span></td>
+        <td><p>What to draw in button</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">GUIStyle</span></td>
+        <td><span class="parametername">style</span></td>
+        <td><p>Style configuration for button</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">GUILayoutOption</span>[]</td>
+        <td><span class="parametername">options</span></td>
+        <td><p>layout options</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if button clicked, false if otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderIndentedButton_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderIndentedButton*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderIndentedButton_System_Func_System_Boolean__" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderIndentedButton(System.Func{System.Boolean})">RenderIndentedButton(Func&lt;Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Helper function to support primary overloaded version of this functionality</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool RenderIndentedButton(Func&lt;bool&gt; renderButton)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><span class="parametername">renderButton</span></td>
+        <td><p>The code to render button correctly based on parameter types passed</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if button clicked, false if otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderIndentedButton_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderIndentedButton*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderIndentedButton_System_String_GUILayoutOption___" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderIndentedButton(System.String,GUILayoutOption[])">RenderIndentedButton(String, GUILayoutOption[])</h4>
+  <div class="markdown level1 summary"><p>Helper function to render buttons correctly indented according to EditorGUI.indentLevel since GUILayout component don't respond naturally</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool RenderIndentedButton(string buttonText, params GUILayoutOption[] options)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">buttonText</span></td>
+        <td><p>text to place in button</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">GUILayoutOption</span>[]</td>
+        <td><span class="parametername">options</span></td>
+        <td><p>layout options</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if button clicked, false if otherwise</p>
+</td>
       </tr>
     </tbody>
   </table>
