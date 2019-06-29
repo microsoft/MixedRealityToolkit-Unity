@@ -35,6 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // Unity's default scene name for a recently created scene
         const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
 
+        private static Stack<MixedRealityInputSimulationProfile> inputSimulationProfiles = new Stack<MixedRealityInputSimulationProfile>();
+
         /// <summary>
         /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
         /// </summary>
@@ -174,7 +176,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        private static Stack<MixedRealityInputSimulationProfile> inputSimulationProfiles = new Stack<MixedRealityInputSimulationProfile>();
         public static void PushHandSimulationProfile()
         {
             var iss = GetInputSimulationService();

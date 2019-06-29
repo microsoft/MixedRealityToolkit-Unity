@@ -98,7 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(pinchSliderObject);
             yield return null;
         }
-        
+
+        /// <summary>
+        /// Tests that slider can be assembled from code and manipulated using GGV
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestAssembleInteractableAndFarManip()
         {
@@ -129,10 +133,54 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(pinchSliderObject);
             PlayModeTestUtilities.PopHandSimulationProfile();
         }
+        
+        /// <summary>
+        /// Tests that interactable raises proper events
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestAssembeInteractableAndEventsRaised()
+        {
+            GameObject pinchSliderObject;
+            PinchSlider slider;
+
+            // This should not throw exception
+            AssembleSlider(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
+
+            bool interactionStarted = false;
+            slider.OnInteractionStarted.AddListener((x) => interactionStarted = true);
+            yield return rightHand.Show(initialPos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            Assert.IsTrue(interactionStarted, "Slider did not raise interaction started.");
+
+            bool interactionUpdated = false;
+            slider.OnValueUpdated.AddListener((x) => interactionUpdated = true);
+
+            yield return rightHand.Move(new Vector3(0.1f, 0, 0));
+
+            Assert.IsTrue(interactionUpdated, "Slider did not raise SliderUpdated event.");
+
+            bool interactionEnded = false;
+            slider.OnInteractionEnded.AddListener((x) => interactionEnded = true);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return rightHand.Hide();
+
+            Assert.IsTrue(interactionEnded, "Slider did not raise interaction ended.");
+
+            Assert.That(slider.SliderValue, Is.GreaterThan(0.5));
+
+            GameObject.Destroy(pinchSliderObject);
+        }
+
         #endregion Tests
 
         #region Private methods
-        
+
         private IEnumerator DirectPinchAndMoveSlider(PinchSlider slider, float toSliderValue)
         {
             Debug.Log($"moving hand to value {toSliderValue}");
