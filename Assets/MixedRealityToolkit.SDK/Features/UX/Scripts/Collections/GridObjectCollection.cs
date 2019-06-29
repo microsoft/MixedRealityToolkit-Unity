@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private float distance = 1f;
 
         /// <summary>
-        /// This is the radial range for creating a radial fan layout.
+        /// This is the Distance for an offset for the Plane mapping and is ignored for the other mappings.
         /// </summary>
         public float Distance
         {
