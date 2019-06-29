@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
                         return;
                     }
                 }
-                catch (MissingReferenceException)
+                catch (Exception)
                 {
                     // Just ignore; This sometimes happens after the game object already got destroyed, but the update sequence had already be started
                 }
@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
                         }
                     }
                 }
-                catch (MissingReferenceException)
+                catch (Exception)
                 {
                     // Just ignore; Usually happens after the game object already got destroyed, but the update sequence had already be started
                 }

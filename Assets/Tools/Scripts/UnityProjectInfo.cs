@@ -201,13 +201,3 @@ namespace Assets.MRTK.Tools.Scripts
     }
 }
 #endif
-
-#if !UNITY_EDITOR
-namespace Test
-{
-    internal class Test2
-    {
-        public UnityAgnostic.Common.SomeComponent a;
-    }
-}
-#endif
