@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public IMixedRealityPointer Pointer { get; private set; }
 
         /// <summary>
+        /// The receiver object associated with this event.
+        /// </summary>
+        public GameObject FocusReceiverObject { get; private set; }
+
+        /// <summary>
         /// The old focused object.
         /// </summary>
         public GameObject OldFocusedObject { get; private set; }
@@ -25,11 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The new focused object.
         /// </summary>
         public GameObject NewFocusedObject { get; private set; }
-
-        /// <summary>
-        /// The object receiving the focus.
-        /// </summary>
-        public GameObject FocusReceiverObject { get; private set; }
 
         /// <inheritdoc />
         public FocusEventData(EventSystem eventSystem) : base(eventSystem) { }
