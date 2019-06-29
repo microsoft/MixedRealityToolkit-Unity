@@ -49,16 +49,52 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             GameObject pinchSliderObject;
             PinchSlider slider;
-            Transform sliderThumbRoot;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Quaternion.identity, out pinchSliderObject, out slider, out sliderThumbRoot);
-            yield return PlayModeTestUtilities.WaitForEnterKey();
+            AssembleSlider(Vector3.forward, Quaternion.identity, out pinchSliderObject, out slider);
 
             // clean up
             GameObject.Destroy(pinchSliderObject);
             yield return null;
         }
+
+        /// <summary>
+        /// Tests that an interactable assembled at runtime can be manipulated
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestAssembleInteractableAndNearManip()
+        {
+            GameObject pinchSliderObject;
+            PinchSlider slider;
+
+            // This should not throw exception
+            AssembleSlider(Vector3.forward, Quaternion.identity, out pinchSliderObject, out slider);
+
+            Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+            yield return DirectPinchAndMoveSlider(slider, 1.0f);
+            yield return PlayModeTestUtilities.WaitForEnterKey();
+            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulted at start");
+
+            // clean up
+            GameObject.Destroy(pinchSliderObject);
+            yield return null;
+        }
+
+        private IEnumerator DirectPinchAndMoveSlider(PinchSlider  slider, float toSliderValue)
+        {
+            Debug.Log($"moving hand to value {toSliderValue}");
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
+            yield return rightHand.Show(initialPos);
+            yield return rightHand.MoveTo(slider.ThumbRoot.transform.position);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            var sliderRay = new Ray(slider.SliderStartPosition, slider.SliderEndPosition - slider.SliderStartPosition);
+            yield return rightHand.MoveTo(sliderRay.GetPoint(toSliderValue));
+            rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            rightHand.Hide();
+        }
+
         /// <summary>
         /// Generates an interactable from primitives and assigns a select action.
         /// </summary>
@@ -66,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="slider"></param>
         /// <param name="sliderThumbRoot"></param>
         /// <param name="selectActionDescription"></param>
-        private void AssembleSlider(Vector3 position, Quaternion rotation, out GameObject pinchSliderObject, out PinchSlider slider, out Transform sliderThumbRoot)
+        private void AssembleSlider(Vector3 position, Quaternion rotation, out GameObject pinchSliderObject, out PinchSlider slider, bool isNearInteractionGrabbable = true)
         {
             // Assemble an interactable out of a set of primitives
             // This will be the slider root
@@ -84,7 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var thumbRoot = GameObject.CreatePrimitive(PrimitiveType.Cube);
             thumbRoot.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             thumbRoot.transform.parent = pinchSliderObject.transform;
-            sliderThumbRoot = thumbRoot.transform;
+            if (isNearInteractionGrabbable)
+            {
+                thumbRoot.AddComponent<NearInteractionGrabbable>();
+            }
 
             slider = pinchSliderObject.AddComponent<PinchSlider>();
             slider.ThumbRoot = thumbRoot;
