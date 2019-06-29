@@ -26,6 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public GameObject NewFocusedObject { get; private set; }
 
+        /// <summary>
+        /// The object receiving the focus.
+        /// </summary>
+        public GameObject FocusReceiverObject { get; private set; }
+
         /// <inheritdoc />
         public FocusEventData(EventSystem eventSystem) : base(eventSystem) { }
 
@@ -45,12 +50,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="pointer"></param>
         /// <param name="oldFocusedObject"></param>
         /// <param name="newFocusedObject"></param>
-        public void Initialize(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        public void Initialize(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject, GameObject focusReceiverObject)
         {
             Reset();
             Pointer = pointer;
             OldFocusedObject = oldFocusedObject;
             NewFocusedObject = newFocusedObject;
+            FocusReceiverObject = focusReceiverObject;
         }
     }
 }
