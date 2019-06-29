@@ -944,7 +944,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseFocusEnter(IMixedRealityPointer pointer, GameObject focusedObject)
         {
-            focusEventData.Initialize(pointer);
+            focusEventData.Initialize(pointer, focusedObject);
 
             HandleEvent(focusEventData, OnFocusEnterEventHandler);
         }
@@ -959,7 +959,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseFocusExit(IMixedRealityPointer pointer, GameObject unfocusedObject)
         {
-            focusEventData.Initialize(pointer);
+            focusEventData.Initialize(pointer, unfocusedObject);
 
             HandleEvent(focusEventData, OnFocusExitEventHandler);
         }

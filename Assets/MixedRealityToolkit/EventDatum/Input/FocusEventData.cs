@@ -38,10 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
         /// <param name="pointer"></param>
-        public void Initialize(IMixedRealityPointer pointer)
+        public void Initialize(IMixedRealityPointer pointer, GameObject focusReceiverObject)
         {
             Reset();
             Pointer = pointer;
+            FocusReceiverObject = focusReceiverObject;
         }
 
         /// <summary>
