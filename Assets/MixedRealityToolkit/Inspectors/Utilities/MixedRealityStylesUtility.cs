@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Editor
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     public static class MixedRealityStylesUtility
     {
