@@ -9,10 +9,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     [CustomEditor( typeof(BaseObjectCollection), true )]
     public class BaseCollectionInspector : UnityEditor.Editor
     {
-        public override void OnInspectorGUI()
+        protected SerializedProperty ignoreInactiveTransforms;
+        protected SerializedProperty sortType;
+
+        protected virtual void OnEnable()
         {
-            // Draw the default
-            base.OnInspectorGUI();
+            ignoreInactiveTransforms = serializedObject.FindProperty("ignoreInactiveTransforms");
+            sortType = serializedObject.FindProperty("sortType");
+        }
+
+        sealed public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(ignoreInactiveTransforms);
+            EditorGUILayout.PropertyField(sortType);
+            OnInspectorGUIInsertion();
+            serializedObject.ApplyModifiedProperties();
 
             // Place the button at the bottom
             BaseObjectCollection collection = (BaseObjectCollection)target;
@@ -21,5 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 collection.UpdateCollection();
             }
         }
+
+        protected virtual void OnInspectorGUIInsertion() { }
     }
 }

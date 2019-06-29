@@ -79,6 +79,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { radialRange = value; }
         }
 
+        [SerializeField]
+        [Tooltip("Distance for plane layout")]
+        [Range(0f, 100f)]
+        private float distance = 1f;
+
+        /// <summary>
+        /// This is the radial range for creating a radial fan layout.
+        /// </summary>
+        public float Distance
+        {
+            get { return distance; }
+            set { distance = value; }
+        }
+
         [Tooltip("Number of rows per column")]
         [SerializeField]
         private int rows = 3;
@@ -164,6 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     {
                         ObjectCollectionNode node = NodeList[i];
                         newPos = nodeGrid[i];
+                        newPos.z = distance;
                         node.Transform.localPosition = newPos;
                         UpdateNodeFacing(node);
                         NodeList[i] = node;
