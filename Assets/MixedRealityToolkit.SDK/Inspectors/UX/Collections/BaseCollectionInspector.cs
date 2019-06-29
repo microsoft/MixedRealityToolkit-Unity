@@ -9,8 +9,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     [CustomEditor( typeof(BaseObjectCollection), true )]
     public class BaseCollectionInspector : UnityEditor.Editor
     {
-        protected SerializedProperty ignoreInactiveTransforms;
-        protected SerializedProperty sortType;
+        private SerializedProperty ignoreInactiveTransforms;
+        private SerializedProperty sortType;
 
         protected virtual void OnEnable()
         {
