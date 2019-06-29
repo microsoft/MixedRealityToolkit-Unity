@@ -47,9 +47,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.PropertyField(radius);
                 EditorGUILayout.PropertyField(radialRange);
             }
-            EditorGUILayout.PropertyField(rows);
-            EditorGUILayout.PropertyField(cellWidth);
-            EditorGUILayout.PropertyField(cellHeight);
+
+            int layoutTypeIndex = layout.enumValueIndex;
+            if (layoutTypeIndex != 2 && layoutTypeIndex != 3)
+            {
+                EditorGUILayout.PropertyField(rows);
+            }
+            if (layoutTypeIndex != 3)
+            {
+                EditorGUILayout.PropertyField(cellWidth);
+            }
+            if (layoutTypeIndex != 2)
+            {
+                EditorGUILayout.PropertyField(cellHeight);
+            }
         }
     }
 }
