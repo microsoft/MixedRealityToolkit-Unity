@@ -20,6 +20,7 @@ using Microsoft.MixedReality.Toolkit.Diagnostics;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System;
 
 #if UNITY_EDITOR
 using TMPro;
@@ -136,10 +137,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Switch off / Destroy all input components, which listen to global events
-            Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
+            UnityEngine.Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
             inputSystem.GazeProvider.Enabled = false;
 
-            var diagnosticsVoiceControls = Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
+            var diagnosticsVoiceControls = UnityEngine.Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
             foreach (var diagnosticsComponent in diagnosticsVoiceControls)
             {
                 diagnosticsComponent.enabled = false;
@@ -171,6 +172,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CollectionAssert.IsEmpty(((BaseEventSystem)inputSystem).EventHandlersByType, "Input event system handler registry is not empty in the beginning of the test.");
 
             yield return null;
+        }
+
+        private static Stack<MixedRealityInputSimulationProfile> inputSimulationProfiles = new Stack<MixedRealityInputSimulationProfile>();
+        public static void PushHandSimulationProfile()
+        {
+            var iss = GetInputSimulationService();
+            inputSimulationProfiles.Push(iss.InputSimulationProfile);
+        }
+
+        public static void PopHandSimulationProfile()
+        {
+            var iss = GetInputSimulationService();
+            iss.InputSimulationProfile = inputSimulationProfiles.Pop();
+        }
+
+        internal static void SetHandSimulationMode(HandSimulationMode mode)
+        {
+            var iss = GetInputSimulationService();
+            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
+            isp.HandSimulationMode = mode;
+            iss.InputSimulationProfile = isp;
         }
 
         internal static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)

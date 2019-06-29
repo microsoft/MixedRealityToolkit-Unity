@@ -98,9 +98,41 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(pinchSliderObject);
             yield return null;
         }
+        
+        [UnityTest]
+        public IEnumerator TestAssembleInteractableAndFarManip()
+        {
+            GameObject pinchSliderObject;
+            PinchSlider slider;
+
+            // This should not throw exception
+            AssembleSlider(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+
+            Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+
+            // Set up ggv simulation
+            PlayModeTestUtilities.PushHandSimulationProfile();
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
+            yield return rightHand.Show(initialPos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            yield return rightHand.Move(new Vector3(0.1f, 0, 0));
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return rightHand.Hide();
+
+            Assert.That(slider.SliderValue, Is.GreaterThan(0.5));
+
+            // clean up
+            GameObject.Destroy(pinchSliderObject);
+            PlayModeTestUtilities.PopHandSimulationProfile();
+        }
         #endregion Tests
 
         #region Private methods
+        
         private IEnumerator DirectPinchAndMoveSlider(PinchSlider slider, float toSliderValue)
         {
             Debug.Log($"moving hand to value {toSliderValue}");
@@ -115,8 +147,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             yield return rightHand.MoveTo(Vector3.Lerp(slider.SliderStartPosition, slider.SliderEndPosition, toSliderValue));
-            rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            rightHand.Hide();
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return rightHand.Hide();
         }
 
         /// <summary>
