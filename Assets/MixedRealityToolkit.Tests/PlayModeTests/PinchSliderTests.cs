@@ -39,6 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.TearDown();
         }
 
+        #region Tests
         /// <summary>
         /// Tests that a slider component can be added at runtime.
         /// at runtime.
@@ -51,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PinchSlider slider;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Quaternion.identity, out pinchSliderObject, out slider);
+            AssembleSlider(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
 
             // clean up
             GameObject.Destroy(pinchSliderObject);
@@ -69,11 +70,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PinchSlider slider;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Quaternion.identity, out pinchSliderObject, out slider);
+            AssembleSlider(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
 
             Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
             yield return DirectPinchAndMoveSlider(slider, 1.0f);
-            yield return PlayModeTestUtilities.WaitForEnterKey();
             Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulted at start");
 
             // clean up
@@ -81,7 +81,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        private IEnumerator DirectPinchAndMoveSlider(PinchSlider  slider, float toSliderValue)
+        [UnityTest]
+        public IEnumerator TestLoadPrefabAndNearManip()
+        {
+            GameObject pinchSliderObject;
+            PinchSlider slider;
+
+            // This should not throw exception
+            InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+
+            Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+            yield return DirectPinchAndMoveSlider(slider, 1.0f);
+            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulted at start");
+
+            // clean up
+            GameObject.Destroy(pinchSliderObject);
+            yield return null;
+        }
+        #endregion Tests
+
+        #region Private methods
+        private IEnumerator DirectPinchAndMoveSlider(PinchSlider slider, float toSliderValue)
         {
             Debug.Log($"moving hand to value {toSliderValue}");
             var rightHand = new TestHand(Handedness.Right);
@@ -89,8 +109,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.Show(initialPos);
             yield return rightHand.MoveTo(slider.ThumbRoot.transform.position);
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            var sliderRay = new Ray(slider.SliderStartPosition, slider.SliderEndPosition - slider.SliderStartPosition);
-            yield return rightHand.MoveTo(sliderRay.GetPoint(toSliderValue));
+            if (!(toSliderValue >= 0 && toSliderValue <= 1))
+            {
+                throw new System.ArgumentException("toSliderValue must be between 0 and 1");
+            }
+
+            yield return rightHand.MoveTo(Vector3.Lerp(slider.SliderStartPosition, slider.SliderEndPosition, toSliderValue));
             rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             rightHand.Hide();
         }
@@ -102,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="slider"></param>
         /// <param name="sliderThumbRoot"></param>
         /// <param name="selectActionDescription"></param>
-        private void AssembleSlider(Vector3 position, Quaternion rotation, out GameObject pinchSliderObject, out PinchSlider slider, bool isNearInteractionGrabbable = true)
+        private void AssembleSlider(Vector3 position, Vector3 rotation, out GameObject pinchSliderObject, out PinchSlider slider, bool isNearInteractionGrabbable = true)
         {
             // Assemble an interactable out of a set of primitives
             // This will be the slider root
@@ -129,18 +153,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             slider.ThumbRoot = thumbRoot;
 
             pinchSliderObject.transform.position = position;
-            pinchSliderObject.transform.localRotation = rotation;
+            pinchSliderObject.transform.eulerAngles = rotation;
         }
 
         /// <summary>
         /// Instantiates the default interactable button.
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
-        /// <param name="sliderObject"></param>
-        /// <param name="pinchSlider"></param>
-        /// <param name="pinchSliderRoot"></param>
-        private void InstantiateDefaultSliderPrefab(Vector3 position, Vector3 rotation, out GameObject sliderObject, out PinchSlider pinchSlider, out Transform pinchSliderRoot)
+        private void InstantiateDefaultSliderPrefab(Vector3 position, Vector3 rotation, out GameObject sliderObject, out PinchSlider pinchSlider)
         {
             // Load interactable prefab
             Object sliderPrefab = AssetDatabase.LoadAssetAtPath(defaultPinchSliderPrefabPath, typeof(Object));
@@ -148,13 +167,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             pinchSlider = sliderObject.GetComponent<PinchSlider>();
             Assert.IsNotNull(pinchSlider);
 
-            // Find the target object for the interactable transformation
-            pinchSliderRoot = pinchSlider.ThumbRoot.transform;
-
             // Move the object into position
             sliderObject.transform.position = position;
             sliderObject.transform.eulerAngles = rotation;
         }
+        #endregion Private methods
+
     }
 }
 #endif
