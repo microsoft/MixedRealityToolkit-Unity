@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -198,11 +197,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <inheritdoc />
-        public bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
+        public virtual bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
         {
             if ((dataProviderInstance == null) || (dataProviders.Contains(dataProviderInstance))) { return false; }
 
             dataProviders.Add(dataProviderInstance);
+
             return true;
         }
 
