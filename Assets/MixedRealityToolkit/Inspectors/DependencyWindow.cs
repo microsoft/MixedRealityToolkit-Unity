@@ -44,6 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             ".controller",
         };
 
+        private readonly string[] assetsWithMetaDependencies =
+        {
+            ".fbx",
+        };
+
         private readonly string[] assetsWhichCanBeUnreferenced =
         {
             ".cs",
@@ -307,17 +312,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 var node = EnsureNode(guid);
 
+                List<string> dependencies = new List<string>();
+
                 // Check if this asset can have dependencies.
                 if (DoesFileHaveExtension(file, assetsWithDependencies))
                 {
-                    var dependencies = GetDependenciesInFile(file);
+                    dependencies.AddRange(GetDependenciesInFile(file));
+                }
 
-                    // Add linkage between this node and it's dependencies and the dependency and this node.
-                    foreach (var dependency in dependencies)
-                    {
-                        node.assetsThisDependsOn.Add(EnsureNode(dependency));
-                        EnsureNode(dependency).assetsDependentOnThis.Add(node);
-                    }
+                // Some files have dependencies in their meta files.
+                if (DoesFileHaveExtension(file, assetsWithMetaDependencies))
+                {
+                    dependencies.AddRange(GetDependenciesInMetaFile(file));
+                }
+
+                // Add linkage between this node and it's dependencies and the dependency and this node.
+                foreach (var dependency in dependencies)
+                {
+                    node.assetsThisDependsOn.Add(EnsureNode(dependency));
+                    EnsureNode(dependency).assetsDependentOnThis.Add(node);
                 }
             }
 
@@ -411,6 +424,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return guids;
+        }
+
+        private static List<string> GetDependenciesInMetaFile(string file)
+        {
+            var metaFile = AssetDatabase.GetTextMetaFilePathFromAssetPath(file);
+
+            return GetDependenciesInFile(metaFile);
         }
 
         private static void DrawDependencyGraphNode(DependencyGraphNode node)
