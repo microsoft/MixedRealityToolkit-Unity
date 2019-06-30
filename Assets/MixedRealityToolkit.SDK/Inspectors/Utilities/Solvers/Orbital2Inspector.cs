@@ -58,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             EditorGUILayout.PropertyField(maintainScale);
             EditorGUILayout.PropertyField(lifetime);
             EditorGUILayout.PropertyField(referenceObjectType);
+
             switch(referenceObjectType.enumValueIndex)
             {
                 case 1:
@@ -65,10 +66,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                     break;
                 case 2:
                     EditorGUILayout.PropertyField(faceTarget);
+                    if (faceTarget.objectReferenceValue != null)
+                    {
+                        EditorGUILayout.PropertyField(offsetSpace);
+                        EditorGUILayout.PropertyField(offset);
+                    }
                     break;
             }
-            EditorGUILayout.PropertyField(offsetSpace);
-            EditorGUILayout.PropertyField(offset);
             EditorGUILayout.PropertyField(pivotAxis);
             EditorGUILayout.PropertyField(useAngleStepping);
             if (useAngleStepping.boolValue)

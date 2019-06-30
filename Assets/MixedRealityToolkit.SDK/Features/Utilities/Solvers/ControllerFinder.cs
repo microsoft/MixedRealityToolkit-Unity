@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// ControllerFinder is a base class providing simple event handling for getting/releasing MotionController Transforms.
     /// </summary>
-    public abstract class ControllerFinder : MonoBehaviour, IMixedRealitySourceStateHandler
+    public class ControllerFinder : MonoBehaviour, IMixedRealitySourceStateHandler
     {
         [SerializeField]
         [Tooltip("The handedness of the controller that should be found.")]
