@@ -366,7 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="material">Material to modify</param>
         /// <param name="keywordName">Keyword of shader feature</param>
         /// <param name="propertyName">Associated property name for shader feature</param>
-        /// <param name="propertyValue">boolean toggle of active/inactive wrapped through float</param>
+        /// <param name="propertyValue">float to be treated as a boolean flag for setting shader feature active or inactive</param>
         protected static void SetShaderFeatureActive(Material material, string keywordName, string propertyName, float? propertyValue)
         {
             if (propertyValue.HasValue)
