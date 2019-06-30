@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// The space in which the XYZ offset is used
         /// </summary>
-        public TransformationSpaceType OffsetSpace
+        public TransformationSpaceType OffsetSpacorbitale
         {
             get { return offsetSpace; }
             set { offsetSpace = value; }
@@ -123,6 +123,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public override void SolverUpdate()
         {
             Vector3 desiredPos = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.position : Vector3.zero;
+
+            Quaternion targetRot;
+            switch (referenceObjectType)
+            {
+                case ReferenceObjectType.TrackedObject:
+                    targetRot = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.Euler(0, 1, 0);
+                    break;
+                case ReferenceObjectType.BodyPart:
+                    switch (trackedObjectToFace)
+                    {
+                        case TrackedObjectType.Head:
+                            if (!)
+                            TrackTransform(CameraCache.Main.transform);
+                            break;
+                        case TrackedObjectType.MotionControllerLeft:
+                            Handedness = Handedness.Left;
+                            break;
+                        case TrackedObjectType.MotionControllerRight:
+                            Handedness = Handedness.Right;
+                            break;
+                        case TrackedObjectType.HandJointLeft:
+                            // Set to None, so the underlying ControllerFinder doesn't attach to a controller.
+                            // TODO: Make this more generic / configurable for hands vs controllers. Also resolve the duplicate Handedness variables.
+                            Handedness = Handedness.None;
+                            TrackTransform(RequestEnableHandJoint(Handedness.Left));
+                            break;
+                        case TrackedObjectType.HandJointRight:
+                            Handedness = Handedness.None;
+                            TrackTransform(RequestEnableHandJoint(Handedness.Right));
+                            break;
+                    }
+            }
 
             Quaternion targetRot = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.Euler(0, 1, 0);
             Quaternion yawOnlyRot = Quaternion.Euler(0, targetRot.eulerAngles.y, 0);
