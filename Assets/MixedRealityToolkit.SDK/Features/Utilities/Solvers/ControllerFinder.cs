@@ -59,7 +59,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected virtual void OnEnable()
         {
             // Look if the controller has loaded.
+            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
             RefreshControllerTransform();
+        }
+
+        protected virtual void OnDisable()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         #endregion MonoBehaviour Implementation
