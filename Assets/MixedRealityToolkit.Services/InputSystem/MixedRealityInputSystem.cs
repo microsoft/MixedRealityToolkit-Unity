@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (inputModules.Length == 0)
             {
-                Debug.LogWarning($"Automatically adding a {typeof(MixedRealityInputModule).Name} to main camera. You should save this change to the scene.", CameraCache.Main);
+                // There is no input module attached to the camera, add one.
                 CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
             }
             else if ((inputModules.Length == 1) && (inputModules[0] is MixedRealityInputModule))
