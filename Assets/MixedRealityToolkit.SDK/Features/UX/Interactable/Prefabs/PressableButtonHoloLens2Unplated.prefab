@@ -164,6 +164,7 @@ MonoBehaviour:
   currentPushDistance: 0
   movingButtonIconText: {fileID: 8352633413104042190}
   compressableButtonVisuals: {fileID: 3030092746254298942}
+  minCompressPercentage: 0.25
   highlightPlate: {fileID: 304758184733692740}
   highlightPlateAnimationTime: 0.25
 --- !u!114 &316800720
@@ -737,6 +738,7 @@ GameObject:
   - component: {fileID: 2096017743}
   - component: {fileID: 2096017746}
   - component: {fileID: 2096017745}
+  - component: {fileID: 4574381583242977316}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -804,6 +806,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &4574381583242977316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096017742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &329340111926477333
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,6 +1100,7 @@ GameObject:
   - component: {fileID: 7769478332401773763}
   - component: {fileID: 1584991705500555878}
   - component: {fileID: 304758184733692740}
+  - component: {fileID: 5158428963143269397}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -1152,6 +1167,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5158428963143269397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6631197331987232791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8352633413104042190
 GameObject:
   m_ObjectHideFlags: 0
