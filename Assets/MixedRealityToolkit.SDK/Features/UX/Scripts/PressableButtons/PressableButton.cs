@@ -54,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
         private bool enforceFrontPush = true;
+        public bool EnforceFrontPush { get => enforceFrontPush; private set => enforceFrontPush = value; }
 
         public enum SpaceMode
         {
@@ -263,30 +264,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region IMixedRealityTouchHandler implementation
 
-        void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
+        private void PulseProximityLight(HandTrackingInputEventData eventData)
         {
-            if (touchPoints.ContainsKey(eventData.Controller))
-            {
-                return;
-            }
-
-            if (enforceFrontPush)
-            {
-                // Back-Press Detection:
-                // Accept touch only if controller pushed from the front.
-                // Extrapolate to get previous position.
-                Vector3 previousPosition = eventData.InputData - eventData.Controller.Velocity * Time.deltaTime;
-                float previousDistance = GetDistanceAlongPushDirection(previousPosition);
-
-                if (previousDistance > startPushDistance)
-                {
-                    return;
-                }
-            }
-
-            touchPoints.Add(eventData.Controller, eventData.InputData);
-            IsTouching = true;
-
             // Pulse each proximity light on pointer cursors' interacting with this button.
             foreach (var pointer in eventData.InputSource.Pointers)
             {
@@ -300,6 +279,42 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
             }
+        }
+
+        private bool HasPassedThroughStartPlane(HandTrackingInputEventData eventData)
+        {
+            foreach (var pointer in eventData.InputSource.Pointers)
+            {
+                PokePointer poke = pointer as PokePointer;
+                if (poke)
+                {
+                    // Extrapolate to get previous position.
+                    float previousDistance = GetDistanceAlongPushDirection(poke.PreviousPosition);
+                    return previousDistance <= StartPushDistance;
+                }
+            }
+
+            return false;
+        }
+
+        void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
+        {
+            if (touchPoints.ContainsKey(eventData.Controller))
+            {
+                return;
+            }
+
+            // Back-Press Detection:
+            // Accept touch only if controller pushed from the front.
+            if (enforceFrontPush && !HasPassedThroughStartPlane(eventData))
+            {
+                return;
+            }
+
+            touchPoints.Add(eventData.Controller, eventData.InputData);
+            IsTouching = true;
+
+            PulseProximityLight(eventData);
 
             eventData.Use();
         }
@@ -309,7 +324,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (touchPoints.ContainsKey(eventData.Controller))
             {
                 touchPoints[eventData.Controller] = eventData.InputData;
-
                 eventData.Use();
             }
         }

@@ -19,6 +19,8 @@ using System.IO;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using System.Reflection;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using System;
 
 #if UNITY_EDITOR
 using TMPro;
@@ -29,6 +31,69 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class PlayModeTestUtilities
     {
+
+        // Unity's default scene name for a recently created scene
+        const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
+
+        private static Stack<MixedRealityInputSimulationProfile> inputSimulationProfiles = new Stack<MixedRealityInputSimulationProfile>();
+
+        /// <summary>
+        /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
+        /// </summary>
+        public static void Setup()
+        {
+            Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
+
+            bool sceneExists = false;
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene playModeTestScene = SceneManager.GetSceneAt(i);
+                if (playModeTestScene.name == playModeTestSceneName && playModeTestScene.isLoaded)
+                {
+                    SceneManager.SetActiveScene(playModeTestScene);
+                    sceneExists = true;
+                }
+            }
+
+            if (!sceneExists)
+            {
+                Scene playModeTestScene = SceneManager.CreateScene(playModeTestSceneName);
+                SceneManager.SetActiveScene(playModeTestScene);
+            }
+
+            // Create an MRTK instance and set up playspace
+            TestUtilities.InitializeMixedRealityToolkit(true);
+            TestUtilities.InitializePlayspace();
+        }
+
+        /// <summary>
+        /// Destroys all objects in the play mode test scene, if it has been loaded, and shuts down MRTK instance.
+        /// </summary>
+        /// <returns></returns>
+        public static void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+
+            Scene playModeTestScene = SceneManager.GetSceneByName(playModeTestSceneName);
+            if (playModeTestScene.isLoaded)
+            {
+                foreach (GameObject gameObject in playModeTestScene.GetRootGameObjects())
+                {
+                    GameObject.Destroy(gameObject);
+                }
+            }
+
+            // If we created a temporary untitled scene in edit mode to get us started, unload that now
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene editorScene = SceneManager.GetSceneAt(i);
+                if (string.IsNullOrEmpty(editorScene.name))
+                {   // We've found our editor scene. Unload it.
+                    SceneManager.UnloadSceneAsync(editorScene);
+                }
+            }
+        }
+
         public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 worldPosition)
         {
             return (jointsOut) =>
@@ -57,6 +122,39 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Make sure there is a MixedRealityInputModule on the main camera, which is needed for using Unity UI with MRTK.
+        /// </summary>
+        /// <remarks>
+        /// Workaround for #5061
+        /// </remarks>
+        public static void EnsureInputModule()
+        {
+            if (CameraCache.Main && !CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>())
+            {
+                var inputModule = CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                inputModule.forceModuleActive = true;
+            }
+        }
+
+        /// <summary>
+        /// Destroy the input module to ensure it gets initialized cleanly for the next test.
+        /// </summary>
+        /// <remarks>
+        /// Workaround for #5116
+        /// </remarks>
+        public static void TeardownInputModule()
+        {
+            if (CameraCache.Main)
+            {
+                var inputModule = CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>();
+                if (inputModule)
+                {
+                    UnityEngine.Object.DestroyImmediate(inputModule);
+                }
+            }
+        }
+
+        /// <summary>
         /// Initializes the MRTK such that there are no other input system listeners
         /// (global or per-interface).
         /// </summary>
@@ -74,10 +172,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Switch off / Destroy all input components, which listen to global events
-            Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
+            UnityEngine.Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
             inputSystem.GazeProvider.Enabled = false;
 
-            var diagnosticsVoiceControls = Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
+            var diagnosticsVoiceControls = UnityEngine.Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
             foreach (var diagnosticsComponent in diagnosticsVoiceControls)
             {
                 diagnosticsComponent.enabled = false;
@@ -109,6 +207,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CollectionAssert.IsEmpty(((BaseEventSystem)inputSystem).EventHandlersByType, "Input event system handler registry is not empty in the beginning of the test.");
 
             yield return null;
+        }
+
+        public static void PushHandSimulationProfile()
+        {
+            var iss = GetInputSimulationService();
+            inputSimulationProfiles.Push(iss.InputSimulationProfile);
+        }
+
+        public static void PopHandSimulationProfile()
+        {
+            var iss = GetInputSimulationService();
+            iss.InputSimulationProfile = inputSimulationProfiles.Pop();
+        }
+
+        internal static void SetHandSimulationMode(HandSimulationMode mode)
+        {
+            var iss = GetInputSimulationService();
+            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
+            isp.HandSimulationMode = mode;
+            iss.InputSimulationProfile = isp;
         }
 
         internal static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)

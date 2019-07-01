@@ -59,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
+#if UNITY_EDITOR
         public bool EditorManageBuildSettings => editorManageBuildSettings;
 
         public bool EditorManageLoadedScenes => editorManageLoadedScenes;
@@ -70,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public bool EditorLightingCacheOutOfDate => editorLightingCacheOutOfDate;
 
         public bool EditorLightingCacheUpdateRequested { get; set; }
+#endif
 
         [SerializeField]
         private bool useManagerScene = true;
