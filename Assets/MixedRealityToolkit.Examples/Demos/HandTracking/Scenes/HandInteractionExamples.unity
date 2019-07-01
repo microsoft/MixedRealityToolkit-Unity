@@ -1419,7 +1419,7 @@ PrefabInstance:
     - target: {fileID: 224765341978470034, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000029891871
+      value: 0.000020354986
       objectReference: {fileID: 0}
     - target: {fileID: 224660968940914148, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
@@ -1679,12 +1679,12 @@ PrefabInstance:
     - target: {fileID: 114708077872054748, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
       propertyPath: m_havePropertiesChanged
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114708077872054748, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
       propertyPath: m_isInputParsingRequired
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224221558752092932, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
@@ -1699,22 +1699,22 @@ PrefabInstance:
     - target: {fileID: 114946447199427632, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
       propertyPath: m_havePropertiesChanged
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114946447199427632, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
       propertyPath: m_isInputParsingRequired
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114462447881518266, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
       propertyPath: m_havePropertiesChanged
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114462447881518266, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
       propertyPath: m_isInputParsingRequired
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114462447881518266, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
@@ -1752,6 +1752,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size
       value: 0.99999976
+      objectReference: {fileID: 0}
+    - target: {fileID: 114948745459632076, guid: 655521c3560b40f40b75cd30857eae84,
+        type: 3}
+      propertyPath: m_Text
+      value: Try selecting this text.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 655521c3560b40f40b75cd30857eae84, type: 3}
@@ -8358,6 +8363,21 @@ PrefabInstance:
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ToggleProfiler
       objectReference: {fileID: 0}
+    - target: {fileID: 4305907101023271952, guid: c0931c4da6d91ea429abedb10290dd16,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305907101023272046, guid: c0931c4da6d91ea429abedb10290dd16,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305907101023272046, guid: c0931c4da6d91ea429abedb10290dd16,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1272738663672335838, guid: c0931c4da6d91ea429abedb10290dd16, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c0931c4da6d91ea429abedb10290dd16, type: 3}
@@ -9550,7 +9570,7 @@ MonoBehaviour:
   gazeTransform: {fileID: 0}
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
-  useEyeTracking: 0
+  useEyeTracking: 1
 --- !u!114 &1087739258
 MonoBehaviour:
   m_ObjectHideFlags: 0
