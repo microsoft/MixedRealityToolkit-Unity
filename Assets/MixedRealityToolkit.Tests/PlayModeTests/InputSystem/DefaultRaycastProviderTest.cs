@@ -25,9 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             // step and layerMasks are set arbitrarily (to something which will not generate a hit).
             RayStep step = new RayStep(Vector3.zero, Vector3.up);
             LayerMask[] layerMasks = new LayerMask[] { UnityEngine.Physics.DefaultRaycastLayers };
-            MixedRealityRaycastHit hitInfo = null;
-            Assert.DoesNotThrow(() => defaultRaycastProvider.Raycast(step, layerMasks, out hitInfo));
-            Assert.IsNull(hitInfo);
+            MixedRealityRaycastHit hitInfo;
+            Assert.IsFalse(defaultRaycastProvider.Raycast(step, layerMasks, out hitInfo));
+            Assert.IsFalse(hitInfo.raycastValid);
             yield return null;
         }
 

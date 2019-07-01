@@ -20,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool Raycast(RayStep step, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo)
         {
-            var result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
-            hitInfo = result ? new MixedRealityRaycastHit(physicsHit) : null;
+            bool result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
+            hitInfo = new MixedRealityRaycastHit(result, physicsHit);
             return result;
         }
 
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool SphereCast(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo)
         {
             var result = MixedRealityRaycaster.RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
-            hitInfo = result ? new MixedRealityRaycastHit(physicsHit) : null;
+            hitInfo = new MixedRealityRaycastHit(result, physicsHit);
             return result;
         }
     }
