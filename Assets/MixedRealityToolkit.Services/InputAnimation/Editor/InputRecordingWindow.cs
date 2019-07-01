@@ -262,12 +262,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             string outputPath;
             if (loadedFilePath.Length > 0)
             {
-                string loadedFilename = Path.GetFileName(loadedFilePath);
                 string loadedDirectory = Path.GetDirectoryName(loadedFilePath);
                 outputPath = EditorUtility.SaveFilePanel(
                     "Select output path",
                     loadedDirectory,
-                    loadedFilename,
+                    InputAnimationSerializationUtils.GetOutputFilename(),
                     InputAnimationSerializationUtils.Extension);
             }
             else
