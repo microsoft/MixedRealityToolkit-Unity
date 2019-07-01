@@ -779,6 +779,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             DestroyRig();
             SetMaterials();
+            InitializeRigRoot();
             InitializeDataStructures();
             SetBoundingBoxCollider();
             UpdateBounds();
@@ -847,41 +848,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             bool result = curBounds != prevBoundsOverride;
             prevBoundsOverride = curBounds;
             return result;
-        }
-
-        private void OnValidate()
-        {
-            CheckBoundingBoxAboveManipulationHandler();
-        }
-
-        private void OnEnable()
-        {
-            CheckBoundingBoxAboveManipulationHandler();
-        }
-
-        private void CheckBoundingBoxAboveManipulationHandler()
-        {
-            int bboxIndex = int.MaxValue;
-            int manipHandlerIndex = int.MaxValue;
-            var behaviours = gameObject.GetComponents<Component>();
-            for (int i = 0; i < behaviours.Length; i++)
-            {
-                if (behaviours[i] is ManipulationHandler && i < manipHandlerIndex)
-                {
-                    manipHandlerIndex = i;
-                }
-                if (behaviours[i] is BoundingBox && i < bboxIndex)
-                {
-                    bboxIndex = i;
-                }
-            }
-            if (manipHandlerIndex < bboxIndex)
-            {
-                Debug.LogError($"You have a Bounding Box on gameObject {gameObject.name} that is below a ManipulationHandler. "
-                    + $"BoundingBox will not work. "
-                    + $"Move your ManipulationHandler below the BoundingBox. "
-                    + $"Bounding box index is {bboxIndex} and manipulation handler index is {manipHandlerIndex}.");
-            }
         }
 
         #endregion MonoBehaviour Methods
@@ -1493,12 +1459,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 handleGrabbedMaterial.SetFloatArray("_InnerGlowColor", color);
             }
         }
-        private void InitializeDataStructures()
+
+        private void InitializeRigRoot()
         {
-            rigRoot = new GameObject(rigRootName).transform;
+            var rigRootObj = new GameObject(rigRootName);
+            rigRoot = rigRootObj.transform;
             rigRoot.parent = transform;
 
+            var pH = rigRootObj.AddComponent<PointerHandler>();
+            pH.OnPointerDown.AddListener(OnPointerDown);
+            pH.OnPointerDragged.AddListener(OnPointerDragged);
+            pH.OnPointerUp.AddListener(OnPointerUp);
+            pH.OnPointerClicked.AddListener(OnPointerClicked);
+        }
 
+        private void InitializeDataStructures()
+        {
             boundsCorners = new Vector3[8];
 
             corners = new List<Transform>();
@@ -1957,7 +1933,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
         }
 
-        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             if (currentPointer != null && eventData.Pointer == currentPointer)
             {
@@ -1986,7 +1962,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             if (currentPointer == null && !eventData.used)
             {
@@ -2043,7 +2019,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
@@ -2083,7 +2059,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Used Event Handlers
 
         #region Unused Event Handlers
-        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
         #endregion Unused Event Handlers
