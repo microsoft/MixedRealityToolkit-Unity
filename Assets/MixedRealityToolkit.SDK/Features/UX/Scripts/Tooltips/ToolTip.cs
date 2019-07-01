@@ -140,10 +140,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             set
             {
-                if (value != toolTipText)
-                {
-                    toolTipText = value;
-                    RefreshLocalContent();                   
+                toolTipText = value;
+                if (!Application.isPlaying)
+                {   // Only force refresh in edit mode
+                    RefreshLocalContent();
                 }
             }
             get { return toolTipText; }
