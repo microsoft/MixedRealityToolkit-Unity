@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // Perpendicular forward/up vectors helpers
-            if (Vector3.Dot(t.LocalForward, t.LocalUp) != 0)
+            if (!t.AreLocalVectorsOrthogonal)
             {
                 UnityEditor.EditorGUILayout.HelpBox("Local Forward and Local Up are not perpendicular.", UnityEditor.MessageType.Warning);
                 if (GUILayout.Button("Fix Local Up"))
