@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 1128269667492352}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.001}
-  m_LocalScale: {x: 0.15333194, y: 0.03495355, z: 1}
+  m_LocalScale: {x: 0.15317991, y: 0.03495355, z: 1}
   m_Children: []
   m_Father: {fileID: 4961073448204456}
   m_RootOrder: 1
@@ -553,6 +553,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 544
+  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -579,7 +580,6 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
-  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -594,9 +594,12 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 0
+  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 6574921829153404536}
   m_subTextObjects:
@@ -785,9 +788,9 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 0.0040024854, y: 0.007328814, z: 0.005862154}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-  - position: {x: -0.026033107, y: 0.2547283, z: 0}
+  - position: {x: -0.025881082, y: 0.2547283, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-  - position: {x: 0.096668065, y: 0.31504643, z: 0}
+  - position: {x: 0.096820086, y: 0.31504643, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
   alignAllControlPoints: 1
 --- !u!114 &114815262729593704
@@ -931,22 +934,22 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0.0000011997246, y: 0.0000022058455, z: 0.0000017582944}
-  - {x: 0.00040207276, y: 0.0045498805, z: 0.0010224553}
-  - {x: 0.00022796956, y: 0.014736815, z: 0.0017619221}
-  - {x: -0.00018926495, y: 0.029804079, z: 0.0022514046}
-  - {x: -0.00051778555, y: 0.048992757, z: 0.0025221491}
-  - {x: -0.0004257476, y: 0.07154392, z: 0.002605402}
-  - {x: 0.00041869376, y: 0.096698634, z: 0.0025324083}
-  - {x: 0.0023473818, y: 0.12369796, z: 0.0023344154}
-  - {x: 0.00569217, y: 0.15178303, z: 0.0020426677}
-  - {x: 0.010784892, y: 0.18019485, z: 0.001688413}
-  - {x: 0.0179574, y: 0.20817454, z: 0.0013028962}
-  - {x: 0.027541533, y: 0.23496315, z: 0.000917364}
-  - {x: 0.03986913, y: 0.25980175, z: 0.0005630626}
-  - {x: 0.055272065, y: 0.28193143, z: 0.0002712371}
-  - {x: 0.07408216, y: 0.3005933, z: 0.000073134244}
-  - {x: 0.09663127, y: 0.31502837, z: 1.7569582e-10}
+  - {x: 0.0000011997291, y: 0.0000022058455, z: 0.0000017582944}
+  - {x: 0.0004040146, y: 0.0045498805, z: 0.0010224553}
+  - {x: 0.00023536466, y: 0.014736815, z: 0.0017619221}
+  - {x: -0.00017344544, y: 0.029804079, z: 0.0022514046}
+  - {x: -0.0004911107, y: 0.048992757, z: 0.0025221491}
+  - {x: -0.00038632704, y: 0.07154392, z: 0.002605402}
+  - {x: 0.0004722108, y: 0.096698634, z: 0.0025324083}
+  - {x: 0.002415806, y: 0.12369796, z: 0.0023344154}
+  - {x: 0.005775771, y: 0.15178303, z: 0.0020426677}
+  - {x: 0.010883399, y: 0.18019485, z: 0.001688413}
+  - {x: 0.018070005, y: 0.20817454, z: 0.0013028962}
+  - {x: 0.027666882, y: 0.23496315, z: 0.000917364}
+  - {x: 0.040005334, y: 0.25980175, z: 0.0005630626}
+  - {x: 0.055416685, y: 0.28193143, z: 0.0002712371}
+  - {x: 0.07423224, y: 0.3005933, z: 0.000073134244}
+  - {x: 0.0967833, y: 0.31502837, z: 1.7569582e-10}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
@@ -1020,6 +1023,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4961073448204456}
+  - component: {fileID: 1128152292871104097}
   m_Layer: 0
   m_Name: ContentParent
   m_TagString: Untagged
@@ -1043,6 +1047,20 @@ Transform:
   m_Father: {fileID: 4829571204916076}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1128152292871104097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582682964526084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2547b4dd088644d6aaf64f45df657c79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pivotAxis: 0
+  targetTransform: {fileID: 0}
 --- !u!1 &1592911157791456
 GameObject:
   m_ObjectHideFlags: 0
