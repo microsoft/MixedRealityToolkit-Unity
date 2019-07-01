@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
             using (new EditorGUILayout.VerticalScope())
             {
-                if (MixedRealityEditorUtility.RenderIndentedButton(AddObserverContent, EditorStyles.miniButton))
+                if (InspectorUIUtility.RenderIndentedButton(AddObserverContent, EditorStyles.miniButton))
                 {
                     list.InsertArrayElementAtIndex(list.arraySize);
                     SerializedProperty observer = list.GetArrayElementAtIndex(list.arraySize - 1);
