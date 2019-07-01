@@ -56,6 +56,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             internal set { raycastProviderType = value; }
         }
 
+        /// <summary>
+        /// Maximum number of colliders that can be detected in a SphereOverlap scene query.
+        /// </summary>
+        public int FocusQueryBufferSize => focusQueryBufferSize;
+
+        [SerializeField]
+        [Range(32, 2048)]
+        [Tooltip("Maximum number of colliders that can be detected in a SphereOverlap scene query.")]
+        private int focusQueryBufferSize = 128;
+
         [SerializeField]
         [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
         private MixedRealityInputActionsProfile inputActionsProfile;

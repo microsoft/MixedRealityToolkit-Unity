@@ -59,6 +59,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public List<GameObject> EventListeners { get; } = new List<GameObject>();
 
+        // Used to look up handlers in handler map tryget attempts
+        private static List<EventHandlerEntry> handlers;
+
         /// <inheritdoc />
         public virtual void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
@@ -274,7 +277,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void AddHandlerToMap(Type handlerType, IEventSystemHandler handler)
         {
-            List<EventHandlerEntry> handlers;
             bool isParentObjectRegistered = false;
 
             var componentHandler = handler as Component;
@@ -300,21 +302,22 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         private void RemoveHandlerFromMap(Type handlerType, IEventSystemHandler handler)
         {
-            List<EventHandlerEntry> handlers;
-
             if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
                 return;
             }
 
-            if (handlers.Exists(h => h.handler == handler))
+            for (int i = handlers.Count - 1; i >= 0; i--)
             {
-                handlers.RemoveAll(h => h.handler == handler);
-
-                if (handlers.Count == 0)
+                if (handlers[i].handler == handler)
                 {
-                    EventHandlersByType.Remove(handlerType);
+                    handlers.RemoveAt(i);
                 }
+            }
+
+            if (handlers.Count == 0)
+            {
+                EventHandlersByType.Remove(handlerType);
             }
         }
 

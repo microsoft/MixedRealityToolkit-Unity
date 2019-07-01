@@ -3,9 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -17,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private RectTransform rectTransform;
 
-        public static IReadOnlyCollection<NearInteractionTouchableUnityUI> Instances { get { return instances.AsReadOnly(); } }
+        public static List<NearInteractionTouchableUnityUI> Instances => instances;
         private static readonly List<NearInteractionTouchableUnityUI> instances = new List<NearInteractionTouchableUnityUI>();
 
         /// <inheritdoc />

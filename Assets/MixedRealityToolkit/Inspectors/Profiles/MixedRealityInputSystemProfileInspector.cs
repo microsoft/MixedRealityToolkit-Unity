@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty dataProviderConfigurations;
 
         private SerializedProperty focusProviderType;
-
+        private SerializedProperty focusQueryBufferSize;
         private SerializedProperty raycastProviderType;
 
         private static bool showPointerProperties = false;
@@ -63,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             dataProviderConfigurations = serializedObject.FindProperty("dataProviderConfigurations");
             focusProviderType = serializedObject.FindProperty("focusProviderType");
+            focusQueryBufferSize = serializedObject.FindProperty("focusQueryBufferSize");
             raycastProviderType = serializedObject.FindProperty("raycastProviderType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
@@ -91,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(focusProviderType);
+                EditorGUILayout.PropertyField(focusQueryBufferSize);
                 EditorGUILayout.PropertyField(raycastProviderType);
                 changed |= EditorGUI.EndChangeCheck();
 

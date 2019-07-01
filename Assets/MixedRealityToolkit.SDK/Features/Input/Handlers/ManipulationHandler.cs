@@ -200,7 +200,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
         private Dictionary<uint, IMixedRealityPointer> pointerIdToPointerMap = new Dictionary<uint, IMixedRealityPointer>();
-
         private Quaternion objectToHandRotation;
         private Vector3 objectToHandTranslation;
         private bool isNearManipulation;
@@ -531,7 +530,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void HandleOneHandMoveUpdated()
         {
             Debug.Assert(pointerIdToPointerMap.Count == 1);
-            IMixedRealityPointer pointer = pointerIdToPointerMap.Values.First();
+            IMixedRealityPointer pointer = GetFirstPointer();
 
             Quaternion targetRotation = Quaternion.identity;
             RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
@@ -622,7 +621,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void HandleOneHandMoveStarted()
         {
             Assert.IsTrue(pointerIdToPointerMap.Count == 1);
-            IMixedRealityPointer pointer = pointerIdToPointerMap.Values.First();
+            IMixedRealityPointer pointer = GetFirstPointer();
 
             moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
 
@@ -754,6 +753,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 rigidBody = null;
             }
+        }
+
+        private IMixedRealityPointer GetFirstPointer()
+        {
+            // We may be able to do this without allocating memory.
+            // Moving to a method for later investigation.
+            return pointerIdToPointerMap.Values.First();
         }
 
         #endregion

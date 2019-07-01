@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+// Including lightmap coord has a performance cost so we've disabled it by default.
+// Uncomment the define to enable lightmap coords.
+// #define MRTK_ENABLE_LIGHTMAPCOORD_IN_RAYCASTHIT
+
 using System;
 using UnityEngine;
 
@@ -31,17 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             textureCoord = hitInfo.textureCoord;
             textureCoord2 = hitInfo.textureCoord2;
             transform = hitInfo.transform;
-
-            try
-            {
-                lightmapCoord = hitInfo.lightmapCoord;
-            }
-            catch (Exception)
-            {
-                // Accessing lightmap coord appears to throw a NullReferenceException in some cases, probably when lightmaps are not used.
-                // Catch this, and just leave as default value.
-                lightmapCoord = Vector2.zero;
-            }
+#if MRTK_ENABLE_LIGHTMAPCOORD_IN_RAYCASTHIT
+            // This null check causes a performance hit but it's preferable to an exception.
+            lightmapCoord = hitInfo.transform != null ? hitInfo.lightmapCoord : Vector2.zero;
+#else
+            lightmapCoord = Vector2.zero;
+#endif
         }
     }
 }

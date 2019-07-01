@@ -21,7 +21,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public FocusProvider(
             IMixedRealityServiceRegistrar registrar,
             MixedRealityInputSystemProfile profile) : base(registrar, profile)
-        { }
+        {
+            maxQuerySceneResults = profile.FocusQueryBufferSize;
+        }
 
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
@@ -30,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
+        private int maxQuerySceneResults = 64;
 
         public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators
         {
@@ -866,7 +869,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Perform raycast to determine focused object
                     var raycastProvider = InputSystem.RaycastProvider;
                     hitResult3d.Clear();
-                    QueryScene(pointer.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d);
+                    QueryScene(pointer.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults);
                     PointerHitResult hit = hitResult3d;
 
                     // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
@@ -973,12 +976,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Physics Raycasting
 
+        // Colliders used to store sphere overlap results
+        private static Collider[] colliders = null;
+
         /// <summary>
         /// Perform a scene query to determine which scene objects with a collider is currently being gazed at, if any.
         /// </summary>
         /// <param name="pointerData"></param>
         /// <param name="prioritizedLayerMasks"></param>
-        private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
+        private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, int maxQuerySceneResults)
         {
             float rayStartDistance = 0;
             MixedRealityRaycastHit hitInfo;
@@ -1019,17 +1025,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         break;
                     case SceneQueryType.SphereOverlap:
-                        Collider[] colliders = UnityEngine.Physics.OverlapSphere(pointer.Rays[i].Origin, pointer.SphereCastRadius, ~UnityEngine.Physics.IgnoreRaycastLayer);
-
-                        if (colliders.Length > 0)
+                        // Set up our results array
+                        if (colliders == null)
                         {
+                            colliders = new Collider[maxQuerySceneResults];
+                        }
+                        else if (colliders.Length != maxQuerySceneResults)
+                        {
+                            Array.Resize<Collider>(ref colliders, maxQuerySceneResults);
+                        }
+
+                        int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(pointer.Rays[i].Origin, pointer.SphereCastRadius, colliders, ~UnityEngine.Physics.IgnoreRaycastLayer);
+
+                        if (numColliders > 0)
+                        {
+                            if (numColliders >= maxQuerySceneResults)
+                            {
+                                Debug.LogWarning($"Maximum number of {numColliders} colliders found in FocusProvider overlap query. Consider increasing the focus query buffer size in the input profile.");
+                            }
+
                             Vector3 testPoint = pointer.Rays[i].Origin;
                             GameObject closest = null;
                             float closestDistance = Mathf.Infinity;
                             Vector3 objectHitPoint = testPoint;
 
-                            foreach (Collider collider in colliders)
+                            for (int colliderIndex = 0; colliderIndex < numColliders; colliderIndex++)
                             {
+                                Collider collider = colliders[colliderIndex];
                                 // Policy: in order for an collider to be near interactable it must have
                                 // a NearInteractionGrabbable component on it.
                                 // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap,

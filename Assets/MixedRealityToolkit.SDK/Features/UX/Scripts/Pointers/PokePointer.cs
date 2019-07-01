@@ -68,8 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float closestDistance = 0.0f;
 
         private Vector3 closestNormal = Vector3.forward;
-        // previous frame pointer position
-        public Vector3 PreviousPosition { get; private set; } = Vector3.zero;
 
         private BaseNearInteractionTouchable closestProximityTouchable = null;
         /// <summary>
@@ -187,8 +185,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Unity UI does not provide an equivalent broad-phase test to Physics.OverlapSphere,
             // so we have to use a static instances list to test all NearInteractionTouchableUnityUI
-            foreach (var touchable in NearInteractionTouchableUnityUI.Instances)
+            for (int i = 0; i < NearInteractionTouchableUnityUI.Instances.Count; i++)
             {
+                NearInteractionTouchableUnityUI touchable = NearInteractionTouchableUnityUI.Instances[i];
                 float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
                 if (distance < closestDistance)
                 {   
@@ -245,8 +244,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 line.endColor = line.startColor = new Color(0, 0, 1, 0.75f);
             }
-
-            PreviousPosition = Position;
         }
 
         public override void OnPreCurrentPointerTargetChange()
@@ -360,12 +357,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             TryRaisePokeUp();
 
             base.OnSourceLost(eventData);
-        }
-
-        public override void OnSourceDetected(SourceStateEventData eventData)
-        {
-            base.OnSourceDetected(eventData);
-            PreviousPosition = Position;
         }
 
         public override void OnInputDown(InputEventData eventData)

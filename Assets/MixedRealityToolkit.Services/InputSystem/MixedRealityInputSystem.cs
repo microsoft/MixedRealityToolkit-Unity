@@ -390,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            Debug.Assert(baseInputEventData.InputSource.Pointers != null, $"InputSource {baseInputEventData.InputSource.SourceName} doesn't have any registered pointers! Input Sources without pointers should use the GazeProvider's pointer as a default fallback.");
+            if (baseInputEventData.InputSource.Pointers == null) { Debug.LogError($"InputSource {baseInputEventData.InputSource.SourceName} doesn't have any registered pointers! Input Sources without pointers should use the GazeProvider's pointer as a default fallback."); }
 
             var modalEventHandled = false;
             // Get the focused object for each pointer of the event source
@@ -447,7 +447,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Debug.Assert(baseInputEventData != null);
             Debug.Assert(!baseInputEventData.used);
-            Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}");
+            if (baseInputEventData.InputSource == null) { Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}"); }
 
             // Send the event to global listeners
             base.HandleEvent(baseInputEventData, eventHandler);
@@ -694,7 +694,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
-            Debug.Assert(!DetectedInputSources.Contains(source), $"{source.SourceName} has already been registered with the Input Manager!");
+            if (DetectedInputSources.Contains(source)) { Debug.LogError($"{source.SourceName} has already been registered with the Input Manager!"); }
 
             DetectedInputSources.Add(source);
 
@@ -722,7 +722,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
-            Debug.Assert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
+            if (!DetectedInputSources.Contains(source)) { Debug.LogError($"{source.SourceName} was never registered with the Input Manager!"); }
 
             DetectedInputSources.Remove(source);
 
