@@ -1,2 +1,2 @@
 -warnaserror+
--nowarn:1701
+-nowarn:1701,1702

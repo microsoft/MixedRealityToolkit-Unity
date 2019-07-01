@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
         /// to be displayed.
         /// </remarks>
-        public bool ShowDetailedLogs;
+        public bool ShowDetailedLogs => showDetailedLogs;
 
         /// <summary>
         /// Enables anchors to be stored from subsequent game sessions.
