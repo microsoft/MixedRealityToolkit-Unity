@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             lifetime = serializedObject.FindProperty("lifetime");
             referenceObjectType = serializedObject.FindProperty("referenceObjectType");
             trackedObjectToFace = serializedObject.FindProperty("trackedObjectToFace");
-            faceTarget = serializedObject.FindProperty("_faceTarget");
+            faceTarget = serializedObject.FindProperty("faceTarget");
             pivotAxis = serializedObject.FindProperty("pivotAxis");
             offsetSpace = serializedObject.FindProperty("offsetSpace");
             offset = serializedObject.FindProperty("offset");
@@ -91,11 +91,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                     }
                     break;
             }
+
             EditorGUILayout.PropertyField(pivotAxis);
-            EditorGUILayout.PropertyField(useAngleStepping);
-            if (useAngleStepping.boolValue)
+            if (pivotAxis.enumValueIndex == 1)
             {
-                EditorGUILayout.PropertyField(tetherAngleSteps);
+                EditorGUILayout.PropertyField(useAngleStepping);
+                if (useAngleStepping.boolValue)
+                {
+                    EditorGUILayout.PropertyField(tetherAngleSteps);
+                }
             }
 
             serializedObject.ApplyModifiedProperties();

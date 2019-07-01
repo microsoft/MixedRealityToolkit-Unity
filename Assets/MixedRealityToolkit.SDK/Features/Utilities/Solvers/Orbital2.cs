@@ -12,9 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     public class Orbital2 : Solver
     {
         [SerializeField]
-        [Tooltip("The desired object reference ")]
+        [Tooltip("The desired object reference type. Can be the tracked object, any scene object, or a body part")]
         private ReferenceObjectType referenceObjectType = default;
 
+        /// <summary>
+        /// The desired object reference
+        /// </summary>
         public ReferenceObjectType ReferenceObjectType
         {
             get { return referenceObjectType; }
@@ -50,13 +53,41 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Manual override for FacedObjectToReference if you want to use a scene object. Leave empty if you want to use head, motion-tracked controllers, or motion-tracked hands.")]
-        private Transform _faceTarget;
+        private Transform faceTarget;
 
-        private Transform faceTarget
+        private Transform FaceTarget
         {
-            get { return _faceTarget; }
-            set { Debug.Log(value);
-                _faceTarget = value; }
+            get { return faceTarget; }
+            set
+            {
+                if (faceTarget != value)
+                {
+                    faceTarget = value;
+
+                    // faceTarget might be one of the body parts, but that's supposed to be happening by assigning ReferenceObjectType.BodyPart and therefore unlikely
+                    if (faceTarget == SolverHandler.TransformTarget)
+                    {
+                        referenceObjectType = ReferenceObjectType.TrackedObject;
+                    }
+                    else
+                    {
+                        referenceObjectType = ReferenceObjectType.SceneObject;
+                    }
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Sets an additional distance from the TargetTransform to orbit around it")]
+        private float orbitDistance;
+
+        /// <summary>
+        /// Sets an additional distance from the TargetTransform to orbit around it
+        /// </summary>
+        public float OrbitDistance
+        {
+            get { return orbitDistance; }
+            set { orbitDistance = value; }
         }
 
         [SerializeField]
@@ -161,7 +192,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3 lookDirection;
             Vector3 up;
 
+            if (referenceObjectType != ReferenceObjectType.TrackedObject || faceTarget == null)
+            {
 
+            }
 
             if (LookAtFaceTarget)
             {

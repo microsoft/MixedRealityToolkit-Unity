@@ -154,13 +154,14 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 80851527}
-  referenceObjectType: 2
+  referenceObjectType: 0
   trackedObjectToFace: 0
-  faceTarget: {fileID: 371148877}
-  pivotAxis: 6
+  faceTarget: {fileID: 527063124}
+  orbitDistance: 0
+  pivotAxis: 1
   offsetSpace: 0
   offset: {x: 0, y: 0, z: 0}
-  useAngleStepping: 0
+  useAngleStepping: 1
   tetherAngleSteps: 6
 --- !u!114 &80851527
 MonoBehaviour:
