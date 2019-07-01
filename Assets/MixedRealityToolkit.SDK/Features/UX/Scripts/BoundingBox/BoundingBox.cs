@@ -609,7 +609,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float handleCloseProximity = 0.0015f;
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range")]
-        private float farScale = 0.0f;//0.01f;
+        private float farScale = 0.0f; // In default, the handles are not visible
         public float FarScale
         {
             get
