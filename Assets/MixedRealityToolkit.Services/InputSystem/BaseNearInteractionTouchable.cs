@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The type of event to receive.
         /// </summary>
-        public TouchableEventType EventsToReceive => eventsToReceive;
+        public TouchableEventType EventsToReceive { get => eventsToReceive; set => eventsToReceive = value; }
 
         [Tooltip("Distance behind the surface at which you will receive a touch started event")]
         [SerializeField]

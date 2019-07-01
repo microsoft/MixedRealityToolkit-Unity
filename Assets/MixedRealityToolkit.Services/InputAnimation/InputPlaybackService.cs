@@ -37,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile)
         {}
 
+#if UNITY_EDITOR
         private IInputSimulationService inputSimService = null;
         private IInputSimulationService InputSimService
         {
@@ -52,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return inputSimService;
             }
         }
+#endif
 
         private InputAnimation animation = null;
         /// <inheritdoc />
@@ -130,11 +132,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void SetPlaying(bool playing)
         {
             isPlaying = playing;
+
+#if UNITY_EDITOR
             if (InputSimService != null)
             {
                 // Disable user input while playing animation
                 InputSimService.UserInputEnabled = !isPlaying;
             }
+#endif
         }
 
         /// Evaluate the animation and update the simulation service to apply input.
@@ -153,13 +158,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 CameraCache.Main.transform.SetPositionAndRotation(cameraPose.Position, cameraPose.Rotation);
             }
 
+#if UNITY_EDITOR
             if (InputSimService != null)
             {
                 EvaluateHandData(InputSimService.HandDataLeft, Handedness.Left);
                 EvaluateHandData(InputSimService.HandDataRight, Handedness.Right);
             }
+#endif
         }
 
+#if UNITY_EDITOR
         private void EvaluateHandData(SimulatedHandData handData, Handedness handedness)
         {
             animation.EvaluateHandState(localTime, handedness, out bool isTracked, out bool isPinching);
@@ -173,6 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 });
         }
+#endif
 
         /// <inheritdoc />
         public bool LoadInputAnimation(string filepath)
