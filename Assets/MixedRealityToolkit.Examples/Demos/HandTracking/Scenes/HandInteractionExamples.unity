@@ -8335,16 +8335,6 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4751306671843597950, guid: c0931c4da6d91ea429abedb10290dd16,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4751306671843597950, guid: c0931c4da6d91ea429abedb10290dd16,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToggleProfiler
-      objectReference: {fileID: 0}
     - target: {fileID: 4305907101023271952, guid: c0931c4da6d91ea429abedb10290dd16,
         type: 3}
       propertyPath: m_Mesh
