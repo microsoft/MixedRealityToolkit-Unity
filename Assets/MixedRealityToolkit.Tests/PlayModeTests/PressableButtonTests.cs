@@ -3,9 +3,13 @@
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the the required assemblies (i.e. the ones below).
-// Given that the .NET backend is deprecated by Unity at this point it's we have
-// to work around this on our end.
+// The assembly that this file is part of is still built for the player,
+// even though the assembly itself is marked as a test assembly (this is not
+// expected because test assemblies should not be included in player builds).
+// Because the .NET backend is deprecated in 2018 and removed in 2019 and this
+// issue will likely persist for 2018, this issue is worked around by wrapping all
+// play mode tests in this check.
+
 using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
 using UnityEngine;
@@ -29,26 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
 
-            RenderSettings.skybox = null;
-
             Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab", typeof(Object));
             GameObject testButton = Object.Instantiate(pressableButtonPrefab) as GameObject;
 
             return testButton;
-        }
-
-        /// <summary>
-        /// Waits for the user to press the enter key before a test continues.
-        /// Not actually used by any test, but it is useful when debugging since you can 
-        /// pause the state of the test and inspect the scene.
-        /// </summary>
-        private IEnumerator WaitForEnterKey()
-        {
-            Debug.Log(Time.time + "Press Enter...");
-            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
-            {
-                yield return null;
-            }
         }
 
         [TearDown]
@@ -84,12 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject testButton = InstantiateSceneAndDefaultPressableButton();
 
             // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             // For some reason, we would only get null pointers when the hand tries to click a button
             // at specific positions, hence the unusal z value.
@@ -116,6 +99,45 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+
+            Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
+
+            Object.Destroy(testButton);
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// This test reproduces P0 issue 4566 which didn't trigger a button with enabled backpressprotection 
+        /// if hands were moving too fast in low framerate
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PressButtonFast()
+        {
+            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+
+            // Move the camera to origin looking at +z to more easily see the button.
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(buttonComponent);
+            Assert.IsTrue(buttonComponent.EnforceFrontPush, "Button default behavior should have enforce front push enabled");
+
+            bool buttonPressed = false;
+            buttonComponent.ButtonPressed.AddListener(() =>
+            {
+                buttonPressed = true;
+            });
+
+            // move the hand quickly from very far distance into the button and check if it was pressed
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            int numSteps = 2;
+            Vector3 p1 = new Vector3(0, 0, -20.0f);
+            Vector3 p2 = new Vector3(0, 0, 0.02f);
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
             Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");

@@ -22,6 +22,11 @@ steps:
    
    Remove-Job $ljob
    Stop-Process $proc
+
+   if ($proc.ExitCode -ne 0)
+   {
+       exit $proc.ExitCode
+   }
   displayName: 'Run Asset Retargetting'
 
 - script: 'Type %Build_ArtifactStagingDirectory%\build\build\retargeting_log.log'
