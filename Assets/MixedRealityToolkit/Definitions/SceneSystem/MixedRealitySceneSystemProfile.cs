@@ -113,6 +113,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         #region editor settings
 
+        // CS414 is disabled during this section because these properties are being used in the editor
+        // scenario - when this file is build for player scenario, these serialized fields still exist
+        // but are not used.
+        #pragma warning disable 414
         [SerializeField]
         [Tooltip("If true, the service will update your build settings automatically, ensuring that all manager, lighting and content scenes are added. Disable this if you want total control over build settings.")]
         private bool editorManageBuildSettings = true;
@@ -131,6 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
         [SerializeField]
         private bool editorLightingCacheOutOfDate = false;
+        #pragma warning restore 414
 
         #endregion
 

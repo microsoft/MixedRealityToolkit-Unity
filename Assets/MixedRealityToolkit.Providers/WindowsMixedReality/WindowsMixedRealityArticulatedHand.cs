@@ -252,16 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                             var handMeshVertexState = handMeshObserver.GetVertexStateForPose(handPose);
                             handMeshVertexState.GetVertices(vertexAndNormals);
 
-                            // When building on the .NET backend with C# projects, we don't have control over the
-                            // System.Numerics.Vector package that Unity references. Unity uses a compatible but
-                            // slightly more advanced version (i.e. one minor version ahead).
-#if NETFX_CORE
-#pragma warning disable 1701
-#endif
                             var meshTransform = handMeshVertexState.CoordinateSystem.TryGetTransformTo(WindowsMixedRealityUtilities.SpatialCoordinateSystem);
-#if NETFX_CORE
-#pragma warning restore 1701
-#endif
                             if (meshTransform.HasValue)
                             {
                                 System.Numerics.Vector3 scale;
