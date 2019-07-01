@@ -160,9 +160,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private void Start()
         {
             // TransformTarget overrides TrackedObjectToReference
-            if (!transformTarget)
+            if (transformTarget == null)
             {
                 AttachToNewTrackedObject();
+            }
+            else if (RequiresOffset)
+            {
+                TrackTransform(transformTarget);
             }
         }
 
@@ -197,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         protected override void OnControllerFound()
         {
-            if (!transformTarget)
+            if (transformTarget == null)
             {
                 TrackTransform(ControllerTransform);
             }
@@ -276,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             transformWithOffset.transform.localPosition = Vector3.Scale(AdditionalOffset, transformWithOffset.transform.localScale);
             transformWithOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
-            transformWithOffset.name = string.Format("{0} on {1} with offset {2}, {3}", gameObject.name, TrackedObjectToReference.ToString(), AdditionalOffset, AdditionalRotation);
+            transformWithOffset.name = string.Format("{0} on {1} with offset {2}, {3}", gameObject.name, transformTarget.ToString(), AdditionalOffset, AdditionalRotation);
             return transformWithOffset.transform;
         }
     }
