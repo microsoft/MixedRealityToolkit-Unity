@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1.075, y: 7.1279716, z: 5}
   m_Children: []
   m_Father: {fileID: 7779420037177669557}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8171578189277596936
 MeshFilter:
@@ -87,7 +87,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7779420037177669557}
   - component: {fileID: 7779420037177669560}
-  - component: {fileID: 7779420037177669563}
   - component: {fileID: 7779420037177669562}
   - component: {fileID: 7779420037177669567}
   - component: {fileID: 7779420037177669561}
@@ -111,7 +110,6 @@ Transform:
   m_Children:
   - {fileID: 7779420038487776843}
   - {fileID: 7779420037805726339}
-  - {fileID: 7779420038095343087}
   - {fileID: 7779420038862058150}
   - {fileID: 9003520578922256460}
   m_Father: {fileID: 7779420039263858271}
@@ -130,19 +128,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.9999999, z: 9.334387}
   m_Center: {x: -0.000000071616775, y: -0.00000022043137, z: -0.09514915}
---- !u!114 &7779420037177669563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7779420037177669556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 006b19a3d56ab0d468466cdb4fad3027, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panComponent: {fileID: 0}
 --- !u!114 &7779420037177669562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,11 +412,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7779420038095343086}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0003604741, y: -3.2930713, z: -0.21252781}
-  m_LocalScale: {x: 1, y: 5.5523934, z: 65.22684}
+  m_LocalPosition: {x: -0.068600014, y: -0.16509998, z: 0.058999836}
+  m_LocalScale: {x: 0.83227205, y: 0.46917725, z: 0.45919693}
   m_Children: []
-  m_Father: {fileID: 7779420037177669557}
-  m_RootOrder: 2
+  m_Father: {fileID: 7779420039263858271}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7779420038095343088
 MeshFilter:
@@ -517,13 +502,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  touchableCollider: {fileID: 7779420038095343090}
-  distBack: 0.25
+  pokeThreshold: 0.25
   debounceThreshold: 0.01
+  touchableCollider: {fileID: 7779420038095343090}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: -0.00000003580839, y: -0.00000047640293, z: -0.14523838}
-  touchableSurface: 0
   bounds: {x: 1, y: 0.99999946}
 --- !u!114 &6478522880476602763
 MonoBehaviour:
@@ -554,6 +538,7 @@ MonoBehaviour:
   centerPoint: {fileID: 0}
   leftPoint: {fileID: 0}
   rightPoint: {fileID: 0}
+  proximityLightCenterColor: {r: 0.25, g: 0.25, b: 0.25, a: 0}
   currentScale: 0
   PanStarted:
     m_PersistentCalls:
@@ -924,7 +909,7 @@ Transform:
   - {fileID: 7779420037312591937}
   - {fileID: 7779420039106690230}
   m_Father: {fileID: 7779420037177669557}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7779420038862058148
 MonoBehaviour:
@@ -981,6 +966,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7779420037177669557}
+  - {fileID: 7779420038095343087}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1172,6 +1158,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7779420038862058150}
     m_Modifications:
+    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
+      propertyPath: m_Name
+      value: Pressable Button (2)
+      objectReference: {fileID: 0}
     - target: {fileID: 9181818329810857364, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
       propertyPath: m_text
@@ -1206,10 +1196,6 @@ PrefabInstance:
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
-      propertyPath: m_Name
-      value: Pressable Button (2)
       objectReference: {fileID: 0}
     - target: {fileID: 1944713263, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1296,6 +1282,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7779420038862058150}
     m_Modifications:
+    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
+      propertyPath: m_Name
+      value: Pressable Button (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 9181818329810857364, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
       propertyPath: m_text
@@ -1335,10 +1325,6 @@ PrefabInstance:
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ToggleFollowMeBehavior
-      objectReference: {fileID: 0}
-    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
-      propertyPath: m_Name
-      value: Pressable Button (1)
       objectReference: {fileID: 0}
     - target: {fileID: 1944713263, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_LocalPosition.x
