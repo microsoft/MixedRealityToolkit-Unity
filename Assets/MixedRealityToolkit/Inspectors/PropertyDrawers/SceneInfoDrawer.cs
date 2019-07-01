@@ -1,10 +1,7 @@
-﻿using System;
-using Boo.Lang;
-using Microsoft.MixedReality.Toolkit.SceneSystem;
+﻿using Microsoft.MixedReality.Toolkit.SceneSystem;
+using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -14,6 +11,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomPropertyDrawer(typeof(SceneInfo))]
     public class SceneInfoDrawer : PropertyDrawer
     {
+        [InitializeOnLoadMethod]
+        private static void SubscribeToEvents()
+        {
+            cachedScenes = EditorBuildSettings.scenes;
+            EditorBuildSettings.sceneListChanged += SceneListChanged;
+        }
+
+        private static void SceneListChanged()
+        {
+            cachedScenes = EditorBuildSettings.scenes;
+        }
+
         /// <summary>
         /// Used to control whether to draw the tag property.
         /// All scenes can have tags, but they're not always relevant based on how the scene is being used.
@@ -27,8 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// so we're not loading them once per property draw call
         /// </summary>
         private static EditorBuildSettingsScene[] cachedScenes = new EditorBuildSettingsScene[0];
-        private static float cachedSceneCheckTime;
-        const float cachedScenesCheckInterval = 0.25f;
 
         const float iconWidth = 20f;
         const float totalPropertyWidth = 410;
@@ -64,13 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public static void DrawProperty(Rect position, SerializedProperty property, GUIContent label, bool isActive = false, bool isSelected = false)
         {
-            // Make sure our cached scenes are up to date
-            if (cachedSceneCheckTime < Time.realtimeSinceStartup)
-            {
-                cachedSceneCheckTime = Time.realtimeSinceStartup + cachedScenesCheckInterval;
-                cachedScenes = EditorBuildSettings.scenes;
-            }
-
             SerializedProperty assetProperty = property.FindPropertyRelative("Asset");
             SerializedProperty nameProperty = property.FindPropertyRelative("Name");
             SerializedProperty pathProperty = property.FindPropertyRelative("Path");
@@ -197,9 +197,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Draw our button
             EditorGUI.BeginDisabledGroup(buttonsDisabled || Application.isPlaying);
+            if (!string.IsNullOrEmpty(pathProperty.stringValue) && asset == null)
+            {
+                // The scene is missing
+                // This may be due to a local file ID mismatch
+                // Try to find it based on guid first
+                asset = AssetDatabase.LoadAssetAtPath<SceneAsset>(pathProperty.stringValue);
+            }
+
+
             if (!string.IsNullOrEmpty (nameProperty.stringValue) && asset == null)
             {
-                // The scene is missing - draw a button that lets people attempt to recover it
+                // If we still can't find it, draw a button that lets people attempt to recover it
                 if (GUI.Button(buttonRect, "Search for missing scene", EditorStyles.toolbarButton))
                 {
                    changed |= FindScene(nameProperty, pathProperty, ref asset);
