@@ -385,8 +385,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 highlights.Add(highlight);
             }
 
-            RefreshLocalContent();
-
             contentParent.SetActive(false);
             ShowBackground = showBackground;
             ShowHighlight = showHighlight;
