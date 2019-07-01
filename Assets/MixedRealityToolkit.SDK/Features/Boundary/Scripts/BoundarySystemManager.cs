@@ -23,19 +23,19 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
         private void Awake()
         {
-            Initialize();
+            InitializeManager();
         }
 
         protected override void OnDestroy()
         {
-            Uninitialize();
+            UninitializeManager();
             base.OnDestroy();
         }
 
         /// <summary>
         ///  Initialize the manager.
         /// </summary>
-        private void Initialize()
+        private void InitializeManager()
         {
             // The boundary system class takes arguments for:
             // * The registrar
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         ///  Uninitialize the manager.
         /// </summary>
-        private void Uninitialize()
+        private void UninitializeManager()
         {
             Uninitialize<IMixedRealityBoundarySystem>();
         }

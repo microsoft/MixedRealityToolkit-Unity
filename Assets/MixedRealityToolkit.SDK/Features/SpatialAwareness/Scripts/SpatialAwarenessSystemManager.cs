@@ -21,12 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         private void Awake()
         {
-            Initialize();
+            InitializeManager();
         }
 
         protected override void OnDestroy()
         {
-            Uninitialize();
+            UninitializeManager();
             base.OnDestroy();
         }
 
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         ///  Initialize the manager.
         /// </summary>
-        private void Initialize()
+        private void InitializeManager()
         {
             // The spatial awareness system class takes arguments for:
             // * The registrar
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         ///  Uninitialize the manager.
         /// </summary>
-        private void Uninitialize()
+        private void UninitializeManager()
         {
             Uninitialize<IMixedRealitySpatialAwarenessSystem>();
         }

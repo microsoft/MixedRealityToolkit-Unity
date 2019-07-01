@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,6 +39,24 @@ namespace Microsoft.MixedReality.Toolkit
                 }
             }
         }
+        private void LateUpdate()
+        {
+            if (Application.isPlaying)
+            {
+                IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
+                for (int i = 0; i < serviceSnapshot.Count; i++)
+                {
+                    serviceSnapshot[i]?.LateUpdate();
+                }
+
+                IMixedRealityDataProvider[] providers = dataProviders.ToArray();
+                for (int i = 0; i < providers.Length; i++)
+                {
+                    providers[i]?.LateUpdate();
+                }
+            }
+        }
+
 
         protected virtual void OnEnable()
         {
@@ -198,11 +215,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <inheritdoc />
-        public bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
+        public virtual bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
         {
             if ((dataProviderInstance == null) || (dataProviders.Contains(dataProviderInstance))) { return false; }
 
             dataProviders.Add(dataProviderInstance);
+
             return true;
         }
 

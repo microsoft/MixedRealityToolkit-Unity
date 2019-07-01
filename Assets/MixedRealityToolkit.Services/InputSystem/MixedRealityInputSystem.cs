@@ -145,26 +145,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            if (!Application.isPlaying)
+            // Ensure the camera starts at the origin.
+            CameraCache.Main.transform.position = Vector3.zero;
+            CameraCache.Main.transform.rotation = Quaternion.identity;
+
+            BaseInputModule[] inputModules = UnityEngine.Object.FindObjectsOfType<BaseInputModule>();
+
+            if (inputModules.Length == 0)
             {
-                CameraCache.Main.transform.position = Vector3.zero;
-                CameraCache.Main.transform.rotation = Quaternion.identity;
-
-                var inputModules = UnityEngine.Object.FindObjectsOfType<BaseInputModule>();
-
-                if (inputModules.Length == 0)
-                {
-                    Debug.LogWarning($"Automatically adding a {typeof(MixedRealityInputModule).Name} to main camera. You should save this change to the scene.", CameraCache.Main);
-                    CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
-                }
-                else if ((inputModules.Length == 1) && (inputModules[0] is MixedRealityInputModule))
-                {
-                    // Nothing. Input module is setup correctly.
-                }
-                else
-                {
-                    Debug.LogError($"For Mixed Reality Toolkit input to work properly, please remove your other input module(s) and add a {typeof(MixedRealityInputModule).Name} to your main camera.", inputModules[0]);
-                }
+                // There is no input module attached to the camera, add one.
+                CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+            }
+            else if ((inputModules.Length == 1) && (inputModules[0] is MixedRealityInputModule))
+            { /* Nothing to do, a MixedRealityInputModule was applied in the editor. */ }
+            else
+            {
+                Debug.LogError($"For Mixed Reality Toolkit input to work properly, please remove your other input module(s) and add a {typeof(MixedRealityInputModule).Name} to your main camera.", inputModules[0]);
             }
 
             if (InputSystemProfile == null)
