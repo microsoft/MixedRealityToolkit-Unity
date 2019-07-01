@@ -13,15 +13,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     public class DependencyWindow : EditorWindow
     {
-        private Object assetSelection = null;
-        private int maxDisplayDepth = 8;
-        private float dependencyGraphRefreshTime = 0.0f;
-        private Vector2 scrollPosition = Vector2.zero;
         private int selectedToolbarIndex = 0;
+        private Vector2 scrollPosition = Vector2.zero;
+
+        // Asset Dependency Graph
+        private Object assetSelection = null;
+        private int maxDisplayDepth = 4;
+        private float dependencyGraphRefreshTime = 0.0f;
+
+        // Unreferenced Asset List
+        private bool excludeUnityScenes = false;
 
         private class DependencyGraphNode
         {
             public string guid = null;
+            public string path = null;
+            public string extension = null;
+            public Object targetObject = null;
             public HashSet<DependencyGraphNode> assetsThisDependsOn = new HashSet<DependencyGraphNode>();
             public HashSet<DependencyGraphNode> assetsDependentOnThis = new HashSet<DependencyGraphNode>();
         }
@@ -104,6 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
             else if (selectedToolbarIndex == 1)
             {
+                excludeUnityScenes = EditorGUILayout.Toggle("Exclude Unity Scenes", excludeUnityScenes);
+
                 DrawUnreferencedAssetList();
             }
         }
@@ -260,7 +270,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             continue;
                         }
 
-                        if (DoesFileHaveExtension(AssetDatabase.GUIDToAssetPath(node.guid), assetsWhichCanBeUnreferenced))
+                        if (DoesNodeHaveExtension(node, assetsWhichCanBeUnreferenced))
+                        {
+                            continue;
+                        }
+
+                        if (excludeUnityScenes && DoesNodeHaveExtension(node, ".unity"))
                         {
                             continue;
                         }
@@ -315,15 +330,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 List<string> dependencies = new List<string>();
 
                 // Check if this asset can have dependencies.
-                if (DoesFileHaveExtension(file, assetsWithDependencies))
+                if (DoesNodeHaveExtension(node, assetsWithDependencies))
                 {
                     dependencies.AddRange(GetDependenciesInFile(file));
                 }
 
                 // Some files have dependencies in their meta files.
-                if (DoesFileHaveExtension(file, assetsWithMetaDependencies))
+                if (DoesNodeHaveExtension(node, assetsWithMetaDependencies))
                 {
-                    dependencies.AddRange(GetDependenciesInMetaFile(file));
+                    dependencies.AddRange(GetDependenciesInFile(metaFile));
                 }
 
                 // Add linkage between this node and it's dependencies and the dependency and this node.
@@ -347,6 +362,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 node = new DependencyGraphNode();
                 node.guid = guid;
+                node.path = AssetDatabase.GUIDToAssetPath(guid);
+                node.extension = Path.GetExtension(node.path).ToLowerInvariant();
+                node.targetObject = AssetDatabase.LoadMainAssetAtPath(node.path);
                 dependencyGraph.Add(guid, node);
             }
 
@@ -358,13 +376,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return File.Exists(file);
         }
 
-        private static bool DoesFileHaveExtension(string file, string[] extensions)
+        private static bool DoesNodeHaveExtension(DependencyGraphNode node, string targetExtension)
         {
-            if (!string.IsNullOrEmpty(file))
+            if (!string.IsNullOrEmpty(node.extension))
             {
-                var extension = Path.GetExtension(file).ToLowerInvariant();
+                return targetExtension.Equals(node.extension);
+            }
 
-                return Array.IndexOf(extensions, extension) >= 0;
+            return false;
+        }
+
+        private static bool DoesNodeHaveExtension(DependencyGraphNode node, string[] targetExtensions)
+        {
+            if (!string.IsNullOrEmpty(node.extension))
+            {
+                return Array.IndexOf(targetExtensions, node.extension) >= 0;
             }
 
             return false;
@@ -426,13 +452,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return guids;
         }
 
-        private static List<string> GetDependenciesInMetaFile(string file)
-        {
-            var metaFile = AssetDatabase.GetTextMetaFilePathFromAssetPath(file);
-
-            return GetDependenciesInFile(metaFile);
-        }
-
         private static void DrawDependencyGraphNode(DependencyGraphNode node)
         {
             DrawDependencyGraphNode(node, 0, int.MaxValue);
@@ -446,15 +465,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if (depth != maxDepth)
                 {
-                    var path = AssetDatabase.GUIDToAssetPath(node.guid);
-
-                    if (string.IsNullOrEmpty(path))
+                    if (string.IsNullOrEmpty(node.path))
                     {
                         EditorGUILayout.LabelField(string.Format("Missing Asset: {0}", node.guid));
                     }
                     else
                     {
-                        EditorGUILayout.ObjectField(string.Empty, AssetDatabase.LoadMainAssetAtPath(path), typeof(Object), false);
+                        EditorGUILayout.ObjectField(string.Empty, node.targetObject, typeof(Object), false);
                     }
                 }
                 else
