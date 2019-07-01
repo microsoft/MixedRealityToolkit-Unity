@@ -1,0 +1,529 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Input Animation Binary File Format Specification | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Input Animation Binary File Format Specification | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.43.1.0">
+    
+    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="input-animation-binary-file-format-specification">Input Animation Binary File Format Specification</h1>
+
+<h2 id="overall-structure">Overall structure</h2>
+<p>The input animation binary file begins with a 64 bit integer magic number. The value of this number in hexadecimal notation is <code>0x6a8faf6e0f9e42c6</code> and can be used to identify valid input animation files.</p>
+<p>The next eight bytes are two Int32 values declaring the major and minor version number of the file.</p>
+<p>The rest of the file is taken up by animation data, which may change between version numbers.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Magic Number</td>
+<td>Int64</td>
+</tr>
+<tr>
+<td>Major Version Number</td>
+<td>Int32</td>
+</tr>
+<tr>
+<td>Minor Version Number</td>
+<td>Int32</td>
+</tr>
+<tr>
+<td>Animation Data</td>
+<td><em>see version section</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="version-10">Version 1.0</h2>
+<p>The input animation data consists of a sequence of animation curves. The number and meaning of animation curves is fixed, but each curve can have a different number of keyframes.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Camera</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>Hand Tracked Left</td>
+<td><a href="#boolean-curve">Boolean Curve</a></td>
+</tr>
+<tr>
+<td>Hand Tracked Right</td>
+<td><a href="#boolean-curve">Boolean Curve</a></td>
+</tr>
+<tr>
+<td>Hand Pinching Left</td>
+<td><a href="#boolean-curve">Boolean Curve</a></td>
+</tr>
+<tr>
+<td>Hand Pinching Right</td>
+<td><a href="#boolean-curve">Boolean Curve</a></td>
+</tr>
+<tr>
+<td>Hand Joints Left</td>
+<td><a href="#joint-pose-curves">Joint Pose Curves</a></td>
+</tr>
+<tr>
+<td>Hand Joints Right</td>
+<td><a href="#joint-pose-curves">Joint Pose Curves</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="joint-pose-curves">Joint Pose Curves</h3>
+<p>For each hand a sequence of joint animation curves is stored. The number of joints is fixed, and a set of pose curves is stored for each joint.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>None</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>Wrist</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>Palm</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>ThumbMetacarpalJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>ThumbProximalJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>ThumbDistalJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>ThumbTip</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>IndexMetacarpal</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>IndexKnuckle</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>IndexMiddleJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>IndexDistalJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>IndexTip</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>MiddleMetacarpal</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>MiddleKnuckle</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>MiddleMiddleJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>MiddleDistalJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>MiddleTip</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>RingMetacarpal</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>RingKnuckle</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>RingMiddleJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>RingDistalJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>RingTip</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>PinkyMetacarpal</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>PinkyKnuckle</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>PinkyMiddleJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>PinkyDistalJoint</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+<tr>
+<td>PinkyTip</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="pose-curves">Pose Curves</h3>
+<p>Pose curves are a sequence of 3 animation curves for the position vector, followed by 4 animation curves for the rotation quaternion.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Position X</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Position Y</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Position Z</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Rotation X</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Rotation Y</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Rotation Z</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Rotation W</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="float-curve">Float Curve</h3>
+<p>Floating point curves are fully fledged Bézier curves with a variable number of keyframes. Each keyframe stores a time and a curve value, as well as tangents and weights on the left and right side of each keyframe.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pre-Wrap Mode</td>
+<td>Int32, <a href="#wrap-mode">Wrap Mode</a></td>
+</tr>
+<tr>
+<td>Post-Wrap Mode</td>
+<td>Int32, <a href="#wrap-mode">Wrap Mode</a></td>
+</tr>
+<tr>
+<td>Number of keyframes</td>
+<td>Int32</td>
+</tr>
+<tr>
+<td>Keyframes</td>
+<td><a href="#float-keyframe">Float Keyframe</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="float-keyframe">Float Keyframe</h3>
+<p>A float keyframe stores tangent and weight values alongside the basic time and value.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time</td>
+<td>Float32</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>Float32</td>
+</tr>
+<tr>
+<td>InTangent</td>
+<td>Float32</td>
+</tr>
+<tr>
+<td>OutTangent</td>
+<td>Float32</td>
+</tr>
+<tr>
+<td>InWeight</td>
+<td>Float32</td>
+</tr>
+<tr>
+<td>OutWeight</td>
+<td>Float32</td>
+</tr>
+<tr>
+<td>WeightedMode</td>
+<td>Int32, <a href="#weighted-mode">Weighted Mode</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="boolean-curve">Boolean Curve</h3>
+<p>Boolean curves are simple sequences of on/off values. On every keyframe the value of the curve flips immediately.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pre-Wrap Mode</td>
+<td>Int32, <a href="#wrap-mode">Wrap Mode</a></td>
+</tr>
+<tr>
+<td>Post-Wrap Mode</td>
+<td>Int32, <a href="#wrap-mode">Wrap Mode</a></td>
+</tr>
+<tr>
+<td>Number of keyframes</td>
+<td>Int32</td>
+</tr>
+<tr>
+<td>Keyframes</td>
+<td><a href="#boolean-keyframe">Boolean Keyframe</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="boolean-keyframe">Boolean Keyframe</h3>
+<p>A boolean keyframe only stores a time and value.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time</td>
+<td>Float32</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>Float32</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wrap-mode">Wrap Mode</h3>
+<p>The semantics of Pre- and Post-Wrap modes follow the <a href="https://docs.unity3d.com/ScriptReference/WrapMode.html">Unity WrapMode</a> definition. They are a combination of the following bits:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Default: Reads the default repeat mode set higher up.</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Once: When time reaches the end of the animation clip, the clip will automatically stop playing and time will be reset to beginning of the clip.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Loop: When time reaches the end of the animation clip, time will continue at the beginning.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>PingPong: When time reaches the end of the animation clip, time will ping pong back between beginning and end.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>ClampForever: Plays back the animation. When it reaches the end, it will keep playing the last frame and never stop playing.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="weighted-mode">Weighted Mode</h3>
+<p>The semantics of the Weighted mode follow the <a href="https://docs.unity3d.com/ScriptReference/WeightedMode.html">Unity WeightedMode</a> definition.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>None: Exclude both inWeight or outWeight when calculating curve segments.</td>
+</tr>
+<tr>
+<td>1</td>
+<td>In: Include inWeight when calculating the previous curve segment.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Out: Include outWeight when calculating the next curve segment.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Both: Include inWeight and outWeight when calculating curve segments.</td>
+</tr>
+</tbody>
+</table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/InputSimulation/InputAnimationFileFormat.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

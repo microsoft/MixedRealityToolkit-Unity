@@ -237,9 +237,6 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_UnregisterHandlers">ControllerPoseSynchronizer.UnregisterHandlers()</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">ControllerPoseSynchronizer.OnSourceDetected(SourceStateEventData)</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Microsoft_MixedReality_Toolkit_TrackingState__">ControllerPoseSynchronizer.OnSourcePoseChanged(SourcePoseEventData&lt;TrackingState&gt;)</a>
     </div>
     <div>
@@ -504,6 +501,31 @@ These are all the game objects in the subtree of the closest touchable component
 </div>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_PreviousPosition_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.PreviousPosition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_PreviousPosition" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.PreviousPosition">PreviousPosition</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 PreviousPosition { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_SceneQueryBufferSize_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.SceneQueryBufferSize*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_SceneQueryBufferSize" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.SceneQueryBufferSize">SceneQueryBufferSize</h4>
   <div class="markdown level1 summary"><p>Maximum number of colliders that can be detected in a scene query.</p>
@@ -676,6 +698,35 @@ These are all the game objects in the subtree of the closest touchable component
   </div>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPreSceneQuery">BaseControllerPointer.OnPreSceneQuery()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnSourceDetected_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnSourceDetected*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnSourceDetected(Microsoft.MixedReality.Toolkit.Input.SourceStateEventData)">OnSourceDetected(SourceStateEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnSourceDetected(SourceStateEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourceStateEventData.html">SourceStateEventData</a></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">ControllerPoseSynchronizer.OnSourceDetected(SourceStateEventData)</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnSourceLost_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnSourceLost*"></a>
