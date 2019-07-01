@@ -12,7 +12,6 @@ using UnityPhysics = UnityEngine.Physics;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class BoundingBox : MonoBehaviour,
-        IMixedRealityPointerHandler,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
         IMixedRealityFocusHandler
@@ -1470,7 +1469,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             pH.OnPointerDown.AddListener(OnPointerDown);
             pH.OnPointerDragged.AddListener(OnPointerDragged);
             pH.OnPointerUp.AddListener(OnPointerUp);
-            pH.OnPointerClicked.AddListener(OnPointerClicked);
         }
 
         private void InitializeDataStructures()
@@ -1933,7 +1931,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
         }
 
-        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        private void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             if (currentPointer != null && eventData.Pointer == currentPointer)
             {
@@ -1962,7 +1960,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        private void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             if (currentPointer == null && !eventData.used)
             {
@@ -2019,7 +2017,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        private void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
@@ -2059,7 +2057,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Used Event Handlers
 
         #region Unused Event Handlers
-        public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
         #endregion Unused Event Handlers
