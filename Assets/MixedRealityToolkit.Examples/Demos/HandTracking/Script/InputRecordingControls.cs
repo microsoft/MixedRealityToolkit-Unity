@@ -68,8 +68,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void SaveRecordedInput()
         {
-            RecordingService.SaveInputAnimation();
-            RecordingService.DiscardRecordedInput();
+            if (!RecordingService.IsRecording)
+            {
+                RecordingService.SaveInputAnimation();
+                RecordingService.DiscardRecordedInput();
+            }
         }
     }
 }
