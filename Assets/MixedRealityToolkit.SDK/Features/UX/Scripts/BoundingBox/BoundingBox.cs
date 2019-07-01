@@ -1958,17 +1958,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // Compute the local scale that produces the desired world space dimensions
                 Vector3 linkDimensions = Vector3.Scale(GetLinkDimensions(), invRootScale);
 
-                //Vector3 cornerDimensions = Vector3.Scale(cornerVisualScaleToMatchHandleSize * Vector3.one, invRootScale);
-                //Vector3 ballDimenions = Vector3.Scale(rotationHandleSize * Vector3.one, invRootScale);
-                //for (int i = 0; i < cornerVisuals.Count; i++)
-                //{
-                //    cornerVisuals[i].localScale = cornerDimensions;
-                //}
-                //for (int i = 0; i < balls.Count; i++)
-                //{
-                //    balls[i].localScale = ballDimenions;
-                //}
-
                 for (int i = 0; i < edgeCenters.Length; ++i)
                 {
                     balls[i].position = edgeCenters[i];
