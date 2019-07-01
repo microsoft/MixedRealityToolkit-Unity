@@ -110,7 +110,7 @@ namespace Assets.MRTK.Tools.Scripts
         private Dictionary<string, PluginAssemblyInfo> ScanForPluginDLLs()
         {
             return Directory.GetFiles(Application.dataPath, "*.dll", SearchOption.AllDirectories)
-                .Select(t => new { FullPath = t, AssetsRelativePath = Utilities.AbsolutePathToAssetsRelative(t) })
+                .Select(t => new { FullPath = t, AssetsRelativePath = Utilities.AbsoluteToAssetsRelativePath(t) })
                 .Select(t => new PluginAssemblyInfo(Guid.Parse(AssetDatabase.AssetPathToGUID(t.AssetsRelativePath)), t.AssetsRelativePath, t.FullPath))
                 .ToDictionary(t => t.AssetsRelativePath);
         }

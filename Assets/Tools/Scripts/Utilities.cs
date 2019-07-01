@@ -13,32 +13,33 @@ namespace Assets.MRTK.Tools.Scripts
 {
     public class Utilities
     {
+        private const string AssetsFolderName = "Assets";
         public const string PackagesCopy = nameof(PackagesCopy);
 
         public static string UnityFolderRelativeToAbsolutePath(string path)
         {
-            if (path.StartsWith("Assets"))
+            if (path.StartsWith(AssetsFolderName))
             {
-                return path.Replace("Assets", Application.dataPath);
+                return path.Replace(AssetsFolderName, Application.dataPath);
             }
             else if (path.StartsWith("Packages"))
             {
-                return Application.dataPath.Substring(0, Application.dataPath.Length - "Assets".Length) + path.Replace("Packages", PackagesCopy);
+                return Application.dataPath.Substring(0, Application.dataPath.Length - AssetsFolderName.Length) + path.Replace("Packages", PackagesCopy);
             }
 
             return path;
         }
 
-        public static string AbsolutePathToAssetsRelative(string absolutePath)
+        public static string AbsoluteToAssetsRelativePath(string absolutePath)
         {
             string forwardSlashPath = absolutePath.Replace('\\', '/');
 
             if (!forwardSlashPath.Contains(Application.dataPath))
             {
-                throw new ArgumentOutOfRangeException(nameof(absolutePath), $"Absolute path '{absolutePath}' is not a Unity Assets relative path ('{Application.dataPath}')");
+                throw new ArgumentException(nameof(absolutePath), $"Absolute path '{absolutePath}' is not a Unity Assets relative path ('{Application.dataPath}')");
             }
 
-            return forwardSlashPath.Replace(Application.dataPath, "Assets");
+            return forwardSlashPath.Replace(Application.dataPath, AssetsFolderName);
         }
 
         public static string NormalizePath(string path)
@@ -189,6 +190,14 @@ namespace Assets.MRTK.Tools.Scripts
 
             template = null;
             return false;
+        }
+
+        public static void GetPathsFromGuidsInPlace(string[] guids)
+        {
+            for (int i = 0; i < guids.Length; i++)
+            {
+                guids[i] = AssetDatabase.GUIDToAssetPath(guids[i]);
+            }
         }
 
         public static bool IsPlatformInstalled(BuildTarget buildTarget)

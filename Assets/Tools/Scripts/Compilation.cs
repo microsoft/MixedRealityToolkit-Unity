@@ -12,17 +12,6 @@ public static class Compilation
     public const string UWPMinPlatformVersion = "10.0.14393.0";
     public const string UWPTargetPlatformVersion = "10.0.18362.0";
 
-    public const string TemplateFolderPath = "Assets/MRTK/Tools";
-    public const string SolutionTemplate = "Assets/MRTK/Tools/SolutionTemplate.sln"; //TODO this won't work, as it's for my symlinked MRTK only
-    public const string SDKProjectTemplate = "Assets/MRTK/Tools/SDKProjectTemplate.csproj"; //TODO this won't work, as it's for my symlinked MRTK only
-
-    public const string PlatformCommonTemplateFileName = "Platform.Configuration.Template.props"; //TODO this won't work, as it's for my symlinked MRTK only
-
-    public static string GetPlatformCommonPropsFileName(CompilationSettings.CompilationPlatform platform, string configuration)
-    {
-        return $"{platform.Name}.{configuration}.props";
-    }
-
     public static HashSet<string> CommonAssemblySearchPaths { get; private set; }
 
     public static HashSet<string> DevelopmentAssemblySearchPaths { get; private set; }
@@ -34,11 +23,6 @@ public static class Compilation
     [MenuItem("Assets/Compile Binaries")]
     public static void ProduceCompiledBinaries()
     {
-        // We create a solution file
-        // We create a props file linking in all the appropriate Unity DLLs paths, and setting up all the common things for all of the proj files
-        // We create a SDK style csproj for each asmdef
-        // We build using dotnet
-
         MakePackagesCopy();
 
         Utilities.EnsureCleanDirectory(Application.dataPath.Replace("Assets", "MRTKBuild"));
@@ -66,12 +50,17 @@ public static class Compilation
         UnityProjectInfo unityProjectInfo = UnityProjectInfo.CreateProjectInfo();
 
         //// Read the solution template
-        string solutionTemplateText = File.ReadAllText(Utilities.UnityFolderRelativeToAbsolutePath(SolutionTemplate));
+        string solutionTemplateText = File.ReadAllText(Utilities.UnityFolderRelativeToAbsolutePath(TemplateFiles.Instance.MSBuildSolutionTemplatePath));
 
         //// Read the project template
-        string projectTemplateText = File.ReadAllText(Utilities.UnityFolderRelativeToAbsolutePath(SDKProjectTemplate));
+        string projectTemplateText = File.ReadAllText(Utilities.UnityFolderRelativeToAbsolutePath(TemplateFiles.Instance.SDKProjectFileTemplatePath));
 
         unityProjectInfo.ExportSolution(solutionTemplateText, projectTemplateText, propsOutputFolder);
+
+        foreach (string otherFile in TemplateFiles.Instance.OtherFiles)
+        {
+            File.Copy(Utilities.UnityFolderRelativeToAbsolutePath(otherFile), Path.Combine(propsOutputFolder, Path.GetFileName(otherFile)));
+        }
 
         Debug.Log("Completed.");
     }
@@ -115,22 +104,15 @@ public static class Compilation
     {
         string configuration = inEditorConfiguration ? "InEditor" : "Player";
 
-        string platformCommonTemplateFilePath = Path.Combine(TemplateFolderPath, PlatformCommonTemplateFileName);
-        string platformSpecificTemplateFilePath = Path.Combine(TemplateFolderPath, PlatformCommonTemplateFileName.Replace("Platform", platform.Name));
-        string platformConfigSpecificTemplateFilePath = Path.Combine(TemplateFolderPath, PlatformCommonTemplateFileName.Replace("Platform", platform.Name).Replace("Configuration", configuration));
-
         string platformTemplate;
-        if (File.Exists(platformConfigSpecificTemplateFilePath))
+        if (TemplateFiles.Instance.PlatformTemplates.TryGetValue(TemplateFiles.GetPlatformSpecificTemplateName(platform.Name, configuration), out string templatePath)
+            || TemplateFiles.Instance.PlatformTemplates.TryGetValue(TemplateFiles.GetPlatformSpecificTemplateName(platform.Name), out templatePath))
         {
-            platformTemplate = File.ReadAllText(platformConfigSpecificTemplateFilePath);
-        }
-        else if (File.Exists(platformSpecificTemplateFilePath))
-        {
-            platformTemplate = File.ReadAllText(platformSpecificTemplateFilePath);
+            platformTemplate = File.ReadAllText(Utilities.UnityFolderRelativeToAbsolutePath(templatePath));
         }
         else
         {
-            platformTemplate = File.ReadAllText(platformCommonTemplateFilePath); ;
+            platformTemplate = File.ReadAllText(TemplateFiles.Instance.PlatformPropsTemplatePath);
         }
 
         string platformPropsText;
@@ -147,7 +129,7 @@ public static class Compilation
                 commonAssemblySearchPaths);
         }
 
-        File.WriteAllText(Path.Combine(propsOutputFolder, GetPlatformCommonPropsFileName(platform, configuration)), platformPropsText);
+        File.WriteAllText(Path.Combine(propsOutputFolder, $"{platform.Name}.{configuration}.props"), platformPropsText);
     }
 
     private static string ProcessPlatformTemplate(string platformTemplate, string platformName, string configuration, BuildTarget buildTarget, TargetFramework targetFramework, IEnumerable<string> references, IEnumerable<string> defines, params HashSet<string>[] priorToCheck)

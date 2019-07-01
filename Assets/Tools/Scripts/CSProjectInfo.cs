@@ -191,19 +191,13 @@ namespace Assets.MRTK.Tools.Scripts
                 && Utilities.TryGetXMLTemplate(projectFileTemplateText, "SUPPORTED_PLATFORM_BUILD_CONDITION", out string suportedPlatformBuildConditionTemplate))
             {
                 List<string> sourceIncludes = new List<string>();
+                Dictionary<string, string> sourceGuidToClassName = new Dictionary<string, string>();
                 foreach (string source in Assembly.sourceFiles)
                 {
-                    string normalized = Utilities.NormalizePath(source);
-                    if (normalized.StartsWith("Packages"))
-                    {
-                        normalized = "PackagesCopy" + normalized.Substring("Packages".Length);
-                    }
-                    sourceIncludes.Add(Utilities.ReplaceTokens(sourceIncludeTemplate, new Dictionary<string, string>()
-                    {
-                        {"##RELATIVE_SOURCE_PATH##", $"..\\{normalized}" },
-                        {"##PROJECT_LINK_PATH##", normalized.Replace("Assets\\", string.Empty) }
-                    }));
+                    ProcessSourceFile(source, sourceIncludeTemplate, sourceIncludes, sourceGuidToClassName);
                 }
+
+                File.WriteAllLines(Path.Combine(propsOutputFolder, $"{Guid.ToString()}.csmap"), sourceGuidToClassName.Select(t => $"{t.Key}:{t.Value}"));
 
                 bool bothConfigurations = PlayerPlatforms.Count > 0;
 
@@ -251,6 +245,31 @@ namespace Assets.MRTK.Tools.Scripts
             }
 
             File.WriteAllText(ReferencePath.AbsolutePath, projectFileTemplateText);
+        }
+
+        private void ProcessSourceFile(string sourceFile, string sourceIncludeTemplate, List<string> sourceIncludes, Dictionary<string, string> sourceGuidToClassName)
+        {
+            // Get the entry for the map
+            string guid = AssetDatabase.AssetPathToGUID(sourceFile);
+            MonoScript asset = AssetDatabase.LoadAssetAtPath<MonoScript>(sourceFile);
+            string classNameToAdd = null;
+            if (asset != null)
+            {
+                classNameToAdd = asset.GetClass()?.FullName;
+            }
+            sourceGuidToClassName.Add(guid, classNameToAdd);
+
+
+            string normalized = Utilities.NormalizePath(sourceFile);
+            if (normalized.StartsWith("Packages"))
+            {
+                normalized = "PackagesCopy" + normalized.Substring("Packages".Length);
+            }
+            sourceIncludes.Add(Utilities.ReplaceTokens(sourceIncludeTemplate, new Dictionary<string, string>()
+            {
+                {"##RELATIVE_SOURCE_PATH##", $"..\\{normalized}" },
+                {"##PROJECT_LINK_PATH##", normalized.Replace("Assets\\", string.Empty) }
+            }));
         }
 
         private void PopulateSupportedPlatformBuildConditions(List<string> supportedPlatformBuildConditions, string template, string configuration, IReadOnlyDictionary<BuildTarget, CompilationSettings.CompilationPlatform> platforms)
