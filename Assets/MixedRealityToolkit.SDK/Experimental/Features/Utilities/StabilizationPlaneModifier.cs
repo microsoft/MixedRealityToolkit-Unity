@@ -2,22 +2,34 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 using UnityEngine.XR.WSA;
 
-namespace Microsoft.MixedReality.Toolkit.Utilities
+namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
     [Serializable]
+    /// <summary>
+    /// StablizationPlaneOverride is a class used to describe the plane to be used by the StabilizationPlaneModifier class
+    /// </summary>
     public struct StabilizationPlaneOverride
     {
+        /// <summary>
+        /// Center of the plane
+        /// </summary>
         public Vector3 Center;
+
+        /// <summary>
+        /// Normal of the plane
+        /// </summary>
         public Vector3 Normal;
     }
 
     /// <summary>
-    /// StabilizationPlaneModifier handles the setting of the stabilization plane in several ways.
-    /// Using StabilizationPlaneModifier with override DepthLSR which is automatically enabled via depth buffer sharing
+    /// StabilizationPlaneModifier handles the setting of the stabilization plane in several different modes.
+    /// It does this via handling the platform call to HolographicPlatformSettings::SetFocusPointForFrame
+    /// Using StabilizationPlaneModifier will override DepthLSR. This is automatically enabled via the depth buffer sharing in Unity build settings
     /// StabilizationPlaneModifier is recommended for HoloLens 1, can be used for HoloLens 2, and does a no op for WMR
     /// </summary>
     public class StabilizationPlaneModifier : MonoBehaviour
@@ -25,27 +37,47 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [System.Serializable]
         public enum StabilizationPlaneMode
         {
+            /// <summary>
+            /// Does not call SetFocusPoint
+            /// </summary>
+            Off,
+
+            /// <summary>
+            /// Submits plane at a fixed distance based on DefaultPlaneDistance field along the users gaze.
+            /// </summary>
             Fixed,
+
+            /// <summary>
+            /// Submits the plane at a fixed position along the users gaze based on the TargetOverride property.
+            /// </summary>
             TargetOverride,
+
+            /// <summary>
+            /// Submits the plane based on the OverridePlane property.
+            /// </summary>
             PlaneOverride,
-            GazeHit,
-            Off
+
+            /// <summary>
+            /// Submits plane along the users gaze at the position of gaze hit.
+            /// </summary>
+            GazeHit
         }
 
-        [Tooltip("Choose mode for stabilization plane.\n1) Fixed- Submits plane at a fixed distance based on DefaultPlaneDistance field along the users gaze.\n2) Gaze Hit- Submits plane along the users gaze at the position of gaze hit.\n3) Target Override- Submits the plane at a fixed position along the users gaze based on the TargetOverride property.\n4) Plane Override- Submits the plane based on the OverridePlane property.\n5) Off- Does not call SetFocusPoint")]
-        public StabilizationPlaneMode Mode;
+        [SerializeField, Tooltip("Choose mode for stabilization plane.\n1) Fixed- Submits plane at a fixed distance based on DefaultPlaneDistance field along the users gaze.\n2) Gaze Hit- Submits plane along the users gaze at the position of gaze hit.\n3) Target Override- Submits the plane at a fixed position along the users gaze based on the TargetOverride property.\n4) Plane Override- Submits the plane based on the OverridePlane property.\n5) Off- Does not call SetFocusPoint")]
+        private StabilizationPlaneMode mode;
 
-        [Tooltip("When lerping, use unscaled time. This is useful for apps that have a pause mechanism or otherwise adjust the game timescale.")]
-        public bool UseUnscaledTime = true;
+        [SerializeField, Tooltip("When lerping, use unscaled time. This is useful for apps that have a pause mechanism or otherwise adjust the game timescale.")]
+        private bool useUnscaledTime = true;
 
-        [Tooltip("Lerp speed when moving focus point closer.")]
-        public float LerpStabilizationPlanePowerCloser = 4.0f;
+        [SerializeField, Tooltip("Lerp speed when moving focus point closer.")]
+        private float lerpPowerCloser = 4.0f;
 
-        [Tooltip("Lerp speed when moving focus point farther away.")]
-        public float LerpStabilizationPlanePowerFarther = 7.0f;
+        [SerializeField, Tooltip("Lerp speed when moving focus point farther away.")]
+        private float lerpPowerFarther = 7.0f;
 
         [SerializeField, Tooltip("Used to temporarily override the location of the stabilization plane.")]
         private Transform targetOverride;
+
         public Transform TargetOverride
         {
             get
@@ -83,11 +115,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        [Tooltip("Default distance to set plane if plane is gaze-locked or if no object is hit.")]
-        public float DefaultPlaneDistance = 2.0f;
+        [SerializeField, Tooltip("Default distance to set plane if plane is gaze-locked or if no object is hit.")]
+        private float defaultPlaneDistance = 2.0f;
 
-        [Tooltip("Visualize the plane at runtime.")]
-        public bool DrawGizmos;
+        [SerializeField, Tooltip("Visualize the plane at runtime.")]
+        private bool drawGizmos;
         
         [SerializeField, Tooltip("Override plane to use. Usually used to set plane to a slate like a menu")]
         private StabilizationPlaneOverride overridePlane;
@@ -147,12 +179,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         private GameObject debugMesh;
 
+        /// <summary>
+        /// Debug mesh filter
+        /// </summary>
+        private MeshFilter debugMeshFilter;
+
         private void Awake()
         {
 #if UNITY_EDITOR
             debugMesh = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            debugMesh.hideFlags |= HideFlags.HideInHierarchy;
             debugMesh.gameObject.SetActive(false);
+            debugMeshFilter = debugMesh.GetComponent<MeshFilter>();
 #endif
+
+            TrackVelocity = trackVelocity;
+            TargetOverride = targetOverride;
         }
 
         /// <summary>
@@ -160,11 +202,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         private void LateUpdate()
         {
-            float deltaTime = UseUnscaledTime
+            float deltaTime = useUnscaledTime
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;
 
-            switch (Mode)
+            switch (mode)
             {
                 case StabilizationPlaneMode.Fixed:
                     ConfigureFixedDistancePlane(deltaTime);
@@ -185,27 +227,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Called by Unity when this script is loaded or a value is changed in the inspector.
-        /// Only called in editor, ensures that the property values always match the corresponding member variables.
-        /// </summary>
-        private void OnValidate()
-        {
-            TrackVelocity = trackVelocity;
-            TargetOverride = targetOverride;
-        }
-
-        /// <summary>
         /// Gets the origin of the gaze for purposes of placing the stabilization plane
         /// </summary>
         private Vector3 GazeOrigin
         {
             get
             {
-                if (InputSystem.GazeProvider.Enabled)
+                if (InputSystem != null && InputSystem.GazeProvider.Enabled)
                 {
                     return InputSystem.GazeProvider.GazeOrigin;
                 }
-                return Camera.main.transform.position;
+                return CameraCache.Main.transform.position;
             }
         }
 
@@ -216,11 +248,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             get
             {
-                if (InputSystem.GazeProvider.Enabled)
+                if (InputSystem != null && InputSystem.GazeProvider.Enabled)
                 {
                     return InputSystem.GazeProvider.GazeDirection;
                 }
-                return Camera.main.transform.forward;
+
+                return CameraCache.Main.transform.forward;
             }
         }
 
@@ -245,38 +278,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         private void ConfigureTransformOverridePlane(float deltaTime)
         {
-            planePosition = TargetOverride.position;
-
-            Vector3 gazeOrigin = GazeOrigin;
-            Vector3 gazeDirection = TargetOverride.position - InputSystem.GazeProvider.GazePointer.Position;
-            Vector3 velocity = Vector3.zero;
-            if (TrackVelocity)
-            {
-                velocity = UpdateVelocity(deltaTime);
-            }
-
-            float focusPointDistance = gazeDirection.magnitude;
-            float lerpPower = focusPointDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
-                                                                        : LerpStabilizationPlanePowerCloser;
-
-            // Smoothly move the focus point from previous hit position to new position.
-            currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, focusPointDistance, lerpPower * deltaTime);
-
-            gazeDirection.Normalize();
-            planePosition = gazeOrigin + (gazeDirection * currentPlaneDistance);
+            Vector3 gazeDirection = ConfigureOverridePlaneHelper(TargetOverride.position, deltaTime);
 
 #if UNITY_EDITOR
             debugPlane.Center = planePosition;
             debugPlane.Normal = -gazeDirection;
-#elif UNITY_WSA
-            // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
-            HolographicSettings.SetFocusPointForFrame(planePosition, -gazeDirection, velocity);
 #endif
         }
 
         private void ConfigureOverridePlane(float deltaTime)
         {
-            planePosition = OverridePlane.Center;
+            ConfigureOverridePlaneHelper(OverridePlane.Center, deltaTime);
+
+#if UNITY_EDITOR
+            debugPlane.Center = planePosition;
+            debugPlane.Normal = OverridePlane.Normal;
+#endif
+        }
+
+        private Vector3 ConfigureOverridePlaneHelper(Vector3 position, float deltaTime)
+        {
+            planePosition = position;
 
             Vector3 velocity = Vector3.zero;
             if (TrackVelocity)
@@ -287,21 +309,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Vector3 gazeOrigin = GazeOrigin;
             Vector3 gazeToPlane = planePosition - gazeOrigin;
             float focusPointDistance = gazeToPlane.magnitude;
-            float lerpPower = focusPointDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
-                                                                        : LerpStabilizationPlanePowerCloser;
+            float lerpPower = focusPointDistance > currentPlaneDistance ? lerpPowerFarther
+                                                                        : lerpPowerCloser;
 
             // Smoothly move the focus point from previous hit position to new position.
             currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, focusPointDistance, lerpPower * deltaTime);
             gazeToPlane.Normalize();
             planePosition = gazeOrigin + (gazeToPlane * currentPlaneDistance);
 
-#if UNITY_EDITOR
-            debugPlane.Center = planePosition;
-            debugPlane.Normal = OverridePlane.Normal;
-#elif UNITY_WSA
+#if UNITY_WSA
             // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
             HolographicSettings.SetFocusPointForFrame(planePosition, OverridePlane.Normal, velocity);
 #endif
+
+            return gazeToPlane;
         }
 
         /// <summary>
@@ -321,11 +342,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             else
             {
-                focusPointDistance = DefaultPlaneDistance;
+                focusPointDistance = defaultPlaneDistance;
             }
 
-            float lerpPower = focusPointDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
-                                                                        : LerpStabilizationPlanePowerCloser;
+            float lerpPower = focusPointDistance > currentPlaneDistance ? lerpPowerFarther
+                                                                        : lerpPowerCloser;
 
             // Smoothly move the focus point from previous hit position to new position.
             currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, focusPointDistance, lerpPower * deltaTime);
@@ -348,11 +369,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Vector3 gazeOrigin = GazeOrigin;
             Vector3 gazeNormal = GazeNormal;
 
-            float lerpPower = DefaultPlaneDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
-                                                                          : LerpStabilizationPlanePowerCloser;
+            float lerpPower = defaultPlaneDistance > currentPlaneDistance ? lerpPowerFarther
+                                                                          : lerpPowerCloser;
 
             // Smoothly move the focus point from previous hit position to new position.
-            currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, DefaultPlaneDistance, lerpPower * deltaTime);
+            currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, defaultPlaneDistance, lerpPower * deltaTime);
 
             planePosition = gazeOrigin + (gazeNormal * currentPlaneDistance);
 #if UNITY_EDITOR
@@ -379,10 +400,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         private void OnDrawGizmos()
         {
-            if (Application.isPlaying && DrawGizmos && Mode != StabilizationPlaneMode.Off)
+            if (Application.isPlaying && drawGizmos && mode != StabilizationPlaneMode.Off)
             {
                 Gizmos.color = Color.green;
-                Gizmos.DrawWireMesh(debugMesh.GetComponent<MeshFilter>().sharedMesh, debugPlane.Center, Quaternion.LookRotation(debugPlane.Normal));
+                Gizmos.DrawWireMesh(debugMeshFilter.sharedMesh, debugPlane.Center, Quaternion.LookRotation(debugPlane.Normal));
                 Gizmos.DrawRay(debugPlane.Center, debugPlane.Normal);
             }
         }
