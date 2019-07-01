@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.Space();
                 EditorGUILayout.BeginVertical();
 
-                    if (MixedRealityEditorUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
+                    if (InspectorUIUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
                     {
                         list.arraySize += 1;
                         var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);

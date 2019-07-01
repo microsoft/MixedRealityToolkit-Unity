@@ -15,8 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// <summary>
     /// Configuration profile settings for setting up scene system.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Scene System Profile", fileName = "MixedRealitySceneSystemProfile", order = (int)CreateProfileMenuItemIndices.SceneSystem)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Scene System Profile", fileName = "MixedRealitySceneSystemProfile", order = (int)CreateProfileMenuItemIndices.SceneSystem)]
     [MixedRealityServiceProfile(typeof(IMixedRealitySceneSystem))]
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html")]
     public class MixedRealitySceneSystemProfile : BaseMixedRealityProfile
     {
         /// <summary>
@@ -58,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
         }
 
+#if UNITY_EDITOR
         public bool EditorManageBuildSettings => editorManageBuildSettings;
 
         public bool EditorManageLoadedScenes => editorManageLoadedScenes;
@@ -69,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public bool EditorLightingCacheOutOfDate => editorLightingCacheOutOfDate;
 
         public bool EditorLightingCacheUpdateRequested { get; set; }
+#endif
 
         [SerializeField]
         private bool useManagerScene = true;
