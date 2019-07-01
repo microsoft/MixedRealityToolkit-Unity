@@ -256,6 +256,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnSourceLost(eventData);
         }
 
+        public override void OnSourceDetected(SourceStateEventData eventData)
+        {
+            base.OnSourceDetected(eventData);
+            PreviousPosition = Position;
+        }
+
         public override void OnInputDown(InputEventData eventData)
         {
             // Poke pointer should not respond when a button is pressed or hand is pinched

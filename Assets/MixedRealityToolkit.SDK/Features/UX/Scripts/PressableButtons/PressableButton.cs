@@ -283,14 +283,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool HasPassedThroughStartPlane(HandTrackingInputEventData eventData)
         {
-            // Extrapolate to get previous position.
-            Vector3 previousPosition = eventData.InputData - eventData.Controller.Velocity * Time.deltaTime;
-
             foreach (var pointer in eventData.InputSource.Pointers)
             {
                 PokePointer poke = pointer as PokePointer;
                 if (poke)
                 {
+                    // Extrapolate to get previous position.
                     float previousDistance = GetDistanceAlongPushDirection(poke.PreviousPosition);
                     return previousDistance <= StartPushDistance;
                 }
