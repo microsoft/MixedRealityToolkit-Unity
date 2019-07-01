@@ -12,7 +12,6 @@ using UnityPhysics = UnityEngine.Physics;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class BoundingBox : MonoBehaviour,
-        IMixedRealityPointerHandler,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
         IMixedRealityFocusHandler
@@ -120,12 +119,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public BoxCollider BoundsOverride
         {
             get { return boundsOverride; }
-            set 
+            set
             {
                 if (boundsOverride != value)
                 {
                     boundsOverride = value;
-                    
+
                     if (boundsOverride == null)
                     {
                         prevBoundsOverride = new Bounds();
@@ -779,6 +778,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             DestroyRig();
             SetMaterials();
+            InitializeRigRoot();
             InitializeDataStructures();
             SetBoundingBoxCollider();
             UpdateBounds();
@@ -848,6 +848,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             prevBoundsOverride = curBounds;
             return result;
         }
+
         #endregion MonoBehaviour Methods
 
         #region Private Methods
@@ -1457,12 +1458,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 handleGrabbedMaterial.SetFloatArray("_InnerGlowColor", color);
             }
         }
-        private void InitializeDataStructures()
+
+        private void InitializeRigRoot()
         {
-            rigRoot = new GameObject(rigRootName).transform;
+            var rigRootObj = new GameObject(rigRootName);
+            rigRoot = rigRootObj.transform;
             rigRoot.parent = transform;
 
+            var pH = rigRootObj.AddComponent<PointerHandler>();
+            pH.OnPointerDown.AddListener(OnPointerDown);
+            pH.OnPointerDragged.AddListener(OnPointerDragged);
+            pH.OnPointerUp.AddListener(OnPointerUp);
+        }
 
+        private void InitializeDataStructures()
+        {
             boundsCorners = new Vector3[8];
 
             corners = new List<Transform>();
@@ -1921,7 +1931,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
         }
 
-        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
+        private void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             if (currentPointer != null && eventData.Pointer == currentPointer)
             {
@@ -1950,7 +1960,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
+        private void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             if (currentPointer == null && !eventData.used)
             {
@@ -2007,7 +2017,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        private void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
@@ -2047,7 +2057,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Used Event Handlers
 
         #region Unused Event Handlers
-        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
         #endregion Unused Event Handlers
