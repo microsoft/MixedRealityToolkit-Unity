@@ -68,9 +68,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             if (EditorGUI.EndChangeCheck())
             {
                 orbital2.ReferenceObjectType = (ReferenceObjectType)referenceObjectType.enumValueIndex;
+                serializedObject.UpdateIfRequiredOrScript();
             }
 
-            switch(referenceObjectType.enumValueIndex)
+            switch (referenceObjectType.enumValueIndex)
             {
                 case 1:
                     EditorGUI.BeginChangeCheck();
@@ -78,6 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                     if (EditorGUI.EndChangeCheck())
                     {
                         orbital2.TrackedObjectToFace = (TrackedObjectType)trackedObjectToFace.enumValueIndex;
+                        serializedObject.UpdateIfRequiredOrScript();
                     }
                     break;
                 case 2:

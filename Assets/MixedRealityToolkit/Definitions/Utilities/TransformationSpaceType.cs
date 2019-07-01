@@ -13,6 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Use the define position, rotation or scale in world space
         /// </summary>
-        WorldSpace = 0
+        WorldSpace
     }
 }
