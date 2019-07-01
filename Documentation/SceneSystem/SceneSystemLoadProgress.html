@@ -80,8 +80,12 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="monitoring-content-loading">Monitoring Content Loading</h1>
 
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>This feature is currently available in the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development"><strong>mrtk_development</strong></a> branch.</p>
+</div>
+<h1 id="monitoring-content-loading">Monitoring Content Loading</h1>
 <h2 id="scene-operation-progress">Scene Operation Progress</h2>
 <p>When content is being loaded or unloaded, the <code>SceneOperationInProgress</code> property will return true. You can monitor the progress of this operation via the <code>SceneOperationProgress</code> property.</p>
 <p>The <code>SceneOperationProgress</code> value is the average of all current async scene operations. At the start of a content load, <code>SceneOperationProgress</code> will be zero. Once fully completed, <code>SceneOperationProgress</code> will be set to 1 and will remain at 1 until the next operation takes place. Note that only content scene operations affect these properties.</p>
