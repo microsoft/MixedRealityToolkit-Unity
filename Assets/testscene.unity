@@ -156,7 +156,7 @@ MonoBehaviour:
   SolverHandler: {fileID: 80851527}
   referenceObjectType: 2
   trackedObjectToFace: 0
-  faceTarget: {fileID: 0}
+  faceTarget: {fileID: 371148877}
   pivotAxis: 6
   offsetSpace: 0
   offset: {x: 0, y: 0, z: 0}
@@ -179,7 +179,7 @@ MonoBehaviour:
   trackedHandJoint: 2
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
-  transformTarget: {fileID: 0}
+  transformTarget: {fileID: 527063124}
   updateSolvers: 1
 --- !u!65 &80851528
 BoxCollider:
@@ -616,13 +616,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 907350070}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.37, y: 7.38, z: -6.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1348152545
 GameObject:
   m_ObjectHideFlags: 0

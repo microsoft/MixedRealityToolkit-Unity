@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 if (referenceObjectType != value)
                 {
                     referenceObjectType = value;
+                    TrackNewFaceTarget();
                 }
             }
         }
@@ -37,12 +38,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public TrackedObjectType TrackedObjectToFace
         {
             get { return trackedObjectToFace; }
-            set { trackedObjectToFace = value; }
+            set
+            {
+                if (trackedObjectToFace != value)
+                {
+                    trackedObjectToFace = value;
+                    TrackNewFaceTarget();
+                }
+            }
         }
 
         [SerializeField]
         [Tooltip("Manual override for FacedObjectToReference if you want to use a scene object. Leave empty if you want to use head, motion-tracked controllers, or motion-tracked hands.")]
-        private Transform faceTarget;
+        private Transform _faceTarget;
+
+        private Transform faceTarget
+        {
+            get { return _faceTarget; }
+            set { Debug.Log(value);
+                _faceTarget = value; }
+        }
 
         [SerializeField]
         [Tooltip("The constraint on the view rotation")]
@@ -67,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// The space in which the XYZ offset is used
         /// </summary>
-        public TransformationSpaceType OffsetSpacorbitale
+        public TransformationSpaceType OffsetSpace
         {
             get { return offsetSpace; }
             set { offsetSpace = value; }
@@ -117,9 +132,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         private ControllerFinderOrbital2 controllerFinder;
-        private bool lookAtFaceTarget;
         private bool useFaceTargetUp;
 
+        private bool LookAtFaceTarget => referenceObjectType != ReferenceObjectType.TrackedObject && faceTarget != null && faceTarget != SolverHandler.TransformTarget;
 
         protected override void Awake()
         {
@@ -143,50 +158,42 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             Vector3 desiredPos = transformTarget != null ? transformTarget.position : Vector3.zero;
-            Vector3 facePosition;
-
-            if (faceTarget != null)
-            {
-                facePosition = offsetSpace == TransformationSpaceType.LocalSpace ? faceTarget.TransformPoint(offset) : faceTarget.position + offset;
-            }
-            else
-            {
-                facePosition = transformTarget.forward;
-            }
-
-            ModifyPositionAndRotation(desiredPos, facePosition);
-
-        }
-
-        private void ModifyPositionAndRotation(Vector3 targetPosition, Vector3 facePosition)
-        {
-            Transform transformTarget = SolverHandler.TransformTarget;
             Vector3 lookDirection;
-            if (transformTarget != null)
-            {
-                lookDirection = transformTarget.InverseTransformPoint(facePosition);
-                if (transformTarget.parent == null)
-                {
-                    Quaternion desiredRot = CalculateRotationConstraint(transformTarget.TransformPoint(Vector3.forward));
-                    desiredRot = SnapToTetherAngleSteps(desiredRot);
-                    SetGoalPositionAndRotation(targetPosition, desiredRot);
-                }
-                else
-                {
+            Vector3 up;
 
-                }
+
+
+            if (LookAtFaceTarget)
+            {
+                lookDirection = offsetSpace == TransformationSpaceType.LocalSpace ? faceTarget.TransformPoint(offset) : faceTarget.position + offset;
+                lookDirection -= desiredPos;
+                up = faceTarget.up;
+            }
+            else if (transformTarget != null)
+            {
+                lookDirection = transformTarget.forward;
+                up = transformTarget.up;
             }
             else
             {
                 lookDirection = Vector3.forward;
+                up = Vector3.up;
             }
+
+            ModifyPositionAndRotation(desiredPos, lookDirection, up);
+
+        }
+
+        private void ModifyPositionAndRotation(Vector3 targetPosition, Vector3 lookDirection, Vector3 up)
+        {
             // constrain it
-            Quaternion desiredRot = CalculateRotationConstraint(lookDirection);
+            Quaternion desiredRot = CalculateRotationConstraint(lookDirection, up);
             // tether angle it
-            desiredRot = SnapToTetherAngleSteps(desiredRot);
+            if (pivotAxis == PivotAxis.Y)
+                desiredRot = SnapToTetherAngleSteps(desiredRot);
             // apply it
 
-            SetGoalPositionAndRotation(targetPosition, transformTarget != null ? transformTarget.rotation * desiredRot : desiredRot);
+            SetGoalPositionAndRotation(targetPosition, desiredRot);
         }
 
         private void SetGoalPositionAndRotation(Vector3 goalPosition, Quaternion goalRotation)
@@ -204,18 +211,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 case ReferenceObjectType.TrackedObject:
                     faceTarget = SolverHandler.TransformTarget;
-                    lookAtFaceTarget = false;
                     break;
                 case ReferenceObjectType.BodyPart:
 
-                    if (trackedObjectToFace == SolverHandler.TrackedObjectToReference)
+                    if (SolverHandler.TransformTarget == null && trackedObjectToFace == SolverHandler.TrackedObjectToReference)
                     {
                         faceTarget = SolverHandler.TransformTarget;
-                        lookAtFaceTarget = false;
                         break;
                     }
-
-                    lookAtFaceTarget = true;
 
                     switch (trackedObjectToFace)
                     {
@@ -241,13 +244,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                             break;
                     }
                     break;
-                case ReferenceObjectType.SceneObject:
-                    lookAtFaceTarget = faceTarget != SolverHandler.TransformTarget;
-                    break;
             }
         }
 
-        private Quaternion CalculateRotationConstraint(Vector3 directionToTarget)
+        private Quaternion CalculateRotationConstraint(Vector3 directionToTarget, Vector3 up)
         {
             useFaceTargetUp = true;
 
@@ -294,25 +294,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             // Calculate and apply the rotation required to reorient the object
-            if (useFaceTargetUp && faceTarget != null)
-            {
-                return Quaternion.LookRotation(directionToTarget, faceTarget.up);
-            }
-            else
-            {
-                return Quaternion.LookRotation(directionToTarget);
-            }
+            return useFaceTargetUp ? Quaternion.LookRotation(directionToTarget, up) : Quaternion.LookRotation(directionToTarget);
         }
 
-        private Quaternion SnapToTetherAngleSteps(Quaternion rotationToSnap)
+        private Quaternion SnapToTetherAngleSteps(Quaternion localRotationToSnap)
         {
-            if (!UseAngleStepping || !lookAtFaceTarget || faceTarget == null)
+            if (!UseAngleStepping || !LookAtFaceTarget)
             {
-                return rotationToSnap;
+                return localRotationToSnap;
             }
 
             float stepAngle = 360f / tetherAngleSteps;
-            int numberOfSteps = Mathf.RoundToInt(rotationToSnap.eulerAngles.y / stepAngle);
+            int numberOfSteps = Mathf.RoundToInt(localRotationToSnap.eulerAngles.y / stepAngle);
 
             float newAngle = stepAngle * numberOfSteps;
 
