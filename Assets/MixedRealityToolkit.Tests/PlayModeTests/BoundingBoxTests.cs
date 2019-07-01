@@ -159,26 +159,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(bounds.center, startCenter, "bbox incorrect center at start");
             TestUtilities.AssertAboutEqual(bounds.size, startSize, "bbox incorrect size at start");
 
-            var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldIsp = iss.InputSimulationProfile;
-            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
-            isp.HandSimulationMode = HandSimulationMode.Gestures;
-            iss.InputSimulationProfile = isp;
+            PlayModeTestUtilities.PushHandSimulationProfile();
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
             CameraCache.Main.transform.LookAt(bbox.ScaleCorners[3].transform);
 
-            var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, isp.DefaultHandDistance));
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, iss, ArticulatedHandPose.GestureId.Open, startHandPos);
-            yield return PlayModeTestUtilities.SetHandState(startHandPos, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, iss);
-            var delta = new Vector3(0.1f, 0.1f, 0f);
-
+            var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, 1.5f));
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(startHandPos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             // After pinching, center should remain the same
             var afterPinchbounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(afterPinchbounds.center, startCenter, "bbox incorrect center after pinch");
             TestUtilities.AssertAboutEqual(afterPinchbounds.size, startSize, "bbox incorrect size after pinch");
 
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+            yield return rightHand.Move(delta);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(startHandPos, startHandPos + delta, 10, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, iss);
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
@@ -188,7 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Restore the input simulation profile
-            iss.InputSimulationProfile = oldIsp;
+            PlayModeTestUtilities.PopHandSimulationProfile();
+
             yield return null;
         }
 

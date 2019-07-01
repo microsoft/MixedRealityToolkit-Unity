@@ -75,12 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject testButton = InstantiateDefaultPressableButton();
 
             // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             // For some reason, we would only get null pointers when the hand tries to click a button
             // at specific positions, hence the unusal z value.
@@ -107,6 +102,45 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+
+            Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
+
+            Object.Destroy(testButton);
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// This test reproduces P0 issue 4566 which didn't trigger a button with enabled backpressprotection 
+        /// if hands were moving too fast in low framerate
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PressButtonFast()
+        {
+            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+
+            // Move the camera to origin looking at +z to more easily see the button.
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(buttonComponent);
+            Assert.IsTrue(buttonComponent.EnforceFrontPush, "Button default behavior should have enforce front push enabled");
+
+            bool buttonPressed = false;
+            buttonComponent.ButtonPressed.AddListener(() =>
+            {
+                buttonPressed = true;
+            });
+
+            // move the hand quickly from very far distance into the button and check if it was pressed
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            int numSteps = 2;
+            Vector3 p1 = new Vector3(0, 0, -20.0f);
+            Vector3 p2 = new Vector3(0, 0, 0.02f);
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
             Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");

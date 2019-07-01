@@ -20,6 +20,7 @@ using Microsoft.MixedReality.Toolkit.Diagnostics;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System;
 
 #if UNITY_EDITOR
 using TMPro;
@@ -30,8 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class PlayModeTestUtilities
     {
+
         // Unity's default scene name for a recently created scene
         const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
+
+        private static Stack<MixedRealityInputSimulationProfile> inputSimulationProfiles = new Stack<MixedRealityInputSimulationProfile>();
 
         /// <summary>
         /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
@@ -59,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Create an MRTK instance and set up playspace
             TestUtilities.InitializeMixedRealityToolkit(true);
-            TestUtilities.InitializePlayspace(); 
+            TestUtilities.InitializePlayspace();
         }
 
         /// <summary>
@@ -171,10 +175,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Switch off / Destroy all input components, which listen to global events
-            Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
+            UnityEngine.Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
             inputSystem.GazeProvider.Enabled = false;
 
-            var diagnosticsVoiceControls = Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
+            var diagnosticsVoiceControls = UnityEngine.Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
             foreach (var diagnosticsComponent in diagnosticsVoiceControls)
             {
                 diagnosticsComponent.enabled = false;
@@ -208,13 +212,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        public static void PushHandSimulationProfile()
+        {
+            var iss = GetInputSimulationService();
+            inputSimulationProfiles.Push(iss.InputSimulationProfile);
+        }
+
+        public static void PopHandSimulationProfile()
+        {
+            var iss = GetInputSimulationService();
+            iss.InputSimulationProfile = inputSimulationProfiles.Pop();
+        }
+
+        internal static void SetHandSimulationMode(HandSimulationMode mode)
+        {
+            var iss = GetInputSimulationService();
+            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
+            isp.HandSimulationMode = mode;
+            iss.InputSimulationProfile = isp;
+        }
+
         internal static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
             yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
         }
 
         internal static IEnumerator MoveHandFromTo(
-            Vector3 startPos, Vector3 endPos, int numSteps, 
+            Vector3 startPos, Vector3 endPos, int numSteps,
             ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
             Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
@@ -284,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Waits for the user to press the enter key before a test continues.
-        /// Not actually used by any test, but it is useful when debugging since you can 
+        /// Not actually used by any test, but it is useful when debugging since you can
         /// pause the state of the test and inspect the scene.
         /// </summary>
         internal static IEnumerator WaitForEnterKey()
