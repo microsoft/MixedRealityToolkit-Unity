@@ -292,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
 #if UNITY_EDITOR
             debugPlane.Center = planePosition;
-            debugPlane.Normal = OverridePlane.Normal;
+            debugPlane.Normal = -OverridePlane.Normal;
 #endif
         }
 
