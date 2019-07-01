@@ -69,7 +69,7 @@ steps:
       Get-Content $logFile.FullName
 
       Write-Output '====================================================='
-      Write-Output '           Begin Unity Player Log                    '
+      Write-Output '           End Unity Player Log                      '
       Write-Output '====================================================='
    }
    Else
@@ -90,7 +90,7 @@ steps:
             Get-Content $nugetRestoreLogFileName
 
             Write-Output '====================================================='
-            Write-Output '           Begin NuGet Restore Log                   '
+            Write-Output '           End NuGet Restore Log                     '
             Write-Output '====================================================='
         }
         Else
