@@ -216,6 +216,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion
 
         #region MonoBehaviour Functions
+
+        /// <summary>
+        /// Releases the object that is currently manipulated
+        /// </summary>
+        public void ForceEndManipulation()
+        {
+            // release rigidbody and clear pointers
+            ReleaseRigidBody();
+            pointerIdToPointerMap.Clear();
+
+            // end manipulation
+            State newState = State.Start;
+            InvokeStateUpdateFunctions(currentState, newState);
+            currentState = newState;
+        }
+
         private void Awake()
         {
             moveLogic = new TwoHandMoveLogic(constraintOnMovement);
@@ -469,21 +485,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             uint id = eventData.Pointer.PointerId;
             if (pointerIdToPointerMap.ContainsKey(id))
             {
-                if (pointerIdToPointerMap.Count == 1 && rigidBody != null)
+                if (pointerIdToPointerMap.Count == 1)
                 {
-                    rigidBody.isKinematic = wasKinematic;
-
-                    if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
-                    {
-                        rigidBody.velocity = GetPointersVelocity();
-                    }
-
-                    if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
-                    {
-                        rigidBody.angularVelocity = GetPointersAngularVelocity();
-                    }
-
-                    rigidBody = null;
+                    ReleaseRigidBody();
                 }
 
                 pointerIdToPointerMap.Remove(id);
@@ -731,6 +735,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 OnHoverExited.Invoke(new ManipulationEventData { IsNearInteraction = !isFar }); 
             }
         }
+
+        private void ReleaseRigidBody()
+        {
+            if (rigidBody != null)
+            {
+                rigidBody.isKinematic = wasKinematic;
+
+                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
+                {
+                    rigidBody.velocity = GetPointersVelocity();
+                }
+
+                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
+                {
+                    rigidBody.angularVelocity = GetPointersAngularVelocity();
+                }
+
+                rigidBody = null;
+            }
+        }
+
         #endregion
     }
 }

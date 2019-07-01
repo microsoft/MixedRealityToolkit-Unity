@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
@@ -22,13 +23,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
 
-        public readonly SimulatedHandData HandDataLeft = new SimulatedHandData();
-        public readonly SimulatedHandData HandDataRight = new SimulatedHandData();
+        /// <summary>
+        /// Pose data for the left hand.
+        /// </summary>
+        public SimulatedHandData HandDataLeft { get; } = new SimulatedHandData();
+        /// <summary>
+        /// Pose data for the right hand.
+        /// </summary>
+        public SimulatedHandData HandDataRight { get; } = new SimulatedHandData();
 
         /// <summary>
         /// If true then keyboard and mouse input are used to simulate hands.
         /// </summary>
-        public bool UserInputEnabled = true;
+        public bool UserInputEnabled { get; set; } = true;
 
         /// <summary>
         /// Dictionary to capture all active hands detected
@@ -189,6 +196,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     inputSimulationProfile = ConfigurationProfile as MixedRealityInputSimulationProfile;
                 }
                 return inputSimulationProfile;
+            }
+            set
+            {
+                inputSimulationProfile = value;
             }
         }
 

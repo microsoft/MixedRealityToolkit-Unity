@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             {
                 if (InputSystem != null)
                 {
-                    InputSystem.Register(gameObject);
+                    InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
                     registeredForInput = true;
                 }
             }
@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         {
             if (registeredForInput)
             {
-                InputSystem.Unregister(gameObject);
+                InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
                 registeredForInput = false;
             }
         }
