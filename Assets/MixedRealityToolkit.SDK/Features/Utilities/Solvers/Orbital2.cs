@@ -163,6 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         private ControllerFinderOrbital2 controllerFinder;
+        private Transform transformTarget;
         private bool useFaceTargetUp;
 
         private bool LookAtFaceTarget => referenceObjectType != ReferenceObjectType.TrackedObject && faceTarget != null && faceTarget != SolverHandler.TransformTarget;
@@ -170,6 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected override void Awake()
         {
             base.Awake();
+            transform.parent = null;
             controllerFinder = GetComponent<ControllerFinderOrbital2>();
         }
 
@@ -180,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         public override void SolverUpdate()
         {
-            Transform transformTarget = SolverHandler.TransformTarget;
+            transformTarget = SolverHandler.TransformTarget;
 
             if (transformTarget == null && faceTarget == null)
             {
@@ -191,11 +193,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3 desiredPos = transformTarget != null ? transformTarget.position : Vector3.zero;
             Vector3 lookDirection;
             Vector3 up;
-
-            if (referenceObjectType != ReferenceObjectType.TrackedObject || faceTarget == null)
-            {
-
-            }
 
             if (LookAtFaceTarget)
             {
@@ -241,16 +238,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private void TrackNewFaceTarget()
         {
+            transformTarget = SolverHandler.TransformTarget;
+
             switch (referenceObjectType)
             {
                 case ReferenceObjectType.TrackedObject:
-                    faceTarget = SolverHandler.TransformTarget;
+                    faceTarget = transformTarget;
                     break;
                 case ReferenceObjectType.BodyPart:
 
-                    if (SolverHandler.TransformTarget == null && trackedObjectToFace == SolverHandler.TrackedObjectToReference)
+                    if (transformTarget == null && trackedObjectToFace == SolverHandler.TrackedObjectToReference)
                     {
-                        faceTarget = SolverHandler.TransformTarget;
+                        faceTarget = transformTarget;
                         break;
                     }
 

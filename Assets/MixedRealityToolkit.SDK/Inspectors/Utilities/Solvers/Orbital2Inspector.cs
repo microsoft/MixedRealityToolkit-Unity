@@ -65,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(referenceObjectType);
+
             if (EditorGUI.EndChangeCheck())
             {
                 orbital2.ReferenceObjectType = (ReferenceObjectType)referenceObjectType.enumValueIndex;
