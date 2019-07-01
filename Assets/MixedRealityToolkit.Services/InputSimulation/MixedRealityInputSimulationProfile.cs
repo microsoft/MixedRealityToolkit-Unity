@@ -6,8 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Simulated Input Profile", fileName = "MixedRealityInputSimulationProfile", order = (int)CreateProfileMenuItemIndices.InputSimulation)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Simulated Input Profile", fileName = "MixedRealityInputSimulationProfile", order = (int)CreateProfileMenuItemIndices.InputSimulation)]
     [MixedRealityServiceProfile(typeof(IInputSimulationService))]
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
     public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile
     {
         [Header("Camera Control")]
@@ -87,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("Enable hand simulation")]
         private HandSimulationMode handSimulationMode = HandSimulationMode.Articulated;
-        public HandSimulationMode HandSimulationMode => handSimulationMode;
+        public HandSimulationMode HandSimulationMode { get => handSimulationMode; set => handSimulationMode = value; }
 
         [Header("Hand Control Settings")]
         [SerializeField]

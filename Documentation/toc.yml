@@ -1,7 +1,18 @@
 - name: Getting Started with MRTK
   href: GettingStartedWithTheMRTK.md
-- name: Upgrading from HTK
-  href: HTKToMRTKPortingGuide.md
+  items:
+  - name: Upgrading from HTK
+    href: HTKToMRTKPortingGuide.md
+  - name: Updating from RC2 to GA
+    href: UpdatingToGA.md
+- name: Architecture
+  items:
+  - name: Overview
+    href: Architecture/Overview.md
+  - name: Framework and Runtime
+    href: Architecture/FrameworkAndRuntime.md
+  - name: Input System
+    href: Architecture/InputSystem.md
 - name: Feature Overviews
   items:
   - name: Profiles
@@ -132,6 +143,8 @@
     href: Contributing/DocumentationGuide.md
   - name: Developer portal generation with DocFX
     href: Contributing/DevDocGuide.md
+  - name: Testing
+    href: Contributing/UnitTests.md
 - name: Planning
   items:
   - name: Roadmap

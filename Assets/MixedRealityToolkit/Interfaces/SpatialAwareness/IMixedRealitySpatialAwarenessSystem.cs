@@ -122,15 +122,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         void SuspendObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
-        /// todo
+        /// Clears all registered observers' observations.
         /// </summary>
         void ClearObservations();
 
         /// <summary>
-        /// todo
+        /// Clears the observations of the specified observer.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
+        /// <typeparam name="T">The observer type.</typeparam>
+        /// <param name="name">The name of the observer.</param>
         void ClearObservations<T>(string name = null) where T : IMixedRealitySpatialAwarenessObserver;
 
         // TODO: make these (and future plane) events more generic

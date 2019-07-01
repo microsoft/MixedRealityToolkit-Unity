@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         public UnityEvent OnEyeCalibrationDetected;
         public UnityEvent OnNoEyeCalibrationDetected;
 
-        private bool? prevCalibrationStatus = null;        
+        private bool? prevCalibrationStatus = null;
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
@@ -40,11 +40,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         // Update is called once per frame
         void Update()
         {
-            bool? calibrationStatus = InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
+            bool? calibrationStatus;
 
-#if UNITY_EDITOR
-            calibrationStatus = editorTestUserIsCalibrated;            
-#endif
+            if (Application.isEditor)
+            {
+                calibrationStatus = editorTestUserIsCalibrated;
+            }
+            else
+            {
+                calibrationStatus = InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
+            }
+
             if (calibrationStatus != null)
             {
                 if (prevCalibrationStatus != calibrationStatus)
