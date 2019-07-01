@@ -14,8 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Configuration profile settings for setting up controller pointers.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
     [MixedRealityServiceProfile(typeof(IMixedRealityInputSystem))]
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
         [SerializeField]
@@ -39,6 +40,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return focusProviderType; }
             internal set { focusProviderType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The raycast provider service concrete type to use when raycasting.")]
+        [Implements(typeof(IMixedRealityRaycastProvider), TypeGrouping.ByNamespaceFlat)]
+        private SystemType raycastProviderType;
+
+        /// <summary>
+        /// The raycast provider service concrete type to use when raycasting.
+        /// </summary>
+        public SystemType RaycastProviderType
+        {
+            get { return raycastProviderType; }
+            internal set { raycastProviderType = value; }
         }
 
         [SerializeField]

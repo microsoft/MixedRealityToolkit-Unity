@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             GUILayout.BeginVertical();
 
-                if (MixedRealityEditorUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
+                if (InspectorUIUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
                 {
                     list.arraySize += 1;
                     var inputAction = list.GetArrayElementAtIndex(list.arraySize - 1);
