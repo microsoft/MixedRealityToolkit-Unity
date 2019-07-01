@@ -135,8 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         public override uint Priority => 1;
 
-        private bool isFirstInitialize = true;
-
         /// <inheritdoc />
         public override void Initialize()
         {
@@ -147,11 +145,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            if (!Application.isPlaying || isFirstInitialize)
-            {
-                CameraCache.Main.transform.position = Vector3.zero;
-                CameraCache.Main.transform.rotation = Quaternion.identity;
-            }
+            // Ensure the camera starts at the origin.
+            CameraCache.Main.transform.position = Vector3.zero;
+            CameraCache.Main.transform.rotation = Quaternion.identity;
 
             BaseInputModule[] inputModules = UnityEngine.Object.FindObjectsOfType<BaseInputModule>();
 
