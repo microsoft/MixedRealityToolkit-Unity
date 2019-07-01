@@ -567,8 +567,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return CursorContextEnum.None;
                 }
 
-                Vector3 adjustedCursorPos = Position - contextCenter.position;
-
                 if (cursorAction == CursorContextInfo.CursorAction.Move)
                 {
                     return CursorContextEnum.MoveCross;
@@ -577,6 +575,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (contextCenter != null)
                     {
+                        Vector3 adjustedCursorPos = Position - contextCenter.position;
+
                         if (Vector3.Dot(adjustedCursorPos, up) * Vector3.Dot(adjustedCursorPos, right) > 0) // quadrant 1 and 3
                         {
                             return CursorContextEnum.MoveNorthwestSoutheast;
@@ -591,6 +591,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (contextCenter != null)
                     {
+                        Vector3 adjustedCursorPos = Position - contextCenter.position;
+
                         if (Math.Abs(Vector3.Dot(adjustedCursorPos, right)) > 
                             Math.Abs(Vector3.Dot(adjustedCursorPos, up)))
                         {
