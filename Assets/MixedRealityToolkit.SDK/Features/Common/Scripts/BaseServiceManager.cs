@@ -39,6 +39,24 @@ namespace Microsoft.MixedReality.Toolkit
                 }
             }
         }
+        private void LateUpdate()
+        {
+            if (Application.isPlaying)
+            {
+                IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
+                for (int i = 0; i < serviceSnapshot.Count; i++)
+                {
+                    serviceSnapshot[i]?.LateUpdate();
+                }
+
+                IMixedRealityDataProvider[] providers = dataProviders.ToArray();
+                for (int i = 0; i < providers.Length; i++)
+                {
+                    providers[i]?.LateUpdate();
+                }
+            }
+        }
+
 
         protected virtual void OnEnable()
         {

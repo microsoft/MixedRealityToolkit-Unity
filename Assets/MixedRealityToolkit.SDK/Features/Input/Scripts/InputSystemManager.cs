@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -43,6 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void InitializeManager()
         {
+#if UNITY_EDITOR
+            // Make sure unity axis mappings are set.
+            InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+#endif
+
             // The input system class takes arguments for:
             // * The registrar
             // * The input system profile
@@ -81,6 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Uninitialize<IMixedRealityRaycastProvider>();
             Uninitialize<IMixedRealityFocusProvider>();
             Uninitialize<IMixedRealityInputSystem>();
+
+#if UNITY_EDITOR
+            InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+#endif
         }
     }
 }
