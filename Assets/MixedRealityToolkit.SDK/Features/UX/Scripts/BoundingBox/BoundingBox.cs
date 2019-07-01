@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -107,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Enums
 
-        #region Serialized Fields
+        #region Serialized Fields and Properties
         [SerializeField]
         [Tooltip("The object that the bounding box rig will be modifying.")]
         private GameObject targetObject;
@@ -161,25 +162,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Public property for the scale maximum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
-        public float ScaleMaximum
-        {
-            get
-            {
-                return maximumScale != null ? maximumScale.x : scaleMaximum;
-            }
-        }
+        public float ScaleMaximum => maximumScale.x;
 
         /// <summary>
         /// Public property for the scale minimum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
-        public float ScaleMinimum
-        {
-            get
-            {
-                return minimumScale != null ? minimumScale.x : scaleMinimum;
-            }
-        }
+        public float ScaleMinimum => minimumScale.x;
 
         [Header("Box Display")]
         [SerializeField]
@@ -227,6 +216,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     CreateRig();
                 }
             }
+        }
+
+        public List<GameObject> GetCorner(int v)
+        {
+            throw new NotImplementedException();
         }
 
         [SerializeField]
@@ -595,7 +589,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public UnityEvent ScaleStopped = new UnityEvent();
         #endregion Serialized Fields
 
-        #region Private Properties
+        #region Private Fields
 
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
         private bool wireframeOnly = false;
@@ -618,7 +612,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
         private List<Transform> links;
+        // List of corner root transforms. Use these to position corners
         private List<Transform> corners;
+        // List of corner visuals. Use these to scale the corners to appropriate handle size
+        // Sometimes the actual visual transform for the corner (in case when you use prefabs)
+        // are below corner root transform.
+        private List<Transform> cornerVisuals;
         private List<Transform> balls;
         private List<Renderer> linkRenderers;
         private List<IMixedRealityController> sourcesDetected;
@@ -661,6 +660,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Used to determine if boundsOverride size has changed.
         private Bounds prevBoundsOverride = new Bounds();
 
+        // This is the local scale on the corner visual (both for default cubes and prefab)
+        // that needs to be used to ensure that corner always matched scaleHandleSize
+        // Gets updated whenever CreateRig() or AddCorners() is called
+        private float cornerVisualScaleToMatchHandleSize = 1f;
+
+        // True if this game object is a child of the Target one
+        private bool isChildOfTarget = false;
+        private static readonly string rigRootName = "rigRoot";
+
+        #endregion
+
+        #region public Properties
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
         public bool Active
@@ -698,11 +709,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return cachedTargetCollider; }
         }
 
-        // True if this game object is a child of the Target one
-        private bool isChildOfTarget = false;
-        private static readonly string rigRootName = "rigRoot";
+        /// <summary>
+        /// Returns list of transforms pointing to the scale handles of the bounding box.
+        /// </summary>
+        public IReadOnlyList<Transform> ScaleCorners
+        {
+            get { return corners; }
+        }
 
-        #endregion Private Properties
+        /// <summary>
+        /// Returns list of transforms pointing to the rotation handles of the bounding box.
+        /// </summary>
+        public IReadOnlyList<Transform> RotateMidpoints
+        {
+            get { return balls; }
+        }
+        #endregion Public Properties
 
         #region Public Methods
 
@@ -769,6 +791,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             rigRoot.gameObject.SetActive(active);
             UpdateRigVisibilityInInspector();
         }
+
         #endregion
 
         #region MonoBehaviour Methods
@@ -868,6 +891,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 links = null;
             }
 
+            if (cornerVisuals != null)
+            {
+                cornerVisuals.Clear();
+                cornerVisuals = null;
+            }
+
             if (corners != null)
             {
                 foreach (Transform transform in corners)
@@ -877,6 +906,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 corners.Clear();
                 corners = null;
             }
+
 
             if (rigRoot != null)
             {
@@ -959,6 +989,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     cube.name = "corner_" + i.ToString();
 
                     cube.transform.localScale = new Vector3(scaleHandleSize, scaleHandleSize, scaleHandleSize);
+                    cornerVisualScaleToMatchHandleSize = scaleHandleSize;
                     cube.transform.position = boundsCorners[i];
 
                     // In order for the cube to be grabbed using near interaction we need
@@ -973,6 +1004,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     BoxCollider collider = cube.GetComponent<BoxCollider>();
                     collider.size *= 1.35f;
                     corners.Add(cube.transform);
+                    // for default visuals, the corner visual == corner root transform
+                    cornerVisuals.Add(cube.transform);
 
                     if (handleMaterial != null)
                     {
@@ -1010,25 +1043,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
 
                     // Instantiate proper prefab based on isFlattened. (2D slate handle vs 3D handle)
-                    GameObject cornerVisuals = Instantiate(isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab, visualsScale.transform);
-                    cornerVisuals.name = "visuals";
+                    GameObject cornerVisual = Instantiate(isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab, visualsScale.transform);
+                    cornerVisual.name = "visuals";
 
                     // this is the size of the corner visuals
-                    var cornerbounds = GetMaxBounds(cornerVisuals);
+                    var cornerbounds = GetMaxBounds(cornerVisual);
                     // we need to multiply by this amount to get to desired scale handle size
                     var invScale = scaleHandleSize / cornerbounds.size.x;
-                    cornerVisuals.transform.localScale = new Vector3(invScale, invScale, invScale);
+                    cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
+                    cornerVisualScaleToMatchHandleSize = invScale;
 
                     if (isFlattened)
                     {
                         // Rotate 2D slate handle asset for proper orientation
-                        cornerVisuals.transform.Rotate(0, 0, -90);
+                        cornerVisual.transform.Rotate(0, 0, -90);
                     }
 
-                    ApplyMaterialToAllRenderers(cornerVisuals, handleMaterial);
+                    ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
 
 
                     corners.Add(corner.transform);
+                    cornerVisuals.Add(cornerVisual.transform);
                 }
             }
         }
@@ -1431,6 +1466,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             boundsCorners = new Vector3[8];
 
             corners = new List<Transform>();
+            cornerVisuals = new List<Transform>();
             balls = new List<Transform>();
 
             if (showWireframe)
@@ -1695,6 +1731,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // Compute the local scale that produces the desired world space dimensions
                 Vector3 linkDimensions = Vector3.Scale(GetLinkDimensions(), invRootScale);
+                Vector3 cornerDimensions = Vector3.Scale(cornerVisualScaleToMatchHandleSize * Vector3.one, invRootScale);
+                Vector3 ballDimenions = Vector3.Scale(rotationHandleDiameter * Vector3.one, invRootScale);
+
+                for (int i = 0; i < cornerVisuals.Count; i++)
+                {
+                   cornerVisuals[i].localScale = cornerDimensions;
+                }
+
+                for (int i = 0; i < balls.Count; i++)
+                {
+                    balls[i].localScale = ballDimenions;
+                }
 
                 for (int i = 0; i < edgeCenters.Length; ++i)
                 {
