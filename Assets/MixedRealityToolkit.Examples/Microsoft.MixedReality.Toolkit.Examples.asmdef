@@ -4,7 +4,6 @@
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit.SDK",
-        "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem"
     ],
     "optionalUnityReferences": [],

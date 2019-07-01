@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool isPinching = false;
         public bool IsPinching => isPinching;
 
-        public delegate void HandJointDataGenerator(MixedRealityPose[] jointPoses);
+        public delegate void HandJointDataGenerator(MixedRealityPose[] jointPositions);
 
         private IMixedRealityInputSystem inputSystem = null;
 
