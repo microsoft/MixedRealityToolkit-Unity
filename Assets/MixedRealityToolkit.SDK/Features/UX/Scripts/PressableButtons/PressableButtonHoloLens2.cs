@@ -16,6 +16,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private GameObject movingButtonIconText = null;
 
         [SerializeField]
+        [Tooltip("The visuals which become compressed (scaled) along the z-axis when pressed.")]
+        private GameObject compressableButtonVisuals = null;
+        public GameObject CompressableButtonVisuals
+        {
+            get => compressableButtonVisuals;
+            set
+            {
+                compressableButtonVisuals = value;
+
+                if (compressableButtonVisuals != null)
+                {
+                    initialCompressableButtonVisualsLocalScale = compressableButtonVisuals.transform.localScale;
+                }
+
+            }
+        }
+
+        [SerializeField]
+        [Range(0.0f, 1.0f)]
+        [Tooltip("The minimum percentage of the original scale the compressableButtonVisuals can be compressed to.")]
+        private float minCompressPercentage = 0.25f;
+        public float MinCompressPercentage { get => minCompressPercentage; set => minCompressPercentage = value; }
+
+        [SerializeField]
         [Tooltip("The plate which represents the press-able surface of the button that highlights when focused.")]
         private Renderer highlightPlate = null;
 
@@ -25,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Private Members
 
+        Vector3 initialCompressableButtonVisualsLocalScale = Vector3.one;
         private int fluentLightIntensityID = 0;
         private float targetFluentLightIntensity = 1.0f;
         private MaterialPropertyBlock properties = null;
@@ -35,6 +60,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected override void Start()
         {
             base.Start();
+
+            if (compressableButtonVisuals != null)
+            {
+                initialCompressableButtonVisualsLocalScale = compressableButtonVisuals.transform.localScale;
+            }
 
             if (highlightPlate != null)
             {
@@ -71,6 +101,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected override void UpdateMovingVisualsPosition()
         {
             base.UpdateMovingVisualsPosition();
+
+            if (compressableButtonVisuals != null)
+            {
+                // Compress the button visuals by the push amount.
+                Vector3 scale = compressableButtonVisuals.transform.localScale;
+                float pressPercentage = Mathf.Max(minCompressPercentage, (1.0f - (currentPushDistance - startPushDistance) / MaxPushDistance));
+                scale.z = initialCompressableButtonVisualsLocalScale.z * pressPercentage;
+                compressableButtonVisuals.transform.localScale = scale;
+            }
 
             if (movingButtonIconText != null)
             {

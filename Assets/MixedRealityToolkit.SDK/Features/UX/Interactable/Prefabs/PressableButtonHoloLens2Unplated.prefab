@@ -34,6 +34,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1019827636}
+  - {fileID: 2104629526733298612}
   - {fileID: 8608155427408040960}
   - {fileID: 2816231285305654104}
   m_Father: {fileID: 0}
@@ -162,6 +163,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   currentPushDistance: 0
   movingButtonIconText: {fileID: 8352633413104042190}
+  compressableButtonVisuals: {fileID: 3030092746254298942}
   highlightPlate: {fileID: 304758184733692740}
   highlightPlateAnimationTime: 0.25
 --- !u!114 &316800720
@@ -402,13 +404,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  touchableCollider: {fileID: 316800722}
-  distBack: 0.25
+  pokeThreshold: 0.25
   debounceThreshold: 0.01
+  touchableCollider: {fileID: 316800722}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
-  touchableSurface: 0
   bounds: {x: 0.032, y: 0.032}
 --- !u!1 &937783100
 GameObject:
@@ -644,8 +645,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2096017743}
+  m_Children: []
   m_Father: {fileID: 1944713263}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -752,11 +752,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2096017742}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.008}
   m_LocalScale: {x: 0.032, y: 0.032, z: 0.016}
   m_Children:
   - {fileID: 7769478332401773763}
-  m_Father: {fileID: 1019827636}
+  m_Father: {fileID: 2104629526733298612}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2096017746
@@ -833,6 +833,37 @@ Transform:
   m_Children:
   - {fileID: 7527647897556286267}
   - {fileID: 586303850521236049}
+  m_Father: {fileID: 1944713263}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3030092746254298942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2104629526733298612}
+  m_Layer: 0
+  m_Name: CompressableButtonVisuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2104629526733298612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3030092746254298942}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.008}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2096017743}
   m_Father: {fileID: 1944713263}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1151,7 +1182,7 @@ Transform:
   - {fileID: 937783101}
   - {fileID: 1911902819}
   m_Father: {fileID: 1944713263}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &574862913537925837
 PrefabInstance:
