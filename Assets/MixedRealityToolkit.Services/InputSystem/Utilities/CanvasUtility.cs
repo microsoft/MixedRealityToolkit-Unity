@@ -38,12 +38,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
                     }
                 }
 
-                if (CanSupportMrtkInput(canvas) && (canvas.GetComponentInChildren<NearInteractionTouchable>() == null))
+                if (CanSupportMrtkInput(canvas) && (canvas.GetComponentInChildren<NearInteractionTouchableUnityUI>() == null))
                 {
-                    UnityEditor.EditorGUILayout.HelpBox($"Canvas does not contain any {typeof(NearInteractionTouchable).Name} components for supporting near interaction.", UnityEditor.MessageType.Warning);
+                    UnityEditor.EditorGUILayout.HelpBox($"Canvas does not contain any {typeof(NearInteractionTouchableUnityUI).Name} components for supporting near interaction.", UnityEditor.MessageType.Warning);
                     if (GUILayout.Button("Add NearInteractionTouchable"))
                     {
-                        UnityEditor.Undo.AddComponent<NearInteractionTouchable>(canvas.gameObject);
+                        UnityEditor.Undo.AddComponent<NearInteractionTouchableUnityUI>(canvas.gameObject);
                     }
                 }
 
