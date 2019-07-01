@@ -9,8 +9,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Object that represents a cursor in 3D space.
     /// </summary>
-    public class BaseCursor : InputSystemGlobalListener, IMixedRealityCursor
+    public class BaseCursor : MonoBehaviour, IMixedRealityCursor
     {
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
         /// <summary>
@@ -291,15 +308,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateCursorTransform();
         }
 
-        protected override void OnEnable()
+        protected virtual void OnEnable()
         {
-            // We don't call base.OnEnable because we handle registering the global listener a bit differently.
             OnCursorStateChange(CursorStateEnum.None);
         }
 
-        protected override void OnDisable()
+        protected virtual void OnDisable()
         {
-            // We don't call base.OnDisable because we handle unregistering the global listener a bit differently.
             TargetedObject = null;
             visibleSourcesCount = 0;
             OnCursorStateChange(CursorStateEnum.Contextual);
@@ -318,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected virtual void RegisterManagers()
         {
             // Register the cursor as a listener, so that it can always get input events it cares about
-            InputSystem.Register(gameObject);
+            InputSystem.RegisterHandler<IMixedRealityCursor>(this);
 
             // Setup the cursor to be able to respond to input being globally enabled / disabled
             if (InputSystem.IsInputEnabled)
@@ -343,7 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 InputSystem.InputEnabled -= OnInputEnabled;
                 InputSystem.InputDisabled -= OnInputDisabled;
-                InputSystem.Unregister(gameObject);
+                InputSystem.UnregisterHandler<IMixedRealityCursor>(this);
             }
         }
 
