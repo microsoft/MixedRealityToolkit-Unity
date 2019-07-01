@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PlayModeTestUtilities
+    <title>Class UnityUiUtilities
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PlayModeTestUtilities
+    <meta name="title" content="Class UnityUiUtilities
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.43.1.0">
     
@@ -81,17 +81,17 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities" class="text-break">Class PlayModeTestUtilities
+  <h1 id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities" class="text-break">Class UnityUiUtilities
   </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">PlayModeTestUtilities</span></div>
+    <div class="level1"><span class="xref">UnityUiUtilities</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -119,35 +119,21 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.html">Microsoft.MixedReality.Toolkit.Tests</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PlayModeTestUtilities</code></pre>
+    <pre><code class="lang-csharp hljs">public static class UnityUiUtilities</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_EnsureInputModule_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.EnsureInputModule*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_EnsureInputModule" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.EnsureInputModule">EnsureInputModule()</h4>
-  <div class="markdown level1 summary"><p>Make sure there is a MixedRealityInputModule on the main camera, which is needed for using Unity UI with MRTK.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void EnsureInputModule()</code></pre>
-  </div>
-  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_EnsureInputModule_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Workaround for #5061</p>
-</div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GenerateHandPose_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GenerateHandPose*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GenerateHandPose_ArticulatedHandPose_GestureId_Handedness_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GenerateHandPose(ArticulatedHandPose.GestureId,Handedness,Vector3)">GenerateHandPose(ArticulatedHandPose.GestureId, Handedness, Vector3)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_CreateButton_" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.CreateButton*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_CreateButton_Color_Color_Color_" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.CreateButton(Color,Color,Color)">CreateButton(Color, Color, Color)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 worldPosition)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Button CreateButton(Color normalColor, Color highlightColor, Color pressedColor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -160,18 +146,18 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ArticulatedHandPose.GestureId</span></td>
-        <td><span class="parametername">gesture</span></td>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">normalColor</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">Handedness</span></td>
-        <td><span class="parametername">handedness</span></td>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">highlightColor</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">Vector3</span></td>
-        <td><span class="parametername">worldPosition</span></td>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">pressedColor</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -186,21 +172,38 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">SimulatedHandData.HandJointDataGenerator</span></td>
+        <td><span class="xref">Button</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GetInputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GetInputSimulationService*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GetInputSimulationService" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GetInputSimulationService">GetInputSimulationService()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_CreateCanvas_" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.CreateCanvas*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_CreateCanvas_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.CreateCanvas(System.Single)">CreateCanvas(Single)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static InputSimulationService GetInputSimulationService()</code></pre>
+    <pre><code class="lang-csharp hljs">public static Canvas CreateCanvas(float scale)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">scale</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -211,21 +214,38 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="xref">Canvas</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GetInputSystem_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GetInputSystem*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GetInputSystem" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GetInputSystem">GetInputSystem()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_CreateImage_" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.CreateImage*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_CreateImage_Color_" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.CreateImage(Color)">CreateImage(Color)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IMixedRealityInputSystem GetInputSystem()</code></pre>
+    <pre><code class="lang-csharp hljs">public static Image CreateImage(Color color)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">color</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -236,25 +256,105 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IMixedRealityInputSystem</span></td>
+        <td><span class="xref">Image</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TeardownInputModule_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.TeardownInputModule*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TeardownInputModule" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.TeardownInputModule">TeardownInputModule()</h4>
-  <div class="markdown level1 summary"><p>Destroy the input module to ensure it gets initialized cleanly for the next test.</p>
-</div>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_CreateText_" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.CreateText*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_CreateText_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.CreateText(System.String)">CreateText(String)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void TeardownInputModule()</code></pre>
+    <pre><code class="lang-csharp hljs">public static Text CreateText(string text)</code></pre>
   </div>
-  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TeardownInputModule_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Workaround for #5116</p>
-</div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">text</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Text</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_CreateToggle_" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.CreateToggle*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_UnityUiUtilities_CreateToggle_Color_Color_Color_" data-uid="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.CreateToggle(Color,Color,Color)">CreateToggle(Color, Color, Color)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Toggle CreateToggle(Color normalColor, Color highlightColor, Color pressedColor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">normalColor</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">highlightColor</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">pressedColor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Toggle</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
