@@ -11,11 +11,13 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Input.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -25,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Setup()
         {
             PlayModeTestUtilities.Setup();
+            PlayModeTestUtilities.EnsureInputModule();
 
             inputSim = PlayModeTestUtilities.GetInputSimulationService();
             Assert.NotNull(inputSim);
@@ -144,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator NearInteractionTouchable()
+        public IEnumerator NearInteractionTouchableVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchable>(objectScale);
             touchable.SetLocalForward(touchNormal);
@@ -195,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator NearInteractionTouchableVolume()
+        public IEnumerator NearInteractionTouchableVolumeVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchableVolume>(objectScale);
 
@@ -338,6 +341,84 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 UnityEngine.Object.Destroy(touchable.gameObject);
             }
+        }
+
+        /// <summary>
+        /// Test Unity UI button
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableUnityUiButton()
+        {
+
+            var canvas = UnityUiUtilities.CreateCanvas(0.002f);
+
+            var button = UnityUiUtilities.CreateButton(Color.gray, Color.blue, Color.green);
+            button.transform.SetParent(canvas.transform, false);
+            var text = UnityUiUtilities.CreateText("test");
+            text.transform.SetParent(button.transform);
+
+            canvas.transform.position = objectPosition;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
+
+            using (var catcher = new UnityButtonEventCatcher(button))
+            {
+                // Touch started and completed when entering and exiting
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.AreEqual(0, catcher.Click);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.AreEqual(1, catcher.Click);
+            }
+
+            UnityEngine.Object.Destroy(canvas.gameObject);
+        }
+
+        /// <summary>
+        /// Test Unity UI toggle button
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableUnityUiToggle()
+        {
+
+            var canvas = UnityUiUtilities.CreateCanvas(0.002f);
+
+            var toggle = UnityUiUtilities.CreateToggle(Color.gray, Color.blue, Color.green);
+            toggle.transform.SetParent(canvas.transform, false);
+            var text = UnityUiUtilities.CreateText("test");
+            text.transform.SetParent(toggle.transform);
+
+            canvas.transform.position = objectPosition;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
+
+            using (var catcher = new UnityToggleEventCatcher(toggle))
+            {
+                // Turn on the toggle after exiting
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.IsFalse(catcher.IsOn);
+                Assert.AreEqual(0, catcher.Changed);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.IsTrue(catcher.IsOn);
+                Assert.AreEqual(1, catcher.Changed);
+
+                // Turn off the toggle after exiting
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.IsTrue(catcher.IsOn);
+                Assert.AreEqual(1, catcher.Changed);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.IsFalse(catcher.IsOn);
+                Assert.AreEqual(2, catcher.Changed);
+            }
+
+            UnityEngine.Object.Destroy(canvas.gameObject);
         }
 
     }
