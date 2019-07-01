@@ -52,6 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float returnSpeed = 25.0f;
 
         [SerializeField]
+        [Tooltip("Button will send the release event on touch end after successful press even if release plane hasn't been passed.")]
+        private bool releaseOnTouchEnd = true;
+        public bool ReleaseOnTouchEnd { get => releaseOnTouchEnd; set => releaseOnTouchEnd = value; }
+
+        [SerializeField]
         [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
         private bool enforceFrontPush = true;
 
@@ -124,8 +129,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     else
                     {
                         // Abort press.
-                        IsPressing = false;
-
+                        if (!releaseOnTouchEnd)
+                        {
+                            IsPressing = false;
+                        }
                         TouchEnd.Invoke();
                     }
                 }
@@ -258,6 +265,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
 
                 UpdateMovingVisualsPosition();
+
+                if (releaseOnTouchEnd && IsPressing)
+                {
+                    UpdatePressedState(currentPushDistance);
+                }
             }
         }
 
