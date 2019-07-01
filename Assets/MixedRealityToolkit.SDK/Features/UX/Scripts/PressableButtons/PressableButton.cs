@@ -100,6 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Dictionary<IMixedRealityController, Vector3> touchPoints = new Dictionary<IMixedRealityController, Vector3>();
 
+        private List<IMixedRealityInputSource> currentInputSources = new List<IMixedRealityInputSource>();
+
         private bool isTouching = false;
 
         ///<summary>
@@ -223,6 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             // clear touch points in case we get disabled and can't receive the touch end event anymore
             touchPoints.Clear();
+            currentInputSources.Clear();
 
             // make sure button doesn't stay in a pressed state in case we disable the button while pressing it
             currentPushDistance = startPushDistance;
@@ -264,18 +267,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region IMixedRealityTouchHandler implementation
 
-        private void PulseProximityLight(HandTrackingInputEventData eventData)
+        private void PulseProximityLight()
         {
             // Pulse each proximity light on pointer cursors' interacting with this button.
-            foreach (var pointer in eventData.InputSource.Pointers)
+            if (currentInputSources.Count != 0)
             {
-                ProximityLight[] proximityLights = pointer.BaseCursor?.GameObjectReference?.GetComponentsInChildren<ProximityLight>();
-
-                if (proximityLights != null)
+                foreach (var pointer in currentInputSources[currentInputSources.Count - 1].Pointers)
                 {
-                    foreach (var proximityLight in proximityLights)
+                    ProximityLight[] proximityLights = pointer.BaseCursor?.GameObjectReference?.GetComponentsInChildren<ProximityLight>();
+
+                    if (proximityLights != null)
                     {
-                        proximityLight.Pulse();
+                        foreach (var proximityLight in proximityLights)
+                        {
+                            proximityLight.Pulse();
+                        }
                     }
                 }
             }
@@ -312,9 +318,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             touchPoints.Add(eventData.Controller, eventData.InputData);
-            IsTouching = true;
 
-            PulseProximityLight(eventData);
+            // Make sure only one instance of this input source exists and is at the "top of the stack."
+            currentInputSources.Remove(eventData.InputSource);
+            currentInputSources.Add(eventData.InputSource);
+
+            IsTouching = true;
 
             eventData.Use();
         }
@@ -333,6 +342,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (touchPoints.ContainsKey(eventData.Controller))
             {
                 touchPoints.Remove(eventData.Controller);
+                currentInputSources.Remove(eventData.InputSource);
+
                 IsTouching = (touchPoints.Count > 0);
                 eventData.Use();
             }
@@ -406,6 +417,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     IsPressing = true;
                     ButtonPressed.Invoke();
+                    PulseProximityLight();
                 }
             }
             // If we're in a press, check if the press is released now.
