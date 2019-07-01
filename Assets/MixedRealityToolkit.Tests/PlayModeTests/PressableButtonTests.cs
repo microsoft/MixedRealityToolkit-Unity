@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PressButtonFast()
         {
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
 
             // Move the camera to origin looking at +z to more easily see the button.
             TestUtilities.PlayspaceToOriginLookingForward();
