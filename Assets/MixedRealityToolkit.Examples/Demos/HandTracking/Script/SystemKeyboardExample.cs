@@ -6,6 +6,14 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    /// <summary>
+    /// An example script that delegates keyboard API access either to the WMR workaround
+    /// (MixedRealityKeyboard) or Unity's TouchScreenKeyboard API depending on the platform.
+    /// </summary>
+    /// <remarks>
+    /// Note that like Unity's TouchScreenKeyboard API, this script only supports WSA, iOS,
+    /// and Android.
+    /// </remarks>
     public class SystemKeyboardExample : MonoBehaviour
     {
         private MixedRealityKeyboard wmrKeyboard;
@@ -18,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 #if !UNITY_EDITOR && UNITY_WSA
             // Windows mixed reality keyboard initialization goes here
             wmrKeyboard = gameObject.AddComponent<MixedRealityKeyboard>();
-#else
+#elif UNITY_IOS || UNITY_ANDROID
             // non-Windows mixed reality keyboard initialization goes here
 #endif
         }
@@ -27,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
 #if !UNITY_EDITOR && UNITY_WSA
             wmrKeyboard.ShowKeyboard();
-#else
+#elif UNITY_IOS || UNITY_ANDROID
             touchscreenKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
 #endif
         }
@@ -52,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     debugMessage.text = "typed " + keyboardText;
                 }
             }
-#else
+#elif UNITY_IOS || UNITY_ANDROID
             // non-Windows mixed reality keyboard initialization goes here
             // for non-Windows mixed reality keyboards just use Unity's default
             // touchscreenkeyboard. 
