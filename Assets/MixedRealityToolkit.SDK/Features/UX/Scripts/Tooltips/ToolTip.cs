@@ -176,7 +176,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set
             {
                 contentScale = value;
-                RefreshLocalContent();
+                if (!Application.isPlaying)
+                {   // Only force refresh in edit mode
+                    RefreshLocalContent();
+                }
             }
         }
 
@@ -194,7 +197,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set
             {
                 fontSize = value;
-                RefreshLocalContent();
+                if (!Application.isPlaying)
+                {   // Only force refresh in edit mode
+                    RefreshLocalContent();
+                }
             }
         }
 
