@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public int FocusQueryBufferSize => focusQueryBufferSize;
 
         [SerializeField]
-        [Range(32, 2048)]
+        [Range(1, 2048)]
         [Tooltip("Maximum number of colliders that can be detected in a SphereOverlap scene query.")]
         private int focusQueryBufferSize = 128;
 

@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
-        private int maxQuerySceneResults = 64;
+        private int maxQuerySceneResults = 128;
 
         public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators
         {
