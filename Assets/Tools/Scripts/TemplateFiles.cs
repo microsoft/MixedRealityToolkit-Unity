@@ -17,8 +17,6 @@ namespace Assets.MRTK.Tools.Scripts
         private const string EditorPropsTemplateName = "Editor.InEditor.Template.props";
         private const string SpecifcPlatformPropsTemplateRegex = @"[a-zA-Z]+\.[a-zA-Z]+\.Template\.props";
 
-        private const string GeneratedCSMetaTemplateName = "GereneratedCSMeta.template";
-
         private static TemplateFiles instance;
 
         public static TemplateFiles Instance => instance ?? (instance = new TemplateFiles());
@@ -36,13 +34,9 @@ namespace Assets.MRTK.Tools.Scripts
 
         public string PlatformPropsTemplatePath { get; }
 
-        public string GeneratedCSMetaTemplatePath { get; }
-
         public IReadOnlyDictionary<string, string> PlatformTemplates { get; }
 
         public IReadOnlyList<string> OtherFiles { get; }
-
-        public string GeneratedCSMetaTemplateText => generatedCSMetaTemplateText ?? (generatedCSMetaTemplateText = File.ReadAllText(GeneratedCSMetaTemplatePath));
 
         private TemplateFiles()
         {
@@ -66,7 +60,6 @@ namespace Assets.MRTK.Tools.Scripts
             MSBuildSolutionTemplatePath = GetExpectedTemplatesPath(fileNamesMaps, "MSBuild Solution", MSBuildSolutionTemplateName);
             SDKProjectFileTemplatePath = GetExpectedTemplatesPath(fileNamesMaps, "SDK Project", SDKProjectFileTemplateName);
             PlatformPropsTemplatePath = GetExpectedTemplatesPath(fileNamesMaps, "Platform Props", PlatformPropsTemplateName);
-            GeneratedCSMetaTemplatePath = GetExpectedTemplatesPath(fileNamesMaps, "Generated CS Template Name", GeneratedCSMetaTemplateName);
 
             // Get specific platforms
             Dictionary<string, string> platformTemplates = new Dictionary<string, string>();
