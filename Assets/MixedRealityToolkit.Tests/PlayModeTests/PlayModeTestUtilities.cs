@@ -66,7 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             if (CameraCache.Main && !CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>())
             {
-                CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                var inputModule = CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                inputModule.forceModuleActive = true;
             }
         }
 
