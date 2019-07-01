@@ -72,12 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject testButton = InstantiateSceneAndDefaultPressableButton();
 
             // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             // For some reason, we would only get null pointers when the hand tries to click a button
             // at specific positions, hence the unusal z value.
@@ -123,12 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject testButton = InstantiateSceneAndDefaultPressableButton();
 
             // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
