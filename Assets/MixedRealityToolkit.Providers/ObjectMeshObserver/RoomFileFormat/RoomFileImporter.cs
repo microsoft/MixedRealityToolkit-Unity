@@ -6,7 +6,7 @@ using System.IO;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
 
-namespace Miicrosoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
+namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
 {
     [ScriptedImporter(1, "room")]
     public class RoomFileImporter : ScriptedImporter

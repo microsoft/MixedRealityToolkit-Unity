@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Miicrosoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
+namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
 {
     /// <summary>
     /// Converts a UnityEngine.Mesh object to and from an array of bytes that conform to the .room file format.
