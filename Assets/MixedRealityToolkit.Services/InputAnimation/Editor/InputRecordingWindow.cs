@@ -27,13 +27,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private string loadedFilePath = "";
 
         private IMixedRealityInputRecordingService recordingService = null;
-        private IMixedRealityInputRecordingService RecordingService => recordingService ?? (recordingService = MixedRealityToolkit.Instance.GetService<IMixedRealityInputRecordingService>());
+        private IMixedRealityInputRecordingService RecordingService =>
+            recordingService ??
+            (recordingService = MixedRealityToolkit.Instance.GetService<IMixedRealityInputRecordingService>());
 
         private IMixedRealityInputPlaybackService playbackService = null;
-        private IMixedRealityInputPlaybackService PlaybackService => playbackService ?? (playbackService = MixedRealityToolkit.Instance.GetService<IMixedRealityInputPlaybackService>());
+        private IMixedRealityInputPlaybackService PlaybackService =>
+            playbackService ??
+            (playbackService = MixedRealityToolkit.Instance.GetService<IMixedRealityInputPlaybackService>());
 
         private IInputSimulationService simService = null;
-        private IInputSimulationService SimService => simService ?? (simService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
+        private IInputSimulationService SimService =>
+            simService ??
+            (simService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
 
         public enum ToolMode
         {
@@ -148,7 +154,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             bool wasRecording = RecordingService.IsRecording;
-            bool record = GUILayout.Toggle(wasRecording, wasRecording ? new GUIContent(iconRecordActive, "Stop recording input animation") : new GUIContent(iconRecord, "Record new input animation"), "Button");
+            var recordButtonContent = wasRecording
+                ? new GUIContent(iconRecordActive, "Stop recording input animation")
+                : new GUIContent(iconRecord, "Record new input animation");
+            bool record = GUILayout.Toggle(wasRecording, recordButtonContent, "Button");
 
             if (record != wasRecording)
             {
@@ -203,7 +212,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 using (new GUILayout.HorizontalScope())
                 {
                     jumpBack = GUILayout.Button(new GUIContent(iconJumpBack, "Reset input animation"), "Button");
-                    play = GUILayout.Toggle(wasPlaying, wasPlaying ? new GUIContent(iconPlay, "Stop playing input animation") : new GUIContent(iconPlay, "Play back input animation"), "Button");
+                    var playButtonContent = wasPlaying
+                        ? new GUIContent(iconPlay, "Stop playing input animation")
+                        : new GUIContent(iconPlay, "Play back input animation");
+                    play = GUILayout.Toggle(wasPlaying, playButtonContent, "Button");
                     stepFwd = GUILayout.Button(new GUIContent(iconStepFwd, "Step forward one frame"), "Button");
                 }
 
