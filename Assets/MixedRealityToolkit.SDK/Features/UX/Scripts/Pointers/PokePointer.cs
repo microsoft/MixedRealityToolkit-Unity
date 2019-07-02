@@ -187,8 +187,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Unity UI does not provide an equivalent broad-phase test to Physics.OverlapSphere,
             // so we have to use a static instances list to test all NearInteractionTouchableUnityUI
-            foreach (var touchable in NearInteractionTouchableUnityUI.Instances)
+            for (int i = 0; i < NearInteractionTouchableUnityUI.Instances.Count; i++)
             {
+                NearInteractionTouchableUnityUI touchable = NearInteractionTouchableUnityUI.Instances[i];
                 float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
                 if (distance < closestDistance)
                 {
