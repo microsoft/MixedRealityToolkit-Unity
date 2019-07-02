@@ -47,7 +47,7 @@ the conditions in [list B](#list-b)
 > 
 > See [Experimental features](../ExperimentalFeatures.md) for more information.
 
-Note that surface area for breaking changes is very large, it's important to note that having an absolute
+As the surface area for breaking changes is very large, it's important to note that having an absolute
 rule that says "no breaking changes" would be impossible - there may be issues that can only be fixed in
 a sane way by having a breaking change. To put another way, the only way we could really have "no breaking changes"
 is to have no changes at all.
