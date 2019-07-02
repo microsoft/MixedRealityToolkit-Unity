@@ -55,17 +55,73 @@ steps:
    
    Remove-Job $ljob
    Stop-Process $proc
+
+   Write-Output '====================================================='
+   Write-Output '           Unity Build Player Finished               '
+   Write-Output '====================================================='
+
+   If (Test-Path $logFile.FullName)
+   {
+      Write-Output '====================================================='
+      Write-Output '           Begin Unity Player Log                    '
+      Write-Output '====================================================='
+
+      Get-Content $logFile.FullName
+
+      Write-Output '====================================================='
+      Write-Output '           End Unity Player Log                      '
+      Write-Output '====================================================='
+   }
+   Else
+   {
+      Write-Output 'Unity Player Log Missing!'
+   }
+
+   # The NuGet and AppX logs are only relevant for UWP builds.
+   If ("${{ parameters.Platform }}" -eq "UWP")
+   {
+        $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
+        If (Test-Path $nugetRestoreLogFileName)
+        {
+            Write-Output '====================================================='
+            Write-Output '           Begin NuGet Restore Log                   '
+            Write-Output '====================================================='
+
+            Get-Content $nugetRestoreLogFileName
+
+            Write-Output '====================================================='
+            Write-Output '           End NuGet Restore Log                     '
+            Write-Output '====================================================='
+        }
+        Else
+        {
+            Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
+        }
+
+        $appxBuildLogFileName = "$logDirectory\buildAppx.log"
+        If (Test-Path $appxBuildLogFileName)
+        {
+            Write-Output '====================================================='
+            Write-Output '           Begin AppX Build Log                      '
+            Write-Output '====================================================='
+
+            Get-Content $appxBuildLogFileName
+
+            Write-Output '====================================================='
+            Write-Output '           End AppX Build Log                        '
+            Write-Output '====================================================='
+        }
+        Else
+        {
+            Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
+        }
+   }
+
+   If ($proc.ExitCode -ne 0)
+   {
+       exit $proc.ExitCode
+   }
   displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
-
-# The NuGet restore log is only relevant when the AppX is being built.
-- ${{ if eq(parameters.Platform, 'UWP') }}:
-  - script: 'Type %Build_ArtifactStagingDirectory%\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\logs\nugetRestore.log'
-    displayName: 'Print MSBuild-NugetRestore log'
-
-# The AppX build log is only relevant when the AppX is being built.
-- ${{ if eq(parameters.Platform, 'UWP') }}:
-  - script: 'Type %Build_ArtifactStagingDirectory%\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\logs\buildAppx.log'
-    displayName: 'Print MSBuild-BuildAppX log'
 
 - task: PublishBuildArtifacts@1
   enabled: ${{ parameters.PublishArtifacts }}
