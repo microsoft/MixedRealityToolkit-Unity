@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// A basic grid layout for game objects of a consistent size
     /// </summary>
     /// 
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public class TileGridObjectCollection : MonoBehaviour
     {
         /// <summary>
