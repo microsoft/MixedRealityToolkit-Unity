@@ -356,20 +356,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        protected virtual void OnValidate()
-        {
-            ValidateHeirarchy();
-
-            label.EnsureComponent<TextMeshPro>();
-            gameObject.EnsureComponent<ToolTipConnector>();
-        }
-
         /// <summary>
         /// virtual functions
         /// </summary>
         protected virtual void OnEnable()
         {
             ValidateHeirarchy();
+
+            label.EnsureComponent<TextMeshPro>();
+            gameObject.EnsureComponent<ToolTipConnector>();
 
             // Get our line if it exists
             if (toolTipLine == null)
