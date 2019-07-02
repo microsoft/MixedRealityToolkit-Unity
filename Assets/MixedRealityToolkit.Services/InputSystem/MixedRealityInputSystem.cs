@@ -405,6 +405,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Handles a focus event
+        /// We send all focus events to all global listeners and the actual focus receivers. the use flag is completely ignored to avoid any interception.
+        /// </summary>
         public void HandleEvent<T>(GameObject focusReceiver, FocusEventData focusEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
             Debug.Assert(focusEventData != null);
@@ -416,7 +420,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 ExecuteEvents.ExecuteHierarchy(focusReceiver, focusEventData, eventHandler);
             }
         }
-
 
         /// <summary>
         /// Handles a pointer event
