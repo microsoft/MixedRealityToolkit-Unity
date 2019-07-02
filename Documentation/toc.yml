@@ -125,6 +125,8 @@
     href: Performance/PerfGettingStarted.md
   - name: Extension Service Creation Wizard
     href: Utilities/ExtensionServiceCreationWizard.md
+    name: Scene Transition Service
+    href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
   - name: Experimental Features
     href: ExperimentalFeatures.md
   - name: Advanced topics
