@@ -28,10 +28,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
     class InputEventSystemTests
     {
-        [TearDown]
-        public void ShutdownMrtk()
+        [SetUp]
+        public void Setup()
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.Setup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
         }
 
         /// <summary>
@@ -155,18 +161,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handlerBasedListener1.enabled = false;
 
             CollectionAssert.AreEquivalent(
-                new List<System.Type> { typeof(IMixedRealitySpeechHandler), typeof(IMixedRealityBaseInputHandler) }, 
-                inputSystem.EventHandlersByType.Keys, 
+                new List<System.Type> { typeof(IMixedRealitySpeechHandler), typeof(IMixedRealityBaseInputHandler) },
+                inputSystem.EventHandlersByType.Keys,
                 "Input event system doesn't contain expected event handler types.");
 
             CollectionAssert.AreEquivalent(
                 new HandleList { new Handle(handlerBasedListener2) },
-                inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)], 
+                inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)],
                 "Input event system doesn't contain expected IMixedRealitySpeechHandler handlers.");
 
             CollectionAssert.AreEquivalent(
                 new HandleList { new Handle(handlerBasedListener2) },
-                inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)], 
+                inputSystem.EventHandlersByType[typeof(IMixedRealityBaseInputHandler)],
                 "Input event system doesn't contain expected IMixedRealityBaseInputHandler handlers.");
 
             Object.Destroy(object1);
@@ -179,9 +185,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestPointerEventCallsForGlobalHandlers()
         {
             // We need Gaze Cursor in this test to use it as source to emit events.
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
             IMixedRealityInputSystem inputSystem = null;
             MixedRealityServiceRegistry.TryGetService(out inputSystem);
 
@@ -212,14 +215,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.Zero(objectBasedListener.pointerUpCount,             "Pointer up event is received by old API handler.");
             Assert.Zero(objectBasedListener.pointerDraggedCount,        "Pointer dragged event is received by old API handler.");
             Assert.Zero(objectBasedListener.speechCount,                "Speech event is received by old API handler.");
-            
+
             // Wrong behavior, preserved for backward compatibility
             Assert.AreEqual(handlerBasedListener.pointerClickedCount, 1, "Pointer clicked event is not received by new API handler.");
             Assert.Zero(handlerBasedListener.pointerDownCount,           "Pointer down event is received by new  API handler.");
             Assert.Zero(handlerBasedListener.pointerUpCount,             "Pointer up event is received by new API handler.");
             Assert.Zero(handlerBasedListener.pointerDraggedCount,        "Pointer dragged event is received by new API handler.");
             Assert.Zero(handlerBasedListener.speechCount,                "Speech event is received by new API handler.");
-            
+
             Assert.AreEqual(handlerBasedListener1.pointerClickedCount, 1, "Pointer clicked event is not received by all-handlers component.");
             Assert.Zero(handlerBasedListener1.pointerDownCount,           "Pointer down event is received by all-handlers component.");
             Assert.Zero(handlerBasedListener1.pointerUpCount,             "Pointer up event is received by all-handlers component.");
@@ -245,9 +248,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestSpeechEventCallsForGlobalHandlers()
         {
             // We need Gaze Cursor in this test to use it as source to emit events.
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
             IMixedRealityInputSystem inputSystem = null;
             MixedRealityServiceRegistry.TryGetService(out inputSystem);
 
@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Emit speech event, which should be received by all handlers.
             var gazeInputSource = inputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
             inputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands("menu", KeyCode.Alpha1, MixedRealityInputAction.None));
-            
+
             Assert.Zero(objectBasedListener.pointerClickedCount, "Pointer clicked event is received by old API handler.");
             Assert.Zero(objectBasedListener.pointerDownCount,    "Pointer down event is received by old API handler.");
             Assert.Zero(objectBasedListener.pointerUpCount,      "Pointer up event is received by old API handler.");
@@ -282,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.Zero(handlerBasedListener.pointerUpCount,      "Pointer up event is received by new API handler.");
             Assert.Zero(handlerBasedListener.pointerDraggedCount, "Pointer dragged event is received by new API handler.");
             Assert.AreEqual(handlerBasedListener.speechCount, 1,  "Speech event is not received by new API handler.");
-            
+
             Assert.Zero(handlerBasedListener1.pointerClickedCount, "Pointer clicked event is received by all-handlers component.");
             Assert.Zero(handlerBasedListener1.pointerDownCount,    "Pointer down event is received by all-handlers component.");
             Assert.Zero(handlerBasedListener1.pointerUpCount,      "Pointer up event is received by all-handlers component.");
