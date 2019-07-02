@@ -164,6 +164,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             EditorSceneManager.newSceneCreated += EditorSceneManagerNewSceneCreated;
             EditorSceneManager.sceneOpened += EditorSceneManagerSceneOpened;
             EditorSceneManager.sceneClosed += EditorSceneManagerSceneClosed;
+
+            EditorBuildSettings.sceneListChanged += EditorSceneListChanged;
         }
 
         private void EditorUnsubscribeFromEvents()
@@ -175,6 +177,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             EditorSceneManager.newSceneCreated += EditorSceneManagerNewSceneCreated;
             EditorSceneManager.sceneOpened -= EditorSceneManagerSceneOpened;
             EditorSceneManager.sceneClosed -= EditorSceneManagerSceneClosed;
+
+            EditorBuildSettings.sceneListChanged -= EditorSceneListChanged;
         }
 
         #endregion
@@ -202,6 +206,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private void EditorApplicationProjectChanged()
         {
             buildSettingsDirty = true;
+        }
+
+        private void EditorSceneListChanged()
+        {
+            buildSettingsDirty = true;
+
+            EditorCheckForChanges();
         }
 
         private void EditorSceneManagerSceneClosed(Scene scene) { activeSceneDirty = true; }
@@ -260,11 +271,16 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             if (buildSettingsDirty)
             {
+                buildSettingsDirty = false;
+
                 EditorUpdateBuildSettings();
             }
 
             if (activeSceneDirty || heirarchyDirty)
             {
+                heirarchyDirty = false;
+                activeSceneDirty = false;
+
                 EditorUpdateManagerScene();
                 EditorUpdateLightingScene(heirarchyDirty);
                 EditorUpdateContentScenes(activeSceneDirty);
@@ -272,11 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 contentTracker.RefreshLoadedContent();
             }
 
-            updatingSettingsOnEditorChanged = false;
+            EditorUtility.SetDirty(profile);
 
-            buildSettingsDirty = false;
-            heirarchyDirty = false;
-            activeSceneDirty = false;
+            updatingSettingsOnEditorChanged = false;
         }
         
         /// <summary>
@@ -641,38 +655,40 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return;
             }
 
-            bool changedScenes = false;
-
             if (profile.UseManagerScene)
             {
-                changedScenes |= EditorSceneUtils.AddSceneToBuildSettings(
-                    profile.ManagerScene, 
-                    cachedBuildScenes, 
-                    EditorSceneUtils.BuildIndexTarget.First);
+                if (EditorSceneUtils.AddSceneToBuildSettings(
+                    profile.ManagerScene,
+                    cachedBuildScenes,
+                    EditorSceneUtils.BuildIndexTarget.First))
+                {
+                    cachedBuildScenes = EditorBuildSettings.scenes;
+                }
             }
 
             foreach (SceneInfo contentScene in profile.ContentScenes)
             {
-                changedScenes |= EditorSceneUtils.AddSceneToBuildSettings(
+                if (EditorSceneUtils.AddSceneToBuildSettings(
                     contentScene,
                     cachedBuildScenes, 
-                    EditorSceneUtils.BuildIndexTarget.None);
+                    EditorSceneUtils.BuildIndexTarget.None))
+                {
+                    cachedBuildScenes = EditorBuildSettings.scenes;
+                }
             }
 
             if (profile.UseLightingScene)
             {
                 foreach (SceneInfo lightingScene in profile.LightingScenes)
                 {   // Make sure ALL lighting scenes are added to build settings
-                    changedScenes |= EditorSceneUtils.AddSceneToBuildSettings(
+                    if (EditorSceneUtils.AddSceneToBuildSettings(
                         lightingScene, 
-                        cachedBuildScenes, 
-                        EditorSceneUtils.BuildIndexTarget.Last);
+                        cachedBuildScenes,
+                        EditorSceneUtils.BuildIndexTarget.Last))
+                    {
+                        cachedBuildScenes = EditorBuildSettings.scenes;
+                    }
                 }
-            }
-
-            if (changedScenes)
-            {   // If we made changes, cache the build scenes again
-                cachedBuildScenes = EditorBuildSettings.scenes;
             }
 
             EditorCheckForSceneNameDuplicates();

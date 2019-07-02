@@ -19,6 +19,8 @@ using System.IO;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using System.Reflection;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using System;
 
 #if UNITY_EDITOR
 using TMPro;
@@ -29,6 +31,69 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class PlayModeTestUtilities
     {
+
+        // Unity's default scene name for a recently created scene
+        const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
+
+        private static Stack<MixedRealityInputSimulationProfile> inputSimulationProfiles = new Stack<MixedRealityInputSimulationProfile>();
+
+        /// <summary>
+        /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
+        /// </summary>
+        public static void Setup()
+        {
+            Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
+
+            bool sceneExists = false;
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene playModeTestScene = SceneManager.GetSceneAt(i);
+                if (playModeTestScene.name == playModeTestSceneName && playModeTestScene.isLoaded)
+                {
+                    SceneManager.SetActiveScene(playModeTestScene);
+                    sceneExists = true;
+                }
+            }
+
+            if (!sceneExists)
+            {
+                Scene playModeTestScene = SceneManager.CreateScene(playModeTestSceneName);
+                SceneManager.SetActiveScene(playModeTestScene);
+            }
+
+            // Create an MRTK instance and set up playspace
+            TestUtilities.InitializeMixedRealityToolkit(true);
+            TestUtilities.InitializePlayspace();
+        }
+
+        /// <summary>
+        /// Destroys all objects in the play mode test scene, if it has been loaded, and shuts down MRTK instance.
+        /// </summary>
+        /// <returns></returns>
+        public static void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+
+            Scene playModeTestScene = SceneManager.GetSceneByName(playModeTestSceneName);
+            if (playModeTestScene.isLoaded)
+            {
+                foreach (GameObject gameObject in playModeTestScene.GetRootGameObjects())
+                {
+                    GameObject.Destroy(gameObject);
+                }
+            }
+
+            // If we created a temporary untitled scene in edit mode to get us started, unload that now
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene editorScene = SceneManager.GetSceneAt(i);
+                if (string.IsNullOrEmpty(editorScene.name))
+                {   // We've found our editor scene. Unload it.
+                    SceneManager.UnloadSceneAsync(editorScene);
+                }
+            }
+        }
+
         public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 worldPosition)
         {
             return (jointsOut) =>
@@ -95,8 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         internal static IEnumerator SetupMrtkWithoutGlobalInputHandlers()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                Debug.LogError("MixedRealityToolkit must be initialized before it can be configured.");
+                yield break;
+            }
 
             IMixedRealityInputSystem inputSystem = null;
             MixedRealityServiceRegistry.TryGetService(out inputSystem);
@@ -107,10 +175,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Switch off / Destroy all input components, which listen to global events
-            Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
+            UnityEngine.Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
             inputSystem.GazeProvider.Enabled = false;
 
-            var diagnosticsVoiceControls = Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
+            var diagnosticsVoiceControls = UnityEngine.Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
             foreach (var diagnosticsComponent in diagnosticsVoiceControls)
             {
                 diagnosticsComponent.enabled = false;
@@ -144,13 +212,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        public static void PushHandSimulationProfile()
+        {
+            var iss = GetInputSimulationService();
+            inputSimulationProfiles.Push(iss.InputSimulationProfile);
+        }
+
+        public static void PopHandSimulationProfile()
+        {
+            var iss = GetInputSimulationService();
+            iss.InputSimulationProfile = inputSimulationProfiles.Pop();
+        }
+
+        internal static void SetHandSimulationMode(HandSimulationMode mode)
+        {
+            var iss = GetInputSimulationService();
+            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
+            isp.HandSimulationMode = mode;
+            iss.InputSimulationProfile = isp;
+        }
+
         internal static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
             yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
         }
 
         internal static IEnumerator MoveHandFromTo(
-            Vector3 startPos, Vector3 endPos, int numSteps, 
+            Vector3 startPos, Vector3 endPos, int numSteps,
             ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
             Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
@@ -220,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Waits for the user to press the enter key before a test continues.
-        /// Not actually used by any test, but it is useful when debugging since you can 
+        /// Not actually used by any test, but it is useful when debugging since you can
         /// pause the state of the test and inspect the scene.
         /// </summary>
         internal static IEnumerator WaitForEnterKey()
