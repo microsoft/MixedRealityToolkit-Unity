@@ -221,7 +221,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 float time = PlaybackService.LocalTime;
                 float duration = (animation != null ? animation.Duration : 0.0f);
-                float newTime = GUILayout.HorizontalSlider(time, 0.0f, duration);
+                float newTimeField = EditorGUILayout.FloatField("Current time", time);
+                float newTimeSlider = GUILayout.HorizontalSlider(time, 0.0f, duration);
 
                 if (play != wasPlaying)
                 {
@@ -242,9 +243,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     PlaybackService.LocalTime += Time.deltaTime;
                 }
-                if (newTime != time)
+                if (newTimeField != time)
                 {
-                    PlaybackService.LocalTime = newTime;
+                    PlaybackService.LocalTime = newTimeField;
+                }
+                else if (newTimeSlider != time)
+                {
+                    PlaybackService.LocalTime = newTimeSlider;
                 }
 
                 // Repaint while playing to update the timeline
