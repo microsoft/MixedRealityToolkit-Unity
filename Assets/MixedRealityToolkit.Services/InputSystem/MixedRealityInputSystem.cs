@@ -406,10 +406,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Handles a pre and post focus events
+        /// Handles focus changed events
         /// We send all focus events to all global listeners and the actual focus change receivers. the use flag is completely ignored to avoid any interception.
         /// </summary>
-        public void HandleEvent<T>(FocusEventData focusEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
+        private void HandleFocusChangedEvents(FocusEventData focusEventData, ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> eventHandler)
         {
             Debug.Assert(focusEventData != null);
 
@@ -447,13 +447,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Handles focus enter and exit
         /// We send the focus event to all global listeners and the actual focus change receiver. the use flag is completely ignored to avoid any interception.
         /// </summary>
-        public void HandleEvent<T>(GameObject focusReceiver, FocusEventData focusEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
+        private void HandleFocusEvent(GameObject eventTarget, FocusEventData focusEventData, ExecuteEvents.EventFunction<IMixedRealityFocusHandler> eventHandler)
         {
             Debug.Assert(focusEventData != null);
 
             DispatchEventToGlobalListeners(focusEventData, eventHandler);
 
-            ExecuteEvents.ExecuteHierarchy(focusReceiver, focusEventData, eventHandler);
+            ExecuteEvents.ExecuteHierarchy(eventTarget, focusEventData, eventHandler);
         }
 
         /// <summary>
@@ -908,7 +908,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
-            HandleEvent(focusEventData, OnPreFocusChangedHandler);
+            HandleFocusChangedEvents(focusEventData, OnPreFocusChangedHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> OnPreFocusChangedHandler =
@@ -923,7 +923,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
-            HandleEvent(focusEventData, OnFocusChangedHandler);
+            HandleFocusChangedEvents(focusEventData, OnFocusChangedHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> OnFocusChangedHandler =
@@ -938,7 +938,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             focusEventData.Initialize(pointer);
 
-            HandleEvent(focusedObject, focusEventData, OnFocusEnterEventHandler);
+            HandleFocusEvent(focusedObject, focusEventData, OnFocusEnterEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusEnterEventHandler =
@@ -953,7 +953,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             focusEventData.Initialize(pointer);
 
-            HandleEvent(unfocusedObject, focusEventData, OnFocusExitEventHandler);
+            HandleFocusEvent(unfocusedObject, focusEventData, OnFocusExitEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusExitEventHandler =
