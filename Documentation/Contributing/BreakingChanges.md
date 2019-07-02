@@ -36,7 +36,7 @@ the conditions in [list B](#list-b)
 
 - The asset in question does not belong to the Experimental namespace.
 
-> Any asset that sits in the Examples package (i.e. part of the MixedRealityToolkit.Examples/ folder)
+> Any asset that sits in the examples package (i.e. part of the MixedRealityToolkit.Examples/ folder)
 > is subject to change at any time, as assets there are designed to be copied and viewed by consumers
 > as 'reference implementations' but are not part of the core set of APIs and assets.
 > Assets in the experimental namespace (or more generally, features labelled as experimental) are ones
