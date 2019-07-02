@@ -153,11 +153,11 @@ Unity provides great performance tools that are built into the editor.
 
 Furthermore, if estimating the rough performance tradeoff between one shader and another, it is useful to compile each shader and view the number of operations per shader stage. This can be done by selecting a [shader asset](https://docs.unity3d.com/Manual/class-Shader.html) and clicking the *Compile and show code* button. This will compile all the shader variants and open visual studio with the results. Note: The statistic results produced may vary depending on what features have been enabled on materials utilizing the given shader. Unity will only compile the shader variants being directly used in the current project.
 
-Unity Standard Shader Statistics
+Unity Standard Shader statistics example
 
 ![Unity Standard Shader Statistics](../../Documentation/Images/Performance/UnityStandardShader-Stats.png)
 
-[MRTK Standard shader](../README_MRTKStandardShader.md) Statistics
+[MRTK Standard shader](../README_MRTKStandardShader.md) statistics example
 
 ![MRTK Standard Shader Statistics](../../Documentation/Images/Performance/MRTKStandardShader-Stats.png)
 

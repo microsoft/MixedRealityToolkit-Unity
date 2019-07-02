@@ -17,10 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public class MixedRealityOptimizeWindow : EditorWindow
     {
         private int selectedToolbarIndex = 0;
-        private readonly string[] ToolbarTitles = { "Project Optimizations", "Scene Optimizations", "Shader Optimizations" };
+        private readonly string[] ToolbarTitles = { "Setting Optimizations", "Scene Analysis", "Shader Analysis" };
         private enum ToolbarSection
         {
-            Project = 0,
+            Settings = 0,
             Scene,
             Shader
         };
@@ -28,13 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private Vector2 windowScrollPosition = new Vector2();
 
         // Project Optimizations
-        private bool singlePassInstanced = true;
-        private bool enableDepthBufferSharing = true;
-        //private bool enable16BitDepthBuffer = true;
+        private bool enable16BitDepthBuffer = true;
 
         // Scene Optimizations
-        private bool disableRealtimeGlobalIllumination = true;
-        private bool disableBakedGlobalIllumination = true;
         private static DateTime? lastAnalyzedTime = null;
         private Light[] sceneLights;
         private const uint TopListSize = 5;
@@ -79,19 +75,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             "Suggest performance optimizations for mobile VR devices with mobile class specifications",
             "Suggest performance optimizations for VR devices tethered to a PC" };
 
+        private const string SinglePassInstanced_URL = "https://docs.unity3d.com/Manual/SinglePassInstancing.html";
+        private const string DepthBufferSharing_URL = "www.google.com";
+        private const string DepthBufferFormat_URL = "www.google.com";
+        private const string GlobalIllumination_URL = "https://docs.unity3d.com/Manual/GlobalIllumination.html";
+
         private readonly int[] SceneLightCountMax = { 1, 2, 4 };
 
         [SerializeField]
         private PerformanceTarget PerfTarget = PerformanceTarget.AR_Headsets;
-
-        protected static GUIStyle HelpIconStyle;
-        protected static GUIStyle BoldLargeTitle;
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Optimize Window", false, 0)]
         public static void OpenWindow()
         {
             // Dock it next to the Scene View.
             var window = GetWindow<MixedRealityOptimizeWindow>(typeof(SceneView));
+            window.titleContent = new GUIContent("Optimize Window", EditorGUIUtility.IconContent("d_PreMatCube").image);
             window.StartUp();
             window.Show();
         }
@@ -103,10 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void OnEnable()
         {
-            // Weird Unity bug where GUIStyle properties do not serialize property on window refreshes
-            CreateStyles();
-
-            this.titleContent = new GUIContent("Optimize Window", EditorGUIUtility.IconContent("d_PreMatCube").image);
+            //this.titleContent = new GUIContent("Optimize Window", EditorGUIUtility.IconContent("d_PreMatCube").image);
         }
 
         private void OnGUI()
@@ -116,38 +112,40 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
             // Render Title
-            EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", BoldLargeTitle);
-                EditorGUILayout.LabelField("This tool automates the process of updating your project, currently open scene, and material assets to recommended settings for Mixed Reality", EditorStyles.wordWrappedLabel);
-                EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
+            EditorGUILayout.LabelField("This tool automates the process of updating your project, currently open scene, and material assets to recommended settings for Mixed Reality", EditorStyles.wordWrappedLabel);
+            EditorGUILayout.Space();
 
-                EditorGUILayout.LabelField(EditorUserBuildSettings.activeBuildTarget.ToString());
+            EditorGUILayout.LabelField("Active Build Target: ", EditorUserBuildSettings.activeBuildTarget.ToString());
 
-                PerfTarget = (PerformanceTarget)EditorGUILayout.Popup("Performance Target", (int)this.PerfTarget, PerformanceTargetEnums);
-                EditorGUILayout.HelpBox(PerformanceTargetDescriptions[(int)PerfTarget], MessageType.Info);
-                EditorGUILayout.Space();
+            PerfTarget = (PerformanceTarget)EditorGUILayout.Popup("Performance Target", (int)this.PerfTarget, PerformanceTargetEnums);
+            EditorGUILayout.HelpBox(PerformanceTargetDescriptions[(int)PerfTarget], MessageType.Info);
+            EditorGUILayout.Space();
 
-                if (!PlayerSettings.virtualRealitySupported)
+            if (!PlayerSettings.virtualRealitySupported)
+            {
+                EditorGUILayout.HelpBox("Virtual reality support is not enabled in player settings", MessageType.Error);
+                if (GUILayout.Button("Enable Virtual Reality Support"))
                 {
-                    EditorGUILayout.HelpBox("Current build target does not have virtual reality support enabled", MessageType.Warning);
-
-                    // TODO: Fix now button
+                    PlayerSettings.virtualRealitySupported = true;
+                }
+            }
+            else
+            {
+                selectedToolbarIndex = GUILayout.Toolbar(selectedToolbarIndex, ToolbarTitles);
+                if (selectedToolbarIndex == 0)
+                {
+                    RenderSettingOptimizations();
+                }
+                else if (selectedToolbarIndex == 1)
+                {
+                    RenderSceneOptimizations();
                 }
                 else
                 {
-                    selectedToolbarIndex = GUILayout.Toolbar(selectedToolbarIndex, ToolbarTitles);
-                    if (selectedToolbarIndex == 0)
-                    {
-                        RenderProjectOptimizations();
-                    }
-                    else if (selectedToolbarIndex == 1)
-                    {
-                        RenderSceneOptimizations();
-                    }
-                    else
-                    {
-                        RenderShaderOptimizations();
-                    }
+                    RenderShaderOptimizations();
                 }
+            }
 
             EditorGUILayout.EndScrollView();
         }
@@ -155,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void RenderShaderOptimizations()
         {
             GUILayout.BeginVertical("Box");
-            EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Shader], BoldLargeTitle);
+            EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Shader], MixedRealityStylesUtility.BoldLargeTitleStyle);
             using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.LabelField("The Unity standard shader is generally not performant or optimized for Mixed Reality development. The MRTK Standard shader can be a more performant option. "
@@ -237,35 +235,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void RenderSceneOptimizations()
         {
             GUILayout.BeginVertical("Box");
-            EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Scene], BoldLargeTitle);
+            EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Scene], MixedRealityStylesUtility.BoldLargeTitleStyle);
             using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.LabelField("This section provides controls and performance information for the currently opened scene. Any optimizations performed are only for the active scene at any moment. Also be aware that changes made while in editor Play mode will not be saved.", EditorStyles.wordWrappedLabel);
 
-                BuildSection("Lighting Settings", "https://docs.unity3d.com/Manual/GlobalIllumination.html", () =>
-                {
-                    EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField("Global Illumination can produce great visual results but sometimes at great expense.", EditorStyles.wordWrappedLabel);
-                        if (GUILayout.Button(new GUIContent("View Lighting Settings", "Open Lighting Settings"), EditorStyles.miniButton, GUILayout.Width(160f)))
-                        {
-                            EditorApplication.ExecuteMenuItem("Window/Rendering/Lighting Settings");
-                        }
-                    EditorGUILayout.EndHorizontal();
-
-                    disableRealtimeGlobalIllumination = EditorGUILayout.ToggleLeft("Disable Realtime Global Illumination", disableRealtimeGlobalIllumination);
-
-                    if (this.PerfTarget == PerformanceTarget.AR_Headsets)
-                    {
-                        disableBakedGlobalIllumination = EditorGUILayout.ToggleLeft("Disable Baked Global Illumination", disableBakedGlobalIllumination);
-                    }
-
-                    if (InspectorUIUtility.RenderIndentedButton("Optimize Lighting"))
-                    {
-                        OptimizeScene();
-                    }
-                });
-
-                BuildSection("Live Scene Analysis", null, () =>
+                BuildSection("Live Scene Analysis", null, null, () =>
                 {
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(lastAnalyzedTime == null ? "Click analysis button for MRTK to scan your currently opened scene" : "Scanned " + GetRelativeTime(lastAnalyzedTime));
@@ -335,64 +310,81 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUILayout.EndVertical();
         }
 
-        private void RenderProjectOptimizations()
+        private void RenderSettingOptimizations()
         {
             GUILayout.BeginVertical("Box");
-            EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Project], BoldLargeTitle);
+            EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
             using (new EditorGUI.IndentLevelScope())
             {
-                BuildSection("Single Pass Instanced Rendering", "https://docs.unity3d.com/Manual/SinglePassStereoRendering.html", () =>
+                bool isSinglePassInstancedEnabled = PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
+                BuildSection("Single Pass Instanced Rendering", SinglePassInstanced_URL, GetTitleIcon(isSinglePassInstancedEnabled), () =>
                 {
-                    if (PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing)
-                    {
-                        // if set, success help box?
-                        EditorGUILayout.HelpBox(new GUIContent("Single Pass Instanced rendering is the current configuration.", EditorGUIUtility.IconContent("Collab").image));
-                    }
-                    else
-                    {
-                        EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity render pipeline to more efficiently render your scene and optimize CPU & GPU work. This path requires shaders though to be written to support instancing which is automatic in all Unity & MRTK shaders. Click the \"Learn More\" button to learn how to update your custom shaders to support instancing.", EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity render pipeline to more efficiently render your scene and optimize CPU & GPU work.");
 
-                        EditorGUILayout.BeginHorizontal();
-                        singlePassInstanced = EditorGUILayout.ToggleLeft("Set Single Pass Instanced Rendering", singlePassInstanced);
-                        if (GUILayout.Button(new GUIContent("Learn More", "Learn more about Single Pass Instanced Rendering"), EditorStyles.miniButton, GUILayout.Width(120f)))
+                    EditorGUILayout.HelpBox("This rendering configuration requires shaders to be written to support GPU instancing which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support instancing.", MessageType.Info);
+
+                    using (new GUIEnabledWrapper(!isSinglePassInstancedEnabled))
+                    {
+                        if (InspectorUIUtility.RenderIndentedButton("Enable Single Pass Instanced rendering"))
                         {
-                            Application.OpenURL("https://docs.unity3d.com/Manual/SinglePassInstancing.html");
+                            PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
                         }
-                        EditorGUILayout.EndHorizontal();
                     }
                 });
 
                 // TODO: Put in Quality settings section
 
-                BuildSection("Depth Buffer Sharing", null, () =>
+                bool isDepthBufferSharingEnabled = MixedRealityOptimizeUtils.IsDepthBufferSharingEnabled();
+                BuildSection("Depth Buffer Sharing", DepthBufferSharing_URL, GetTitleIcon(isDepthBufferSharingEnabled), () =>
                 {
                     EditorGUILayout.LabelField("This option shares the application's depth buffer with the running platform which allows the platform to more accurately stabilize holograms and content.", EditorStyles.wordWrappedLabel);
-                    EditorGUILayout.LabelField("Note: Depth buffer sharing & format is a platform dependent feature.", EditorStyles.wordWrappedLabel);
-                    enableDepthBufferSharing = EditorGUILayout.ToggleLeft("Enable Depth Buffer Sharing", enableDepthBufferSharing);
 
-                    /*
-                     * TODO: Finish rationalizing this section per platform
-                    EditorGUILayout.LabelField("The depth format determines the level of precision for the depth texture (i.e 16-bit vs 24-bit etc). Using a lower precision format (i.e 16-bit) will generally result in performance gains however this also results in lower precision to resolve one object being farther than another. Thus, particularly for AR devices, it is recommended to lower the camera's far plane value so there is a reduced range of possible values.", EditorStyles.wordWrappedLabel);
-                    enableDepthBufferSharing = EditorGUILayout.BeginToggleGroup("Enable Depth Buffer Sharing", enableDepthBufferSharing);
+                    EditorGUILayout.HelpBox("This feature requires that a valid depth buffer is submitted to the platform. Ensure that transparent & text gameobjects write to depth.", MessageType.Info);
 
-                    if (this.PerfTarget == PerformanceTarget.AR_Headsets)
+                    using (new GUIEnabledWrapper(!isDepthBufferSharingEnabled))
                     {
-                        enable16BitDepthBuffer = EditorGUILayout.ToggleLeft("Set Depth Buffer to 16-bit", enable16BitDepthBuffer);
-                        enable16BitDepthBuffer = EditorGUILayout.ToggleLeft("Set MRTK Camera Far Plane to 50m", enable16BitDepthBuffer);
+                        if (InspectorUIUtility.RenderIndentedButton("Enable Depth Buffer Sharing"))
+                        {
+                            MixedRealityOptimizeUtils.SetDepthBufferSharing(true);
+                        }
                     }
-                    else if (this.PerfTarget == PerformanceTarget.VR_Standalone)
-                    {
-                        enable16BitDepthBuffer = EditorGUILayout.ToggleLeft("Set Depth Buffer to 16-bit", enable16BitDepthBuffer);
-                        enable16BitDepthBuffer = EditorGUILayout.ToggleLeft("Set MRTK Camera Far Plane to 50m", enable16BitDepthBuffer);
-                    }
-                    EditorGUILayout.EndToggleGroup();
-                    */
                 });
 
-                if (InspectorUIUtility.RenderIndentedButton("Optimize Project"))
+                bool is16BitDepthFormat = isDepthBufferSharingEnabled && (!IsHololensTargeted() || MixedRealityOptimizeUtils.IsHololensDepthBufferFormat16bit());
+                BuildSection("Depth Buffer Format", DepthBufferFormat_URL, GetTitleIcon(is16BitDepthFormat), () =>
                 {
-                    OptimizeProject();
-                }
+                    EditorGUILayout.LabelField("Blah blah blah", EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.HelpBox("This r.Click the \"Documentation\" button for more  ", MessageType.Info);
+
+                    using (new GUIEnabledWrapper(!is16BitDepthFormat))
+                    {
+                        if (InspectorUIUtility.RenderIndentedButton("Enable 16-bit depth format"))
+                        {
+                            MixedRealityOptimizeUtils.SetDepthBufferFormat(true);
+                        }
+                    }
+                });
+
+                bool isGIEnabled = MixedRealityOptimizeUtils.IsRealtimeGlobalIlluminationEnabled();
+                Texture realtimeGI_Icon = !isGIEnabled ? InspectorUIUtility.SuccessIcon : InspectorUIUtility.WarningIcon;
+                BuildSection("Real-time Global Illumination", GlobalIllumination_URL, realtimeGI_Icon, () =>
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField("Global Illumination can produce great visual results but sometimes at great expense.", EditorStyles.wordWrappedLabel);
+                    if (GUILayout.Button(new GUIContent("View Lighting Settings", "Open Lighting Settings"), EditorStyles.miniButton, GUILayout.Width(160f)))
+                    {
+                        EditorApplication.ExecuteMenuItem("Window/Rendering/Lighting Settings");
+                    }
+                    EditorGUILayout.EndHorizontal();
+
+                    using (new GUIEnabledWrapper(isGIEnabled))
+                    {
+                        if (InspectorUIUtility.RenderIndentedButton("Disable Real-time Global Illumination"))
+                        {
+                            MixedRealityOptimizeUtils.SetRealtimeGlobalIlluminationEnabled(false);
+                        }
+                    }
+                });
             }
 
             GUILayout.EndVertical();
@@ -444,36 +436,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        private void OptimizeProject()
-        {
-            if (singlePassInstanced)
-            {
-                PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
-            }
-
-            if (enableDepthBufferSharing)
-            {
-                MixedRealityOptimizeUtils.SetDepthBufferSharing(enableDepthBufferSharing);
-                // TODO: This value needs to be per-perf target
-                //MixedRealityOptimizeUtils.SetDepthBufferFormat(enable16BitDepthBuffer);
-            }
-        }
-
-        private void OptimizeScene()
-        {
-            var lightmapSettings = MixedRealityOptimizeUtils.GetLighmapSettings();
-
-            if (disableRealtimeGlobalIllumination)
-            {
-                MixedRealityOptimizeUtils.ChangeProperty(lightmapSettings, "m_GISettings.m_EnableRealtimeLightmaps", property => property.boolValue = false);
-            }
-
-            if (disableBakedGlobalIllumination)
-            {
-                MixedRealityOptimizeUtils.ChangeProperty(lightmapSettings, "m_GISettings.m_EnableBakedLightmaps", property => property.boolValue = false);
-            }
-        }
-
         private void DiscoverMaterials()
         {
             discoveredMaterials.Clear();
@@ -520,32 +482,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         || asset.shader == errorShader);
         }
 
-        private static void BuildTitle(string title, string url)
+        private static void BuildTitle(string title, string url, Texture titleIcon = null)
         {
+            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
             // Section Title
             EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(new GUIContent(title, titleIcon), EditorStyles.boldLabel);
+                //EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
                 InspectorUIUtility.RenderDocLinkButton(url);
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
         }
 
-        private static void BuildHelpIconButton(Action onClick)
-        {
-            if (GUILayout.Button(EditorGUIUtility.IconContent("_Help", "|Learn more"), HelpIconStyle))
-            {
-                onClick();
-            }
-        }
-
-        private static void BuildSection(string title, string url, Action renderContent)
+        private static void BuildSection(string title, string url, Texture titleIcon = null, Action renderContent = null)
         {
             EditorGUILayout.BeginVertical();
                 // Section Title
-                BuildTitle(title, url);
-
-                renderContent();
+                BuildTitle(title, url, titleIcon);
+                renderContent?.Invoke();
             EditorGUILayout.EndVertical();
+            EditorGUILayout.Space();
             EditorGUILayout.Space();
         }
 
@@ -556,19 +511,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             errorShader = Shader.Find("Hidden/InternalErrorShader");
         }
 
-        private static void CreateStyles()
+        private bool IsHololensTargeted()
         {
-            HelpIconStyle = new GUIStyle()
-            {
-                fixedWidth = 24,
-                border = new RectOffset(0, 0, 0, 0),
-            };
+            return PerfTarget == PerformanceTarget.AR_Headsets && EditorUserBuildSettings.activeBuildTarget == BuildTarget.WSAPlayer;
+        }
 
-            BoldLargeTitle = new GUIStyle()
-            {
-                fontSize = 12,
-                fontStyle = FontStyle.Bold,
-            };
+        private Texture GetTitleIcon(bool isValid)
+        {
+            return isValid ? InspectorUIUtility.SuccessIcon: InspectorUIUtility.WarningIcon;
         }
 
         private static string GetRelativeTime(DateTime? time)
