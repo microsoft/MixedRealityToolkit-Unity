@@ -264,7 +264,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (animation != null)
                 {
                     GUILayout.Label($"File Path: {loadedFilePath}");
-                    GUILayout.Label($"Duration: {animation.Duration}");
+                    GUILayout.Label($"Duration: {animation.Duration} seconds");
+                }
+                else
+                {
+                    GUILayout.Label("No animation loaded");
                 }
             }
         }
