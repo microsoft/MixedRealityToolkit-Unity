@@ -119,8 +119,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private float defaultPlaneDistance = 2.0f;
 
         [SerializeField, Tooltip("Visualize the plane at runtime.")]
+#pragma warning disable 414 // Field is used only in UNITY_EDITOR contexts
         private bool drawGizmos = false;
-        
+#pragma warning restore 414
+
         [SerializeField, Tooltip("Override plane to use. Usually used to set plane to a slate like a menu")]
         private StabilizationPlaneOverride overridePlane;
 
