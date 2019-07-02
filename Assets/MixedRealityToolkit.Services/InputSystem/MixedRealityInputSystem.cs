@@ -406,8 +406,46 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Handles a focus event
-        /// We send all focus events to all global listeners and the actual focus receivers. the use flag is completely ignored to avoid any interception.
+        /// Handles a pre and post focus events
+        /// We send all focus events to all global listeners and the actual focus change receivers. the use flag is completely ignored to avoid any interception.
+        /// </summary>
+        public void HandleEvent<T>(FocusEventData focusEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
+        {
+            Debug.Assert(focusEventData != null);
+
+            DispatchEventToGlobalListeners(focusEventData, eventHandler);
+
+            // Raise Focus Events on the old and new focused objects.
+            if (focusEventData.OldFocusedObject != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(focusEventData.OldFocusedObject, focusEventData, eventHandler);
+            }
+
+            if (focusEventData.NewFocusedObject != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(focusEventData.NewFocusedObject, focusEventData, eventHandler);
+            }
+
+            // Raise Focus Events on the pointers cursor if it has one.
+            if (focusEventData.Pointer != null && focusEventData.Pointer.BaseCursor != null)
+            {
+                try
+                {
+                    // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
+                    // We'll ignore when this happens.
+                    ExecuteEvents.ExecuteHierarchy(focusEventData.Pointer.BaseCursor.GameObjectReference, focusEventData, eventHandler);
+
+                }
+                catch (Exception)
+                {
+                    // ignored.
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles focus enter and exit
+        /// We send the focus event to all global listeners and the actual focus change receiver. the use flag is completely ignored to avoid any interception.
         /// </summary>
         public void HandleEvent<T>(GameObject focusReceiver, FocusEventData focusEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
@@ -415,10 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             DispatchEventToGlobalListeners(focusEventData, eventHandler);
 
-            if(focusEventData.Pointer != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(focusReceiver, focusEventData, eventHandler);
-            }
+            ExecuteEvents.ExecuteHierarchy(focusReceiver, focusEventData, eventHandler);
         }
 
         /// <summary>
@@ -871,35 +906,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePreFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
+            focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
-            // Raise Focus Events on the old and new focused objects.
-            if (oldFocusedObject != null)
-            {
-                focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
-                HandleEvent(oldFocusedObject, focusEventData, OnPreFocusChangedHandler);
-            }
-
-            if (newFocusedObject != null)
-            {
-                focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
-                HandleEvent(newFocusedObject, focusEventData, OnPreFocusChangedHandler);
-            }
-
-            // Raise Focus Events on the pointers cursor if it has one.
-            if (pointer.BaseCursor != null)
-            {
-                try
-                {
-                    // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
-                    // We'll ignore when this happens.
-                    focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
-                    HandleEvent(pointer.BaseCursor.GameObjectReference, focusEventData, OnPreFocusChangedHandler);
-                }
-                catch (Exception)
-                {
-                    // ignored.
-                }
-            }
+            HandleEvent(focusEventData, OnPreFocusChangedHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> OnPreFocusChangedHandler =
@@ -912,35 +921,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
+            focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
-            // Raise Focus Events on the old and new focused objects.
-            if (oldFocusedObject != null)
-            {
-                focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
-                HandleEvent(oldFocusedObject, focusEventData, OnFocusChangedHandler);
-            }
-
-            if (newFocusedObject != null)
-            {
-                focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
-                HandleEvent(newFocusedObject, focusEventData, OnFocusChangedHandler);
-            }
-
-            // Raise Focus Events on the pointers cursor if it has one.
-            if (pointer.BaseCursor != null)
-            {
-                try
-                {
-                    // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
-                    // We'll ignore when this happens.
-                    focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
-                    HandleEvent(pointer.BaseCursor.GameObjectReference, focusEventData, OnFocusChangedHandler);
-                }
-                catch (Exception)
-                {
-                    // ignored.
-                }
-            }
+            HandleEvent(focusEventData, OnFocusChangedHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> OnFocusChangedHandler =
