@@ -25,14 +25,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class BoundingBoxTests
     {
         #region Utilities
+        [SetUp]
+        public void Setup()
+        {
+            PlayModeTestUtilities.Setup();
+        }
+
         [TearDown]
         public void ShutdownMrtk()
         {
-            // Make sure to also zero out any camera transforms that may have been applied
-            CameraCache.Main.transform.localPosition = Vector3.zero;
-            CameraCache.Main.transform.localRotation = Quaternion.identity;
-
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
 
         /// <summary>
@@ -42,9 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <returns></returns>
         private BoundingBox InstantiateSceneAndDefaultBbox()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position = Vector3.forward * 1.5f;
             BoundingBox bbox = cube.AddComponent<BoundingBox>();

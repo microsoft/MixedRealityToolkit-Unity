@@ -22,6 +22,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ManipulationHandlerTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            PlayModeTestUtilities.Setup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
+        }
+
         /// <summary>
         /// Test creating adding a ManipulationHandler to GameObject programmatically.
         /// Should be able to run scene without getting any exceptions.
@@ -41,19 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(testObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
-        }
-
-        [SetUp]
-        public void SetupMrtk()
-        {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-        }
-
-        [TearDown]
-        public void ShutdownMrtk()
-        {
-            TestUtilities.ShutdownMixedRealityToolkit();
         }
 
         /// <summary>

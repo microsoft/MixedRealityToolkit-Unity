@@ -24,10 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class NearInteractionTouchableTests
     {
         [SetUp]
-        public void SetupMrtk()
+        public void Setup()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
+            PlayModeTestUtilities.Setup();
             PlayModeTestUtilities.EnsureInputModule();
 
             inputSim = PlayModeTestUtilities.GetInputSimulationService();
@@ -51,10 +50,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [TearDown]
-        public void ShutdownMrtk()
+        public void TearDown()
         {
-            PlayModeTestUtilities.TeardownInputModule();
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
 
         /// <summary>
