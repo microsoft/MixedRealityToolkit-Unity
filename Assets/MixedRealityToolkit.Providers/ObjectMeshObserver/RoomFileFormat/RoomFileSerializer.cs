@@ -21,29 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
         private static int HeaderSize = sizeof(int) * 2;
 
         /// <summary>
-        /// Serializes a list of Mesh objects to the specified writer.
-        /// Optionally transforms the vertices into the supplied secondarySpace.
-        /// </summary>
-        /// <param name="writer">The writer to which to write the serialized objects.</param>
-        /// <param name="meshes">List of MeshFilter objects to be serialized.</param>
-        /// <param name="secondarySpace">New space to transform the vertices into.</param>
-        public static void Serialize(BinaryWriter writer, IList<MeshFilter> meshes, Transform secondarySpace = null)
-        {
-            if (writer == null)
-            {
-                // todo: error
-                return;
-            }
-
-            foreach (MeshFilter meshFilter in meshes)
-            {
-                WriteMesh(writer, meshFilter.sharedMesh, meshFilter.transform, secondarySpace);
-            }
-
-            writer.Flush();
-        }
-
-        /// <summary>
         /// Deserializes a list of Mesh objects from the provided byte array.
         /// </summary>
         /// <param name="reader">The reader from which to deserialize the meshes.</param>
@@ -54,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
 
             if (reader == null)
             {
-                // todo: error
+                Debug.LogError("Null reader passed to Deserialize.");
                 return meshes;
             }
 
@@ -64,21 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
             }
 
             return meshes;
-        }
-
-        /// <summary>
-        /// Writes a Mesh object to the data stream.
-        /// </summary>
-        /// <param name="writer">BinaryWriter representing the data stream.</param>
-        /// <param name="mesh">The Mesh object to be written.</param>
-        /// <param name="transform">If provided, will transform all vertices into world space before writing.</param>
-        /// <param name="secondarySpace">Secondary space to transform the vertices into.</param>
-        private static void WriteMesh(BinaryWriter writer, Mesh mesh, Transform transform = null, Transform secondarySpace = null)
-        {
-            // Write the mesh data.
-            WriteFileHeader(writer, mesh.vertexCount, mesh.triangles.Length);
-            WriteVertices(writer, mesh.vertices, transform, secondarySpace);
-            WriteTriangleIndicies(writer, mesh.triangles);
         }
 
         /// <summary>
@@ -107,18 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
         }
 
         /// <summary>
-        /// Writes the file header to the data stream.
-        /// </summary>
-        /// <param name="writer">BinaryWriter representing the data stream.</param>
-        /// <param name="vertexCount">Count of vertices in the mesh.</param>
-        /// <param name="triangleIndexCount">Count of triangle indices in the mesh.</param>
-        private static void WriteFileHeader(BinaryWriter writer, int vertexCount, int triangleIndexCount)
-        {
-            writer.Write(vertexCount);
-            writer.Write(triangleIndexCount);
-        }
-
-        /// <summary>
         /// Reads the file header from the data stream.
         /// </summary>
         /// <param name="reader">BinaryReader representing the data stream.</param>
@@ -128,40 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
         {
             vertexCount = reader.ReadInt32();
             triangleIndexCount = reader.ReadInt32();
-        }
-
-        /// <summary>
-        /// Writes a mesh's vertices to the data stream.
-        /// </summary>
-        /// <param name="reader">BinaryReader representing the data stream.</param>
-        /// <param name="vertices">Array of Vector3 structures representing each vertex.</param>
-        /// <param name="transform">If provided, will convert all vertices into world space before writing.</param>
-        /// <param name="secondarySpace">If provided, will convert the vertices local to this space.</param>
-        private static void WriteVertices(BinaryWriter writer, Vector3[] vertices, Transform transform = null, Transform secondarySpace = null)
-        {
-            if (transform != null)
-            {
-                for (int v = 0, vLength = vertices.Length; v < vLength; ++v)
-                {
-                    Vector3 vertex = transform.TransformPoint(vertices[v]);
-                    if (secondarySpace != null)
-                    {
-                        vertex = secondarySpace.InverseTransformPoint(vertex);
-                    }
-                    writer.Write(vertex.x);
-                    writer.Write(vertex.y);
-                    writer.Write(vertex.z);
-                }
-            }
-            else
-            {
-                foreach (Vector3 vertex in vertices)
-                {
-                    writer.Write(vertex.x);
-                    writer.Write(vertex.y);
-                    writer.Write(vertex.z);
-                }
-            }
         }
 
         /// <summary>
@@ -182,19 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
             }
 
             return vertices;
-        }
-
-        /// <summary>
-        /// Writes the vertex indices that represent a mesh's triangles to the data stream
-        /// </summary>
-        /// <param name="writer">BinaryWriter representing the data stream.</param>
-        /// <param name="triangleIndices">Array of integers that describe how the vertex indices form triangles.</param>
-        private static void WriteTriangleIndicies(BinaryWriter writer, int[] triangleIndices)
-        {
-            foreach (int index in triangleIndices)
-            {
-                writer.Write(index);
-            }
         }
 
         /// <summary>
