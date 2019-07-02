@@ -1050,6 +1050,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        public void ForceUpdateThemes()
+        {
+            SetupEvents();
+            SetupThemes();
+            SetupStates();
+        }
+
         #endregion DimensionsUtilities
 
         #region InteractableUtilities

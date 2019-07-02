@@ -34,15 +34,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         [SetUp]
         public void SetUp()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
+            PlayModeTestUtilities.Setup();
             defaultRaycastProvider = new DefaultRaycastProvider(null, null, null);
         }
 
         [TearDown]
         public void TearDown()
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
     }
 }
