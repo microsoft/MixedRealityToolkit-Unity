@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// ControllerFinder is a base class providing simple event handling for getting/releasing MotionController Transforms.
     /// </summary>
-    public abstract class ControllerFinder : MonoBehaviour, IMixedRealitySourceStateHandler
+    public abstract class ControllerFinder : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("The handedness of the controller that should be found.")]
@@ -59,43 +59,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected virtual void OnEnable()
         {
             // Look if the controller has loaded.
-            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
             RefreshControllerTransform();
         }
 
-        protected virtual void OnDisable()
-        {
-            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
-        }
-
         #endregion MonoBehaviour Implementation
-
-        #region IMixedRealitySourceStateHandler Implementation
-
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-            if (eventData.Controller?.ControllerHandedness == handedness)
-            {
-                if (eventData.Controller is IMixedRealityHand)
-                {
-
-                }
-                else
-                {
-                    AddControllerTransform(eventData.Controller);
-                }
-            }
-        }
-
-        public void OnSourceLost(SourceStateEventData eventData)
-        {
-            if (eventData.Controller?.ControllerHandedness == handedness)
-            {
-                RemoveControllerTransform();
-            }
-        }
-
-        #endregion IMixedRealitySourceStateHandler Implementation
 
         /// <summary>
         /// Looks to see if the controller model already exists and registers it if so.
