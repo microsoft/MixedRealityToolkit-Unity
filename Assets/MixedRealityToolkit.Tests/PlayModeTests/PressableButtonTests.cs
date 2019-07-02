@@ -336,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator ReleaseButton()
         {
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
             TestUtilities.PlayspaceToOriginLookingForward();
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
