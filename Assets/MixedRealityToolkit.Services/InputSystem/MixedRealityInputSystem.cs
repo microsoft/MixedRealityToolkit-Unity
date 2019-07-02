@@ -920,7 +920,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (newFocusedObject != null)
             {
                 focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
-                HandleEvent(newFocusedObject, focusEventData, OnPreFocusChangedHandler);
+                HandleEvent(newFocusedObject, focusEventData, OnFocusChangedHandler);
             }
 
             // Raise Focus Events on the pointers cursor if it has one.
@@ -931,7 +931,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
                     // We'll ignore when this happens.
                     focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
-                    HandleEvent(pointer.BaseCursor.GameObjectReference, focusEventData, OnPreFocusChangedHandler);
+                    HandleEvent(pointer.BaseCursor.GameObjectReference, focusEventData, OnFocusChangedHandler);
                 }
                 catch (Exception)
                 {
