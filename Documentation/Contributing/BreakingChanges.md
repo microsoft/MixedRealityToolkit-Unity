@@ -34,7 +34,7 @@ the conditions in [list B](#list-b)
   - MixedRealityToolkit.Services/ 
   - MixedRealityToolkit.SDK/
 
-- The asset in question does not belong to the Experimental namespace.
+- The asset in question does not belong to the experimental namespace.
 
 > Any asset that sits in the examples package (i.e. part of the MixedRealityToolkit.Examples/ folder)
 > is subject to change at any time, as assets there are designed to be copied and viewed by consumers
