@@ -27,7 +27,7 @@ the conditions in [list B](#list-b)
 
 ### List B
 
-- The asset in question is in the Foundation package (i.e. it's in one of the following folders):
+- The asset in question is in the foundation package (i.e. it's in one of the following folders):
 
   - MixedRealityToolkit/
   - MixedRealityToolkit.Providers/
