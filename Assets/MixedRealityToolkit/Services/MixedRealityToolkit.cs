@@ -713,8 +713,21 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void RegisterInstance(MixedRealityToolkit toolkitInstance, bool setAsActiveInstance = false)
         {
+            if (toolkitInstance == null)
+            {   // Don't register a null instance0
+                Debug.LogWarning("Attempted to register a null MixedRealityToolkit instance.");
+                return;
+            }
+
             if (MixedRealityToolkit.isApplicationQuitting)
             {   // Don't register instances while application is quitting
+                return;
+            }
+
+            if (!toolkitInstance.gameObject.scene.isLoaded)
+            {   // Don't register an instance that's being unloaded
+                // This may happen if an OnDestroy call triggers the active instance
+                // to un-register itself, prompting registration of another instance in the same scene.
                 return;
             }
 
