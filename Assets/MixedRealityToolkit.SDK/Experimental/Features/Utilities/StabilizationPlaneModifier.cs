@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         [SerializeField, Tooltip("Choose mode for stabilization plane.\n1) Fixed- Submits plane at a fixed distance based on DefaultPlaneDistance field along the users gaze.\n2) Gaze Hit- Submits plane along the users gaze at the position of gaze hit.\n3) Target Override- Submits the plane at a fixed position along the users gaze based on the TargetOverride property.\n4) Plane Override- Submits the plane based on the OverridePlane property.\n5) Off- Does not call SetFocusPoint")]
-        private StabilizationPlaneMode mode;
+        private StabilizationPlaneMode mode = StabilizationPlaneMode.Off;
 
         [SerializeField, Tooltip("When lerping, use unscaled time. This is useful for apps that have a pause mechanism or otherwise adjust the game timescale.")]
         private bool useUnscaledTime = true;
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private float defaultPlaneDistance = 2.0f;
 
         [SerializeField, Tooltip("Visualize the plane at runtime.")]
-        private bool drawGizmos;
+        private bool drawGizmos = false;
         
         [SerializeField, Tooltip("Override plane to use. Usually used to set plane to a slate like a menu")]
         private StabilizationPlaneOverride overridePlane;
