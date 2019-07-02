@@ -12016,7 +12016,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.BoundingBoxTests.html",
-          "hash": "0U8/evDYJLiYzc7HKz0OKw=="
+          "hash": "oEgJDkSqdH2iwlTZlLZiRw=="
         }
       },
       "is_incremental": false,
@@ -12064,7 +12064,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.FocusProviderTests.html",
-          "hash": "Z5/iEewZ4FjjjqyEHlgR5A=="
+          "hash": "ns01we77bOCLcxwWk2Eitg=="
         }
       },
       "is_incremental": false,
@@ -12172,7 +12172,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.html",
-          "hash": "WPZSAyl51d8BWYDQGpMg/w=="
+          "hash": "5GqF05WsQUaoHE2SMbxCAA=="
         }
       },
       "is_incremental": false,
@@ -12184,7 +12184,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.html",
-          "hash": "Dxme9vHlxa1ZxAwSgMgO0g=="
+          "hash": "/avr6dzhTr91ltUS2dPj5g=="
         }
       },
       "is_incremental": false,
@@ -12220,7 +12220,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.html",
-          "hash": "OgYUstENDyvRjSANTsARMA=="
+          "hash": "f+tVDa3smLm28MsDI+Aj4A=="
         }
       },
       "is_incremental": false,
@@ -12232,7 +12232,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html",
-          "hash": "I84ZTIAMxSv1r1jNiTmERA=="
+          "hash": "MlsNc2uJ/F7t7B5b8+OYwg=="
         }
       },
       "is_incremental": false,
@@ -12736,7 +12736,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Interactable.html",
-          "hash": "7PphgXfKjf/qCx22YAjEPA=="
+          "hash": "b5wTtGS8li4EAUv/Yn0TGw=="
         }
       },
       "is_incremental": false,
