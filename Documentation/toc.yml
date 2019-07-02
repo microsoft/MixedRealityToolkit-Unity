@@ -150,6 +150,8 @@
     href: Contributing/DevDocGuide.md
   - name: Testing
     href: Contributing/UnitTests.md
+  - name: Breaking Changes
+    href: Contributing/BreakingChanges.md
 - name: Planning
   items:
   - name: Roadmap
