@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Tests.Services;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
@@ -645,6 +644,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit secondInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
 
             GameObject.DestroyImmediate(MixedRealityToolkit.Instance.gameObject);
+
+            MixedRealityToolkit.SetActiveInstance(secondInstance);
 
             Assert.NotNull(MixedRealityToolkit.Instance);
             Assert.AreEqual(secondInstance, MixedRealityToolkit.Instance);
