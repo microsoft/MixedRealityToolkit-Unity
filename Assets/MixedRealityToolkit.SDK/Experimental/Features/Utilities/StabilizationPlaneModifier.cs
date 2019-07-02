@@ -169,6 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// </summary>
         private Vector3 targetOverridePreviousPosition;
 
+#if UNITY_EDITOR
         /// <summary>
         /// Used for representing latest plane drawn as gizmo
         /// </summary>
@@ -183,6 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// Debug mesh filter
         /// </summary>
         private MeshFilter debugMeshFilter;
+#endif
 
         private void Awake()
         {
@@ -395,6 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             return velocity;
         }
 
+#if UNITY_EDITOR
         /// <summary>
         /// When in editor, draws a magenta quad that visually represents the stabilization plane.
         /// </summary>
@@ -407,5 +410,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 Gizmos.DrawRay(debugPlane.Center, debugPlane.Normal);
             }
         }
+#endif
     }
 }
