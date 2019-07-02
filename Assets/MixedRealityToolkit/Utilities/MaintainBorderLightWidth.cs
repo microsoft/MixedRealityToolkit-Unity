@@ -6,7 +6,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// Utility component to keep the border light width a constant size no mater the object scale.
+    /// Utility component to keep the border light width a constant size no mater the 
+    /// object scale. This component should be used in conjunction with the 
+    /// "MixedRealityToolkit/Standard" shader "_BorderLight" feature.
     /// </summary>
     [RequireComponent(typeof(Renderer))]
     public class MaintainBorderLightWidth : MonoBehaviour
