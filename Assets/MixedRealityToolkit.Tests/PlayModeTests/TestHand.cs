@@ -52,6 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
         }
 
+        public IEnumerator Move(Vector3 delta, int numSteps = 30)
+        {
+            yield return MoveTo(position + delta, numSteps);
+        }
+
         public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId)
         {
             gestureId = newGestureId;

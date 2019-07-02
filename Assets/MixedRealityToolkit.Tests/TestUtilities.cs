@@ -34,83 +34,81 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static Scene primaryTestScene;
         public static Scene[] additiveTestScenes = new Scene[0];
 
-        public static void InitializeMixedRealityToolkit()
-        {
-            MixedRealityToolkit.ConfirmInitialized();
-        }
-
         /// <summary>
-        /// Destroys all scene assets that were created over the course of testing
+        /// Destroys all scene assets that were created over the course of testing.
+        /// Used only in editor tests.
         /// </summary>
-        public static void TearDownScenes()
+        public static void EditorTearDownScenes()
         {
 #if UNITY_EDITOR
-            // If any of our scenes were saved, tear down the assets
-            SceneAsset primaryTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(primaryTestSceneTemporarySavePath);
-            if (primaryTestSceneAsset != null)
+            if (!EditorApplication.isPlaying)
             {
-                AssetDatabase.DeleteAsset(primaryTestSceneTemporarySavePath);
-            }
-
-            for (int i = 0; i < additiveTestScenes.Length; i++)
-            {
-                string path = additiveTestSceneTemporarySavePath.Replace("#", i.ToString());
-                SceneAsset additiveTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
-                if (additiveTestSceneAsset != null)
+                // If any of our scenes were saved, tear down the assets
+                SceneAsset primaryTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(primaryTestSceneTemporarySavePath);
+                if (primaryTestSceneAsset != null)
                 {
-                    AssetDatabase.DeleteAsset(path);
+                    AssetDatabase.DeleteAsset(primaryTestSceneTemporarySavePath);
                 }
+
+                for (int i = 0; i < additiveTestScenes.Length; i++)
+                {
+                    string path = additiveTestSceneTemporarySavePath.Replace("#", i.ToString());
+                    SceneAsset additiveTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+                    if (additiveTestSceneAsset != null)
+                    {
+                        AssetDatabase.DeleteAsset(path);
+                    }
+                }
+                AssetDatabase.Refresh();
             }
-            AssetDatabase.Refresh();
 #endif
         }
 
         /// <summary>
         /// Creates a number of scenes and loads them additively for testing. Must create a minimum of 1.
+        /// Used only in editor stests.
         /// </summary>
         /// <param name="numScenesToCreate"></param>
-        public static void CreateScenes(int numScenesToCreate = 1)
+        public static void EditorCreateScenes(int numScenesToCreate = 1)
         {
-            Debug.Assert(numScenesToCreate > 0);
-
             // Create default test scenes.
             // In the editor this can be done using EditorSceneManager with a default setup.
             // In playmode the scene needs to be set up manually.
 
 #if UNITY_EDITOR
-            if (!EditorApplication.isPlaying)
-            {
-                List<Scene> additiveTestScenesList = new List<Scene>();
+            Assert.False(EditorApplication.isPlaying, "This method should only be called during edit mode tests. Use PlaymodeTestUtilities.");
 
-                if (numScenesToCreate == 1)
-                {   // No need to save this scene, we're just creating one
-                    primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
-                }
-                else
-                {
-                    // Make the first scene single so it blows away previously loaded scenes
-                    primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
-                    // Save the scene (temporarily) so we can load additively on top of it
-                    EditorSceneManager.SaveScene(primaryTestScene, primaryTestSceneTemporarySavePath);
+            List<Scene> additiveTestScenesList = new List<Scene>();
 
-                    for (int i = 1; i < numScenesToCreate; i++)
-                    {
-                        string path = additiveTestSceneTemporarySavePath.Replace("#", additiveTestScenesList.Count.ToString());
-                        // Create subsequent scenes additively
-                        Scene additiveScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
-                        additiveTestScenesList.Add(additiveScene);
-                        // Save the scene (temporarily) so we can load additively on top of it
-                        EditorSceneManager.SaveScene(additiveScene, path);
-                    }
-                }
-
-                additiveTestScenes = additiveTestScenesList.ToArray();
-
-                return;
+            if (numScenesToCreate == 1)
+            {   // No need to save this scene, we're just creating one
+                primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
             }
+            else
+            {
+                // Make the first scene single so it blows away previously loaded scenes
+                primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+                // Save the scene (temporarily) so we can load additively on top of it
+                EditorSceneManager.SaveScene(primaryTestScene, primaryTestSceneTemporarySavePath);
+
+                for (int i = 1; i < numScenesToCreate; i++)
+                {
+                    string path = additiveTestSceneTemporarySavePath.Replace("#", additiveTestScenesList.Count.ToString());
+                    // Create subsequent scenes additively
+                    Scene additiveScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
+                    additiveTestScenesList.Add(additiveScene);
+                    // Save the scene (temporarily) so we can load additively on top of it
+                    EditorSceneManager.SaveScene(additiveScene, path);
+                }
+            }
+
+            additiveTestScenes = additiveTestScenesList.ToArray();
 #endif
         }
 
+        /// <summary>
+        /// Creates a playspace and moves it into a default position.
+        /// </summary>
         public static void InitializePlayspace()
         {
             MixedRealityPlayspace.PerformTransformation(
@@ -142,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void InitializeMixedRealityToolkitAndCreateScenes(bool useDefaultProfile = false, int numScenesToCreate = 1)
         {
             // Setup
-            CreateScenes(numScenesToCreate);
+            EditorCreateScenes(numScenesToCreate);
             InitializeMixedRealityToolkit(useDefaultProfile);
         }
 

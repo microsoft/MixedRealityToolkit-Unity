@@ -28,21 +28,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         #region Utilities
-        private GameObject InstantiateSceneAndDefaultPressableButton()
+        private GameObject InstantiateDefaultPressableButton()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
             Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab", typeof(Object));
             GameObject testButton = Object.Instantiate(pressableButtonPrefab) as GameObject;
 
             return testButton;
         }
 
-        [TearDown]
-        public void ShutdownMrtk()
+        [SetUp]
+        public void TestSetup()
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.Setup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
         }
 
         #endregion
@@ -52,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator ButtonInstantiate()
         {
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -69,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PressButtonWithHand()
         {
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
 
             // Move the camera to origin looking at +z to more easily see the button.
             TestUtilities.PlayspaceToOriginLookingForward();
@@ -115,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PressButtonFast()
         {
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
 
             // Move the camera to origin looking at +z to more easily see the button.
             TestUtilities.PlayspaceToOriginLookingForward();
@@ -152,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScaleWorldDistances()
         {
             // instantiate scene and button
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -204,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator SwitchWorldToLocalDistanceMode()
         {
             // instantiate scene and button
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -275,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScaleLocalDistances()
         {
             // instantiate scene and button
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
