@@ -46,14 +46,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Record input animation and store in the asset.
             /// </summary>
-            Recording,
+            Record,
             /// <summary>
             /// Play back input animation as simulated input.
             /// </summary>
             Playback,
         }
 
-        private ToolMode mode = ToolMode.Recording;
+        private ToolMode mode = ToolMode.Record;
         public ToolMode Mode
         {
             get { return mode; }
@@ -87,12 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             LoadIcons();
 
-            string[] modeStrings = { "Record", "Playback" };
+            string[] modeStrings = Enum.GetNames(typeof(ToolMode));
             Mode = (ToolMode)GUILayout.SelectionGrid((int)Mode, modeStrings, modeStrings.Length);
 
             switch (mode)
             {
-                case ToolMode.Recording:
+                case ToolMode.Record:
                     DrawRecordingGUI();
                     break;
                 case ToolMode.Playback:
