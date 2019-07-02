@@ -45,7 +45,7 @@ the conditions in [list B](#list-b)
 > because we likely haven't nailed down all of the interactions and designs, we publish them in a state
 > where the public should assume that they can and will change (i.e. be modified, completely removed, etc).
 > 
-> See [Experimental Features](../ExperimentalFeatures.md) for more information.
+> See [Experimental features](../ExperimentalFeatures.md) for more information.
 
 Note that surface area for breaking changes is very large, it's important to note that having an absolute
 rule that says "no breaking changes" would be impossible - there may be issues that can only be fixed in
