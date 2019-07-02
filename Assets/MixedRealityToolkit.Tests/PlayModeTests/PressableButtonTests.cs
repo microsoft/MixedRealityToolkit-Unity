@@ -351,24 +351,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 buttonReleased = true;
             });
 
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             Vector3 startHand = new Vector3(0, 0, 0);
-            Vector3 inButtonOnPress = new Vector3(0, 0, 0.01f);
-            Vector3 rightOfButtonPress = new Vector3(1.0f, 0, 0.01f);
-            Vector3 inButtonOnRelease = new Vector3(0, 0, 0.005f);
+            Vector3 inButtonOnPress = new Vector3(0, 0, 0.01f); // press plane of mrtk pressablebutton prefab
+            Vector3 rightOfButtonPress = new Vector3(1.0f, 0, 0.01f); // right of press plane, outside button
+            Vector3 inButtonOnRelease = new Vector3(0, 0, 0.005f); // release plane of mrtk pressablebutton prefab
+            TestHand hand = new TestHand(Handedness.Right);
 
             // test scenarios in normal and low framerate
             int[] stepVariations = { 30, 2 };
             for (int i = 0; i < stepVariations.Length; ++i)
             {
                 int numSteps = stepVariations[i];
-                // test release
-                yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-                yield return PlayModeTestUtilities.MoveHandFromTo(startHand, inButtonOnPress, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-                yield return PlayModeTestUtilities.MoveHandFromTo(inButtonOnPress, inButtonOnRelease, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-                yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
-                //yield return new WaitForFixedUpdate();
+                // test release
+                yield return hand.Show(startHand);
+                yield return hand.MoveTo(inButtonOnPress, numSteps);
+                yield return hand.MoveTo(inButtonOnRelease, numSteps);
+                yield return hand.Hide();
+                
                 Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
                 Assert.IsTrue(buttonReleased, "Button did not get released.");
 
@@ -378,12 +378,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.IsTrue(buttonComponent.ReleaseOnTouchEnd == true, "default behavior of button should be release on touch end");
 
                 // test release on moving outside of button 
-                yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-                yield return PlayModeTestUtilities.MoveHandFromTo(startHand, inButtonOnPress, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-                yield return PlayModeTestUtilities.MoveHandFromTo(inButtonOnPress, rightOfButtonPress, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-                yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
-
-                //yield return new WaitForFixedUpdate();
+                yield return hand.Show(startHand);
+                yield return hand.MoveTo(inButtonOnPress, numSteps);
+                yield return hand.MoveTo(rightOfButtonPress, numSteps);
+                yield return hand.Hide();
+                
                 Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
                 Assert.IsTrue(buttonReleased, "Button did not get released when hand exited the button.");
 
@@ -393,10 +392,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 buttonComponent.ReleaseOnTouchEnd = false;
 
                 // test no release on moving outside of button when releaseOnTouchEnd is disabled
-                yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-                yield return PlayModeTestUtilities.MoveHandFromTo(startHand, inButtonOnPress, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-                yield return PlayModeTestUtilities.MoveHandFromTo(inButtonOnPress, rightOfButtonPress, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-                yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+                yield return hand.Show(startHand);
+                yield return hand.MoveTo(inButtonOnPress, numSteps);
+                yield return hand.MoveTo(rightOfButtonPress, numSteps);
+                yield return hand.Hide();
 
                 Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
                 Assert.IsFalse(buttonReleased, "Button did got released on exit even though releaseOnTouchEnd wasn't set");
