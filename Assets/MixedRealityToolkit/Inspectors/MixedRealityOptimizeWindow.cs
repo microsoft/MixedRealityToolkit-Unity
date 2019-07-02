@@ -120,6 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.LabelField("This tool automates the process of updating your project, currently open scene, and material assets to recommended settings for Mixed Reality", EditorStyles.wordWrappedLabel);
                 EditorGUILayout.Space();
 
+                EditorGUILayout.LabelField(EditorUserBuildSettings.activeBuildTarget.ToString());
+
                 PerfTarget = (PerformanceTarget)EditorGUILayout.Popup("Performance Target", (int)this.PerfTarget, PerformanceTargetEnums);
                 EditorGUILayout.HelpBox(PerformanceTargetDescriptions[(int)PerfTarget], MessageType.Info);
                 EditorGUILayout.Space();
@@ -127,20 +129,24 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (!PlayerSettings.virtualRealitySupported)
                 {
                     EditorGUILayout.HelpBox("Current build target does not have virtual reality support enabled", MessageType.Warning);
-                }
 
-                selectedToolbarIndex = GUILayout.Toolbar(selectedToolbarIndex, ToolbarTitles);
-                if (selectedToolbarIndex == 0)
-                {
-                    RenderProjectOptimizations();
-                }
-                else if (selectedToolbarIndex == 1)
-                {
-                    RenderSceneOptimizations();
+                    // TODO: Fix now button
                 }
                 else
                 {
-                    RenderShaderOptimizations();
+                    selectedToolbarIndex = GUILayout.Toolbar(selectedToolbarIndex, ToolbarTitles);
+                    if (selectedToolbarIndex == 0)
+                    {
+                        RenderProjectOptimizations();
+                    }
+                    else if (selectedToolbarIndex == 1)
+                    {
+                        RenderSceneOptimizations();
+                    }
+                    else
+                    {
+                        RenderShaderOptimizations();
+                    }
                 }
 
             EditorGUILayout.EndScrollView();
@@ -337,15 +343,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 BuildSection("Single Pass Instanced Rendering", "https://docs.unity3d.com/Manual/SinglePassStereoRendering.html", () =>
                 {
-                    EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity render pipeline to more efficiently render your scene and optimize CPU & GPU work. This path requires shaders though to be written to support instancing which is automatic in all Unity & MRTK shaders. Click the \"Learn More\" button to learn how to update your custom shaders to support instancing.", EditorStyles.wordWrappedLabel);
+                    if (PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing)
+                    {
+                        // if set, success help box?
+                        EditorGUILayout.HelpBox(new GUIContent("Single Pass Instanced rendering is the current configuration.", EditorGUIUtility.IconContent("Collab").image));
+                    }
+                    else
+                    {
+                        EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity render pipeline to more efficiently render your scene and optimize CPU & GPU work. This path requires shaders though to be written to support instancing which is automatic in all Unity & MRTK shaders. Click the \"Learn More\" button to learn how to update your custom shaders to support instancing.", EditorStyles.wordWrappedLabel);
 
-                    EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.BeginHorizontal();
                         singlePassInstanced = EditorGUILayout.ToggleLeft("Set Single Pass Instanced Rendering", singlePassInstanced);
                         if (GUILayout.Button(new GUIContent("Learn More", "Learn more about Single Pass Instanced Rendering"), EditorStyles.miniButton, GUILayout.Width(120f)))
                         {
                             Application.OpenURL("https://docs.unity3d.com/Manual/SinglePassInstancing.html");
                         }
-                    EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.EndHorizontal();
+                    }
                 });
 
                 // TODO: Put in Quality settings section
