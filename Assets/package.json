@@ -1,0 +1,25 @@
+{
+  "name": "com.microsoft.mixedrealitytoolkit",
+  "version": "2.0.0",
+  "displayName": "Mixed Reality Toolkit",
+  "description": "MRTK virtal package.",
+  "unity": "2018.4",
+  "unityRelease": "0f1",
+  "dependencies": {
+ },
+ "keywords": [
+    "holotoolkit",
+	"holotoolkit-unity",
+	"mixed-reality",
+	"hololens",
+	"mixedrealitytoolkit",
+	"mrtk",
+	"mixedrealitytookit-unity",
+	"openvr"
+  ],
+  "author": {
+    "name": "Microsoft",
+    "email": "opencode@microsoft.com",
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity"
+  } 
+}
