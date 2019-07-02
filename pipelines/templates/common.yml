@@ -1,8 +1,17 @@
 # [Template] Common build tasks shared between CI builds and PR validation.
 
 steps:
-# Run tests first so, that engineers can get test failure notifications
-# earlier in the CI process.
+# Build Standalone x86.
+# This must happen before tests run, because if the build fails and tests attempt
+# to get run, Unity will hang showing a dialog (even when in batch mode).
+# This is the fastest build, since it doesn't produce an AppX.
+- template: tasks/unitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+
+# Tests should run earlier in the process, so that engineers can get test failure
+# notifications earlier in the CI process.
 - template: tests.yml
 
 # Build UWP x86
@@ -28,11 +37,5 @@ steps:
     Platform: 'UWP'
     PublishArtifacts: true
     ScriptingBackend: '.NET'
-
-# Build Standalone x86
-- template: tasks/unitybuild.yml
-  parameters:
-    Arch: 'x86'
-    Platform: 'Standalone'
 
 - template: assetretargeting.yml

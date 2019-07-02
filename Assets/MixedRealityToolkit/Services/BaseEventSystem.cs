@@ -274,7 +274,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void AddHandlerToMap(Type handlerType, IEventSystemHandler handler)
         {
-            List<EventHandlerEntry> handlers;
             bool isParentObjectRegistered = false;
 
             var componentHandler = handler as Component;
@@ -284,6 +283,7 @@ namespace Microsoft.MixedReality.Toolkit
                 WarnAboutConflictingApis(componentHandler.gameObject.name);
             }
 
+            List<EventHandlerEntry> handlers;
             if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
                 handlers = new List<EventHandlerEntry> { new EventHandlerEntry(handler, isParentObjectRegistered) };
@@ -291,7 +291,17 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            if (!handlers.Exists(h => h.handler == handler))
+            bool handlerExists = false;
+            for (int i = handlers.Count - 1; i >= 0; i--)
+            {
+                if (handlers[i].handler == handler)
+                {
+                    handlerExists = true;
+                    break;
+                }
+            }
+
+            if (!handlerExists)
             {
                 handlers.Add(new EventHandlerEntry(handler, isParentObjectRegistered));
             }
@@ -301,20 +311,22 @@ namespace Microsoft.MixedReality.Toolkit
         private void RemoveHandlerFromMap(Type handlerType, IEventSystemHandler handler)
         {
             List<EventHandlerEntry> handlers;
-
             if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
                 return;
             }
 
-            if (handlers.Exists(h => h.handler == handler))
+            for (int i = handlers.Count - 1; i >= 0; i--)
             {
-                handlers.RemoveAll(h => h.handler == handler);
-
-                if (handlers.Count == 0)
+                if (handlers[i].handler == handler)
                 {
-                    EventHandlersByType.Remove(handlerType);
+                    handlers.RemoveAt(i);
                 }
+            }
+
+            if (handlers.Count == 0)
+            {
+                EventHandlersByType.Remove(handlerType);
             }
         }
 
