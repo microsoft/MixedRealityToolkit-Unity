@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [Header("Behavior")]
         [SerializeField]
-        private BoundingBoxActivationType activation = BoundingBoxActivationType.ActivateManually;
+        private BoundingBoxActivationType activation = BoundingBoxActivationType.ActivateOnStart;
         public BoundingBoxActivationType BoundingBoxActivation
         {
             get { return activation; }
@@ -300,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("linkRadius")]
         [Tooltip("Radius for wireframe edges")]
-        private float wireframeEdgeRadius = 0.005f;
+        private float wireframeEdgeRadius = 0.001f;
         public float WireframeEdgeRadius
         {
             get { return wireframeEdgeRadius; }
@@ -384,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("cornerRadius")]
         [Tooltip("Size of the cube collidable used in scale handles")]
-        private float scaleHandleSize = 0.2f;
+        private float scaleHandleSize = 0.016f; // 1.6cm default handle size
 
         public float ScaleHandleSize
         {
@@ -417,7 +417,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("ballRadius")]
         [Tooltip("Radius of the handle geometry of rotation handles")]
-        private float rotationHandleSize = 0.2f;
+        private float rotationHandleSize = 0.016f; // 1.6cm default handle size
         public float RotationHandleSize
         {
             get { return rotationHandleSize; }
