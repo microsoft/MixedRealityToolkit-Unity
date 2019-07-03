@@ -163,7 +163,7 @@ A pointer is defined by the following set of data:
 
 It is possible to have multiple pointers associated with a controller. For example,
 in the [default HoloLens 2 profile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2InputSystemProfile.asset)
-the Articulated Hand controller is associated with the PokePointer, GrabPointer, and the
+the articulated hand controller is associated with the PokePointer, GrabPointer, and the
 DefaultControllerPointer (which has hand rays).
 
 The lifetime of a pointer generally looks like:
