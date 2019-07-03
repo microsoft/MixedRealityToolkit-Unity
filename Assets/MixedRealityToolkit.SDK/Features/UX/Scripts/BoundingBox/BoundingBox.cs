@@ -1118,91 +1118,78 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             bool isFlattened = (flattenAxis != FlattenModeType.DoNotFlatten);
 
-            // Flattened but missing custom 2D handle prefab OR Not flattened but missing custom 3D handle prefab.
-            if ((isFlattened && (scaleHandleSlatePrefab == null)) || (scaleHandlePrefab == null))
+            for (int i = 0; i < boundsCorners.Length; ++i)
             {
-                // Use default HoloLens v1 cube style handles
-                for (int i = 0; i < boundsCorners.Length; ++i)
+                GameObject corner = new GameObject();
+                corner.name = "corner_" + i.ToString();
+                corner.transform.parent = rigRoot.transform;
+                corner.transform.localPosition = boundsCorners[i];
+
+                BoxCollider collider = corner.AddComponent<BoxCollider>();
+                collider.size = scaleHandleSize * Vector3.one;
+
+                // In order for the corner to be grabbed using near interaction we need
+                // to add NearInteractionGrabbable;
+                var g = corner.EnsureComponent<NearInteractionGrabbable>();
+                g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
+
+                GameObject visualsScale = new GameObject();
+                visualsScale.name = "visualsScale";
+                visualsScale.transform.parent = corner.transform;
+                visualsScale.transform.localPosition = Vector3.zero;
+                // Compute mirroring scale
                 {
-                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cube.name = "corner_" + i.ToString();
-                    cube.transform.localScale = new Vector3(scaleHandleSize, scaleHandleSize, scaleHandleSize);
-                    cube.transform.position = boundsCorners[i];
-
-                    // In order for the cube to be grabbed using near interaction we need
-                    // to add NearInteractionGrabbable;
-                    var g = cube.EnsureComponent<NearInteractionGrabbable>();
-                    g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
-
-                    cube.transform.parent = rigRoot.transform;
-
-                    Renderer renderer = cube.GetComponent<Renderer>();
-                    BoxCollider collider = cube.GetComponent<BoxCollider>();             
-                    collider.size *= 1.35f;
-
-                    corners.Add(cube.transform);
-                    cornerVisuals.Add(cube.transform);
-                    cornersProximate.Add(HandleProximityState.FullsizeNoProximity);
-                    cornerRenderers.Add(renderer);
-
-                    if (handleMaterial != null)
-                    {
-                        renderer.material = handleMaterial;
-                    }
+                    Vector3 p = boundsCorners[i];
+                    visualsScale.transform.localScale = new Vector3(Mathf.Sign(p[0]), Mathf.Sign(p[1]), Mathf.Sign(p[2]));
                 }
-            }
-            else
-            {
-                // Use custom prefab for the handles
-                for (int i = 0; i < boundsCorners.Length; ++i)
+
+                // figure out which prefab to instantiate
+                GameObject prefabToInstantiate = null;
+                GameObject cornerVisual = null;
+                //GameObject cornerVisual = Instantiate(isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab, visualsScale.transform);
+                if (isFlattened)
                 {
-                    GameObject corner = new GameObject();
-                    corner.name = "corner_" + i.ToString();
-                    corner.transform.parent = rigRoot.transform;
-                    corner.transform.localPosition = boundsCorners[i];
-
-                    BoxCollider collider = corner.AddComponent<BoxCollider>();
-                    collider.size = scaleHandleSize * Vector3.one;
-
-                    // In order for the corner to be grabbed using near interaction we need
-                    // to add NearInteractionGrabbable;
-                    var g = corner.EnsureComponent<NearInteractionGrabbable>();
-                    g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
-
-                    GameObject visualsScale = new GameObject();
-                    visualsScale.name = "visualsScale";
-                    visualsScale.transform.parent = corner.transform;
-                    visualsScale.transform.localPosition = Vector3.zero;
-
-                    // Compute mirroring scale
-                    {
-                        Vector3 p = boundsCorners[i];
-                        visualsScale.transform.localScale = new Vector3(Mathf.Sign(p[0]), Mathf.Sign(p[1]), Mathf.Sign(p[2]));
-                    }
-
-                    GameObject cornerVisual = Instantiate(isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab, visualsScale.transform);
-                    cornerVisual.name = "visuals";
-
-                    // this is the size of the corner visuals
-                    var cornerbounds = GetMaxBounds(cornerVisual);
-                    // we need to multiply by this amount to get to desired scale handle size
-                    var invScale = scaleHandleSize / cornerbounds.size.x;
-                    cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
-
-                    if (isFlattened)
-                    {
-                        // Rotate 2D slate handle asset for proper orientation
-                       cornerVisual.transform.Rotate(0, 0, -90);
-                    }
-
-                    ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
-
-                    corners.Add(corner.transform);
-                    cornerVisuals.Add(cornerVisual.transform);
-                    cornersProximate.Add(HandleProximityState.FullsizeNoProximity);
-                    Renderer renderer = cornerVisual.GetComponent<Renderer>();
-                    cornerRenderers.Add(renderer ?? null);
+                    prefabToInstantiate = scaleHandleSlatePrefab;
                 }
+                else
+                {
+                    prefabToInstantiate = scaleHandlePrefab;
+                }
+
+                if (prefabToInstantiate == null)
+                {
+                    // instantiate default prefab, a cube. Remove the box collider from it
+                    cornerVisual = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cornerVisual.transform.parent = visualsScale.transform;
+                    cornerVisual.transform.localPosition = Vector3.zero;
+                    Destroy(cornerVisual.GetComponent<BoxCollider>());
+                }
+                else
+                {
+                    cornerVisual = Instantiate(prefabToInstantiate, visualsScale.transform);
+                }
+
+                cornerVisual.name = "visuals";
+
+                // this is the size of the corner visuals
+                var cornerbounds = GetMaxBounds(cornerVisual);
+                // we need to multiply by this amount to get to desired scale handle size
+                var invScale = scaleHandleSize / cornerbounds.size.x;
+                cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
+
+                if (isFlattened)
+                {
+                    // Rotate 2D slate handle asset for proper orientation
+                    cornerVisual.transform.Rotate(0, 0, -90);
+                }
+
+                ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
+
+                corners.Add(corner.transform);
+                cornerVisuals.Add(cornerVisual.transform);
+                cornersProximate.Add(HandleProximityState.FullsizeNoProximity);
+                Renderer renderer = cornerVisual.GetComponent<Renderer>();
+                cornerRenderers.Add(renderer ?? null);
             }
         }
 
@@ -1992,26 +1979,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             float weight = targetState == HandleProximityState.CloseProximity ? closeGrowRate : (targetState == HandleProximityState.MediumProximity ? mediumGrowRate : farGrowRate);
             float newLocalScale = (handleVisual.transform.localScale.x * (1.0f - weight)) + (handleSize * targetScale * weight);
             handleVisual.transform.localScale = new Vector3(newLocalScale, newLocalScale, newLocalScale);
-
-            // Update teh collider to ensure its size is still scalehandlesize.
-
-            Collider collider = handleRoot.gameObject.GetComponent<Collider>();
-            if (handleVisual == handleRoot)
-            {
-                if (collider && collider is BoxCollider)
-                {
-                    // update colliderSize so that it matches scalehandlesize
-                    newLocalScale = Mathf.Abs(newLocalScale);
-                    newLocalScale /= scaleHandleSize != 0.0f ? scaleHandleSize : 1.0f;
-                    (collider as BoxCollider).size = newLocalScale > 0.0f ? new Vector3(newLocalScale, newLocalScale, newLocalScale) : Vector3.zero;
-                }
-                else if (collider && collider is SphereCollider)
-                {
-                    newLocalScale = Mathf.Abs(newLocalScale);
-                    newLocalScale /= rotationHandleSize != 0.0f ? rotationHandleSize : 1.0f;
-                    (collider as SphereCollider).radius = newLocalScale > 0.0f ? newLocalScale * 0.5f : 0.0f;
-                }
-            }
         }
 
         private void HandleProximityScaling(bool forceFar = false)
