@@ -400,20 +400,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Scale override for custom Corner Handlers: Size of its collider")]
-        private float scaleHandleColliderSize = 2.0f;
-        public float HandleColliderScale
-        {
-            get
-            {
-                return scaleHandleColliderSize;
-            }
-            set
-            {
-                scaleHandleColliderSize = value;
-            }
-        }
-        [SerializeField]
         [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead")]
         GameObject rotationHandlePrefab = null;
         public GameObject RotationHandleSlatePrefab
@@ -444,23 +430,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
-
-        [SerializeField] 
-        [Tooltip("Radius of the SphereCollider used in detecting grabs on rotation handles")] 
-        private float rotationHandleColliderSize = 1.0f; 
- 
-        public float RotationHandleColliderSize 
-        { 
-            get { return rotationHandleColliderSize; } 
-            set 
-            { 
-                if (rotationHandleColliderSize != value) 
-                { 
-                    rotationHandleColliderSize = value; 
-                    CreateRig(); 
-                } 
-            } 
-        } 
 
 
         [SerializeField]
@@ -1193,10 +1162,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     corner.transform.localPosition = boundsCorners[i];
 
                     BoxCollider collider = corner.AddComponent<BoxCollider>();
-                    collider.size = (scaleHandleSize * scaleHandleColliderSize) * Vector3.one;
-
-                    float localScale = corner.transform.localScale.x;
-                    (collider as BoxCollider).size = new Vector3(0.02f / localScale, 0.02f / localScale, 0.02f / localScale);
+                    collider.size = scaleHandleSize * Vector3.one;
 
                     // In order for the corner to be grabbed using near interaction we need
                     // to add NearInteractionGrabbable;
@@ -1294,7 +1260,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
 
                     SphereCollider collider = ball.GetComponent<SphereCollider>();
-                    collider.radius *= rotationHandleColliderSize;
                     balls.Add(ball.transform);
                     ballVisuals.Add(ball.transform);
 
@@ -2036,14 +2001,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (collider && collider is BoxCollider)
                 {
+                    // update colliderSize so that it matches scalehandlesize
                     newLocalScale = Mathf.Abs(newLocalScale);
-                    newLocalScale /= scaleHandleColliderSize != 0.0f ? scaleHandleColliderSize : 1.0f;
+                    newLocalScale /= scaleHandleSize != 0.0f ? scaleHandleSize : 1.0f;
                     (collider as BoxCollider).size = newLocalScale > 0.0f ? new Vector3(newLocalScale, newLocalScale, newLocalScale) : Vector3.zero;
                 }
                 else if (collider && collider is SphereCollider)
                 {
                     newLocalScale = Mathf.Abs(newLocalScale);
-                    newLocalScale /= rotationHandleColliderSize != 0.0f ? rotationHandleColliderSize : 1.0f;
+                    newLocalScale /= rotationHandleSize != 0.0f ? rotationHandleSize : 1.0f;
                     (collider as SphereCollider).radius = newLocalScale > 0.0f ? 0.02f / newLocalScale : 0.0f;
                 }
             }
