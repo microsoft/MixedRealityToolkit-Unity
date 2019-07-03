@@ -412,7 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// Calculate solver for simple raycast with provided ray
         /// </summary>
         /// <param name="rayStep">start/end ray passed by read-only reference to avoid struct-copy performance</param>
-        private void SimpleRaycastStepUpdate(in RayStep rayStep)
+        private void SimpleRaycastStepUpdate(RayStep rayStep)
         {
             bool isHit;
             RaycastHit result;
@@ -443,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// Calculate solver for sphere raycast with provided ray
         /// </summary>
         /// <param name="rayStep">start/end ray passed by read-only reference to avoid struct-copy performance</param>
-        private void SphereRaycastStepUpdate(in RayStep rayStep)
+        private void SphereRaycastStepUpdate(RayStep rayStep)
         {
             bool isHit;
             RaycastHit result;
@@ -475,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// Calculate solver for box raycast with provided ray
         /// </summary>
         /// <param name="rayStep">start/end ray passed by read-only reference to avoid struct-copy performance</param>
-        private void BoxRaycastStepUpdate(in RayStep rayStep)
+        private void BoxRaycastStepUpdate(RayStep rayStep)
         {
             Vector3 scale = ScaleOverride > 0 ? transform.lossyScale.normalized * ScaleOverride : transform.lossyScale;
 
