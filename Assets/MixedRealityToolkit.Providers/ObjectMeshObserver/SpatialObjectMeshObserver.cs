@@ -382,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         }
 
         /// <summary>
-        /// 
+        /// Updates the mesh physics layer for current mesh observations.
         /// </summary>
         private void ApplyUpdatedPhysicsLayer()
         {
