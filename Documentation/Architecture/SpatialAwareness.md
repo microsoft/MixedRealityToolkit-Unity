@@ -29,7 +29,7 @@ expose and render underlying spatial data.
 
 Similar to the [input system](InputSystem/Terminology.md), at the root of the spatial awareness system
 is an object that is responsible for initializing and running the spatial work. It does so by creating
-and then running its list of spatial observers (which are also referred to as data providers in).
+and then running its list of spatial observers (which are also referred to as data providers).
 
 ### Observers
 
