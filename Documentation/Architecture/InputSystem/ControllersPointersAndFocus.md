@@ -107,7 +107,7 @@ is the NearInteractionGrabbable script. This type of pointer/NearInteractionGrab
 to power higher level scripts like the ManipulationHandler (which provides rotate/resize/translate
 capabilities).
 
-## Teleport Pointer
+## Teleport pointers
 
 ### TeleportPointer and ParabolicTeleportPointer
 
