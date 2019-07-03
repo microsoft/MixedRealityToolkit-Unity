@@ -3,24 +3,21 @@
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the required assemblies (i.e. the ones below).
-// Given that the .NET backend is deprecated by Unity at this point it's we have
-// to work around this on our end.
+// The assembly that this file is part of is still built for the player,
+// even though the assembly itself is marked as a test assembly (this is not
+// expected because test assemblies should not be included in player builds).
+// Because the .NET backend is deprecated in 2018 and removed in 2019 and this
+// issue will likely persist for 2018, this issue is worked around by wrapping all
+// play mode tests in this check.
+
 using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
 using System.Collections;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Linq;
-using System;
-using UnityEditor;
-using System.Collections.Generic;
 using Assert = UnityEngine.Assertions.Assert;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -28,14 +25,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class BoundingBoxTests
     {
         #region Utilities
+        [SetUp]
+        public void Setup()
+        {
+            PlayModeTestUtilities.Setup();
+        }
+
         [TearDown]
         public void ShutdownMrtk()
         {
-            // Make sure to also zero out any camera transforms that may have been applied
-            CameraCache.Main.transform.localPosition = Vector3.zero;
-            CameraCache.Main.transform.localRotation = Quaternion.identity;
-
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
 
         /// <summary>
@@ -45,9 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <returns></returns>
         private BoundingBox InstantiateSceneAndDefaultBbox()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position = Vector3.forward * 1.5f;
             BoundingBox bbox = cube.AddComponent<BoundingBox>();
@@ -163,26 +159,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(bounds.center, startCenter, "bbox incorrect center at start");
             TestUtilities.AssertAboutEqual(bounds.size, startSize, "bbox incorrect size at start");
 
-            var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldIsp = iss.InputSimulationProfile;
-            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
-            isp.HandSimulationMode = HandSimulationMode.Gestures;
-            iss.InputSimulationProfile = isp;
+            PlayModeTestUtilities.PushHandSimulationProfile();
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
             CameraCache.Main.transform.LookAt(bbox.ScaleCorners[3].transform);
 
-            var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, isp.DefaultHandDistance));
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, iss, ArticulatedHandPose.GestureId.Open, startHandPos);
-            yield return PlayModeTestUtilities.SetHandState(startHandPos, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, iss);
-            var delta = new Vector3(0.1f, 0.1f, 0f);
-
+            var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, 1.5f));
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(startHandPos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             // After pinching, center should remain the same
             var afterPinchbounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(afterPinchbounds.center, startCenter, "bbox incorrect center after pinch");
             TestUtilities.AssertAboutEqual(afterPinchbounds.size, startSize, "bbox incorrect size after pinch");
 
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+            yield return rightHand.Move(delta);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(startHandPos, startHandPos + delta, 10, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, iss);
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
@@ -192,7 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Restore the input simulation profile
-            iss.InputSimulationProfile = oldIsp;
+            PlayModeTestUtilities.PopHandSimulationProfile();
+
             yield return null;
         }
 

@@ -6,10 +6,38 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public static class MixedRealityOptimizeUtils
     {
+        /// <summary>
+        /// Checks if the project has depth buffer sharing enabled.
+        /// </summary>
+        /// <returns>True if the project has depth buffer sharing enabled, false otherwise.</returns>
+        public static bool IsDepthBufferSharingEnabled()
+        {
+            if (PlayerSettings.VROculus.sharedDepthBuffer)
+            {
+                return true;
+            }
+
+#if UNITY_2019_1_OR_NEWER
+            if (PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled)
+            {
+                return true;
+            }
+#else
+            var playerSettings = GetSettingsObject("PlayerSettings");
+            var property = playerSettings?.FindProperty("vrSettings.hololens.depthBufferSharingEnabled");
+            if (property != null && property.boolValue)
+            {
+                return true;
+            }
+#endif
+
+            return false;
+        }
+
         public static void SetDepthBufferSharing(bool enableDepthBuffer)
         {
             PlayerSettings.VROculus.sharedDepthBuffer = enableDepthBuffer;

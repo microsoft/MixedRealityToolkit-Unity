@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             if (thisProfile.MixedRealityControllerMappingProfiles.Length != controllerList.arraySize) { return; }
 
-            if (MixedRealityEditorUtility.RenderIndentedButton(ControllerAddButtonContent, EditorStyles.miniButton))
+            if (InspectorUIUtility.RenderIndentedButton(ControllerAddButtonContent, EditorStyles.miniButton))
             {
                 AddController(controllerList, typeof(GenericJoystickController));
                 return;
@@ -230,12 +230,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                     return;
                                 }
 
-                                if (MixedRealityEditorUtility.RenderIndentedButton("Edit Input Action Map"))
+                                if (InspectorUIUtility.RenderIndentedButton("Edit Input Action Map"))
                                 {
                                     ControllerPopupWindow.Show(controllerMapping, interactionsProperty, handedness);
                                 }
 
-                                if (MixedRealityEditorUtility.RenderIndentedButton("Reset Input Actions"))
+                                if (InspectorUIUtility.RenderIndentedButton("Reset Input Actions"))
                                 {
                                     interactionsProperty.ClearArray();
                                     serializedObject.ApplyModifiedProperties();
