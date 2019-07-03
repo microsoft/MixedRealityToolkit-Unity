@@ -65,7 +65,7 @@ as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 
 ## Enumerating available xrefs
 
-xref syntax can be difficult to remember - it's possible to enumerate all of the available xref IDs by first running
+Xref syntax can be difficult to remember - it's possible to enumerate all of the available xref IDs by first running
 docfx locally:
 
 > docfx docfx.json
