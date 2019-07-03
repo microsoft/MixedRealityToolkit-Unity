@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// be capture at various resolutions and with the current camera's clear color or a transparent 
     /// clear color for use in easy post compositing of images.
     /// </summary>
-    class ScreenshotUtility : EditorWindow
+    public class ScreenshotUtility
     {
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/Native Resolution")]
         private static void CaptureScreenshot1x()
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/Native Resolution (Transparent Background)")]
         private static void CaptureScreenshot1xAlphaComposite()
         {
-            CaptureScreenshotAlphaComposite(Camera.main, true, GetScreenshotFileName(), 1);
+            CaptureScreenshot(GetScreenshotFileName(), 1, true);
         }
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/2x Resolution")]
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/2x Resolution (Transparent Background)")]
         private static void CaptureScreenshot2xAlphaComposite()
         {
-            CaptureScreenshotAlphaComposite(Camera.main, true, GetScreenshotFileName(), 2);
+            CaptureScreenshot(GetScreenshotFileName(), 2, true);
         }
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/4x Resolution")]
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/4x Resolution (Transparent Background)")]
         private static void CaptureScreenshot4xAlphaComposite()
         {
-            CaptureScreenshotAlphaComposite(Camera.main, true, GetScreenshotFileName(), 4);
+            CaptureScreenshot(GetScreenshotFileName(), 4, true);
         }
 
         /// <summary>
@@ -56,42 +56,45 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         /// <param name="path">The path to save the screenshot to.</param>
         /// <param name="superSize">The multiplication factor to apply to the native resolution.</param>
+        /// <param name="transparentClearColor">True if the captured screenshot should have a transparent clear color. Which can be used for screenshot overlays.</param>
+        /// <param name="camera">The optional camera to take the screenshot from.</param>
         /// <returns>True on successful screenshot capture, false otherwise.</returns>
-        public static bool CaptureScreenshot(string path, int superSize)
+        public static bool CaptureScreenshot(string path, int superSize = 1, bool transparentClearColor = false, Camera camera = null)
         {
             if (string.IsNullOrEmpty(path) || superSize <= 0)
             {
                 return false;
             }
 
-            ScreenCapture.CaptureScreenshot(path, superSize);
-
-            Debug.LogFormat("Screenshot captured to: {0}", path);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Captures a screenshot from a specified camera and optionally a transparent clear color.
-        /// </summary>
-        /// <param name="clearBackground">True if the captured screenshot should have a transparent background</param>
-        /// <param name="camera">The camera to take the screenshot from.</param>
-        /// <param name="path">The path to save the screenshot to.</param>
-        /// <param name="superSize">The multiplication factor to apply to the native resolution.</param>
-        /// <returns>True on successful screenshot capture, false otherwise.</returns>
-        public static bool CaptureScreenshotAlphaComposite(Camera camera, bool clearBackground, string path, int superSize)
-        {
-            if (camera == null || string.IsNullOrEmpty(path) || superSize <= 0)
+            // If a transparent clear color isn't needed and we are capturing from the default camera, use Unity's screenshot API.
+            if (!transparentClearColor && (camera == null || camera == Camera.main))
             {
-                return false;
+                ScreenCapture.CaptureScreenshot(path, superSize);
+
+                Debug.LogFormat("Screenshot captured to: {0}", path);
+
+                return true;
+            }
+
+            // Make sure we have a valid camera to render from.
+            if (camera == null)
+            {
+                camera = Camera.main;
+
+                if (camera == null)
+                {
+                    Debug.Log("Failed to acquire a valid camera to capture a screenshot from.");
+
+                    return false;
+                }
             }
 
             // Create a camera clone with a transparent clear color.
             var renderCamera = new GameObject().AddComponent<Camera>();
             renderCamera.transform.position = camera.transform.position;
             renderCamera.transform.rotation = camera.transform.rotation;
-            renderCamera.clearFlags = clearBackground ? CameraClearFlags.Color : camera.clearFlags;
-            renderCamera.backgroundColor = clearBackground ? new Color(0.0f, 0.0f, 0.0f, 0.0f) : camera.backgroundColor;
+            renderCamera.clearFlags = transparentClearColor ? CameraClearFlags.Color : camera.clearFlags;
+            renderCamera.backgroundColor = transparentClearColor ? new Color(0.0f, 0.0f, 0.0f, 0.0f) : camera.backgroundColor;
             renderCamera.fieldOfView = camera.fieldOfView;
             renderCamera.nearClipPlane = camera.nearClipPlane;
             renderCamera.farClipPlane = camera.farClipPlane;
@@ -126,9 +129,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
             finally
             {
-                DestroyImmediate(outputTexture);
-                DestroyImmediate(renderCamera.gameObject);
-                DestroyImmediate(renderTexture);
+                UnityEngine.Object.DestroyImmediate(outputTexture);
+                UnityEngine.Object.DestroyImmediate(renderCamera.gameObject);
+                UnityEngine.Object.DestroyImmediate(renderTexture);
             }
 
             Debug.LogFormat("Screenshot captured to: {0}", path);
