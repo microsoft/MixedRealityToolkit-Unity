@@ -27,19 +27,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private string loadedFilePath = "";
 
         private IMixedRealityInputRecordingService recordingService = null;
-        private IMixedRealityInputRecordingService RecordingService =>
-            recordingService ??
-            (recordingService = MixedRealityToolkit.Instance.GetService<IMixedRealityInputRecordingService>());
+        private IMixedRealityInputRecordingService RecordingService
+        {
+            get
+            {
+                if (recordingService == null)
+                {
+                    if (MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem))
+                    {
+                        recordingService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>();
+                    }
+                }
+                return recordingService;
+            }
+        }
 
         private IMixedRealityInputPlaybackService playbackService = null;
-        private IMixedRealityInputPlaybackService PlaybackService =>
-            playbackService ??
-            (playbackService = MixedRealityToolkit.Instance.GetService<IMixedRealityInputPlaybackService>());
-
-        private IInputSimulationService simService = null;
-        private IInputSimulationService SimService =>
-            simService ??
-            (simService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
+        private IMixedRealityInputPlaybackService PlaybackService
+        {
+            get
+            {
+                if (playbackService == null)
+                {
+                    if (MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem))
+                    {
+                        playbackService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputPlaybackService>();
+                    }
+                }
+                return playbackService;
+            }
+        }
 
         public enum ToolMode
         {
@@ -178,11 +195,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (!Application.isPlaying)
             {
                 EditorGUILayout.HelpBox("Input test playback is only available in play mode", MessageType.Info);
-                return;
-            }
-            if (SimService == null)
-            {
-                EditorGUILayout.HelpBox("No input simulation service found", MessageType.Info);
                 return;
             }
 
