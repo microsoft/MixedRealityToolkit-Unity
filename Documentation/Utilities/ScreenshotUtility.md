@@ -8,12 +8,12 @@ The [ScreenshotUtility](/Assets/MixedRealityToolkit/Utilities/Editor) class aide
 ### Taking Screenshots
 Screenshots can be easily capture while in the editor by selecting *Mixed Reality Toolkit->Utilities->Take Screenshot* and then selecting your desired option. Make sure to have the game window tab visible if capturing while not playing, or a screenshot may not be saved.
 
-By default all screenshots are saved to your desktop, the path to the screenshot will be displayed in the Unity console.
+By default, all screenshots are saved to your desktop, the path to the screenshot will be displayed in the Unity console.
 
 ![](../../Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Menu_Item.png)
 
 ### Example Screenshot Capture
 
-The beloew screenshot was captured with the *"4x Resolution (Transparent Background)"* option. This outputs a high resoluton image with whatever pixels normally represented by the clear color saved as transparent pixels. This technique helps developers showcase their application for the store, or other media outlets, by overlaying this image on top of other imagery.
+The below screenshot was captured with the *"4x Resolution (Transparent Background)"* option. This outputs a high-resolution image with whatever pixels normally represented by the clear color saved as transparent pixels. This technique helps developers showcase their application for the store, or other media outlets, by overlaying this image on top of other imagery.
 
 ![](../../Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Example_Capture.png)
