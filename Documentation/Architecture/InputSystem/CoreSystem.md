@@ -50,7 +50,7 @@ to get notified of ALL input events, rather than just input events of a particul
 
 Note that [fallback listeners](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.PushFallbackInputHandler(GameObject))
 are another type of global listeners which are also discouraged because they will receive
-every single input event that hasn't handled elsewhere in the scene.
+every single input event that hasn't been handled elsewhere in the scene.
 
 ### Order of event dispatch
 
