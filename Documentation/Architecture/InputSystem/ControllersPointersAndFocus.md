@@ -83,7 +83,7 @@ the screen will cast a ray from the camera to a potentially far location in the 
 
 ### LinePointer
 
-[A base pointer class](xref:Microsoft.MixedReality.Toolkit.Input.MousePointer) that draws lines from the source of the input (i.e. the controller) in the pointer direction. This is also used by other things like the Shell Hand Ray Pointer and the teleport pointers (which also draw lines to indicate where teleportation will end up at.
+[A base pointer class](xref:Microsoft.MixedReality.Toolkit.Input.MousePointer) that draws lines from the source of the input (i.e. the controller) in the pointer direction. This is also used by other things like the Shell Hand Ray Pointer and the teleport pointers (which also draw lines to indicate where teleportation will end up at).
 
 ## Near pointers
 
