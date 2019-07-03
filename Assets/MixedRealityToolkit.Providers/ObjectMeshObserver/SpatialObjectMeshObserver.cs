@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using Boo.Lang;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -36,16 +37,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             string name = null,
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, spatialAwarenessSystem, name, priority, profile)
-        {
-            int i = 0;
-            i++;
-        }
+        { }
 
         private bool sendObservations = true;
 
         private GameObject spatialMeshObject = null;
-
-        private List<Mesh> observedMeshes = new List<Mesh>();
 
         /// <summary>
         /// Reads the settings from the configuration profile.
@@ -89,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
         #region IMixedRealityDataProvider implementation
 
-        bool wasRunning = false;
+        bool autoResume = false;
 
         /// <inheritdoc />
         public override void Initialize()
@@ -98,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
             if (StartupBehavior == AutoStartBehavior.AutoStart)
             {
-                wasRunning = true;
+                Resume();
             }
         }
 
@@ -112,7 +108,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Enable()
         {
-            if (wasRunning)
+            // Resume iff we are not running and had been disabled while running.
+            if (!IsRunning && autoResume)
             {
                 Resume();
             }
@@ -121,8 +118,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Disable()
         {
-            wasRunning = IsRunning;
-            Suspend();
+            // Remember if we are currently running when Disable is called.
+            autoResume = IsRunning;
+
+            // If we are disbled while running...
+            if (IsRunning)
+            {
+                // Suspend the observer
+                Suspend();
+            }
         }
 
         /// <inheritdoc />
@@ -130,16 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         {
             Disable();
             CleanupObserver();
-        }
-
-        private void CleanupObserver()
-        {
-            if(IsRunning)
-            {
-                Suspend();
-            }
-
-            ClearObservations();
         }
 
         #endregion IMixedRealityDataProvider implementation
@@ -174,8 +168,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Resume()
         {
+            if (IsRunning) { return; }
             if (!sendObservations) { return; }
 
+            // We are running.
             IsRunning = true;
 
             // Get the collection of MeshFilters
@@ -232,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
         #region IMixedRealitySpatialAwarenessMeshObserver implementation
 
-        public SpatialAwarenessMeshDisplayOptions displayOption = SpatialAwarenessMeshDisplayOptions.Visible;
+        private SpatialAwarenessMeshDisplayOptions displayOption = SpatialAwarenessMeshDisplayOptions.Visible;
         
         /// <inheritdoc />
         public SpatialAwarenessMeshDisplayOptions DisplayOption
@@ -252,8 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         private Dictionary<int, SpatialAwarenessMeshObject> meshes = new Dictionary<int, SpatialAwarenessMeshObject>();
 
         /// <inheritdoc />
-        public IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes =>
-            new Dictionary<int, SpatialAwarenessMeshObject>(meshes) as IReadOnlyDictionary<int, SpatialAwarenessMeshObject>;
+        public IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes => new Dictionary<int, SpatialAwarenessMeshObject>(meshes);
 
         private int meshPhysicsLayer = 31;
 
@@ -266,10 +261,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             {
                 if ((value < 0) || (value > 31))
                 {
-                    Debug.LogError("Specified MeshPhysicsLayer is out of bounds. Please use a value between 0 and 31, inclusive.");
+                    Debug.LogError("Specified MeshPhysicsLayer is out of bounds. Please set a value between 0 and 31, inclusive.");
                     return;
                 }
+                
                 meshPhysicsLayer = value;
+
+                ApplyUpdatedPhysicsLayer();
             }
         }
 
@@ -282,11 +280,61 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public int TrianglesPerCubicMeter { get; set; } = 0;
 
-        /// <inheritdoc />
-        public Material OcclusionMaterial { get; set; } = null;
+        private Material occlusionMaterial = null;
 
         /// <inheritdoc />
-        public Material VisibleMaterial { get; set; } = null;
+        public Material OcclusionMaterial
+        {
+            get => occlusionMaterial;
+
+            set
+            {
+                if (value != occlusionMaterial)
+                {
+                    occlusionMaterial = value;
+
+                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Occlusion)
+                    {
+                        ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Occlusion);
+                    }
+                }
+            }
+        }
+
+
+        private Material visibleMaterial = null;
+
+        /// <inheritdoc />
+        public Material VisibleMaterial
+        {
+            get => visibleMaterial;
+
+            set
+            {
+                if (value != visibleMaterial)
+                {
+                    visibleMaterial = value;
+
+                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible)
+                    {
+                        ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Visible);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stop the observer and releases resources.
+        /// </summary>
+        private void CleanupObserver()
+        {
+            if (IsRunning)
+            {
+                Suspend();
+            }
+
+            ClearObservations();
+        }
 
         /// <summary>
         /// Applies the appropriate material, based on the current of the <see cref="SpatialAwarenessMeshDisplayOptions"/> property. 
@@ -294,6 +342,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <param name="meshObject">The <see cref="SpatialAwarenessMeshObject"/> for which the material is to be applied.</param>
         private void ApplyMeshMaterial(SpatialAwarenessMeshObject meshObject)
         {
+            if (meshObject?.Renderer == null) { return; }
+
             bool enable = (DisplayOption != SpatialAwarenessMeshDisplayOptions.None);
 
             if (enable)
@@ -318,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
             foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
             {
-                if ((meshObject == null) || (meshObject.Renderer == null)) { continue; }
+                if ((meshObject?.Renderer == null)) { continue; }
 
                 if (enable)
                 {
@@ -328,6 +378,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                 }
 
                 meshObject.Renderer.enabled = enable;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ApplyUpdatedPhysicsLayer()
+        {
+            foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
+            {
+                if (meshObject?.GameObject == null) { continue; }
+
+                meshObject.GameObject.layer = MeshPhysicsLayer;
+
             }
         }
 
