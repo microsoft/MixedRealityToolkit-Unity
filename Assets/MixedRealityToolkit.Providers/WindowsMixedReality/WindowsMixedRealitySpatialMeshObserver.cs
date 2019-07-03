@@ -258,7 +258,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 }
 
                 meshPhysicsLayer = value;
-
                 ApplyUpdatedPhysicsLayer();
             }
         }
@@ -800,7 +799,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 if (meshObject?.GameObject == null) { continue; }
 
                 meshObject.GameObject.layer = MeshPhysicsLayer;
-
             }
         }
 
