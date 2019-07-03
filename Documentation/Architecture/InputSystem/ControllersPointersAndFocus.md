@@ -16,7 +16,7 @@ is a controller that is responsible for interfacing with the underlying Windows
 [hand tracking APIs](https://docs.microsoft.com/en-us/uwp/api/windows.ui.input.spatial.spatialinteractionsourcestate) to get
 information about the joints, pose, and other properties of the hand. It is responsible for turning this data into relevant
 MRTK events (for example, by calling RaisePoseInputChanged or RaiseHandJointsUpdated) and by updating its own internal
-state so that queries for [TryGetJointPose](xref:Microsoft.MixedReality.Toolkit.Input.HandJointUtils.TryGetJointPose)
+state so that queries for [TryGetJointPose](xref:Microsoft.MixedReality.Toolkit.Input.HandJointUtils.TryGetJointPose(TrackedHandJoint,Handedness,MixedRealityPose@))
 will return correct data.
 
 Generally, a controller's lifecycle will involve:

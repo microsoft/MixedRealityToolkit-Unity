@@ -42,13 +42,13 @@ in [DispatchEventToObjectFocusedByPointer](https://github.com/microsoft/MixedRea
 ### Global listeners
 
 Events can be sent to global listeners. It's possible to register for all input events by using
-the input systems's [IMixedRealityEventSystem](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
-interface. It's recommended to use the [RegisterHandler](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.RegisterHandler`1)
+the input systems's [IMixedRealityEventSystem](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem)
+interface. It's recommended to use the [RegisterHandler](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.RegisterHandler``1(IEventSystemHandler))
 method for registering for global events - the deprecated Register function will cause listeners
 to get notified of ALL input events, rather than just input events of a particular type
 (where type is defined by the event interface).
 
-Note that [fallback listeners](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.PushFallbackInputHandler)
+Note that [fallback listeners](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.PushFallbackInputHandler(GameObject))
 are another type of global listeners which are also discouraged because they will receive
 every single input event that hasn't handled elsewhere in the scene.
 
