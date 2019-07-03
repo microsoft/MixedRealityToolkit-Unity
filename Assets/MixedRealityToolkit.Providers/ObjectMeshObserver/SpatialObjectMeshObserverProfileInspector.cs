@@ -78,6 +78,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                 serializedObject.Update();
 
                 EditorGUILayout.PropertyField(spatialMeshObject);
+                MeshFilter[] filters = (spatialMeshObject.objectReferenceValue as GameObject)?.GetComponentsInChildren<MeshFilter>();
+                if ((filters == null) ||
+                    (filters.Length == 0))
+                {
+                    EditorGUILayout.HelpBox("The specified Spatial Mesh Object is not specified or does not appear to be a 3D model.", MessageType.Warning);
+                }
                 EditorGUILayout.Space();
 
                 EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
