@@ -14,30 +14,49 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         #region Enums
 
         /// <summary>
-        /// Raycast direction mode for solver.
-        /// CameraFacing = cast from head in facing direction
-        /// ToObject = from head to object position
-        /// ToLinkedPosition = from head to linked solver position
+        /// Raycast direction mode for solver
         /// </summary>
         public enum RaycastDirectionMode
         {
+            /// <summary>
+            /// Cast from head in facing direction
+            /// </summary>
             CameraFacing = 0,
+
+            /// <summary>
+            /// Cast from head to object position
+            /// </summary>
             ToObject,
+
+            /// <summary>
+            /// Cast from head to linked solver position
+            /// </summary>
             ToLinkedPosition
         }
 
         /// <summary>
         /// Orientation mode for solver
-        /// None = no orienting
-        /// Vertical = Face head, but always oriented up/down
-        /// Full = Aligned to surface normal completely
-        /// Blend = Blend between head & surface orientation
         /// </summary>
         public enum OrientationMode
         {
+            /// <summary>
+            /// No orienting
+            /// </summary>
             None = 0,
+
+            /// <summary>
+            /// Face head, but always oriented up or down
+            /// </summary>
             Vertical,
+
+            /// <summary>
+            /// Aligned to surface normal completely
+            /// </summary>
             Full,
+
+            /// <summary>
+            /// Blend between head and surface orientation
+            /// </summary>
             Blended
         }
         #endregion
