@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    [ExecuteAlways]
     public class SpherePointerVisual : MonoBehaviour
     {
         public Transform TetherEndPoint => tetherEndPoint;
@@ -30,11 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private BaseMixedRealityLineDataProvider tetherLine = null;
 
         private bool tetherVisualsEnabled;
-
-        public void OnValidate()
-        {
-            CheckInitialization();
-        }
 
         public void OnEnable()
         {
@@ -82,6 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void Update()
         {
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+
             tetherVisualsEnabled = false;
             if (pointer.IsFocusLocked && pointer.IsTargetPositionLockedOnFocusLock && pointer.Result != null)
             {

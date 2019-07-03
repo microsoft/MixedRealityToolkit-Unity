@@ -144,6 +144,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private List<Vector2> unTransformedUVs = new List<Vector2>();
         private Dictionary<uint, HandPanData> handDataMap = new Dictionary<uint, HandPanData>();
         private List<IMixedRealityHandPanHandler> handlerInterfaces = new List<IMixedRealityHandPanHandler>();
+        List<Vector2> uvs = new List<Vector2>();
+        List<Vector2> uvsOrig = new List<Vector2>();
         #endregion Private Properties
 
         /// <summary>
@@ -337,12 +339,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
         private void UpdateUVMapping()
-        {        
+        {
             Vector2 tiling = currentMaterial != null ? currentMaterial.mainTextureScale : new Vector2(1.0f, 1.0f);
-            List<Vector2> uvs = new List<Vector2>();
-            List<Vector2> uvsOrig = new List<Vector2>();
             Vector2 uvTestValue;
             mesh.GetUVs(0, uvs);
+            uvsOrig.Clear();
             uvsOrig.AddRange(uvs);
             float scaleUVDelta = 0.0f;
             Vector2 scaleUVCentroid = Vector2.zero;
@@ -350,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (scaleActive)
             {
-                scaleUVCentroid = GetDisplayedUVCentroid();
+                scaleUVCentroid = GetDisplayedUVCentroid(uvs);
                 currentContactRatio = GetUVScaleFromTouches();
                 scaleUVDelta = currentContactRatio / previousContactRatio;
                 previousContactRatio = currentContactRatio;
@@ -402,7 +403,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            mesh.uv = uvs.ToArray();
+            mesh.SetUVs(0, uvs);
         }
         private float GetUVScaleFromTouches()
         {
@@ -525,10 +526,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             return GetUVFromPoint(GetTouchPoint());
         }
-        private Vector2 GetDisplayedUVCentroid()
+        private Vector2 GetDisplayedUVCentroid(List<Vector2> uvs)
         {
-            List<Vector2> uvs = new List<Vector2>();
-            mesh.GetUVs(0, uvs);
             Vector2 centroid = Vector2.zero;
             for (int i = 0; i < uvs.Count; ++i)
             {

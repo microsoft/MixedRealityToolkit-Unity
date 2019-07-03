@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
-        private static SpeechCommands[] Commands => MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands;
+        private SpeechCommands[] Commands => (ConfigurationProfile as MixedRealityInputSystemProfile)?.SpeechCommandsProfile?.SpeechCommands;
 
         /// <summary>
         /// The Input Source for Windows Speech Input.
@@ -106,7 +106,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!Application.isPlaying || Commands.Length == 0) { return; }
+            if (!Application.isPlaying || 
+                (Commands == null) ||
+                (Commands.Length == 0)) { return; }
 
             if (InputSystemProfile == null) { return; }
 

@@ -50,7 +50,7 @@ settings based on the type of display that the application is run on (i.e. AR vs
 ### Input
 
 The largest profile for the most complex subsystem of the MRTK. The various subsystems of input will
-be covered in the [Input System](InputSystem.md) documentation itself.
+be covered in the [Input System](InputSystem/Terminology.md) documentation itself.
 
 ### Teleport
 

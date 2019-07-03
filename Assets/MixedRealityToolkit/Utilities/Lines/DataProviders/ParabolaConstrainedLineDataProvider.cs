@@ -48,20 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { height = Mathf.Clamp(value, 0.01f, 10f); }
         }
 
-        #region MonoBehaviour Implementation
-
-        protected override void OnValidate()
-        {
-            if (endPoint == StartPoint)
-            {
-                endPoint.Position = transform.InverseTransformPoint(LineTransform.position) + Vector3.forward;
-            }
-
-            base.OnValidate();
-        }
-
-        #endregion MonoBehaviour Implementation
-
         #region Line Data Provider Implementation
 
         /// <inheritdoc />
