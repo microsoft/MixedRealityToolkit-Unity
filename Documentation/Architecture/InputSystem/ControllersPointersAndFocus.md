@@ -30,7 +30,7 @@ Generally, a controller's lifecycle will involve:
 ## Pointers and focus
 
 Pointers are used to interact with game objects. This section describes how pointers are created,
-how they get updated, and how they determine the object(s) that are in focus. This section will
+how they get updated, and how they determine the object(s) that are in focus. It will
 also cover the different types of pointers that exist and the scenarios in which they are active.
 
 ### Pointer categories
