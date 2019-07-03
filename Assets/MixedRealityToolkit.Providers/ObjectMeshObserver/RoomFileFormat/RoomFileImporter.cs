@@ -26,18 +26,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
             GameObject model = new GameObject(name);
             context.AddObjectToAsset(name, model);
 
-            int i = 0;
-            foreach (Mesh mesh in meshes)
+            for (int i = 0; i < meshes.Count; i++)
             {
                 string meshName = $"{name}_{i}";
                 GameObject meshObject = new GameObject(meshName, new System.Type[] { typeof(MeshRenderer), typeof(MeshFilter) });
 
-                mesh.name = meshName;
-                meshObject.GetComponent<MeshFilter>().sharedMesh = mesh;
-                context.AddObjectToAsset(meshName, mesh);
+                meshes[i].name = meshName;
+                meshObject.GetComponent<MeshFilter>().sharedMesh = meshes[i];
+                context.AddObjectToAsset(meshName, meshes[i]);
                 meshObject.transform.parent = model.transform;
-
-                i++;
             }
         }
 
