@@ -76,6 +76,6 @@ The basic flow of a device manager involves:
 2. The device manager registers with its underlying system (for example, the Windows Mixed Reality
    device manager will register for [gesture and interaction events](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Providers/WindowsMixedReality/WindowsMixedRealityDeviceManager.cs#L651)).
 3. It creates controllers that it discovers from the underlying system (for example 
-   example, the provider could detect the presence of articulated hands)
+   the provider could detect the presence of articulated hands)
 4. In its Update() loop, call UpdateController() to poll for the new state of the underlying system
    and update its controller representation.
