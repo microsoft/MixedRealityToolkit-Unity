@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUILayout.PropertyField(surfaceType);
             EditorGUILayout.PropertyField(orientType);
             EditorGUILayout.PropertyField(layout);
-            if (surfaceType.enumValueIndex == 1)
+            if ((ObjectOrientationSurfaceType) surfaceType.enumValueIndex == ObjectOrientationSurfaceType.Plane)
             {
                 EditorGUILayout.PropertyField(distance);
             }
@@ -48,16 +48,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.PropertyField(radialRange);
             }
 
-            int layoutTypeIndex = layout.enumValueIndex;
-            if (layoutTypeIndex != 2 && layoutTypeIndex != 3)
+            LayoutOrder layoutTypeIndex = (LayoutOrder) layout.enumValueIndex;
+            if (layoutTypeIndex != LayoutOrder.Horizontal && layoutTypeIndex != LayoutOrder.Vertical)
             {
                 EditorGUILayout.PropertyField(rows);
             }
-            if (layoutTypeIndex != 3)
+            if (layoutTypeIndex != LayoutOrder.Vertical)
             {
                 EditorGUILayout.PropertyField(cellWidth);
             }
-            if (layoutTypeIndex != 2)
+            if (layoutTypeIndex != LayoutOrder.Horizontal)
             {
                 EditorGUILayout.PropertyField(cellHeight);
             }
