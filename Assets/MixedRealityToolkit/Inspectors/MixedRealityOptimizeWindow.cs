@@ -27,9 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private Vector2 windowScrollPosition = new Vector2();
 
-        // Project Optimizations
-        private bool enable16BitDepthBuffer = true;
-
         // Scene Optimizations
         private static DateTime? lastAnalyzedTime = null;
         private Light[] sceneLights;
