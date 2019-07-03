@@ -1,5 +1,5 @@
 {
-  "name": "com.microsoft.mixedrealitytoolkit",
+  "name": "com.microsoft.mixedreality.toolkit.all",
   "version": "2.0.0",
   "displayName": "Mixed Reality Toolkit",
   "description": "MRTK virtual package.",
@@ -19,7 +19,6 @@
   ],
   "author": {
     "name": "Microsoft",
-    "email": "opencode@microsoft.com",
     "url": "https://github.com/microsoft/MixedRealityToolkit-Unity"
   } 
 }
