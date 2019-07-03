@@ -130,8 +130,6 @@ Shader "Mixed Reality Toolkit/Wireframe"
                 // quickly.
                 float I = exp2(-2 * dist * dist);
 
-                // Fade out the alpha but not the color so we don't get any weird halo effects from
-                // a fade to a different color.
                 return I * _WireColor + (1 - I) * _BaseColor;
             }
             ENDCG
