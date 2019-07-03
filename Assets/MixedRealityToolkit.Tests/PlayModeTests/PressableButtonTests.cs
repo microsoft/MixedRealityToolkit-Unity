@@ -3,9 +3,13 @@
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the the required assemblies (i.e. the ones below).
-// Given that the .NET backend is deprecated by Unity at this point it's we have
-// to work around this on our end.
+// The assembly that this file is part of is still built for the player,
+// even though the assembly itself is marked as a test assembly (this is not
+// expected because test assemblies should not be included in player builds).
+// Because the .NET backend is deprecated in 2018 and removed in 2019 and this
+// issue will likely persist for 2018, this issue is worked around by wrapping all
+// play mode tests in this check.
+
 using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
 using UnityEngine;
@@ -24,37 +28,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         #region Utilities
-        private GameObject InstantiateSceneAndDefaultPressableButton()
+        private GameObject InstantiateDefaultPressableButton()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-
-            RenderSettings.skybox = null;
-
             Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab", typeof(Object));
             GameObject testButton = Object.Instantiate(pressableButtonPrefab) as GameObject;
 
             return testButton;
         }
 
-        /// <summary>
-        /// Waits for the user to press the enter key before a test continues.
-        /// Not actually used by any test, but it is useful when debugging since you can 
-        /// pause the state of the test and inspect the scene.
-        /// </summary>
-        private IEnumerator WaitForEnterKey()
+        [SetUp]
+        public void TestSetup()
         {
-            Debug.Log(Time.time + "Press Enter...");
-            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
-            {
-                yield return null;
-            }
+            PlayModeTestUtilities.Setup();
         }
 
         [TearDown]
-        public void ShutdownMrtk()
+        public void TearDown()
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
 
         #endregion
@@ -64,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator ButtonInstantiate()
         {
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -81,15 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PressButtonWithHand()
         {
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
 
             // Move the camera to origin looking at +z to more easily see the button.
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             // For some reason, we would only get null pointers when the hand tries to click a button
             // at specific positions, hence the unusal z value.
@@ -125,12 +111,51 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        /// <summary>
+        /// This test reproduces P0 issue 4566 which didn't trigger a button with enabled backpressprotection 
+        /// if hands were moving too fast in low framerate
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PressButtonFast()
+        {
+            GameObject testButton = InstantiateDefaultPressableButton();
+
+            // Move the camera to origin looking at +z to more easily see the button.
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(buttonComponent);
+            Assert.IsTrue(buttonComponent.EnforceFrontPush, "Button default behavior should have enforce front push enabled");
+
+            bool buttonPressed = false;
+            buttonComponent.ButtonPressed.AddListener(() =>
+            {
+                buttonPressed = true;
+            });
+
+            // move the hand quickly from very far distance into the button and check if it was pressed
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            int numSteps = 2;
+            Vector3 p1 = new Vector3(0, 0, -20.0f);
+            Vector3 p2 = new Vector3(0, 0, 0.02f);
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+
+            Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
+
+            Object.Destroy(testButton);
+
+            yield return null;
+        }
+
 
         [UnityTest]
         public IEnumerator ScaleWorldDistances()
         {
             // instantiate scene and button
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -182,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator SwitchWorldToLocalDistanceMode()
         {
             // instantiate scene and button
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -253,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScaleLocalDistances()
         {
             // instantiate scene and button
-            GameObject testButton = InstantiateSceneAndDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -302,6 +327,90 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// This tests the release behavior of a button
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ReleaseButton()
+        {
+            GameObject testButton = InstantiateDefaultPressableButton();
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(buttonComponent);
+
+            bool buttonPressed = false;
+            buttonComponent.ButtonPressed.AddListener(() =>
+            {
+                buttonPressed = true;
+            });
+
+            bool buttonReleased = false;
+            buttonComponent.ButtonReleased.AddListener(() =>
+            {
+                buttonReleased = true;
+            });
+
+            Vector3 startHand = new Vector3(0, 0, 0);
+            Vector3 inButtonOnPress = new Vector3(0, 0, 0.01f); // press plane of mrtk pressablebutton prefab
+            Vector3 rightOfButtonPress = new Vector3(1.0f, 0, 0.01f); // right of press plane, outside button
+            Vector3 inButtonOnRelease = new Vector3(0, 0, 0.005f); // release plane of mrtk pressablebutton prefab
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // test scenarios in normal and low framerate
+            int[] stepVariations = { 30, 2 };
+            for (int i = 0; i < stepVariations.Length; ++i)
+            {
+                int numSteps = stepVariations[i];
+
+                // test release
+                yield return hand.Show(startHand);
+                yield return hand.MoveTo(inButtonOnPress, numSteps);
+                yield return hand.MoveTo(inButtonOnRelease, numSteps);
+                yield return hand.Hide();
+                
+                Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
+                Assert.IsTrue(buttonReleased, "Button did not get released.");
+
+                buttonPressed = false;
+                buttonReleased = false;
+
+                Assert.IsTrue(buttonComponent.ReleaseOnTouchEnd == true, "default behavior of button should be release on touch end");
+
+                // test release on moving outside of button 
+                yield return hand.Show(startHand);
+                yield return hand.MoveTo(inButtonOnPress, numSteps);
+                yield return hand.MoveTo(rightOfButtonPress, numSteps);
+                yield return hand.Hide();
+                
+                Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
+                Assert.IsTrue(buttonReleased, "Button did not get released when hand exited the button.");
+
+                buttonPressed = false;
+                buttonReleased = false;
+
+                buttonComponent.ReleaseOnTouchEnd = false;
+
+                // test no release on moving outside of button when releaseOnTouchEnd is disabled
+                yield return hand.Show(startHand);
+                yield return hand.MoveTo(inButtonOnPress, numSteps);
+                yield return hand.MoveTo(rightOfButtonPress, numSteps);
+                yield return hand.Hide();
+
+                Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
+                Assert.IsFalse(buttonReleased, "Button did got released on exit even though releaseOnTouchEnd wasn't set");
+
+                buttonPressed = false;
+                buttonReleased = false;
+
+                buttonComponent.ReleaseOnTouchEnd = true;
+            }
+
+            Object.Destroy(testButton);
+
             yield return null;
         }
 

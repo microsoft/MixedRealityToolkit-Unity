@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// An abstract primitive component to animate and visualize a clipping primitive that can be 
     /// used to drive per pixel based clipping.
     /// </summary>
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public abstract class ClippingPrimitive : MonoBehaviour
     {
         [Tooltip("The renderer(s) that should be affected by the primitive.")]
@@ -113,17 +113,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        protected void OnValidate()
-        {
-            ToggleClippingFeature(true);
-            RestoreUnassignedMaterials();
-        }
-
         protected void OnEnable()
         {
             Initialize();
             UpdateRenderers();
             ToggleClippingFeature(true);
+
+            if (!Application.isPlaying)
+            {   // Previously in OnValidate. Only needed in edit mode.
+                RestoreUnassignedMaterials();
+            }
 
             if (useOnPreRender)
             {

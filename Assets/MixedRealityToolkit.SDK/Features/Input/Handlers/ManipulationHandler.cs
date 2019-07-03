@@ -200,7 +200,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
         private Dictionary<uint, IMixedRealityPointer> pointerIdToPointerMap = new Dictionary<uint, IMixedRealityPointer>();
-
         private Quaternion objectToHandRotation;
         private Vector3 objectToHandTranslation;
         private bool isNearManipulation;
@@ -216,6 +215,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion
 
         #region MonoBehaviour Functions
+
+        /// <summary>
+        /// Releases the object that is currently manipulated
+        /// </summary>
+        public void ForceEndManipulation()
+        {
+            // release rigidbody and clear pointers
+            ReleaseRigidBody();
+            pointerIdToPointerMap.Clear();
+
+            // end manipulation
+            State newState = State.Start;
+            InvokeStateUpdateFunctions(currentState, newState);
+            currentState = newState;
+        }
+
         private void Awake()
         {
             moveLogic = new TwoHandMoveLogic(constraintOnMovement);
@@ -469,21 +484,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             uint id = eventData.Pointer.PointerId;
             if (pointerIdToPointerMap.ContainsKey(id))
             {
-                if (pointerIdToPointerMap.Count == 1 && rigidBody != null)
+                if (pointerIdToPointerMap.Count == 1)
                 {
-                    rigidBody.isKinematic = wasKinematic;
-
-                    if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
-                    {
-                        rigidBody.velocity = GetPointersVelocity();
-                    }
-
-                    if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
-                    {
-                        rigidBody.angularVelocity = GetPointersAngularVelocity();
-                    }
-
-                    rigidBody = null;
+                    ReleaseRigidBody();
                 }
 
                 pointerIdToPointerMap.Remove(id);
@@ -527,7 +530,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void HandleOneHandMoveUpdated()
         {
             Debug.Assert(pointerIdToPointerMap.Count == 1);
-            IMixedRealityPointer pointer = pointerIdToPointerMap.Values.First();
+            IMixedRealityPointer pointer = GetFirstPointer();
 
             Quaternion targetRotation = Quaternion.identity;
             RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
@@ -618,7 +621,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void HandleOneHandMoveStarted()
         {
             Assert.IsTrue(pointerIdToPointerMap.Count == 1);
-            IMixedRealityPointer pointer = pointerIdToPointerMap.Values.First();
+            IMixedRealityPointer pointer = GetFirstPointer();
 
             moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
 
@@ -731,6 +734,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 OnHoverExited.Invoke(new ManipulationEventData { IsNearInteraction = !isFar }); 
             }
         }
+
+        private void ReleaseRigidBody()
+        {
+            if (rigidBody != null)
+            {
+                rigidBody.isKinematic = wasKinematic;
+
+                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
+                {
+                    rigidBody.velocity = GetPointersVelocity();
+                }
+
+                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
+                {
+                    rigidBody.angularVelocity = GetPointersAngularVelocity();
+                }
+
+                rigidBody = null;
+            }
+        }
+
+        private IMixedRealityPointer GetFirstPointer()
+        {
+            // We may be able to do this without allocating memory.
+            // Moving to a method for later investigation.
+            return pointerIdToPointerMap.Values.First();
+        }
+
         #endregion
     }
 }

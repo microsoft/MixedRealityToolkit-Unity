@@ -25,7 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         static ServiceFacadeEditor()
         {
             // Register this on startup so we can update whether a facade inspector is updated or not
+#if UNITY_2019_1_OR_NEWER
+            SceneView.duringSceneGui += DrawSceneGUI;
+#else
             SceneView.onSceneGUIDelegate += DrawSceneGUI;
+#endif
         }
 
         private static List<string> dataProviderList = new List<string>();
@@ -122,25 +126,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         /// <summary>
         /// Draws button linking to documentation.
         /// </summary>
-        /// <param name="serviceType"></param>
-        /// <returns></returns>
+        /// <param name="serviceType">type of service to target</param>
+        /// <returns>true if doc link is found, false otherwise</returns>
         private bool DrawDocLink(Type serviceType)
         {
             DocLinkAttribute docLink = serviceType.GetCustomAttribute<DocLinkAttribute>();
             if (docLink != null)
             {
-                GUIContent buttonContent = new GUIContent();
-                buttonContent.image = EditorGUIUtility.IconContent("_Help").image;
-                buttonContent.text = " Documentation";
-                buttonContent.tooltip = docLink.URL;
-
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(MixedRealityInspectorUtility.DocLinkWidth)))
-                {
-                    Application.OpenURL(docLink.URL);
-                }
+                InspectorUIUtility.RenderDocLinkButton(docLink.URL);
 
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
