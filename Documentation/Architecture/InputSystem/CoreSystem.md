@@ -66,7 +66,7 @@ the event dispatch process stops.
 ## Device Managers / Data Providers
 
 These entities are responsible for interfacing with lower-level APIs (such as Windows Mixed Reality APIs,
-or OpenVR APIs, for example) and translating data from those systems into ones that fit the MRTK's higher
+or OpenVR APIs) and translating data from those systems into ones that fit the MRTK's higher
 level input abstractions. They are responsible for detecting, creating, and managing the lifetime of
 [controllers](ControllersPointersAndFocus.md#controllers).
 
