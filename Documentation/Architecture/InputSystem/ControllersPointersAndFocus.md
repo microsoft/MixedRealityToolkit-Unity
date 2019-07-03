@@ -59,7 +59,7 @@ Pointers generally fall into one of the following categories:
 
 ## Far pointers
 
-The follow are far pointers that come with the MRTK:
+The following are far pointers that come with the MRTK:
 
 ### ShellHandRayPointer
 
