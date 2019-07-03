@@ -595,13 +595,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  touchableCollider: {fileID: 7779420038095343090}
-  distBack: 0.25
+  pokeThreshold: 0.25
   debounceThreshold: 0.01
+  touchableCollider: {fileID: 7779420038095343090}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: -0.000000035977287, y: -0.0000004786908, z: -0.060188234}
-  touchableSurface: 0
   bounds: {x: 1, y: 0.99999946}
 --- !u!114 &6478522880476602763
 MonoBehaviour:
@@ -1167,11 +1166,11 @@ MonoBehaviour:
     type: 3}
   scaleHandleSlatePrefab: {fileID: 1134031327877807717, guid: c45e552a6d92491468c421c35c5dd63d,
     type: 3}
-  scaleHandleSize: 0.22
-  cornerHandleColliderScale: 3
+  scaleHandleSize: 0.3
+  scaleHandleColliderSize: 2
   rotationHandlePrefab: {fileID: 100000, guid: 57c53da2552a8114ab6d68e0cd31b1eb, type: 3}
-  rotationHandleDiameter: 5
-  rotationHandleColliderDiameter: 3
+  rotationHandleSize: 4
+  rotationHandleColliderSize: 1
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
@@ -1182,8 +1181,8 @@ MonoBehaviour:
   handleMediumProximity: 0.005
   handleCloseProximity: 0.0015
   farScale: 0.01
-  mediumScale: 2
-  closeScale: 3
+  mediumScale: 1
+  closeScale: 1.5
   farGrowRate: 0.3
   mediumGrowRate: 0.2
   closeGrowRate: 0.3
