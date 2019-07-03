@@ -1,6 +1,6 @@
 # Hologram stabilization
 
-## Performance 
+## Performance
 
 In order for the underlying platform and device to produce the best results, it is important to achieve performant framerates. The target framerate (ex: 60 FPS or 90 FPS) will vary across platform and devices. Mixed reality applications meeting framerate will have stable holograms as well as efficient head tracking, hand tracking and more. 
 

@@ -75,9 +75,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             "Suggest performance optimizations for mobile VR devices with mobile class specifications",
             "Suggest performance optimizations for VR devices tethered to a PC" };
 
+        private const string OptimizeWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Utilities/OptimizeWindow.html";
         private const string SinglePassInstanced_URL = "https://docs.unity3d.com/Manual/SinglePassInstancing.html";
-        private const string DepthBufferSharing_URL = "www.google.com";
-        private const string DepthBufferFormat_URL = "www.google.com";
+        private const string DepthBufferSharing_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Hologram-Stabilization.html";
+        private const string DepthBufferFormat_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Hologram-Stabilization.html";
         private const string GlobalIllumination_URL = "https://docs.unity3d.com/Manual/GlobalIllumination.html";
 
         private readonly int[] SceneLightCountMax = { 1, 2, 4 };
@@ -100,11 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             FindShaders();
         }
 
-        private void OnEnable()
-        {
-            //this.titleContent = new GUIContent("Optimize Window", EditorGUIUtility.IconContent("d_PreMatCube").image);
-        }
-
         private void OnGUI()
         {
             windowScrollPosition = EditorGUILayout.BeginScrollView(windowScrollPosition);
@@ -112,7 +108,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
             // Render Title
-            EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
+            EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
+                InspectorUIUtility.RenderDocLinkButton(OptimizeWindow_URL);
+            EditorGUILayout.EndHorizontal();
+
             EditorGUILayout.LabelField("This tool automates the process of updating your project, currently open scene, and material assets to recommended settings for Mixed Reality", EditorStyles.wordWrappedLabel);
             EditorGUILayout.Space();
 
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Scene], MixedRealityStylesUtility.BoldLargeTitleStyle);
             using (new EditorGUI.IndentLevelScope())
             {
-                EditorGUILayout.LabelField("This section provides controls and performance information for the currently opened scene. Any optimizations performed are only for the active scene at any moment. Also be aware that changes made while in editor Play mode will not be saved.", EditorStyles.wordWrappedLabel);
+                EditorGUILayout.LabelField("This section provides controls and performance information for the currently opened scene. Any optimizations performed are only for the active scene at any moment.", EditorStyles.wordWrappedLabel);
 
                 BuildSection("Live Scene Analysis", null, null, () =>
                 {
@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 bool isSinglePassInstancedEnabled = PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
                 BuildSection("Single Pass Instanced Rendering", SinglePassInstanced_URL, GetTitleIcon(isSinglePassInstancedEnabled), () =>
                 {
-                    EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity render pipeline to more efficiently render your scene and optimize CPU & GPU work.");
+                    EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
 
                     EditorGUILayout.HelpBox("This rendering configuration requires shaders to be written to support GPU instancing which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support instancing.", MessageType.Info);
 
@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.LabelField("This option shares the application's depth buffer with the running platform which allows the platform to more accurately stabilize holograms and content.", EditorStyles.wordWrappedLabel);
 
-                    EditorGUILayout.HelpBox("This feature requires that a valid depth buffer is submitted to the platform. Ensure that transparent & text gameobjects write to depth.", MessageType.Info);
+                    EditorGUILayout.HelpBox("Depth buffer sharing requires that a valid depth buffer is submitted to the platform. Click the \"Documentation\" button for instructions to ensure that transparent & text gameobjects write to depth.", MessageType.Info);
 
                     using (new GUIEnabledWrapper(!isDepthBufferSharingEnabled))
                     {
@@ -350,11 +350,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 });
 
-                bool is16BitDepthFormat = isDepthBufferSharingEnabled && (!IsHololensTargeted() || MixedRealityOptimizeUtils.IsHololensDepthBufferFormat16bit());
+                bool is16BitDepthFormat = MixedRealityOptimizeUtils.IsHololensDepthBufferFormat16bit();
                 BuildSection("Depth Buffer Format", DepthBufferFormat_URL, GetTitleIcon(is16BitDepthFormat), () =>
                 {
-                    EditorGUILayout.LabelField("Blah blah blah", EditorStyles.wordWrappedLabel);
-                    EditorGUILayout.HelpBox("This r.Click the \"Documentation\" button for more  ", MessageType.Info);
+                    EditorGUILayout.LabelField("If sharing the depth buffer with the underlying mixed reality platform, it is generally recommended to utilize a 16-bit depth format buffer to save on performance.", EditorStyles.wordWrappedLabel);
+
+                    EditorGUILayout.HelpBox("Although 16-bit depth format is better performing, it can result in z-fighting if the far clip plane is too far. Click the \"Documentation\" button to learn more", MessageType.Info);
 
                     using (new GUIEnabledWrapper(!is16BitDepthFormat))
                     {
@@ -366,16 +367,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 });
 
                 bool isGIEnabled = MixedRealityOptimizeUtils.IsRealtimeGlobalIlluminationEnabled();
-                Texture realtimeGI_Icon = !isGIEnabled ? InspectorUIUtility.SuccessIcon : InspectorUIUtility.WarningIcon;
-                BuildSection("Real-time Global Illumination", GlobalIllumination_URL, realtimeGI_Icon, () =>
+                BuildSection("Real-time Global Illumination", GlobalIllumination_URL, GetTitleIcon(!isGIEnabled), () =>
                 {
                     EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField("Global Illumination can produce great visual results but sometimes at great expense.", EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.LabelField("Real-time Global Illumination can produce great visual results but at great expense. It is recommended to disable this feature in lighting settings.", EditorStyles.wordWrappedLabel);
                     if (GUILayout.Button(new GUIContent("View Lighting Settings", "Open Lighting Settings"), EditorStyles.miniButton, GUILayout.Width(160f)))
                     {
                         EditorApplication.ExecuteMenuItem("Window/Rendering/Lighting Settings");
                     }
                     EditorGUILayout.EndHorizontal();
+
+                    EditorGUILayout.HelpBox("Note: Real-time Global Illumination is a per-scene setting.", MessageType.Info);
 
                     using (new GUIEnabledWrapper(isGIEnabled))
                     {
@@ -488,7 +490,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Section Title
             EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(new GUIContent(title, titleIcon), EditorStyles.boldLabel);
-                //EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
                 InspectorUIUtility.RenderDocLinkButton(url);
             EditorGUILayout.EndHorizontal();
         }
