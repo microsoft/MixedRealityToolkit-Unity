@@ -34,7 +34,7 @@ and then running its list of spatial observers (which are also referred to as da
 ### Observers
 
 A spatial observer is responsible for interfacing with a specific underlying system (for example, the
-inbox MRTK spatial observer talks with the Windows Mixed Reality platform to get HoloLens meshes) and
+in-box MRTK spatial observer talks with the Windows Mixed Reality platform to get HoloLens meshes) and
 then surfacing the platform specific data in a way that is consistent with the larger spatial awareness
 system.
 
