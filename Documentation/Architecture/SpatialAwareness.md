@@ -7,7 +7,7 @@ world. It provides:
 2. A mechanism to stop/start observation (i.e. to allow for runtime disabling of mesh visualization and generation).
 3. Visualization of the observed environment.
 
-This system only works on platforms that support spatial mapping. Currently MRTK provides inbox support
+This system only works on platforms that support spatial mapping. Currently MRTK provides in-box support
 for spatial mapping on the following platforms:
 
 - HoloLens
