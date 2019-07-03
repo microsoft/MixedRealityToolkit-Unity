@@ -128,6 +128,26 @@ as well as this short version: <a class="xref" href="../../api/Microsoft.MixedRe
 <pre><code>This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
 as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 </code></pre>
+<h2 id="enumerating-available-xrefs">Enumerating available xrefs</h2>
+<p>Xref syntax can be difficult to remember - it's possible to enumerate all of the available xref IDs by first running
+docfx locally:</p>
+<blockquote>
+<p>docfx docfx.json</p>
+</blockquote>
+<p>This will generate an xrefmap.yml file, which will be located in docs/xrefmap.yml.</p>
+<p>For example, in order to link the following overload of HandleEvent, the syntax is fairly arcane:</p>
+<pre><code>- uid: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
+  name: HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)
+  href: api/Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0__
+  commentId: M:Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
+  name.vb: HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
+  fullName: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)
+  fullName.vb: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
+  nameWithType: BaseEventSystem.HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)
+  nameWithType.vb: BaseEventSystem.HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
+</code></pre>
+<p>It's easy, however, to search for the name and then use the entire <strong>uid field</strong> as the xref.</p>
+<p>In this example, the xref would look like: (xref:Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent<code>1(BaseEventData,ExecuteEvents.EventFunction{</code>0}))</p>
 <h2 id="adding-new-md-files-to-developer-docs">Adding new .md files to developer docs</h2>
 <p>Docfx will pick up any .md files in folders that are added as content files in the build section of the docfx.json and generate html files out of them. For new folders a corresponding entry in the build file needs to be added.</p>
 <h3 id="navigation-entries">Navigation entries</h3>
