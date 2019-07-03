@@ -1,12 +1,20 @@
 # Optimize Window
 
-The MRTK Optimize Window is a utility to help automate and inform in the process of configuring a mixed reality for best [performance](../Documentation/Performance/PerfGettingStarted.md) in Unity. This tool generally focuses on rendering configurations that when set to the correct preset can save milliseconds of processing.
+The MRTK Optimize Window is a utility to help automate and inform in the process of configuring a mixed reality project for best [performance](../Documentation/Performance/PerfGettingStarted.md) in Unity. This tool generally focuses on rendering configurations that when set to the correct preset can save milliseconds of processing.
+
+The *Active Build Target* is the [build platform currently targeted](https://docs.unity3d.com/Manual/BuildSettings.html) by the project for compiling.
+
+The *Performance Target* instructs the optimize tool what kind of device endpoints to target.
+
+- *AR Headsets* are mobile-class devices such as HoloLens
+- *VR Standalone* are mobile-class devices such as the Oculus Go or Quest
+- *VR Tethered* are PC-powered devices such as the Samsung Odyssey, Oculus Rift or HTC Vive etc.
 
 ## Setting optimizations
 
 The settings optimization tab covers some of the important rendering configurations for a Unity project. This section can help automate and inform what settings should be changed for the best performing results.
 
-(INSERT PICTURE HERE)
+![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_Settings.png)
 
 ### Single Pass Instanced Rendering
 
@@ -18,7 +26,7 @@ To improve [hologram stabilization](..\Hologram-Stabilization.md), developers ca
 
 ### Depth buffer format
 
-Furthermore, it is recommended to utilize a 16-bit depth format when enabling depth buffer sharing compared to 24-bit. This means lower precision but saves on performance. If [z-fighting](https://en.wikipedia.org/wiki/Z-fighting) occurs because there is less precision in calculating depth for pixels, then it is recommended to move the [far clip plane](https://docs.unity3d.com/Manual/class-Camera.html) closer to the camera (ex: 50m instead of 1000m).
+Furthermore, for *AR Headsets*, it is recommended to utilize a 16-bit depth format when enabling depth buffer sharing compared to 24-bit. This means lower precision but saves on performance. If [z-fighting](https://en.wikipedia.org/wiki/Z-fighting) occurs because there is less precision in calculating depth for pixels, then it is recommended to move the [far clip plane](https://docs.unity3d.com/Manual/class-Camera.html) closer to the camera (ex: 50m instead of 1000m).
 
 ### Real-time Global Illumination
 
@@ -28,19 +36,22 @@ Furthermore, it is recommended to utilize a 16-bit depth format when enabling de
 
 ## Scene analysis
 
-The scene analysis tab is designed to inform developers what elements currently in the scene will likely have the biggest impact on performance.
+The *Scene Analysis* tab is designed to inform developers what elements currently in the scene will likely have the biggest impact on performance.
 
-(INSERT PICTURE HERE)
+![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_SceneAnalysis.png)
 
 ### Lighting analysis
 
-This tool will examine the number of lights currently in the scene as well as any lights that should disable shadows. Shadow casting is a very expensive operation.
+This section will examine the number of lights currently in the scene as well as any lights that should disable shadows. Shadow casting is a very expensive operation.
 
 ### Polygon count analysis
 
- The tool also provides polygon count statistics. It can be very helpful to quickly identify which GameObjects have the highest polygon complexity in a given scene.
+ The tool also provides polygon count statistics. It can be very helpful to quickly identify which GameObjects have the highest polygon complexity in a given scene to target for optimizations.
 
 ## Shader analysis
 
-sdfsdf
-(INSERT PICTURE HERE)
+The [Unity Standard shader](https://docs.unity3d.com/Manual/shader-StandardShader.html) can produce very high quality visual results for games but is not generally best suited for the performance needs of mixed reality applications, especially since such applications are generally [GPU bounded](../Performance/PerfGettingStarted.md#GPU-Bounded). Thus, it is recommended to developers to utilize the [MRTK Standard shader](../README_MRTKStandardShader.md) to balance aesthetics & graphical features with performance.
+
+The *Shader Analysis* tab scans the current project's Asset folder for materials using the Unity Standard shader or if desired, all materials not using Mixed Reality Toolkit provided shaders. Once discovered, developers can convert all materials or convert individually using the appropriate buttons.
+
+![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_ShaderAnalysis.png)

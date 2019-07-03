@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             {
                                 foreach (var l in this.sceneLights)
                                 {
-                                    if (l.shadows != LightShadows.None)
+                                    if (l != null && l.shadows != LightShadows.None)
                                     {
                                         EditorGUILayout.ObjectField("Disable shadows", l, typeof(Light), true);
                                     }
@@ -480,6 +480,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private bool CanConvertMaterial(Material asset)
         {
             return asset != null
+                && !asset.shader.name.StartsWith("Mixed Reality Toolkit")
                 && ((asset.shader != replacementShader && (!onlyUnityShader || asset.shader == unityStandardShader))
                         || asset.shader == errorShader);
         }
