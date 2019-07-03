@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
                         if (c != null)
                         {
-                            c.IsPointerDown = false;
+                            c.SourceDownIds.Remove(eventData.SourceId);
                         }
                         InputSystem.RaisePointerClicked(this, selectAction, 0, Controller.ControllerHandedness);
                         InputSystem.RaisePointerUp(this, selectAction, Controller.ControllerHandedness);
@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
                         if (c != null)
                         {
-                            c.IsPointerDown = true;
+                            c.SourceDownIds.Add(eventData.SourceId);
                         }
                         InputSystem.RaisePointerDown(this, selectAction, Controller.ControllerHandedness);
                     }
@@ -335,6 +335,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
+                BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
+                if (c != null)
+                {
+                    c.SourceDownIds.Remove(eventData.SourceId);
+                }
+
                 if (isSelectPressed)
                 {
                     // Raise OnInputUp if pointer is lost while select is pressed

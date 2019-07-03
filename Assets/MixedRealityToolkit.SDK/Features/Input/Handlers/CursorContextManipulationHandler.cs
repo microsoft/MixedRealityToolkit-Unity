@@ -59,7 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void ManipulationEnded(ManipulationEventData manipEvent)
         {
-            contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.None;
+            contextInfo.CurrentCursorAction = hoverCount < 2 ?
+                CursorContextInfo.CursorAction.None :
+                CursorContextInfo.CursorAction.Move;
         }
     }
 }

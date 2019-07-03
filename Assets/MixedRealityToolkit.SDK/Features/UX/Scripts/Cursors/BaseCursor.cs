@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -119,7 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected bool IsSourceDetected => visibleSourcesCount > 0;
 
-        public bool IsPointerDown = false;
+        public List<uint> SourceDownIds = new List<uint>();
+        public bool IsPointerDown => SourceDownIds.Count > 0;
 
         protected GameObject TargetedObject = null;
 
@@ -232,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (basePointer != null &&
                             basePointer.DestroyOnSourceLost)
                         {
-                            IsPointerDown = false;
+                            SourceDownIds.Remove(eventData.SourceId);
                             Destroy(gameObject);
                             return;
                         }
@@ -244,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (!IsSourceDetected)
             {
-                IsPointerDown = false;
+                SourceDownIds.Remove(eventData.SourceId);
 
                 if (SetVisibilityOnSourceDetected)
                 {
@@ -280,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (sourcePointer.PointerId == Pointer.PointerId)
                 {
-                    IsPointerDown = true;
+                    SourceDownIds.Add(eventData.SourceId);
                 }
             }
         }
@@ -298,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (sourcePointer.PointerId == Pointer.PointerId)
                 {
-                    IsPointerDown = false;
+                    SourceDownIds.Remove(eventData.SourceId);
                 }
             }
         }
@@ -559,9 +561,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                Vector3 right = default;
-                Vector3 up = default;
-                Vector3 forward = default;
+                Vector3 right = Vector3.zero;
+                Vector3 up = Vector3.zero;
+                Vector3 forward = Vector3.zero;
                 if (!GetCursorTargetAxes(focusDetails.Normal, ref right, ref up, ref forward))
                 {
                     return CursorContextEnum.None;
