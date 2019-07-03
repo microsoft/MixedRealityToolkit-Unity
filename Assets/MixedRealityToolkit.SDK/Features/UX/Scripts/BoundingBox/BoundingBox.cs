@@ -952,8 +952,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void Start()
         {
-            farScale = Mathf.Max(farScale, 0.01f);
-
             CreateRig();
             CaptureInitialState();
 
