@@ -154,7 +154,7 @@ A pointer is defined by the following set of data:
 
 1. The set of controllers that a pointer is valid for. For example, the PokePointer
    is responsible for "poking" objects with a finger, and is, by default, marked as
-   only supporting the Articulated Hand controller type.
+   only supporting the articulated hand controller type.
 2. The handedness that the pointer supports. All inbox pointers are configured to
    work with any hand - it's possible to restrict a pointer to only being instantiated
    for a specific hand (left/right) by changing its handedness configuration.
