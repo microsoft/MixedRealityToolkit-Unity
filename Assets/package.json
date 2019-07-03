@@ -2,7 +2,7 @@
   "name": "com.microsoft.mixedrealitytoolkit",
   "version": "2.0.0",
   "displayName": "Mixed Reality Toolkit",
-  "description": "MRTK virtal package.",
+  "description": "MRTK virtual package.",
   "unity": "2018.4",
   "unityRelease": "0f1",
   "dependencies": {
