@@ -94,7 +94,7 @@ that support “near interaction touchable.” GameObjects support "near interac
 have attach the [NearInteractionTouchable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) script.
 The PokePointer uses a SphereCast to determine the closest touchable (or in the case of interaction with
 UnityUI, enumerate through the list of NearInteractionTouchableUnityUIs). This type of pointer/NearInteractionTouchable combination is used to power things like the pressable buttons and the piano
-keys (n the hand interaction examples scene.
+keys (in the hand interaction examples scene).
 
 ### SpherePointer
 
