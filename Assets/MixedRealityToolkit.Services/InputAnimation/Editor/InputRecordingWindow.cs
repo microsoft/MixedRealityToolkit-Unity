@@ -65,14 +65,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// Icon textures
         private Texture2D iconPlay = null;
-        private Texture2D iconPause = null;
         private Texture2D iconRecord = null;
         private Texture2D iconRecordActive = null;
-        private Texture2D iconStop = null;
         private Texture2D iconStepFwd = null;
-        private Texture2D iconStepBack = null;
-        private Texture2D iconJumpFwd = null;
         private Texture2D iconJumpBack = null;
+        private Texture2D iconJumpFwd = null;
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Input Recording")]
         private static void ShowWindow()
@@ -208,15 +205,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 bool wasPlaying = PlaybackService.IsPlaying;
 
-                bool play, stepFwd, jumpBack;
+                bool play, stepFwd, jumpBack, jumpFwd;
                 using (new GUILayout.HorizontalScope())
                 {
-                    jumpBack = GUILayout.Button(new GUIContent(iconJumpBack, "Reset input animation"), "Button");
+                    jumpBack = GUILayout.Button(new GUIContent(iconJumpBack, "Jump to the start of the input animation"), "Button");
                     var playButtonContent = wasPlaying
                         ? new GUIContent(iconPlay, "Stop playing input animation")
                         : new GUIContent(iconPlay, "Play back input animation");
                     play = GUILayout.Toggle(wasPlaying, playButtonContent, "Button");
                     stepFwd = GUILayout.Button(new GUIContent(iconStepFwd, "Step forward one frame"), "Button");
+                    jumpFwd = GUILayout.Button(new GUIContent(iconJumpFwd, "Jump to the end of the input animation"), "Button");
                 }
 
                 float time = PlaybackService.LocalTime;
@@ -239,6 +237,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     PlaybackService.LocalTime = 0.0f;
                 }
+                if (jumpFwd)
+                {
+                    PlaybackService.LocalTime = duration;
+                }
                 if (stepFwd)
                 {
                     PlaybackService.LocalTime += Time.deltaTime;
@@ -247,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     PlaybackService.LocalTime = newTimeField;
                 }
-                else if (newTimeSlider != time)
+                if (newTimeSlider != time)
                 {
                     PlaybackService.LocalTime = newTimeSlider;
                 }
@@ -329,12 +331,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void LoadIcons()
         {
             LoadTexture(ref iconPlay, "MRTK_TimelinePlay.png");
-            LoadTexture(ref iconPause, "MRTK_TimelinePause.png");
             LoadTexture(ref iconRecord, "MRTK_TimelineRecord.png");
             LoadTexture(ref iconRecordActive, "MRTK_TimelineRecordActive.png");
-            LoadTexture(ref iconStop, "MRTK_TimelineStop.png");
             LoadTexture(ref iconStepFwd, "MRTK_TimelineStepFwd.png");
-            LoadTexture(ref iconStepBack, "MRTK_TimelineStepBack.png");
             LoadTexture(ref iconJumpFwd, "MRTK_TimelineJumpFwd.png");
             LoadTexture(ref iconJumpBack, "MRTK_TimelineJumpBack.png");
         }
