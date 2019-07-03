@@ -403,21 +403,24 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var meshes = new List<MeshNode>();
             foreach(var f in filters)
             {
-                int count = f.sharedMesh.triangles.Length / 3;
+                if (f != null && f.sharedMesh != null)
+                {
+                    int count = f.sharedMesh.triangles.Length / 3;
 
-                meshes.Add(new MeshNode
-                {
-                    polycount = count,
-                    filter = f
-                });
+                    meshes.Add(new MeshNode
+                    {
+                        polycount = count,
+                        filter = f
+                    });
 
-                if (f.gameObject.activeInHierarchy)
-                {
-                    totalActivePolyCount += count;
-                }
-                else
-                {
-                    totalInActivePolyCount += count;
+                    if (f.gameObject.activeInHierarchy)
+                    {
+                        totalActivePolyCount += count;
+                    }
+                    else
+                    {
+                        totalInActivePolyCount += count;
+                    }
                 }
             }
 
