@@ -10,7 +10,7 @@ world. It provides:
 This system only works on platforms that support spatial mapping. Currently MRTK provides inbox support
 for spatial mapping on the following platforms:
 
-- HoloLens 1
+- HoloLens
 - HoloLens 2
 
 On platforms that don't support spatial features, this system will fallback gracefully to null/empty
