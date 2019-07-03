@@ -63,6 +63,33 @@ This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Bound
 as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 ```
 
+## Enumerating available xrefs
+
+xref syntax can be difficult to remember - it's possible to enumerate all of the available xref IDs by first running
+docfx locally:
+
+> docfx docfx.json
+
+This will generate an xrefmap.yml file, which will be located in docs/xrefmap.yml.
+
+For example, in order to link the following overload of HandleEvent, the syntax is fairly arcane:
+
+```
+- uid: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
+  name: HandleEvent<T>(BaseEventData, ExecuteEvents.EventFunction<T>)
+  href: api/Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0__
+  commentId: M:Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
+  name.vb: HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
+  fullName: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent<T>(BaseEventData, ExecuteEvents.EventFunction<T>)
+  fullName.vb: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
+  nameWithType: BaseEventSystem.HandleEvent<T>(BaseEventData, ExecuteEvents.EventFunction<T>)
+  nameWithType.vb: BaseEventSystem.HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
+```
+
+It's easy, however, to search for the name and then use the entire **uid field** as the xref.
+
+In this example, the xref would look like: (xref:Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0}))
+
 ## Adding new .md files to developer docs
 Docfx will pick up any .md files in folders that are added as content files in the build section of the docfx.json and generate html files out of them. For new folders a corresponding entry in the build file needs to be added. 
 
