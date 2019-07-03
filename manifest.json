@@ -7704,6 +7704,42 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.StabilizationPlaneModifier.StabilizationPlaneMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.StabilizationPlaneModifier.StabilizationPlaneMode.html",
+          "hash": "PDUUxTS2ek+FMheLPJb8Nw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.StabilizationPlaneModifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.StabilizationPlaneModifier.html",
+          "hash": "DKtqytHM3MzkbOBlVBbecg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.StabilizationPlaneOverride.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.StabilizationPlaneOverride.html",
+          "hash": "dTnq6q2o7oIAjtIVj5DNRw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.WorldAnchorManager.yml",
       "output": {
         ".html": {
@@ -7720,7 +7756,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.html",
-          "hash": "3m9s5fwk3s1y4dEM1GTVgA=="
+          "hash": "RGkzk/u0c9V1B/3JjbVZzQ=="
         }
       },
       "is_incremental": false,
@@ -16852,7 +16888,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "9WbJ9xH9qftD1KO4G4XJ9g=="
+          "hash": "JYJOcPQRK5lhmCF8Z3dyzw=="
         }
       },
       "is_incremental": false,
@@ -16911,16 +16947,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 992,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 110,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 995,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
