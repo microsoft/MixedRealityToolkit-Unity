@@ -6,7 +6,7 @@ with objects in the scene.
 
 ## Controllers
 
-Controllers representations of a physical controller (6-degree of freedom, articulated hand, etc).
+Controllers are representations of a physical controller (6-degree of freedom, articulated hand, etc).
 They are created by device managers, and are responsible for communicating with the corresponding
 underlying system and translating that data into MRTK-shaped data and events.
 
