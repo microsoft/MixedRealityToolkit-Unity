@@ -5,10 +5,6 @@
     href: HTKToMRTKPortingGuide.md
   - name: Updating from RC2 to GA
     href: UpdatingToGA.md
-  - name: Performance
-    href: Performance/PerfGettingStarted.md
-  - name: Hologram Stabilization
-    href: Hologram-Stabilization.md
 - name: Architecture
   items:
   - name: Overview
@@ -16,7 +12,13 @@
   - name: Framework and Runtime
     href: Architecture/FrameworkAndRuntime.md
   - name: Input System
-    href: Architecture/InputSystem.md
+    items:
+    - name: Terminology
+      href: Architecture/InputSystem/Terminology.md
+    - name: Core System
+      href: Architecture/InputSystem/CoreSystem.md
+    - name: Controllers, Pointers, and Focus
+      href: Architecture/InputSystem/ControllersPointersAndFocus.md
 - name: Feature Overviews
   items:
   - name: Profiles
@@ -49,6 +51,11 @@
       href: EyeTracking/EyeTracking_Main.md
   - name: In-Editor Input Simulation
     href: InputSimulation/InputSimulationService.md
+  - name: Input Animation Recording
+    href: InputSimulation/InputAnimationRecording.md
+    items:
+    - name: Input Animation File Format Specification
+      href: InputSimulation/InputAnimationFileFormat.md
   - name: UX Building Blocks
     items:
     - name: Interactable
@@ -125,14 +132,10 @@
       href: Packaging/MRTK_Packages.md
     - name: MRTK Componentization
       href: Packaging/MRTK_Modularization.md
-  - name: Utilities
-    items:
-    - name: Build Window
-      href: Utilities/BuildWindow.md
-    - name: Optimize Window
-      href: Utilities/OptimizeWindow.md
-    - name: Extension Service Creation Wizard
-      href: Utilities/ExtensionServiceCreationWizard.md
+  - name: Performance
+    href: Performance/PerfGettingStarted.md
+  - name: Extension Service Creation Wizard
+    href: Utilities/ExtensionServiceCreationWizard.md
   - name: Experimental Features
     href: ExperimentalFeatures.md
   - name: Advanced topics
@@ -153,6 +156,8 @@
     href: Contributing/DevDocGuide.md
   - name: Testing
     href: Contributing/UnitTests.md
+  - name: Breaking Changes
+    href: Contributing/BreakingChanges.md
 - name: Planning
   items:
   - name: Roadmap

@@ -132,22 +132,18 @@ The Mixed Reality Project provides a full featured Teleportation system for mana
 ## Spatial awareness settings
 
 The Mixed Reality Project provides a rebuilt spatial awareness system for working with spatial scanning systems in the project which is selected by default.
-You can view the architecture behind the [MRTK Spatial awareness system here](../Documentation/Architecture/SpatialAwareness/SpatialAwarenessSystemArchitecture.md).
-
-> The MRTK also allows you to write your own spatial awareness system and you can use the selection below to switch the system used without rewriting the toolkit. For more information on writing your own systems, [please see this guide to building registered services]() (Coming soon)
+You can view the architecture behind the [MRTK Spatial awareness system here](../Documentation/Architecture/SpatialAwareness.md).
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png" width="650px" style="display:block;">
 
-The Mixed Reality Toolkit spatial awareness configuration lets you tailor how the system starts, whether it is automatically when the application starts or later programmatically as well as setting the extents for the field of view.
+The Mixed Reality Toolkit spatial awareness configuration lets you tailor how the system starts, whether it is automatically when the application starts
+or later programmatically as well as setting the extents for the field of view.
 
 It also lets you configure the mesh and surface settings, further customizing how your project understands the environment around you. 
 
-This is only applicable for devices that can provide a scanned environment, such as the HoloLens (and other devices in the future)
-
-> Note, the spatial awareness system is still in active development, please report any issues or requests in the [MRTK Issues section on GitHub](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues)
+This is only applicable for devices that can provide a scanned environment.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png" width="650px" style="display:block;">
-
 
 ---
 <a name="diagnostic"/>
