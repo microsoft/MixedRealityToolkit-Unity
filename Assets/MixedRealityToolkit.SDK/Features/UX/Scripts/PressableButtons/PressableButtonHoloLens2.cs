@@ -18,6 +18,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("The visuals which become compressed (scaled) along the z-axis when pressed.")]
         private GameObject compressableButtonVisuals = null;
+
+        /// <summary>
+        /// The visuals which become compressed (scaled) along the z-axis when pressed.
+        /// </summary>
         public GameObject CompressableButtonVisuals
         {
             get => compressableButtonVisuals;
@@ -37,6 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Range(0.0f, 1.0f)]
         [Tooltip("The minimum percentage of the original scale the compressableButtonVisuals can be compressed to.")]
         private float minCompressPercentage = 0.25f;
+
+        /// <summary>
+        /// The minimum percentage of the original scale the compressableButtonVisuals can be compressed to.
+        /// </summary>
         public float MinCompressPercentage { get => minCompressPercentage; set => minCompressPercentage = value; }
 
         [SerializeField]
