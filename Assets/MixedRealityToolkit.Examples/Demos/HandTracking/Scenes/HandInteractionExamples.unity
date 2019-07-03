@@ -6758,11 +6758,13 @@ MonoBehaviour:
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
-  scaleHandlePrefab: {fileID: 100000, guid: 36fc2837fda89a6479905d3bc90d9ff8, type: 3}
-  scaleHandleSlatePrefab: {fileID: 100000, guid: feb050428dc7b2d4fa247e8d11bf1eaf,
+  scaleHandlePrefab: {fileID: 9134652625222899238, guid: 6cf8f9d89a23d5446a85086a373dbd21,
+    type: 3}
+  scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
-  rotationHandlePrefab: {fileID: 100000, guid: b1b91cc294648bc4da669c0dc8ed7a43, type: 3}
+  rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
+    type: 3}
   rotationHandleSize: 0.016
   rotationHandlePrefabColliderType: 0
   showScaleHandles: 1
@@ -6771,8 +6773,8 @@ MonoBehaviour:
   showRotationHandleForZ: 1
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
-  handleMediumProximity: 0.08
-  handleCloseProximity: 0.05
+  handleMediumProximity: 0.1
+  handleCloseProximity: 0.03
   farScale: 0
   mediumScale: 1
   closeScale: 1.5
@@ -7987,41 +7989,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: scaleHandleSize
-      value: 0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: rotationHandleSize
-      value: 0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: scaleHandlePrefab
-      value: 
-      objectReference: {fileID: 100000, guid: 36fc2837fda89a6479905d3bc90d9ff8, type: 3}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: scaleHandleSlatePrefab
-      value: 
-      objectReference: {fileID: 100000, guid: feb050428dc7b2d4fa247e8d11bf1eaf, type: 3}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: rotationHandlePrefab
-      value: 
-      objectReference: {fileID: 100000, guid: b1b91cc294648bc4da669c0dc8ed7a43, type: 3}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: handleMediumProximity
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: handleCloseProximity
-      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 937ce507dd7ee334ba569554e24adbdd, type: 3}
@@ -12998,26 +12965,34 @@ PrefabInstance:
         type: 3}
       propertyPath: scaleHandlePrefab
       value: 
-      objectReference: {fileID: 100000, guid: 36fc2837fda89a6479905d3bc90d9ff8, type: 3}
+      objectReference: {fileID: 9134652625222899238, guid: 6cf8f9d89a23d5446a85086a373dbd21,
+        type: 3}
     - target: {fileID: 215865006215067806, guid: e9e54ebd208487c409e32502a50a1f20,
         type: 3}
       propertyPath: scaleHandleSlatePrefab
       value: 
-      objectReference: {fileID: 100000, guid: feb050428dc7b2d4fa247e8d11bf1eaf, type: 3}
+      objectReference: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
+        type: 3}
     - target: {fileID: 215865006215067806, guid: e9e54ebd208487c409e32502a50a1f20,
         type: 3}
       propertyPath: rotationHandlePrefab
       value: 
-      objectReference: {fileID: 100000, guid: b1b91cc294648bc4da669c0dc8ed7a43, type: 3}
+      objectReference: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
+        type: 3}
     - target: {fileID: 215865006215067806, guid: e9e54ebd208487c409e32502a50a1f20,
         type: 3}
       propertyPath: handleMediumProximity
-      value: 0.08
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 215865006215067806, guid: e9e54ebd208487c409e32502a50a1f20,
         type: 3}
       propertyPath: handleCloseProximity
-      value: 0.05
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 215865006215067806, guid: e9e54ebd208487c409e32502a50a1f20,
+        type: 3}
+      propertyPath: rotationHandlePrefabColliderType
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9e54ebd208487c409e32502a50a1f20, type: 3}
@@ -14747,9 +14722,9 @@ MonoBehaviour:
   scaleHandleSlatePrefab: {fileID: 1134031327877807717, guid: c45e552a6d92491468c421c35c5dd63d,
     type: 3}
   scaleHandleSize: 0.016
-  rotationHandlePrefab: {fileID: 100000, guid: 57c53da2552a8114ab6d68e0cd31b1eb, type: 3}
+  rotationHandlePrefab: {fileID: 100000, guid: b1b91cc294648bc4da669c0dc8ed7a43, type: 3}
   rotationHandleSize: 0.016
-  rotationHandlePrefabColliderType: 0
+  rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
   showRotationHandleForY: 1
@@ -15046,21 +15021,23 @@ MonoBehaviour:
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
-  scaleHandlePrefab: {fileID: 100000, guid: 36fc2837fda89a6479905d3bc90d9ff8, type: 3}
-  scaleHandleSlatePrefab: {fileID: 100000, guid: feb050428dc7b2d4fa247e8d11bf1eaf,
+  scaleHandlePrefab: {fileID: 9134652625222899238, guid: 6cf8f9d89a23d5446a85086a373dbd21,
+    type: 3}
+  scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
-  rotationHandlePrefab: {fileID: 100000, guid: b1b91cc294648bc4da669c0dc8ed7a43, type: 3}
+  rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
+    type: 3}
   rotationHandleSize: 0.016
-  rotationHandlePrefabColliderType: 0
+  rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
   showRotationHandleForY: 1
   showRotationHandleForZ: 1
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
-  handleMediumProximity: 0.08
-  handleCloseProximity: 0.05
+  handleMediumProximity: 0.1
+  handleCloseProximity: 0.03
   farScale: 0
   mediumScale: 1
   closeScale: 1.5
@@ -16309,15 +16286,15 @@ MonoBehaviour:
   scaleHandleSize: 0.016
   rotationHandlePrefab: {fileID: 0}
   rotationHandleSize: 0.016
-  rotationHandlePrefabColliderType: 0
+  rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 0
   showRotationHandleForY: 1
   showRotationHandleForZ: 0
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
-  handleMediumProximity: 0.08
-  handleCloseProximity: 0.05
+  handleMediumProximity: 0.1
+  handleCloseProximity: 0.03
   farScale: 1
   mediumScale: 1.2
   closeScale: 1.5
@@ -17379,7 +17356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.08599998
+      value: 0.152
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
       propertyPath: m_LocalPosition.y
@@ -17387,7 +17364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.043999948
+      value: -0.162
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
       propertyPath: m_LocalRotation.x
@@ -17569,21 +17546,23 @@ MonoBehaviour:
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
-  scaleHandlePrefab: {fileID: 100000, guid: 36fc2837fda89a6479905d3bc90d9ff8, type: 3}
-  scaleHandleSlatePrefab: {fileID: 100000, guid: feb050428dc7b2d4fa247e8d11bf1eaf,
+  scaleHandlePrefab: {fileID: 9134652625222899238, guid: 6cf8f9d89a23d5446a85086a373dbd21,
+    type: 3}
+  scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
-  rotationHandlePrefab: {fileID: 100000, guid: b1b91cc294648bc4da669c0dc8ed7a43, type: 3}
+  rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
+    type: 3}
   rotationHandleSize: 0.016
-  rotationHandlePrefabColliderType: 0
+  rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
   showRotationHandleForY: 1
   showRotationHandleForZ: 1
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
-  handleMediumProximity: 0.08
-  handleCloseProximity: 0.05
+  handleMediumProximity: 0.1
+  handleCloseProximity: 0.03
   farScale: 0
   mediumScale: 1
   closeScale: 1.5
@@ -19931,21 +19910,23 @@ MonoBehaviour:
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
-  scaleHandlePrefab: {fileID: 100000, guid: 36fc2837fda89a6479905d3bc90d9ff8, type: 3}
-  scaleHandleSlatePrefab: {fileID: 100000, guid: feb050428dc7b2d4fa247e8d11bf1eaf,
+  scaleHandlePrefab: {fileID: 9134652625222899238, guid: 6cf8f9d89a23d5446a85086a373dbd21,
+    type: 3}
+  scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
-  rotationHandlePrefab: {fileID: 100000, guid: b1b91cc294648bc4da669c0dc8ed7a43, type: 3}
+  rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
+    type: 3}
   rotationHandleSize: 0.016
-  rotationHandlePrefabColliderType: 0
+  rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
   showRotationHandleForY: 1
   showRotationHandleForZ: 1
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
-  handleMediumProximity: 0.08
-  handleCloseProximity: 0.05
+  handleMediumProximity: 0.1
+  handleCloseProximity: 0.03
   farScale: 0
   mediumScale: 1
   closeScale: 1.5

@@ -558,11 +558,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it starts scaling the handle?")]
         [Range(0.005f, 0.2f)]
-        private float handleMediumProximity = 0.08f;
+        private float handleMediumProximity = 0.1f;
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it activates the close-proximity scaling effect?")]
         [Range(0.001f, 0.1f)]
-        private float handleCloseProximity = 0.05f;
+        private float handleCloseProximity = 0.03f;
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range")]
         private float farScale = 1.0f; 
