@@ -6768,9 +6768,9 @@ MonoBehaviour:
   rotationHandleSize: 0.016
   rotationHandlePrefabColliderType: 0
   showScaleHandles: 1
-  showRotationHandleForX: 1
+  showRotationHandleForX: 0
   showRotationHandleForY: 1
-  showRotationHandleForZ: 1
+  showRotationHandleForZ: 0
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
@@ -14717,9 +14717,9 @@ MonoBehaviour:
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
-  scaleHandlePrefab: {fileID: 1361136173122186969, guid: ba9083550f965e545a628b53bfa80c9e,
+  scaleHandlePrefab: {fileID: 9134652625222899238, guid: 6cf8f9d89a23d5446a85086a373dbd21,
     type: 3}
-  scaleHandleSlatePrefab: {fileID: 1134031327877807717, guid: c45e552a6d92491468c421c35c5dd63d,
+  scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
   rotationHandlePrefab: {fileID: 100000, guid: b1b91cc294648bc4da669c0dc8ed7a43, type: 3}
