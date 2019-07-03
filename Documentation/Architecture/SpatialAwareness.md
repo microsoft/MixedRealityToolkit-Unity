@@ -3,7 +3,7 @@
 The spatial awareness system provides support for visualizing and reasoning over mapping data of the real
 world. It provides:
 
-1. Notifications for when meshes have been generated (and a way to get those meshes).
+1. Notifications for when observations (ex: meshes) have been generated (and a way to get those observations).
 2. A mechanism to stop/start observation (i.e. to allow for runtime disabling of mesh visualization and generation).
 3. Visualization of the observed environment.
 
