@@ -557,11 +557,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it starts scaling the handle?")]
-        [Range(0.005f, 0.1f)]
+        [Range(0.005f, 0.2f)]
         private float handleMediumProximity = 0.005f;
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it activates the close-proximity scaling effect?")]
-        [Range(0.001f, 0.01f)]
+        [Range(0.001f, 0.1f)]
         private float handleCloseProximity = 0.0015f;
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range")]
@@ -1959,17 +1959,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private HandleProximityState ScaleHandleByProximity(Transform handle, Renderer renderer, Transform handleVisual, HandleProximityState state, List<Vector3> points)
         {
             HandleProximityState newState = state;
-            float closestDistanceSqr = float.MaxValue;
+            float closestDistance = float.MaxValue;
             foreach (Vector3 point in points)
             {
-                closestDistanceSqr = Mathf.Min(closestDistanceSqr, (handle.position - point).sqrMagnitude);
+                closestDistance = Mathf.Min(closestDistance, (handle.position - point).magnitude);
             }
 
-            if (closestDistanceSqr < handleCloseProximity)
+            if (closestDistance < handleCloseProximity)
             {
                 newState = HandleProximityState.CloseProximity;
             }
-            else if (closestDistanceSqr < handleMediumProximity)
+            else if (closestDistance < handleMediumProximity)
             {
                 newState = HandleProximityState.MediumProximity;
             }
