@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
-        private SpeechCommands[] Commands => (ConfigurationProfile as MixedRealityInputSystemProfile)?.SpeechCommandsProfile?.SpeechCommands;
+        private SpeechCommands[] Commands => InputSystemProfile?.SpeechCommandsProfile.SpeechCommands;
 
         /// <summary>
         /// The Input Source for Windows Speech Input.
