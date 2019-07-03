@@ -16268,9 +16268,9 @@ MonoBehaviour:
   proximityEffectActive: 1
   handleMediumProximity: 0.005
   handleCloseProximity: 0.0015
-  farScale: 0
+  farScale: 1
   mediumScale: 1.2
-  closeScale: 1.3
+  closeScale: 1.5
   farGrowRate: 0.3
   mediumGrowRate: 0.2
   closeGrowRate: 0.3

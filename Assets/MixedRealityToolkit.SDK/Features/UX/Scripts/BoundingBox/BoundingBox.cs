@@ -597,7 +597,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float handleCloseProximity = 0.0015f;
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range")]
-        private float farScale = 0.0f; // In default, the handles are not visible
+        private float farScale = 1.0f; 
         public float FarScale
         {
             get
@@ -611,7 +611,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Medium Proximity range")]
-        private float mediumScale = 2.0f;
+        private float mediumScale = 1.2f;
         public float MediumScale
         {
             get
@@ -625,7 +625,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Close Proximity range")]
-        private float closeScale = 3.0f;
+        private float closeScale = 1.5f;
         public float CloseScale
         {
             get
@@ -952,13 +952,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void Start()
         {
-            //override Shell Parity settings if no prefab is specified for corner handles;
-            if (scaleHandlePrefab == null)
-            {
-                closeScale = 1.8f;
-                mediumScale = 1.5f;
-                farScale = 1.0f;
-            }
             farScale = Mathf.Max(farScale, 0.01f);
 
             CreateRig();
