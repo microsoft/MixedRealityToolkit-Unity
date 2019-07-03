@@ -393,13 +393,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             switch (RaycastMode)
             {
                 case SceneQueryType.SimpleRaycast:
-                    SimpleRaycastStepUpdate(this.currentRayStep);
+                    SimpleRaycastStepUpdate(ref this.currentRayStep);
                     break;
                 case SceneQueryType.BoxRaycast:
-                    BoxRaycastStepUpdate(this.currentRayStep);
+                    BoxRaycastStepUpdate(ref this.currentRayStep);
                     break;
                 case SceneQueryType.SphereCast:
-                    SphereRaycastStepUpdate(this.currentRayStep);
+                    SphereRaycastStepUpdate(ref this.currentRayStep);
                     break;
             }
 
@@ -412,7 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// Calculate solver for simple raycast with provided ray
         /// </summary>
         /// <param name="rayStep">start/end ray passed by read-only reference to avoid struct-copy performance</param>
-        private void SimpleRaycastStepUpdate(RayStep rayStep)
+        private void SimpleRaycastStepUpdate(ref RayStep rayStep)
         {
             bool isHit;
             RaycastHit result;
@@ -443,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// Calculate solver for sphere raycast with provided ray
         /// </summary>
         /// <param name="rayStep">start/end ray passed by read-only reference to avoid struct-copy performance</param>
-        private void SphereRaycastStepUpdate(RayStep rayStep)
+        private void SphereRaycastStepUpdate(ref RayStep rayStep)
         {
             bool isHit;
             RaycastHit result;
@@ -475,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// Calculate solver for box raycast with provided ray
         /// </summary>
         /// <param name="rayStep">start/end ray passed by read-only reference to avoid struct-copy performance</param>
-        private void BoxRaycastStepUpdate(RayStep rayStep)
+        private void BoxRaycastStepUpdate(ref RayStep rayStep)
         {
             Vector3 scale = ScaleOverride > 0 ? transform.lossyScale.normalized * ScaleOverride : transform.lossyScale;
 
