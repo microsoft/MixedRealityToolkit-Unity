@@ -2,7 +2,7 @@
 
 ![Slate](../Documentation/Images/Slate/MRTK_Slate_Main.png)
 
-The [`Slate.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Prefabs/Slate.prefab) offers a thin window style control for displaying 2D content, for example plain text or articles including media. It offers a grabbable title bar as well as *Follow Me* and *Close* functionality. The content window can be scrolled via articulated hand input.
+The [`Slate.prefab`](../Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Slate/Slate.prefab) offers a thin window style control for displaying 2D content, for example plain text or articles including media. It offers a grabbable title bar as well as *Follow Me* and *Close* functionality. The content window can be scrolled via articulated hand input.
 
 ## How to use a slate control ##
 A slate control is composed of the following elements:
