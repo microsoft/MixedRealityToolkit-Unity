@@ -384,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [FormerlySerializedAs("cornerRadius")]
         [Tooltip("Size of the cube collidable used in scale handles")]
-        private float scaleHandleSize = 0.2f;
+        private float scaleHandleSize = 0.1f;
 
         public float ScaleHandleSize
         {
@@ -1250,7 +1250,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     GameObject ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     ball.name = "midpoint_" + i.ToString();
 
-                    ball.transform.localScale = new Vector3(rotationHandleSize * rotationHandleSize, rotationHandleSize * rotationHandleSize, rotationHandleSize * rotationHandleSize);
+                    ball.transform.localScale = new Vector3(rotationHandleSize, rotationHandleSize, rotationHandleSize);
                     ball.transform.position = edgeCenters[i];
                     ball.transform.parent = rigRoot.transform;
 
@@ -1259,7 +1259,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     var g = ball.EnsureComponent<NearInteractionGrabbable>();
                     g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
 
-                    SphereCollider collider = ball.GetComponent<SphereCollider>();
                     balls.Add(ball.transform);
                     ballVisuals.Add(ball.transform);
 
@@ -1956,7 +1955,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private HandleProximityState ScaleHandleByProximity(Transform handle, Renderer renderer, Transform handleVisual, HandleProximityState state, List<Vector3> points)
+        private HandleProximityState ScaleHandleByProximity(Transform handle, Renderer renderer, Transform handleVisual, HandleProximityState state, List<Vector3> points, float handleSize)
         {
             HandleProximityState newState = state;
             float closestDistance = float.MaxValue;
@@ -1978,7 +1977,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 newState = HandleProximityState.FullsizeNoProximity;
             }
 
-            ScaleHandle(handle, handleVisual, newState);
+            ScaleHandle(handle, handleVisual, newState, handleSize);
 
             if (renderer != null && state != newState)
             {
@@ -1987,11 +1986,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return newState;
         }
 
-        private void ScaleHandle(Transform handleRoot, Transform handleVisual, HandleProximityState targetState)
+        private void ScaleHandle(Transform handleRoot, Transform handleVisual, HandleProximityState targetState, float handleSize)
         {
             float targetScale = targetState == HandleProximityState.CloseProximity ? closeScale : (targetState == HandleProximityState.MediumProximity ? mediumScale : farScale);
             float weight = targetState == HandleProximityState.CloseProximity ? closeGrowRate : (targetState == HandleProximityState.MediumProximity ? mediumGrowRate : farGrowRate);
-            float newLocalScale = (handleVisual.transform.localScale.x * (1.0f - weight)) + (scaleHandleSize * targetScale * weight);
+            float newLocalScale = (handleVisual.transform.localScale.x * (1.0f - weight)) + (handleSize * targetScale * weight);
             handleVisual.transform.localScale = new Vector3(newLocalScale, newLocalScale, newLocalScale);
 
             // Update teh collider to ensure its size is still scalehandlesize.
@@ -2010,7 +2009,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     newLocalScale = Mathf.Abs(newLocalScale);
                     newLocalScale /= rotationHandleSize != 0.0f ? rotationHandleSize : 1.0f;
-                    (collider as SphereCollider).radius = newLocalScale > 0.0f ? 0.02f / newLocalScale : 0.0f;
+                    (collider as SphereCollider).radius = newLocalScale > 0.0f ? newLocalScale * 0.5f : 0.0f;
                 }
             }
         }
@@ -2043,12 +2042,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         for (int i = 0; i < corners.Count; ++i)
                         {
-                            cornersProximate[i] = ScaleHandleByProximity(corners[i], cornerRenderers.Count > 0 ? cornerRenderers[i] : null, cornerVisuals[i], cornersProximate[i], inputPoints);
+                            cornersProximate[i] = ScaleHandleByProximity(corners[i], cornerRenderers.Count > 0 ? cornerRenderers[i] : null, cornerVisuals[i], cornersProximate[i], inputPoints, scaleHandleSize);
                         }
 
                         for (int i = 0; i < balls.Count; ++i)
                         {
-                            ballsProximate[i] = ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballVisuals[i], ballsProximate[i], inputPoints);
+                            ballsProximate[i] = ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballVisuals[i], ballsProximate[i], inputPoints, rotationHandleSize);
                         }
                     }
                 }
