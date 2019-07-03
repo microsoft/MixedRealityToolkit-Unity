@@ -242,22 +242,76 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes => new Dictionary<int, SpatialAwarenessMeshObject>(meshes) as IReadOnlyDictionary<int, SpatialAwarenessMeshObject>;
 
+        private int meshPhysicsLayer = 31;
+
         /// <inheritdoc />
-        public int MeshPhysicsLayer { get; set; }
+        public int MeshPhysicsLayer
+        {
+            get => meshPhysicsLayer;
+
+            set
+            {
+                if ((value < 0) || (value > 31))
+                {
+                    Debug.LogError("Specified MeshPhysicsLayer is out of bounds. Please set a value between 0 and 31, inclusive.");
+                    return;
+                }
+
+                meshPhysicsLayer = value;
+
+                ApplyUpdatedPhysicsLayer();
+            }
+        }
 
         /// <inheritdoc />
         public int MeshPhysicsLayerMask => (1 << MeshPhysicsLayer);
 
+        private Material occlusionMaterial = null;
+
         /// <inheritdoc />
-        public Material OcclusionMaterial { get; set; } = null;
+        public Material OcclusionMaterial
+        {
+            get => occlusionMaterial;
+
+            set
+            {
+                if (value != occlusionMaterial)
+                {
+                    occlusionMaterial = value;
+
+                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Occlusion)
+                    {
+                        ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Occlusion);
+                    }
+                }
+            }
+        }
 
         /// <inheritdoc />
         public bool RecalculateNormals { get; set; } = true;
 
         public int TrianglesPerCubicMeter { get; set; } = 0;
 
+        private Material visibleMaterial = null;
+
         /// <inheritdoc />
-        public Material VisibleMaterial { get; set; } = null;
+        public Material VisibleMaterial
+        {
+            get => visibleMaterial;
+
+            set
+            {
+                if (value != visibleMaterial)
+                {
+                    visibleMaterial = value;
+
+                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible)
+                    {
+                        ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Visible);
+                    }
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public override void Resume()
@@ -733,6 +787,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 }
 
                 meshObject.Renderer.enabled = enable;
+            }
+        }
+
+        /// <summary>
+        /// Updates the mesh physics layer for current mesh observations.
+        /// </summary>
+        private void ApplyUpdatedPhysicsLayer()
+        {
+            foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
+            {
+                if (meshObject?.GameObject == null) { continue; }
+
+                meshObject.GameObject.layer = MeshPhysicsLayer;
+
             }
         }
 
