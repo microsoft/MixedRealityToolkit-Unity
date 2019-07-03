@@ -70,6 +70,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4139348576178690}
+  - component: {fileID: 647865741599513649}
   m_Layer: 0
   m_Name: ContentParent
   m_TagString: Untagged
@@ -93,6 +94,20 @@ Transform:
   m_Father: {fileID: 4517565306006688}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &647865741599513649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269510977283586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2547b4dd088644d6aaf64f45df657c79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pivotAxis: 0
+  targetTransform: {fileID: 0}
 --- !u!1 &1439306413935240
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,6 +175,7 @@ MonoBehaviour:
   contentScale: 2
   fontSize: 30
   attachPointType: 1
+  attachPointOffset: {x: 0, y: 0, z: 0}
   toolTipLine: {fileID: 114158392181191990}
 --- !u!114 &114355726734100340
 MonoBehaviour:
@@ -236,6 +252,7 @@ MonoBehaviour:
   - {x: 0, y: 1, z: 0}
   velocitySearchRange: 0.02
   distorters: []
+  distortionEnabled: 1
   distortionMode: 0
   distortionStrength:
     serializedVersion: 2
@@ -371,6 +388,8 @@ MonoBehaviour:
   roundedEdges: 1
   roundedCaps: 1
   lineRenderer: {fileID: 120116089410604596}
+  tileMaterialByWorldLength: 0
+  tileMaterialScale: 1
 --- !u!120 &120116089410604596
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -520,7 +539,7 @@ Transform:
   m_GameObject: {fileID: 1938448898337100}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.001}
-  m_LocalScale: {x: 0.075, y: 0.015, z: 1}
+  m_LocalScale: {x: 0.15317991, y: 0.03495355, z: 1}
   m_Children: []
   m_Father: {fileID: 4139348576178690}
   m_RootOrder: 1
@@ -550,7 +569,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bf8139ce01f74164bb3003ed8a498e41, type: 2}
+  - {fileID: 2100000, guid: ec72a3a105768f746b556a8dfdae61a8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -597,6 +616,7 @@ MonoBehaviour:
   - {x: 0, y: 1, z: 0}
   velocitySearchRange: 0.02
   distorters: []
+  distortionEnabled: 1
   distortionMode: 0
   distortionStrength:
     serializedVersion: 2
@@ -859,6 +879,8 @@ MonoBehaviour:
   roundedEdges: 1
   roundedCaps: 1
   lineRenderer: {fileID: 5250982768442807330}
+  tileMaterialByWorldLength: 0
+  tileMaterialScale: 1
 --- !u!1 &1942671045987180
 GameObject:
   m_ObjectHideFlags: 0
@@ -915,7 +937,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1049,14 +1071,14 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
   m_isInputParsingRequired: 0
-  m_inputSource: 3
+  m_inputSource: 0
   m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 0}
+  m_renderer: {fileID: 7554743645055247269}
   m_subTextObjects:
   - {fileID: 0}
   - {fileID: 0}
