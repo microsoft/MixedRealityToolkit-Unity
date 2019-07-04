@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityMouseInputProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  mouseController:
+    reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseController, Microsoft.MixedReality.Toolkit
   mouseSpeed: 0.25
