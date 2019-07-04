@@ -120,11 +120,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// True if the pointer focus point was set successfully. False if not,
         /// which can happen if the pointer is not associated with the FocusProvider
         /// </returns>
-        public bool TrySetFocusPoint(IMixedRealityPointer pointer, Vector3 focusPoint)
+        public bool TrySetFocusPoint(IMixedRealityPointer pointer, GameObject gameObject, Vector3 focusPoint)
         {
             if (TryGetPointerData(pointer, out PointerData pointerData))
             {
-                pointerData.SetFocusPoint(focusPoint, (pointer.Position - focusPoint).magnitude);
+                pointerData.SetFocusPoint(gameObject, focusPoint, (pointer.Position - focusPoint).magnitude);
                 return true;
             }
             else
@@ -482,8 +482,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return Pointer != null ? Pointer.GetHashCode() : 0;
             }
 
-            internal void SetFocusPoint(Vector3 point, float distance)
+            internal void SetFocusPoint(GameObject gameObject, Vector3 point, float distance)
             {
+                focusDetails.Object = gameObject;
                 focusDetails.RayDistance = distance;
                 focusDetails.Point = point;
                 focusDetails.PointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(point);
