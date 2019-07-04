@@ -99,13 +99,13 @@ both HoloLens' gesture input and immersive headset's motion controller input.</p
   <div classs="implements">
     <h5>Implements</h5>
     <div><span class="xref">IMixedRealityPointerHandler</span></div>
-    <div><span class="xref">IMixedRealityFocusHandler</span></div>
+    <div><span class="xref">IMixedRealityFocusChangedHandler</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.html">Microsoft.MixedReality.Toolkit.UI</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_UI_ManipulationHandler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -497,13 +497,13 @@ both HoloLens' gesture input and immersive headset's motion controller input.</p
   </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_ManipulationHandler_OnFocusEnter_" data-uid="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.OnFocusEnter*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_ManipulationHandler_OnFocusEnter_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.OnFocusEnter(FocusEventData)">OnFocusEnter(FocusEventData)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_UI_ManipulationHandler_OnBeforeFocusChange_" data-uid="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.OnBeforeFocusChange*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ManipulationHandler_OnBeforeFocusChange_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.OnBeforeFocusChange(FocusEventData)">OnBeforeFocusChange(FocusEventData)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnFocusEnter(FocusEventData eventData)</code></pre>
+    <pre><code class="lang-csharp hljs">public void OnBeforeFocusChange(FocusEventData eventData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -524,13 +524,13 @@ both HoloLens' gesture input and immersive headset's motion controller input.</p
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_ManipulationHandler_OnFocusExit_" data-uid="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.OnFocusExit*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_ManipulationHandler_OnFocusExit_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.OnFocusExit(FocusEventData)">OnFocusExit(FocusEventData)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_UI_ManipulationHandler_OnFocusChanged_" data-uid="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.OnFocusChanged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ManipulationHandler_OnFocusChanged_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.OnFocusChanged(FocusEventData)">OnFocusChanged(FocusEventData)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnFocusExit(FocusEventData eventData)</code></pre>
+    <pre><code class="lang-csharp hljs">public void OnFocusChanged(FocusEventData eventData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -662,7 +662,7 @@ both HoloLens' gesture input and immersive headset's motion controller input.</p
       <span class="xref">IMixedRealityPointerHandler</span>
   </div>
   <div>
-      <span class="xref">IMixedRealityFocusHandler</span>
+      <span class="xref">IMixedRealityFocusChangedHandler</span>
   </div>
 </article>
           </div>
