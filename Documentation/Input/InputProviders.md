@@ -2,7 +2,7 @@
 
 Input providers are registered in the **Registered Service Providers Profile**, found in the Mixed Reality Toolkit component:
 
-<img src="../../Documentation/Images/Input/RegisteredServiceProviders.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/RegisteredServiceProviders.PNG" width="650px" style="display:block;">
 
 These are the input providers available out of the box, together with their corresponding controllers:
 

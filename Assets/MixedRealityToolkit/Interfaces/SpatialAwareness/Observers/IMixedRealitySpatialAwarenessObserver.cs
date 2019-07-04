@@ -74,5 +74,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// Stop | pause the observer
         /// </summary>
         void Suspend();
+
+        /// <summary>
+        /// Clears the observer's collection of observations.
+        /// </summary>
+        /// <remarks>
+        /// If the observer is currently running, calling ClearObservations will suspend it.
+        /// </remarks>
+        void ClearObservations();
     }
 }

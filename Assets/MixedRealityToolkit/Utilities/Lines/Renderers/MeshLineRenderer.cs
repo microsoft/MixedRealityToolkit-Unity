@@ -89,15 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private List<Matrix4x4> meshTransforms = new List<Matrix4x4>();
         private MaterialPropertyBlock linePropertyBlock;
 
-        private void OnValidate()
-        {
-            if (!IsInitialized)
-            {
-                enabled = false;
-                return;
-            }
-        }
-
         protected virtual void OnEnable()
         {
             if (!IsInitialized)
@@ -116,6 +107,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected override void UpdateLine()
         {
+            if (!Application.isPlaying)
+            {   // This check is only necessary in edit mode.
+                if (!IsInitialized)
+                {
+                    enabled = false;
+                    return;
+                }
+            }
+
             if (LineDataSource.enabled)
             {
                 meshTransforms.Clear();

@@ -32,6 +32,8 @@ For pointer events, i.e. the ones handled by [`IMixedRealityPointerHandler`](xre
 
 The pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) property contains the current result for the scene query used to determine the object with focus. For a raycast pointer, like the ones created by default for motion controllers, gaze input and hand rays, it will contain the location and normal of the raycast hit.
 
-The *Pointer Result Example* in `MixedRealityToolkit.Examples\Demos\Input\Scenes\PointerResult` shows how to use the pointer Result to spawn an object at the hit location.
+## Example Scene
+
+The **Pointer Result Example** in `MixedRealityToolkit.Examples\Demos\Input\Scenes\PointerResult` shows how to use the pointer Result to spawn an object at the hit location.
 
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">

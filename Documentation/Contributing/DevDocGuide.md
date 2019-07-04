@@ -1,6 +1,6 @@
 # Developer portal generation guide
 
-MRTK uses [docfx](https://dotnet.github.io/docfx/index.html) to generate html documentation out of triple slash comments in code and .md files in the MRTK repository. Docfx documentation generation is automatically triggered by CI (soon) on completed PRs in the mrtk_development branch.
+MRTK uses [docfx](https://dotnet.github.io/docfx/index.html) to generate html documentation out of triple slash comments in code and .md files in the MRTK repository. Docfx documentation generation is automatically triggered by CI on completed PRs in the mrtk_development branch.
 The current state of the developer documentation can be found on the [MRTK github.io page](https://microsoft.github.io/MixedRealityToolkit-Unity/)
 
 Docfx supports DFM Docfx Flavored Markdown which includes GFM Github Flavored Markdown. The full documentation and feature list can be found [here](https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html)
@@ -24,6 +24,10 @@ The docfx build files in the MRTK repo can be used to create a local version of 
 
 Note that on executing the docfx command on the json build file docfx will show any broken links in the documentation as warning. 
 Please make sure whenever you perform changes on any of the documentation files or API to update all links pointing to these articles or code.
+
+## Verifying docfx on github
+
+Whenever a PR includes a change that might affect documentation CI has to be executed to run a check on docfx for broken links. This can be triggered by posting the command `/azp run mrtk_docs` into the PR if the user has sufficient rights to do so. The command will trigger a CI job which will add a docs build to the checks section of the PR.
 
 ## Using crefs and hrefs in /// documented code
 Docfx supports crefs in /// documented code. It will translate those references to links pointing to the generated api documentation or to external documentation websites.
@@ -58,6 +62,33 @@ as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
 as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 ```
+
+## Enumerating available xrefs
+
+Xref syntax can be difficult to remember - it's possible to enumerate all of the available xref IDs by first running
+docfx locally:
+
+> docfx docfx.json
+
+This will generate an xrefmap.yml file, which will be located in docs/xrefmap.yml.
+
+For example, in order to link the following overload of HandleEvent, the syntax is fairly arcane:
+
+```
+- uid: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
+  name: HandleEvent<T>(BaseEventData, ExecuteEvents.EventFunction<T>)
+  href: api/Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0__
+  commentId: M:Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
+  name.vb: HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
+  fullName: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent<T>(BaseEventData, ExecuteEvents.EventFunction<T>)
+  fullName.vb: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
+  nameWithType: BaseEventSystem.HandleEvent<T>(BaseEventData, ExecuteEvents.EventFunction<T>)
+  nameWithType.vb: BaseEventSystem.HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
+```
+
+It's easy, however, to search for the name and then use the entire **uid field** as the xref.
+
+In this example, the xref would look like: (xref:Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0}))
 
 ## Adding new .md files to developer docs
 Docfx will pick up any .md files in folders that are added as content files in the build section of the docfx.json and generate html files out of them. For new folders a corresponding entry in the build file needs to be added. 

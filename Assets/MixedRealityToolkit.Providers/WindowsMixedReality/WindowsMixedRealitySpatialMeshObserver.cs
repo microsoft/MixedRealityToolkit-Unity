@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
-#region IMixedRealityToolkit implementation
+        #region IMixedRealityToolkit implementation
 
 #if UNITY_WSA
 
@@ -138,16 +138,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
 #endif // UNITY_WSA
 
-#endregion IMixedRealityToolkit implementation
+        #endregion IMixedRealityToolkit implementation
 
-#region IMixedRealitySpatialAwarenessObserver implementation
+        #region IMixedRealitySpatialAwarenessObserver implementation
 
         private GameObject observedObjectParent = null;
 
         /// <summary>
         /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which observed objects are parented.
         /// </summary>
-        private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
+        private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySpatialMeshObserver"));
 
 #if UNITY_WSA
         /// <inheritdoc />
@@ -688,6 +688,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 SpatialAwarenessSystem?.RaiseMeshAdded(this, cookedData.id.handle, meshObject);
             }
         }
+
+        /// <inheritdoc />
+        public override void ClearObservations()
+        {
+            if (IsRunning)
+            {
+                Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
+                Suspend();
+            }
+
+            IReadOnlyList<int> observations = new List<int>(Meshes.Keys);
+            foreach (int meshId in observations)
+            {
+                RemoveMeshObject(meshId);
+            }
+
+            if (spareMeshObject != null)
+            {
+                spareMeshObject.CleanObject();
+                spareMeshObject = null;
+            }
+
+        }
 #endif // UNITY_WSA
 
         /// <summary>
@@ -713,6 +736,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
-#endregion IMixedRealitySpatialAwarenessObserver implementation
+        #endregion IMixedRealitySpatialAwarenessObserver implementation
     }
 }

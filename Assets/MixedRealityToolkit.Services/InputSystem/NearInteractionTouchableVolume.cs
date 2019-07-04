@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Add a NearInteractionTouchableVolume to your scene and configure a touchable volume
     /// in order to get PointerDown and PointerUp events whenever a PokePointer collides with this volume.
     /// </summary>
-    public class NearInteractionTouchableVolume : BaseNearInteractionTouchable
+    public class NearInteractionTouchableVolume : ColliderNearInteractionTouchable
     {
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(NearInteractionTouchableVolume))]
@@ -35,30 +35,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {
-            if (usesCollider)
+            Vector3 closest = TouchableCollider.ClosestPoint(samplePoint);
+
+            normal = (samplePoint - closest);
+            if (normal == Vector3.zero)
             {
-                touchableCollider = GetComponent<Collider>();
-
-                Vector3 closest = touchableCollider.ClosestPoint(samplePoint);
-
-                normal = (samplePoint - closest);
-                if (normal == Vector3.zero)
-                {
-                    // inside object, use vector to centre as normal
-                    normal = samplePoint - transform.TransformVector(touchableCollider.bounds.center);
-                    normal.Normalize();
-                    return 0;
-                }
-                else
-                {
-                    float dist = normal.magnitude;
-                    normal.Normalize();
-                    return dist;
-                }
+                // inside object, use vector to centre as normal
+                normal = samplePoint - transform.TransformVector(TouchableCollider.bounds.center);
+                normal.Normalize();
+                return 0;
             }
-
-            normal = Vector3.forward;
-            return float.PositiveInfinity;
+            else
+            {
+                float dist = normal.magnitude;
+                normal.Normalize();
+                return dist;
+            }
         }
     }
 }

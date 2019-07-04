@@ -9,7 +9,8 @@ For example, the Input system's behavior is governed by its input profile. An ex
 of such a profile is [here](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityInputSystemProfile.asset). In order to edit this, it's usually recommended
 to use the in-editor inspector:
 
-![MRTK](../Images/Profiles/input_profile.png)
+<img src="../../Documentation/Images/Profiles/input_profile.png" width="650px" style="display:block;"><br/>
+<sup>Profile Inspector</sup>
 
 > **Note:** While it is intended that profiles can be swapped out at runtime, this currently
 > doesn't work - [see this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289)

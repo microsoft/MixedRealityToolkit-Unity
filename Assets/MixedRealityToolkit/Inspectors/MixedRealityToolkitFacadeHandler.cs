@@ -20,7 +20,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         static MixedRealityToolkitFacadeHandler()
         {
+#if UNITY_2019_1_OR_NEWER
+            SceneView.duringSceneGui += UpdateServiceFacades;
+#else
             SceneView.onSceneGUIDelegate += UpdateServiceFacades;
+#endif
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
 
