@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
@@ -54,22 +55,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return;
             }
 
-#if UNITY_EDITOR
-            if (UnityEditor.EditorWindow.focusedWindow != null)
-            {
-                UnityEditor.EditorWindow.focusedWindow.ShowNotification(new GUIContent("Press \"ESC\" to regain mouse control"));
-            }
-#endif
-
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-
             IMixedRealityInputSource mouseInputSource = null;
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             MixedRealityRaycaster.DebugEnabled = true;
+#endif
 
             const Handedness handedness = Handedness.Any;
-            System.Type controllerType = typeof(MouseController);
+            System.Type controllerType = MouseInputProfile.MouseController;
 
             // Make sure that the handedness declared in the controller attribute matches what we expect
             {
@@ -89,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 mouseInputSource = inputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
             }
 
-            Controller = new MouseController(TrackingState.NotApplicable, handedness, mouseInputSource);
+            Controller = Activator.CreateInstance(controllerType, TrackingState.NotApplicable, handedness, mouseInputSource, null) as MouseController;
 
             if (mouseInputSource != null)
             {

@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class MixedRealityMouseInputProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private SerializedProperty mouseSpeed;
+        private SerializedProperty mouseController;
         private const string ProfileTitle = "Mouse Input Settings";
         private const string ProfileDescription = "Settings for mouse input in the editor.";
 
@@ -19,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnEnable();
             mouseSpeed = serializedObject.FindProperty("mouseSpeed");
+            mouseController = serializedObject.FindProperty("mouseController");
         }
 
         public override void OnInspectorGUI()
@@ -29,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 serializedObject.Update();
                 EditorGUILayout.PropertyField(mouseSpeed);
+                EditorGUILayout.PropertyField(mouseController);
                 serializedObject.ApplyModifiedProperties();
             }
         }
