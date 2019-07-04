@@ -1187,7 +1187,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 corners.Add(corner.transform);
                 cornerVisuals.Add(cornerVisual.transform);
                 cornersProximate.Add(HandleProximityState.FullsizeNoProximity);
-                Renderer renderer = cornerVisual.GetComponent<Renderer>();
+                Renderer renderer = cornerVisual.GetComponentInChildren<Renderer>();
                 cornerRenderers.Add(renderer ?? null);
             }
         }
@@ -1302,7 +1302,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         balls.Add(ball.transform);
                         ballVisuals.Add(ball.transform);
                         ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
-                        Renderer renderer = ball.GetComponent<Renderer>();
+                        Renderer renderer = ball.GetComponentInChildren<Renderer>();
                         ballRenderers.Add(renderer ?? null);
                 }
             }
@@ -1632,7 +1632,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             cornerVisuals = new List<Transform>();
             cornersProximate = new List<HandleProximityState>();
             cornerRenderers = new List<Renderer>();
-            //cornerVisuals = new List<Transform>();
             balls = new List<Transform>();
             ballVisuals = new List<Transform>();
             ballsProximate = new List<HandleProximityState>();
