@@ -11927,7 +11927,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject.html",
-          "hash": "sfJ6QNslUvxXf9YGkOqdkQ=="
+          "hash": "ADGrxuJFN1NpRUkEuuYUwg=="
         }
       },
       "is_incremental": false,
@@ -11964,6 +11964,90 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.html",
           "hash": "evrdM+yuJznWWd98JX8mYA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile.RoomFileImporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile.RoomFileImporter.html",
+          "hash": "vr0qPPZCx5RgvCpjIISA+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile.RoomFileSerializer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile.RoomFileSerializer.html",
+          "hash": "45feIR//p95xohCdW3ftGw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile.html",
+          "hash": "5+vmvhW77CXGJfL/NjIvHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.html",
+          "hash": "8+DegULqnG80bWViiDkgfA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile.html",
+          "hash": "kJ4zq5k+UIKIZsQnROAAag=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfileInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfileInspector.html",
+          "hash": "8mOPI6SzSijL4YRrFz0RpA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.html",
+          "hash": "znGzK2s6tSRbeM5kve+zhQ=="
         }
       },
       "is_incremental": false,
@@ -17015,7 +17099,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "k7IiJH1oQur+Ltdw/RpXlA=="
+          "hash": "KDIaezUQ2VDRZQOQbQCfdw=="
         }
       },
       "is_incremental": false,
@@ -17080,17 +17164,17 @@
           "total_file_count": 112,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 997,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1004,
           "skipped_file_count": 0
         }
       }
