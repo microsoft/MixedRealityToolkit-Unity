@@ -1146,7 +1146,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // figure out which prefab to instantiate
                 GameObject prefabToInstantiate = null;
                 GameObject cornerVisual = null;
-                //GameObject cornerVisual = Instantiate(isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab, visualsScale.transform);
                 if (isFlattened)
                 {
                     prefabToInstantiate = scaleHandleSlatePrefab;
@@ -1260,51 +1259,51 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                for (int i = 0; i < edgeCenters.Length; ++i)
-                {
-                    GameObject ball = Instantiate(rotationHandlePrefab, rigRoot.transform);
-                    ball.name = "midpoint_" + i.ToString();
-                    ball.transform.localPosition = edgeCenters[i];
-
-                    // Align handle with its edge assuming that the prefab is initially aligned with the up direction 
-                    if (edgeAxes[i] == CardinalAxisType.X)
+                    for (int i = 0; i < edgeCenters.Length; ++i)
                     {
-                        Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.right);
-                        ball.transform.localRotation = realignment * ball.transform.localRotation;
-                    }
-                    else if (edgeAxes[i] == CardinalAxisType.Z)
-                    {
-                        Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
-                        ball.transform.localRotation = realignment * ball.transform.localRotation;
-                    }
+                        GameObject ball = Instantiate(rotationHandlePrefab, rigRoot.transform);
+                        ball.name = "midpoint_" + i.ToString();
+                        ball.transform.localPosition = edgeCenters[i];
 
-                    if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Sphere)
-                    {
-                        SphereCollider sphereCollider = ball.AddComponent<SphereCollider>();
-                        sphereCollider.radius = 0.5f * rotationHandleSize;
-                        float localScale = ball.transform.localScale.x;
-                        sphereCollider.radius = 0.04f / localScale;
-                    }
-                    else if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
-                    {
-                        Debug.Assert(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box);
-                        BoxCollider collider = ball.AddComponent<BoxCollider>();
-                        float localScale = ball.transform.localScale.x;
-                        (collider as BoxCollider).size = new Vector3(0.02f / localScale, 0.02f / localScale, 0.02f / localScale);
-                    }
+                        // Align handle with its edge assuming that the prefab is initially aligned with the up direction 
+                        if (edgeAxes[i] == CardinalAxisType.X)
+                        {
+                            Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.right);
+                            ball.transform.localRotation = realignment * ball.transform.localRotation;
+                        }
+                        else if (edgeAxes[i] == CardinalAxisType.Z)
+                        {
+                            Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
+                            ball.transform.localRotation = realignment * ball.transform.localRotation;
+                        }
 
-                    // In order for the ball to be grabbed using near interaction we need
-                    // to add NearInteractionGrabbable;
-                    var g = ball.EnsureComponent<NearInteractionGrabbable>();
-                    g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
+                        if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Sphere)
+                        {
+                            SphereCollider sphereCollider = ball.AddComponent<SphereCollider>();
+                            sphereCollider.radius = 0.5f * rotationHandleSize;
+                            float localScale = ball.transform.localScale.x;
+                            sphereCollider.radius = localScale;
+                        }
+                        else if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
+                        {
+                            Debug.Assert(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box);
+                            BoxCollider collider = ball.AddComponent<BoxCollider>();
+                            float localScale = ball.transform.localScale.x;
+                            (collider as BoxCollider).size = new Vector3(localScale, localScale, localScale);
+                        }
 
-                    ApplyMaterialToAllRenderers(ball, handleMaterial);
+                        // In order for the ball to be grabbed using near interaction we need
+                        // to add NearInteractionGrabbable;
+                        var g = ball.EnsureComponent<NearInteractionGrabbable>();
+                        g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
 
-                    balls.Add(ball.transform);
-                    ballVisuals.Add(ball.transform);
-                    ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
-                    Renderer renderer = ball.GetComponent<Renderer>();
-                    ballRenderers.Add(renderer ?? null);
+                        ApplyMaterialToAllRenderers(ball, handleMaterial);
+
+                        balls.Add(ball.transform);
+                        ballVisuals.Add(ball.transform);
+                        ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
+                        Renderer renderer = ball.GetComponent<Renderer>();
+                        ballRenderers.Add(renderer ?? null);
                 }
             }
 
