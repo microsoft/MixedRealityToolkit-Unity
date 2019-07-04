@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [TearDown]
         public void CleanupTests()
         {
-            TestUtilities.TearDownScenes();
+            TestUtilities.EditorTearDownScenes();
         }
     }
 }

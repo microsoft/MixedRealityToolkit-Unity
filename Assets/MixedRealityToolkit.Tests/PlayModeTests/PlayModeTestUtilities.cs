@@ -129,9 +129,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </remarks>
         public static void EnsureInputModule()
         {
-            if (CameraCache.Main && !CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>())
+            if (CameraCache.Main)
             {
-                var inputModule = CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                var inputModule = CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>();
+                if (inputModule == null)
+                {
+                    CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                }
                 inputModule.forceModuleActive = true;
             }
         }
@@ -160,8 +164,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         internal static IEnumerator SetupMrtkWithoutGlobalInputHandlers()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                Debug.LogError("MixedRealityToolkit must be initialized before it can be configured.");
+                yield break;
+            }
 
             IMixedRealityInputSystem inputSystem = null;
             MixedRealityServiceRegistry.TryGetService(out inputSystem);
@@ -235,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         internal static IEnumerator MoveHandFromTo(
-            Vector3 startPos, Vector3 endPos, int numSteps, 
+            Vector3 startPos, Vector3 endPos, int numSteps,
             ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
             Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
@@ -305,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Waits for the user to press the enter key before a test continues.
-        /// Not actually used by any test, but it is useful when debugging since you can 
+        /// Not actually used by any test, but it is useful when debugging since you can
         /// pause the state of the test and inspect the scene.
         /// </summary>
         internal static IEnumerator WaitForEnterKey()

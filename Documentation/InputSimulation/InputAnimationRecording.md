@@ -51,7 +51,42 @@ The current animation time can also be controlled directly with the [LocalTime](
 
 # Editor tools for recording and playing input animation
 
->TODO: added in separate PR
+A number of tools exist in the Unity editor for recording and examining input animation. These tools can be accessed in the _Input Recording_ window, which can be opened from the _"Mixed Reality Toolkit > Utilities > Input Recording"_ menu.
+
+<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsMenu.png">
+  <img src="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsMenu.png" title="Editor tools menu" width="80%" class="center" />
+</a>
+
+> Note: Input recording and playback only works during play mode.
+
+The input recording window has two modes:
+* _Recording_ for recording input during play mode and saving it to animation files.
+
+  <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsRecording.png">
+    <img src="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsRecording.png" title="Recording mode" width="80%" class="center" />
+  </a>
+
+  When toggling on the recording button the [Input Recording Service](xref:Microsoft.MixedReality.Toolkit.Input.InputRecordingService) is enabled to record input.
+  When toggling off the recording button a file save selection is shown and the recorded input animation is saved to the selected destination.
+
+  The buffer time limit can also be changed in this mode.
+
+* _Playback_ for loading animation files and then recreating input through the input simulation system.
+
+  <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsPlayback.png">
+    <img src="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsPlayback.png" title="Playback mode" width="80%" class="center" />
+  </a>
+
+  An animation must be loaded in this mode first. After recording input in recording mode the resulting animation is automatically loaded. Alternatively click the "Load" button to select an existing animation file.
+
+  The time control buttons from left to right are:
+  - _Reset_ the playback time to the start of the animation.
+  - _Play_ animation continuously over time.
+  - _Step_ forward one time step.
+  The slider can also be used to scrub through the animation timeline.
+
+> [!WARNING]
+> Looping or resetting input animation or scrubbing the timeline may yield unexpected results when manipulating the scene! Only the input movements are recorded, any additional changes such as moving objects or flipping switches will not be reset. Make sure to reload the scene if irreversible changes have been made.
 
 # Conversion to and from AnimationClip
 
