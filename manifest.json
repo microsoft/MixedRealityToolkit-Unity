@@ -13691,7 +13691,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PressableButtonHoloLens2.html",
-          "hash": "UDer1h/sGa4+2VohWjABsQ=="
+          "hash": "Qe1j5f7Y4mxbVIg54t1jiw=="
         }
       },
       "is_incremental": false,
@@ -15895,6 +15895,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.MaintainBorderLightWidth.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.MaintainBorderLightWidth.html",
+          "hash": "pTLv8TY0MlF4loWijoKmzQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.yml",
       "output": {
         ".html": {
@@ -16571,7 +16583,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.html",
-          "hash": "MDk2mndA6WFCP8mC1DwVNw=="
+          "hash": "2CxyOgBda+5Iwrm/WQ+kqQ=="
         }
       },
       "is_incremental": false,
@@ -17123,7 +17135,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "gf6ExDiExwgYmJH9wZa6sQ=="
+          "hash": "OFk5iG8gM5ALTPJo+r/f9Q=="
         }
       },
       "is_incremental": false,
@@ -17191,7 +17203,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1006,
+          "total_file_count": 1007,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
