@@ -1162,15 +1162,14 @@ MonoBehaviour:
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
-  scaleHandlePrefab: {fileID: 1361136173122186969, guid: ba9083550f965e545a628b53bfa80c9e,
+  scaleHandlePrefab: {fileID: 9134652625222899238, guid: 6cf8f9d89a23d5446a85086a373dbd21,
     type: 3}
-  scaleHandleSlatePrefab: {fileID: 1134031327877807717, guid: c45e552a6d92491468c421c35c5dd63d,
+  scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
-  scaleHandleSize: 0.3
-  scaleHandleColliderSize: 2
-  rotationHandlePrefab: {fileID: 100000, guid: 57c53da2552a8114ab6d68e0cd31b1eb, type: 3}
-  rotationHandleSize: 4
-  rotationHandleColliderSize: 1
+  scaleHandleSize: 0.016
+  rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
+    type: 3}
+  rotationHandleSize: 0.016
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
@@ -1178,9 +1177,9 @@ MonoBehaviour:
   showRotationHandleForZ: 1
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
-  handleMediumProximity: 0.005
-  handleCloseProximity: 0.0015
-  farScale: 0.01
+  handleMediumProximity: 0.1
+  handleCloseProximity: 0.03
+  farScale: 0
   mediumScale: 1
   closeScale: 1.5
   farGrowRate: 0.3
@@ -1418,6 +1417,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7779420038862058150}
     m_Modifications:
+    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
+      propertyPath: m_Name
+      value: Pressable Button (2)
+      objectReference: {fileID: 0}
     - target: {fileID: 9181818329810857364, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
       propertyPath: m_text
@@ -1442,10 +1445,6 @@ PrefabInstance:
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
-      propertyPath: m_Name
-      value: Pressable Button (2)
       objectReference: {fileID: 0}
     - target: {fileID: 1944713263, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1536,6 +1535,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7779420038862058150}
     m_Modifications:
+    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
+      propertyPath: m_Name
+      value: Pressable Button (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 9181818329810857364, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
       propertyPath: m_text
@@ -1565,10 +1568,6 @@ PrefabInstance:
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ToggleFollowMeBehavior
-      objectReference: {fileID: 0}
-    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
-      propertyPath: m_Name
-      value: Pressable Button (1)
       objectReference: {fileID: 0}
     - target: {fileID: 1944713263, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_LocalPosition.x
