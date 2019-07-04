@@ -872,7 +872,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     int hitResult3dLayer = hitResult3d.hitObject?.layer ?? -1;
                     if (hitResult3dLayer == 0)
                     {
-                        // if we have a hit in the highest priority layer, we can go ahead and truncate the pointer before doing the UI raycast
+                        // If we have a hit in the highest priority layer, we can go ahead and truncate the pointer before doing the UI raycast
                         // (if it's not highest priority it's possible the UI raycast could produce a higher-priority hit that is further than the physics hit,
                         // and we'd lose that hit if the pointer were truncated)
                         TruncatePointerRayToHit(pointer.Pointer, hitResult3d);
@@ -890,7 +890,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     
                     if (hit != hitResult3d || hitResult3dLayer > 0)
                     {
-                        // truncate if we didn't already for this hit
+                        // Truncate if we didn't already for this hit
                         TruncatePointerRayToHit(pointer.Pointer, hitResult3d);
                     }
 

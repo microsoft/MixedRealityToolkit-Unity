@@ -7,11 +7,14 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
+    /// <summary>
+    /// A simple pointer that is just used for Unity play mode tests. It doesn't update anything itself -
+    /// it is expected that any test using it will manually update data as necessary.
+    /// If you would like to setup pointer parameters in data (e.g. a prefab), you can use
+    /// <see cref="FocusRaycastTestProxy"/>.
+    /// </summary>
     public class TestPointer : GenericPointer
     {
-        private int preFrameCount = -1;
-        private int postFrameCount = -1;
-
         public TestPointer() : base("Test Pointer", null)
         {
         }
@@ -26,14 +29,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public override void OnPreSceneQuery()
         {
-            preFrameCount = Time.frameCount;
         }
 
         public override void OnPostSceneQuery()
         {
-            postFrameCount = Time.frameCount;
         }
 
+        /// <summary>
+        /// Initialize all applicable settings on this pointer from <paramref name="testProxy"/> and then set this pointer active,
+        /// so that it will update its <see cref="IMixedRealityPointer.Result"/> in the next <see cref="FocusProvider.Update"/>.
+        /// </summary>
+        /// <param name="testProxy"></param>
         public void SetFromTestProxy(FocusRaycastTestProxy testProxy)
         {
             if (Rays == null || Rays.Length != testProxy.LineCastResolution)
@@ -55,25 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PrioritizedLayerMasksOverride = testProxy.PrioritizedLayerMasks;
             
             IsActive = true;
-        }
-
-        private class WaitForPointerFocusUpdate : CustomYieldInstruction
-        {
-            private readonly TestPointer pointer;
-            private readonly int startFrame;
-
-            public override bool keepWaiting => pointer.postFrameCount <= startFrame;
-
-            public WaitForPointerFocusUpdate(TestPointer pointer) : base()
-            {
-                this.pointer = pointer;
-                startFrame = pointer.preFrameCount;
-            }
-        }
-
-        public CustomYieldInstruction WaitForFocusUpdate()
-        {
-            return new WaitForPointerFocusUpdate(this);
         }
     }
 }

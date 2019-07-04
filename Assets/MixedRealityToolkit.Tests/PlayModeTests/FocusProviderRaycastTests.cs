@@ -4,7 +4,7 @@
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
 // Unity doesn't include the required assemblies (i.e. the ones below).
-// Given that the .NET backend is deprecated by Unity at this point it's we have
+// Given that the .NET backend is deprecated by Unity at this point we have
 // to work around this on our end.
 using Microsoft.MixedReality.Toolkit.Input;
 using NUnit.Framework;
@@ -16,12 +16,21 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
+    /// <summary>
+    /// This class is used to test that <see cref="FocusProvider"/> raycasts are selecting the correct focus object.
+    /// </summary>
     public class FocusProviderRaycastTests
     {
         private GameObject raycastTestPrefabInstance = null;
         private TestPointer pointer = null;
         IMixedRealityFocusProvider focusProvider = null;
 
+        /// <summary>
+        /// For each <see cref="FocusRaycastTestProxy="/> in the raycast test prefab, set the relevant values on the <see cref="TestPointer"/>,
+        /// then wait for the <see cref="FocusProvider.Update"/> and Assert that the <see cref="FocusRaycastTestProxy.ExpectedHitObject"/> matches
+        /// the <see cref="TestPointer"/>'s <see cref="IPointerResult.CurrentPointerTarget"/>.
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestRaycastProxies()
         {
@@ -30,17 +39,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             foreach (var raycastTestProxy in raycastTestPrefabInstance.GetComponentsInChildren<FocusRaycastTestProxy>())
             {
                 pointer.SetFromTestProxy(raycastTestProxy);
-                yield return pointer.WaitForFocusUpdate();
+                yield return null;
                 Assert.AreSame(raycastTestProxy.ExpectedHitObject, pointer.Result?.CurrentPointerTarget, "FAILED: " + raycastTestProxy.name);
 
                 pointer.IsActive = false;
-                yield return pointer.WaitForFocusUpdate();
+                yield return null;
                 Assert.AreSame(null, pointer.Result?.CurrentPointerTarget, "Failed to clear pointer target after test.");
             }
         }
 
         [SetUp]
-        public void SetupMrtk()
+        public void SetupFocusProviderRaycastTests()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
             TestUtilities.InitializePlayspace();
@@ -55,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [TearDown]
-        public void ShutdownMrtk()
+        public void ShutdownFocusProviderRaycastTests()
         {
             if (raycastTestPrefabInstance)
             {
