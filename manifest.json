@@ -16247,7 +16247,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.html",
-          "hash": "oqaDFrvFkUdFrSLbMilNvw=="
+          "hash": "0Ro+BJjWG6tONO308pMT0w=="
         }
       },
       "is_incremental": false,
@@ -16283,7 +16283,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.html",
-          "hash": "uu1UuyAdncSBEnGgWWw/ag=="
+          "hash": "ntippsx2gw3ah6CAZ/ae9Q=="
         }
       },
       "is_incremental": false,
@@ -16351,11 +16351,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.OrientationMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.OrientationMode.html",
+          "hash": "Of/QO1dcP0FowqYw+QHhAQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.RaycastDirectionMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.RaycastDirectionMode.html",
+          "hash": "tYdA2dAzpfsJAMA7irKt1A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html",
-          "hash": "9/vtFbObY4wY65D/ExkYOw=="
+          "hash": "PwUersjjydbEjOMgAo8o+Q=="
         }
       },
       "is_incremental": false,
@@ -16367,7 +16391,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.html",
-          "hash": "HEMMurHWdBcWHEdcAudQvQ=="
+          "hash": "dWwDKnKXWvMNq7dOyDIllw=="
         }
       },
       "is_incremental": false,
@@ -17099,7 +17123,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "KDIaezUQ2VDRZQOQbQCfdw=="
+          "hash": "gf6ExDiExwgYmJH9wZa6sQ=="
         }
       },
       "is_incremental": false,
@@ -17164,17 +17188,17 @@
           "total_file_count": 112,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1006,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1004,
           "skipped_file_count": 0
         }
       }

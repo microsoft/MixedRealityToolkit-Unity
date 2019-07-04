@@ -161,6 +161,138 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class Momentum : Solver</code></pre>
   </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_AccelerationRate_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.AccelerationRate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_AccelerationRate" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.AccelerationRate">AccelerationRate</h4>
+  <div class="markdown level1 summary"><p>Accelerate to goal position at this rate</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float AccelerationRate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_Resistance_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.Resistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_Resistance" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.Resistance">Resistance</h4>
+  <div class="markdown level1 summary"><p>Friction to slow down the current velocity</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Resistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_ResistanceVelocityPower_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.ResistanceVelocityPower*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_ResistanceVelocityPower" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.ResistanceVelocityPower">ResistanceVelocityPower</h4>
+  <div class="markdown level1 summary"><p>Apply more resistance when going faster- applied resistance is resistance * (velocity ^ resistanceVelocityPower)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ResistanceVelocityPower { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_SnapZ_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.SnapZ*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_SnapZ" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.SnapZ">SnapZ</h4>
+  <div class="markdown level1 summary"><p>Instantly maintain a constant depth from the view point instead of simulating Z-velocity</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SnapZ { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_Springiness_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.Springiness*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_Springiness" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.Springiness">Springiness</h4>
+  <div class="markdown level1 summary"><p>Apply more acceleration if farther from target- applied acceleration is accelerationRate + springiness * distance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Springiness { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
