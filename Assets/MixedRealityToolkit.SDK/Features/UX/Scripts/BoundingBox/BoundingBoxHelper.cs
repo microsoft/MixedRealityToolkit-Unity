@@ -24,6 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         readonly int[] noFaceIndices = { };
         readonly Vector3[] noFaceVertices = { };
 
+        private Vector3[] face = new Vector3[4];
+        private Vector3[] midpoints = new Vector3[4];
         private List<Vector3> rawBoundingCorners = new List<Vector3>();
         private List<Vector3> worldBoundingCorners = new List<Vector3>();
         private BoxCollider targetBounds;
@@ -109,7 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public Vector3[] GetFaceEdgeMidpoints(int index)
         {
             Vector3[] corners = GetFaceCorners(index);
-            Vector3[] midpoints = new Vector3[4];
             midpoints[0] = (corners[0] + corners[1]) * 0.5f;
             midpoints[1] = (corners[1] + corners[2]) * 0.5f;
             midpoints[2] = (corners[2] + corners[3]) * 0.5f;
@@ -186,7 +187,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (faceIndices.Length == 4)
             {
-                Vector3[] face = new Vector3[4];
                 face[0] = worldBoundingCorners[faceIndices[0]];
                 face[1] = worldBoundingCorners[faceIndices[1]];
                 face[2] = worldBoundingCorners[faceIndices[2]];

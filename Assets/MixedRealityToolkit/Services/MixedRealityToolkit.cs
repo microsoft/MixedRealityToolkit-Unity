@@ -233,6 +233,7 @@ namespace Microsoft.MixedReality.Toolkit
                 else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(interfaceType)) { diagnosticsSystem = null; }
                 // Focus provider reference is not managed by the MixedRealityToolkit class.
                 else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(interfaceType)) { inputSystem = null; }
+                // Raycast provider reference is not managed by the MixedRealityToolkit class.
                 else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(interfaceType)) { spatialAwarenessSystem = null; }
                 else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(interfaceType)) { teleportSystem = null; }
 
@@ -387,8 +388,8 @@ namespace Microsoft.MixedReality.Toolkit
                     return;
                 }
 
-                args = new object[] { this, InputSystem, ActiveProfile.InputSystemProfile };
-                if (!RegisterDataProvider<IMixedRealityRaycastProvider>(ActiveProfile.InputSystemProfile.RaycastProviderType, args: args))
+                args = new object[] { this, ActiveProfile.InputSystemProfile };
+                if (!RegisterService<IMixedRealityRaycastProvider>(ActiveProfile.InputSystemProfile.RaycastProviderType, args: args))
                 {
                     Debug.LogError("Failed to register the raycast provider! The input system will not function without it.");
                     return;

@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The current object that is being touched.
         /// </summary>
-        /// We need to make sure to consistently fire 
+        /// We need to make sure to consistently fire
         /// poke-down / poke-up events for this object. This is also the case when the object within
         /// the same current closest touchable component's changes (e.g. Unity UI control elements).
         public GameObject CurrentTouchableObjectDown => currentTouchableObjectDown;
@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
                     if (distance < closestDistance)
-                    {   
+                    {
                         closest = touchable;
                         closestDistance = distance;
                         closestNormal = normal;
@@ -187,11 +187,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Unity UI does not provide an equivalent broad-phase test to Physics.OverlapSphere,
             // so we have to use a static instances list to test all NearInteractionTouchableUnityUI
-            foreach (var touchable in NearInteractionTouchableUnityUI.Instances)
+            for (int i = 0; i < NearInteractionTouchableUnityUI.Instances.Count; i++)
             {
+                NearInteractionTouchableUnityUI touchable = NearInteractionTouchableUnityUI.Instances[i];
                 float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
                 if (distance < closestDistance)
-                {   
+                {
                     closest = touchable;
                     closestDistance = distance;
                     closestNormal = normal;
@@ -251,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnPreCurrentPointerTargetChange()
         {
-            // We need to raise the event now, since the pointer's focused object or touchable will change 
+            // We need to raise the event now, since the pointer's focused object or touchable will change
             // after we leave this function. This will make sure the same object that received the Down event
             // will also receive the Up event.
             TryRaisePokeUp();
@@ -378,6 +379,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Poke pointer should not respond when a button is released or hand is un-pinched
             // It should only dispatch events based on collision with touchables.
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            Debug.Assert(line != null, "No line renderer found in PokePointer.");
+            Debug.Assert(visuals != null, "No visuals object found in PokePointer.");
         }
     }
 }
