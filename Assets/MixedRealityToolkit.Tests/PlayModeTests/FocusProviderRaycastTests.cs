@@ -51,10 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [SetUp]
         public void SetupFocusProviderRaycastTests()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
+            PlayModeTestUtilities.Setup();
 
-            MixedRealityServiceRegistry.TryGetService(out focusProvider);
+            focusProvider = PlayModeTestUtilities.GetInputSystem().FocusProvider;
 
             pointer = new TestPointer();
             focusProvider.RegisterPointer(pointer);
@@ -76,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             focusProvider = null;
             pointer = null;
 
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
     }
 }
