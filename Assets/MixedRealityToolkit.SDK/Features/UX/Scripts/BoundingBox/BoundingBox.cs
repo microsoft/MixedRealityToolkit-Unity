@@ -424,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("Only used if rotationHandlePrefab is specified. Determines the type of collider that will surround the rotation handle prefab.")]
-        private RotationHandlePrefabCollider rotationHandlePrefabColliderType = RotationHandlePrefabCollider.Sphere;
+        private RotationHandlePrefabCollider rotationHandlePrefabColliderType = RotationHandlePrefabCollider.Box;
         public RotationHandlePrefabCollider RotationHandlePrefabColliderType
         {
             get
@@ -993,6 +993,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     cornerVisualScaleToMatchHandleSize = scaleHandleSize;
                     cube.transform.position = boundsCorners[i];
 
+                    var contextInfo = cube.EnsureComponent<CursorContextInfo>();
+                    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Scale;
+                    contextInfo.ObjectCenter = rigRoot.transform;
+
                     // In order for the cube to be grabbed using near interaction we need
                     // to add NearInteractionGrabbable;
                     var g = cube.EnsureComponent<NearInteractionGrabbable>();
@@ -1026,6 +1030,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     BoxCollider collider = corner.AddComponent<BoxCollider>();
                     collider.size = scaleHandleSize * Vector3.one;
+
+                    var contextInfo = corner.EnsureComponent<CursorContextInfo>();
+                    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Scale;
+                    contextInfo.ObjectCenter = rigRoot.transform;
 
                     // In order for the corner to be grabbed using near interaction we need
                     // to add NearInteractionGrabbable;
@@ -1117,6 +1125,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     ball.transform.position = edgeCenters[i];
                     ball.transform.parent = rigRoot.transform;
 
+                    var contextInfo = ball.EnsureComponent<CursorContextInfo>();
+                    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Rotate;
+                    contextInfo.ObjectCenter = rigRoot.transform;
+
                     // In order for the ball to be grabbed using near interaction we need
                     // to add NearInteractionGrabbable;
                     var g = ball.EnsureComponent<NearInteractionGrabbable>();
@@ -1152,6 +1164,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         BoxCollider collider = ball.AddComponent<BoxCollider>();
                         collider.size = rotationHandleDiameter * Vector3.one;
                     }
+
+                    var contextInfo = ball.EnsureComponent<CursorContextInfo>();
+                    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Rotate;
+                    contextInfo.ObjectCenter = rigRoot.transform;
 
                     // In order for the ball to be grabbed using near interaction we need
                     // to add NearInteractionGrabbable;
