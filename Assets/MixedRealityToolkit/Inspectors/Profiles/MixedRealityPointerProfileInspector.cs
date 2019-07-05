@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.PropertyField(gazeProviderType);
                     EditorGUILayout.Space();
 
-                    if (MixedRealityEditorUtility.RenderIndentedButton("Customize Gaze Provider Settings"))
+                    if (InspectorUIUtility.RenderIndentedButton("Customize Gaze Provider Settings"))
                     {
                         Selection.activeObject = CameraCache.Main.gameObject;
                     }

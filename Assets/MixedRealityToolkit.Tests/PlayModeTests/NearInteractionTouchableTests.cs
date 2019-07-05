@@ -3,27 +3,31 @@
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the required assemblies (i.e. the ones below).
-// Given that the .NET backend is deprecated by Unity at this point it's we have
-// to work around this on our end.
+// The assembly that this file is part of is still built for the player,
+// even though the assembly itself is marked as a test assembly (this is not
+// expected because test assemblies should not be included in player builds).
+// Because the .NET backend is deprecated in 2018 and removed in 2019 and this
+// issue will likely persist for 2018, this issue is worked around by wrapping all
+// play mode tests in this check.
+
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Input.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class NearInteractionTouchableTests
     {
         [SetUp]
-        public void SetupMrtk()
+        public void Setup()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
+            PlayModeTestUtilities.Setup();
+            PlayModeTestUtilities.EnsureInputModule();
 
             inputSim = PlayModeTestUtilities.GetInputSimulationService();
             Assert.NotNull(inputSim);
@@ -46,9 +50,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [TearDown]
-        public void ShutdownMrtk()
+        public void TearDown()
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
 
         /// <summary>
@@ -143,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator NearInteractionTouchable()
+        public IEnumerator NearInteractionTouchableVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchable>(objectScale);
             touchable.SetLocalForward(touchNormal);
@@ -194,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator NearInteractionTouchableVolume()
+        public IEnumerator NearInteractionTouchableVolumeVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchableVolume>(objectScale);
 
@@ -337,6 +341,84 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 UnityEngine.Object.Destroy(touchable.gameObject);
             }
+        }
+
+        /// <summary>
+        /// Test Unity UI button
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableUnityUiButton()
+        {
+
+            var canvas = UnityUiUtilities.CreateCanvas(0.002f);
+
+            var button = UnityUiUtilities.CreateButton(Color.gray, Color.blue, Color.green);
+            button.transform.SetParent(canvas.transform, false);
+            var text = UnityUiUtilities.CreateText("test");
+            text.transform.SetParent(button.transform);
+
+            canvas.transform.position = objectPosition;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
+
+            using (var catcher = new UnityButtonEventCatcher(button))
+            {
+                // Touch started and completed when entering and exiting
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.AreEqual(0, catcher.Click);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.AreEqual(1, catcher.Click);
+            }
+
+            UnityEngine.Object.Destroy(canvas.gameObject);
+        }
+
+        /// <summary>
+        /// Test Unity UI toggle button
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableUnityUiToggle()
+        {
+
+            var canvas = UnityUiUtilities.CreateCanvas(0.002f);
+
+            var toggle = UnityUiUtilities.CreateToggle(Color.gray, Color.blue, Color.green);
+            toggle.transform.SetParent(canvas.transform, false);
+            var text = UnityUiUtilities.CreateText("test");
+            text.transform.SetParent(toggle.transform);
+
+            canvas.transform.position = objectPosition;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
+
+            using (var catcher = new UnityToggleEventCatcher(toggle))
+            {
+                // Turn on the toggle after exiting
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.IsFalse(catcher.IsOn);
+                Assert.AreEqual(0, catcher.Changed);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.IsTrue(catcher.IsOn);
+                Assert.AreEqual(1, catcher.Changed);
+
+                // Turn off the toggle after exiting
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.IsTrue(catcher.IsOn);
+                Assert.AreEqual(1, catcher.Changed);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.IsFalse(catcher.IsOn);
+                Assert.AreEqual(2, catcher.Changed);
+            }
+
+            UnityEngine.Object.Destroy(canvas.gameObject);
         }
 
     }
