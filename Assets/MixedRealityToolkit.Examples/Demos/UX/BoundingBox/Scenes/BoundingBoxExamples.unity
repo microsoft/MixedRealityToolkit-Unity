@@ -343,7 +343,7 @@ MonoBehaviour:
   showWireframe: 0
   wireframeShape: 0
   wireframeMaterial: {fileID: 0}
-  wireframeEdgeRadius: 0.005
+  wireframeEdgeRadius: 0.001
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
@@ -3291,7 +3291,7 @@ MonoBehaviour:
   showWireframe: 0
   wireframeShape: 0
   wireframeMaterial: {fileID: 0}
-  wireframeEdgeRadius: 0.005
+  wireframeEdgeRadius: 0.001
   handleMaterial: {fileID: 2100000, guid: cd4f0804b166a5e4dbefe7a9d10a1438, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
@@ -4585,7 +4585,7 @@ MonoBehaviour:
   showWireframe: 0
   wireframeShape: 0
   wireframeMaterial: {fileID: 0}
-  wireframeEdgeRadius: 0.005
+  wireframeEdgeRadius: 0.001
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
@@ -5223,7 +5223,7 @@ MonoBehaviour:
   showWireframe: 0
   wireframeShape: 0
   wireframeMaterial: {fileID: 0}
-  wireframeEdgeRadius: 0.005
+  wireframeEdgeRadius: 0.001
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
