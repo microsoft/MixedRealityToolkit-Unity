@@ -363,7 +363,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.0016
+  handleCloseProximity: 0.03
   farScale: 0
   mediumScale: 1
   closeScale: 1.5
@@ -603,7 +603,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.0016
+  handleCloseProximity: 0.03
   farScale: 1
   mediumScale: 1
   closeScale: 1
@@ -2047,7 +2047,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.0016
+  handleCloseProximity: 0.03
   farScale: 0
   mediumScale: 1
   closeScale: 1
@@ -3308,7 +3308,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.0016
+  handleCloseProximity: 0.03
   farScale: 1
   mediumScale: 1
   closeScale: 1
@@ -3937,7 +3937,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.0016
+  handleCloseProximity: 0.03
   farScale: 1
   mediumScale: 1
   closeScale: 1
@@ -4605,7 +4605,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.0016
+  handleCloseProximity: 0.03
   farScale: 1
   mediumScale: 1
   closeScale: 1.5
@@ -5243,7 +5243,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.0016
+  handleCloseProximity: 0.03
   farScale: 1
   mediumScale: 1
   closeScale: 1.5
