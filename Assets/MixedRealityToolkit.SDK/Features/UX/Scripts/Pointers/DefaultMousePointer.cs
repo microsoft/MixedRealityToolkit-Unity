@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -53,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool IsInteractionEnabled => isInteractionEnabled;
 
         private IMixedRealityController controller;
+        private Vector2 mousePosition;
 
         /// <inheritdoc />
         public override IMixedRealityController Controller
@@ -75,8 +76,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
+            if (UInput.mousePosition.x < 0 ||
+                UInput.mousePosition.y < 0 ||
+                UInput.mousePosition.x > Screen.width ||
+                UInput.mousePosition.y > Screen.height)
+            {
+                return;
+            }
+
+            if ((mousePosition - (Vector2) UInput.mousePosition).magnitude >= MovementThresholdToUnHide)
+            {
+                SetVisibility(true);
+            }
+            mousePosition = UInput.mousePosition;
+
             Camera mainCamera = CameraCache.Main;
-            Ray ray = mainCamera.ScreenPointToRay(UnityEngine.Input.mousePosition);
+            Ray ray = mainCamera.ScreenPointToRay(mousePosition);
             Rays[0].CopyRay(ray, float.MaxValue);
 
             transform.position = ray.origin + ray.direction * DefaultPointerExtent;
@@ -86,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {       
             get
             {
-                return gameObject.transform.position;
+                return transform.position;
             }
         }
 
@@ -151,13 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public override void OnInputChanged(InputEventData<Vector2> eventData)
-        {
-            //if (eventData.SourceId == Controller?.InputSource.SourceId)
-            //{
-            //    Vector3
-            //}
-        }
+        public override void OnInputChanged(InputEventData<Vector2> eventData) { }
 
         public override void OnInputChanged(InputEventData<MixedRealityPose> eventData) { }
 
@@ -196,13 +205,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 timeoutTimer = 0.0f;
                 SetVisibility(false);
-                isDisabled = true;
             }
         }
 
         protected virtual void SetVisibility(bool visible)
         {
-            BaseCursor?.SetVisibility(visible);
+            Cursor.visible = visible;
+            isDisabled = !visible;
         }
 
         #endregion MonoBehaviour Implementation

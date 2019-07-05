@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // ray to worldspace conversion
-            transform.position += transform.forward * DefaultPointerExtent;
+            //transform.position += transform.forward * DefaultPointerExtent;
         }
 
         /// <inheritdoc />
@@ -77,19 +77,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void UpdateMouseRotation(Vector3 mouseDeltaRotation)
         {
-            if (mouseDeltaRotation.magnitude >= MovementThresholdToUnHide)
+            if (isDisabled)
             {
-                if (isDisabled)
+                if (mouseDeltaRotation.magnitude >= MovementThresholdToUnHide)
                 {
                     // if cursor was hidden reset to center
                     SetVisibility(true);
                     transform.rotation = CameraCache.Main.transform.rotation;
                 }
-
-                isDisabled = false;
             }
-
-            if (!isDisabled)
+            else
             {
                 timeoutTimer = 0.0f;
             }
@@ -110,6 +107,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        protected override void SetVisibility(bool visible)
+        {
+            BaseCursor?.SetVisibility(visible);
+            isDisabled = !visible;
         }
     }
 }

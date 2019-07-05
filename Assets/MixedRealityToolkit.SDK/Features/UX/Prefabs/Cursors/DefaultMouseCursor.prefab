@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1201456477079117847}
   - component: {fileID: 4477198245755248415}
+  - component: {fileID: 4977626938594247160}
   m_Layer: 0
   m_Name: DefaultMouseCursor
   m_TagString: Untagged
@@ -52,3 +53,17 @@ MonoBehaviour:
   PrimaryCursorVisual: {fileID: 0}
   SourceDownIds: 
   defaultCursorDistance: 2
+--- !u!114 &4977626938594247160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114071904148380692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9296b71443954db1b4571935a43e5266, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.15
+  color: {r: 0.3, g: 0.3, b: 0.3, a: 1}
