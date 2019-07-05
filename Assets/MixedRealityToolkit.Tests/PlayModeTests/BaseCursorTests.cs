@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestUtilities.InitializeMixedRealityToolkit(true);
             TestUtilities.PlayspaceToOriginLookingForward();
-
+            
             // Target frame rate is set to 50 to match the physics
             // tick rate. The rest of the test code needs to wait on a frame to have
             // passed, and this is a rough way of ensuring that each WaitForFixedUpdate()
@@ -154,7 +154,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Right hand, pointer not on cube, hand open
             cube.transform.localPosition = abovePointerPos;
             yield return new WaitForFixedUpdate();
-            yield return null;
             yield return rightHand.Show(Vector3.zero);
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.Interact);
 
@@ -288,8 +287,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var hand = new TestHand(Handedness.Right);
             Vector3 handPos = new Vector3(0.05f, 0, 1.5f);
             yield return hand.Show(handPos);
-            yield return new WaitForFixedUpdate();
-            yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.None);
 
             // rotate, center north
