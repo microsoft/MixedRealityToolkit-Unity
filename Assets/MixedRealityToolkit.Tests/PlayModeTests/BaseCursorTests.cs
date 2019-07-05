@@ -35,6 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestUtilities.InitializeMixedRealityToolkit(true);
             TestUtilities.PlayspaceToOriginLookingForward();
+            
+            // Target frame rate is set to 50 to match the physics
+            // tick rate. The rest of the test code needs to wait on a frame to have
+            // passed, and this is a rough way of ensuring that each WaitForFixedUpdate()
+            // will roughly wait for frame to also pass.
+            Application.targetFrameRate = 50;
 
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.localPosition = new Vector3(0, 0, 2);
@@ -219,6 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             cube.AddComponent<ManipulationHandler>();
             var temp = cube.AddComponent<CursorContextManipulationHandler>();
+            yield return new WaitForFixedUpdate();
             yield return null;
 
             // Move cube back to original postion (described above)
@@ -230,11 +237,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rightHand = new TestHand(Handedness.Right);
             Vector3 rightPos = new Vector3(0.05f, 0, 1.5f);
             yield return rightHand.Show(rightPos);
+            yield return new WaitForFixedUpdate();
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.None);
 
             // Pinch right hand
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return new WaitForFixedUpdate();
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
 
@@ -243,11 +252,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 leftPos = new Vector3(-0.05f, 0, 1.5f);
             yield return rightHand.Hide();
             yield return leftHand.Show(leftPos);
+            yield return new WaitForFixedUpdate();
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.None);
 
             // Pinch left hand
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return new WaitForFixedUpdate();
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
 
@@ -255,6 +266,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return rightHand.Show(rightPos);
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return new WaitForFixedUpdate();
+            yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
 
             Object.Destroy(cube.GetComponent<ManipulationHandler>());
