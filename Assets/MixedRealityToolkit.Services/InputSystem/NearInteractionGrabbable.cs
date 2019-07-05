@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -37,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 (collider as SphereCollider) == null &&
                 ((collider as MeshCollider) == null || (collider as MeshCollider).convex == false))
             {
-                Debug.LogException(new SystemException("NearInteractionGrabbable requires a " +
+                Debug.LogException(new UnityException("NearInteractionGrabbable requires a " +
                     "BoxCollider, SphereCollider, CapsuleCollider or a convex MeshCollider on an object. " +
                     "Otherwise grab interaction will not work correctly."));
             }
