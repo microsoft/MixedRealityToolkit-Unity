@@ -46,6 +46,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
             gameObject.transform.position = transform.position + transform.forward * DefaultPointerExtent;
         }
 
+        public override void OnInputChanged(InputEventData<MixedRealityPose> eventData)
+        {
+            if (eventData.SourceId == Controller?.InputSource.SourceId)
+            {
+                if (!UseSourcePoseData &&
+                    PoseAction == eventData.MixedRealityInputAction)
+                {
+                    IsTracked = true;
+                    TrackingState = TrackingState.Tracked;
+                    transform.position = eventData.InputData.Position;
+                    transform.rotation = eventData.InputData.Rotation;
+                }
+            }
+        }
+
+
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId)
