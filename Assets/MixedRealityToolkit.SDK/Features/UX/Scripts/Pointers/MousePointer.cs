@@ -28,7 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
             // screenspace to ray conversion
@@ -43,25 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // ray to worldspace conversion
-            gameObject.transform.position = transform.position + transform.forward * DefaultPointerExtent;
+            transform.position += transform.forward * DefaultPointerExtent;
         }
 
-        public override void OnInputChanged(InputEventData<MixedRealityPose> eventData)
-        {
-            if (eventData.SourceId == Controller?.InputSource.SourceId)
-            {
-                if (!UseSourcePoseData &&
-                    PoseAction == eventData.MixedRealityInputAction)
-                {
-                    IsTracked = true;
-                    TrackingState = TrackingState.Tracked;
-                    transform.position = eventData.InputData.Position;
-                    transform.rotation = eventData.InputData.Rotation;
-                }
-            }
-        }
-
-
+        /// <inheritdoc />
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId)
@@ -79,6 +63,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
+
+        public override void OnInputChanged(InputEventData<MixedRealityPose> eventData)
+        {
+            if (eventData.SourceId == Controller?.InputSource.SourceId)
+            {
+                if (UseSourcePoseData)
+                {
+                    UpdateMouseRotation(eventData.InputData.Rotation.eulerAngles);
+                }
+            }
+        }
+
         private void UpdateMouseRotation(Vector3 mouseDeltaRotation)
         {
             if (mouseDeltaRotation.magnitude >= MovementThresholdToUnHide)
@@ -114,11 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-        }
-
-        protected override void SetVisibility(bool visible)
-        {
-            BaseCursor?.SetVisibility(visible);
         }
     }
 }

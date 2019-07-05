@@ -75,19 +75,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
-            // screenspace to ray conversion
-            transform.position = CameraCache.Main.transform.position;
+            Camera mainCamera = CameraCache.Main;
+            Ray ray = mainCamera.ScreenPointToRay(UnityEngine.Input.mousePosition);
+            Rays[0].CopyRay(ray, float.MaxValue);
 
-            Ray ray = new Ray(transform.position, transform.forward);
-            Rays[0].CopyRay(ray, float.PositiveInfinity);
-
-            if (MixedRealityRaycaster.DebugEnabled)
-            {
-                Debug.DrawRay(ray.origin, ray.direction * PointerExtent, Color.green);
-            }
-
-            // ray to worldspace conversion
-            gameObject.transform.position = transform.position + transform.forward * DefaultPointerExtent;
+            transform.position = ray.origin + ray.direction * DefaultPointerExtent;
         }
 
         public override Vector3 Position
@@ -157,6 +149,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 base.OnInputUp(eventData);
             }
+        }
+
+        public override void OnInputChanged(InputEventData<Vector2> eventData)
+        {
+            //if (eventData.SourceId == Controller?.InputSource.SourceId)
+            //{
+            //    Vector3
+            //}
         }
 
         public override void OnInputChanged(InputEventData<MixedRealityPose> eventData) { }
