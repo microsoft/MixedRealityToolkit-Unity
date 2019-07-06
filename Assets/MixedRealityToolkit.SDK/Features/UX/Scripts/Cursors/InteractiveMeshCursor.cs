@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool hasHand = false;
         private bool isDown = false;
 
-        private Vector3 targetScale;
+        private new Vector3 targetScale;
         private Vector3 initialScale;
 
         private void Awake()
