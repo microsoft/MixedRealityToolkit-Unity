@@ -9,31 +9,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 7612acbc1a4a4ed0afa5f4ccbe42bee4, type: 3}
   m_Name: EyeTrackingDemoConfigurationProfile
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   isCustomProfile: 1
   targetExperienceScale: 4
   enableCameraSystem: 1
   cameraProfile: {fileID: 11400000, guid: de38e71178510674fae830377a72888a, type: 2}
   cameraSystemType:
     reference: Microsoft.MixedReality.Toolkit.CameraSystem.MixedRealityCameraSystem,
-      MixedRealityToolkit.Services.CameraSystem
+      Microsoft.MixedReality.Toolkit.Services.CameraSystem
   enableInputSystem: 1
   inputSystemProfile: {fileID: 11400000, guid: cc939e5f734608145a0be1e66727eac2, type: 2}
   inputSystemType:
     reference: Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem, Microsoft.MixedReality.Toolkit.Services.InputSystem
   enableBoundarySystem: 0
   boundarySystemType:
-    reference:
+    reference: 
   boundaryVisualizationProfile: {fileID: 0}
   enableTeleportSystem: 0
   teleportSystemType:
-    reference:
+    reference: 
   enableSpatialAwarenessSystem: 0
   spatialAwarenessSystemType:
-    reference:
+    reference: 
   spatialAwarenessSystemProfile: {fileID: 0}
   diagnosticsSystemProfile: {fileID: 11400000, guid: 478436bd1083882479a52d067e98e537,
     type: 2}
@@ -41,5 +40,9 @@ MonoBehaviour:
   diagnosticsSystemType:
     reference: Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem,
       Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
+  sceneSystemProfile: {fileID: 0}
+  enableSceneSystem: 0
+  sceneSystemType:
+    reference: 
   registeredServiceProvidersProfile: {fileID: 0}
   useServiceInspectors: 0

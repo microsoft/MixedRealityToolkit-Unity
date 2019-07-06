@@ -136,6 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent proximityLightOuterColorOverride = new GUIContent("Outer Color", "The Override Color of the ProximityLight Gradient at the Outer Edge (RGB) and (A) is Gradient Extent");
             public static GUIContent proximityLightSubtractive = new GUIContent("Subtractive", "Proximity Lights Remove Light from a Surface, Used to Mimic a Shadow");
             public static GUIContent proximityLightTwoSided = new GUIContent("Two Sided", "Proximity Lights Apply to Both Sides of a Surface");
+            public static GUIContent fluentLightIntensity = new GUIContent("Light Intensity", "Intensity Scaler for All Hover and Proximity Lights");
             public static GUIContent roundCorners = new GUIContent("Round Corners", "(Assumes UVs Specify Borders of Surface, Works Best on Unity Cube, Quad, and Plane)");
             public static GUIContent roundCornerRadius = new GUIContent("Unit Radius", "Rounded Rectangle Corner Unit Sphere Radius");
             public static GUIContent roundCornerMargin = new GUIContent("Margin %", "Distance From Geometry Edge");
@@ -232,6 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty proximityLightOuterColorOverride;
         protected MaterialProperty proximityLightSubtractive;
         protected MaterialProperty proximityLightTwoSided;
+        protected MaterialProperty fluentLightIntensity;
         protected MaterialProperty roundCorners;
         protected MaterialProperty roundCornerRadius;
         protected MaterialProperty roundCornerMargin;
@@ -327,6 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             proximityLightOuterColorOverride = FindProperty("_ProximityLightOuterColorOverride", props);
             proximityLightSubtractive = FindProperty("_ProximityLightSubtractive", props);
             proximityLightTwoSided = FindProperty("_ProximityLightTwoSided", props);
+            fluentLightIntensity = FindProperty("_FluentLightIntensity", props);
             roundCorners = FindProperty("_RoundCorners", props);
             roundCornerRadius = FindProperty("_RoundCornerRadius", props);
             roundCornerMargin = FindProperty("_RoundCornerMargin", props);
@@ -727,14 +730,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ProximityLight), Styles.proximityLight.text), EditorStyles.helpBox, new GUILayoutOption[0]);
             }
 
-            materialEditor.ShaderProperty(roundCorners, Styles.roundCorners);
-
-            if (PropertyEnabled(roundCorners))
-            {
-                materialEditor.ShaderProperty(roundCornerRadius, Styles.roundCornerRadius, 2);
-                materialEditor.ShaderProperty(roundCornerMargin, Styles.roundCornerMargin, 2);
-            }
-
             materialEditor.ShaderProperty(borderLight, Styles.borderLight);
 
             if (PropertyEnabled(borderLight))
@@ -761,6 +756,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         materialEditor.ShaderProperty(borderLightOpaqueAlpha, Styles.borderLightOpaqueAlpha, 4);
                     }
                 }
+            }
+
+            if (PropertyEnabled(hoverLight) || PropertyEnabled(proximityLight) || PropertyEnabled(borderLight))
+            {
+                materialEditor.ShaderProperty(fluentLightIntensity, Styles.fluentLightIntensity);
+            }
+
+            materialEditor.ShaderProperty(roundCorners, Styles.roundCorners);
+
+            if (PropertyEnabled(roundCorners))
+            {
+                materialEditor.ShaderProperty(roundCornerRadius, Styles.roundCornerRadius, 2);
+                materialEditor.ShaderProperty(roundCornerMargin, Styles.roundCornerMargin, 2);
             }
 
             if (PropertyEnabled(roundCorners) || PropertyEnabled(borderLight))

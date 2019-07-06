@@ -19,17 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <remarks>Always located at this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s <see href="https://docs.unity3d.com/ScriptReference/Transform-position.html">Transform.position</see></remarks>
         public MixedRealityPose StartPoint => startPoint;
 
-        #region MonoBehaviour Implementation
-
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            startPoint.Position = transform.transform.InverseTransformPoint(LineTransform.position);
-        }
-
-        #endregion MonoBehaviour Implementation
-
         #region Line Data Provider Implementation
 
         /// <inheritdoc />

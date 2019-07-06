@@ -5,6 +5,20 @@
     href: HTKToMRTKPortingGuide.md
   - name: Updating from RC2 to GA
     href: UpdatingToGA.md
+- name: Architecture
+  items:
+  - name: Overview
+    href: Architecture/Overview.md
+  - name: Framework and Runtime
+    href: Architecture/FrameworkAndRuntime.md
+  - name: Input System
+    items:
+    - name: Terminology
+      href: Architecture/InputSystem/Terminology.md
+    - name: Core System
+      href: Architecture/InputSystem/CoreSystem.md
+    - name: Controllers, Pointers, and Focus
+      href: Architecture/InputSystem/ControllersPointersAndFocus.md
 - name: Feature Overviews
   items:
   - name: Profiles
@@ -37,6 +51,11 @@
       href: EyeTracking/EyeTracking_Main.md
   - name: In-Editor Input Simulation
     href: InputSimulation/InputSimulationService.md
+  - name: Input Animation Recording
+    href: InputSimulation/InputAnimationRecording.md
+    items:
+    - name: Input Animation File Format Specification
+      href: InputSimulation/InputAnimationFileFormat.md
   - name: UX Building Blocks
     items:
     - name: Interactable
@@ -135,6 +154,10 @@
     href: Contributing/DocumentationGuide.md
   - name: Developer portal generation with DocFX
     href: Contributing/DevDocGuide.md
+  - name: Testing
+    href: Contributing/UnitTests.md
+  - name: Breaking Changes
+    href: Contributing/BreakingChanges.md
 - name: Planning
   items:
   - name: Roadmap
