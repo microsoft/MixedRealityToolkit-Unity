@@ -72,21 +72,21 @@ Note that themes that manipulate mesh objects (color or shader themes) are able 
 
 
 ### Creating Toggles and Multi-Dimension buttons
-Toggle or multi-dimension buttons can be created in the Profile using the Selection Mode field. In the Toggle mode, a new toggled theme is added for each Target in the Profile. When the Interactable is toggled, the Toggled Theme will be used to provide an additional layer visual feedback.
+Toggle or multi-dimension buttons can be created in the Profile using the [`Selection Mode`](xref:Microsoft.MixedReality.Toolkit.UI.SelectionModes) field. In the Toggle mode, a new toggled theme is added for each Target in the Profile. When the Interactable is toggled on, the Toggled Theme will be used to provide an additional layer of visual feedback.
 
-While the Selection Mode is set to Toggle, the Is Toggled check box can be used to set the default value of the control which will be visible during runtime.
+While the [`Selection Mode`](xref:Microsoft.MixedReality.Toolkit.UI.SelectionModes) is set to Toggle, the Is Toggled check box can be used to set the default value of the control which will be visible during runtime.
 
 In the Toggle selection mode, Set the Interactable's toggled state during runtime by calling the Interactable's SetToggled(bool toggle) method to switch the IsToggled state and update the profile to use the correct theme.
 
 <img src="../Documentation/Images/Interactable/Profile_toggle.png" width="450">
 
-Multi-Dimension selection mode is used to create sequintial buttons, or a button that has more than two steps, like controlling speed with three values, Fast (1x), Faster (2x) or Fastest (3x).
+Multi-Dimension selection mode is used to create sequential buttons, or a button that has more than two steps, like controlling speed with three values, Fast (1x), Faster (2x) or Fastest (3x).
 
 <img src="../Documentation/Images/Interactable/Profile_multiDimensions.png" width="450">
 
-With dimensions being a numeric value, there are plenty options (up to 9) for adding themes layers. Dimensions and themes can be used to control the text or texture of the button for each speed setting, using a different theme for each of step.
+With dimensions being a numeric value, up to 9 themes can be added to control the text label or texture of the button for each speed setting, using a different theme for each of step.
 
-Developers can assess the *DimensionIndex* to determine which dimension is currently active.
+Developers can assess the [`DimensionIndex`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) to determine which dimension is currently active.
 
 ```
 //Access the current DimensionIndex

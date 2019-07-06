@@ -58,12 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Input sources that are pressing the interactable
         /// </summary>
         public HashSet<IMixedRealityInputSource> PressingInputSources => pressingInputSources;
-
-        /// <summary>
-        /// Values for user-friendly dimensions settings
-        /// </summary>
-        public enum SelectionTypes { Button, Toggle, MultiDimension };
-
+        
         /// <summary>
         /// Is the interactable enabled?
         /// </summary>
@@ -101,7 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// The Dimension value to set on start
         /// </summary>
-        public int StartDimensionIndex = 0;
+        [SerializeField]
+        private int StartDimensionIndex = 0;
 
         /// <summary>
         /// Is the interactive selectable?
@@ -745,6 +741,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (Dimensions == 2)
             {
                 SetDimensionIndex(toggled ? 1 : 0);
+            }
+            else
+            {
+                int selectedMode = Mathf.Clamp(Dimensions, 1, 3);
+                Debug.Log("SetToggled(bool) called, but SelectionMode is set to " + (SelectionModes)(selectedMode - 1) + ", so DimensionIndex was unchanged.");
             }
         }
 
