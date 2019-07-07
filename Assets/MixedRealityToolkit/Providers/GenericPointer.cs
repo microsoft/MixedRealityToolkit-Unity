@@ -78,9 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public IMixedRealityCursor BaseCursor { get; set; }
 
         /// <inheritdoc />
-        public bool IsCursorActive { get; set; }
-
-        /// <inheritdoc />
         public ICursorModifier CursorModifier { get; set; }
 
         /// <inheritdoc />
