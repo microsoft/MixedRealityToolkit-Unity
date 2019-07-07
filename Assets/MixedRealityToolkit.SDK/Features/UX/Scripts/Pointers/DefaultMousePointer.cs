@@ -94,7 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Ray ray = mainCamera.ScreenPointToRay(mousePosition);
             Rays[0].CopyRay(ray, float.MaxValue);
 
-            transform.position = ray.origin + ray.direction * DefaultPointerExtent;
+            transform.position = mainCamera.transform.position;
+            transform.rotation = Quaternion.LookRotation(ray.direction);
         }
 
         public override Vector3 Position
