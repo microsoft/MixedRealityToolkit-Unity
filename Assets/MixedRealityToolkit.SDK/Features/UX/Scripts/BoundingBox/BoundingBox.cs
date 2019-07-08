@@ -187,20 +187,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("When an axis is flattened what value to set that axes scale to.")]
-        private float flattenAxisScale = 0.0f;
+        [Tooltip("When an axis is flattened what value to set that axis's scale to for display.")]
+        private float flattenAxisDisplayScale = 0.0f;
 
         /// <summary>
-        /// When an axis is flattened what value to set that axes scale to.
+        /// When an axis is flattened what value to set that axis's scale to for display.
         /// </summary>
-        public float FlattenAxisScale
+        public float FlattenAxisDisplayScale
         {
-            get { return flattenAxisScale; }
+            get { return flattenAxisDisplayScale; }
             set
             {
-                if (flattenAxisScale != value)
+                if (flattenAxisDisplayScale != value)
                 {
-                    flattenAxisScale = value;
+                    flattenAxisDisplayScale = value;
                     CreateRig();
                 }
             }
@@ -321,26 +321,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (wireframeEdgeRadius != value)
                 {
                     wireframeEdgeRadius = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("When an axis is flattened, what to change the Border Light (MRTK/Standard shader feature) width to.")]
-        private float flattenedAxisBorderWidth = 0.35f;
-
-        /// <summary>
-        /// When an axis is flattened, what to change the Border Light (MRTK/Standard shader feature) width to.
-        /// </summary>
-        public float FlattenedAxisBorderWidth
-        {
-            get { return flattenedAxisBorderWidth; }
-            set
-            {
-                if (flattenedAxisBorderWidth != value)
-                {
-                    flattenedAxisBorderWidth = value;
                     CreateRig();
                 }
             }
@@ -1292,29 +1272,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (boxMaterial != null)
             {
-                boxDisplay = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                Destroy(boxDisplay.GetComponent<BoxCollider>());
-                boxDisplay.name = "bounding box";
+                bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
 
-                // When an axis is flattened the border width may need to be adjusted to account for the new scale.
-                // Note, this assumes use with the MRTK/Standard shader's Border Light feature. This will have no 
-                // effect on other shaders or materials which do not enable the Border Light.
-                if (flattenAxis != FlattenModeType.DoNotFlatten)
-                {
-                    var boxDisplayRenderer = boxDisplay.GetComponent<Renderer>();
-                    var properties = new MaterialPropertyBlock();
-                    boxDisplayRenderer.GetPropertyBlock(properties);
-                    properties.SetFloat("_BorderWidth", flattenedAxisBorderWidth);
-                    boxDisplayRenderer.SetPropertyBlock(properties);
-                }
+                boxDisplay = GameObject.CreatePrimitive(isFlattened ? PrimitiveType.Quad : PrimitiveType.Cube);
+                Destroy(boxDisplay.GetComponent<Collider>());
+                boxDisplay.name = "bounding box";
 
                 ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
 
-                boxDisplay.transform.localScale = 2.0f * currentBoundsExtents;
+                boxDisplay.transform.localScale = GetBoxDisplayScale();
                 boxDisplay.transform.parent = rigRoot.transform;
-
-
             }
+        }
+
+        private Vector3 GetBoxDisplayScale()
+        {
+            // When a box is flattened one axis is normally scaled to zero, this doesn't always work well with visuals so we take 
+            // that flattened axis and re-scale it to the flattenAxisDisplayScale.
+            Vector3 displayScale = currentBoundsExtents;
+            displayScale.x = (flattenAxis == FlattenModeType.FlattenX) ? flattenAxisDisplayScale : displayScale.x;
+            displayScale.y = (flattenAxis == FlattenModeType.FlattenY) ? flattenAxisDisplayScale : displayScale.y;
+            displayScale.z = (flattenAxis == FlattenModeType.FlattenZ) ? flattenAxisDisplayScale : displayScale.z;
+
+            return 2.0f * displayScale;
         }
 
         private void SetBoundingBoxCollider()
@@ -1779,9 +1759,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             ((min == boundsExtents.y) ? FlattenModeType.FlattenY : FlattenModeType.FlattenZ);
                     }
 
-                    boundsExtents.x = (flattenAxis == FlattenModeType.FlattenX) ? flattenAxisScale : boundsExtents.x;
-                    boundsExtents.y = (flattenAxis == FlattenModeType.FlattenY) ? flattenAxisScale : boundsExtents.y;
-                    boundsExtents.z = (flattenAxis == FlattenModeType.FlattenZ) ? flattenAxisScale : boundsExtents.z;
+                    boundsExtents.x = (flattenAxis == FlattenModeType.FlattenX) ? 0.0f : boundsExtents.x;
+                    boundsExtents.y = (flattenAxis == FlattenModeType.FlattenY) ? 0.0f : boundsExtents.y;
+                    boundsExtents.z = (flattenAxis == FlattenModeType.FlattenZ) ? 0.0f : boundsExtents.z;
                     currentBoundsExtents = boundsExtents;
 
                     GetCornerPositionsFromBounds(new Bounds(Vector3.zero, boundsExtents * 2.0f), ref boundsCorners);
@@ -1850,7 +1830,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (boxDisplay != null)
                 {
                     // Compute the local scale that produces the desired world space size
-                    boxDisplay.transform.localScale = Vector3.Scale(2.0f * currentBoundsExtents, invRootScale);
+                    boxDisplay.transform.localScale = Vector3.Scale(GetBoxDisplayScale(), invRootScale);
                 }
 
                 //move rig into position and rotation

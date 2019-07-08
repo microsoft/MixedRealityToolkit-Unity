@@ -1072,7 +1072,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 4
-  flattenAxisScale: 0.0025
+  flattenAxisDisplayScale: 0.35
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -1080,7 +1080,6 @@ MonoBehaviour:
   wireframeShape: 0
   wireframeMaterial: {fileID: 0}
   wireframeEdgeRadius: 0.005
-  flattenedAxisBorderWidth: 0.35
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
