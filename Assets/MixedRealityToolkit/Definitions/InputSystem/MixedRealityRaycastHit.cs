@@ -20,26 +20,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Vector2 textureCoord2;
         public Transform transform;
         public Vector2 lightmapCoord;
+        public bool raycastValid;
 
-        public MixedRealityRaycastHit(RaycastHit hitInfo)
+        public MixedRealityRaycastHit(bool raycastValid, RaycastHit hitInfo)
         {
-            point = hitInfo.point;
-            normal = hitInfo.normal;
-            barycentricCoordinate = hitInfo.barycentricCoordinate;
-            distance = hitInfo.distance;
-            triangleIndex = hitInfo.triangleIndex;
-            textureCoord = hitInfo.textureCoord;
-            textureCoord2 = hitInfo.textureCoord2;
-            transform = hitInfo.transform;
-
-            try
+            this.raycastValid = raycastValid;
+            if (raycastValid)
             {
+                point = hitInfo.point;
+                normal = hitInfo.normal;
+                barycentricCoordinate = hitInfo.barycentricCoordinate;
+                distance = hitInfo.distance;
+                triangleIndex = hitInfo.triangleIndex;
+                textureCoord = hitInfo.textureCoord;
+                textureCoord2 = hitInfo.textureCoord2;
+                transform = hitInfo.transform;
                 lightmapCoord = hitInfo.lightmapCoord;
             }
-            catch (Exception)
+            else
             {
-                // Accessing lightmap coord appears to throw a NullReferenceException in some cases, probably when lightmaps are not used.
-                // Catch this, and just leave as default value.
+                point = Vector3.zero;
+                normal = Vector3.zero;
+                barycentricCoordinate = Vector3.zero;
+                distance = 0;
+                triangleIndex = 0;
+                textureCoord = Vector2.zero;
+                textureCoord2 = Vector2.zero;
+                transform = null;
                 lightmapCoord = Vector2.zero;
             }
         }
