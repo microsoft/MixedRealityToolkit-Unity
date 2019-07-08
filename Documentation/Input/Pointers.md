@@ -19,7 +19,7 @@ Touch Started / Updated / Completed | Raised by touch-aware pointers like [**Pok
 
 To handle them the corresponding interface must be implemented. Additionally there's the option to receive the events raised on all game objects instead of just the ones on itself and its children. This requires to register as a global event listener calling [`RegisterHandler`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.RegisterHandler*) on the input system with the corresponding interface(s).
 
-> [!WARNING]
+> [!NOTE]
 > [`IMixedRealityFocusChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler) and [`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler) should be handled in the objects they are raised on. It is possible to receive focus events globally but, unlike other input events, global event handler won't block receiving events based on focus (the event will be received by both global handler and a corresponding object in focus).
 
 Alternatively, there's the possibility to derive the handler script from [`InputSystemGlobalHandlerListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener) for global registration or from [`BaseInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputHandler) for choosing in the inspector whether to register as global listener or not. In both cases the abstract methods `RegisterHandlers` and `UnregisterHandlers` which specify the interfaces to listen to, need to be implemented.

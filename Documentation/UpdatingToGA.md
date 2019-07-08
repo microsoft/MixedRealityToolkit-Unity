@@ -39,6 +39,83 @@ New API `RegisterHandler` and `UnregisterHandler`:
 - If you have been inheriting from `InputSystemGlobalListener`, change inheritance to `InputSystemGlobalHandlerListener`. Implement `RegisterHandlers` and `UnregisterHandlers` abstract methods. In the implementation call `inputSystem.RegisterHandler` (`inputSystem.UnregisterHandler`) to register on all handler interfaces you want to listen global events for.
 - If you have been inheriting from `BaseInputHandler`, implement `RegisterHandlers` and `UnregisterHandlers` abstract methods (same as for `InputSystemGlobalListener`).
 
+**Examples of migration**
+
+<pre><code>
+// Old
+class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+{
+    private void OnEnable()
+    {
+        <b>InputSystem?.Register(gameObject);</b>
+    }
+
+    private void OnDisable()
+    {
+        <b>InputSystem?.Unregister(gameObject);</b>
+    }
+}
+
+// Migrated
+class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+{
+    private void OnEnable()
+    {
+        <b>InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);</b>
+        <b>InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);</b>
+    }
+
+    private void OnDisable()
+    {
+        <b>InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);</b>
+        <b>InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);</b>
+    }
+}
+</code></pre>
+
+<pre><code>
+// Old
+class SampleHandler2 : <b>InputSystemGlobalListener</b>, IMixedRealitySpeechHandler
+{
+}
+
+// Migrated
+class SampleHandler2 : <b>InputSystemGlobalHandlerListener</b>, IMixedRealitySpeechHandler
+{
+    <b>private void RegisterHandlers()
+    {
+        InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+    }
+
+    private void UnregisterHandlers()
+    {
+        InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+    }</b>
+}
+
+// Alternative migration
+class SampleHandler2 : <b>MonoBehaviour</b>, IMixedRealitySpeechHandler
+{
+    private void <b>OnEnable</b>()
+    {
+        IMixedRealityInputSystem inputSystem;
+        if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))
+        {
+            inputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+    }
+
+    private void <b>OnDisable</b>()
+    {
+        IMixedRealityInputSystem inputSystem;
+        if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))
+        {
+            inputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+    }</b>
+}
+</code></pre>
+
 ### Spatial Awareness
 
 The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserver interfaces have taken multiple breaking changes as described below.
