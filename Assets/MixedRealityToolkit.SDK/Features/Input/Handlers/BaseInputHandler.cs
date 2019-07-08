@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Is Focus required to receive input events on this GameObject?")]
         private bool isFocusRequired = true;
 
-        private bool initializationDone = false;
+        private bool activeFocusValue = true;
 
         /// <summary>
         /// Is Focus required to receive input events on this GameObject?
@@ -22,12 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual bool IsFocusRequired
         {
             get { return isFocusRequired; }
-            protected set
-            {
-                bool oldValue = isFocusRequired;
-                isFocusRequired = value;
-                UpdateHandlersState(oldValue);
-            }
+            protected set { isFocusRequired = value; }
         }
 
         #region MonoBehaviour Implementation
@@ -47,28 +42,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 base.Start();
             }
 
-            initializationDone = true;
+            activeFocusValue = isFocusRequired;
         }
 
-        protected override void OnDisable()
+        protected void Update()
         {
-            if (!isFocusRequired)
+            if(activeFocusValue != isFocusRequired)
             {
-                base.OnDisable();
-            }
-        }
+                activeFocusValue = isFocusRequired;
 
-        #endregion MonoBehaviour Implementation
-
-        private void UpdateHandlersState(bool oldValue)
-        {
-            if (oldValue == isFocusRequired)
-            {
-                return;
-            }
-
-            if (initializationDone && Application.isPlaying && isActiveAndEnabled)
-            {
                 // If focus wasn't required before and is required now, unregister global handlers.
                 // Otherwise, register them.
                 if (isFocusRequired)
@@ -81,5 +63,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
+
+        protected override void OnDisable()
+        {
+            if (!isFocusRequired)
+            {
+                base.OnDisable();
+            }
+        }
+
+        #endregion MonoBehaviour Implementation
     }
 }
