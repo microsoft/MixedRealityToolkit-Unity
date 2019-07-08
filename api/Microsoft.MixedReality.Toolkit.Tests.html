@@ -97,8 +97,17 @@
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusedObjectEventCatcher-1.html">FocusedObjectEventCatcher&lt;T&gt;</a></h4>
       <section><p>Base class for counting events raised on the focused object.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusProviderRaycastTests.html">FocusProviderRaycastTests</a></h4>
+      <section><p>This class is used to test that <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.FocusProvider.html">FocusProvider</a> raycasts are selecting the correct focus object.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusProviderTests.html">FocusProviderTests</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusRaycastTestProxy.html">FocusRaycastTestProxy</a></h4>
+      <section><p>Used by <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusProviderRaycastTests.html">FocusProviderRaycastTests</a> to represent a single raycast test.
+This is used to set any necessary values on the <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestPointer.html">TestPointer</a> for performing the test,
+including positioning (through <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusRaycastTestProxy.html#Microsoft_MixedReality_Toolkit_Tests_FocusRaycastTestProxy_RayLineData">RayLineData</a>), as well as the GameObject that the test author expects to be selected
+as the pointer's new focus target after the values are set on the <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestPointer.html">TestPointer</a>, and it is updated by the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.FocusProvider.html">FocusProvider</a>.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.GlobalEventCatcher-1.html">GlobalEventCatcher&lt;T&gt;</a></h4>
       <section><p>Base class for counting global events.</p>
 </section>
@@ -112,6 +121,12 @@
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.html">PressableButtonTests</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestPointer.html">TestPointer</a></h4>
+      <section><p>A simple pointer that is just used for Unity play mode tests. It doesn't update anything itself -
+it is expected that any test using it will manually update data as necessary.
+If you would like to setup pointer parameters in data (e.g. a prefab), you can use
+<a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusRaycastTestProxy.html">FocusRaycastTestProxy</a>.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html">TestUtilities</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TouchEventCatcher.html">TouchEventCatcher</a></h4>
