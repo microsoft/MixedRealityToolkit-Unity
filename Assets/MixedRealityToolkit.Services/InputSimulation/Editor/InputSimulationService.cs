@@ -294,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SupportedControllerType st = simulationMode == HandSimulationMode.Gestures ? SupportedControllerType.GGVHand : SupportedControllerType.ArticulatedHand;
             IMixedRealityPointer[] pointers = RequestPointers(st, handedness);
 
-            var inputSource = InputSystem?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
+            var inputSource = InputSystem?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand, true);
             switch (simulationMode)
             {
                 case HandSimulationMode.Articulated:

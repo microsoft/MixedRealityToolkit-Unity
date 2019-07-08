@@ -761,9 +761,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other)
+        public IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other, bool addGazePointer = false)
         {
-            return new BaseGenericInputSource(name, pointers, sourceType);
+            return new BaseGenericInputSource(name, pointers, sourceType, addGazePointer);
         }
 
         #region Input Source State Events
