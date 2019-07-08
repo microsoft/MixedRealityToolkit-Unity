@@ -4,8 +4,8 @@ At the script level you consume input events by implementing one of the event ha
 
 > [!IMPORTANT]
 > By default a script will receive events only while in focus by a pointer. To receive events while out of focus, in addition to implementing the desired handler interfaces, you have to do one of the following:
-> - Register the script's game object as a global listener via [`MixedRealityToolkit.InputSystem.Register`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem).
-> - Derive the script from [`InputSystemGlobalListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener).
+> - (Preferred) Register the script's game object as a global listener via [`MixedRealityToolkit.InputSystem.RegisterHandler`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem) in `OnEnable` (`UnregisterHandler` explicitly in `OnDisable`). You need to call `RegisterHandler` multiple times, if you want to listen to global input events on multiple interfaces.
+> - Derive the script from [`InputSystemGlobalHandlerListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener). It will add an `inputSystem` property to the component and make sure inputSystem is valid before registering handlers. Implement its abstract methods `RegisterHandlers` and `UnregisterHandlers`. In these implementations use [`MixedRealityToolkit.InputSystem.RegisterHandler`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem) to register interfaces, which you want to receive global events for.
 
 Handler | Events | Description
 --- | --- | ---

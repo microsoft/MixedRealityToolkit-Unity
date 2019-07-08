@@ -9,7 +9,35 @@ Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes 
 
 Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.
 
+- [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
+
+### Event System
+
+**Changes**
+
+- The `IMixedRealityEventSystem` old API methods `Register` and `Unregister` has been marked as Obsolete. They are preserved for backward compatibility.
+- `InputSystemGlobalListener` has been marked as obsolete. Its functionality has not changed.
+- `BaseInputHandler` base class has been changed from `InputSystemGlobalListener` to `InputSystemGlobalHandlerListener`. This is a breaking change for any descendants of `BaseInputHandler`.
+
+**Motivation behind the change**
+
+Old event system Api `Register` and `Unregister` could potentially cause multiple issues in runtime, main being:
+
+- If a component registers for global events, it would receive global input events of ALL types.
+- If one of components on an object registers for global input events, all components on this object will receive global input events of ALL types.
+- If two components on the same object register to global events, and then one is disabled in runtime, second stops receiving global events.
+
+New Api `RegisterHandler` and `UnregisterHandler`:
+
+- Provides an explicit and granular control over which input events should be listened to globally and which should be focused-based.
+- Allows multiple components on the same object to listen to global events independently on each other.
+
+**How to migrate**
+
+- If you have been calling `Register`/`Unregister` API directly before, replace these calls with calls to `RegisterHandler`/`UnregisterHandler`. Use handler interfaces you implement as generic parameters. If you implement multiple interfaces, and several of them listen to global input events, call `RegisterHandler` multiple times.
+- If you have been inheriting from `InputSystemGlobalListener`, change inheritance to `InputSystemGlobalHandlerListener`. Implement `RegisterHandlers` and `UnregisterHandlers` abstract methods. In implementation call `inputSystem.RegisterHandler` (`inputSystem.UnregisterHandler`) to register on all handler interfaces you want to listen global events for.
+- If you have been inheriting from `BaseInputHandler`, implement `RegisterHandlers` and `UnregisterHandlers` abstract methods (same as for `InputSystemGlobalListener`).
 
 ### Spatial Awareness
 
