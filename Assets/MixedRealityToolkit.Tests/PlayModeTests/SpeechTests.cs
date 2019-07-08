@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const Byte ScanCode_9 = 0x0A;
 
         /// <summary>
-        /// Flags, for the keybd_event function, used in this test.
+        /// Flags, for the KeyboardEvent function, used in this test.
         /// </summary>
         private const UInt32 KeyboardFlag_KeyUp = 0x0002;
 
