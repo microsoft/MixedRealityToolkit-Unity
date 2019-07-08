@@ -10,17 +10,15 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using NUnit.Framework;
-using System.Collections;
-using UnityEngine;
-using UnityEngine.TestTools;
+using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Linq;
-using Microsoft.MixedReality.Toolkit.Diagnostics;
-using System.Runtime.InteropServices;
+using NUnit.Framework;
 using System;
-using Microsoft.MixedReality.Toolkit.UI;
+using System.Collections;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -38,16 +36,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.TearDown();
         }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestToggleProfilerCommand()
         {
-            // Confirm that the Diagnostics system is enabled and the VisualProfiler is in the scene.
+            int frameDelay = 10;
+
+            // Confirm that the diagnostics system is enabled.
             IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
             MixedRealityServiceRegistry.TryGetService<IMixedRealityDiagnosticsSystem>(out diagnosticsSystem);
             Assert.IsNotNull(diagnosticsSystem, "The diagnostics system is not enabled in the scene.");
+            yield return null;
+
+            // This test uses the input system to simulate speech commands.
+            IMixedRealityInputSystem inputSystem = null;
+            MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+            Assert.IsNotNull(inputSystem, "The input system is not enabled in the scene.");
             yield return null;
 
             // Verfiy that the VisualProfiler is enabled.
@@ -55,50 +58,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Toggle the profiler visualization off.
-            KeyboardEvent(VirtualKey_9, ScanCode_9, 0, IntPtr.Zero); // key down
-            yield return null;
-            KeyboardEvent(VirtualKey_9, ScanCode_9, KeyboardFlag_KeyUp, IntPtr.Zero); // key up
-            for (int i = 0; i < 10; i++) { yield return null; }
+            var gazeInputSource = inputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
+            inputSystem.RaiseSpeechCommandRecognized(
+                gazeInputSource, 
+                RecognitionConfidenceLevel.High, 
+                new TimeSpan(), 
+                DateTime.Now, 
+                new SpeechCommands("toggle profiler", KeyCode.Alpha9, MixedRealityInputAction.None));
+            // It may take a few frames before the event is handled and the system responds to the state change.
+            for (int i = 0; i < frameDelay; i++) { yield return null; }
 
             // Verify that the VisualProfiler is disabled.
             Assert.IsFalse(diagnosticsSystem.ShowProfiler, "The VisualProfiler is active (should be inactive).");
             yield return null;
-
-            // Toggle the profiler visualization on.
-            KeyboardEvent(VirtualKey_9, ScanCode_9, 0, IntPtr.Zero); // key down
-            yield return null;
-            KeyboardEvent(VirtualKey_9, ScanCode_9, KeyboardFlag_KeyUp, IntPtr.Zero); // key up
-            for (int i = 0; i < 10; i++) { yield return null; }
-
-            // Verfiy that the VisualProfiler is enabled.
-            Assert.IsTrue(diagnosticsSystem.ShowProfiler, "The VisualProfiler is inactive (should be active).");
-            yield return null;
         }
-
-        /// <summary>
-        /// Virutal Key Code and Scan Code values used in this test.
-        /// </summary>
-        private const Byte VirtualKey_9 = 0x39;
-        private const Byte ScanCode_9 = 0x0A;
-
-        /// <summary>
-        /// Flags, for the keybd_event function, used in this test.
-        /// </summary>
-        private const UInt32 KeyboardFlag_KeyUp = 0x0002;
-
-        /// <summary>
-        /// P/Invoke signature for the Windows keybd_event function.
-        /// </summary>
-        /// <param name="keyCode">Virtual Key Code for the desired keyboard event.</param>
-        /// <param name="scanCode">Scan Code for the desired keybaord event.</param>
-        /// <param name="flags">Flags used to interpret the keyboard event.</param>
-        /// <param name="extraInfo">Additional information associated with the keyboard event.</param>
-        [DllImport("user32.dll", EntryPoint = "keybd_event")]
-        private static extern void KeyboardEvent(
-            Byte keyCode,
-            Byte scanCode,
-            UInt32 flags,
-            IntPtr extraInfo);
     }
 }
 #endif
