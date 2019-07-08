@@ -94,13 +94,13 @@
 </ul>
 <h3 id="spatial-awareness">Spatial Awareness</h3>
 <p>The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserver interfaces have taken multiple breaking changes as described below.</p>
-<p><strong>Changes</strong></p>
+<h4 id="changes">Changes</h4>
 <p>The following method(s) have been renamed to better describe their usage.</p>
 <ul>
-<li>IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent has been renaned to IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent to clarify its usage.</li>
+<li>IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent has been renamed to IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent to clarify its usage.</li>
 </ul>
-<p><strong>Additions</strong></p>
-<p>Based on customer feedback, support for easy removal of previously observed spataial awareness data has been added.</p>
+<h4 id="additions">Additions</h4>
+<p>Based on customer feedback, support for easy removal of previously observed spatial awareness data has been added.</p>
 <ul>
 <li>IMixedRealitySpatialAwarenessSystem.ClearObservations()</li>
 <li>IMixedRealitySpatialAwarenessSystem.ClearObservations&lt;T&gt;(string name)</li>
@@ -115,9 +115,13 @@ This is the distance and which the PokePointer can interact with touchables. Pre
 <li>BaseNearInteractionTouchable.DistBack has been renamed to PokeThreshold
 This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. A touchable is activated when the PokeThreshold is crossed, and released when DebounceThreshold is crossed.</li>
 </ul>
+<h3 id="readonlyattribute">ReadOnlyAttribute</h3>
+<ul>
+<li>The <code>Microsoft.MixedReality.Toolkit</code> namespace has been added to <code>ReadOnlyAttribute</code>, <code>BeginReadOnlyGroupAttribute</code>, and <code>EndReadOnlyGroupAttribute</code>.</li>
+</ul>
 <h2 id="assembly-name-changes">Assembly name changes</h2>
 <p>In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.</p>
-<pre><code>Microsoft.MixedReality.Toolkit[.&lt;name&gt;]
+<pre><code class="lang-c#">Microsoft.MixedReality.Toolkit[.&lt;name&gt;]
 </code></pre>
 <p>In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.</p>
 <p>The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name.</p>
