@@ -39,8 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestToggleProfilerCommand()
         {
-            int frameDelay = 10;
-
             // Confirm that the diagnostics system is enabled.
             IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
             MixedRealityServiceRegistry.TryGetService<IMixedRealityDiagnosticsSystem>(out diagnosticsSystem);
@@ -56,6 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Verfiy that the VisualProfiler is enabled.
             Assert.IsTrue(diagnosticsSystem.ShowProfiler, "The VisualProfiler is not active.");
             yield return null;
+
+            int frameDelay = 10;
 
             // Toggle the profiler visualization off.
             var gazeInputSource = inputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
