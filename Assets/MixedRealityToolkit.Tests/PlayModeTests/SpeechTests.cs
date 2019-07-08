@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(inputSystem, "The input system is not enabled in the scene.");
             yield return null;
 
-            // Verfiy that the VisualProfiler is enabled.
+            // Verify that the VisualProfiler is enabled.
             Assert.IsTrue(diagnosticsSystem.ShowProfiler, "The VisualProfiler is not active.");
             yield return null;
 
