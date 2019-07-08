@@ -38,6 +38,10 @@ Based on customer feedback, support for easy removal of previously observed spat
 - BaseNearInteractionTouchable.DistBack has been renamed to PokeThreshold
     This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. A touchable is activated when the PokeThreshold is crossed, and released when DebounceThreshold is crossed.
 
+### ReadOnlyAttribute
+
+- The `Microsoft.MixedReality.Toolkit` namespace has been added to `ReadOnlyAttribute`, `BeginReadOnlyGroupAttribute`, and `EndReadOnlyGroupAttribute`.
+
 ## Assembly name changes
 
 In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.
