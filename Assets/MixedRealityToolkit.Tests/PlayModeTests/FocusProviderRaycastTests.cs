@@ -17,7 +17,7 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     /// <summary>
-    /// This class is used to test that <see cref="FocusProvider"/> raycasts are selecting the correct focus object.
+    /// This class is used to test that <see cref="Toolkit.Input.FocusProvider"/> raycasts are selecting the correct focus object.
     /// </summary>
     public class FocusProviderRaycastTests
     {
@@ -27,8 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// For each <see cref="FocusRaycastTestProxy="/> in the raycast test prefab, set the relevant values on the <see cref="TestPointer"/>,
-        /// then wait for the <see cref="FocusProvider.Update"/> and Assert that the <see cref="FocusRaycastTestProxy.ExpectedHitObject"/> matches
-        /// the <see cref="TestPointer"/>'s <see cref="IPointerResult.CurrentPointerTarget"/>.
+        /// then wait for the <see cref="Toolkit.Input.FocusProvider.Update"/> and Assert that the <see cref="FocusRaycastTestProxy.ExpectedHitObject"/> matches
+        /// the <see cref="TestPointer"/>'s <see cref="Toolkit.Input.IPointerResult.CurrentPointerTarget"/>.
         /// </summary>
         /// <returns></returns>
         [UnityTest]
