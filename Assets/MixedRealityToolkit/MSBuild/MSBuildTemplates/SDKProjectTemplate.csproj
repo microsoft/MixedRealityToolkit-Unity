@@ -12,6 +12,8 @@
     <RelativeBuildFolder><!--OUTPUT_PATH_TOKEN--></RelativeBuildFolder>
     <IsEditorOnlyTarget><!--IS_EDITOR_ONLY_TARGET_TOKEN--></IsEditorOnlyTarget>
     <UnityEditorInstallFolder><!--UNITY_EDITOR_INSTALL_FOLDER--></UnityEditorInstallFolder>
+
+    <BuildFolder>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\</BuildFolder>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Platform)' == ''">
@@ -31,16 +33,16 @@
 
   <!-- This is special cased here for WSA player only-->
   <PropertyGroup>
-    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\obj\$(UnityConfiguration)\$(UnityPlatform)\$(ProjectGuid)\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>$(BuildFolder)obj\$(UnityConfiguration)\$(UnityPlatform)\$(ProjectGuid)\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(UnityConfiguration)|$(UnityPlatform)' == 'Player|WSA'">
-    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\$(UnityConfiguration)\$(UnityPlatform)\</OutputPath>
+    <OutputPath>$(BuildFolder)$(UnityConfiguration)\$(UnityPlatform)\</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(UnityConfiguration)|$(UnityPlatform)' != 'Player|WSA'">
-    <OutputPath>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\$(UnityConfiguration)\$(UnityPlatform)\$(MSBuildProjectName)\</OutputPath>
+    <OutputPath>$(BuildFolder)$(UnityConfiguration)\$(UnityPlatform)\$(MSBuildProjectName)\</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
   </PropertyGroup>
 
@@ -114,6 +116,10 @@
 <!--SUPPORTED_PLATFORM_BUILD_CONDITION_TEMPLATE_START-->
     <CallTarget Targets="OriginalBuild" Condition="'$(UnityConfiguration)|$(UnityPlatform)'=='##SUPPORTED_CONFIGURATION_TOKEN##|##SUPPORTED_PLATFORM_TOKEN##'"/>
 <!--SUPPORTED_PLATFORM_BUILD_CONDITION_TEMPLATE_END-->
+  </Target>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y $(TargetDir)$(TargetName).dll $(BuildFolder)$(UnityConfiguration)\$(UnityPlatform)\&#xD;&#xA;xcopy /y $(TargetDir)$(TargetName).pdb $(BuildFolder)$(UnityConfiguration)\$(UnityPlatform)\" />
   </Target>
 
 </Project>

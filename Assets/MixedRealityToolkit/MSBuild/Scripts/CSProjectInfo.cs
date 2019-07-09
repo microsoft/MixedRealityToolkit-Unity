@@ -189,8 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                 File.WriteAllLines(Path.Combine(propsOutputFolder, $"{Guid.ToString()}.csmap"), sourceGuidToClassName.Select(t => $"{t.Key}:{t.Value}"));
 
-                bool bothConfigurations = PlayerPlatforms.Count > 0;
-
                 List<string> supportedPlatformBuildConditions = new List<string>();
                 PopulateSupportedPlatformBuildConditions(supportedPlatformBuildConditions, suportedPlatformBuildConditionTemplate, "InEditor", InEditorPlatforms);
                 PopulateSupportedPlatformBuildConditions(supportedPlatformBuildConditions, suportedPlatformBuildConditionTemplate, "Player", PlayerPlatforms);

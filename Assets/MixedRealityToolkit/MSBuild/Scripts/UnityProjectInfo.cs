@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     AssemblyDefinitionAsset assemblyDefinitionAsset = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(asmDefPath);
                     AssemblyDefinitionInfo assemblyDefinitionInfo = assemblyDefinitionAsset == null ? null : JsonUtility.FromJson<AssemblyDefinitionInfo>(assemblyDefinitionAsset.text);
-                    assemblyDefinitionInfo?.Validate();
+                    assemblyDefinitionInfo?.Validate(availablePlatforms);
                     toAdd = new CSProjectInfo(availablePlatforms, guidResult, assemblyDefinitionInfo, pair.Value, Application.dataPath.Replace("Assets", "MSBuild"));
                 }
 

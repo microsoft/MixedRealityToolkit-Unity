@@ -3,6 +3,7 @@
 
 #if UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -56,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// After it's parsed from JSON, this method should be invoked to validate some of the values and set additional properties.
         /// </summary>
-        public void Validate()
+        public void Validate(IEnumerable<CompilationPlatformInfo> availablePlatforms)
         {
             if (excludePlatforms.Length > 0 && includePlatforms.Length > 0)
             {
@@ -64,13 +65,28 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 excludePlatforms = Array.Empty<string>();
             }
 
-            EditorPlatformSupported =
-                (includePlatforms.Length > 0 && includePlatforms.Contains(EditorPlatform))
-                || (excludePlatforms.Length > 0 && !excludePlatforms.Contains(EditorPlatform));
-
-            NonEditorPlatformSupported =
-                (includePlatforms.Length > 0 && !includePlatforms.Contains(EditorPlatform))
-                || (excludePlatforms.Length > 0 && excludePlatforms.Contains(EditorPlatform));
+            // Is the EditorPlatfrom included?
+            if (includePlatforms.Contains(EditorPlatform))
+            {
+                EditorPlatformSupported = true;
+                NonEditorPlatformSupported = availablePlatforms.Any(t => includePlatforms.Any(i => Equals(i.ToLower(), t.Name.ToLower())));
+            }
+            // If it's not included, that means if we have at least one other platform, then non-editor is supported
+            else if (includePlatforms.Length > 0)
+            {
+                NonEditorPlatformSupported = true;
+            }
+            else if (excludePlatforms.Length == 0) // So included platforms is length 0, as first if will be true if not 0. Means rely on excluded.
+            {
+                NonEditorPlatformSupported = true;
+                NonEditorPlatformSupported = true;
+            }
+            else
+            {
+                EditorPlatformSupported = !excludePlatforms.Contains(EditorPlatform);
+                // Any available platform that is not found in excluded platforms
+                NonEditorPlatformSupported = availablePlatforms.Any(t => !excludePlatforms.Any(i => Equals(i.ToLower(), t.Name.ToLower())));
+            }
 
             TestAssembly = optionalUnityReferences?.Contains(TestAssembliesReference) ?? false;
         }
