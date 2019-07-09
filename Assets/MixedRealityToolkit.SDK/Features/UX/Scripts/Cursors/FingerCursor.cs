@@ -66,6 +66,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     indexFingerRotation = transform.rotation;
                 }
 
+                Vector3 indexKnucklePosition;
+                if (!TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnucklePosition, out _)) // knuckle rotation not used
+                {
+                    indexKnucklePosition = transform.position;
+                }
+
                 Vector3 thumbPosition;
                 Quaternion thumbRotation;
                 if (!TryGetJoint(TrackedHandJoint.ThumbTip, out thumbPosition, out thumbRotation))
@@ -87,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (indexFingerRingRenderer != null)
                     {
-                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexFingerRotation, false);
+                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexKnucklePosition);
 
                         Vector3 surfaceNormal;
                         if ((distance < alignWithSurfaceDistance) &&
@@ -118,14 +124,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (indexFingerRingRenderer != null)
                     {
-                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexFingerRotation, nearGrabbable);
+                        if (nearGrabbable)
+                        {
+                            TranslateToFingerPad(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexFingerRotation);
+                        }
+                        else
+                        {
+                            TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexKnucklePosition);
+                        }
                         RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation, nearGrabbable);
                         UpdateVisuals(indexFingerRingRenderer, distance, nearGrabbable);
                     }
 
                     if (thumbRingRenderer != null)
                     {
-                        TranslateToFinger(thumbRingRenderer.transform, deltaTime, thumbPosition, thumbRotation, true);
+                        TranslateToFingerPad(thumbRingRenderer.transform, deltaTime, thumbPosition, thumbRotation);
                         RotateToFinger(thumbRingRenderer.transform, deltaTime, thumbRotation, true);
                         UpdateVisuals(thumbRingRenderer, distance, nearGrabbable);
                     }
@@ -204,10 +217,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return false;
         }
 
-        private void TranslateToFinger(Transform target, float deltaTime, Vector3 fingerPosition, Quaternion fingerRoation, bool useFingerPad)
+        private void TranslateToFinger(Transform target, float deltaTime, Vector3 fingerPosition, Vector3 knucklePosition)
         {
-            var targetPosition = (useFingerPad) ? fingerPosition + (fingerRoation * -Vector3.up) * skinSurfaceOffset :
-                                                      fingerPosition + (fingerRoation * Vector3.forward) * skinSurfaceOffset;
+            var targetPosition = fingerPosition + (fingerPosition - knucklePosition).normalized * skinSurfaceOffset;
+            target.position = Vector3.Lerp(target.position, targetPosition, deltaTime / PositionLerpTime);
+        }
+
+        private void TranslateToFingerPad(Transform target, float deltaTime, Vector3 fingerPosition, Quaternion fingerRoation)
+        {
+            var targetPosition = fingerPosition + (fingerRoation * Vector3.forward) * skinSurfaceOffset;
             target.position = Vector3.Lerp(target.position, targetPosition, deltaTime / PositionLerpTime);
         }
 
