@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
-    /// Stand alone boundary system manager.
+    /// Service manager supporting running the boundary system, without requring the MixedRealityToolkit object.
     /// </summary>
     public class BoundarySystemManager : BaseServiceManager
     {

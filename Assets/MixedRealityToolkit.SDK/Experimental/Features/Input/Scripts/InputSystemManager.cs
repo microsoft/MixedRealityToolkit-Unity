@@ -12,7 +12,7 @@ using Microsoft.MixedReality.Toolkit.Input.Editor;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Stand alone input system manager.
+    /// Service manager supporting running the input system, without requring the MixedRealityToolkit object.
     /// </summary>
     public class InputSystemManager : BaseServiceManager
     {

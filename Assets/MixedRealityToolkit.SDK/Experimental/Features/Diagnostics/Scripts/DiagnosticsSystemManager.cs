@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     /// <summary>
-    /// Stand alone diagnostics system manager.
+    /// Service manager supporting running the diagnostics system without requring the MixedRealityToolkit object.
     /// </summary>
     public class DiagnosticsSystemManager : BaseServiceManager
     {

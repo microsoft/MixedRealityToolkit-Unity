@@ -9,10 +9,14 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Base class for service manager implementations.
+    /// Base class providing service registration and management functionality. This class can be used to implement a
+    /// custom service management component for one or more services, similar to the MixedRealityToolkit object.
     /// </summary>
     public class BaseServiceManager : MonoBehaviour, IMixedRealityServiceRegistrar
     {
+        /// <summary>
+        /// The collection of registered services.
+        /// </summary>
         protected Dictionary<Type, IMixedRealityService> registeredServices = new Dictionary<Type, IMixedRealityService>();
 
         /// <summary>
