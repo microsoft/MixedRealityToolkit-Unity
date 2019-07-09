@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You may also configure the script on only enable certain manipulations. The script works with 
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
-    public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
+    public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
         public enum HandMovementType
@@ -484,7 +484,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             uint id = eventData.Pointer.PointerId;
             if (pointerIdToPointerMap.ContainsKey(id))
             {
-                if (pointerIdToPointerMap.Count == 1)
+                if (pointerIdToPointerMap.Count == 1 && rigidBody != null)
                 {
                     ReleaseRigidBody();
                 }
@@ -683,6 +683,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Unused Event Handlers
         /// <inheritdoc />
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
+        public void OnBeforeFocusChange(FocusEventData eventData) { }
+
         #endregion Unused Event Handlers
 
         #region Private methods
@@ -709,29 +711,40 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return handPositionMap;
         }
 
-        public void OnFocusEnter(FocusEventData eventData)
+        public void OnFocusChanged(FocusEventData eventData)
         {
             bool isFar = !(eventData.Pointer is IMixedRealityNearPointer);
-            if (isFar && !AllowFarManipulation)
+            if (eventData.OldFocusedObject == null ||
+                !eventData.OldFocusedObject.transform.IsChildOf(transform))
             {
-                return;
+                if (isFar && !AllowFarManipulation)
+                {
+                    return;
+                }
+                if (OnHoverEntered != null)
+                {
+                    OnHoverEntered.Invoke(new ManipulationEventData
+                    {
+                        ManipulationSource = this,
+                        IsNearInteraction = !isFar
+                    });
+                }
             }
-            if (OnHoverEntered != null)
+            else if (eventData.NewFocusedObject == null ||
+                    !eventData.NewFocusedObject.transform.IsChildOf(transform))
             {
-                OnHoverEntered.Invoke(new ManipulationEventData { IsNearInteraction = !isFar }); 
-            }
-        }
-
-        public void OnFocusExit(FocusEventData eventData)
-        {
-            bool isFar = !(eventData.Pointer is IMixedRealityNearPointer);
-            if (isFar && !AllowFarManipulation)
-            {
-                return;
-            }
-            if (OnHoverExited != null)
-            {
-                OnHoverExited.Invoke(new ManipulationEventData { IsNearInteraction = !isFar }); 
+                if (isFar && !AllowFarManipulation)
+                {
+                    return;
+                }
+                if (OnHoverExited != null)
+                {
+                    OnHoverExited.Invoke(new ManipulationEventData
+                    {
+                        ManipulationSource = this,
+                        IsNearInteraction = !isFar
+                    });
+                }
             }
         }
 
