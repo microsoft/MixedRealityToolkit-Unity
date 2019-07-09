@@ -361,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Sets the shader feature controlled by keyword & property name parameters active or inactive
+        /// Sets the shader feature controlled by keyword and property name parameters active or inactive
         /// </summary>
         /// <param name="material">Material to modify</param>
         /// <param name="keywordName">Keyword of shader feature</param>
