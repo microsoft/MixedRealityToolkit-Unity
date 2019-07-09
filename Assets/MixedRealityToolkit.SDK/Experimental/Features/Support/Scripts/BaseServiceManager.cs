@@ -30,33 +30,33 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (Application.isPlaying)
             {
-                IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
-                for (int i = 0; i < serviceSnapshot.Count; i++)
+                foreach (IMixedRealityService service in registeredServices.Values)
                 {
-                    serviceSnapshot[i]?.Update();
+                    service.Update();
                 }
 
-                IMixedRealityDataProvider[] providers = dataProviders.ToArray();
-                for (int i = 0; i < providers.Length; i++)
+                for (int i = 0; i < dataProviders.Count; i++)
                 {
-                    providers[i]?.Update();
+                    dataProviders[i].Update();
                 }
             }
         }
+
         private void LateUpdate()
         {
             if (Application.isPlaying)
             {
-                IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
-                for (int i = 0; i < serviceSnapshot.Count; i++)
+                if (Application.isPlaying)
                 {
-                    serviceSnapshot[i]?.LateUpdate();
-                }
+                    foreach (IMixedRealityService service in registeredServices.Values)
+                    {
+                        service.LateUpdate();
+                    }
 
-                IMixedRealityDataProvider[] providers = dataProviders.ToArray();
-                for (int i = 0; i < providers.Length; i++)
-                {
-                    providers[i]?.LateUpdate();
+                    for (int i = 0; i < dataProviders.Count; i++)
+                    {
+                        dataProviders[i].LateUpdate();
+                    }
                 }
             }
         }
@@ -66,16 +66,14 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (Application.isPlaying)
             {
-                IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
-                for (int i = 0; i < serviceSnapshot.Count; i++)
+                foreach (IMixedRealityService service in registeredServices.Values)
                 {
-                    serviceSnapshot[i]?.Enable();
+                    service.Enable();
                 }
 
-                IMixedRealityDataProvider[] providers = dataProviders.ToArray();
-                for (int i = 0; i < providers.Length; i++)
+                for (int i = 0; i < dataProviders.Count; i++)
                 {
-                    providers[i]?.Enable();
+                    dataProviders[i].Enable();
                 }
             }
         }
@@ -84,38 +82,32 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (Application.isPlaying)
             {
-                IMixedRealityDataProvider[] providers = dataProviders.ToArray();
-                for (int i = 0; i < providers.Length; i++)
+                foreach (IMixedRealityService service in registeredServices.Values)
                 {
-                    providers[i]?.Disable();
+                    service.Disable();
                 }
 
-                IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
-                for (int i = 0; i < serviceSnapshot.Count; i++)
+                for (int i = 0; i < dataProviders.Count; i++)
                 {
-                    serviceSnapshot[i]?.Disable();
+                    dataProviders[i].Disable();
                 }
             }
         }
 
         protected virtual void OnDestroy()
         {
-            IMixedRealityDataProvider[] providers = dataProviders.ToArray();
-            for (int i = 0; i < providers.Length; i++)
+            for (int i = 0; i < dataProviders.Count; i++)
             {
-                providers[i]?.Disable(); // Disable before destroy to ensure the data provider has time to get in a good state.
-                providers[i]?.Destroy();
+                dataProviders[i].Disable(); // Disable before destroy to ensure the data provider has time to get in a good state.
+                dataProviders[i].Destroy();
             }
-            // Clear the actual collection
             dataProviders.Clear();
 
-            IReadOnlyList<IMixedRealityService> serviceSnapshot = new List<IMixedRealityService>(registeredServices.Values);
-            for (int i = 0; i < serviceSnapshot.Count; i++)
+            foreach (IMixedRealityService service in registeredServices.Values)
             {
-                serviceSnapshot[i].Disable(); // Disable before destroy to ensure the service has time to get in a good state.
-                serviceSnapshot[i].Destroy();
+                service.Disable(); // Disable before destroy to ensure the service has time to get in a good state.
+                service.Destroy();
             }
-            // Clear the actual collection
             registeredServices.Clear();
         }
 
