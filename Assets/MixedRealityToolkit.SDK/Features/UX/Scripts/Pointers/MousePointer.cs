@@ -103,16 +103,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.DrawRay(ray.origin, ray.direction * PointerExtent, Color.green);
             }
-
-            // ray to worldspace conversion
-            gameObject.transform.position = transform.position + transform.forward * DefaultPointerExtent;
         }
 
         public override Vector3 Position
         {       
             get
             {
-                return gameObject.transform.position;
+                return CameraCache.Main.transform.position + transform.forward * DefaultPointerExtent;
             }
         }
 
