@@ -40,9 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.DrawRay(ray.origin, ray.direction * PointerExtent, Color.green);
             }
-
-            // ray to worldspace conversion
-            //transform.position += transform.forward * DefaultPointerExtent;
         }
 
         /// <inheritdoc />

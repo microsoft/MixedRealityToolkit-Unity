@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {       
             get
             {
-                return transform.position;
+                return CameraCache.Main.transform.position + transform.forward * DefaultPointerExtent;
             }
         }
 
