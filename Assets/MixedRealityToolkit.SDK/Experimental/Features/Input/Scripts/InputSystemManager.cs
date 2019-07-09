@@ -36,17 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnDestroy();
         }
 
-        /// <inheritdoc />
-        public override bool RegisterDataProvider<T>(T dataProviderInstance)
-        {
-            bool registered = base.RegisterDataProvider<T>(dataProviderInstance);
-            if (registered)
-            {
-                dataProviderInstance.Initialize();
-            }
-            return registered;
-        }
-
         /// <summary>
         /// Initialize the manager.
         /// </summary>

@@ -219,11 +219,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <inheritdoc />
-        public virtual bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
+        public bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
         {
             if ((dataProviderInstance == null) || (dataProviders.Contains(dataProviderInstance))) { return false; }
 
             dataProviders.Add(dataProviderInstance);
+            dataProviderInstance.Initialize();
 
             return true;
         }
