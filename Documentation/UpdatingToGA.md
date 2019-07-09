@@ -120,15 +120,15 @@ class SampleHandler2 : <b>MonoBehaviour</b>, IMixedRealitySpeechHandler
 
 The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserver interfaces have taken multiple breaking changes as described below.
 
-**Changes**
+#### Changes
 
 The following method(s) have been renamed to better describe their usage.
 
-- IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent has been renaned to IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent to clarify its usage.
+- IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent has been renamed to IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent to clarify its usage.
 
-**Additions**
+#### Additions
 
-Based on customer feedback, support for easy removal of previously observed spataial awareness data has been added.
+Based on customer feedback, support for easy removal of previously observed spatial awareness data has been added.
 
 - IMixedRealitySpatialAwarenessSystem.ClearObservations()
 - IMixedRealitySpatialAwarenessSystem.ClearObservations\<T\>(string name)
@@ -143,17 +143,21 @@ Based on customer feedback, support for easy removal of previously observed spat
 - BaseNearInteractionTouchable.DistBack has been renamed to PokeThreshold
     This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. A touchable is activated when the PokeThreshold is crossed, and released when DebounceThreshold is crossed.
 
+### ReadOnlyAttribute
+
+- The `Microsoft.MixedReality.Toolkit` namespace has been added to `ReadOnlyAttribute`, `BeginReadOnlyGroupAttribute`, and `EndReadOnlyGroupAttribute`.
+
 ## Assembly name changes
 
 In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.
 
-```
+```c#
 Microsoft.MixedReality.Toolkit[.<name>]
 ```
 
 In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.
 
-The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name. 
+The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name.
 
 ### MixedRealityToolkit
 
@@ -186,13 +190,12 @@ The following tables describe how the RC2 .asmdef file names map to the GA relea
 | MixedRealityToolkit.Services.CameraSystem.asmdef | Microsoft.MixedReality.Toolkit.Services.CameraSystem.asmdef |
 | MixedRealityToolkit.Services.DiagnosticsSystem.asmdef | Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.asmdef |
 | MixedRealityToolkit.Services.InputSimulation.asmdef | Microsoft.MixedReality.Toolkit.Services.InputSimulation.asmdef |
-| MixedRealityToolkit.Services.InputSimulation.Editor.asmdef | Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor.asmdef | 
+| MixedRealityToolkit.Services.InputSimulation.Editor.asmdef | Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor.asmdef |
 | MixedRealityToolkit.Services.InputSystem.asmdef | Microsoft.MixedReality.Toolkit.Services.InputSystem.asmdef |
 | MixedRealityToolkit.Services.Inspectors.asmdef | Microsoft.MixedReality.Toolkit.Services.InputSystem.Editor.asmdef |
 | MixedRealityToolkit.Services.SceneSystem.asmdef | Microsoft.MixedReality.Toolkit.Services.SceneSystem.asmdef |
 | MixedRealityToolkit.Services.SpatialAwarenessSystem.asmdef | Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem.asmdef |
 | MixedRealityToolkit.Services.TeleportSystem.asmdef | Microsoft.MixedReality.Toolkit.Services.TeleportSystem.asmdef |
-
 
 ### MixedRealityToolkit.SDK
 

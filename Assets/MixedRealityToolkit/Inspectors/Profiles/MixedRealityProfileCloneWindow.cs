@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
@@ -20,12 +21,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private struct SubProfileAction
         {
-            public SubProfileAction(ProfileCloneBehavior behavior, SerializedProperty property, Object substitutionReference, System.Type profileType)
+            public SubProfileAction(
+                ProfileCloneBehavior behavior,
+                SerializedProperty property,
+                Object substitutionReference, 
+                System.Type profileType)
             {
                 Behavior = behavior;
                 Property = property;
                 SubstitutionReference = substitutionReference;
                 ProfileType = profileType;
+                TargetFolder = null;
 
                 CloneName = (SubstitutionReference != null) ? "New " + SubstitutionReference.name : "New " + profileType.Name;
             }
@@ -35,12 +41,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public string CloneName;
             public Object SubstitutionReference;
             public System.Type ProfileType;
+            internal Object TargetFolder;
         }
 
+        private const string AdvancedModeKey = "MRTK_ProfileCloneWindow_AdvancedMode_Key";
+        private static bool AdvancedMode = false;
         private const string DefaultCustomProfileFolder = "Assets/MixedRealityToolkit.Generated/CustomProfiles";
         private const string IsCustomProfileProperty = "isCustomProfile";
-        private static readonly Vector2 MinWindowSizeBasic = new Vector2(500, 170);
-        private const float SubProfileSizeMultiplier = 70f;
+        private static readonly Vector2 MinWindowSizeBasic = new Vector2(500, 180);
+        private const float SubProfileSizeMultiplier = 95f;
         private static MixedRealityProfileCloneWindow cloneWindow;
 
         private BaseMixedRealityProfile parentProfile;
@@ -48,11 +57,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty childProperty;
         private SerializedObject childSerializedObject;
         private Object targetFolder;
+        private Object selectionTarget;
         private string childProfileTypeName;
         private string childProfileAssetName;
         private List<SubProfileAction> subProfileActions = new List<SubProfileAction>();
 
-        public static void OpenWindow(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile childProfile, SerializedProperty childProperty)
+        public static void OpenWindow(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile childProfile, SerializedProperty childProperty, Object selectionTarget = null)
         {
             if (cloneWindow != null)
             {
@@ -60,15 +70,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             cloneWindow = (MixedRealityProfileCloneWindow)GetWindow<MixedRealityProfileCloneWindow>(true, "Clone Profile", true);
-            cloneWindow.Initialize(parentProfile, childProfile, childProperty);
+            cloneWindow.Initialize(parentProfile, childProfile, childProperty, selectionTarget);
             cloneWindow.Show(true);
         }
 
-        private void Initialize(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile childProfile, SerializedProperty childProperty)
+        private void Initialize(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile childProfile, SerializedProperty childProperty, Object selectionTarget)
         {
             this.childProperty = childProperty;
             this.parentProfile = parentProfile;
             this.childProfile = childProfile;
+            this.selectionTarget = selectionTarget;
 
             childSerializedObject = new SerializedObject(childProfile);
             childProfileTypeName = childProfile.GetType().Name;
@@ -111,15 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     subProfileType));
             }
 
-            Vector2 minWindowSize = MinWindowSizeBasic;
-            minWindowSize.y = Mathf.Max(minWindowSize.y, subProfileActions.Count * SubProfileSizeMultiplier);
-            cloneWindow.minSize = minWindowSize;
-
-            // If there are no sub profiles, limit the max so the window isn't spawned too large
-            if (subProfileActions.Count <= 0)
-            {
-                cloneWindow.maxSize = minWindowSize;
-            }
+            cloneWindow.maxSize = MinWindowSizeBasic;
 
             targetFolder = EnsureTargetFolder(targetFolder);
         }
@@ -143,50 +146,68 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (subProfileActions.Count > 0)
             {
-                EditorGUILayout.HelpBox("This profile has sub-profiles. By default your clone will reference the existing profiles. If you want to specify a different profile, or if you want to clone the sub-profile, use the options below.", MessageType.Info);
+                AdvancedMode = EditorGUILayout.Foldout(SessionState.GetBool(AdvancedModeKey, false), "Advanced Options", true, MixedRealityStylesUtility.BoldFoldoutStyle);
+                SessionState.SetBool(AdvancedModeKey, AdvancedMode);
 
-                EditorGUILayout.BeginVertical();
-
-                for (int i = 0; i < subProfileActions.Count; i++)
+                if (AdvancedMode)
                 {
-                    GUI.color = Color.white;
-                    EditorGUILayout.Space();
+                    EditorGUILayout.HelpBox("This profile has sub-profiles. By default your clone will reference the existing profiles. If you want to specify a different profile, or if you want to clone the sub-profile, use the options below.", MessageType.Info);
 
-                    SubProfileAction action = subProfileActions[i];
+                    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
-                    action.Behavior = (ProfileCloneBehavior)EditorGUILayout.EnumPopup(action.Property.displayName, action.Behavior);
-
-                    switch (action.Behavior)
+                    for (int i = 0; i < subProfileActions.Count; i++)
                     {
-                        case ProfileCloneBehavior.UseExisting:
-                            GUI.color = Color.Lerp(Color.white, Color.clear, 0.5f);
-                            EditorGUILayout.ObjectField("Existing", action.Property.objectReferenceValue, action.ProfileType, false);
-                            break;
+                        GUI.color = Color.white;
+                        EditorGUILayout.Space();
 
-                        case ProfileCloneBehavior.UseSubstitution:
-                            action.SubstitutionReference = EditorGUILayout.ObjectField("Substitution", action.SubstitutionReference, action.ProfileType, false);
-                            break;
+                        SubProfileAction action = subProfileActions[i];
 
-                        case ProfileCloneBehavior.CloneExisting:
-                            if (action.Property.objectReferenceValue == null)
-                            {
-                                EditorGUILayout.LabelField("Can't clone profile - none is set.");
-                            }
-                            else
-                            {
-                                action.CloneName = EditorGUILayout.TextField("Clone name", action.CloneName);
-                            }
-                            break;
+                        action.Behavior = (ProfileCloneBehavior)EditorGUILayout.EnumPopup(action.Property.displayName, action.Behavior);
 
-                        case ProfileCloneBehavior.LeaveEmpty:
-                            // Add one line for formatting reasons
-                            EditorGUILayout.LabelField(" ");
-                            break;
+                        switch (action.Behavior)
+                        {
+                            case ProfileCloneBehavior.UseExisting:
+                                GUI.color = Color.Lerp(Color.white, Color.clear, 0.5f);
+                                EditorGUILayout.ObjectField("Existing", action.Property.objectReferenceValue, action.ProfileType, false);
+                                break;
+
+                            case ProfileCloneBehavior.UseSubstitution:
+                                action.SubstitutionReference = EditorGUILayout.ObjectField("Substitution", action.SubstitutionReference, action.ProfileType, false);
+                                break;
+
+                            case ProfileCloneBehavior.CloneExisting:
+                                if (action.Property.objectReferenceValue == null)
+                                {
+                                    EditorGUILayout.LabelField("Can't clone profile - none is set.");
+                                }
+                                else
+                                {
+                                    action.CloneName = EditorGUILayout.TextField("Clone name", action.CloneName);
+                                }
+                                EditorGUILayout.BeginHorizontal();
+                                if (action.TargetFolder == null)
+                                {
+                                    action.TargetFolder = targetFolder;
+                                }
+                                action.TargetFolder = EditorGUILayout.ObjectField("Target Folder", action.TargetFolder, typeof(DefaultAsset), false);
+                                if (GUILayout.Button("Put in original folder", EditorStyles.miniButton, GUILayout.MaxWidth(120)))
+                                {
+                                    string profilePath = AssetDatabase.GetAssetPath(action.Property.objectReferenceValue);
+                                    action.TargetFolder = AssetDatabase.LoadAssetAtPath<Object>(System.IO.Path.GetDirectoryName(profilePath));
+                                }
+                                EditorGUILayout.EndHorizontal();
+                                break;
+
+                            case ProfileCloneBehavior.LeaveEmpty:
+                                // Add one line for formatting reasons
+                                EditorGUILayout.LabelField(" ");
+                                break;
+                        }
+                        subProfileActions[i] = action;
                     }
-                    subProfileActions[i] = action;
-                }
 
-                EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndVertical();
+                }
             }
 
             GUI.color = Color.white;
@@ -194,7 +215,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUILayout.FlexibleSpace();
 
             // Get the selected folder in the project window
+            EditorGUILayout.BeginHorizontal();
             targetFolder = EditorGUILayout.ObjectField("Target Folder", targetFolder, typeof(DefaultAsset), false);
+            if (GUILayout.Button("Put in original folder", EditorStyles.miniButton, GUILayout.MaxWidth(120)))
+            {
+                string profilePath = AssetDatabase.GetAssetPath(childProfile);
+                targetFolder = AssetDatabase.LoadAssetAtPath<Object>(System.IO.Path.GetDirectoryName(profilePath));
+            }
+            EditorGUILayout.EndHorizontal();
+
             EditorGUILayout.HelpBox("If no folder is provided, the profile will be cloned to the Assets/MixedRealityToolkit.Generated/CustomProfiles folder.", MessageType.Info);
             childProfileAssetName = EditorGUILayout.TextField("Profile Name", childProfileAssetName);
 
@@ -211,6 +240,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             EditorGUILayout.EndHorizontal();
+
+            // If there are no sub profiles, limit the max so the window isn't spawned too large
+            if (subProfileActions.Count <= 0 || !AdvancedMode)
+            {
+                cloneWindow.minSize = MinWindowSizeBasic;
+                cloneWindow.maxSize = MinWindowSizeBasic;
+            }
+            else
+            {
+                Vector2 minWindowSize = MinWindowSizeBasic;
+                minWindowSize.y = Mathf.Max(minWindowSize.y, subProfileActions.Count * SubProfileSizeMultiplier);
+                cloneWindow.minSize = minWindowSize;
+                cloneWindow.maxSize = minWindowSize;
+            }
 
             Repaint();
         }
@@ -255,7 +298,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
 
                         // Clone the sub profile
-                        var newSubProfile = CloneProfile(newChildProfile, subProfileToClone, action.ProfileType.Name, actionProperty, targetFolder, action.CloneName);
+                        Object subTargetFolder = (action.TargetFolder == null) ? targetFolder : action.TargetFolder;
+                        var newSubProfile = CloneProfile(newChildProfile, subProfileToClone, action.ProfileType.Name, actionProperty, subTargetFolder, action.CloneName);
                         SerializedObject newSubProfileSerializedObject = new SerializedObject(newSubProfile);
                         // Paste values from existing profile
                         PasteProfileValues(newChildProfile, subProfileToClone, newSubProfileSerializedObject);
@@ -271,9 +315,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             newChildSerializedObject.ApplyModifiedProperties();
 
             // If we're not working with a parent profile, select the newly created profile
-            if (parentProfile == null)
+            // UNLESS we've been given a selection target
+            if (selectionTarget != null)
             {
-                Selection.activeObject = newChildProfile;
+                Selection.activeObject = selectionTarget;
+            }
+            else
+            {
+                if (parentProfile == null)
+                {
+                    Selection.activeObject = newChildProfile;
+                }
             }
 
             cloneWindow.Close();
