@@ -2,7 +2,7 @@
 
 ![Slate](../Documentation/Images/Slate/MRTK_Slate_Main.png)
 
-The [`Slate.prefab`](../Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Slate/Slate.prefab) offers a thin window style control for displaying 2D content, for example plain text or articles including media. It offers a grabbable title bar as well as *Follow Me* and *Close* functionality. The content window can be scrolled via articulated hand input.
+The Slate prefab offers a thin window style control for displaying 2D content, for example plain text or articles including media. It offers a grabbable title bar as well as *Follow Me* and *Close* functionality. The content window can be scrolled via articulated hand input.
 
 ## How to use a slate control ##
 A slate control is composed of the following elements:
@@ -35,8 +35,8 @@ In general, the `NearInteractionTouchable.cs` script must be attached to any obj
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_Scripts.png">
 
-* [`HandInteractionPan.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/HandInteractionPan.cs): This script handles articulated hand input for touching and moving the content on the slate's *ContentQuad*.
+* `HandInteractionPan.cs` This script handles articulated hand input for touching and moving the content on the slate's *ContentQuad*.
 
-* [`HandInteractionPanZoom.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/HandInteractionPanZoom.cs): In addition to the panning interaction, this script supports two-handed zooming.
+* `HandInteractionPanZoom.cs`: In addition to the panning interaction, this script supports two-handed zooming.
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_PanZoom.png" width="500">
