@@ -2,11 +2,11 @@
 
 ## Getting started
 
-The easiest way to rationalize performance is via framerate or how many times your application can render an image per second. It is important to meet the target framerate as outlined by the platform being targeted(i.e [Windows Mixed Reality](https://docs.microsoft.com/en-us/windows/mixed-reality/understanding-performance-for-mixed-reality), [Oculus](https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-guidelines/), etc). For example, on HoloLens, the target framerate is 60 FPS. Low framerate applications can result in deteriorated user experiences such as worsened [hologram stabilization](..\Hologram-Stabilization.md), world tracking, hand tracking, and more. To help developers track and achieve quality framerate, the Mixed Reality Toolkit provides a variety of tools and scripts.
+The easiest way to rationalize performance is via framerate or how many times your application can render an image per second. It is important to meet the target framerate as outlined by the platform being targeted(i.e [Windows Mixed Reality](https://docs.microsoft.com/en-us/windows/mixed-reality/understanding-performance-for-mixed-reality), [Oculus](https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-guidelines/), etc). For example, on HoloLens, the target framerate is 60 FPS. Low framerate applications can result in deteriorated user experiences such as worsened [hologram stabilization](../hologram-Stabilization.md), world tracking, hand tracking, and more. To help developers track and achieve quality framerate, the Mixed Reality Toolkit provides a variety of tools and scripts.
 
 ### Visual Profiler
 
-To continuously track performance over the lifetime of development, it is highly recommended to always show a framerate visual while running & debugging an application. The Mixed Reality Toolkit provides the [Visual Profiler](..\Diagnostics\UsingVisualProfiler.md) diagnostic tool which gives real-time information about the current FPS and memory usage in application view. The Visual Profiler can be configured via the [Diagnostics System Settings](..\Diagnostics\DiagnosticsSystemGettingStarted.md) under the [MRTK Profiles Inspector](..\MixedRealityConfigurationGuide.md).
+To continuously track performance over the lifetime of development, it is highly recommended to always show a framerate visual while running & debugging an application. The Mixed Reality Toolkit provides the [Visual Profiler](../Diagnostics/UsingVisualProfiler.md) diagnostic tool which gives real-time information about the current FPS and memory usage in application view. The Visual Profiler can be configured via the [Diagnostics System Settings](../Diagnostics/DiagnosticsSystemGettingStarted.md) under the [MRTK Profiles Inspector](../MixedRealityConfigurationGuide.md).
 
 Furthermore, it is particularly important to utilize the Visual Profiler to track framerate when running on device as opposed to running in Unity editor or an emulator. The most accurate performance results will be depicted when running on device with [Release configuration builds](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-set-debug-and-release-configurations?view=vs-2019).
 
@@ -16,7 +16,7 @@ Furthermore, it is particularly important to utilize the Visual Profiler to trac
 
 ### Optimize Window
 
-The [MRTK Optimize Window](..\Utilities\OptimizeWindow.md) offers information and automation tools to help mixed reality developers set up their environment for the best performing results and identify potential bottlenecks in their scene & assets. Certain key configurations in Unity can help deliver substantially more optimized results for mixed reality projects.
+The [MRTK Optimize Window](../Utilities/OptimizeWindow.md) offers information and automation tools to help mixed reality developers set up their environment for the best performing results and identify potential bottlenecks in their scene & assets. Certain key configurations in Unity can help deliver substantially more optimized results for mixed reality projects.
 
 Generally these settings involve rendering configurations that are ideal for mixed reality. Mixed reality applications are unique compared to traditional 3D graphics development in that there are two screens (i.e two eyes) to render for the entire scene.
 
@@ -79,7 +79,7 @@ Unity provides [presets to control quality](https://docs.unity3d.com/Manual/clas
 
 ### Depth buffer sharing (HoloLens)
 
-If developing for the Windows Mixed Reality platform and in particular HoloLens, enabling *Depth Buffer Sharing* under *XR Settings* can help with [hologram stabilization](..\Hologram-Stabilization.md). However, processing of the depth buffer can incur a performance cost, particularly if using [24-bit depth format](https://docs.unity3d.com/ScriptReference/PlayerSettings.VRWindowsMixedReality-depthBufferFormat.html).
+If developing for the Windows Mixed Reality platform and in particular HoloLens, enabling *Depth Buffer Sharing* under *XR Settings* can help with [hologram stabilization](../Hologram-Stabilization.md). However, processing of the depth buffer can incur a performance cost, particularly if using [24-bit depth format](https://docs.unity3d.com/ScriptReference/PlayerSettings.VRWindowsMixedReality-depthBufferFormat.html).
 
 Thus, it is *highly recommended* to configure the depth buffer to 16-bit precision. If [z-fighting](https://en.wikipedia.org/wiki/Z-fighting) occurs due to the lower bit format, confirm the [far clip plane](https://docs.unity3d.com/Manual/class-Camera.html) of all cameras is set to the lowest possible value for the application. Unity by default sets a far clip plane of 1000m. On HoloLens, a far clip plane of 50m is generally more than enough for most application scenarios.
 
