@@ -98,10 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             string strFormat = "";
             for (int i = 0; i < data.Length - 1; i++)
             {
-                strFormat += ("{" + i + "}, ");
+                strFormat += ("{" + i + "}" + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ");
             }
             strFormat += ("{" + (data.Length - 1) + "}");
-            
             return strFormat;
         }
         

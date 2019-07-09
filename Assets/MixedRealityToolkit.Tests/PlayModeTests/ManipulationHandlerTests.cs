@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
 
-            // add near interaction grabbable to be able to grab the cube with the siulated articulated hand
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
 
             yield return new WaitForFixedUpdate();
@@ -167,6 +167,88 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
             Object.Destroy(testObject);
+        }
+
+
+        /// <summary>
+        /// This tests the one hand movement while camera (character) is moving around.
+        /// The test will check the offset between object pivot and grab point and make sure we're not drifting
+        /// out of the object on pointer rotation - this test should be the same in all rotation setups
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerOneHandMove()
+        {
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = initialObjectPosition;
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneHandedOnly;
+
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
+            testObject.AddComponent<NearInteractionGrabbable>();
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            const int numCircleSteps = 10;
+            const int numHandSteps = 10;
+
+            Vector3 handOffset = new Vector3(0, 0, 0.1f);
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            Vector3 initialGrabPosition = new Vector3(-0.1f, -0.1f, 1f); // grab the left bottom corner of the cube 
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // do this test for every one hand rotation mode
+            for (ManipulationHandler.RotateInOneHandType type = ManipulationHandler.RotateInOneHandType.MaintainRotationToUser; type <= ManipulationHandler.RotateInOneHandType.RotateAboutGrabPoint; ++type)
+            {
+                manipHandler.OneHandRotationModeNear = type;
+
+                TestUtilities.PlayspaceToOriginLookingForward();
+
+                yield return hand.Show(initialHandPosition);
+                yield return hand.MoveTo(initialGrabPosition, numHandSteps);
+                yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+                // save relative pos grab point to object
+                Vector3 initialOffsetGrabToObjPivot = MixedRealityPlayspace.InverseTransformPoint(initialGrabPosition) - MixedRealityPlayspace.InverseTransformPoint(testObject.transform.position);
+
+                // full circle
+                const int degreeStep = 360 / numCircleSteps;
+
+                // rotating the pointer in a circle around "the user" 
+                for (int i = 1; i <= numCircleSteps; ++i)
+                {
+
+                    // rotate main camera (user)
+                    MixedRealityPlayspace.PerformTransformation(
+                    p =>
+                    {
+                        p.position = MixedRealityPlayspace.Position;
+                        Vector3 rotatedFwd = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * Vector3.forward;
+                        p.LookAt(rotatedFwd);
+                    });
+
+                    yield return null;
+
+                    // move hand with the camera
+                    Vector3 newHandPosition = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialGrabPosition;
+                    yield return hand.MoveTo(newHandPosition, 1);
+
+                    // make sure that the offset between grab point and object pivot hasn't changed while rotating
+                    Vector3 offsetRotated = MixedRealityPlayspace.InverseTransformPoint(newHandPosition) - MixedRealityPlayspace.InverseTransformPoint(testObject.transform.position);
+                    TestUtilities.AssertAboutEqual(offsetRotated, initialOffsetGrabToObjPivot, "Grab point on object changed during rotation");
+                }
+
+                yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+                yield return hand.Hide();
+
+            }
+
         }
 
     }
