@@ -9,7 +9,112 @@ Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes 
 
 Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.
 
+- [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
+
+### Event System
+
+**Changes**
+
+- The `IMixedRealityEventSystem` old API methods `Register` and `Unregister` have been marked as obsolete. They are preserved for backwards compatibility.
+- `InputSystemGlobalListener` has been marked as obsolete. Its functionality has not changed.
+- `BaseInputHandler` base class has been changed from `InputSystemGlobalListener` to `InputSystemGlobalHandlerListener`. This is a breaking change for any descendants of `BaseInputHandler`.
+
+**Motivation behind the change**
+
+The old event system API `Register` and `Unregister` could potentially cause multiple issues in runtime, main being:
+
+- If a component registers for global events, it would receive global input events of *all* types.
+- If one of the components on an object registers for global input events, all components on this object will receive global input events of *all* types.
+- If two components on the same object register to global events, and then one is disabled in runtime, the second one stops receiving global events.
+
+New API `RegisterHandler` and `UnregisterHandler`:
+
+- Provides an explicit and granular control over which input events should be listened to globally and which should be focused-based.
+- Allows multiple components on the same object to listen to global events independently on each other.
+
+**How to migrate**
+
+- If you have been calling `Register`/`Unregister` API directly before, replace these calls with calls to `RegisterHandler`/`UnregisterHandler`. Use handler interfaces you implement as generic parameters. If you implement multiple interfaces, and several of them listen to global input events, call `RegisterHandler` multiple times.
+- If you have been inheriting from `InputSystemGlobalListener`, change inheritance to `InputSystemGlobalHandlerListener`. Implement `RegisterHandlers` and `UnregisterHandlers` abstract methods. In the implementation call `inputSystem.RegisterHandler` (`inputSystem.UnregisterHandler`) to register on all handler interfaces you want to listen global events for.
+- If you have been inheriting from `BaseInputHandler`, implement `RegisterHandlers` and `UnregisterHandlers` abstract methods (same as for `InputSystemGlobalListener`).
+
+**Examples of migration**
+
+```csharp
+// Old
+class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+{
+    private void OnEnable()
+    {
+        InputSystem?.Register(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        InputSystem?.Unregister(gameObject);
+    }
+}
+
+// Migrated
+class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+{
+    private void OnEnable()
+    {
+        InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+        InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
+    }
+
+    private void OnDisable()
+    {
+        InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+        InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
+    }
+}
+```
+
+```csharp
+// Old
+class SampleHandler2 : InputSystemGlobalListener, IMixedRealitySpeechHandler
+{
+}
+
+// Migrated
+class SampleHandler2 : InputSystemGlobalHandlerListener, IMixedRealitySpeechHandler
+{
+    private void RegisterHandlers()
+    {
+        InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+    }
+
+    private void UnregisterHandlers()
+    {
+        InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+    }
+}
+
+// Alternative migration
+class SampleHandler2 : MonoBehaviour, IMixedRealitySpeechHandler
+{
+    private void OnEnable()
+    {
+        IMixedRealityInputSystem inputSystem;
+        if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))
+        {
+            inputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        IMixedRealityInputSystem inputSystem;
+        if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))
+        {
+            inputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+    }
+}
+```
 
 ### Spatial Awareness
 
