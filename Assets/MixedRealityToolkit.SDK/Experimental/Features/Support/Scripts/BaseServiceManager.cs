@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (showLogs && (serviceInstance == null))
             {
-                Debug.Log("Failed to get the requested service.");
+                Debug.LogError($"Failed to get the requested service of type {typeof(T)}.");
             }
 
             return serviceInstance;
@@ -358,7 +358,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="args">Arguments to provide to the service class constructor.</param>
         protected virtual void Initialize<T>(Type concreteType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args) where T : IMixedRealityService
         {
-            RegisterService<T>(concreteType, supportedPlatforms, args);
+            if (!RegisterService<T>(concreteType, supportedPlatforms, args))
+            {
+                Debug.LogError($"Failed to register the {concreteType.Name} service.");
+            }
+
             T serviceInstance = FindService<T>();
             serviceInstance?.Initialize();
         }
