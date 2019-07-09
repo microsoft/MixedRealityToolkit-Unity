@@ -41,18 +41,18 @@ New API `RegisterHandler` and `UnregisterHandler`:
 
 **Examples of migration**
 
-<pre><code>
+```csharp
 // Old
 class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
 {
     private void OnEnable()
     {
-        <b>InputSystem?.Register(gameObject);</b>
+        InputSystem?.Register(gameObject);
     }
 
     private void OnDisable()
     {
-        <b>InputSystem?.Unregister(gameObject);</b>
+        InputSystem?.Unregister(gameObject);
     }
 }
 
@@ -61,28 +61,28 @@ class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedReal
 {
     private void OnEnable()
     {
-        <b>InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);</b>
-        <b>InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);</b>
+        InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+        InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
     }
 
     private void OnDisable()
     {
-        <b>InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);</b>
-        <b>InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);</b>
+        InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+        InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
     }
 }
-</code></pre>
+```
 
-<pre><code>
+```csharp
 // Old
-class SampleHandler2 : <b>InputSystemGlobalListener</b>, IMixedRealitySpeechHandler
+class SampleHandler2 : InputSystemGlobalListener, IMixedRealitySpeechHandler
 {
 }
 
 // Migrated
-class SampleHandler2 : <b>InputSystemGlobalHandlerListener</b>, IMixedRealitySpeechHandler
+class SampleHandler2 : InputSystemGlobalHandlerListener, IMixedRealitySpeechHandler
 {
-    <b>private void RegisterHandlers()
+    private void RegisterHandlers()
     {
         InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
     }
@@ -90,13 +90,13 @@ class SampleHandler2 : <b>InputSystemGlobalHandlerListener</b>, IMixedRealitySpe
     private void UnregisterHandlers()
     {
         InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
-    }</b>
+    }
 }
 
 // Alternative migration
-class SampleHandler2 : <b>MonoBehaviour</b>, IMixedRealitySpeechHandler
+class SampleHandler2 : MonoBehaviour, IMixedRealitySpeechHandler
 {
-    private void <b>OnEnable</b>()
+    private void OnEnable()
     {
         IMixedRealityInputSystem inputSystem;
         if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))
@@ -105,16 +105,16 @@ class SampleHandler2 : <b>MonoBehaviour</b>, IMixedRealitySpeechHandler
         }
     }
 
-    private void <b>OnDisable</b>()
+    private void OnDisable()
     {
         IMixedRealityInputSystem inputSystem;
         if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))
         {
             inputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
         }
-    }</b>
+    }
 }
-</code></pre>
+```
 
 ### Spatial Awareness
 
