@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
     /// <summary>
-    /// Service manager supporting running the camera system, without requring the MixedRealityToolkit object.
+    /// Service manager supporting running the camera system, without requiring the MixedRealityToolkit object.
     /// </summary>
     public class CameraSystemManager : BaseServiceManager
     {

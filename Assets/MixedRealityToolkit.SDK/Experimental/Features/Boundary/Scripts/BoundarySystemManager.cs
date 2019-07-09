@@ -7,13 +7,13 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
-    /// Service manager supporting running the boundary system, without requring the MixedRealityToolkit object.
+    /// Service manager supporting running the boundary system, without requiring the MixedRealityToolkit object.
     /// </summary>
     public class BoundarySystemManager : BaseServiceManager
     {
         [SerializeField]
         [Tooltip("The scale (room, world, etc) of the experience.")]
-        private ExperienceScale expereinceScale = ExperienceScale.Room;
+        private ExperienceScale experienceScale = ExperienceScale.Room;
 
         [SerializeField]
         [Tooltip("The boundary system type that will be instantiated.")]
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             // * The registrar
             // * The boundary visualization profile
             // * The desired experience scale
-            object[] args = { this, profile, expereinceScale };
+            object[] args = { this, profile, experienceScale };
 
             Initialize<IMixedRealityBoundarySystem>(BoundarySystemType.Type, args: args);
         }

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
-    /// Service manager supporting running the spatial awareness system, without requring the MixedRealityToolkit object.
+    /// Service manager supporting running the spatial awareness system, without requiring the MixedRealityToolkit object.
     /// </summary>
     public class SpatialAwarenessSystemManager : BaseServiceManager
     {

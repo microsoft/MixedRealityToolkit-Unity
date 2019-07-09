@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     /// <summary>
-    /// Service manager supporting running the teleport system, without requring the MixedRealityToolkit object.
+    /// Service manager supporting running the teleport system, without requiring the MixedRealityToolkit object.
     /// </summary>
     public class TeleportSystemManager : BaseServiceManager
     {
