@@ -578,14 +578,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector3 targetPosition;
             if (IsNearManipulation())
             {
-                if (oneHandRotationModeNear == RotateInOneHandType.RotateAboutGrabPoint)
-                {
-                    targetPosition = (pointer.Rotation * objectToHandTranslation) + pointer.Position;
-                }
-                else // RotateAboutCenter or DoNotRotateInOneHand
-                {
-                    targetPosition = objectToHandTranslation + pointer.Position;
-                }
+                // make sure to apply pointer rotation to hand to object offset as well
+                targetPosition = (pointer.Rotation * objectToHandTranslation) + pointer.Position;
             }
             else
             {
@@ -628,11 +622,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // Calculate relative transform from object to hand.
             Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
             objectToHandRotation = worldToPalmRotation * hostTransform.rotation;
-            objectToHandTranslation = (hostTransform.position - pointer.Position);
-            if (oneHandRotationModeNear == RotateInOneHandType.RotateAboutGrabPoint)
-            {
-                objectToHandTranslation = worldToPalmRotation * objectToHandTranslation;
-            }
+            objectToHandTranslation = worldToPalmRotation * (hostTransform.position - pointer.Position);
 
             startObjectRotationCameraSpace = Quaternion.Inverse(CameraCache.Main.transform.rotation) * hostTransform.rotation;
             var cameraFlat = CameraCache.Main.transform.forward;

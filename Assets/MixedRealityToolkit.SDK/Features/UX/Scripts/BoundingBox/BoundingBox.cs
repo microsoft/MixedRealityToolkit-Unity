@@ -185,6 +185,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
+
+        [SerializeField]
+        [Tooltip("When an axis is flattened what value to set that axis's scale to for display.")]
+        private float flattenAxisDisplayScale = 0.0f;
+
+        /// <summary>
+        /// When an axis is flattened what value to set that axis's scale to for display.
+        /// </summary>
+        public float FlattenAxisDisplayScale
+        {
+            get { return flattenAxisDisplayScale; }
+            set
+            {
+                if (flattenAxisDisplayScale != value)
+                {
+                    flattenAxisDisplayScale = value;
+                    CreateRig();
+                }
+            }
+        }
+
         [SerializeField]
         [FormerlySerializedAs("wireframePadding")]
         [Tooltip("Extra padding added to the actual Target bounds")]
@@ -304,6 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
+
         [Header("Handles")]
         [SerializeField]
         [Tooltip("Material applied to handles when they are not in a grabbed state")]
@@ -1250,17 +1272,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (boxMaterial != null)
             {
-                boxDisplay = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                Destroy(boxDisplay.GetComponent<BoxCollider>());
+                bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
+
+                boxDisplay = GameObject.CreatePrimitive(isFlattened ? PrimitiveType.Quad : PrimitiveType.Cube);
+                Destroy(boxDisplay.GetComponent<Collider>());
                 boxDisplay.name = "bounding box";
 
                 ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
 
-                boxDisplay.transform.localScale = 2.0f * currentBoundsExtents;
+                boxDisplay.transform.localScale = GetBoxDisplayScale();
                 boxDisplay.transform.parent = rigRoot.transform;
-
-
             }
+        }
+
+        private Vector3 GetBoxDisplayScale()
+        {
+            // When a box is flattened one axis is normally scaled to zero, this doesn't always work well with visuals so we take 
+            // that flattened axis and re-scale it to the flattenAxisDisplayScale.
+            Vector3 displayScale = currentBoundsExtents;
+            displayScale.x = (flattenAxis == FlattenModeType.FlattenX) ? flattenAxisDisplayScale : displayScale.x;
+            displayScale.y = (flattenAxis == FlattenModeType.FlattenY) ? flattenAxisDisplayScale : displayScale.y;
+            displayScale.z = (flattenAxis == FlattenModeType.FlattenZ) ? flattenAxisDisplayScale : displayScale.z;
+
+            return 2.0f * displayScale;
         }
 
         private void SetBoundingBoxCollider()
@@ -1796,7 +1830,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (boxDisplay != null)
                 {
                     // Compute the local scale that produces the desired world space size
-                    boxDisplay.transform.localScale = Vector3.Scale(2.0f * currentBoundsExtents, invRootScale);
+                    boxDisplay.transform.localScale = Vector3.Scale(GetBoxDisplayScale(), invRootScale);
                 }
 
                 //move rig into position and rotation
