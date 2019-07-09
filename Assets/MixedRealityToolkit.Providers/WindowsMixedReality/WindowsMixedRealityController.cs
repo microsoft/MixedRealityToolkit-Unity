@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using System;
 
 #if UNITY_WSA
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
@@ -16,6 +17,7 @@ using Windows.Foundation;
 using Windows.Perception;
 using Windows.UI.Input.Spatial;
 using Windows.Storage.Streams;
+using Microsoft.MixedReality.Toolkit.Windows.Input;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
@@ -58,9 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         };
 
 #if UNITY_WSA
-
         private bool controllerModelInitialized = false;
         private bool failedToObtainControllerModel = false;
+
+        private static readonly Dictionary<string, GameObject> controllerDictionary = new Dictionary<string, GameObject>(0);
 
         #region Update data functions
 
@@ -311,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         else
                         {
                             Debug.LogError("Controller visualization type not defined for controller visualization profile");
-                            GameObject.Destroy(gltfGameObject);
+                            UnityEngine.Object.Destroy(gltfGameObject);
                             gltfGameObject = null;
                         }
                     }
@@ -353,6 +356,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             return returnValue;
         }
 #endif
+
+        private string GenerateKey(InteractionSource source)
+        {
+            return source.vendorId + "/" + source.productId + "/" + source.productVersion + "/" + source.handedness;
+        }
 
         #endregion Controller model functions
 
