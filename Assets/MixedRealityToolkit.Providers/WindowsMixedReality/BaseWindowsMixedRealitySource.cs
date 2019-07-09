@@ -131,6 +131,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentSourceRotation);
 
+                // We want the source to follow the Playspace, so fold in the playspace transform here to 
+                // put the source pose into world space.
+                currentSourcePosition = MixedRealityPlayspace.TransformPoint(currentSourcePosition);
+                currentSourceRotation = MixedRealityPlayspace.Rotation * currentSourceRotation;
+
                 // Devices are considered tracked if we receive position OR rotation data from the sensors.
                 TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
             }
