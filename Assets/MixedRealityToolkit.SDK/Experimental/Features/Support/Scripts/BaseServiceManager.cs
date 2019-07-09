@@ -383,10 +383,11 @@ namespace Microsoft.MixedReality.Toolkit
         private T FindService<T>(string name = null) where T : IMixedRealityService
         {
             Type interfaceType = typeof(T);
+            IMixedRealityService serviceInstance;
 
-            if (!registeredServices.ContainsKey(interfaceType)) { return default(T); }
+            if (!registeredServices.TryGetValue(interfaceType, out serviceInstance)) { return default(T);  }
 
-            return (T)registeredServices[interfaceType];
+            return (T)serviceInstance;
          }
     }
 }
