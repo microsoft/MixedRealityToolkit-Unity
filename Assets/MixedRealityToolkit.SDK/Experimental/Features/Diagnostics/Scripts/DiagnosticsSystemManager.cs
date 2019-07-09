@@ -6,15 +6,18 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
+    /// <summary>
+    /// Stand alone diagnostics system manager.
+    /// </summary>
     public class DiagnosticsSystemManager : BaseServiceManager
     {
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The diagnostics system type that will be instantiated.")]
         [Implements(typeof(IMixedRealityDiagnosticsSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType DiagnosticsSystemType = null;
 
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The diagnostics system configuration profile.")]
         private MixedRealityDiagnosticsProfile profile = null;
 
         private void Awake()

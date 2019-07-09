@@ -6,15 +6,18 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
+    /// <summary>
+    /// Stand alone camera system manager.
+    /// </summary>
     public class CameraSystemManager : BaseServiceManager
     {
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The camera system type that will be instantiated.")]
         [Implements(typeof(IMixedRealityCameraSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType CameraSystemType = null;
 
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The camera system configuration profile.")]
         private MixedRealityCameraProfile profile = null;
 
         private void Awake()

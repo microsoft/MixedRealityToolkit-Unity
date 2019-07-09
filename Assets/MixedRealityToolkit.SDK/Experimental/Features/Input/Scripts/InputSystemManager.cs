@@ -1,22 +1,28 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+#if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Input.Editor;
+#endif
+
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Stand alone input system manager.
+    /// </summary>
     public class InputSystemManager : BaseServiceManager
     {
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The input system type that will be instantiated.")]
         [Implements(typeof(IMixedRealityInputSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType InputSystemType = null;
 
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The input system configuration profile.")]
         private MixedRealityInputSystemProfile profile = null;
 
         private void Awake()

@@ -8,11 +8,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// Base class for service manager implementations.
+    /// </summary>
     public class BaseServiceManager : MonoBehaviour, IMixedRealityServiceRegistrar
     {
-        // todo: remove
-        //protected IMixedRealityService service = null;
-        // todo: rename to services (when done)
         protected Dictionary<Type, IMixedRealityService> registeredServices = new Dictionary<Type, IMixedRealityService>();
 
         /// <summary>
@@ -344,6 +344,13 @@ namespace Microsoft.MixedReality.Toolkit
 
         #endregion IMixedRealityServiceRegistrar implementation
 
+        /// <summary>
+        /// Initialize a service.
+        /// </summary>
+        /// <typeparam name="T">The interface type for the service to be intialized.</typeparam>
+        /// <param name="concreteType">The concrete type of the service to initialize.</param>
+        /// <param name="supportedPlatforms">The platoform(s) on which the service is supported.</param>
+        /// <param name="args">Arguments to provide to the service class constructor.</param>
         protected virtual void Initialize<T>(Type concreteType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args) where T : IMixedRealityService
         {
             RegisterService<T>(concreteType, supportedPlatforms, args);
@@ -351,6 +358,10 @@ namespace Microsoft.MixedReality.Toolkit
             serviceInstance?.Initialize();
         }
 
+        /// <summary>
+        /// Uninitialize a service.
+        /// </summary>
+        /// <typeparam name="T">The interface type for the service to uninitialize.</typeparam>
         protected virtual void Uninitialize<T>() where T : IMixedRealityService
         {
             T serviceInstance = FindService<T>();
@@ -362,6 +373,12 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        /// <summary>
+        /// Locates a service instance in the registry,
+        /// </summary>
+        /// <typeparam name="T">The interface type of the service to locate.</typeparam>
+        /// <param name="name">The name of the desired service.</param>
+        /// <returns>Instance of the interface type, or null if not found.</returns>
         private T FindService<T>(string name = null) where T : IMixedRealityService
         {
             Type interfaceType = typeof(T);

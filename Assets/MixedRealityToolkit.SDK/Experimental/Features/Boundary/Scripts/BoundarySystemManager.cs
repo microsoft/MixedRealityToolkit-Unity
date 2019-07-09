@@ -6,19 +6,22 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Boundary
 {
+    /// <summary>
+    /// Stand alone boundary system manager.
+    /// </summary>
     public class BoundarySystemManager : BaseServiceManager
     {
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The scale (room, world, etc) of the experience.")]
         private ExperienceScale expereinceScale = ExperienceScale.Room;
 
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The boundary system type that will be instantiated.")]
         [Implements(typeof(IMixedRealityBoundarySystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType BoundarySystemType = null;
 
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The boundary visualization configuration profile.")]
         private MixedRealityBoundaryVisualizationProfile profile = null;
 
         private void Awake()

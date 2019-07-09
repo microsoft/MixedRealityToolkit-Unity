@@ -6,10 +6,13 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Teleport
 {
+    /// <summary>
+    /// Stand alone teleport system manager.
+    /// </summary>
     public class TeleportSystemManager : BaseServiceManager
     {
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The teleport system type that will be instantiated.")]
         [Implements(typeof(IMixedRealityTeleportSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType TeleportSystemType = null;
 

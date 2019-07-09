@@ -6,15 +6,18 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
+    /// <summary>
+    /// Stand alone spatial awareness system manager.
+    /// </summary>
     public class SpatialAwarenessSystemManager : BaseServiceManager
     {
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The spatial awareness system type that will be instantiated.")]
         [Implements(typeof(IMixedRealitySpatialAwarenessSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType SpatialAwarenessSystemType = null;
 
-        // todo: tooltips, etc
         [SerializeField]
+        [Tooltip("The spatial awareness system configuration profile.")]
         private MixedRealitySpatialAwarenessSystemProfile profile = null;
 
         private void Awake()
