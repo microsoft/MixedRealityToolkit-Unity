@@ -29,6 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected GUIContent[] speechKeywords = null;
         protected static bool ProfilesSetup = false;
 
+        protected bool hasProfileLayout;
+
         // indent tracker
         protected static int indentOnSectionStart = 0;
 
@@ -38,7 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private static GUIContent selectionModeLabel = new GUIContent("Selection Mode", "How the Interactable should react to input");
         private static GUIContent dimensionsLabel = new GUIContent("Dimensions", "The amount of theme layers for sequence button functionality (3-9)");
-        private static GUIContent startDimensionLabel = new GUIContent("Start Dimension Index", "The dimension value to set on start.");
+        private static GUIContent startDimensionLabel = new GUIContent("Start Dimension Index", "The dimensionIndex value to set on start.");
+        private static GUIContent CurrentDimensionLabel = new GUIContent("Dimension Index", "The dimensionIndex value at runtime.");
         private static GUIContent isToggledLabel = new GUIContent("Is Toggled", "The toggled value to set on start.");
 
         protected virtual void OnEnable()
@@ -277,7 +280,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     if (dimensions.intValue >= selectionModeNames.Length)
                     {
                         // multi dimensions
-                        EditorGUI.IntField(position, startDimensionLabel, startDimensionIndex.intValue);
+                        if (!isPlayMode)
+                        {
+                            startDimensionIndex.intValue = EditorGUI.IntField(position, startDimensionLabel, startDimensionIndex.intValue);
+                        }
+                        else
+                        {
+                            SerializedProperty dimensionIndex = serializedObject.FindProperty("dimensionIndex");
+                            EditorGUI.IntField(position, CurrentDimensionLabel, dimensionIndex.intValue);
+                        }
                     }
                     else if (dimensions.intValue == (int)SelectionModes.Toggle + 1)
                     {
@@ -567,7 +578,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     themeCnt += themes.arraySize;
                 }
             }
-
+           
             ProfilesSetup = validProfileCnt == profileList.arraySize + themeCnt;
 
             InspectorUIUtility.DrawSectionEnd(indentOnSectionStart);

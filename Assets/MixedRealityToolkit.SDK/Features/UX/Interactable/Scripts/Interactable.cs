@@ -425,6 +425,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetupEvents();
             SetupThemes();
             SetupStates();
+
+            if(StartDimensionIndex > 0)
+            {
+                SetDimensionIndex(StartDimensionIndex);
+            }
         }
 
         private void OnEnable()
