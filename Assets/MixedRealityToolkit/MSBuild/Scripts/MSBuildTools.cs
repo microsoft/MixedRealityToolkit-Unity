@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         };
 
         public const string CSharpVersion = "7.3";
-        //public const string UWPTargetPlatformVersion = "10.0.18362.0";
+        public const string DefaultMinUWPSDK = "10.0.14393.0";
 
         private static readonly string uwpMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;// "10.0.14393.0";
         private static readonly string uwpTargetPlatformVersion = EditorUserBuildSettings.wsaUWPSDK;
@@ -143,6 +143,12 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     targetUWPPlatform = Utilities.GetUWPSDKs().Max().ToString(4);
                 }
 
+                string minUWPPlatform = uwpMinPlatformVersion;
+                if (string.IsNullOrWhiteSpace(minUWPPlatform))
+                {
+                    minUWPPlatform = DefaultMinUWPSDK;
+                }
+
                 Dictionary<string, string> platformTokens = new Dictionary<string, string>()
                 {
                     {"<!--TARGET_FRAMEWORK_TOKEN-->", targetFramework.AsMSBuildString() },
@@ -150,8 +156,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     {"<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", platformAssemblySearchPaths)},
 
                     // These are UWP specific, but they will be no-op if not needed
-                    { "<!--UWP_TARGET_PLATFORM_VERSION_TOKEN-->", uwpTargetPlatformVersion ?? "$(LatestTargetPlatformVersion)" },
-                    { "<!--UWP_MIN_PLATFORM_VERSION_TOKEN-->", uwpMinPlatformVersion }
+                    { "<!--UWP_TARGET_PLATFORM_VERSION_TOKEN-->", targetUWPPlatform },
+                    { "<!--UWP_MIN_PLATFORM_VERSION_TOKEN-->", minUWPPlatform }
                 };
 
                 platformTokens.Add(platformCommonReferenceTemplate, string.Join("\r\n", GetReferenceEntries(platformCommonReferenceTemplate, platformAssemblyReferencePaths)));
