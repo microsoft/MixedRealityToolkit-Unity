@@ -90,8 +90,106 @@
 <h2 id="api-changes">API changes</h2>
 <p>Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.</p>
 <ul>
+<li><a href="#event-system">Event System</a></li>
 <li><a href="#spatial-awareness">Spatial Awareness</a></li>
 </ul>
+<h3 id="event-system">Event System</h3>
+<p><strong>Changes</strong></p>
+<ul>
+<li>The <code>IMixedRealityEventSystem</code> old API methods <code>Register</code> and <code>Unregister</code> have been marked as obsolete. They are preserved for backwards compatibility.</li>
+<li><code>InputSystemGlobalListener</code> has been marked as obsolete. Its functionality has not changed.</li>
+<li><code>BaseInputHandler</code> base class has been changed from <code>InputSystemGlobalListener</code> to <code>InputSystemGlobalHandlerListener</code>. This is a breaking change for any descendants of <code>BaseInputHandler</code>.</li>
+</ul>
+<p><strong>Motivation behind the change</strong></p>
+<p>The old event system API <code>Register</code> and <code>Unregister</code> could potentially cause multiple issues in runtime, main being:</p>
+<ul>
+<li>If a component registers for global events, it would receive global input events of <em>all</em> types.</li>
+<li>If one of the components on an object registers for global input events, all components on this object will receive global input events of <em>all</em> types.</li>
+<li>If two components on the same object register to global events, and then one is disabled in runtime, the second one stops receiving global events.</li>
+</ul>
+<p>New API <code>RegisterHandler</code> and <code>UnregisterHandler</code>:</p>
+<ul>
+<li>Provides an explicit and granular control over which input events should be listened to globally and which should be focused-based.</li>
+<li>Allows multiple components on the same object to listen to global events independently on each other.</li>
+</ul>
+<p><strong>How to migrate</strong></p>
+<ul>
+<li>If you have been calling <code>Register</code>/<code>Unregister</code> API directly before, replace these calls with calls to <code>RegisterHandler</code>/<code>UnregisterHandler</code>. Use handler interfaces you implement as generic parameters. If you implement multiple interfaces, and several of them listen to global input events, call <code>RegisterHandler</code> multiple times.</li>
+<li>If you have been inheriting from <code>InputSystemGlobalListener</code>, change inheritance to <code>InputSystemGlobalHandlerListener</code>. Implement <code>RegisterHandlers</code> and <code>UnregisterHandlers</code> abstract methods. In the implementation call <code>inputSystem.RegisterHandler</code> (<code>inputSystem.UnregisterHandler</code>) to register on all handler interfaces you want to listen global events for.</li>
+<li>If you have been inheriting from <code>BaseInputHandler</code>, implement <code>RegisterHandlers</code> and <code>UnregisterHandlers</code> abstract methods (same as for <code>InputSystemGlobalListener</code>).</li>
+</ul>
+<p><strong>Examples of migration</strong></p>
+<pre><code class="lang-csharp">// Old
+class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+{
+    private void OnEnable()
+    {
+        InputSystem?.Register(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        InputSystem?.Unregister(gameObject);
+    }
+}
+
+// Migrated
+class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+{
+    private void OnEnable()
+    {
+        InputSystem?.RegisterHandler&lt;IMixedRealitySourceStateHandler&gt;(this);
+        InputSystem?.RegisterHandler&lt;IMixedRealityHandJointHandler&gt;(this);
+    }
+
+    private void OnDisable()
+    {
+        InputSystem?.UnregisterHandler&lt;IMixedRealitySourceStateHandler&gt;(this);
+        InputSystem?.UnregisterHandler&lt;IMixedRealityHandJointHandler&gt;(this);
+    }
+}
+</code></pre>
+<pre><code class="lang-csharp">// Old
+class SampleHandler2 : InputSystemGlobalListener, IMixedRealitySpeechHandler
+{
+}
+
+// Migrated
+class SampleHandler2 : InputSystemGlobalHandlerListener, IMixedRealitySpeechHandler
+{
+    private void RegisterHandlers()
+    {
+        InputSystem?.RegisterHandler&lt;IMixedRealitySpeechHandler&gt;(this);
+    }
+
+    private void UnregisterHandlers()
+    {
+        InputSystem?.UnregisterHandler&lt;IMixedRealitySpeechHandler&gt;(this);
+    }
+}
+
+// Alternative migration
+class SampleHandler2 : MonoBehaviour, IMixedRealitySpeechHandler
+{
+    private void OnEnable()
+    {
+        IMixedRealityInputSystem inputSystem;
+        if (MixedRealityServiceRegistry.TryGetService&lt;IMixedRealityInputSystem&gt;(out inputSystem))
+        {
+            inputSystem?.RegisterHandler&lt;IMixedRealitySpeechHandler&gt;(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        IMixedRealityInputSystem inputSystem;
+        if (MixedRealityServiceRegistry.TryGetService&lt;IMixedRealityInputSystem&gt;(out inputSystem))
+        {
+            inputSystem?.UnregisterHandler&lt;IMixedRealitySpeechHandler&gt;(this);
+        }
+    }
+}
+</code></pre>
 <h3 id="spatial-awareness">Spatial Awareness</h3>
 <p>The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserver interfaces have taken multiple breaking changes as described below.</p>
 <h4 id="changes">Changes</h4>

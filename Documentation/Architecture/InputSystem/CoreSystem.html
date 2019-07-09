@@ -120,7 +120,7 @@ in <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_dev
 <p>Events can be sent to global listeners. It's possible to register for all input events by using
 the input systems's <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html">IMixedRealityEventSystem</a>
 interface. It's recommended to use the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_RegisterHandler__1_IEventSystemHandler_">RegisterHandler</a>
-method for registering for global events - the deprecated Register function will cause listeners
+method for registering for global events - the deprecated <code>Register</code> function will cause listeners
 to get notified of ALL input events, rather than just input events of a particular type
 (where type is defined by the event interface).</p>
 <p>Note that <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.html#Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystem_PushFallbackInputHandler_GameObject_">fallback listeners</a>
