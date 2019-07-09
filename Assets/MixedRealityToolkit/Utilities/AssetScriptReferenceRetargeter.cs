@@ -237,7 +237,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             using (StreamReader reader = new StreamReader(filePath))
             {
-                return reader.ReadLine().StartsWith(YamlPrefix);
+                string line = reader.ReadLine();
+                return line?.StartsWith(YamlPrefix) ?? false;
             }
         }
 
