@@ -253,7 +253,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// This tests the one hand far movement while camera (character) is moving around.
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
-        /// out of the object on pointer rotation - this test should be the same in all rotation setups
+        /// out of the object on pointer rotation - this test will only work for far interaction rotation modes that 
+        /// aren't influenced by moving the object in space - rotation modes that rotate the cube while moving will cause 
+        /// the pointer grab point to rotate as well and therefor return a different result
         /// </summary>
         /// <returns></returns>
         [UnityTest]
@@ -285,7 +287,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // do this test for every one hand rotation mode
             for (ManipulationHandler.RotateInOneHandType type = ManipulationHandler.RotateInOneHandType.MaintainRotationToUser; type <= ManipulationHandler.RotateInOneHandType.RotateAboutGrabPoint; ++type)
             {
-                manipHandler.OneHandRotationModeNear = type;
+                // skip far interaction modes that would influence the orientation of the cube in move mode
+                // these modes will be covered in tests specific to this type of rotation behavior
+                if (type == ManipulationHandler.RotateInOneHandType.FaceUser || 
+                    type == ManipulationHandler.RotateInOneHandType.FaceAwayFromUser || 
+                    type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation)
+                {
+                    continue;
+                }
+
+                manipHandler.OneHandRotationModeFar = type;
 
                 TestUtilities.PlayspaceToOriginLookingForward();
 
