@@ -22,10 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float deltaTimeStart;
         private readonly int velocityUpdateInterval = 6;
         private int frameOn = 0;
-        private Vector3[] positions = new Vector3[6];
-        private Vector3[] normals = new Vector3[6];
-        private Vector3 positionSum = Vector3.zero;
-        private Vector3 normalsSum = Vector3.zero;
+        private Vector3[] velocityPositionsCache = new Vector3[6];
+        private Vector3[] velocityNormalsCache = new Vector3[6];
+        private Vector3 velocityPositionsSum = Vector3.zero;
+        private Vector3 velocityNormalsSum = Vector3.zero;
 
         /// <summary>
         /// Constructor.
@@ -58,10 +58,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if(frameOn < velocityUpdateInterval)
             {
-                positions[frameOn] = GetJointPosition(TrackedHandJoint.Palm);
-                positionSum += positions[frameOn];
-                normals[frameOn] = GetPalmNormal();
-                normalsSum += normals[frameOn];
+                velocityPositionsCache[frameOn] = GetJointPosition(TrackedHandJoint.Palm);
+                velocityPositionsSum += velocityPositionsCache[frameOn];
+                velocityNormalsCache[frameOn] = GetPalmNormal();
+                velocityNormalsSum += velocityNormalsCache[frameOn];
             }
             else
             {
@@ -72,19 +72,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 newPosition = GetJointPosition(TrackedHandJoint.Palm);
                 Vector3 newNormal = GetPalmNormal();
 
-                Vector3 newPositionSum = positionSum - positions[frameIndex] + newPosition;
-                Vector3 newNormalsSum = normalsSum - normals[frameIndex] + newNormal;
+                Vector3 newPositionsSum = velocityPositionsSum - velocityPositionsCache[frameIndex] + newPosition;
+                Vector3 newNormalsSum = velocityNormalsSum - velocityNormalsCache[frameIndex] + newNormal;
 
-                Velocity = (newPositionSum - positionSum) / deltaTime / velocityUpdateInterval;
+                Velocity = (newPositionsSum - velocityPositionsSum) / deltaTime / velocityUpdateInterval;
 
-                Quaternion rotation = Quaternion.FromToRotation(normalsSum / velocityUpdateInterval, newNormalsSum / velocityUpdateInterval);
+                Quaternion rotation = Quaternion.FromToRotation(velocityNormalsSum / velocityUpdateInterval, newNormalsSum / velocityUpdateInterval);
                 Vector3 rotationRate = rotation.eulerAngles * Mathf.Deg2Rad;
                 AngularVelocity = rotationRate / deltaTime;
 
-                positions[frameIndex] = newPosition;
-                normals[frameIndex] = newNormal;
-                positionSum = newPositionSum;
-                normalsSum = newNormalsSum;
+                velocityPositionsCache[frameIndex] = newPosition;
+                velocityNormalsCache[frameIndex] = newNormal;
+                velocityPositionsSum = newPositionsSum;
+                velocityNormalsSum = newNormalsSum;
             }
 
             deltaTimeStart = Time.unscaledTime;
