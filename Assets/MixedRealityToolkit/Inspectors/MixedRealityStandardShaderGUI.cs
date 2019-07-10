@@ -66,9 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent vertexColors = new GUIContent("Vertex Colors", "Enable Vertex Color Tinting");
             public static GUIContent vertexExtrusion = new GUIContent("Vertex Extrusion", "Enable Vertex Extrusion Along the Vertex Normal");
             public static GUIContent vertexExtrusionValue = new GUIContent("Vertex Extrusion Value", "How Far to Extrude the Vertex Along the Vertex Normal");
-            public static GUIContent clippingPlane = new GUIContent("Clipping Plane", "Enable Clipping Against a Plane");
-            public static GUIContent clippingSphere = new GUIContent("Clipping Sphere", "Enable Clipping Against a Sphere");
-            public static GUIContent clippingBox = new GUIContent("Clipping Box", "Enable Clipping Against a Box");
             public static GUIContent clippingBorder = new GUIContent("Clipping Border", "Enable a Border Along the Clipping Primitive's Edge");
             public static GUIContent clippingBorderWidth = new GUIContent("Width", "Width of the Clipping Border");
             public static GUIContent clippingBorderColor = new GUIContent("Color", "Interpolated Color of the Clipping Border");
@@ -149,9 +146,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty vertexColors;
         protected MaterialProperty vertexExtrusion;
         protected MaterialProperty vertexExtrusionValue;
-        protected MaterialProperty clippingPlane;
-        protected MaterialProperty clippingSphere;
-        protected MaterialProperty clippingBox;
         protected MaterialProperty clippingBorder;
         protected MaterialProperty clippingBorderWidth;
         protected MaterialProperty clippingBorderColor;
@@ -235,9 +229,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             vertexColors = FindProperty("_VertexColors", props);
             vertexExtrusion = FindProperty("_VertexExtrusion", props);
             vertexExtrusionValue = FindProperty("_VertexExtrusionValue", props);
-            clippingPlane = FindProperty("_ClippingPlane", props);
-            clippingSphere = FindProperty("_ClippingSphere", props);
-            clippingBox = FindProperty("_ClippingBox", props);
             clippingBorder = FindProperty("_ClippingBorder", props);
             clippingBorderWidth = FindProperty("_ClippingBorderWidth", props);
             clippingBorderColor = FindProperty("_ClippingBorderColor", props);
@@ -511,36 +502,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(vertexExtrusionValue, Styles.vertexExtrusionValue, 2);
             }
 
-            materialEditor.ShaderProperty(clippingPlane, Styles.clippingPlane);
+            materialEditor.ShaderProperty(clippingBorder, Styles.clippingBorder);
 
-            if (PropertyEnabled(clippingPlane))
+            if (PropertyEnabled(clippingBorder))
             {
-                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPlane), Styles.clippingPlane.text), EditorStyles.helpBox, new GUILayoutOption[0]);
-            }
-
-            materialEditor.ShaderProperty(clippingSphere, Styles.clippingSphere);
-
-            if (PropertyEnabled(clippingSphere))
-            {
-                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingSphere), Styles.clippingSphere.text), EditorStyles.helpBox, new GUILayoutOption[0]);
-            }
-
-            materialEditor.ShaderProperty(clippingBox, Styles.clippingBox);
-
-            if (PropertyEnabled(clippingBox))
-            {
-                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingBox), Styles.clippingBox.text), EditorStyles.helpBox, new GUILayoutOption[0]);
-            }
-
-            if (PropertyEnabled(clippingPlane) || PropertyEnabled(clippingSphere) || PropertyEnabled(clippingBox))
-            {
-                materialEditor.ShaderProperty(clippingBorder, Styles.clippingBorder);
-                
-                if (PropertyEnabled(clippingBorder))
-                {
-                    materialEditor.ShaderProperty(clippingBorderWidth, Styles.clippingBorderWidth, 2);
-                    materialEditor.ShaderProperty(clippingBorderColor, Styles.clippingBorderColor, 2);
-                }
+                materialEditor.ShaderProperty(clippingBorderWidth, Styles.clippingBorderWidth, 2);
+                materialEditor.ShaderProperty(clippingBorderColor, Styles.clippingBorderColor, 2);
             }
 
             materialEditor.ShaderProperty(nearPlaneFade, Styles.nearPlaneFade);

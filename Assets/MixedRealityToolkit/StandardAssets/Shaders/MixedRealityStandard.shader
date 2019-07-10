@@ -37,9 +37,6 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_VERTEX_COLORS)] _VertexColors("Vertex Colors", Float) = 0.0
         [Toggle(_VERTEX_EXTRUSION)] _VertexExtrusion("Vertex Extrusion", Float) = 0.0
         _VertexExtrusionValue("Vertex Extrusion Value", Float) = 0.0
-        [Toggle(_CLIPPING_PLANE)] _ClippingPlane("Clipping Plane", Float) = 0.0
-        [Toggle(_CLIPPING_SPHERE)] _ClippingSphere("Clipping Sphere", Float) = 0.0
-        [Toggle(_CLIPPING_BOX)] _ClippingBox("Clipping Box", Float) = 0.0
         [Toggle(_CLIPPING_BORDER)] _ClippingBorder("Clipping Border", Float) = 0.0
         _ClippingBorderWidth("Clipping Border Width", Range(0.005, 1.0)) = 0.025
         _ClippingBorderColor("Clipping Border Color", Color) = (1.0, 0.2, 0.0, 1.0)
@@ -216,8 +213,10 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #pragma multi_compile_instancing
             #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile _ UNITY_COLORSPACE_GAMMA
             #pragma multi_compile _ _MULTI_HOVER_LIGHT
+            #pragma multi_compile _ _CLIPPING_PLANE
+            #pragma multi_compile _ _CLIPPING_SPHERE
+            #pragma multi_compile _ _CLIPPING_BOX
 
             #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON
             #pragma shader_feature _DISABLE_ALBEDO_MAP
@@ -235,9 +234,6 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _RIM_LIGHT
             #pragma shader_feature _VERTEX_COLORS
             #pragma shader_feature _VERTEX_EXTRUSION
-            #pragma shader_feature _CLIPPING_PLANE
-            #pragma shader_feature _CLIPPING_SPHERE
-            #pragma shader_feature _CLIPPING_BOX
             #pragma shader_feature _CLIPPING_BORDER
             #pragma shader_feature _NEAR_PLANE_FADE
             #pragma shader_feature _NEAR_LIGHT_FADE
