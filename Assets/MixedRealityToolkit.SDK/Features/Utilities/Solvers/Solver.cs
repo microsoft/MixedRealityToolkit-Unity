@@ -38,10 +38,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [Tooltip("If true, updates are smoothed to the target. Otherwise, they are snapped to the target")]
         private bool smoothing = true;
 
-        public bool Smoothing 
-        { 
-            get => smoothing; 
-            set => smoothing = value; 
+        public bool Smoothing
+        {
+            get => smoothing;
+            set => smoothing = value;
         }
 
         [SerializeField]
@@ -62,14 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         protected Vector3 GoalPosition
         {
-            get
-            {
-                return SolverHandler.GoalPosition;
-            }
-            set
-            {
-                SolverHandler.GoalPosition = value;
-            }
+            get { return SolverHandler.GoalPosition; }
+            set { SolverHandler.GoalPosition = value; }
         }
 
         /// <summary>
@@ -77,14 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         protected Quaternion GoalRotation
         {
-            get
-            {
-                return SolverHandler.GoalRotation;
-            }
-            set
-            {
-                SolverHandler.GoalRotation = value;
-            }
+            get { return SolverHandler.GoalRotation; }
+            set { SolverHandler.GoalRotation = value; }
         }
 
         /// <summary>
@@ -92,14 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         protected Vector3 GoalScale
         {
-            get
-            {
-                return SolverHandler.GoalScale;
-            }
-            set
-            {
-                SolverHandler.GoalScale = value;
-            }
+            get { return SolverHandler.GoalScale; }
+            set { SolverHandler.GoalScale = value; }
         }
 
         /// <summary>
