@@ -130,26 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public string SourceName { get; } = "Mixed Reality Scene System";
 
-        /// <summary>
-        /// Returns the manager scene found in profile.
-        /// </summary>
-        public SceneInfo ManagerScene => profile.ManagerScene;
-
-        /// <summary>
-        /// Returns all lighting scenes found in profile.
-        /// </summary>
-        public SceneInfo[] LightingScenes => contentTracker.SortedLightingScenes;
-
-        /// <summary>
-        /// Returns all content scenes found in profile.
-        /// </summary>
-        public SceneInfo[] ContentScenes => contentTracker.SortedContentScenes;
-
-        /// <summary>
-        /// Returns all content tags found in profile scenes.
-        /// </summary>
-        public IEnumerable<string> ContentTags => profile.ContentTags;
-
         #endregion
 
         #region Service Methods

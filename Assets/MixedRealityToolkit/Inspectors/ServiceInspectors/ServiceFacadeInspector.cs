@@ -176,13 +176,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         /// <returns></returns>
         private bool DrawInspector(ServiceFacade facade)
         {
-            IMixedRealityServiceInspector inspectorInstance;
-            if (GetServiceInspectorInstance(facade.ServiceType, out inspectorInstance))
+            bool drewInspector = false;
+            foreach (Type interfaceType in facade.ServiceType.GetInterfaces())
             {
-                inspectorInstance.DrawInspectorGUI(facade.Service);
-                return true;
+                IMixedRealityServiceInspector inspectorInstance;
+                if (GetServiceInspectorInstance(interfaceType, out inspectorInstance))
+                {
+                    inspectorInstance.DrawInspectorGUI(facade.Service);
+                    drewInspector = true;
+                }
             }
-            return false;
+            return drewInspector;
         }
 
         /// <summary>
@@ -192,13 +196,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         /// <returns></returns>
         private bool DrawProfile(Type serviceType)
         {
-            IMixedRealityServiceInspector inspectorInstance;
-            if (GetServiceInspectorInstance(serviceType, out inspectorInstance))
+            bool drawProfileField = true;
+            foreach (Type interfaceType in serviceType.GetInterfaces())
             {
-                if (!inspectorInstance.DrawProfileField)
-                {   // We've been instructed to skip drawing a profile by the inspector
-                    return false;
+                IMixedRealityServiceInspector inspectorInstance;
+                if (GetServiceInspectorInstance(interfaceType, out inspectorInstance))
+                {
+                    drawProfileField &= inspectorInstance.DrawProfileField;
                 }
+            }
+
+            if (!drawProfileField)
+            {   // We've been instructed to skip drawing a profile by the inspector
+                return false;
             }
 
             bool foundAndDrewProfile = false;
@@ -329,14 +339,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             InitializeServiceInspectorLookup();
 
             // Find and draw the custom inspector
-            IMixedRealityServiceInspector inspectorInstance;
-            if (!GetServiceInspectorInstance(facade.ServiceType, out inspectorInstance))
+            foreach (Type interfaceType in facade.ServiceType.GetInterfaces())
             {
-                return;
+                IMixedRealityServiceInspector inspectorInstance;
+                if (GetServiceInspectorInstance(facade.ServiceType, out inspectorInstance))
+                {
+                    // If we've implemented a facade inspector, draw gizmos now
+                    inspectorInstance.DrawGizmos(facade.Service);
+                }
             }
-
-            // If we've implemented a facade inspector, draw gizmos now
-            inspectorInstance.DrawGizmos(facade.Service);
         }
 
         /// <summary>
@@ -362,15 +373,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                     continue;
                 }
 
-                IMixedRealityServiceInspector inspectorInstance;
-                if (!GetServiceInspectorInstance(inspectorTypePair.Key, out inspectorInstance))
+                foreach (Type interfaceType in inspectorTypePair.Key.GetInterfaces())
                 {
-                    continue;
-                }
+                    IMixedRealityServiceInspector inspectorInstance;
+                    if (!GetServiceInspectorInstance(inspectorTypePair.Key, out inspectorInstance))
+                    {
+                        continue;
+                    }
 
-                if (Selection.Contains(facade) || inspectorInstance.AlwaysDrawSceneGUI)
-                {
-                    inspectorInstance.DrawSceneGUI(facade.Service, sceneView);
+                    if (Selection.Contains(facade) || inspectorInstance.AlwaysDrawSceneGUI)
+                    {
+                        inspectorInstance.DrawSceneGUI(facade.Service, sceneView);
+                    }
                 }
             }
         }

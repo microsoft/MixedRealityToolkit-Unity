@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [MixedRealityServiceInspector(typeof(FocusProvider))]
+    [MixedRealityServiceInspector(typeof(IMixedRealityFocusProvider))]
     public class FocusProviderInspector : BaseMixedRealityServiceInspector
     {
         private static readonly Color enabledColor = GUI.backgroundColor;
