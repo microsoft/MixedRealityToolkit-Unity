@@ -10,11 +10,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <summary>
         /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/extension.schema.json
         /// </summary>
-        public readonly Dictionary<string, string> Extensions = new Dictionary<string, string>();
+        public readonly Dictionary<string, string> extensions = new Dictionary<string, string>();
 
         /// <summary>
         /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/extras.schema.json
         /// </summary>
-        public readonly Dictionary<string, string> Extras = new Dictionary<string, string>();
+        public readonly Dictionary<string, string> extras = new Dictionary<string, string>();
     }
 }

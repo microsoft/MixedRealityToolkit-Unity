@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// The floating-point vertical field of view in radians.
         /// <minimum>0.0</minimum>
         /// </summary>
-        public double yFov;
+        public double yfov;
 
         /// <summary>
         /// The floating-point distance to the far clipping plane. When defined,
@@ -32,12 +32,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// If `zfar` is undefined, runtime must use infinite projection matrix.
         /// <minimum>0.0</minimum>
         /// </summary>
-        public double zFar;
+        public double zfar;
 
         /// <summary>
         /// The floating-point distance to the near clipping plane.
         /// <minimum>0.0</minimum>
         /// </summary>
-        public double zNear;
+        public double znear;
     }
 }

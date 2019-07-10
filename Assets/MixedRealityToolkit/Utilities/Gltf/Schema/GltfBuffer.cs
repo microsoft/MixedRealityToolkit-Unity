@@ -25,6 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         public int byteLength = 0;
 
-        public byte[] BufferData { get; internal set; }
+        public byte[] BufferData { get; set; }
     }
 }

@@ -55,12 +55,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         private AnimationCurve handTrackedCurveLeft;
+        public AnimationCurve HandTrackedCurveLeft => handTrackedCurveLeft;
         [SerializeField]
         private AnimationCurve handTrackedCurveRight;
+        public AnimationCurve HandTrackedCurveRight => handTrackedCurveRight;
         [SerializeField]
         private AnimationCurve handPinchCurveLeft;
+        public AnimationCurve HandPinchCurveLeft => handPinchCurveLeft;
         [SerializeField]
         private AnimationCurve handPinchCurveRight;
+        public AnimationCurve HandPinchCurveRight => handPinchCurveRight;
         [SerializeField]
         private Dictionary<TrackedHandJoint, PoseCurves> handJointCurvesLeft;
         [SerializeField]
@@ -256,6 +260,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static void AddRotationKeyFiltered(AnimationCurve curveX, AnimationCurve curveY, AnimationCurve curveZ, AnimationCurve curveW, float time, Quaternion rotation, float threshold)
         {
             float sqrThreshold = threshold * threshold;
+
+            rotation.Normalize();
 
             int iX = FindKeyframeInterval(curveX, time);
             int iY = FindKeyframeInterval(curveY, time);
@@ -613,7 +619,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return lowIdx;
         }
 
-        private void ComputeDuration()
+        public void ComputeDuration()
         {
             duration = 0.0f;
             foreach (var curve in AnimationCurves)
@@ -632,14 +638,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             var writer = new BinaryWriter(stream);
 
-            InputAnimationSerializationUtils.WriteHeader(writer);
+            InputAnimationBinaryUtils.WriteHeader(writer);
 
             PoseCurvesToStream(writer, cameraCurves, startTime);
 
-            InputAnimationSerializationUtils.WriteBoolCurve(writer, handTrackedCurveLeft, startTime);
-            InputAnimationSerializationUtils.WriteBoolCurve(writer, handTrackedCurveRight, startTime);
-            InputAnimationSerializationUtils.WriteBoolCurve(writer, handPinchCurveLeft, startTime);
-            InputAnimationSerializationUtils.WriteBoolCurve(writer, handPinchCurveRight, startTime);
+            InputAnimationBinaryUtils.WriteBoolCurve(writer, handTrackedCurveLeft, startTime);
+            InputAnimationBinaryUtils.WriteBoolCurve(writer, handTrackedCurveRight, startTime);
+            InputAnimationBinaryUtils.WriteBoolCurve(writer, handPinchCurveLeft, startTime);
+            InputAnimationBinaryUtils.WriteBoolCurve(writer, handPinchCurveRight, startTime);
 
             for (int i = 0; i < jointCount; ++i)
             {
@@ -658,7 +664,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 PoseCurvesToStream(writer, curves, startTime);
             }
 
-            InputAnimationSerializationUtils.WriteMarkerList(writer, markers, startTime);
+            InputAnimationBinaryUtils.WriteMarkerList(writer, markers, startTime);
         }
 
         /// <summary>
@@ -668,7 +674,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var reader = new BinaryReader(stream);
 
-            InputAnimationSerializationUtils.ReadHeader(reader, out int versionMajor, out int versionMinor);
+            InputAnimationBinaryUtils.ReadHeader(reader, out int versionMajor, out int versionMinor);
             if (versionMajor != 1 || versionMinor != 0)
             {
                 Debug.LogError("Only version 1.0 of input animation file format is supported.");
@@ -677,10 +683,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             PoseCurvesFromStream(reader, cameraCurves);
 
-            InputAnimationSerializationUtils.ReadBoolCurve(reader, handTrackedCurveLeft);
-            InputAnimationSerializationUtils.ReadBoolCurve(reader, handTrackedCurveRight);
-            InputAnimationSerializationUtils.ReadBoolCurve(reader, handPinchCurveLeft);
-            InputAnimationSerializationUtils.ReadBoolCurve(reader, handPinchCurveRight);
+            InputAnimationBinaryUtils.ReadBoolCurve(reader, handTrackedCurveLeft);
+            InputAnimationBinaryUtils.ReadBoolCurve(reader, handTrackedCurveRight);
+            InputAnimationBinaryUtils.ReadBoolCurve(reader, handPinchCurveLeft);
+            InputAnimationBinaryUtils.ReadBoolCurve(reader, handPinchCurveRight);
 
             for (int i = 0; i < jointCount; ++i)
             {
@@ -701,33 +707,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 PoseCurvesFromStream(reader, curves);
             }
 
-            InputAnimationSerializationUtils.ReadMarkerList(reader, markers);
+            InputAnimationBinaryUtils.ReadMarkerList(reader, markers);
 
             ComputeDuration();
         }
 
         private static void PoseCurvesToStream(BinaryWriter writer, PoseCurves curves, float startTime)
         {
-            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.PositionX, startTime);
-            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.PositionY, startTime);
-            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.PositionZ, startTime);
+            InputAnimationBinaryUtils.WriteFloatCurve(writer, curves.PositionX, startTime);
+            InputAnimationBinaryUtils.WriteFloatCurve(writer, curves.PositionY, startTime);
+            InputAnimationBinaryUtils.WriteFloatCurve(writer, curves.PositionZ, startTime);
 
-            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.RotationX, startTime);
-            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.RotationY, startTime);
-            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.RotationZ, startTime);
-            InputAnimationSerializationUtils.WriteFloatCurve(writer, curves.RotationW, startTime);
+            InputAnimationBinaryUtils.WriteFloatCurve(writer, curves.RotationX, startTime);
+            InputAnimationBinaryUtils.WriteFloatCurve(writer, curves.RotationY, startTime);
+            InputAnimationBinaryUtils.WriteFloatCurve(writer, curves.RotationZ, startTime);
+            InputAnimationBinaryUtils.WriteFloatCurve(writer, curves.RotationW, startTime);
         }
 
         private static void PoseCurvesFromStream(BinaryReader reader, PoseCurves curves)
         {
-            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionX);
-            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionY);
-            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionZ);
+            InputAnimationBinaryUtils.ReadFloatCurve(reader, curves.PositionX);
+            InputAnimationBinaryUtils.ReadFloatCurve(reader, curves.PositionY);
+            InputAnimationBinaryUtils.ReadFloatCurve(reader, curves.PositionZ);
 
-            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationX);
-            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationY);
-            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationZ);
-            InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationW);
+            InputAnimationBinaryUtils.ReadFloatCurve(reader, curves.RotationX);
+            InputAnimationBinaryUtils.ReadFloatCurve(reader, curves.RotationY);
+            InputAnimationBinaryUtils.ReadFloatCurve(reader, curves.RotationZ);
+            InputAnimationBinaryUtils.ReadFloatCurve(reader, curves.RotationW);
         }
     }
 }

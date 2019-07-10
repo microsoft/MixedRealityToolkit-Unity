@@ -1,15 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
-using UnityEngine.Playables;
-using UnityEngine.SceneManagement;
 using UnityEditor;
 using System;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -190,6 +186,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             DrawAnimationInfo();
         }
 
+        static readonly string[] FileTypeFilters = new string[]
+            {
+                "glTF Binary File", InputAnimationGltfUtils.Extension,
+                "Input Animation Binary File", InputAnimationBinaryUtils.Extension,
+                "All files", "*"
+            };
+
         private void DrawPlaybackGUI()
         {
             if (!Application.isPlaying)
@@ -204,12 +207,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (GUILayout.Button("Load ..."))
                 {
-                    string filepath = EditorUtility.OpenFilePanel(
+                    string filepath = EditorUtility.OpenFilePanelWithFilters(
                         "Select input animation file",
                         "",
-                        InputAnimationSerializationUtils.Extension);
+                        FileTypeFilters);
 
-                    LoadAnimation(filepath);
+                    TryLoadAnimation(filepath);
                 }
             }
 
@@ -295,23 +298,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void SaveAnimation(bool loadAfterExport)
         {
             string outputPath;
-            if (loadedFilePath.Length > 0)
-            {
-                string loadedDirectory = Path.GetDirectoryName(loadedFilePath);
-                outputPath = EditorUtility.SaveFilePanel(
-                    "Select output path",
-                    loadedDirectory,
-                    InputAnimationSerializationUtils.GetOutputFilename(),
-                    InputAnimationSerializationUtils.Extension);
-            }
-            else
-            {
-                outputPath = EditorUtility.SaveFilePanelInProject(
-                    "Select output path",
-                    InputAnimationSerializationUtils.GetOutputFilename(),
-                    InputAnimationSerializationUtils.Extension,
-                    "Enter filename for exporting input animation");
-            }
+            string initialDirectory = (loadedFilePath.Length > 0 ? Path.GetDirectoryName(loadedFilePath) : Application.dataPath);
+            outputPath = EditorUtility.SaveFilePanel(
+                "Select output path",
+                initialDirectory,
+                InputAnimationGltfUtils.GetOutputFilename(),
+                InputAnimationGltfUtils.Extension);
 
             if (outputPath.Length > 0)
             {
@@ -323,21 +315,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (loadAfterExport)
                 {
-                    LoadAnimation(result);
+                    TryLoadAnimation(result);
                 }
             }
         }
 
-        private void LoadAnimation(string filepath)
+        private async void TryLoadAnimation(string filepath, int attempts = 3, int waitMs = 1000)
         {
-            if (PlaybackService.LoadInputAnimation(filepath))
+            for (int i = 0; i < attempts; ++i)
             {
-                loadedFilePath = filepath;
+                try
+                {
+                    if (await PlaybackService.LoadInputAnimation(filepath))
+                    {
+                        loadedFilePath = filepath;
+                        return;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    Debug.LogWarning($"Loading input animation failed ({attempts - 1 - i} attempts remaining): {ex}");
+                    System.Threading.Thread.Sleep(waitMs);
+                }
             }
-            else
-            {
-                loadedFilePath = "";
-            }
+
+            loadedFilePath = "";
         }
 
         private void LoadIcons()

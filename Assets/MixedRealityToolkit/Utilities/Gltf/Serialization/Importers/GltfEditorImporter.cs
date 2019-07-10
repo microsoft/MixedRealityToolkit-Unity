@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
     {
         public static async void OnImportGltfAsset(AssetImportContext context)
         {
-            var importedObject = await GltfUtility.ImportGltfObjectFromPathAsync(context.assetPath);
+            var importedObject = await GltfUtility.ImportGltfObjectFromPathAsync(context.assetPath, true);
 
             if (importedObject == null ||
                 importedObject.GameObjectReference == null)

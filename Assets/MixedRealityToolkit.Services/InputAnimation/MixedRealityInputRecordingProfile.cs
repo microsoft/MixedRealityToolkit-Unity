@@ -32,5 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Minimum rotation angle of the camera to record a keyframe")]
         private float cameraRotationThreshold = 0.02f;
         public float CameraRotationThreshold => cameraRotationThreshold;
+
+        [SerializeField]
+        [Tooltip("License for exported input animation data")]
+        private string licenseString = "";
+        public string LicenseString => licenseString;
     }
 }

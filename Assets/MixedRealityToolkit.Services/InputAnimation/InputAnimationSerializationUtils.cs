@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Functions for serializing input animation data to and from binary files.
     /// </summary>
-    public static class InputAnimationSerializationUtils
+    public static class InputAnimationBinaryUtils
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             string filename;
             if (appendTimestamp)
             {
-                filename = String.Format("{0}-{1}.{2}", baseName, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), InputAnimationSerializationUtils.Extension);
+                filename = String.Format("{0}-{1}.{2}", baseName, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), Extension);
             }
             else
             {
@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             foreach (AnimationCurve curve in curves)
             {
-                InputAnimationSerializationUtils.WriteFloatCurve(writer, curve, startTime);
+                InputAnimationBinaryUtils.WriteFloatCurve(writer, curve, startTime);
             }
         }
 
@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             foreach (AnimationCurve curve in curves)
             {
-                InputAnimationSerializationUtils.ReadFloatCurve(reader, curve);
+                InputAnimationBinaryUtils.ReadFloatCurve(reader, curve);
             }
         }
 
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             foreach (AnimationCurve curve in curves)
             {
-                InputAnimationSerializationUtils.WriteBoolCurve(writer, curve, startTime);
+                InputAnimationBinaryUtils.WriteBoolCurve(writer, curve, startTime);
             }
         }
 
@@ -194,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             foreach (AnimationCurve curve in curves)
             {
-                InputAnimationSerializationUtils.ReadBoolCurve(reader, curve);
+                InputAnimationBinaryUtils.ReadBoolCurve(reader, curve);
             }
         }
 

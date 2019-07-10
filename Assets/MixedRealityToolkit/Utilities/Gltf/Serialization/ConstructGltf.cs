@@ -282,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
 
                 Texture2D occlusionTexture = null;
-                if (gltfMaterial.occlusionTexture.index >= 0)
+                if (gltfMaterial.occlusionTexture != null && gltfMaterial.occlusionTexture.index >= 0)
                 {
                     occlusionTexture = gltfObject.images[gltfMaterial.occlusionTexture.index].Texture;
                 }

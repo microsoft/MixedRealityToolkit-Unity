@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
 
             try
             {
-                gltfObject = await GltfUtility.ImportGltfObjectFromPathAsync(path);
+                gltfObject = await GltfUtility.ImportGltfObjectFromPathAsync(path, true);
             }
             catch (Exception e)
             {

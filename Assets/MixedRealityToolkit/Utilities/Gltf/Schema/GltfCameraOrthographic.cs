@@ -16,21 +16,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <summary>
         /// The floating-point horizontal magnification of the view.
         /// </summary>
-        public double xMag;
+        public double xmag;
 
         /// <summary>
         /// The floating-point vertical magnification of the view.
         /// </summary>
-        public double yMag;
+        public double ymag;
 
         /// <summary>
         /// The floating-point distance to the far clipping plane.
         /// </summary>
-        public double zFar;
+        public double zfar;
 
         /// <summary>
         /// The floating-point distance to the near clipping plane.
         /// </summary>
-        public double zNear;
+        public double znear;
     }
 }

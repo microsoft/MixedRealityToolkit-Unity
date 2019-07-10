@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -184,27 +185,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #endif
 
         /// <inheritdoc />
-        public bool LoadInputAnimation(string filepath)
+        public async Task<bool> LoadInputAnimation(string filepath)
         {
             if (filepath.Length > 0)
             {
-                try
+                string extension = Path.GetExtension(filepath);
+                if (extension.EndsWith(InputAnimationBinaryUtils.Extension))
                 {
                     using (FileStream fs = new FileStream(filepath, FileMode.Open))
                     {
-                        animation = new InputAnimation();
-                        animation.FromStream(fs);
-
-                        Evaluate();
-
-                        return true;
+                        var result = new InputAnimation();
+                        await Task.Run(() => result.FromStream(fs));
+                        animation = result;
                     }
                 }
-                catch (IOException ex)
+                else if (extension.EndsWith(InputAnimationGltfUtils.Extension))
                 {
-                    Debug.LogError(ex.Message);
-                    animation = null;
+                    animation = await InputAnimationGltfImporter.OnImportInputAnimation(filepath);
                 }
+                else
+                {
+                    Debug.LogError($"Unknown file extension {extension}, cannot load input animation");
+                    return false;
+                }
+
+                Evaluate();
+
+                return true;
             }
             return false;
         }

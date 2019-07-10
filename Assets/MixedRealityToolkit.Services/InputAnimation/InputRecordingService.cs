@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public string SaveInputAnimation(string directory = null)
         {
-            return SaveInputAnimation(InputAnimationSerializationUtils.GetOutputFilename(), directory);
+            return SaveInputAnimation(InputAnimationGltfUtils.GetOutputFilename(), directory);
         }
 
         /// <inheritdoc />
@@ -280,7 +280,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 string path = Path.Combine(directory ?? Application.persistentDataPath, filename);
 
-                try
+                string extension = Path.GetExtension(path);
+                if (extension.EndsWith(InputAnimationGltfUtils.Extension))
+                {
+                    InputAnimationGltfExporter.OnExportInputAnimation(recordingBuffer, path, InputRecordingProfile);
+                }
+                else if (extension.EndsWith(InputAnimationBinaryUtils.Extension))
                 {
                     using (Stream fileStream = File.Open(path, FileMode.Create))
                     {
@@ -288,12 +293,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         recordingBuffer.ToStream(fileStream, StartTime);
                         Debug.Log($"Recorded input animation exported to {path}");
                     }
-                    return path;
                 }
-                catch (IOException ex)
+                else
                 {
-                    Debug.LogWarning(ex.Message);
+                    Debug.LogError($"Unknown file extension {extension}, cannot save input animation");
+                    return "";
                 }
+
+                return path;
             }
             return "";
         }

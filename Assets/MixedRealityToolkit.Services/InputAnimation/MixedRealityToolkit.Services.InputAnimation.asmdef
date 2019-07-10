@@ -2,7 +2,8 @@
     "name": "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Services.InputSimulation"
+        "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
+        "Microsoft.MixedReality.Toolkit.Gltf"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

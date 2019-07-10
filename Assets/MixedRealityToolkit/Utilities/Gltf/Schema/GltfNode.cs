@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Json;
 using System;
 using UnityEngine;
 
@@ -26,21 +27,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <summary>
         /// If true, extracts transform, rotation, scale values from the Matrix4x4. Otherwise uses the Transform, Rotate, Scale directly as specified by the node.
         /// </summary>
+        [NonSerialized]
         public bool useTRS;
 
         /// <summary>
         /// The index of the camera referenced by this node.
         /// </summary>
+        [JSONInteger(minimum:0)]
         public int camera = -1;
 
         /// <summary>
         /// The indices of this node's children.
         /// </summary>
+        [JSONArray(minItems:1)]
         public int[] children;
 
         /// <summary>
         /// The index of the skin referenced by this node.
         /// </summary>
+        [JSONInteger(minimum:0)]
         public int skin = -1;
 
         /// <summary>
@@ -53,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <summary>
         /// The index of the mesh in this node.
         /// </summary>
+        [JSONInteger(minimum:0)]
         public int mesh = -1;
 
         /// <summary>
@@ -75,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// The weights of the instantiated Morph Target.
         /// Number of elements must match number of Morph Targets of used mesh.
         /// </summary>
+        [JSONArray(minItems:1)]
         public double[] weights;
     }
 }

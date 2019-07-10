@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Json;
 using System;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
@@ -35,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <minimum>0</minimum>
         /// <maximum>255</maximum>
         /// </summary>
+        [JSONInteger(minimum:4)]
         public int byteStride = 0;
 
         /// <summary>
@@ -42,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// All valid values correspond to WebGL enums.
         /// When this is not provided, the bufferView contains animation or skin data.
         /// </summary>
+        [JSONEnum(useIntValue : true, ignoreValues : new object[] {GltfBufferViewTarget.None})]
         public GltfBufferViewTarget target = GltfBufferViewTarget.None;
 
         /// <summary>
