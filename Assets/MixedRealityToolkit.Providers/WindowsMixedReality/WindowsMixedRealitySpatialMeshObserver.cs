@@ -48,8 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             ReadProfile();
         }
 
-        private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
-
         private void ReadProfile()
         {
             if (ConfigurationProfile == null)
@@ -359,6 +357,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         }
 
 #if UNITY_WSA
+        private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
+
         /// <summary>
         /// Creates the surface observer and handles the desired startup behavior.
         /// </summary>

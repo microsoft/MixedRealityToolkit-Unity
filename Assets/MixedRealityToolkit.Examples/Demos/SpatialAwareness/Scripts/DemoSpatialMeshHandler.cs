@@ -34,21 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private Dictionary<int, uint> meshUpdateData = new Dictionary<int, uint>();
 
-        private async void Start()
+        private void Start()
         {
-            await new WaitUntil(() => SpatialAwarenessSystem != null);
-            SpatialAwarenessSystem.RegisterHandler<SpatialAwarenessHandler>(this);
+            SpatialAwarenessSystem?.RegisterHandler<SpatialAwarenessHandler>(this);
         }
-
-        //private void OnEnable()
-        //{
-        //    SpatialAwarenessSystem.RegisterHandler<SpatialAwarenessHandler>(this);
-        //}
-
-        //private void OnDisable()
-        //{
-        //    SpatialAwarenessSystem?.UnregisterHandler<SpatialAwarenessHandler>(this);
-        //}
 
         private void OnDestroy()
         {
