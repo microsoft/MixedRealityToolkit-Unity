@@ -33,15 +33,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [SerializeField]
         [Tooltip("If true, the Solver will respect the object's original scale values")]
         private bool maintainScale = true;
+
         [SerializeField]
         [Tooltip("If true, updates are smoothed to the target. Otherwise, they are snapped to the target")]
         private bool smoothing = true;
+
         public bool Smoothing 
         { 
             get => smoothing; 
             set => smoothing = value; 
         }
-        public bool smoothing = true;
 
         [SerializeField]
         [Tooltip("If > 0, this solver will deactivate after this much time, even if the state is still active")]
