@@ -253,9 +253,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// This tests the one hand far movement while camera (character) is moving around.
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
-        /// out of the object on pointer rotation - this test will only work for far interaction rotation modes that 
-        /// aren't influenced by moving the object in space - rotation modes that rotate the cube while moving will cause 
-        /// the pointer grab point to rotate as well and therefor return a different result
+        /// out of the object on pointer rotation - this test is the same for all objects that won't change 
+        /// their orientation to camera while camera / pointer rotates as this will modify the far interaction grab point
         /// </summary>
         /// <returns></returns>
         [UnityTest]
@@ -287,14 +286,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // do this test for every one hand rotation mode
             for (ManipulationHandler.RotateInOneHandType type = ManipulationHandler.RotateInOneHandType.MaintainRotationToUser; type <= ManipulationHandler.RotateInOneHandType.RotateAboutGrabPoint; ++type)
             {
-                // skip far interaction modes that would influence the orientation of the cube in move mode
-                // these modes will be covered in tests specific to this type of rotation behavior
-                if (type == ManipulationHandler.RotateInOneHandType.FaceUser || 
-                    type == ManipulationHandler.RotateInOneHandType.FaceAwayFromUser || 
-                    type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation)
+                // TODO: grab point is moving in this test and has to be covered by a different test
+                if (type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation)
                 {
                     continue;
-                }
+                }         
 
                 manipHandler.OneHandRotationModeFar = type;
 
@@ -303,8 +299,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.Show(initialHandPosition);
                 yield return null;
                
+                // pinch and let go of the object again to make sure that any rotation adjustment we're doing is applied 
+                // at the beginning of our test and doesn't interfere with our grab position on the cubes surface while we're moving around
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                
+                yield return new WaitForFixedUpdate();
+                yield return null;
+
+                yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+                yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+
                 // save relative pos grab point to object - for far interaction we need to check the grab point where the pointer ray hits the manipulated object
                 InputSimulationService simulationService = PlayModeTestUtilities.GetInputSimulationService();
                 IMixedRealityController[] inputControllers = simulationService.GetActiveControllers();
@@ -337,6 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     yield return hand.MoveTo(newHandPosition, numHandSteps);
                     yield return new WaitForFixedUpdate();
                     yield return null;
+
 
                     // make sure that the offset between grab point and object pivot hasn't changed while rotating
                     Vector3 newGrabPosition = handPointer.Result.Details.Point;
