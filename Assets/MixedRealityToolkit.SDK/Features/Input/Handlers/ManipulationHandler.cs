@@ -199,6 +199,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private TwoHandMoveLogic moveLogic;
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
+        /// <summary>
+        /// Holds the pointer and the initial intersection point of the pointer ray 
+        /// with the object on pointer down in pointer space
+        /// </summary>
         private struct PointerData
         {
             public IMixedRealityPointer pointer;
