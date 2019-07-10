@@ -12761,6 +12761,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.SanityTests.DemoSceneTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SanityTests.DemoSceneTests.html",
+          "hash": "mmQYLKcEAl+/HTiGAeGeFQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.SanityTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SanityTests.html",
+          "hash": "TLmH5q79zwIYAnqYEVzi0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.SpeechTests.yml",
       "output": {
         ".html": {
@@ -17469,7 +17493,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "5+1q9IEj+ejWo9p26eEGTQ=="
+          "hash": "FpJUWjIrbPUx1m+GJNQQLA=="
         }
       },
       "is_incremental": false,
@@ -17528,16 +17552,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1032,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 113,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1034,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
