@@ -54,6 +54,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
 
+        /// <inheritdoc />
+        public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
+        {
+            base.HandleEvent(eventData, eventHandler);
+        }
+
         /// <inheritdoc/>
         public override void Initialize()
         {
