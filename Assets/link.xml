@@ -4,7 +4,7 @@
     during IL2CPP builds. More details on when this is needed and why this is needed
     can be found here: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5273
 
-    If your application some specific services (for example, if teleportation system is
+    If your application doesn't use some specific services (for example, if teleportation system is
     disabled in the profile), it is possible to remove their corresponding lines down
     below (in the previous example, we would remove the TeleportSystem below).
 
