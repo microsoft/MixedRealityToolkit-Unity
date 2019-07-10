@@ -169,6 +169,71 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Object.Destroy(testObject);
         }
 
+        /// <summary>
+        /// Tests MaintainRotationToUser mode of ManipulationHandler (OneHandedOnly)
+        /// MaintainRotationToUser should only align with user / camera on x / y and not apply rotations in z
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerRotateWithUser()
+        {
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = initialObjectPosition;
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneHandedOnly;
+            manipHandler.OneHandRotationModeNear = ManipulationHandler.RotateInOneHandType.MaintainRotationToUser;
+
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
+            testObject.AddComponent<NearInteractionGrabbable>();
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+
+            Vector3 initialGrabPosition = new Vector3(-0.1f, -0.1f, 1f); // grab the left bottom corner of the cube 
+            TestHand hand = new TestHand(Handedness.Right);
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return hand.Show(initialGrabPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            Quaternion originalObjRotation = testObject.transform.rotation;
+
+            CameraCache.Main.transform.Rotate(new Vector3(10, 0, 0));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Quaternion rotatedOriginal = originalObjRotation * Quaternion.Euler(10, 0, 0);
+            // check if x rotation was applied to object
+            TestUtilities.AssertAboutEqual(testObject.transform.rotation.eulerAngles, rotatedOriginal.eulerAngles, "Object wasn't rotated with camera");
+
+            CameraCache.Main.transform.Rotate(new Vector3(-10, 0, 0));
+            CameraCache.Main.transform.Rotate(new Vector3(0, 10, 0));
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // check if y rotation was applied to object
+            rotatedOriginal = originalObjRotation * Quaternion.Euler(0, 10, 0);
+            TestUtilities.AssertAboutEqual(testObject.transform.rotation.eulerAngles, rotatedOriginal.eulerAngles, "Object wasn't rotated with camera");
+
+            CameraCache.Main.transform.Rotate(new Vector3(0, -10, 0));
+            CameraCache.Main.transform.Rotate(new Vector3(0, 0, 10));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // check if z rotation wasn't applied to object
+            rotatedOriginal = originalObjRotation * Quaternion.Euler(0, 0, 10);
+            TestUtilities.AssertNotAboutEqual(testObject.transform.rotation.eulerAngles, rotatedOriginal.eulerAngles, "Object rolled with camera");
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return hand.Hide();
+
+        }
 
         /// <summary>
         /// This tests the one hand movement while camera (character) is moving around.
