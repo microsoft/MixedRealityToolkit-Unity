@@ -14,7 +14,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
     guid: 3dd4a396b5225f8469b9a1eb608bfa57
-  - enabled: 1
-    path: Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Scenes/InteractablesExamples.unity
-    guid: 3cfba91e4f501d048bd6014bb47c4e4c
   m_configObjects: {}
