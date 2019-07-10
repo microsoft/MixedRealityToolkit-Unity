@@ -44,7 +44,7 @@ in [DispatchEventToObjectFocusedByPointer](https://github.com/microsoft/MixedRea
 Events can be sent to global listeners. It's possible to register for all input events by using
 the input systems's [IMixedRealityEventSystem](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem)
 interface. It's recommended to use the [RegisterHandler](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.RegisterHandler``1(IEventSystemHandler))
-method for registering for global events - the deprecated Register function will cause listeners
+method for registering for global events - the deprecated `Register` function will cause listeners
 to get notified of ALL input events, rather than just input events of a particular type
 (where type is defined by the event interface).
 

@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Initialize all applicable settings on this pointer from <paramref name="testProxy"/> and then set this pointer active,
-        /// so that it will update its <see cref="IMixedRealityPointer.Result"/> in the next <see cref="FocusProvider.Update"/>.
+        /// so that it will update its <see cref="Toolkit.Input.IMixedRealityPointer.Result"/> in the next <see cref="Toolkit.Input.FocusProvider.Update"/>.
         /// </summary>
         /// <param name="testProxy"></param>
         public void SetFromTestProxy(FocusRaycastTestProxy testProxy)
