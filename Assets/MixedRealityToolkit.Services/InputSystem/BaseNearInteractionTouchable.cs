@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// When the pointer distance to the touchable object becomes less than -PokeThreshold (i.e. behind the surface),
         /// then the Touch Started event is raised and the touchable object becomes tracked by the pointer.
         /// </remarks>
-        public float PokeThreshold => pokeThreshold;
+        public float PokeThreshold { get => pokeThreshold; set => pokeThreshold = value; }
 
         [Tooltip("Distance in front of the surface at which you will receive a touch completed event")]
         [SerializeField]
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// When the touchable is active and the pointer distance becomes greater than +DebounceThreshold (i.e. in front of the surface),
         /// then the Touch Completed event is raised and the touchable object is released by the pointer.
         /// </remarks>
-        public float DebounceThreshold => debounceThreshold;
+        public float DebounceThreshold { get => debounceThreshold; set => debounceThreshold = value; }
 
         protected void OnValidate()
         {
