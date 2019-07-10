@@ -129,9 +129,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </remarks>
         public static void EnsureInputModule()
         {
-            if (CameraCache.Main && !CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>())
+            if (CameraCache.Main)
             {
-                var inputModule = CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                var inputModule = CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>();
+                if (inputModule == null)
+                {
+                    CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                }
                 inputModule.forceModuleActive = true;
             }
         }

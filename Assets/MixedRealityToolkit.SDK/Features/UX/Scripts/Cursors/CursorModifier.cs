@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region MonoBehaviour Implementation
 
         private void OnValidate()
-        {
+        {   // This is an appropriate use of OnValidate
             Debug.Assert(HostTransform.GetComponent<Collider>() != null, $"A collider component is required on {hostTransform.gameObject.name} for the cursor modifier component on {gameObject.name} to function properly.");
         }
 

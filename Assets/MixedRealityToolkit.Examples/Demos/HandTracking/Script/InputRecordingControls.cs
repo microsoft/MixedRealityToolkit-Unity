@@ -64,12 +64,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <summary>
-        /// Export recorded input
+        /// Export recorded input.
         /// </summary>
+        /// <remarks>
+        /// This will only save recorded input after recording has been stopped.
+        /// </remarks>
         public void SaveRecordedInput()
         {
-            RecordingService.SaveInputAnimation();
-            RecordingService.DiscardRecordedInput();
+            if (!RecordingService.IsRecording)
+            {
+                RecordingService.SaveInputAnimation();
+                RecordingService.DiscardRecordedInput();
+            }
         }
     }
 }
