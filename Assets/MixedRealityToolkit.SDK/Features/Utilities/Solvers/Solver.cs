@@ -227,20 +227,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             WorkingScale = scale;
         }
 
-        [Obsolete("Use SnapTo(Vector3, Quaternion, Vector3) instead.")]
-        public virtual void SnapTo(Vector3 position, Quaternion rotation)
-        {
-            GoalPosition = position;
-            GoalRotation = rotation;
-        }
-
-        [Obsolete("Use SnapGoalTo(Vector3, Quaternion, Vector3) instead.")]
-        public virtual void SnapGoalTo(Vector3 position, Quaternion rotation)
-        {
-            GoalPosition = position;
-            GoalRotation = rotation;
-        }
-
         /// <summary>
         /// SnapGoalTo only sets the goal orientation.  Not really useful.
         /// </summary>
@@ -251,6 +237,35 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             GoalPosition = position;
             GoalRotation = rotation;
             GoalScale = scale;
+        }
+
+        /// <summary>
+        /// Snaps the solver to the desired pose.
+        /// </summary>
+        /// <remarks>
+        /// SnapTo may be used to bypass smoothing to a certain position if the object is teleported or spawned.
+        /// </remarks>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        [Obsolete("Use SnapTo(Vector3, Quaternion, Vector3) instead.")]
+        public virtual void SnapTo(Vector3 position, Quaternion rotation)
+        {
+            SnapGoalTo(position, rotation);
+
+            WorkingPosition = position;
+            WorkingRotation = rotation;
+        }
+
+        /// <summary>
+        /// SnapGoalTo only sets the goal orientation.  Not really useful.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        [Obsolete("Use SnapGoalTo(Vector3, Quaternion, Vector3) instead.")]
+        public virtual void SnapGoalTo(Vector3 position, Quaternion rotation)
+        {
+            GoalPosition = position;
+            GoalRotation = rotation;
         }
 
         /// <summary>
