@@ -71,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (!Enabled) { return; }
 
             UpdateSourceData(interactionSourceState);
+            UpdateVelocity();
 
             if (Interactions == null)
             {
@@ -224,6 +225,40 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
                 break;
             }
+        }
+
+        // Velocity internal states
+        private float deltaTimeStart;
+        private readonly int velocityUpdateInterval = 6;
+        private int frameOn = 0;
+        private Vector3[] positions = new Vector3[6];
+        private Vector3 positionSum = Vector3.zero;
+
+        protected void UpdateVelocity()
+        {
+            if (frameOn < velocityUpdateInterval)
+            {
+                positions[frameOn] = currentSourcePosition;
+                positionSum += positions[frameOn];
+            }
+            else
+            {
+                int frameIndex = frameOn % velocityUpdateInterval;
+                float deltaTime = Time.unscaledTime - deltaTimeStart;
+
+                Vector3 newPositionSum = positionSum - positions[frameIndex] + currentSourcePosition;
+
+                Velocity = (newPositionSum - positionSum) / deltaTime / velocityUpdateInterval;
+
+                Vector3 rotationRate = currentSourceRotation.eulerAngles * Mathf.Deg2Rad;
+                AngularVelocity = rotationRate / deltaTime;
+
+                positions[frameIndex] = currentSourcePosition;
+                positionSum = newPositionSum;
+            }
+
+            deltaTimeStart = Time.unscaledTime;
+            frameOn++;
         }
 
         /// <summary>
