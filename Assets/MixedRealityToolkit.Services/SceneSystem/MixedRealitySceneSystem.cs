@@ -296,8 +296,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public async void SetLightingScene(string newLightingSceneName, LightingSceneTransitionType transitionType = LightingSceneTransitionType.None, float transitionDuration = 1f)
         {
-            Debug.Log("Set lighting scene: " + newLightingSceneName);
-
             if (ActiveLightingScene == newLightingSceneName)
             {   // Nothing to do here
                 return;
