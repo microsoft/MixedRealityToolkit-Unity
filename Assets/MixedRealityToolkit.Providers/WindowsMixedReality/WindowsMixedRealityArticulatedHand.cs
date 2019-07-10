@@ -349,6 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #endif // WINDOWS_UWP
         }
 
+#if WINDOWS_UWP
         // Velocity internal states
         private float deltaTimeStart;
         private readonly int velocityUpdateInterval = 6;
@@ -357,6 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private Vector3[] velocityNormalsCache = new Vector3[6];
         private Vector3 velocityPositionsSum = Vector3.zero;
         private Vector3 velocityNormalsSum = Vector3.zero;
+#endif // WINDOWS_UWP
 
         protected void UpdateVelocity()
         {
