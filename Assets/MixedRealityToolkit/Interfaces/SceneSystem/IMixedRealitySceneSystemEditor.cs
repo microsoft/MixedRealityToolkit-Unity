@@ -29,13 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         SceneInfo[] LightingScenes { get; }
 
         /// <summary>
-        /// Loads the next content scene in-editor. Use instead of LoadNextContent while not in play mode.
+        /// Loads the next content scene in-editor. Use instead of IMixedRealitySceneSystem.LoadNextContent while not in play mode.
         /// </summary>
         /// <param name="wrap"></param>
         void EditorLoadNextContent(bool wrap = false);
 
         /// <summary>
-        /// Loads the prev content scene in-editor. Use instead of LoadPrevContent while not in play mode.
+        /// Loads the prev content scene in-editor. Use instead of IMixedRealitySceneSystem.LoadPrevContent while not in play mode.
         /// </summary>
         /// <param name="wrap"></param>
         void EditorLoadPrevContent(bool wrap = false);
