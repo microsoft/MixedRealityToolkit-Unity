@@ -98,6 +98,9 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_Smoothing">Solver.Smoothing</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SolverHandler">Solver.SolverHandler</a>
     </div>
     <div>
@@ -126,6 +129,12 @@
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SolverUpdateEntry">Solver.SolverUpdateEntry()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapGoalTo_Vector3_Quaternion_Vector3_">Solver.SnapGoalTo(Vector3, Quaternion, Vector3)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapTo_Vector3_Quaternion_">Solver.SnapTo(Vector3, Quaternion)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapGoalTo_Vector3_Quaternion_">Solver.SnapGoalTo(Vector3, Quaternion)</a>
@@ -310,13 +319,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_SnapTo_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.SnapTo*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_SnapTo_Vector3_Quaternion_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.SnapTo(Vector3,Quaternion)">SnapTo(Vector3, Quaternion)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_SnapTo_Vector3_Quaternion_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.SnapTo(Vector3,Quaternion,Vector3)">SnapTo(Vector3, Quaternion, Vector3)</h4>
   <div class="markdown level1 summary"><p>Snaps the solver to the desired pose.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void SnapTo(Vector3 position, Quaternion rotation)</code></pre>
+    <pre><code class="lang-csharp hljs">public override void SnapTo(Vector3 position, Quaternion rotation, Vector3 scale)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -338,11 +347,16 @@
         <td><span class="parametername">rotation</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">scale</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapTo_Vector3_Quaternion_">Solver.SnapTo(Vector3, Quaternion)</a></div>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_SnapTo_Vector3_Quaternion__remarks">Remarks</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapTo_Vector3_Quaternion_Vector3_">Solver.SnapTo(Vector3, Quaternion, Vector3)</a></div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Momentum_SnapTo_Vector3_Quaternion_Vector3__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>SnapTo may be used to bypass smoothing to a certain position if the object is teleported or spawned.</p>
 </div>
   
