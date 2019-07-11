@@ -579,11 +579,11 @@ Shader "Mixed Reality Toolkit/Standard"
                 float normalizedProximityLightDistance = saturate(proximityLightDistance * proximityLightParams.y);
                 float3 projectedProximityLight = proximityLight.xyz - (worldNormal * abs(proximityLightDistance));
                 float projectedProximityLightDistance = length(projectedProximityLight - worldPosition);
-                float attenuation = (1.0 - pow(normalizedProximityLightDistance, 2.0)) * proximityLight.w;
+                float attenuation = (1.0 - normalizedProximityLightDistance) * proximityLight.w;
                 colorValue = saturate(projectedProximityLightDistance * proximityLightParams.z);
                 float pulse = step(proximityLightPulseParams.x, projectedProximityLightDistance) * proximityLightPulseParams.y;
 
-                return smoothstep(1.0, 0.0, projectedProximityLightDistance / (proximityLightParams.x * max(normalizedProximityLightDistance, proximityLightParams.w))) * pulse * attenuation;
+                return smoothstep(1.0, 0.0, projectedProximityLightDistance / (proximityLightParams.x * max(pow(normalizedProximityLightDistance, 0.25), proximityLightParams.w))) * pulse * attenuation;
             }
 
             inline fixed3 MixProximityLightColor(fixed4 centerColor, fixed4 middleColor, fixed4 outerColor, fixed t)

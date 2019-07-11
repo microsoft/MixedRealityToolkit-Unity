@@ -82,7 +82,7 @@ MonoBehaviour:
   rotationLerpTime: 0.1
   lookRotationBlend: 0.5
   PrimaryCursorVisual: {fileID: 7521151737680088869}
-  IsPointerDown: 0
+  SourceDownIds: 
   defaultCursorDistance: 2
   checkForGrabbables: 0
   skinSurfaceOffset: 0.01
@@ -137,9 +137,9 @@ MonoBehaviour:
     farRadius: 0.2
     nearDistance: 0.02
     minNearSizePercentage: 0.35
-    centerColor: {r: 0.078431375, g: 0.4745098, b: 0.98039216, a: 0}
-    middleColor: {r: 0.011764706, g: 0.43529412, b: 1, a: 0.32941177}
-    outerColor: {r: 1.372549, g: 0, b: 3.745098, a: 1}
+    centerColor: {r: 0.21176471, g: 0.5568628, b: 0.98039216, a: 0}
+    middleColor: {r: 0.18431373, g: 0.5176471, b: 1, a: 0.2}
+    outerColor: {r: 0.9647059, g: 0.3647059, b: 2.2470589, a: 1}
 --- !u!1001 &7442314219997024738
 PrefabInstance:
   m_ObjectHideFlags: 0

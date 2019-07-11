@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Teleport;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Teleport
+namespace Microsoft.MixedReality.Toolkit.Experimental.Teleport
 {
     /// <summary>
     /// Service manager supporting running the teleport system, without requiring the MixedRealityToolkit object.

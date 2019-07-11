@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit
+namespace Microsoft.MixedReality.Toolkit.Experimental
 {
     /// <summary>
     /// Base class providing service registration and management functionality. This class can be used to implement a
