@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.SceneSystem;
 
 namespace Microsoft.MixedReality.Toolkit.SceneSystem
 {
@@ -31,13 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// Loads the next content scene in-editor. Use instead of IMixedRealitySceneSystem.LoadNextContent while not in play mode.
         /// </summary>
-        /// <param name="wrap"></param>
+        /// <param name="wrap">If true, if the current scene is the LAST content scene, the FIRST content scene will be loaded.</param>
         void EditorLoadNextContent(bool wrap = false);
 
         /// <summary>
         /// Loads the prev content scene in-editor. Use instead of IMixedRealitySceneSystem.LoadPrevContent while not in play mode.
         /// </summary>
-        /// <param name="wrap"></param>
+        /// <param name="wrap">If true, if the current scene is the FIRST content scene, the LAST content scene will be loaded.</param>
         void EditorLoadPrevContent(bool wrap = false);
 #endif
     }
