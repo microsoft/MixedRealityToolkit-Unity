@@ -4,12 +4,13 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Microsoft.MixedReality.Toolkit.Input;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.Experimental.Input
 {
     /// <summary>
     /// Service manager supporting running the input system, without requiring the MixedRealityToolkit object.
