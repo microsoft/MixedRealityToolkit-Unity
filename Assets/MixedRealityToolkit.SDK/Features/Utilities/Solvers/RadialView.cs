@@ -198,9 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             GoalPosition = goalPosition;
             GoalRotation = goalRotation;
-
-            UpdateWorkingPositionToGoal();
-            UpdateWorkingRotationToGoal();
         }
 
         /// <summary>
