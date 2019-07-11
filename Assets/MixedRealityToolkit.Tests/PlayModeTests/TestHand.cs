@@ -72,9 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public IEnumerator GrabAndThrowAt(Vector3 positionToRelease, int numSteps = 30)
         {
-            var positionToChangeGesture = (positionToRelease - position) * (numSteps - 1) / numSteps;
             yield return SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return MoveTo(positionToRelease);
+            yield return MoveTo(positionToRelease, numSteps);
             yield return SetGesture(ArticulatedHandPose.GestureId.Open);
         }
     }
