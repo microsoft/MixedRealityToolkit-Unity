@@ -41,5 +41,12 @@
 
     <!-- Assemblies that are built from the MixedRealityToolkit.Services folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
+
+    <!-- 
+      link.xml is copied to the root location, so that it can catch IL2CPP
+      bytecode stripping issues for all scripts included in this package.
+    -->
+    <file src="link.xml" target="" />
+    <file src="link.xml.meta" target="" />
   </files>
 </package>
