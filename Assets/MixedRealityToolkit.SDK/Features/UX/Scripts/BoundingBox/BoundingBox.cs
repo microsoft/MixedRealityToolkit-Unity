@@ -1,8 +1,9 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Physics;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -160,23 +161,44 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Maximum scaling allowed relative to the initial size")]
-        private float scaleMaximum = 2.0f;
-        [SerializeField]
         [Tooltip("Minimum scaling allowed relative to the initial size")]
         private float scaleMinimum = 0.2f;
+        [SerializeField]
+        [Tooltip("Maximum scaling allowed relative to the initial size")]
+        private float scaleMaximum = 2.0f;
 
-        /// <summary>
-        /// Public property for the scale maximum, in the target's local scale.
-        /// Set this value with SetScaleLimits.
-        /// </summary>
-        public float ScaleMaximum => maximumScale.x;
 
         /// <summary>
         /// Public property for the scale minimum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
-        public float ScaleMinimum => minimumScale.x;
+        public float ScaleMinimum
+        {
+            get
+            {
+                if (transformHelper != null)
+                {
+                    return transformHelper.ScaleMinimum;
+                }
+                return 0.0f;
+            }
+        }
+
+        /// <summary>
+        /// Public property for the scale maximum, in the target's local scale.
+        /// Set this value with SetScaleLimits.
+        /// </summary>
+        public float ScaleMaximum
+        {
+            get
+            {
+                if (transformHelper != null)
+                {
+                    return transformHelper.ScaleMaximum;
+                }
+                return 0.0f;
+            }
+        }
 
         [Header("Box Display")]
         [SerializeField]
@@ -805,11 +827,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-
-        // Scale of the target at startup (in Start())
-        private Vector3 initialScaleAtStart;
-        private Vector3 maximumScale;
-        private Vector3 minimumScale;
+        private TransformHelper transformHelper;
 
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
@@ -934,16 +952,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var target = Target;
             if (target != null)
             {
-                if (relativeToInitialState)
-                {
-                    maximumScale = initialScaleAtStart * scaleMaximum;
-                    minimumScale = initialScaleAtStart * scaleMinimum;
-                }
-                else
-                {
-                    maximumScale = new Vector3(scaleMaximum, scaleMaximum, scaleMaximum);
-                    minimumScale = new Vector3(scaleMinimum, scaleMinimum, scaleMinimum);
-                }
+                transformHelper.SetScale(min, max, relativeToInitialState);
             }
         }
 
@@ -1134,7 +1143,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
-                    Vector3 clampedScale = ClampScale(newScale);
+                    Vector3 clampedScale = transformHelper.ClampScale(newScale);
                     if (clampedScale != newScale)
                     {
                         scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
@@ -1791,67 +1800,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var target = Target;
             if (target != null)
             {
-                initialScaleAtStart = target.transform.localScale;
+                transformHelper = new TransformHelper(target.transform);
 
-                maximumScale = initialScaleAtStart * scaleMaximum;
-                minimumScale = initialScaleAtStart * scaleMinimum;
-                isChildOfTarget = transform.IsChildOf(target.transform);
+                transformHelper.SetScale(scaleMinimum, scaleMaximum);
             }
-        }
-
-        private Vector3 ClampScale(Vector3 scale)
-        {
-            if (Vector3.Min(maximumScale, scale) != scale)
-            {
-                float maxRatio = 0.0f;
-                int maxIdx = -1;
-
-                // Find out the component with the maximum ratio to its maximum allowed value
-                for (int i = 0; i < 3; ++i)
-                {
-                    if (maximumScale[i] > 0)
-                    {
-                        float ratio = scale[i] / maximumScale[i];
-                        if (ratio > maxRatio)
-                        {
-                            maxRatio = ratio;
-                            maxIdx = i;
-                        }
-                    }
-                }
-
-                if (maxIdx != -1)
-                {
-                    scale /= maxRatio;
-                }
-            }
-
-            if (Vector3.Max(minimumScale, scale) != scale)
-            {
-                float minRatio = 1.0f;
-                int minIdx = -1;
-
-                // Find out the component with the minimum ratio to its minimum allowed value
-                for (int i = 0; i < 3; ++i)
-                {
-                    if (minimumScale[i] > 0)
-                    {
-                        float ratio = scale[i] / minimumScale[i];
-                        if (ratio < minRatio)
-                        {
-                            minRatio = ratio;
-                            minIdx = i;
-                        }
-                    }
-                }
-
-                if (minIdx != -1)
-                {
-                    scale /= minRatio;
-                }
-            }
-
-            return scale;
         }
 
         private Vector3 GetLinkDimensions()
