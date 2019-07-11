@@ -130,7 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             base.UpdateController(interactionSourceState);
 
             UpdateHandData(interactionSourceState);
-            UpdateVelocity();
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
@@ -346,56 +345,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 // Raise input system Event if it enabled
                 InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
             }
-#endif // WINDOWS_UWP
-        }
-
-#if WINDOWS_UWP
-        // Velocity internal states
-        private float deltaTimeStart;
-        private readonly int velocityUpdateInterval = 6;
-        private int frameOn = 0;
-        private Vector3[] velocityPositionsCache = new Vector3[6];
-        private Vector3[] velocityNormalsCache = new Vector3[6];
-        private Vector3 velocityPositionsSum = Vector3.zero;
-        private Vector3 velocityNormalsSum = Vector3.zero;
-#endif // WINDOWS_UWP
-
-        protected void UpdateVelocity()
-        {
-#if WINDOWS_UWP
-            if (frameOn < velocityUpdateInterval)
-            {
-                velocityPositionsCache[frameOn] = unityJointPositions[(int)HandJointKind.Palm];
-                velocityPositionsSum += velocityPositionsCache[frameOn];
-                velocityNormalsCache[frameOn] = unityJointOrientations[(int)HandJointKind.Palm] * Vector3.up;
-                velocityNormalsSum += velocityNormalsCache[frameOn];
-            }
-            else
-            {
-                int frameIndex = frameOn % velocityUpdateInterval;
-
-                float deltaTime = Time.unscaledTime - deltaTimeStart;
-
-                Vector3 newPosition = unityJointPositions[(int)HandJointKind.Palm];
-                Vector3 newNormal = unityJointOrientations[(int)HandJointKind.Palm] * Vector3.up;
-
-                Vector3 newPositionsSum = velocityPositionsSum - velocityPositionsCache[frameIndex] + newPosition;
-                Vector3 newNormalsSum = velocityNormalsSum - velocityNormalsCache[frameIndex] + newNormal;
-
-                Velocity = (newPositionsSum - velocityPositionsSum) / deltaTime / velocityUpdateInterval;
-
-                Quaternion rotation = Quaternion.FromToRotation(velocityNormalsSum / velocityUpdateInterval, newNormalsSum / velocityUpdateInterval);
-                Vector3 rotationRate = rotation.eulerAngles * Mathf.Deg2Rad;
-                AngularVelocity = rotationRate / deltaTime;
-
-                velocityPositionsCache[frameIndex] = newPosition;
-                velocityNormalsCache[frameIndex] = newNormal;
-                velocityPositionsSum = newPositionsSum;
-                velocityNormalsSum = newNormalsSum;
-            }
-
-            deltaTimeStart = Time.unscaledTime;
-            frameOn++;
 #endif // WINDOWS_UWP
         }
 

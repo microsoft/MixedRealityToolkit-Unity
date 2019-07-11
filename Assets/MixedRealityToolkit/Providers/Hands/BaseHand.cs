@@ -20,10 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         // Velocity internal states
         private float deltaTimeStart;
-        private readonly int velocityUpdateInterval = 6;
+        private const int velocityUpdateInterval = 6;
         private int frameOn = 0;
-        private Vector3[] velocityPositionsCache = new Vector3[6];
-        private Vector3[] velocityNormalsCache = new Vector3[6];
+        private Vector3[] velocityPositionsCache = new Vector3[velocityUpdateInterval];
+        private Vector3[] velocityNormalsCache = new Vector3[velocityUpdateInterval];
         private Vector3 velocityPositionsSum = Vector3.zero;
         private Vector3 velocityNormalsSum = Vector3.zero;
 
