@@ -236,6 +236,60 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test validates throw behavior on manipulation handler. Box with disabled gravity should travel a 
+        /// certain distance when being released from grab during hand movement
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerThrow()
+        {
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = initialObjectPosition;
+
+            var rigidBody = testObject.AddComponent<Rigidbody>();
+            rigidBody.useGravity = false;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
+            testObject.AddComponent<NearInteractionGrabbable>();
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // grab the cube - move it to the right 
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+
+            Vector3 handOffset = new Vector3(0, 0, 0.1f);
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            Vector3 rightPosition = new Vector3(1f, 0f, 1f);
+
+            yield return hand.Show(initialHandPosition);
+            yield return hand.MoveTo(initialObjectPosition);
+            yield return hand.GrabAndThrowAt(rightPosition);
+
+            // With simulated hand angular velocity would not be equal to 0, because of how simulation
+            // moves hand when releasing the Pitch. Even though it doesn't directly follow from hand movement, there will always be some rotation.
+            Assert.NotZero(rigidBody.angularVelocity.magnitude, "Manipulationhandler should apply angular velocity to rigidBody upon release.");
+            Assert.AreEqual(rigidBody.velocity, hand.GetVelocity(), "Manipulationhandler should apply hand velocity to rigidBody upon release.");
+
+            // This is just for debugging purposes, so object's movement after release can be seen.
+            yield return hand.MoveTo(initialHandPosition);
+            yield return hand.Hide();
+
+            Object.Destroy(testObject);
+            yield return null;
+        }
+
+
+        /// <summary>
         /// This tests the one hand movement while camera (character) is moving around.
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
         /// out of the object on pointer rotation - this test should be the same in all rotation setups

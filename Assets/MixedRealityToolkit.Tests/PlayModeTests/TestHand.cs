@@ -31,6 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             simulationService = PlayModeTestUtilities.GetInputSimulationService();
         }
 
+        public Vector3 GetVelocity()
+        {
+            var hand = simulationService.GetHandDevice(handedness);
+            return hand.Velocity;
+        }
+
         public IEnumerator Show(Vector3 position)
         {
             this.position = position;
@@ -62,6 +68,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             gestureId = newGestureId;
             yield return PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService);
             yield return new WaitForFixedUpdate();
+        }
+
+        public IEnumerator GrabAndThrowAt(Vector3 positionToRelease, int numSteps = 30)
+        {
+            yield return SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return MoveTo(positionToRelease, numSteps);
+            yield return SetGesture(ArticulatedHandPose.GestureId.Open);
         }
     }
 }
