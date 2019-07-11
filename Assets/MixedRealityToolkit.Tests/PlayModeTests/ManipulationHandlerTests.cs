@@ -17,6 +17,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -166,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
-            Object.Destroy(testObject);
+            GameObject.Destroy(testObject);
         }
 
 
@@ -203,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestHand hand = new TestHand(Handedness.Right);
 
             // do this test for every one hand rotation mode
-            for (ManipulationHandler.RotateInOneHandType type = ManipulationHandler.RotateInOneHandType.MaintainRotationToUser; type <= ManipulationHandler.RotateInOneHandType.RotateAboutGrabPoint; ++type)
+            foreach (ManipulationHandler.RotateInOneHandType type in Enum.GetValues(typeof(ManipulationHandler.RotateInOneHandType)))
             {
                 manipHandler.OneHandRotationModeNear = type;
 
@@ -284,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestHand hand = new TestHand(Handedness.Right);     
 
             // do this test for every one hand rotation mode
-            for (ManipulationHandler.RotateInOneHandType type = ManipulationHandler.RotateInOneHandType.MaintainRotationToUser; type <= ManipulationHandler.RotateInOneHandType.RotateAboutGrabPoint; ++type)
+            foreach (ManipulationHandler.RotateInOneHandType type in Enum.GetValues(typeof(ManipulationHandler.RotateInOneHandType)))
             {
                 // TODO: grab point is moving in this test and has to be covered by a different test
                 if (type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation)

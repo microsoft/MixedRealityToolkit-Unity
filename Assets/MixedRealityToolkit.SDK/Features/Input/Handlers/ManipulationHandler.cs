@@ -219,15 +219,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return (pointer is IMixedRealityNearPointer);
             }
 
-            public Vector3 GetPositionAtGrabPoint()
+            /// Returns the grab point on the manipulated object in world space
+            public Vector3 GrabPoint
             {
-                if (IsNearPointer())
+                get
                 {
-                    return pointer.Position;
-                }
-                else
-                {
-                    return (pointer.Rotation * initialGrabPointInPointer) + pointer.Position;
+                    if (IsNearPointer())
+                    {
+                        return pointer.Position;
+                    }
+                    else
+                    {
+                        return (pointer.Rotation * initialGrabPointInPointer) + pointer.Position;
+                    }
                 }
             }
         }
@@ -285,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             int count = 0;
             foreach (var p in pointerIdToPointerMap.Values)
             {
-                sum += p.GetPositionAtGrabPoint();
+                sum += p.GrabPoint;
                 count++;
             }
             return sum / Math.Max(1, count);
@@ -619,7 +623,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                targetPosition = moveLogic.Update(pointerData.GetPositionAtGrabPoint(), IsNearManipulation());
+                targetPosition = moveLogic.Update(pointerData.GrabPoint, IsNearManipulation());
             }
 
             float lerpAmount = GetLerpAmount();
@@ -653,7 +657,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Assert.IsTrue(pointerIdToPointerMap.Count == 1);
             PointerData pointerData = GetFirstPointer();
             IMixedRealityPointer pointer = pointerData.pointer;
-            moveLogic.Setup(pointerData.GetPositionAtGrabPoint(), hostTransform.position);
+            moveLogic.Setup(pointerData.GrabPoint, hostTransform.position);
 
             // Calculate relative transform from object to hand.
             Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
