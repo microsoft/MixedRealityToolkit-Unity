@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 {
     /// <summary>
     /// Service manager supporting running the spatial awareness system, without requiring the MixedRealityToolkit object.
