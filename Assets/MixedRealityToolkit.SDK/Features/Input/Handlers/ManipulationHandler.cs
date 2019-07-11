@@ -540,7 +540,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else if (rotateInOneHandType == RotateInOneHandType.MaintainRotationToUser)
             {
-                targetRotation = CameraCache.Main.transform.rotation * startObjectRotationCameraSpace;
+                Vector3 euler = CameraCache.Main.transform.rotation.eulerAngles;
+                // don't use roll (feels awkward) - just maintain yaw / pitch angle
+                targetRotation = Quaternion.Euler(euler.x, euler.y, 0) * startObjectRotationCameraSpace;
             }
             else if (rotateInOneHandType == RotateInOneHandType.GravityAlignedMaintainRotationToUser)
             {
