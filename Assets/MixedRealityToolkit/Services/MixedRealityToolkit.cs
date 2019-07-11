@@ -939,23 +939,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void LateUpdateAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
-            // Update all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.LateUpdate();
-            }
-
-            // Update all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.LateUpdate();
-            }
+            ExecuteOnAllServices(service => service.LateUpdate());
         }
 
         private void DisableAllServices()
@@ -1022,12 +1006,12 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Mixed Reality Toolkit is not configured, stop.
             if (!HasProfileAndIsInitialized) { return false; }
 
-            foreach (var system in activeSystems)
+            foreach (var system in activeSystems.ToList())
             {
                 execute(system.Value);
             }
 
-            foreach (var service in registeredMixedRealityServices)
+            foreach (var service in registeredMixedRealityServices.ToList())
             {
                 execute(service.Item2);
             }
