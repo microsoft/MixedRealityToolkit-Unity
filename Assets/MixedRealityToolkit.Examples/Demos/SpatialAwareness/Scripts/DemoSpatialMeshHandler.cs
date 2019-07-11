@@ -29,19 +29,59 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 return spatialAwarenessSystem;
             }
         }
+
         /// <summary>
         /// Collection that tracks the IDs and count of updates for each active spatial awareness mesh.
         /// </summary>
         private Dictionary<int, uint> meshUpdateData = new Dictionary<int, uint>();
 
+        /// <summary>
+        /// Value indicating whether or not this script has registered for spatial awareness events.
+        /// </summary>
+        private bool isRegistered = false;
+
         private void Start()
         {
-            SpatialAwarenessSystem?.RegisterHandler<SpatialAwarenessHandler>(this);
+            RegisterEventHandlers();
+        }
+
+        private void OnEnable()
+        {
+            RegisterEventHandlers();
+        }
+
+        private void OnDisable()
+        {
+            UnregisterEventHandlers();
         }
 
         private void OnDestroy()
         {
-            SpatialAwarenessSystem?.UnregisterHandler<SpatialAwarenessHandler>(this);
+            UnregisterEventHandlers();
+        }
+
+        /// <summary>
+        /// Registers for the spatial awareness system events.
+        /// </summary>
+        private void RegisterEventHandlers()
+        {
+            if (!isRegistered && (SpatialAwarenessSystem != null))
+            {
+                SpatialAwarenessSystem.RegisterHandler<SpatialAwarenessHandler>(this);
+                isRegistered = true;
+            }
+        }
+
+        /// <summary>
+        /// Unregisters from the spatial awareness system events.
+        /// </summary>
+        private void UnregisterEventHandlers()
+        {
+            if (isRegistered && (SpatialAwarenessSystem != null))
+            {
+                SpatialAwarenessSystem.UnregisterHandler<SpatialAwarenessHandler>(this);
+                isRegistered = false;
+            }
         }
 
         /// <inheritdoc />
