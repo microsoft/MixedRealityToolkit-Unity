@@ -334,7 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             List<string> lightingSceneNames = new List<string>();
             // Create a list of lighting scenes to unload
-            foreach (SceneInfo lso in LightingScenes)
+            foreach (SceneInfo lso in profile.LightingScenes)
             {
                 if (lso.Name != newLightingSceneName)
                 {
@@ -786,7 +786,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public Scene GetScene(string sceneName)
         {
             Scene scene = default(Scene);
-            RuntimeSceneUtils.FindScene(sceneName, out scene, out int sceneIndex);
+            int sceneIndex;
+            RuntimeSceneUtils.FindScene(sceneName, out scene, out sceneIndex);
             return scene;
         }
 
