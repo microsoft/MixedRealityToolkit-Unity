@@ -22,8 +22,6 @@
     <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
     <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Providers.targets" />
 
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.OpenVR.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" target="Plugins\" />
   </files>
 </package>

@@ -430,42 +430,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #region Protected InputSource Helpers
 
-        // Velocity internal states
-        private float deltaTimeStart;
-        private Vector3 lastPosition;
-        private Vector3 lastPalmNormal;
-        private readonly int velocityUpdateInterval = 9;
-        private int frameOn = 0;
-
-        #region Gesture Definitions
-
-        protected void UpdateVelocity()
-        {
-            if (frameOn == 0)
-            {
-                deltaTimeStart = Time.unscaledTime;
-
-                lastPosition = unityJointPositions[(int)HandJointKind.Palm];
-                lastPalmNormal = unityJointOrientations[(int)HandJointKind.Palm] * Vector3.up;
-            }
-            else if (frameOn == velocityUpdateInterval)
-            {
-                //update linear velocity
-                float deltaTime = Time.unscaledTime - deltaTimeStart;
-                Vector3 newVelocity = (unityJointPositions[(int)HandJointKind.Palm] - lastPosition) / deltaTime;
-                Velocity = (Velocity * 0.8f) + (newVelocity * 0.2f);
-
-                //update angular velocity
-                Vector3 currentPalmNormal = unityJointOrientations[(int)HandJointKind.Palm] * Vector3.up;
-                Quaternion rotation = Quaternion.FromToRotation(lastPalmNormal, currentPalmNormal);
-                Vector3 rotationRate = rotation.eulerAngles * Mathf.Deg2Rad;
-                AngularVelocity = rotationRate / deltaTime;
-            }
-
-            frameOn++;
-            frameOn = frameOn > velocityUpdateInterval ? 0 : frameOn;
-        }
-
         protected void UpdateCurrentIndexPose()
         {
             currentIndexPose.Rotation = unityJointOrientations[(int)HandJointKind.IndexTip];
@@ -473,8 +437,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             var skinOffsetFromBone = (currentIndexPose.Rotation * Vector3.forward * lastIndexTipRadius);
             currentIndexPose.Position = (unityJointPositions[(int)HandJointKind.IndexTip] + skinOffsetFromBone);
         }
-
-        #endregion Gesture Definitions
 
         #endregion Private InputSource Helpers
 

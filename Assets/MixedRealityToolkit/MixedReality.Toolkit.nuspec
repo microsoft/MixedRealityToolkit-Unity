@@ -18,14 +18,14 @@
 
     <file src="MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.targets" />
 
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Build.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Inspectors.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Utilities.Async.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Editor.ClassExtensions.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Editor.Inspectors.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Editor.ServiceInspectors.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Async.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Editor.Utilities.dll*" target="Plugins\" />
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Utilities.Gltf.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Utilities.Gltf.Importers.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Gltf.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Gltf.Importers.dll*" target="Plugins\" />
   </files>
 </package>
