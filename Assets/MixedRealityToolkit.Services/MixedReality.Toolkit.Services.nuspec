@@ -22,13 +22,6 @@
     <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
     <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Services.targets" />
 
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.BoundarySystem.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSimulation.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSystem.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSystem.Inspectors.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.TeleportSystem.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
   </files>
 </package>
