@@ -47,8 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </summary>
         public InteractionSourceState LastSourceStateReading { get; protected set; }
 
-        protected Vector3 currentSourcePosition = Vector3.zero;
-        protected Quaternion currentSourceRotation = Quaternion.identity;
+        private Vector3 currentSourcePosition = Vector3.zero;
+        private Quaternion currentSourceRotation = Quaternion.identity;
         private MixedRealityPose lastSourcePose = MixedRealityPose.ZeroIdentity;
         private MixedRealityPose currentSourcePose = MixedRealityPose.ZeroIdentity;
 
