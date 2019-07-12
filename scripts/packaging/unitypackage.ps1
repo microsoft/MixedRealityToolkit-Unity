@@ -147,20 +147,6 @@ function ValidateUnityVersion([String] $Version) {
     }
 }
 
-function ValidatePackageFolders(
-    [String] $PackageName,
-    [String[]] $Folders) {
-    <#
-    .SYNOPSIS
-        Validates that all of the folders specified exist on disk.
-    #>
-    foreach ($folder in $Folders) {
-        if (-not (Test-Path $folder -PathType Container)) {
-            throw "Package $PackageName is missing folder $folder"
-        }
-    }
-}
-
 # Beginning of the .unitypackage script main section
 # The overall structure of this script looks like:
 #
