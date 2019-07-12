@@ -669,7 +669,7 @@ PrefabInstance:
     - target: {fileID: 114995780653097258, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
-      value: 'This scene shows how the MRTK/Standard shader in conjuction with clipping
+      value: 'This scene shows how the MRTK/Standard shader in conjunction with clipping
         primitives (ClippingPlane, ClippingSphere, & ClippingBox) can be used to dynamically
         clip pixels on a mesh.
 
@@ -679,7 +679,7 @@ PrefabInstance:
         Try grabbing the sphere or box which a near or far interaction. Then move
         the sphere or box until it intersects with the heart. You will notice that
         any portions of the heart that intersect with the sphere or box will not be
-        renderered.
+        rendered.
 
 
 
