@@ -39,16 +39,23 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <param name="layer"></param>
         /// <param name="name"></param>
         /// <param name="meshId"></param>
+        /// <param name="meshParent"></param>
         /// <returns>
         /// SpatialMeshObject containing the fields that describe the mesh.
         /// </returns>
-        public static SpatialAwarenessMeshObject Create(Mesh mesh, int layer, string name, int meshId)
+        public static SpatialAwarenessMeshObject Create(
+            Mesh mesh,
+            int layer,
+            string name,
+            int meshId,
+            GameObject meshParent = null)
         {
             SpatialAwarenessMeshObject newMesh = new SpatialAwarenessMeshObject();
 
             newMesh.Id = meshId;
             newMesh.GameObject = new GameObject(name, requiredMeshComponents);
             newMesh.GameObject.layer = layer;
+            newMesh.GameObject.transform.parent = meshParent?.transform;
 
             newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
             newMesh.Filter.sharedMesh = mesh;

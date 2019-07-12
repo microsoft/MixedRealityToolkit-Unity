@@ -9,12 +9,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// The default implementation of IMixedRealityRaycastProvider.
     /// </summary>
-    public class DefaultRaycastProvider : BaseDataProvider, IMixedRealityRaycastProvider
+    public class DefaultRaycastProvider : BaseCoreSystem, IMixedRealityRaycastProvider
     {
         public DefaultRaycastProvider(
             IMixedRealityServiceRegistrar registrar,
-            IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile profile) : base(registrar, inputSystem, null, DefaultPriority, profile)
+            MixedRealityInputSystemProfile profile) : base(registrar, profile)
         { }
 
         /// <inheritdoc />

@@ -12,9 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             GoalPosition = SolverHandler.TransformTarget.position;
             GoalRotation = SolverHandler.TransformTarget.rotation;
-
-            UpdateWorkingPositionToGoal();
-            UpdateWorkingRotationToGoal();
         }
     }
 }

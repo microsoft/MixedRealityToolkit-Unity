@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// An abstract primitive component to animate and visualize a clipping primitive that can be 
     /// used to drive per pixel based clipping.
     /// </summary>
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public abstract class ClippingPrimitive : MonoBehaviour
     {
         [Tooltip("The renderer(s) that should be affected by the primitive.")]
@@ -70,7 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
 
         protected abstract string Keyword { get; }
-        protected abstract string KeywordProperty { get; }
         protected abstract string ClippingSideProperty { get; }
 
         protected MaterialPropertyBlock materialPropertyBlock;
@@ -274,12 +273,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             if (keywordOn)
             {
                 material.EnableKeyword(Keyword);
-                material.SetFloat(KeywordProperty, 1.0f);
             }
             else
             {
                 material.DisableKeyword(Keyword);
-                material.SetFloat(KeywordProperty, 0.0f);
             }
         }
 

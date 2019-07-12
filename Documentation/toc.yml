@@ -12,7 +12,13 @@
   - name: Framework and Runtime
     href: Architecture/FrameworkAndRuntime.md
   - name: Input System
-    href: Architecture/InputSystem.md
+    items:
+    - name: Terminology
+      href: Architecture/InputSystem/Terminology.md
+    - name: Core System
+      href: Architecture/InputSystem/CoreSystem.md
+    - name: Controllers, Pointers, and Focus
+      href: Architecture/InputSystem/ControllersPointersAndFocus.md
 - name: Feature Overviews
   items:
   - name: Profiles

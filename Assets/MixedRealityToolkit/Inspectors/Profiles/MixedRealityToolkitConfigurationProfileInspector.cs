@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private MixedRealityToolkitConfigurationProfile configurationProfile;
         private Func<bool>[] RenderProfileFuncs;
 
-        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Mapping", "Diagnostics", "Scene System", "Extensions", "Editor" };
+        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Awareness", "Diagnostics", "Scene System", "Extensions", "Editor" };
         private static int SelectedProfileTab = 0;
         private const string SelectedTabPreferenceKey = "SelectedProfileTab";
 
@@ -196,9 +196,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (GUILayout.Button("Copy & Customize"))
                 {
-                    var originalSelection = Selection.activeObject;
-                    CreateCustomProfile(target as BaseMixedRealityProfile);
-                    Selection.activeObject = originalSelection;
+                    SerializedProperty targetProperty = null;
+                    UnityEngine.Object selectionTarget = null;
+                    // If we have an active MRTK instance, find its config profile serialized property
+                    if (MixedRealityToolkit.IsInitialized)
+                    {
+                        selectionTarget = MixedRealityToolkit.Instance;
+                        SerializedObject mixedRealityToolkitObject = new SerializedObject(MixedRealityToolkit.Instance);
+                        targetProperty = mixedRealityToolkitObject.FindProperty("activeProfile");
+                    }
+                    MixedRealityProfileCloneWindow.OpenWindow(null, target as BaseMixedRealityProfile, targetProperty, selectionTarget);
                 }
 
                 if (MixedRealityToolkit.IsInitialized)

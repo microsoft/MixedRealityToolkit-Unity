@@ -28,7 +28,6 @@ namespace Microsoft.MixedReality.Toolkit
     /// The Profile can be swapped out at any time to meet the needs of your project.
     /// </summary>
     [DisallowMultipleComponent]
-    [ExecuteAlways]
     public class MixedRealityToolkit : MonoBehaviour, IMixedRealityServiceRegistrar
     {
 #region Mixed Reality Toolkit Profile configuration
@@ -177,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (concreteType == null)
             {
-                Debug.LogError("Unable to register a service with a null concrete type.");
+                Debug.LogError($"Unable to register {typeof(T).Name} service with a null concrete type.");
                 return false;
             }
 
@@ -234,6 +233,7 @@ namespace Microsoft.MixedReality.Toolkit
                 else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(interfaceType)) { diagnosticsSystem = null; }
                 // Focus provider reference is not managed by the MixedRealityToolkit class.
                 else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(interfaceType)) { inputSystem = null; }
+                // Raycast provider reference is not managed by the MixedRealityToolkit class.
                 else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(interfaceType)) { spatialAwarenessSystem = null; }
                 else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(interfaceType)) { teleportSystem = null; }
 
@@ -388,8 +388,8 @@ namespace Microsoft.MixedReality.Toolkit
                     return;
                 }
 
-                args = new object[] { this, InputSystem, ActiveProfile.InputSystemProfile };
-                if (!RegisterDataProvider<IMixedRealityRaycastProvider>(ActiveProfile.InputSystemProfile.RaycastProviderType, args: args))
+                args = new object[] { this, ActiveProfile.InputSystemProfile };
+                if (!RegisterService<IMixedRealityRaycastProvider>(ActiveProfile.InputSystemProfile.RaycastProviderType, args: args))
                 {
                     Debug.LogError("Failed to register the raycast provider! The input system will not function without it.");
                     return;
@@ -645,11 +645,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void OnEnable()
         {
-            if (!Application.isPlaying)
-            {   // This is only necessary in edit mode.
-                RegisterInstance(this);
-            }
-
             if (IsActiveInstance)
             {
                 EnableAllServices();
@@ -713,21 +708,8 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void RegisterInstance(MixedRealityToolkit toolkitInstance, bool setAsActiveInstance = false)
         {
-            if (toolkitInstance == null)
-            {   // Don't register a null instance0
-                Debug.LogWarning("Attempted to register a null MixedRealityToolkit instance.");
-                return;
-            }
-
             if (MixedRealityToolkit.isApplicationQuitting)
             {   // Don't register instances while application is quitting
-                return;
-            }
-
-            if (!toolkitInstance.gameObject.scene.isLoaded)
-            {   // Don't register an instance that's being unloaded
-                // This may happen if an OnDestroy call triggers the active instance
-                // to un-register itself, prompting registration of another instance in the same scene.
                 return;
             }
 
@@ -1545,6 +1527,20 @@ namespace Microsoft.MixedReality.Toolkit
                     }
                 };
             }
+        }
+
+        /// <summary>
+        /// Used to register newly created instances in edit mode.
+        /// Initially handled by using ExecuteAlways, but this attribute causes the instance to be destroyed as we enter play mode, which is disruptive to services.
+        /// </summary>
+        private void OnValidate()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {   // This check is only necessary in edit mode
+                return;
+            }
+
+            RegisterInstance(this);
         }
 
 #endif // UNITY_EDITOR
