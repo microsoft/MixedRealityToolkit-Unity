@@ -218,6 +218,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         InputSystem.RaisePointerClicked(this, selectAction, 0, Controller.ControllerHandedness);
                         InputSystem.RaisePointerUp(this, selectAction, Controller.ControllerHandedness);
+
+                        gazeProvider.GazePointer.IsFocusLocked = false;
                     }
                 }
             }
@@ -240,6 +242,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             c.SourceDownIds.Add(eventData.SourceId);
                         }
                         InputSystem.RaisePointerDown(this, selectAction, Controller.ControllerHandedness);
+
+                        gazeProvider.GazePointer.IsFocusLocked = (gazeProvider.GazePointer.Result?.Details.Object != null);
                     }
                 }
             }

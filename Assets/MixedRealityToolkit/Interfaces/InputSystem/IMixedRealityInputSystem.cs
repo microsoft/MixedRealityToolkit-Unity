@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>a new unique Id for the input source.</returns>
         uint GenerateNewSourceId();
 
-        IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other, bool addGazePointer = false);
+        IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other);
 
         /// <summary>
         /// Raise the event that the Input Source was detected.

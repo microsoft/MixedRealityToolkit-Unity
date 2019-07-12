@@ -546,7 +546,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             string nameModifier = controllingHand == Handedness.None ? interactionSource.kind.ToString() : controllingHand.ToString();
-            var inputSource = inputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers, inputSourceType, true);
+            var inputSource = inputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers, inputSourceType);
 
             BaseWindowsMixedRealitySource detectedController;
             if (interactionSource.kind == InteractionSourceKind.Hand)
