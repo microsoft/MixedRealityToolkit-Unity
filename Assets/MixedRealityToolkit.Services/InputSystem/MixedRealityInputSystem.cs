@@ -269,6 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Unity's way to remove component is to destroy it.
             if (GazeProvider != null)
             {
+                GazeProvider.GazePointer.BaseCursor.Destroy();
                 if (Application.isPlaying)
                 {
                     UnityEngine.Object.Destroy(GazeProvider as Component);
