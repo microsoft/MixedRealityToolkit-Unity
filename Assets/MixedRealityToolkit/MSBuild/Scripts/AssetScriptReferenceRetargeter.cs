@@ -1,4 +1,7 @@
-﻿#if UNITY_EDITOR
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +15,7 @@ using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Build.Editor
+namespace Microsoft.MixedReality.Toolkit.MSBuild
 {
     public static class AssetScriptReferenceRetargeter
     {
@@ -73,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             Dictionary<string, Tuple<string, long>> remapDictionary = new Dictionary<string, Tuple<string, long>>();
 
-            foreach (var pair in scriptFilesReferences)
+            foreach (KeyValuePair<string, ClassInformation> pair in scriptFilesReferences)
             {
                 if (compiledClassReferences.TryGetValue(pair.Key, out ClassInformation compiledClassInfo))
                 {
@@ -140,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     }
 
                     bool copyFile = true;
-                    foreach (var suffix in ExcludedSuffixFromCopy)
+                    foreach (string suffix in ExcludedSuffixFromCopy)
                     {
                         if (filePath.EndsWith(suffix))
                         {
@@ -156,12 +159,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
             }
 
-            foreach (var extension in foundNonYamlExtensions)
+            foreach (string extension in foundNonYamlExtensions)
             {
                 Debug.LogWarning($"Not a YAML extension: {extension}");
             }
 
-            var tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t.Item1, t.Item2, remapDictionary)));
+            IEnumerable<Task> tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t.Item1, t.Item2, remapDictionary)));
             Task.WhenAll(tasks).Wait();
 
             PostProcess(outputDirectory, dllGuids);
@@ -382,23 +385,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static void UpdateMetaFiles(Dictionary<string, string> dllGuids)
         {
-            if (!TemplateFiles)
-            //Load the sample meta files
-            DirectoryInfo assetDirectory = new DirectoryInfo(Application.dataPath);
-            FileInfo editorMetaFile = assetDirectory.GetFiles("*sampleEditorDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();
-            if (editorMetaFile == null)
+            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.Unknown, out FileInfo editorMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample editor dll.meta file");
+                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
             }
-            FileInfo uapMetaFile = assetDirectory.GetFiles("*sampleUAPDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();
-            if (uapMetaFile == null)
+
+            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.WSA, out FileInfo uapMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample UAP dll.meta file");
+                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
             }
-            FileInfo standaloneMetaFile = assetDirectory.GetFiles("*sampleStandaloneDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();
-            if (standaloneMetaFile == null)
+
+            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.Standalone, out FileInfo standaloneMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample Standalone dll.meta file");
+                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
             }
 
             string[] metaFileContent = File.ReadAllLines(editorMetaFile.FullName);
