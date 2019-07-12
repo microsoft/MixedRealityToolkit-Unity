@@ -31,14 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf.Editor
 
             if (GUILayout.Button("Copy GLTF Directory to Streaming Assets"))
             {
-                if (needsCopy)
-                {
-                    DirectoryCopy($"{Application.dataPath}\\MixedRealityToolkit.Examples\\Demos\\Gltf\\Models",
-                                  $"{Application.streamingAssetsPath}\\GltfModels");
+                DirectoryCopy($"{Application.dataPath}\\MixedRealityToolkit.Examples\\Demos\\Gltf\\Models",
+                              $"{Application.streamingAssetsPath}\\GltfModels");
 #if UNITY_EDITOR
-                    UnityEditor.AssetDatabase.Refresh(UnityEditor.ImportAssetOptions.ForceUpdate);
+                UnityEditor.AssetDatabase.Refresh(UnityEditor.ImportAssetOptions.ForceUpdate);
 #endif
-                }
+                Debug.Log("Copied glTF model files to Streaming Assets folder");
             }
         }
 
