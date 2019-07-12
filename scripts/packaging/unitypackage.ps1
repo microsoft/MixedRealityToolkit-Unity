@@ -18,7 +18,7 @@
     described in Assets/MixedReality.Toolkit.Foundation.nuspec and
     Assets/MixedRealityToolkit.Examples/MixedReality.Toolkit.Examples.nuspec.
 
-    Assumes that the current working directory of the script is in the root
+    Defaults to assuming that the current working directory of the script is in the root
     directory of the repo.
 .PARAMETER OutputDirectory
     Where should we place the output? Defaults to ".\artifacts"
