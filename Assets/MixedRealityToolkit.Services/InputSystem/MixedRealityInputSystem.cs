@@ -269,9 +269,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Unity's way to remove component is to destroy it.
             if (GazeProvider != null)
             {
-                GazeProvider.GazePointer.BaseCursor.Destroy();
                 if (Application.isPlaying)
                 {
+                    GazeProvider.GazePointer.BaseCursor.Destroy();
                     UnityEngine.Object.Destroy(GazeProvider as Component);
                 }
                 else
@@ -304,15 +304,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (isInputModuleAdded)
             {
                 var inputModule = CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>();
-                inputModule.DeactivateModule();
+                if (inputModule)
+                {
+                    inputModule.DeactivateModule();
 
-                if (Application.isPlaying)
-                {
-                    UnityEngine.Object.Destroy(inputModule);
-                }
-                else
-                {
-                    UnityEngine.Object.DestroyImmediate(inputModule);
+                    if (Application.isPlaying)
+                    {
+                        UnityEngine.Object.Destroy(inputModule);
+                    }
+                    else
+                    {
+                        UnityEngine.Object.DestroyImmediate(inputModule);
+                    }
                 }
             }
 
