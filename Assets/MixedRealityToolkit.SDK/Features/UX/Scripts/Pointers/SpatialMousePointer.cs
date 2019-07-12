@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Internal Touch Pointer Implementation.
+    /// Spatial Mouse Pointer Implementation.
     /// </summary>
-    public class MousePointer : DefaultMousePointer
+    public class SpatialMousePointer : BaseMousePointer
     {
         private MixedRealityMouseInputProfile mouseInputProfile = null;
 
@@ -28,6 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        protected override string ControllerName => "Spatial Mouse Pointer";
+
         public override void OnPreSceneQuery()
         {
             // screenspace to ray conversion
@@ -41,6 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.DrawRay(ray.origin, ray.direction * PointerExtent, Color.green);
             }
         }
+
+        #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />
         public override void OnInputChanged(InputEventData<Vector2> eventData)
@@ -71,6 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
+
+        #endregion IMixedRealityInputHandler Implementation
 
         private void UpdateMouseRotation(Vector3 mouseDeltaRotation)
         {
@@ -108,8 +114,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected override void SetVisibility(bool visible)
         {
+            base.SetVisibility(visible);
             BaseCursor?.SetVisibility(visible);
-            isDisabled = !visible;
         }
     }
 }

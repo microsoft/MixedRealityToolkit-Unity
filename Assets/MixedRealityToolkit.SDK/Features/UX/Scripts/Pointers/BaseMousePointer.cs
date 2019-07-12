@@ -1,16 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using UInput = UnityEngine.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Internal Touch Pointer Implementation.
+    /// Base Mouse Pointer Implementation.
     /// </summary>
-    public class DefaultMousePointer : BaseControllerPointer, IMixedRealityMousePointer
+    public abstract class BaseMousePointer : BaseControllerPointer, IMixedRealityMousePointer
     {
         protected float timeoutTimer = 0.0f;
 
@@ -26,7 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Should the mouse cursor be hidden when no active input is received?")]
         private bool hideCursorWhenInactive = true;
 
-        /// <inheritdoc />
+        /// <summary>
+        ///  Should the mouse cursor be hidden when no active input is received?
+        /// </summary>
         public bool HideCursorWhenInactive => hideCursorWhenInactive;
 
         [SerializeField]
@@ -34,7 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("What is the movement threshold to reach before un-hiding mouse cursor?")]
         private float movementThresholdToUnHide = 0.1f;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// What is the movement threshold to reach before un-hiding mouse cursor?
+        /// </summary>
         public float MovementThresholdToUnHide => movementThresholdToUnHide;
 
         [SerializeField]
@@ -42,7 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("How long should it take before the mouse cursor is hidden?")]
         private float hideTimeout = 3.0f;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// How long should it take before the mouse cursor is hidden?
+        /// </summary>
         public float HideTimeout => hideTimeout;
 
         #endregion IMixedRealityMousePointer Implementation
@@ -52,8 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override bool IsInteractionEnabled => isInteractionEnabled;
 
+        protected abstract string ControllerName { get; }
+
+
         private IMixedRealityController controller;
-        private Vector2 mousePosition;
 
         /// <inheritdoc />
         public override IMixedRealityController Controller
@@ -68,45 +75,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     InputSourceParent = controller.InputSource;
                     Handedness = controller.ControllerHandedness;
-                    gameObject.name = "Spatial Mouse Pointer";
+                    gameObject.name = ControllerName;
                 }
             }
         }
 
-        /// <inheritdoc />
-        public override void OnPreSceneQuery()
-        {
-            if (UInput.mousePosition.x < 0 ||
-                UInput.mousePosition.y < 0 ||
-                UInput.mousePosition.x > Screen.width ||
-                UInput.mousePosition.y > Screen.height)
-            {
-                return;
-            }
-
-            if ((mousePosition - (Vector2) UInput.mousePosition).magnitude >= MovementThresholdToUnHide)
-            {
-                SetVisibility(true);
-            }
-            mousePosition = UInput.mousePosition;
-
-            Camera mainCamera = CameraCache.Main;
-            Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-            Rays[0].CopyRay(ray, float.MaxValue);
-
-            transform.position = mainCamera.transform.position;
-            transform.rotation = Quaternion.LookRotation(ray.direction);
-        }
-
-        public override Vector3 Position
-        {       
-            get
-            {
-                return CameraCache.Main.transform.position + transform.forward * DefaultPointerExtent;
-            }
-        }
-
         #endregion IMixedRealityPointer Implementation
+
+        public override Vector3 Position => CameraCache.Main.transform.position + transform.forward * DefaultPointerExtent;
+
+        protected virtual void SetVisibility(bool visible) => isDisabled = !visible;
 
         #region IMixedRealitySourcePoseHandler Implementation
 
@@ -125,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 isInteractionEnabled = true;
             }
         }
-       
+
 
         /// <inheritdoc />
         public override void OnSourceLost(SourceStateEventData eventData)
@@ -149,8 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (cursorWasDisabledOnDown)
             {
-                SetVisibility(true);
-                transform.rotation = CameraCache.Main.transform.rotation;
+                ResetCursor();
             }
             else
             {
@@ -161,17 +138,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
-            if (!isDisabled && !cursorWasDisabledOnDown)
+            if (!cursorWasDisabledOnDown)
             {
                 base.OnInputUp(eventData);
+
+                if (isDisabled)
+                {
+                    ResetCursor();
+                }
             }
         }
 
-        public override void OnInputChanged(InputEventData<Vector2> eventData) { }
-
-        public override void OnInputChanged(InputEventData<MixedRealityPose> eventData) { }
-
         #endregion IMixedRealityInputHandler Implementation
+
+        private void ResetCursor()
+        {
+            SetVisibility(true);
+            transform.rotation = CameraCache.Main.transform.rotation;
+        }
 
         #region MonoBehaviour Implementation
 
@@ -209,14 +193,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        protected virtual void SetVisibility(bool visible)
-        {
-            Cursor.visible = visible;
-            isDisabled = !visible;
-        }
-
         #endregion MonoBehaviour Implementation
-
-
     }
 }
