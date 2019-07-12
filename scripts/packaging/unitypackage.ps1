@@ -75,7 +75,7 @@ Import-Module UnitySetup -MinimumVersion '4.0.97' -ErrorAction Stop
 # (for example, in Microsoft.MixedReality.Toolkit.Unity.Foundation, the Foundation
 # section comes from the key below).
 #
-# Note that capatilization below in the key itself is significant. Capitalization
+# Note that capitalization below in the key itself is significant. Capitalization
 # in the values is not significant.
 #
 # These paths are project-root relative.
