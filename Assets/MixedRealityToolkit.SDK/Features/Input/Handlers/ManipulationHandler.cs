@@ -148,6 +148,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => constraintOnMovement = value;
         }
 
+        [SerializeField]
+        [Tooltip("Maximum scaling allowed relative to the initial size")]
+        private float scaleMaximum = 2.0f;
+        public float ScaleMaximum
+        {
+            get => scaleMaximum;
+            set => scaleMaximum = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Minimum scaling allowed relative to the initial size")]
+        private float scaleMinimum = 0.2f;
+        public float ScaleMinimum
+        {
+            get => scaleMinimum;
+            set => scaleMinimum = value;
+        }
+
         [Header("Smoothing")]
         [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing. ")]
@@ -241,6 +259,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Quaternion startObjectRotationFlatCameraSpace;
         private Quaternion hostWorldRotationOnManipulationStart;
 
+        private TransformHelper transformHelper;
+
         #endregion
 
         #region MonoBehaviour Functions
@@ -257,6 +277,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 hostTransform = transform;
             }
+
+            transformHelper = this.EnsureComponent<TransformHelper>();
+            transformHelper.Initialize(hostTransform);
+            transformHelper.SetScaleLimits(scaleMinimum, scaleMaximum);
         }
         #endregion MonoBehaviour Functions
 
@@ -595,6 +619,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             hostTransform.position = Vector3.Lerp(hostTransform.position, targetPosition, lerpAmount);
             // Currently the two hand rotation algorithm doesn't allow for lerping, but it should. Fix this.
             hostTransform.rotation = Quaternion.Lerp(hostTransform.rotation, targetRotationTwoHands, lerpAmount);
+
+            targetScale = transformHelper.ClampScale(targetScale);
             hostTransform.localScale = Vector3.Lerp(hostTransform.localScale, targetScale, lerpAmount);
         }
 

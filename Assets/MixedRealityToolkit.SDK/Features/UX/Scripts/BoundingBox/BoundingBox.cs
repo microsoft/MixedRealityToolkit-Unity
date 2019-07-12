@@ -952,7 +952,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var target = Target;
             if (target != null)
             {
-                transformHelper.SetScale(min, max, relativeToInitialState);
+                transformHelper.SetScaleLimits(min, max, relativeToInitialState);
             }
         }
 
@@ -1800,9 +1800,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var target = Target;
             if (target != null)
             {
-                transformHelper = new TransformHelper(target.transform);
-
-                transformHelper.SetScale(scaleMinimum, scaleMaximum);
+                transformHelper = this.EnsureComponent<TransformHelper>();
+                transformHelper.Initialize(target.transform);
+                transformHelper.SetScaleLimits(scaleMinimum, scaleMaximum);
             }
         }
 

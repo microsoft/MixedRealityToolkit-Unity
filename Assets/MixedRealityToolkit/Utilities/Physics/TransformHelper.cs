@@ -8,9 +8,11 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// <summary>
     /// Helper class containing move/rotate/scale related utility functions.
     /// <summary>
-    public class TransformHelper
+    public class TransformHelper : MonoBehaviour
     {
         #region Properties
+
+        private Transform targetTransform;
         
         private Vector3 initialScale;
         private Vector3 minimumScale;
@@ -21,14 +23,18 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
         #endregion Properties
 
-        public TransformHelper(Transform inititialTransform)
+        public void Initialize(Transform transform)
         {
-            initialScale = inititialTransform.localScale;
+            if (targetTransform == null)
+            {
+                targetTransform = transform;
+                initialScale = transform.localScale;
+            }
         }
 
         #region Scale Utilities
 
-        public void SetScale(float min, float max, bool relativeToInitialState = true)
+        public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
         {
             if (relativeToInitialState)
             {
