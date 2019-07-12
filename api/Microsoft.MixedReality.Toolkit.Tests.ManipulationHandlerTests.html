@@ -155,16 +155,45 @@ from gaze provider.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_ManipulationHandlerTests_ManipulationHandlerOneHandMove_" data-uid="Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.ManipulationHandlerOneHandMove*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_ManipulationHandlerTests_ManipulationHandlerOneHandMove" data-uid="Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.ManipulationHandlerOneHandMove">ManipulationHandlerOneHandMove()</h4>
-  <div class="markdown level1 summary"><p>This tests the one hand movement while camera (character) is moving around.
+  <a id="Microsoft_MixedReality_Toolkit_Tests_ManipulationHandlerTests_ManipulationHandlerOneHandMoveFar_" data-uid="Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.ManipulationHandlerOneHandMoveFar*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_ManipulationHandlerTests_ManipulationHandlerOneHandMoveFar" data-uid="Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.ManipulationHandlerOneHandMoveFar">ManipulationHandlerOneHandMoveFar()</h4>
+  <div class="markdown level1 summary"><p>This tests the one hand far movement while camera (character) is moving around.
+The test will check the offset between object pivot and grab point and make sure we're not drifting
+out of the object on pointer rotation - this test is the same for all objects that won't change
+their orientation to camera while camera / pointer rotates as this will modify the far interaction grab point</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator ManipulationHandlerOneHandMoveFar()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_ManipulationHandlerTests_ManipulationHandlerOneHandMoveNear_" data-uid="Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.ManipulationHandlerOneHandMoveNear*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_ManipulationHandlerTests_ManipulationHandlerOneHandMoveNear" data-uid="Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.ManipulationHandlerOneHandMoveNear">ManipulationHandlerOneHandMoveNear()</h4>
+  <div class="markdown level1 summary"><p>This tests the one hand near movement while camera (character) is moving around.
 The test will check the offset between object pivot and grab point and make sure we're not drifting
 out of the object on pointer rotation - this test should be the same in all rotation setups</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator ManipulationHandlerOneHandMove()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator ManipulationHandlerOneHandMoveNear()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
