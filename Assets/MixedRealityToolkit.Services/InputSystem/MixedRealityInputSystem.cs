@@ -76,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool IsInputEnabled => disabledRefCount <= 0;
 
         private int disabledRefCount;
+        private bool isInputModuleAdded = false;
 
         private SourceStateEventData sourceStateEventData;
         private SourcePoseEventData<TrackingState> sourceTrackingEventData;
@@ -151,6 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // There is no input module attached to the camera, add one.
                 CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                isInputModuleAdded = true;
             }
             else if ((inputModules.Length == 1) && (inputModules[0] is MixedRealityInputModule))
             { /* Nothing to do, a MixedRealityInputModule was applied in the editor. */ }
@@ -294,6 +296,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             deviceManagers.Clear();
 
             InputDisabled?.Invoke();
+        }
+
+        public override void Destroy()
+        {
+            if (isInputModuleAdded)
+            {
+                var inputModule = CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>();
+                inputModule.DeactivateModule();
+
+                if (Application.isPlaying)
+                {
+                    UnityEngine.Object.Destroy(inputModule);
+                }
+                else
+                {
+                    UnityEngine.Object.DestroyImmediate(inputModule);
+                }
+            }
+
+            base.Destroy();
         }
 
         #endregion IMixedRealityService Implementation

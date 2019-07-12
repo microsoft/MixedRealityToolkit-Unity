@@ -244,6 +244,28 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        public override void Destroy()
+        {
+            foreach (var listener in EventListeners)
+            {
+                Debug.LogError("Event system is destroyed, while still having a registered listener. " +
+                    "Make sure that all global event listeners have been unregistered before destroying the event system. " +
+                    $"Dangling listener: object {listener.name}");
+            }
+
+            foreach (var typeEntry in EventHandlersByType)
+            {
+                for (int index = 0; index < typeEntry.Value.Count; index++)
+                {
+                    var handlerEntry = typeEntry.Value[index];
+
+                    Debug.LogError("Event system is being destroyed while still having a registered listener. " +
+                        "Make sure that all global event listeners have been unregistered before destroying the event system. " +
+                        $"Dangling listener: handler {handlerEntry.handler}");
+                }
+            }
+        }
+
     #endregion IMixedRealityEventSystem Implementation
 
     #region Registration helpers

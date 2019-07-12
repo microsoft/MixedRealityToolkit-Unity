@@ -961,48 +961,53 @@ namespace Microsoft.MixedReality.Toolkit
         private void DisableAllServices()
         {
             // Disable all systems
-            ExecuteOnAllServices(service => service.Disable());
+            ExecuteOnAllServicesReverseOrder(service => service.Disable());
         }
 
         private void DestroyAllServices()
         {
             // NOTE: Service instances are destroyed as part of the unregister process.
-
-            // Unregister core services (active systems).
-            List<Type> serviceTypes = activeSystems.Keys.ToList<Type>();
-            foreach (Type type in serviceTypes)
             {
-                if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
+                // Unregister core services (active systems).
+                // We need to destroy services in backwards order as those which are initialized 
+                // later may rely on those which are initialized first.
+                var orderedActiveSystems = activeSystems.OrderByDescending(m => m.Value.Priority);
+
+                foreach (var system in orderedActiveSystems)
                 {
-                    UnregisterService<IMixedRealityBoundarySystem>();
+                    Type type = system.Key;
+
+                    if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
+                    {
+                        UnregisterService<IMixedRealityBoundarySystem>();
+                    }
+                    else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(type))
+                    {
+                        UnregisterService<IMixedRealityCameraSystem>();
+                    }
+                    else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type))
+                    {
+                        UnregisterService<IMixedRealityDiagnosticsSystem>();
+                    }
+                    else if (typeof(IMixedRealityFocusProvider).IsAssignableFrom(type))
+                    {
+                        UnregisterService<IMixedRealityFocusProvider>();
+                    }
+                    else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(type))
+                    {
+                        UnregisterService<IMixedRealityInputSystem>();
+                    }
+                    else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type))
+                    {
+                        UnregisterService<IMixedRealitySpatialAwarenessSystem>();
+                    }
+                    else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type))
+                    {
+                        UnregisterService<IMixedRealityTeleportSystem>();
+                    }
                 }
-                else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(type))
-                {
-                    UnregisterService<IMixedRealityCameraSystem>();
-                }
-                else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type))
-                {
-                    UnregisterService<IMixedRealityDiagnosticsSystem>();
-                }
-                else if (typeof(IMixedRealityFocusProvider).IsAssignableFrom(type))
-                {
-                    UnregisterService<IMixedRealityFocusProvider>();
-                }
-                else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(type))
-                {
-                    UnregisterService<IMixedRealityInputSystem>();
-                }
-                else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type))
-                {
-                    UnregisterService<IMixedRealitySpatialAwarenessSystem>();
-                }
-                else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type))
-                {
-                    UnregisterService<IMixedRealityTeleportSystem>();
-                }
+                activeSystems.Clear();
             }
-            serviceTypes.Clear();
-            activeSystems.Clear();
 
             // Unregister extension services.
             List<Tuple<Type, IMixedRealityService>> serviceTuples = new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices.ToArray());
@@ -1035,9 +1040,28 @@ namespace Microsoft.MixedReality.Toolkit
             return true;
         }
 
-#endregion Multiple Service Management
+        private bool ExecuteOnAllServicesReverseOrder(Action<IMixedRealityService> execute)
+        {
+            // If the Mixed Reality Toolkit is not configured, stop.
+            if (!HasProfileAndIsInitialized) { return false; }
 
-#region Service Utilities
+            foreach (var service in registeredMixedRealityServices)
+            {
+                execute(service.Item2);
+            }
+
+            var orderedActiveSystems = activeSystems.OrderByDescending(m => m.Value.Priority);
+            foreach (var system in orderedActiveSystems)
+            {
+                execute(system.Value);
+            }
+
+            return true;
+        }
+
+        #endregion Multiple Service Management
+
+        #region Service Utilities
 
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.
