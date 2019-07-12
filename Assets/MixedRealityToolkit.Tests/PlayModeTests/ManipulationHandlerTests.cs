@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(initialHandPosition);
             yield return hand.Hide();
 
-            Object.Destroy(testObject);
+            GameObject.Destroy(testObject);
             yield return null;
         }
 
