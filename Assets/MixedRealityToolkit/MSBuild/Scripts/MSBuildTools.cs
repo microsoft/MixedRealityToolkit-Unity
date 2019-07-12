@@ -28,21 +28,19 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         public const string CSharpVersion = "7.3";
         public const string DefaultMinUWPSDK = "10.0.14393.0";
 
-        private static readonly string uwpMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;// "10.0.14393.0";
+        private static readonly string uwpMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
         private static readonly string uwpTargetPlatformVersion = EditorUserBuildSettings.wsaUWPSDK;
 
         [MenuItem("MSBuild/Generate C# SDK Projects")]
         public static void GenerateSDKProjects()
         {
             // Create a copy of the packages as they might change after we create the MSBuild project
-            MakePackagesCopy();
 
-            Utilities.EnsureCleanDirectory(Application.dataPath.Replace("Assets", "MRTKBuild"));
 
-            string path = Application.dataPath.Replace("Assets", "MSBuild");
+            string generatedProjectPath = Path.Combine(Utilities.MSBuildOutputFolder, "Projects");
             try
             {
-                Utilities.EnsureCleanDirectory(path);
+                Utilities.EnsureCleanDirectory(generatedProjectPath);
             }
             catch (IOException ex)
             {
@@ -57,6 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 }
             }
 
+            Utilities.EnsureCleanDirectory(Path.Combine(Utilities.MSBuildOutputFolder, "Output"));
+
+            MakePackagesCopy(Utilities.MSBuildOutputFolder);
+
             List<CompilationPlatformInfo> platforms = CompilationPipeline.GetAssemblyDefinitionPlatforms()
                 .Where(t => supportedBuildTargets.Contains(t.BuildTarget))
                 .Select(CompilationPlatformInfo.GetCompilationPlatform)
@@ -64,9 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             CompilationPlatformInfo editorPlatform = CompilationPlatformInfo.GetEditorPlatform();
 
-            string propsOutputFolder = Application.dataPath.Replace("Assets", "MSBuild");
-            CreateCommonPropsFile(platforms, editorPlatform, propsOutputFolder);
-            UnityProjectInfo unityProjectInfo = new UnityProjectInfo(platforms);
+            CreateCommonPropsFile(platforms, editorPlatform, generatedProjectPath);
+            UnityProjectInfo unityProjectInfo = new UnityProjectInfo(platforms, generatedProjectPath);
 
             //// Read the solution template
             string solutionTemplateText = File.ReadAllText(Utilities.GetAssetsRelativePathFrom(TemplateFiles.Instance.MSBuildSolutionTemplatePath));
@@ -74,22 +75,22 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             //// Read the project template
             string projectTemplateText = File.ReadAllText(Utilities.GetAssetsRelativePathFrom(TemplateFiles.Instance.SDKProjectFileTemplatePath));
 
-            unityProjectInfo.ExportSolution(solutionTemplateText, projectTemplateText, propsOutputFolder);
+            unityProjectInfo.ExportSolution(solutionTemplateText, projectTemplateText, generatedProjectPath);
 
             foreach (string otherFile in TemplateFiles.Instance.OtherFiles)
             {
-                File.Copy(Utilities.GetFullPathFromKnownRelative(otherFile), Path.Combine(propsOutputFolder, Path.GetFileName(otherFile)));
+                File.Copy(Utilities.GetFullPathFromKnownRelative(otherFile), Path.Combine(generatedProjectPath, Path.GetFileName(otherFile)));
             }
 
             Debug.Log("Completed.");
         }
 
-        private static void MakePackagesCopy()
+        private static void MakePackagesCopy(string msbuildFolder)
         {
             string packageCache = Path.Combine(Application.dataPath, "..", "Library/PackageCache");
             string[] directories = Directory.GetDirectories(packageCache);
 
-            string outputDirectory = Path.Combine(Application.dataPath, "..", Utilities.PackagesCopyFolderName);
+            string outputDirectory = Path.Combine(msbuildFolder, Utilities.PackagesCopyFolderName);
             Utilities.EnsureCleanDirectory(outputDirectory);
 
             foreach (string directory in directories)
@@ -98,19 +99,19 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
         }
 
-        private static void CreateCommonPropsFile(IEnumerable<CompilationPlatformInfo> availablePlatforms, CompilationPlatformInfo editorPlatform, string propsOutputFolder)
+        private static void CreateCommonPropsFile(IEnumerable<CompilationPlatformInfo> availablePlatforms, CompilationPlatformInfo editorPlatform, string projectOutputFolder)
         {
             foreach (CompilationPlatformInfo platform in availablePlatforms)
             {
                 // Check for specialized template, otherwise get the common one
-                ProcessPlatformTemplateForConfiguration(platform, propsOutputFolder, true);
-                ProcessPlatformTemplateForConfiguration(platform, propsOutputFolder, false);
+                ProcessPlatformTemplateForConfiguration(platform, projectOutputFolder, true);
+                ProcessPlatformTemplateForConfiguration(platform, projectOutputFolder, false);
             }
 
-            ProcessPlatformTemplateForConfiguration(editorPlatform, propsOutputFolder, true);
+            ProcessPlatformTemplateForConfiguration(editorPlatform, projectOutputFolder, true);
         }
 
-        private static void ProcessPlatformTemplateForConfiguration(CompilationPlatformInfo platform, string propsOutputFolder, bool inEditorConfiguration)
+        private static void ProcessPlatformTemplateForConfiguration(CompilationPlatformInfo platform, string projectOutputFolder, bool inEditorConfiguration)
         {
             string configuration = inEditorConfiguration ? "InEditor" : "Player";
 
@@ -128,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     platform.CommonPlatformReferences.Concat(platform.AdditionalPlayerReferences), platform.CommonPlatformDefines.Concat(platform.AdditionalPlayerDefines));
             }
 
-            File.WriteAllText(Path.Combine(propsOutputFolder, $"{platform.Name}.{configuration}.props"), platformPropsText);
+            File.WriteAllText(Path.Combine(projectOutputFolder, $"{platform.Name}.{configuration}.props"), platformPropsText);
         }
 
         private static string ProcessPlatformTemplate(string platformTemplate, string platformName, string configuration, BuildTarget buildTarget, TargetFramework targetFramework, IEnumerable<string> references, IEnumerable<string> defines, params HashSet<string>[] priorToCheck)

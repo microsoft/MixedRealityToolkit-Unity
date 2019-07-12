@@ -168,8 +168,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// Exports the project given a template.
         /// </summary>
         /// <param name="projectFileTemplateText">The template of the csproj file.</param>
-        /// <param name="propsOutputFolder">The output folder where all the props were added.</param>
-        internal void ExportProject(string projectFileTemplateText, string propsOutputFolder)
+        /// <param name="projectFilesPath">The output folder where all the props were added.</param>
+        internal void ExportProject(string projectFileTemplateText, string projectFilesPath)
         {
             if (File.Exists(ReferencePath.AbsolutePath))
             {
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     ProcessSourceFile(source, sourceIncludeTemplate, sourceIncludes, sourceGuidToClassName);
                 }
 
-                File.WriteAllLines(Path.Combine(propsOutputFolder, $"{Guid.ToString()}.csmap"), sourceGuidToClassName.Select(t => $"{t.Key}:{t.Value}"));
+                File.WriteAllLines(Path.Combine(projectFilesPath, $"{Guid.ToString()}.csmap"), sourceGuidToClassName.Select(t => $"{t.Key}:{t.Value}"));
 
                 List<string> supportedPlatformBuildConditions = new List<string>();
                 PopulateSupportedPlatformBuildConditions(supportedPlatformBuildConditions, suportedPlatformBuildConditionTemplate, "InEditor", InEditorPlatforms);
@@ -203,7 +203,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     { "<!--DEVELOPMENT_BUILD_TOKEN-->", "false" }, // Default to false
 
-                    { "<!--OUTPUT_PATH_TOKEN-->", Path.Combine("..", "MRTKBuild") },
                     { "<!--IS_EDITOR_ONLY_TARGET_TOKEN-->", (ProjectType ==  ProjectType.EditorAsmDef || ProjectType == ProjectType.PredefinedEditorAssembly).ToString() },
                     { "<!--UNITY_EDITOR_INSTALL_FOLDER-->", Path.GetDirectoryName(EditorApplication.applicationPath) + "\\"},
 
@@ -214,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     { "<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", inEditorSearchPaths) },
                     { "<!--PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", playerSearchPaths) },
 
-                    { "##PLATFORM_PROPS_FOLDER_PATH_TOKEN##", propsOutputFolder },
+                    { "##PLATFORM_PROPS_FOLDER_PATH_TOKEN##", projectFilesPath },
 
                     { projectReferenceSetTemplate, projectReferences },
                     { sourceIncludeTemplate, string.Join("\r\n", sourceIncludes) },
@@ -241,14 +240,19 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             {
                 classNameToAdd = asset.GetClass()?.FullName;
             }
-            sourceGuidToClassName.Add(guid, classNameToAdd);
 
+            sourceGuidToClassName.Add(guid, classNameToAdd);
 
             string normalized = Utilities.GetNormalizedPath(sourceFile);
             if (normalized.StartsWith("Packages"))
             {
                 normalized = "PackagesCopy" + normalized.Substring("Packages".Length);
             }
+            else if (normalized.StartsWith("Assets"))
+            {
+                normalized = "..\\" + normalized;
+            }
+
             sourceIncludes.Add(Utilities.ReplaceTokens(sourceIncludeTemplate, new Dictionary<string, string>()
             {
                 {"##RELATIVE_SOURCE_PATH##", $"..\\{normalized}" },

@@ -24,7 +24,7 @@
     <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
     <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.SDK.targets" />
 
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.Inspectors.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.Inspectors.*" target="Plugins\" />
   </files>
 </package>

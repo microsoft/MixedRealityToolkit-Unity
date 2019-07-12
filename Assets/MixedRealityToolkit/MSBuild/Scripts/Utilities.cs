@@ -22,7 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     {
         private const string AssetsFolderName = "Assets";
         private const string PackagesFolderName = "Packages";
+        private const string MSBuildFolderName = "MSBuild";
 
+        public static readonly string MSBuildOutputFolder = GetNormalizedPath(Application.dataPath.Replace("Assets", MSBuildFolderName), true);
         public const string PackagesCopyFolderName = "PackagesCopy";
 
         private static string AssetsPath;
@@ -52,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
             if (path.StartsWith(PackagesFolderName))
             {
-                return Path.GetFullPath(AssetsPath.Substring(0, AssetsPath.Length - AssetsFolderName.Length) + path.Replace(PackagesFolderName, PackagesCopyFolderName));
+                return Path.GetFullPath(MSBuildOutputFolder + path.Replace(PackagesFolderName, PackagesCopyFolderName));
             }
 
             throw new InvalidOperationException("Not a path known to be relative to project's Package folder.");
@@ -278,11 +280,16 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Given a list of Asset guids converts them to asset paths in place.
         /// </summary>
-        public static void GetPathsFromGuidsInPlace(string[] guids)
+        public static void GetPathsFromGuidsInPlace(string[] guids, bool fullPaths = false)
         {
             for (int i = 0; i < guids.Length; i++)
             {
                 guids[i] = AssetDatabase.GUIDToAssetPath(guids[i]);
+
+                if (fullPaths)
+                {
+                    guids[i] = GetFullPathFromAssetsRelative(guids[i]);
+                }
             }
         }
 

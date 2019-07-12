@@ -382,6 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static void UpdateMetaFiles(Dictionary<string, string> dllGuids)
         {
+            if (!TemplateFiles)
             //Load the sample meta files
             DirectoryInfo assetDirectory = new DirectoryInfo(Application.dataPath);
             FileInfo editorMetaFile = assetDirectory.GetFiles("*sampleEditorDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();

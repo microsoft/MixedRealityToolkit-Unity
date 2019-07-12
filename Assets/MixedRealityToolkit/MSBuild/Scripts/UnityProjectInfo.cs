@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         public IReadOnlyDictionary<string, PluginAssemblyInfo> Plugins { get; }
 
-        public UnityProjectInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms)
+        public UnityProjectInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, string projectOutputPath)
         {
             this.availablePlatforms = availablePlatforms;
 
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         Debug.LogError($"Failed to retrieve AsmDef for script assembly: {pair.Key}");
                     }
 
-                    toAdd = new CSProjectInfo(availablePlatforms, Guid.NewGuid(), null, pair.Value, Application.dataPath.Replace("Assets", "MSBuild"));
+                    toAdd = new CSProjectInfo(availablePlatforms, Guid.NewGuid(), null, pair.Value, projectOutputPath);
                 }
                 else
                 {
@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     AssemblyDefinitionAsset assemblyDefinitionAsset = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(asmDefPath);
                     AssemblyDefinitionInfo assemblyDefinitionInfo = assemblyDefinitionAsset == null ? null : JsonUtility.FromJson<AssemblyDefinitionInfo>(assemblyDefinitionAsset.text);
                     assemblyDefinitionInfo?.Validate(availablePlatforms);
-                    toAdd = new CSProjectInfo(availablePlatforms, guidResult, assemblyDefinitionInfo, pair.Value, Application.dataPath.Replace("Assets", "MSBuild"));
+                    toAdd = new CSProjectInfo(availablePlatforms, guidResult, assemblyDefinitionInfo, pair.Value, projectOutputPath);
                 }
 
                 csProjects.Add(pair.Key, toAdd);
@@ -125,10 +125,10 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// </summary>
         /// <param name="solutionTemplateText">The solution file template text.</param>
         /// <param name="projectFileTemplateText">The project file template text.</param>
-        /// <param name="propsOutputFolder">The output folder of the platform props.</param>
-        public void ExportSolution(string solutionTemplateText, string projectFileTemplateText, string propsOutputFolder)
+        /// <param name="generatedProjectPath">The output folder of the platform props.</param>
+        public void ExportSolution(string solutionTemplateText, string projectFileTemplateText, string generatedProjectPath)
         {
-            string solutionFilePath = Path.Combine(Application.dataPath.Replace("Assets", "MSBuild"), "MRTK.sln");
+            string solutionFilePath = Path.Combine(generatedProjectPath, "MRTK.sln");
 
             if (File.Exists(solutionFilePath))
             {
@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             foreach (CSProjectInfo project in CSProjects.Values)
             {
-                project.ExportProject(projectFileTemplateText, propsOutputFolder);
+                project.ExportProject(projectFileTemplateText, generatedProjectPath);
             }
 
             File.WriteAllText(solutionFilePath, solutionTemplateText);

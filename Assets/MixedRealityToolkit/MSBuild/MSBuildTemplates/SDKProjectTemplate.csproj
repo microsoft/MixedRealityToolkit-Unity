@@ -9,11 +9,18 @@
     
     <DevelopmentBuild><!--DEVELOPMENT_BUILD_TOKEN--></DevelopmentBuild>
     
-    <RelativeBuildFolder><!--OUTPUT_PATH_TOKEN--></RelativeBuildFolder>
     <IsEditorOnlyTarget><!--IS_EDITOR_ONLY_TARGET_TOKEN--></IsEditorOnlyTarget>
     <UnityEditorInstallFolder><!--UNITY_EDITOR_INSTALL_FOLDER--></UnityEditorInstallFolder>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <RelativeBuildFolder>..\Output\</RelativeBuildFolder>
+    <BuildFolder>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)</BuildFolder>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
 
-    <BuildFolder>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)\</BuildFolder>
+  <PropertyGroup Condition="'$(PublishOutputPath)'==''">
+    <PublishOutputPath>$(MSBuildThisFileDirectory)..\Publish\</PublishOutputPath>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Platform)' == ''">
@@ -119,7 +126,7 @@
   </Target>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y $(TargetDir)$(TargetName).dll $(BuildFolder)$(UnityConfiguration)\$(UnityPlatform)\&#xD;&#xA;xcopy /y $(TargetDir)$(TargetName).pdb $(BuildFolder)$(UnityConfiguration)\$(UnityPlatform)\" />
+    <Exec Command="xcopy /y $(TargetDir)$(TargetName).dll $(PublishOutputPath)$(UnityConfiguration)\$(UnityPlatform)\&#xD;&#xA;xcopy /y $(TargetDir)$(TargetName).pdb $(PublishOutputPath)$(UnityConfiguration)\$(UnityPlatform)\" />
   </Target>
 
 </Project>
