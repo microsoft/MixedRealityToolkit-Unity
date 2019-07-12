@@ -419,7 +419,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     tokenReplacements.Add(executionOrderEntryTemplate, string.Join("\r\n", entries));
                 }
             }
-
+            
             return Utilities.ReplaceTokens(templateText, tokenReplacements);
         }
 

@@ -23,7 +23,5 @@
     <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tests.targets" />
 
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.EditModeTests.*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.PlayModeTests.*" target="Plugins\" />
   </files>
 </package>
