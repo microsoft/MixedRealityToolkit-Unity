@@ -678,7 +678,8 @@ PrefabInstance:
 
         Try grabbing the sphere or box which a near or far interaction. Then move
         the sphere or box until it intersects with the heart. You will notice that
-        any portions of the heart that intersect with the heart will not be renderered.
+        any portions of the heart that intersect with the sphere or box will not be
+        renderered.
 
 
 
