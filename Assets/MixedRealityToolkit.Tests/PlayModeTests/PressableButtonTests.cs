@@ -151,6 +151,40 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
 
+        /// <summary>
+        /// This test verifies button trigger with far interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TriggerButtonFarInteraction()
+        {
+            GameObject testButton = InstantiateDefaultPressableButton();
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            testButton.transform.position = new Vector3(0f, 0.3f, 0.8f);
+            testButton.transform.localScale = Vector3.one * 15f; // scale button up so it's easier to hit it with the far interaction pointer
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            bool buttonTriggered = false;
+            Interactable interactableComponent = testButton.GetComponent<Interactable>();
+            Assert.IsNotNull(interactableComponent);
+            interactableComponent.OnClick.AddListener(() =>
+            {
+                buttonTriggered = true;
+            });
+
+            TestHand hand = new TestHand(Handedness.Right);
+            Vector3 initialHandPosition = new Vector3(0.0f, 0f, 0.3f); // orient hand so far interaction ray will hit button
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            Assert.IsTrue(buttonTriggered, "Button did not get triggered with far interaction.");
+
+            Object.Destroy(testButton);
+            yield return null;
+        }
+
         [UnityTest]
         public IEnumerator ScaleWorldDistances()
         {
