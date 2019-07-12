@@ -42,6 +42,7 @@ Material:
     - _AlbedoAlphaMode: 0
     - _AlbedoAssignedAtRuntime: 0
     - _BlendOp: 0
+    - _BlendedClippingWidth: 0.0001
     - _BorderLight: 1
     - _BorderLightOpaque: 0
     - _BorderLightOpaqueAlpha: 1
@@ -74,6 +75,7 @@ Material:
     - _FadeBeginDistance: 0.01
     - _FadeCompleteDistance: 0.05
     - _FadeMinValue: 0
+    - _FluentLightIntensity: 1
     - _HoverLight: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 24.5

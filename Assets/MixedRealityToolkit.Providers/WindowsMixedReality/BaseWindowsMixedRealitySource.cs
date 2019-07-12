@@ -71,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (!Enabled) { return; }
 
             UpdateSourceData(interactionSourceState);
+            UpdateVelocity(interactionSourceState);
 
             if (Interactions == null)
             {
@@ -100,6 +101,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             LastSourceStateReading = interactionSourceState;
+        }
+
+        public void UpdateVelocity(InteractionSourceState interactionSourceState)
+        {
+            Vector3 newVelocity;
+            bool isVelocityValid = interactionSourceState.sourcePose.TryGetVelocity(out newVelocity);
+            if (isVelocityValid)
+            {
+                Velocity = newVelocity;
+            }
+            Vector3 newAngularVelocity;
+            bool isAngularVelocityValid = interactionSourceState.sourcePose.TryGetAngularVelocity(out newAngularVelocity);
+            if(isAngularVelocityValid)
+            {
+                AngularVelocity = newAngularVelocity;
+            }
         }
 
         /// <summary>

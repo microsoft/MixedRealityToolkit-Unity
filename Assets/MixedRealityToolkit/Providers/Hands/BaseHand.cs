@@ -20,10 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         // Velocity internal states
         private float deltaTimeStart;
-        private Vector3 lastPosition;
-        private Vector3 lastPalmNormal;
-        private readonly int velocityUpdateInterval = 9;
+        private const int velocityUpdateInterval = 6;
         private int frameOn = 0;
+        private Vector3[] velocityPositionsCache = new Vector3[velocityUpdateInterval];
+        private Vector3[] velocityNormalsCache = new Vector3[velocityUpdateInterval];
+        private Vector3 velocityPositionsSum = Vector3.zero;
+        private Vector3 velocityNormalsSum = Vector3.zero;
 
         /// <summary>
         /// Constructor.
@@ -54,30 +56,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected void UpdateVelocity()
         {
-            if (frameOn == 0)
+            if(frameOn < velocityUpdateInterval)
             {
-                deltaTimeStart = Time.unscaledTime;
-                lastPosition = GetJointPosition(TrackedHandJoint.Palm);
-                lastPalmNormal = GetPalmNormal();
-                //lastPalmNormal = new Vector3(1, 0, 0);
+                velocityPositionsCache[frameOn] = GetJointPosition(TrackedHandJoint.Palm);
+                velocityPositionsSum += velocityPositionsCache[frameOn];
+                velocityNormalsCache[frameOn] = GetPalmNormal();
+                velocityNormalsSum += velocityNormalsCache[frameOn];
             }
-            else if (frameOn == velocityUpdateInterval)
+            else
             {
-                //update linear velocity
-                float deltaTime = Time.unscaledTime - deltaTimeStart;
-                Vector3 newVelocity = (GetJointPosition(TrackedHandJoint.Palm) - lastPosition) / deltaTime;
-                Velocity = (Velocity * 0.8f) + (newVelocity * 0.2f);
+                int frameIndex = frameOn % velocityUpdateInterval;
 
-                //update angular velocity
-                Vector3 currentPalmNormal = GetPalmNormal();
-                //currentPalmNormal = new Vector3(0, 1, 0);
-                Quaternion rotation = Quaternion.FromToRotation(lastPalmNormal, currentPalmNormal);
+                float deltaTime = Time.unscaledTime - deltaTimeStart;
+
+                Vector3 newPosition = GetJointPosition(TrackedHandJoint.Palm);
+                Vector3 newNormal = GetPalmNormal();
+
+                Vector3 newPositionsSum = velocityPositionsSum - velocityPositionsCache[frameIndex] + newPosition;
+                Vector3 newNormalsSum = velocityNormalsSum - velocityNormalsCache[frameIndex] + newNormal;
+
+                Velocity = (newPositionsSum - velocityPositionsSum) / deltaTime / velocityUpdateInterval;
+
+                Quaternion rotation = Quaternion.FromToRotation(velocityNormalsSum / velocityUpdateInterval, newNormalsSum / velocityUpdateInterval);
                 Vector3 rotationRate = rotation.eulerAngles * Mathf.Deg2Rad;
                 AngularVelocity = rotationRate / deltaTime;
+
+                velocityPositionsCache[frameIndex] = newPosition;
+                velocityNormalsCache[frameIndex] = newNormal;
+                velocityPositionsSum = newPositionsSum;
+                velocityNormalsSum = newNormalsSum;
             }
 
+            deltaTimeStart = Time.unscaledTime;
             frameOn++;
-            frameOn = frameOn > velocityUpdateInterval ? 0 : frameOn;
         }
 
         #endregion Gesture Definitions

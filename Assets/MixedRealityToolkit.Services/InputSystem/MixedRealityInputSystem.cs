@@ -145,10 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            // Ensure the camera starts at the origin.
-            CameraCache.Main.transform.position = Vector3.zero;
-            CameraCache.Main.transform.rotation = Quaternion.identity;
-
             BaseInputModule[] inputModules = UnityEngine.Object.FindObjectsOfType<BaseInputModule>();
 
             if (inputModules.Length == 0)
