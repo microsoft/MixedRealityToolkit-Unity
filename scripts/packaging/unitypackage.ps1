@@ -33,8 +33,8 @@
 .PARAMETER LogDirectory
     The location where Unity logs will be stored. Defaults to the current
     working directory.
-.PARAMETER UnityVersion
-    What version of Unity should we use? Falls back to -ge, then to -latest.
+.PARAMETER UnityDirectory
+    The Unity install directory that will be used to build packages.
 .PARAMETER Clean
     If true, the OutputDirectory will be recursively deleted prior to package
     generation.
@@ -57,17 +57,14 @@ param(
     [string]$OutputDirectory = ".\artifacts",
     [string]$RepoDirectory = ".",
     [string]$LogDirectory,
-    [ValidatePattern("^\d+\.\d+\.\d+$")]
+    [string]$UnityDirectory,
+    [ValidatePattern("^\d+\.\d+\.\d+\.*\d*$")]
     [string]$PackageVersion,
-    [ValidatePattern("^\d+\.\d+\.\d+[fpb]\d+$")]
-    [string]$UnityVersion, 
     [switch]$Clean,
     [switch]$Verbose
 )
 
 if ( $Verbose ) { $VerbosePreference = 'Continue' }
-
-Import-Module UnitySetup -MinimumVersion '4.0.97' -ErrorAction Stop
 
 # This hashtable contains mapping of the packages (by name) to the set
 # of top level folders that should be included in that package.
@@ -102,51 +99,6 @@ function GetPackageVersion() {
         Select-Object -First 1
 }
 
-function GetFallbackUnityVersion() {
-    <#
-    .SYNOPSIS
-        Gets the first version of Unity that is greater than or equal to the Unity
-        version specified in the project.
-    .DESCRIPTION
-        This will fallback to the latest Unity version if a greater than or equal
-        to version is not found.
-    #>
-    $upi = Get-UnityProjectInstance
-    $usis = Get-UnitySetupInstance
-
-    # Try to find an equal or greater version than our project
-    $usi = $usis | Where-Object { $_.Version -ge $upi.Version } |
-        Sort-Object -Property 'Version' | 
-        Select-Object -First 1
-
-    # If no version is found that is greater than or equal to our project
-    # fall back to the latest.
-    if (-not $usi) {
-        $usi = $usis | Select-UnitySetupInstance -Latest
-    }
-    if (-not $usi) {
-        throw 'Could not find version of Unity to build with.'
-    }
-
-    # Warn if we're not using the exact version
-    if ($usi.Version.CompareTo($upi.Version) -ne 0) {
-        Write-Warning "Could not find Unity $($upi.Version), falling back to $($usi.Version)"
-    }
-
-    return $usi.Version 
-}
-
-function ValidateUnityVersion([String] $Version) {
-    <#
-    .SYNOPSIS
-        Validates that the specified version of Unity exists.
-    #>
-    $usi = Get-UnitySetupInstance | Select-UnitySetupInstance -Version $Version
-    if ( -not $usi ) {
-        throw "Could not find specified version of unity: $Version"
-    }
-}
-
 # Beginning of the .unitypackage script main section
 # The overall structure of this script looks like:
 #
@@ -169,12 +121,16 @@ if (-not $PackageVersion) {
 }
 Write-Verbose "Using $PackageVersion"
 
-Write-Verbose "Reconciling Unity version:"
-if (-not $UnityVersion) {
-    $UnityVersion = GetFallbackUnityVersion
+Write-Verbose "Reconciling Unity binary:"
+if (-not $UnityDirectory) {
+    throw "-UnityDirectory is a required flag"
 }
-ValidateUnityVersion($UnityVersion)
-Write-Verbose "Using Unity version $UnityVersion"
+
+$unityEditor = Get-ChildItem $UnityDirectory -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+if (-not $unityEditor) {
+    throw "Unable to find the unity editor executable in $UnityDirectory"
+}
+Write-Verbose $unityEditor;
 
 if ($Clean) {
     Write-Verbose "Recursively deleting output directory: $OutputDirectory"
@@ -205,24 +161,34 @@ foreach ($entry in $packages.GetEnumerator()) {
     # The exportPackages flag expects the last value in the array
     # to be the final output destination.
     $exportPackages = $folders + $unityPackagePath
+    $exportPackages = $exportPackages -join " "
 
     Write-Verbose "Generating .unitypackage: $unityPackagePath"
     Write-Verbose "Log location: $logFileName"
     
     try {
-        $unityArgs = @{
-            'BatchMode'       = $true
-            'AcceptAPIUpdate' = $true
-            'Quit'            = $true
-            'PassThru'        = $true
-            'Wait'            = $true
-            'ExportPackage'   = $exportPackages
-            'LogFile'         = $logFileName
-            'Version'         = $UnityVersion
-        }
+        $unityArgs = "-BatchMode -Quit -Wait " +
+            "-projectPath $RepoDirectory " +
+            "-exportPackage $exportPackages " +
+            "-logFile $logFileName"
 
-        $process = Start-UnityEditor @unityArgs
-        if (($process.ExitCode -eq 0) -and (Test-Path $unityPackagePath)) {
+        # Starts the Unity process, and the waits (and shows output from the editor in the console
+        # while the process is still running.)
+        $proc = Start-Process -FilePath "$unityEditor" -ArgumentList "$unityArgs" -PassThru
+        $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFileName
+
+        while (-not $proc.HasExited -and $ljob.HasMoreData)
+        {
+            Receive-Job $ljob
+            Start-Sleep -Milliseconds 200
+        }
+        Receive-Job $ljob
+        Stop-Job $ljob
+        Remove-Job $ljob
+
+        Stop-Process $proc
+
+        if (($proc.ExitCode -eq 0) -and (Test-Path $unityPackagePath)) {
             Write-Verbose "Successfully created $unityPackagePath"
         }
         else { Write-Error "Failed to create $unityPackagePath" }
