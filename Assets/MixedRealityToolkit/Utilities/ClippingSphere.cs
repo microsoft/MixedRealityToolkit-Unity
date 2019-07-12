@@ -28,11 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             get { return "_CLIPPING_SPHERE"; }
         }
 
-        protected override string KeywordProperty
-        {
-            get { return "_ClippingSphere"; }
-        }
-
         protected override string ClippingSideProperty
         {
             get { return "_ClipSphereSide"; }
