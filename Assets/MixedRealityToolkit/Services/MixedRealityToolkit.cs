@@ -967,59 +967,58 @@ namespace Microsoft.MixedReality.Toolkit
         private void DestroyAllServices()
         {
             // NOTE: Service instances are destroyed as part of the unregister process.
-            {
-                // Unregister core services (active systems).
-                // We need to destroy services in backwards order as those which are initialized 
-                // later may rely on those which are initialized first.
-                var orderedActiveSystems = activeSystems.OrderByDescending(m => m.Value.Priority);
 
-                foreach (var system in orderedActiveSystems)
-                {
-                    Type type = system.Key;
+            // Unregister extension services first
+            var orderedRegisteredServices = registeredMixedRealityServices.OrderByDescending(service => service.Item2.Priority);
 
-                    if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
-                    {
-                        UnregisterService<IMixedRealityBoundarySystem>();
-                    }
-                    else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(type))
-                    {
-                        UnregisterService<IMixedRealityCameraSystem>();
-                    }
-                    else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type))
-                    {
-                        UnregisterService<IMixedRealityDiagnosticsSystem>();
-                    }
-                    else if (typeof(IMixedRealityFocusProvider).IsAssignableFrom(type))
-                    {
-                        UnregisterService<IMixedRealityFocusProvider>();
-                    }
-                    else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(type))
-                    {
-                        UnregisterService<IMixedRealityInputSystem>();
-                    }
-                    else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type))
-                    {
-                        UnregisterService<IMixedRealitySpatialAwarenessSystem>();
-                    }
-                    else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type))
-                    {
-                        UnregisterService<IMixedRealityTeleportSystem>();
-                    }
-                }
-                activeSystems.Clear();
-            }
-
-            // Unregister extension services.
-            List<Tuple<Type, IMixedRealityService>> serviceTuples = new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices.ToArray());
-            foreach (Tuple<Type, IMixedRealityService> serviceTuple in serviceTuples)
+            foreach (Tuple<Type, IMixedRealityService> serviceTuple in orderedRegisteredServices)
             {
                 if (serviceTuple.Item2 is IMixedRealityExtensionService)
                 {
                     UnregisterService<IMixedRealityExtensionService>((IMixedRealityExtensionService)serviceTuple.Item2);
                 }
             }
-            serviceTuples.Clear();
             registeredMixedRealityServices.Clear();
+
+            // Unregister core services (active systems) second.
+            // We need to destroy services in backwards order as those which are initialized 
+            // later may rely on those which are initialized first.
+            var orderedActiveSystems = activeSystems.OrderByDescending(m => m.Value.Priority);
+
+            foreach (var system in orderedActiveSystems)
+            {
+                Type type = system.Key;
+
+                if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityBoundarySystem>();
+                }
+                else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityCameraSystem>();
+                }
+                else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityDiagnosticsSystem>();
+                }
+                else if (typeof(IMixedRealityFocusProvider).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityFocusProvider>();
+                }
+                else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityInputSystem>();
+                }
+                else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealitySpatialAwarenessSystem>();
+                }
+                else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityTeleportSystem>();
+                }
+            }
+            activeSystems.Clear();
         }
 
         private bool ExecuteOnAllServices(Action<IMixedRealityService> execute)
@@ -1045,7 +1044,8 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Mixed Reality Toolkit is not configured, stop.
             if (!HasProfileAndIsInitialized) { return false; }
 
-            foreach (var service in registeredMixedRealityServices)
+            var orderedRegisteredServices = registeredMixedRealityServices.OrderByDescending(service => service.Item2.Priority);
+            foreach (var service in orderedRegisteredServices)
             {
                 execute(service.Item2);
             }
