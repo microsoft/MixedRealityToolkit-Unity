@@ -30,7 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void DrawInspectorGUI(object target)
         {
-            IMixedRealitySceneSystem sceneSystem = (IMixedRealitySceneSystem)target;
+            // Get the scene system itself
+            IMixedRealitySceneSystem sceneSystem = target as IMixedRealitySceneSystem;
+            // Get the scene system's editor interface
             IMixedRealitySceneSystemEditor sceneSystemEditor = target as IMixedRealitySceneSystemEditor;
 
             if (sceneSystemEditor == null)
