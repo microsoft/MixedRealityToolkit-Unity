@@ -383,6 +383,46 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
         }
 
+        private static string ProcessMetaTemplate(string templateText, string guid, Dictionary<string, int> executionOrderEntries = null)
+        {
+            if (!Utilities.TryGetTextTemplate(templateText, "PROJECT_GUID", out string projectGuidTemplate))
+            {
+                throw new FormatException("Incorrect format for the meta template, doesn't contain a place for project_guid.");
+            }
+
+            Dictionary<string, string> tokenReplacements = new Dictionary<string, string>()
+            {
+                { projectGuidTemplate, projectGuidTemplate.Replace("<PROJECT_GUID_TOKEN>", guid) }
+            };
+
+            if (Utilities.TryGetTextTemplate(templateText, "EXECUTION_ORDER", out string executionOrderTemplate)
+                && Utilities.TryGetTextTemplate(templateText, "EXECUTION_ORDER_ENTRY", out string executionOrderEntryTemplate))
+            {
+                if (executionOrderEntries?.Count == 0)
+                {
+                    tokenReplacements.Add(executionOrderTemplate, executionOrderTemplate.Replace("<EMPTY_TOKEN>", "{}"));
+                    tokenReplacements.Add(executionOrderEntryTemplate, string.Empty);
+                }
+                else
+                {
+                    List<string> entries = new List<string>();
+                    foreach (KeyValuePair<string, int> pair in executionOrderEntries)
+                    {
+                        entries.Add(Utilities.ReplaceTokens(executionOrderEntryTemplate, new Dictionary<string, string>()
+                        {
+                            { "<SCRIPT_FULL_NAME_TOKEN>", pair.Key },
+                            { "<SCRIPT_EXECUTION_VALUE_TOKEN>", pair.Value.ToString() }
+                        }));
+                    }
+
+                    tokenReplacements.Add(executionOrderTemplate, executionOrderTemplate.Replace("<EMPTY_TOKEN>", string.Empty));
+                    tokenReplacements.Add(executionOrderEntryTemplate, string.Join("\r\n", entries));
+                }
+            }
+
+            return Utilities.ReplaceTokens(templateText, tokenReplacements);
+        }
+
         private static void UpdateMetaFiles(Dictionary<string, string> dllGuids)
         {
             if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.Unknown, out FileInfo editorMetaFile))
@@ -400,17 +440,16 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 throw new FileNotFoundException("Could not find sample editor dll.meta template.");
             }
 
-            string[] metaFileContent = File.ReadAllLines(editorMetaFile.FullName);
+            string metaFileTemplate = File.ReadAllText(editorMetaFile.FullName);
 
             foreach (FileInfo dllFile in new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins")).GetFiles("*", SearchOption.AllDirectories))
             {
                 if (dllFile.Extension.Equals(".meta"))
                 {
                     string dllFileName = dllFile.Name.Remove(dllFile.Name.Length - 5);
-                    if (dllGuids.ContainsKey(dllFileName))
+                    if (dllGuids.TryGetValue(dllFileName, out string guid))
                     {
-                        metaFileContent[1] = string.Format("guid: {0}", dllGuids[dllFileName]);
-                        File.WriteAllLines(dllFile.FullName, metaFileContent);
+                        File.WriteAllText(dllFile.FullName, ProcessMetaTemplate(metaFileTemplate, guid, null));
                     }
                 }
             }
@@ -425,11 +464,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 {
                     if (directory.Name.Contains("Standalone") || directory.Parent.Name.Contains("Standalone"))
                     {
-                        metaFileContent = File.ReadAllLines(standaloneMetaFile.FullName);
+                        metaFileTemplate = File.ReadAllText(standaloneMetaFile.FullName);
                     }
                     else if (directory.Name.Contains("UAP") || directory.Parent.Name.Contains("UAP"))
                     {
-                        metaFileContent = File.ReadAllLines(uapMetaFile.FullName);
+                        metaFileTemplate = File.ReadAllText(uapMetaFile.FullName);
                         isUAP = true;
                     }
 
@@ -450,12 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         if (dllGuids.ContainsKey(file.Name))
                         {
                             metaFilePath = $"{file.FullName}.meta";
-                            metaFileContent[1] = $"guid: {dllGuid}";
-                            if (File.Exists(metaFilePath))
-                            {
-                                File.Delete(metaFilePath);
-                            }
-                            File.WriteAllLines(metaFilePath, metaFileContent);
+                            File.WriteAllText(metaFilePath, ProcessMetaTemplate(metaFileTemplate, dllGuid, null));
                         }
                     }
                 }
