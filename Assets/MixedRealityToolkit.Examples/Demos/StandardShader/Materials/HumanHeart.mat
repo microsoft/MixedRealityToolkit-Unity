@@ -10,8 +10,8 @@ Material:
   m_Name: HumanHeart
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: _CLIPPING_BORDER _CLIPPING_BOX _CLIPPING_SPHERE _DIRECTIONAL_LIGHT
-    _HOVER_COLOR_OVERRIDE _HOVER_LIGHT _PROXIMITY_LIGHT _PROXIMITY_LIGHT_COLOR_OVERRIDE
-    _REFLECTIONS _SPECULAR_HIGHLIGHTS
+    _HOVER_COLOR_OVERRIDE _HOVER_LIGHT _PROXIMITY_LIGHT_COLOR_OVERRIDE _REFLECTIONS
+    _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -125,7 +125,7 @@ Material:
     - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ProximityLight: 1
+    - _ProximityLight: 0
     - _ProximityLightSubtractive: 0
     - _ProximityLightTwoSided: 0
     - _Reflections: 1
