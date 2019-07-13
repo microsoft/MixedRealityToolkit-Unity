@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 
         /// <summary>
-        /// This test verifies button trigger with far interaction
+        /// This test verifies that buttons will trigger with far interaction
         /// </summary>
         [UnityTest]
         public IEnumerator TriggerButtonFarInteraction()
