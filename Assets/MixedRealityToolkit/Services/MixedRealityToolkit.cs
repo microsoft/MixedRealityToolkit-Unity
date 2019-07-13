@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
+using UnityEngine.XR;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
@@ -1464,7 +1465,7 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_EDITOR
         /// <summary>
         /// Static class whose constructor is called once on startup. Listens for editor events.
-        /// Removes the need for invidual instances to listen for events.
+        /// Removes the need for individual instances to listen for events.
         /// </summary>
         [InitializeOnLoad]
         private static class EditorEventListener
@@ -1476,10 +1477,12 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     switch (playModeState)
                     {
+                        case PlayModeStateChange.EnteredPlayMode:
+                            CheckConfiguration();
+                            break;
                         case PlayModeStateChange.EnteredEditMode:
                             isApplicationQuitting = false;
                             break;
-
                         case PlayModeStateChange.ExitingEditMode:
                             isApplicationQuitting = false;
                             // Do a profile check
@@ -1492,7 +1495,6 @@ namespace Microsoft.MixedReality.Toolkit
                                 EditorGUIUtility.PingObject(Instance);
                             }
                             break;
-
                         default:
                             break;
                     }
@@ -1543,8 +1545,32 @@ namespace Microsoft.MixedReality.Toolkit
             RegisterInstance(this);
         }
 
+        private static void CheckConfiguration()
+        {
+            if (PlayerSettings.stereoRenderingPath != StereoRenderingPath.Instancing)
+            {
+                Debug.LogWarning("XR stereo rendering mode not set to <b>Single Pass Instanced</b>. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+            }
+
+            // If Windows Mixed Reality platform and using depth LSR, check if using 16-bit to suggest performance benefit
+            if (MixedRealityOptimizeUtils.IsDepthBufferSharingEnabled()
+                && EditorUserBuildSettings.activeBuildTarget == BuildTarget.WSAPlayer
+                && !Check16bit())
+            {
+                Debug.LogWarning("<b>Depth Buffer Sharing</b> enabled but with 24-bit depth format. Consider using 16-bit for performance. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+            }
+        }
+
+        private static bool Check16bit()
+        {
+            var playerSettings = MixedRealityOptimizeUtils.GetSettingsObject("PlayerSettings");
+            var property = playerSettings?.FindProperty("vrSettings.hololens.depthFormat");
+            return property != null && property.intValue == 0;
+        }
+
+
 #endif // UNITY_EDITOR
 
-#endregion
+        #endregion
     }
 }
