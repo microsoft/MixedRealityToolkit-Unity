@@ -25,17 +25,31 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             public string Namespace;
             public string Guid;
             public long FileId;
+            public int ExecutionOrder;
+        }
+
+        private class AssemblyInformation
+        {
+            public string Name { get; }
+
+            public Dictionary<string, ClassInformation> CompiledClasses { get; }
+
+            public AssemblyInformation(string name)
+            {
+                Name = name;
+                CompiledClasses = new Dictionary<string, ClassInformation>();
+            }
         }
 
         private const string YamlPrefix = "%YAML 1.1";
 
         private static readonly Dictionary<string, string> sourceToOutputFolders = new Dictionary<string, string>
         {
-            {"Library/PlayerDataCache/WindowsStoreApps", "UAPPlayer" },
-            {"Library/PlayerDataCache/Win", "StandalonePlayer" },
+            { "MSBuild/Publish/Player/WSA", "UAPPlayer" },
+            { "MSBuild/Publish/Player/WindowsStandalone32", "StandalonePlayer" },
         };
 
-        private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".pdf", ".cginc" };
+        private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".pdf", ".cginc", ".rsp", ".xml", ".targets", ".props", ".template", ".csproj", ".sln", ".psd", ".room" };
         private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta", ".asmdef", ".asmdef.meta" };
 
         private static Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); //Guid, FileName
@@ -71,21 +85,25 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             // DLL name to Guid
             Dictionary<string, string> asmDefMappings = RetrieveAsmDefGuids(allFilesUnderAssets);
 
-            Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer"), asmDefMappings);
-            Debug.Log($"Found {compiledClassReferences.Count} compiled class references.");
+            Dictionary<string, AssemblyInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer"), asmDefMappings);
+            Debug.Log($"Found {compiledClassReferences.Select(t => t.Value.CompiledClasses.Count).Sum()} compiled class references.");
 
             Dictionary<string, Tuple<string, long>> remapDictionary = new Dictionary<string, Tuple<string, long>>();
 
-            foreach (KeyValuePair<string, ClassInformation> pair in scriptFilesReferences)
+            foreach (KeyValuePair<string, AssemblyInformation> pair in compiledClassReferences)
             {
-                if (compiledClassReferences.TryGetValue(pair.Key, out ClassInformation compiledClassInfo))
+                foreach (KeyValuePair<string, ClassInformation> compiledClass in pair.Value.CompiledClasses)
                 {
-                    remapDictionary.Add(pair.Value.Guid, new Tuple<string, long>(compiledClassInfo.Guid, compiledClassInfo.FileId));
-                }
-                else
-                {
-                    // Switch to throwing exception later
-                    Debug.LogWarning($"Can't find a compiled version of the script: {pair.Key}; guid: {pair.Value.Guid}");
+                    ClassInformation compiledClassInfo = compiledClass.Value;
+                    if (scriptFilesReferences.TryGetValue(compiledClass.Key, out ClassInformation scriptClassInfo))
+                    {
+                        remapDictionary.Add(scriptClassInfo.Guid, new Tuple<string, long>(compiledClassInfo.Guid, compiledClassInfo.FileId));
+                        scriptFilesReferences.Remove(compiledClass.Key);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Can't find a script version of the compiled class: {compiledClass.Key}; {pair.Key}.dll. This generally means the compiled class is second or later in a script file, and Unity doesn't parse it as two different assets.");
+                    }
                 }
             }
 
@@ -256,18 +274,29 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             {
                 if (Path.GetExtension(filePath) == ".cs")
                 {
-                    MonoScript monoScript = AssetDatabase.LoadAssetAtPath<MonoScript>(filePath.Substring(lengthOfPrefix));
-                    if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(monoScript, out string guid, out long fileId))
+                    Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(filePath.Substring(lengthOfPrefix));
+                    IEnumerable<MonoScript> allScripts = allAssets.Cast<MonoScript>();
+                    if (allAssets.Length > 1)
                     {
-                        Type type = monoScript.GetClass();
-                        if (type != null)
+                        Debug.Log("Test");
+                    }
+
+                    foreach (MonoScript monoScript in allScripts)
+                    {
+                        if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(monoScript, out string guid, out long fileId))
                         {
-                            toReturn.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = guid });
-                        }
-                        else
-                        {
-                            nonClassDictionary.Add(guid, Path.GetFileName(filePath));
-                            Debug.LogWarning($"Found script that we can't get type from: {monoScript.name}");
+                            Type type = monoScript.GetClass();
+                            if (type != null)
+                            {
+                                toReturn.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = guid, ExecutionOrder = MonoImporter.GetExecutionOrder(monoScript) });
+                            }
+                            else
+                            {
+                                nonClassDictionary.Add(guid, Path.GetFileName(filePath));
+                                // anborod: This warning is very noisy, and often is correct due to "interface", "abstract", "enum" classes that won't return type with call to GetClass above.
+                                // To turn it on, we should do extra checking, but removing for now.
+                                //Debug.LogWarning($"Found script that we can't get type from: {monoScript.name}");
+                            }
                         }
                     }
                 }
@@ -277,7 +306,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         /// <returns>Returns a dictionary of type name inside MRTK DLLs mapped to additional data.</returns>
-        private static Dictionary<string, ClassInformation> ProcessCompiledDLLs(string temporaryDirectoryName, string outputDirectory, Dictionary<string, string> asmDefMappings)
+        private static Dictionary<string, AssemblyInformation> ProcessCompiledDLLs(string temporaryDirectoryName, string outputDirectory, Dictionary<string, string> asmDefMappings)
         {
             Assembly[] dlls = CompilationPipeline.GetAssemblies();
 
@@ -295,25 +324,22 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 {
                     if (dll.name.Contains("MixedReality"))
                     {
-                        File.Copy(dll.outputPath, Path.Combine(tmpDirPath, $"{dll.name}.dll"), true);
+                        string dllPath = Utilities.GetFullPathFromAssetsRelative($"Assets/../MSBuild/Publish/InEditor/WindowsStandalone32/{dll.name}.dll");
+                        File.Copy(dllPath, Path.Combine(tmpDirPath, $"{dll.name}.dll"), true);
                     }
                 }
 
                 // Load these directories
                 AssetDatabase.Refresh();
 
-                Dictionary<string, ClassInformation> toReturn = new Dictionary<string, ClassInformation>();
+                Dictionary<string, AssemblyInformation> toReturn = new Dictionary<string, AssemblyInformation>();
 
-                if (Directory.Exists(outputDirectory))
-                {
-                    Directory.Delete(outputDirectory, true);
-                }
-
-                Directory.CreateDirectory(outputDirectory);
+                Utilities.EnsureCleanDirectory(outputDirectory);
                 foreach (Assembly dll in dlls)
                 {
                     if (dll.name.Contains("MixedReality"))
                     {
+                        AssemblyInformation assemblyInformation = new AssemblyInformation(dll.name);
                         if (!asmDefMappings.TryGetValue($"{dll.name}.dll", out string newDllGuid))
                         {
                             throw new InvalidOperationException($"No guid based on .asmdef was generated for DLL '{dll.name}'.");
@@ -331,13 +357,22 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                             {
                                 Type type = monoScript.GetClass();
 
-                                if (type.Namespace == null || !type.Namespace.Contains("Microsoft.MixedReality.Toolkit"))
+                                if (type == null)
+                                {
+                                    Debug.LogError($"Encountered a MonoScript we get a null Type from: '{monoScript.name}'");
+                                }
+                                else if (type.Namespace == null || !type.Namespace.Contains("Microsoft.MixedReality.Toolkit"))
                                 {
                                     throw new InvalidDataException($"Type {type.Name} is not a member of the Microsoft.MixedReality.Toolkit namespace");
                                 }
-                                toReturn.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = newDllGuid });
+                                else
+                                {
+                                    assemblyInformation.CompiledClasses.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = newDllGuid });
+                                }
                             }
                         }
+
+                        toReturn.Add(dll.name, assemblyInformation);
                     }
                 }
 
@@ -398,7 +433,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             if (Utilities.TryGetTextTemplate(templateText, "EXECUTION_ORDER", out string executionOrderTemplate)
                 && Utilities.TryGetTextTemplate(templateText, "EXECUTION_ORDER_ENTRY", out string executionOrderEntryTemplate))
             {
-                if (executionOrderEntries?.Count == 0)
+                if ((executionOrderEntries?.Count ?? 0) == 0)
                 {
                     tokenReplacements.Add(executionOrderTemplate, executionOrderTemplate.Replace("<EMPTY_TOKEN>", "{}"));
                     tokenReplacements.Add(executionOrderEntryTemplate, string.Empty);
@@ -419,7 +454,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     tokenReplacements.Add(executionOrderEntryTemplate, string.Join("\r\n", entries));
                 }
             }
-            
+
             return Utilities.ReplaceTokens(templateText, tokenReplacements);
         }
 

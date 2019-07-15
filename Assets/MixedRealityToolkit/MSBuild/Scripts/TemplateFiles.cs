@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private const string PlatformPropsTemplateName = "Platform.Configuration.Template.props";
         private const string EditorPropsTemplateName = "Editor.InEditor.Template.props";
         private const string SpecifcPlatformPropsTemplateRegex = @"[a-zA-Z]+\.[a-zA-Z]+\.Template\.props";
-        private const string PluginMetaFileTemplateRegex = @"Plugin\.([a-zA-Z])\.meta.template";
+        private const string PluginMetaFileTemplateRegex = @"Plugin\.([a-zA-Z]*)\.meta.template";
 
         private static TemplateFiles instance;
 
@@ -91,36 +91,43 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             // Get specific platforms
             Dictionary<string, string> platformTemplates = new Dictionary<string, string>();
             Dictionary<BuildTargetGroup, FileInfo> metaFileTemplates = new Dictionary<BuildTargetGroup, FileInfo>();
+
+            HashSet<string> toRemove = new HashSet<string>();
             foreach (KeyValuePair<string, string> pair in fileNamesMaps)
             {
                 if (Regex.IsMatch(pair.Key, SpecifcPlatformPropsTemplateRegex))
                 {
                     platformTemplates.Add(pair.Key, pair.Value);
+                    toRemove.Add(pair.Key);
                 }
-
-                Match match = Regex.Match(pair.Key, PluginMetaFileTemplateRegex);
-                if (match.Success)
+                else
                 {
-                    string value = match.Groups[0].Captures[0].Value;
-                    FileInfo fileInfo = new FileInfo(pair.Value);
-                    if (Equals(value, "Editor"))
+                    Match match = Regex.Match(pair.Key, PluginMetaFileTemplateRegex);
+                    if (match.Success)
                     {
-                        metaFileTemplates.Add(BuildTargetGroup.Unknown, fileInfo);
-                    }
-                    else if (Enum.TryParse(match.Groups[0].Captures[0].Value, out BuildTargetGroup buildTargetGroup))
-                    {
-                        metaFileTemplates.Add(buildTargetGroup, fileInfo);
-                    }
-                    else
-                    {
-                        Debug.LogError($"Matched meta template but failed to parse it: {pair.Key}");
+                        string value = match.Groups[1].Captures[0].Value;
+                        FileInfo fileInfo = new FileInfo(pair.Value);
+                        if (Equals(value, "Editor"))
+                        {
+                            metaFileTemplates.Add(BuildTargetGroup.Unknown, fileInfo);
+                        }
+                        else if (Enum.TryParse(value, out BuildTargetGroup buildTargetGroup))
+                        {
+                            metaFileTemplates.Add(buildTargetGroup, fileInfo);
+                        }
+                        else
+                        {
+                            Debug.LogError($"Matched meta template but failed to parse it: {pair.Key}");
+                        }
+
+                        toRemove.Add(pair.Key);
                     }
                 }
             }
 
-            foreach (KeyValuePair<string, string> pair in platformTemplates)
+            foreach (string item in toRemove)
             {
-                fileNamesMaps.Remove(pair.Key);
+                fileNamesMaps.Remove(item);
             }
 
             PlatformTemplates = new ReadOnlyDictionary<string, string>(platformTemplates);
@@ -140,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             if (PlatformTemplates.TryGetValue($"{platform}.{configuration}.Template.props", out string templatePath)
                 || PlatformTemplates.TryGetValue($"{platform}.Configuration.Template.props", out templatePath))
             {
-                return Utilities.GetFullPathFromKnownRelative(templatePath);
+                return templatePath;
             }
             else
             {

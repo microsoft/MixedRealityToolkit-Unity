@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             foreach (string otherFile in TemplateFiles.Instance.OtherFiles)
             {
-                File.Copy(Utilities.GetFullPathFromKnownRelative(otherFile), Path.Combine(generatedProjectPath, Path.GetFileName(otherFile)));
+                File.Copy(otherFile, Path.Combine(generatedProjectPath, Path.GetFileName(otherFile)));
             }
 
             Debug.Log("Completed.");
