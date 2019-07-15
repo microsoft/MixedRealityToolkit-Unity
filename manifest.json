@@ -3666,6 +3666,94 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Performance/DepthBufferFixNow_After.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Performance/DepthBufferFixNow_After.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Performance/DepthBufferFixNow_Before.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Performance/DepthBufferFixNow_Before.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Performance/MRTKStandardShader-Stats.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Performance/MRTKStandardShader-Stats.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Performance/OptimizeWindow_SceneAnalysis.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Performance/OptimizeWindow_SceneAnalysis.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Performance/OptimizeWindow_Settings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Performance/OptimizeWindow_Settings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Performance/OptimizeWindow_ShaderAnalysis.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Performance/OptimizeWindow_ShaderAnalysis.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Performance/TextMeshPro-DepthBuffer-Fix.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Performance/TextMeshPro-DepthBuffer-Fix.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Performance/UnityStandardShader-Stats.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Performance/UnityStandardShader-Stats.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Pointers/MRTK_GGVPointer_HL1.jpg",
       "output": {
         "resource": {
@@ -4678,7 +4766,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Performance/PerfGettingStarted.html",
-          "hash": "PznUmeVLjG+efOm/Qhmk1w=="
+          "hash": "/dun5L7zlIzarmDXi6HtMA=="
         }
       },
       "is_incremental": false,
@@ -5022,6 +5110,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Utilities/BuildWindow.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Utilities/BuildWindow.html",
+          "hash": "ZRWLHQgxVsR2DeX5H8qriw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Utilities/DependencyWindow.md",
       "output": {
         ".html": {
@@ -5045,12 +5145,36 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Utilities/OptimizeWindow.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Utilities/OptimizeWindow.html",
+          "hash": "zfNsHsQ7KbtYd5LgXmsxGw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/hologram-stabilization.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/hologram-stabilization.html",
+          "hash": "FnYjQn3+Qg8hQD9FeEYgQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "Documentation/toc.yml",
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "K/yf/Gk5R/QPyQS+Hy5ZUA=="
+          "hash": "PPHuAZdReZTHPzNIHh4cqQ=="
         }
       },
       "is_incremental": false,
@@ -6081,7 +6205,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityOptimizeWindow.html",
-          "hash": "TxmhUwHR3G6o/MueBClCKQ=="
+          "hash": "7lGwqFgLmTLB0kRNnRE92Q=="
         }
       },
       "is_incremental": false,
@@ -15141,7 +15265,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.html",
-          "hash": "BiL+cc4a4Gx3g7nF+p8P+A=="
+          "hash": "Wxxzkwf520mYN1VsUk8MPQ=="
         }
       },
       "is_incremental": false,
@@ -15189,7 +15313,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityStylesUtility.html",
-          "hash": "UOkmdkWcNOcKyJ3OUyRNTw=="
+          "hash": "d2gtez+fDevViDI2VQ8HXQ=="
         }
       },
       "is_incremental": false,
@@ -16389,7 +16513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityOptimizeUtils.html",
-          "hash": "aJDyb2Nza5rjDrGn6k/TqQ=="
+          "hash": "scRZPdwd5mtYLam9mHqPjA=="
         }
       },
       "is_incremental": false,
@@ -17639,13 +17763,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 113,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1041,
+          "total_file_count": 116,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
@@ -17653,6 +17771,12 @@
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1041,
           "skipped_file_count": 0
         }
       }
