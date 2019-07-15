@@ -18,37 +18,43 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/Native Resolution")]
         private static void CaptureScreenshot1x()
         {
-            CaptureScreenshot(GetScreenshotFileName(), 1);
+            CaptureScreenshot(GetScreenshotPath(), 1);
+            EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/Native Resolution (Transparent Background)")]
         private static void CaptureScreenshot1xAlphaComposite()
         {
-            CaptureScreenshot(GetScreenshotFileName(), 1, true);
+            CaptureScreenshot(GetScreenshotPath(), 1, true);
+            EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/2x Resolution")]
         private static void CaptureScreenshot2x()
         {
-            CaptureScreenshot(GetScreenshotFileName(), 2);
+            CaptureScreenshot(GetScreenshotPath(), 2);
+            EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/2x Resolution (Transparent Background)")]
         private static void CaptureScreenshot2xAlphaComposite()
         {
-            CaptureScreenshot(GetScreenshotFileName(), 2, true);
+            CaptureScreenshot(GetScreenshotPath(), 2, true);
+            EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/4x Resolution")]
         private static void CaptureScreenshot4x()
         {
-            CaptureScreenshot(GetScreenshotFileName(), 4);
+            CaptureScreenshot(GetScreenshotPath(), 4);
+            EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/4x Resolution (Transparent Background)")]
         private static void CaptureScreenshot4xAlphaComposite()
         {
-            CaptureScreenshot(GetScreenshotFileName(), 4, true);
+            CaptureScreenshot(GetScreenshotPath(), 4, true);
+            EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
         /// <summary>
@@ -149,13 +155,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Gets a screenshot file name based on time and located on the current user's desktop.
+        /// Gets a directory which is safe for saving screenshots.
         /// </summary>
-        /// <returns>The filename of the screenshot.</returns>
-        public static string GetScreenshotFileName()
+        /// <returns>A directory safe for saving screenshots.</returns>
+        public static string GetScreenshotDirectory()
         {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            return Path.Combine(path, string.Format("Screenshot_{0:yyyy-MM-dd_hh-mm-ss-tt}.png", DateTime.Now));
+            return Application.temporaryCachePath;
+        }
+
+        /// <summary>
+        /// Gets a unique screenshot path with a file name based on date and time.
+        /// </summary>
+        /// <returns>A unique screenshot path.</returns>
+        public static string GetScreenshotPath()
+        {
+            return Path.Combine(GetScreenshotDirectory(), string.Format("Screenshot_{0:yyyy-MM-dd_hh-mm-ss-tt}_{1}.png", DateTime.Now, GUID.Generate()));
         }
     }
 }

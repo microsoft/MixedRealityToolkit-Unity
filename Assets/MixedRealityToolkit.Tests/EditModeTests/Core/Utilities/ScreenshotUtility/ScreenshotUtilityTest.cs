@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
         [UnityTest]
         public IEnumerator TestScreenshotCapture()
         {
-            var path = ScreenshotUtility.GetScreenshotFileName();
+            var path = ScreenshotUtility.GetScreenshotPath();
 
             try
             {
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
                     yield return null;
                 }
 
-                FileAssert.Exists(path, "A file was not written to disk during 1x resolution screenshot capture");
+                FileAssert.Exists(path, "A file was not written to disk during 1x resolution screenshot capture.");
 
                 Assert.True(ScreenshotUtility.CaptureScreenshot(path, 4), "Failed to capture a 4x resolution screenshot.");
 
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
                     yield return null;
                 }
 
-                FileAssert.Exists(path, "A file was not written to disk during 4x resolution screenshot capture");
+                FileAssert.Exists(path, "A file was not written to disk during 4x resolution screenshot capture.");
 
                 Assert.True(ScreenshotUtility.CaptureScreenshot(path, 1, true), "Failed to capture a 1x resolution screenshot with a transparent clear color.");
 
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
                 FileAssert.Exists(path, "A file was not written to disk during 4x resolution screenshot capture with a transparent clear color.");
 
                 Assert.False(ScreenshotUtility.CaptureScreenshot(null, 1), "A screenshot was captured with an invalid path.");
-                Assert.False(ScreenshotUtility.CaptureScreenshot(ScreenshotUtility.GetScreenshotFileName(), -1), "A screenshot was captured with an invalid super size.");
+                Assert.False(ScreenshotUtility.CaptureScreenshot(ScreenshotUtility.GetScreenshotPath(), -1), "A screenshot was captured with an invalid super size.");
             }
             finally
             {
