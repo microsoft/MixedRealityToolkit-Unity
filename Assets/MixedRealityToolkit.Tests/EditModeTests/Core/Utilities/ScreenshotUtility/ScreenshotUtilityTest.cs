@@ -25,46 +25,50 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
             {
                 Assert.False(string.IsNullOrEmpty(path), "GetScreenshotFileName returned a null or empty string.");
 
-                Assert.True(ScreenshotUtility.CaptureScreenshot(path, 1), "Failed to capture a 1x resolution screenshot.");
-
-                // Edit mode tests can only "yield return null" so we must roll our own "WaitForSeconds" implementation.
-                var waitRoutine = WaitForSeconds(1);
-                while (waitRoutine.MoveNext())
+                // Tests which require a valid device context (such as taking screenshots) cannot be run in batch mode.
+                if (!Application.isBatchMode)
                 {
-                    yield return null;
+                    Assert.True(ScreenshotUtility.CaptureScreenshot(path, 1), "Failed to capture a 1x resolution screenshot.");
+
+                    // Edit mode tests can only "yield return null" so we must roll our own "WaitForSeconds" implementation.
+                    var waitRoutine = WaitForSeconds(1);
+                    while (waitRoutine.MoveNext())
+                    {
+                        yield return null;
+                    }
+
+                    FileAssert.Exists(path, "A file was not written to disk during 1x resolution screenshot capture.");
+
+                    Assert.True(ScreenshotUtility.CaptureScreenshot(path, 4), "Failed to capture a 4x resolution screenshot.");
+
+                    waitRoutine = WaitForSeconds(4);
+                    while (waitRoutine.MoveNext())
+                    {
+                        yield return null;
+                    }
+
+                    FileAssert.Exists(path, "A file was not written to disk during 4x resolution screenshot capture.");
+
+                    Assert.True(ScreenshotUtility.CaptureScreenshot(path, 1, true), "Failed to capture a 1x resolution screenshot with a transparent clear color.");
+
+                    waitRoutine = WaitForSeconds(1);
+                    while (waitRoutine.MoveNext())
+                    {
+                        yield return null;
+                    }
+
+                    FileAssert.Exists(path, "A file was not written to disk during 1x resolution screenshot capture with a transparent clear color.");
+
+                    Assert.True(ScreenshotUtility.CaptureScreenshot(path, 4, true), "Failed to capture a 4x resolution screenshot with a transparent clear color.");
+
+                    waitRoutine = WaitForSeconds(4);
+                    while (waitRoutine.MoveNext())
+                    {
+                        yield return null;
+                    }
+
+                    FileAssert.Exists(path, "A file was not written to disk during 4x resolution screenshot capture with a transparent clear color.");
                 }
-
-                FileAssert.Exists(path, "A file was not written to disk during 1x resolution screenshot capture.");
-
-                Assert.True(ScreenshotUtility.CaptureScreenshot(path, 4), "Failed to capture a 4x resolution screenshot.");
-
-                waitRoutine = WaitForSeconds(4);
-                while (waitRoutine.MoveNext())
-                {
-                    yield return null;
-                }
-
-                FileAssert.Exists(path, "A file was not written to disk during 4x resolution screenshot capture.");
-
-                Assert.True(ScreenshotUtility.CaptureScreenshot(path, 1, true), "Failed to capture a 1x resolution screenshot with a transparent clear color.");
-
-                waitRoutine = WaitForSeconds(1);
-                while (waitRoutine.MoveNext())
-                {
-                    yield return null;
-                }
-
-                FileAssert.Exists(path, "A file was not written to disk during 1x resolution screenshot capture with a transparent clear color.");
-
-                Assert.True(ScreenshotUtility.CaptureScreenshot(path, 4, true), "Failed to capture a 4x resolution screenshot with a transparent clear color.");
-
-                waitRoutine = WaitForSeconds(4);
-                while (waitRoutine.MoveNext())
-                {
-                    yield return null;
-                }
-
-                FileAssert.Exists(path, "A file was not written to disk during 4x resolution screenshot capture with a transparent clear color.");
 
                 Assert.False(ScreenshotUtility.CaptureScreenshot(null, 1), "A screenshot was captured with an invalid path.");
                 Assert.False(ScreenshotUtility.CaptureScreenshot(ScreenshotUtility.GetScreenshotPath(), -1), "A screenshot was captured with an invalid super size.");
