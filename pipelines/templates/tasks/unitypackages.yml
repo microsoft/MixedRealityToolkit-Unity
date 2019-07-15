@@ -1,6 +1,6 @@
 # [Template] Builds and publishes .unitypackages
 parameters:
-  version: '$(MRTKVersion).$(Build.BuildNumber)'
+  version: '$(MRTKVersion)-$(Build.BuildNumber)'
 
 steps:
 - task: PowerShell@2

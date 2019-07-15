@@ -58,7 +58,7 @@ param(
     [string]$RepoDirectory = ".",
     [string]$LogDirectory,
     [string]$UnityDirectory,
-    [ValidatePattern("^\d+\.\d+\.\d+\.*\d*$")]
+    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
     [string]$PackageVersion,
     [switch]$Clean,
     [switch]$Verbose
