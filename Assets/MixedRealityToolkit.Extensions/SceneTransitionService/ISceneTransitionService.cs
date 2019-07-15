@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         bool TransitionInProgress { get; }
 
         /// <summary>
-        /// From 0-1
+        /// From 0 to 1
         /// </summary>
         float TransitionProgress { get; }
 
@@ -90,20 +90,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// </summary>
         /// <param name="customFadeTargetCameras"></param>
         void SetCustomFadeTargetCameras(IEnumerable<Camera> customFadeTargetCameras);
-
+        
         /// <summary>
         /// Fades target cameras out to color. Can be used independently of scene transitions provided no transition is taking place.
         /// </summary>
-        /// <param name="fadeColor"></param>
-        /// <param name="targetCameras"></param>
         /// <returns></returns>
         Task FadeOut();
 
         /// <summary>
         /// Fades target cameras in. Instant fade-out will occur if fade state is not opaque. Can be used independently of scene transitions provided no transition is taking place.
         /// </summary>
-        /// <param name="fadeColor"></param>
-        /// <param name="targetCameras"></param>
         /// <returns></returns>
         Task FadeIn();
 
