@@ -110,6 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (focusProvider.TryGetFocusDetails(this, out focusDetails))
                 {
                     distance = focusDetails.RayDistance;
+                    return true;
                 }
             }
 
@@ -127,6 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (focusProvider.TryGetFocusDetails(this, out focusDetails))
                 {
                     normal = focusDetails.Normal;
+                    return true;
                 }
             }
 

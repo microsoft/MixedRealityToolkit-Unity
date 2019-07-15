@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Input sources that are pressing the interactable
         /// </summary>
         public HashSet<IMixedRealityInputSource> PressingInputSources => pressingInputSources;
-
+        
         /// <summary>
         /// Is the interactable enabled?
         /// </summary>
@@ -92,6 +92,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// A way of adding more layers of states for controls like toggles
         /// </summary>
         public int Dimensions = 1;
+
+        /// <summary>
+        /// The Dimension value to set on start
+        /// </summary>
+        [SerializeField]
+        private int StartDimensionIndex = 0;
 
         /// <summary>
         /// Is the interactive selectable?
@@ -242,6 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected bool isGlobalValueCheck;
 
         // cache of current dimension
+        [SerializeField]
         protected int dimensionIndex = 0;
 
         // allows for switching colliders without firing a lose focus immediately
@@ -418,6 +425,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetupEvents();
             SetupThemes();
             SetupStates();
+
+            if(StartDimensionIndex > 0)
+            {
+                SetDimensionIndex(StartDimensionIndex);
+            }
         }
 
         private void OnEnable()
@@ -729,6 +741,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             IsToggled = toggled;
             SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
+
+            // if in toggle mode
+            if (Dimensions == 2)
+            {
+                SetDimensionIndex(toggled ? 1 : 0);
+            }
+            else
+            {
+                int selectedMode = Mathf.Clamp(Dimensions, 1, 3);
+                Debug.Log("SetToggled(bool) called, but SelectionMode is set to " + (SelectionModes)(selectedMode - 1) + ", so DimensionIndex was unchanged.");
+            }
         }
 
         /// <summary>
@@ -1175,7 +1198,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void TriggerOnClick()
         {
-            IncreaseDimensionIndex();
+            if(Dimensions == 2)
+            {
+                SetToggled(dimensionIndex % 2 == 0);
+            }
+            else
+            {
+                IncreaseDimensionIndex();
+            }
+            
             SendOnClick(null);
             SetVisited(true);
         }
