@@ -1452,15 +1452,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Bounds GetSingleObjectBounds(GameObject gameObject)
         {
-            Bounds bounds = new Bounds(Vector3.zero, Vector3.zero);
-            BoxCollider boxCollider;
-            boxCollider = gameObject.GetComponent<BoxCollider>();
-            if (boxCollider == null)
-            {
-                return new Bounds();
-            }
-
-            return new Bounds(transform.TransformPoint(boxCollider.center), Vector3.Scale(transform.lossyScale, boxCollider.size));
+            BoxCollider boxCollider = gameObject.GetComponent<BoxCollider>();
+            return boxCollider == null ? new Bounds() : new Bounds(transform.TransformPoint(boxCollider.center), Vector3.Scale(transform.lossyScale, boxCollider.size));
         }
 
         private void SetMaterials()
