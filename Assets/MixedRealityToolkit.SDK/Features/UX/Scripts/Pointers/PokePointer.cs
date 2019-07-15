@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 NearInteractionTouchableUnityUI touchable = NearInteractionTouchableUnityUI.Instances[i];
                 float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
-                if (distance < closestDistance)
+                if (distance <= touchableDistance && distance < closestDistance)
                 {
                     closest = touchable;
                     closestDistance = distance;

@@ -188,5 +188,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var dist = (actual - expected).magnitude;
             Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
+
+        public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message)
+        {
+            var dist = (val1 - val2).magnitude;
+            Debug.Assert(dist >= vector3DistanceEpsilon, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+        }
     }
 }

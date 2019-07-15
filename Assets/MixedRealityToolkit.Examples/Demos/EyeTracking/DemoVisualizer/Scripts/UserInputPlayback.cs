@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 // Now let's populate the visualizer
                 for (int i = 0; i < loggedLines.Count; i++)
                 {
-                    string[] split = loggedLines[i].Split(new char[] { ',' });
+                    string[] split = loggedLines[i].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray());
                     if (iType == InputSourceType.Eyes)
                         UpdateEyeGazeSignal(split, visualizer);
 
@@ -362,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             // Now let's populate the visualizer
             for (int i = 0; i < loggedLines.Count; i++)
             {
-                Ray? currentPointingRay = GetEyeRay(loggedLines[i].Split(new char[] { ',' }));
+                Ray? currentPointingRay = GetEyeRay(loggedLines[i].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray()));
                 if (currentPointingRay.HasValue)
                 {
                     if (UnityEngine.Physics.Raycast(currentPointingRay.Value, out hit, maxTargetingDistInMeters))
@@ -520,7 +520,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             // Now let's populate the visualizer step by step
             if (replayIndex < loggedLines.Count)
             {
-                string[] split = loggedLines[replayIndex].Split(new char[] { ',' });
+                string[] split = loggedLines[replayIndex].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray());
                 UpdateEyeGazeSignal(split, _EyeGazeVisualizer);
                 UpdateHeadGazeSignal(split, _HeadGazeVisualizer);
                 UpdateTimestampForNextReplay(split);

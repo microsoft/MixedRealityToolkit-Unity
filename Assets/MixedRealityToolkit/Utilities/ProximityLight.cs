@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             [Tooltip("The color of the ProximityLight gradient at the center (RGB) and (A) is gradient extent.")]
             [ColorUsageAttribute(true, true)]
             [SerializeField]
-            private Color centerColor = new Color(20.0f / 255.0f, 121.0f / 255.0f, 250.0f / 255.0f, 0.0f / 255.0f);
+            private Color centerColor = new Color(54.0f / 255.0f, 142.0f / 255.0f, 250.0f / 255.0f, 0.0f / 255.0f);
 
             /// <summary>
             /// The color of the ProximityLight gradient at the center (RGB) and (A) is gradient extent.
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             [Tooltip("The color of the ProximityLight gradient at the middle (RGB) and (A) is gradient extent.")]
             [SerializeField]
             [ColorUsageAttribute(true, true)]
-            private Color middleColor = new Color(3.0f / 255.0f, 111.0f / 255.0f, 255.0f / 255.0f, 84.0f / 255.0f);
+            private Color middleColor = new Color(47.0f / 255.0f, 132.0f / 255.0f, 255.0f / 255.0f, 51.0f / 255.0f);
 
             /// <summary>
             /// The color of the ProximityLight gradient at the center (RGB) and (A) is gradient extent.
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             [Tooltip("The color of the ProximityLight gradient at the outer (RGB) and (A) is gradient extent.")]
             [SerializeField]
             [ColorUsageAttribute(true, true)]
-            private Color outerColor = new Color((70.0f * 5.0f) / 255.0f, (0.0f * 5.0f) / 255.0f, (191.0f * 5.0f) / 255.0f, 255.0f / 255.0f);
+            private Color outerColor = new Color((82.0f * 3.0f) / 255.0f, (31.0f * 3.0f) / 255.0f, (191.0f * 3.0f) / 255.0f, 255.0f / 255.0f);
         }
 
         public LightSettings Settings
@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     float pulseScaler = 1.0f + light.pulseTime;
                     proximityLightData[dataIndex + 1] = new Vector4(light.Settings.NearRadius * pulseScaler,
                                                                     1.0f / Mathf.Clamp(light.Settings.FarRadius * pulseScaler, 0.001f, 1.0f),
-                                                                    1.0f / Mathf.Clamp(light.Settings.NearDistance* pulseScaler, 0.001f, 1.0f),
+                                                                    1.0f / Mathf.Clamp(light.Settings.NearDistance * pulseScaler, 0.001f, 1.0f),
                                                                     Mathf.Clamp01(light.Settings.MinNearSizePercentage));
                     proximityLightData[dataIndex + 2] = new Vector4(light.Settings.NearDistance * light.pulseTime,
                                                                     Mathf.Clamp01(1.0f - light.pulseFade),
