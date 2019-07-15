@@ -21,32 +21,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IMixedRealityMousePointer Implementation
 
-        [SerializeField]
-        [Tooltip("Should the mouse cursor be hidden when no active input is received?")]
-        private bool hideCursorWhenInactive = true;
-
-        /// <summary>
-        ///  Should the mouse cursor be hidden when no active input is received?
-        /// </summary>
-        public bool HideCursorWhenInactive => hideCursorWhenInactive;
+        public bool HideCursorWhenInactive => hideTimeout > 0;
 
         [SerializeField]
         [Range(0.01f, 1f)]
-        [Tooltip("What is the movement threshold to reach before un-hiding mouse cursor?")]
+        [Tooltip("The distance the mouse cursor must move during one frame to reappear")]
         private float movementThresholdToUnHide = 0.1f;
 
         /// <summary>
-        /// What is the movement threshold to reach before un-hiding mouse cursor?
+        /// The distance the mouse cursor must move during one frame to reappear
         /// </summary>
         public float MovementThresholdToUnHide => movementThresholdToUnHide;
 
         [SerializeField]
         [Range(0f, 10f)]
-        [Tooltip("How long should it take before the mouse cursor is hidden?")]
+        [Tooltip("The time it takes for the immobile mouse cursor to hide")]
         private float hideTimeout = 3.0f;
 
         /// <summary>
-        /// How long should it take before the mouse cursor is hidden?
+        /// The time it takes for the immobile mouse cursor to hide
         /// </summary>
         public float HideTimeout => hideTimeout;
 
@@ -182,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
-            if (!hideCursorWhenInactive || isDisabled) { return; }
+            if (hideTimeout <= 0 || isDisabled) { return; }
 
             timeoutTimer += Time.unscaledDeltaTime;
 
