@@ -4,9 +4,10 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: MRTK_DefaultMouseCursor
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SpatialMouseCursor
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: ALBEDO_OFF ALPHA_USAGE_OFF AMBIENTLIGHT_OFF CUBEMAP_OFF EMISSIVE_OFF
     ETC1_EXTERNAL_ALPHA FRESNEL_OFF LIGHTMAP_OFF LIGHTPROBES_OFF LIGHT_OFF NEARCLIP_OFF
@@ -31,6 +32,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IridescentSpectrumMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -69,18 +74,25 @@ Material:
     - ZOFFSET_CONSTANT: 0
     - ZOFFSET_SLOPE: 0
     - _AlbedoAlphaMode: 0
+    - _AlbedoAssignedAtRuntime: 0
     - _AlphaTestThreshold: 0.05
     - _BlendOp: 0
     - _BorderLight: 0
     - _BorderLightOpaque: 0
+    - _BorderLightOpaqueAlpha: 1
+    - _BorderLightReplacesAlbedo: 0
     - _BorderLightUsesHoverColor: 1
     - _BorderMinValue: 0.1
     - _BorderWidth: 0.1
     - _COLORMASK: 15
     - _CULL: 2
+    - _ClippingBorder: 0
+    - _ClippingBorderWidth: 0.025
+    - _ClippingBox: 0
     - _ClippingPlane: 0
     - _ClippingPlaneBorder: 0
     - _ClippingPlaneBorderWidth: 0.025
+    - _ClippingSphere: 0
     - _ColorWriteMask: 15
     - _CubemapContribution: 1
     - _CullMode: 0
@@ -94,23 +106,38 @@ Material:
     - _EnableEmission: 0
     - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
+    - _EnableLocalSpaceTriplanarMapping: 0
     - _EnableNormalMap: 0
+    - _EnableProximityLightColorOverride: 0
+    - _EnableTriplanarMapping: 0
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
     - _FOG: 0
     - _FadeBeginDistance: 0.85
     - _FadeCompleteDistance: 0.5
+    - _FadeMinValue: 0
+    - _FluentLightIntensity: 1
     - _HoverLight: 0
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
+    - _InnerGlowPower: 4
     - _InstancedColor: 0
+    - _Iridescence: 0
+    - _IridescenceAngle: -0.78
+    - _IridescenceIntensity: 0.5
+    - _IridescenceThreshold: 0.05
     - _LightProbeAmount: 1
     - _Metallic: 0
     - _Mode: 5
+    - _NearLightFade: 0
     - _NearPlaneFade: 0
     - _NormalAlphaAsEmissive: 0
     - _NormalAlphaAsSpecular: 0
+    - _NormalMapScale: 1
+    - _ProximityLight: 0
+    - _ProximityLightSubtractive: 0
+    - _ProximityLightTwoSided: 0
     - _Reflections: 0
     - _Refraction: 0
     - _RefractiveIndex: 0
@@ -124,12 +151,19 @@ Material:
     - _ShowDebugValue: 0
     - _Smoothness: 0.5
     - _SpecularHighlights: 1
+    - _SphericalHarmonics: 0
     - _SrcBlend: 1
     - _Stencil: 0
     - _StencilComparison: 0
     - _StencilOperation: 0
     - _StencilReference: 0
+    - _TriplanarMappingBlendSharpness: 4
     - _VertColorScale: 1
+    - _VertexColors: 0
+    - _VertexExtrusion: 0
+    - _VertexExtrusionValue: 0
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
     - _ZTEST: 8
     - _ZTest: 8
     - _ZWRITE: 1
@@ -139,6 +173,7 @@ Material:
     - _AmbientColor: {r: 0.125, g: 0.125, b: 0.125, a: 1}
     - _BounceColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
     - _ClipPlane: {r: 0, g: 1, b: 0, a: 0}
+    - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
     - _ClippingPlaneBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CubemapBalance: {r: 0, g: 1, b: 0, a: 0}
@@ -158,6 +193,9 @@ Material:
     - _NearClipDistance: {r: 0.2, g: 1, b: 0, a: 0}
     - _NormalAlphaScale: {r: 1, g: 0, b: 0, a: 0}
     - _NormalScale: {r: 1, g: 1, b: 1, a: 0}
+    - _ProximityLightCenterColorOverride: {r: 1, g: 0, b: 0, a: 0}
+    - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
+    - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SpecPower: {r: 60, g: 0, b: 1, a: 0}
     - _TintColor: {r: 1, g: 1, b: 1, a: 1}
