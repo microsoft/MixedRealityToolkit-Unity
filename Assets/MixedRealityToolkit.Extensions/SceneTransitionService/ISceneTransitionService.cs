@@ -14,14 +14,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <summary>
         /// Called when transition starts.
         /// This is called at the beginning of a transition, not at the beginning of a scene load.
-        /// For scene load events, use the Scene System.
+        /// For scene load events, we recommend using IMixedRealitySceneSystem.
         /// </summary>
         Action OnTransitionStarted { get; set; }
 
         /// <summary>
         /// Called when transition ends.
         /// This is called at the end of a transition, not at the end of a scene load.
-        /// For scene load events, use the Scene System.
+        /// For scene load events, we recommend using IMixedRealitySceneSystem.
         /// </summary>
         Action OnTransitionCompleted { get; set; }
 
