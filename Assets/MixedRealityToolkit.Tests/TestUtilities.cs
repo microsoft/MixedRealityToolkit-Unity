@@ -173,7 +173,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void ShutdownMixedRealityToolkit()
         {
             MixedRealityToolkit.SetInstanceInactive(MixedRealityToolkit.Instance);
-            MixedRealityPlayspace.Destroy();
+            if (Application.isPlaying)
+            {
+                MixedRealityPlayspace.Destroy();
+            }
 
             BaseEventSystem.enableDanglingHandlerDiagnostics = false;
         }

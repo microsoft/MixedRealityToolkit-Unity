@@ -306,10 +306,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputModule = CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>();
                 if (inputModule)
                 {
-                    inputModule.DeactivateModule();
-
                     if (Application.isPlaying)
                     {
+                        inputModule.DeactivateModule();
                         UnityEngine.Object.Destroy(inputModule);
                     }
                     else
