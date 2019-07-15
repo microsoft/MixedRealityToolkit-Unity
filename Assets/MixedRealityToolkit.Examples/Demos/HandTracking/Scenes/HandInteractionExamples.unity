@@ -19570,6 +19570,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1698852960}
+  - component: {fileID: 1698852961}
   m_Layer: 0
   m_Name: SceneContent
   m_TagString: Untagged
@@ -19600,6 +19601,14 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!362 &1698852961
+WorldAnchor:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698852959}
+  serializedVersion: 2
 --- !u!1001 &1700504399
 PrefabInstance:
   m_ObjectHideFlags: 0
