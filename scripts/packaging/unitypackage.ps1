@@ -166,6 +166,10 @@ foreach ($entry in $packages.GetEnumerator()) {
     Write-Verbose "Generating .unitypackage: $unityPackagePath"
     Write-Verbose "Log location: $logFileName"
     
+    # Assumes that unity package building has failed, unless we
+    # succeed down below after running the Unity packaging step.
+    $exitCode = 1
+
     try {
         $unityArgs = "-BatchMode -Quit -Wait " +
             "-projectPath $RepoDirectory " +
@@ -188,10 +192,19 @@ foreach ($entry in $packages.GetEnumerator()) {
 
         Stop-Process $proc
 
+        $exitCode = $proc.ExitCode
         if (($proc.ExitCode -eq 0) -and (Test-Path $unityPackagePath)) {
             Write-Verbose "Successfully created $unityPackagePath"
         }
-        else { Write-Error "Failed to create $unityPackagePath" }
+        else {
+            # It's possible that $exitCode could have been set to a zero value
+            # despite the package not being there - in that case this should still return
+            # failure (i.e. a non-zero exit code)
+            $exitCode = 1
+            Write-Error "Failed to create $unityPackagePath"
+        }
     }
     catch { Write-Error $_ }
+
+    exit $exitCode
 }
