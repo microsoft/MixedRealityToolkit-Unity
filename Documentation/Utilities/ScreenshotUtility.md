@@ -8,7 +8,7 @@ The [ScreenshotUtility](/Assets/MixedRealityToolkit/Utilities/Editor) class aide
 ### Taking Screenshots
 Screenshots can be easily capture while in the editor by selecting *Mixed Reality Toolkit->Utilities->Take Screenshot* and then selecting your desired option. Make sure to have the game window tab visible if capturing while not playing, or a screenshot may not be saved.
 
-By default, all screenshots are saved to your desktop, the path to the screenshot will be displayed in the Unity console.
+By default, all screenshots are saved to your [temporary cache path](https://docs.unity3d.com/ScriptReference/Application-temporaryCachePath.html), the path to the screenshot will be displayed in the Unity console.
 
 ![](../../Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Menu_Item.png)
 
