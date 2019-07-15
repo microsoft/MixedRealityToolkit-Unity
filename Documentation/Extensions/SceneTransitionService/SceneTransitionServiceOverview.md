@@ -149,8 +149,6 @@ A progress indicator is anything that implements the `IProgressIndicator` interf
 
 If `UseDefaultProgressIndicator` is checked in the SceneTransitionService profile, a progress indicator will be instantiated when a transition begins. For the duration of the transition this indicator's `Progress` and `Message` properties can be accessed via that service's `SetProgressValue` and `SetProgressMessage` methods.
 
-Alternatively, when calling `DoSceneTransition` you can supply your own progress indicator via the optional `progressIndicator` argument. This will override the default progress indicator.
-
 ```csharp
 private async void TransitionToScene()
 {
@@ -185,3 +183,5 @@ private async void ListenToSceneTransition(IMixedRealitySceneSystem sceneSystem,
     }
 }
 ```
+
+Alternatively, when calling `DoSceneTransition` you can supply your own progress indicator via the optional `progressIndicator` argument. This will override the default progress indicator.
