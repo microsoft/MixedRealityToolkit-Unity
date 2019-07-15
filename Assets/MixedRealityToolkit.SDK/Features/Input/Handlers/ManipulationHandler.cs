@@ -149,21 +149,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Maximum scaling allowed relative to the initial size")]
-        private float scaleMaximum = 2.0f;
-        public float ScaleMaximum
+        [Tooltip("Minimum scaling allowed relative to the initial size")]
+        private float scaleMinimum = 0.2f;
+
+        /// <summary>
+        /// Public property for the scale maximum, in the target's local scale.
+        /// Set this value with SetScaleLimits.
+        /// </summary>
+        public float ScaleMinimum
         {
-            get => scaleMaximum;
-            set => scaleMaximum = value;
+            get
+            {
+                if (transformHelper != null)
+                {
+                    return transformHelper.ScaleMinimum;
+                }
+                return 0.0f;
+            }
         }
 
         [SerializeField]
-        [Tooltip("Minimum scaling allowed relative to the initial size")]
-        private float scaleMinimum = 0.2f;
-        public float ScaleMinimum
+        [Tooltip("Maximum scaling allowed relative to the initial size")]
+        private float scaleMaximum = 2.0f;
+
+        /// <summary>
+        /// Public property for the scale maximum, in the target's local scale.
+        /// Set this value with SetScaleLimits.
+        /// </summary>
+        public float ScaleMaximum
         {
-            get => scaleMinimum;
-            set => scaleMinimum = value;
+            get
+            {
+                if (transformHelper != null)
+                {
+                    return transformHelper.ScaleMaximum;
+                }
+                return 0.0f;
+            }
         }
 
         [Header("Smoothing")]
@@ -283,6 +305,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
             transformHelper.SetScaleLimits(scaleMinimum, scaleMaximum);
         }
         #endregion MonoBehaviour Functions
+
+        #region Public Methods
+
+        /// <summary>
+        /// Sets the minimum/maximum scale for the manipulation handler at runtime.
+        /// </summary>
+        /// <param name="min">Minimum scale</param>
+        /// <param name="max">Maximum scale</param>
+        /// <param name="relativeToInitialState">If true the values will be multiplied by scale of target at startup. If false they will be in absolute local scale.</param>
+        public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
+        {
+            scaleMaximum = max;
+            scaleMinimum = min;
+            transformHelper.SetScaleLimits(min, max, relativeToInitialState);
+        }
+
+        #endregion Public Methods
 
         #region Private Methods
         private Vector3 GetPointersCentroid()

@@ -947,13 +947,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             scaleMaximum = max;
             scaleMinimum = min;
-
-            // Update the absolute min/max
-            var target = Target;
-            if (target != null)
-            {
-                transformHelper.SetScaleLimits(min, max, relativeToInitialState);
-            }
+            transformHelper.SetScaleLimits(min, max, relativeToInitialState);
         }
 
         /// <summary>
