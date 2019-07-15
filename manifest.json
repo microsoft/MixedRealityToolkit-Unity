@@ -3941,6 +3941,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Example_Capture.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Example_Capture.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Menu_Item.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Menu_Item.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Slate/MRTK_Slate_Box.png",
       "output": {
         "resource": {
@@ -5151,6 +5173,18 @@
         ".html": {
           "relative_path": "Documentation/Utilities/OptimizeWindow.html",
           "hash": "zfNsHsQ7KbtYd5LgXmsxGw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Utilities/ScreenshotUtility.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Utilities/ScreenshotUtility.html",
+          "hash": "bJfF5VJMo5RnkzCEc1RK0g=="
         }
       },
       "is_incremental": false,
@@ -15393,6 +15427,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.ScreenshotUtility.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.ScreenshotUtility.html",
+          "hash": "yN1WD/h05Pb/mMc/pVvptQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.SimpleLineDataProviderInspector.yml",
       "output": {
         ".html": {
@@ -15529,7 +15575,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.html",
-          "hash": "02T13IC+v3SonbLEjIxf/w=="
+          "hash": "A55nKv9dQZX1C9+0LJOTBg=="
         }
       },
       "is_incremental": false,
@@ -17701,7 +17747,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Au2OMuW59gapv6VqHEbL/w=="
+          "hash": "I+c+4PMesTKbkTbof096xQ=="
         }
       },
       "is_incremental": false,
@@ -17760,12 +17806,6 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 116,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -17773,10 +17813,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 117,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1041,
+          "total_file_count": 1042,
           "skipped_file_count": 0
         }
       }
