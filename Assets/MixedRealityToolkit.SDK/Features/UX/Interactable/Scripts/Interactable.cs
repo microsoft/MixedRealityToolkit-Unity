@@ -480,7 +480,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        protected virtual void Start()
+        {
+            InternalUpdate();
+        }
+
         protected virtual void Update()
+        {
+            InternalUpdate();
+        }
+
+        private void InternalUpdate()
         {
             if (rollOffTimer < rollOffTime && HasPress)
             {
