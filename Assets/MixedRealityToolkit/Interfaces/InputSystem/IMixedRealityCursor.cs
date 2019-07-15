@@ -47,6 +47,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void SetVisibility(bool visible);
 
         /// <summary>
+        /// Utility method to destroy cursor dependencies (e.g. event subscriptions) in the system
+        /// explicitly in the middle update loop. This is a "replacement" of Unity OnDestroy.
+        /// Relying on Unity OnDestroy may cause event handler subscription to 
+        /// become invalid at the point of destroying.
+        /// </summary>
+        void Destroy();
+
+        /// <summary>
         /// Is the cursor currently visible?
         /// </summary>
         bool IsVisible { get; }
