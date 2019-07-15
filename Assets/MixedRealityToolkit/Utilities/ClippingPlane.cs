@@ -19,11 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             get { return "_CLIPPING_PLANE"; }
         }
 
-        protected override string KeywordProperty
-        {
-            get { return "_ClippingPlane"; }
-        }
-
         protected override string ClippingSideProperty
         {
             get { return "_ClipPlaneSide"; }
