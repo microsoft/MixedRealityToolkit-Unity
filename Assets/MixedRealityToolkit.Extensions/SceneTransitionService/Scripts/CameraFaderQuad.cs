@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
+    /// <summary>
+    /// Quad-based implementation if ICameraFader. Instantiates quads in front of cameras to achieve fade out / in effect.
+    /// </summary>
     public class CameraFaderQuad : ICameraFader
     {
         const string QuadMaterialShaderName = "UI/Unlit/Transparent";
@@ -24,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             public MaterialPropertyBlock PropertyBlock;
         }
 
+        /// <inheritdoc />
         public CameraFaderState State { get; private set; }
 
         private Dictionary<Camera, Quad> quads = new Dictionary<Camera, Quad>();
@@ -32,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         private Color currentColor;
         private Material quadMaterial;
 
+        /// <inheritdoc />
         public async Task FadeOutAsync(float fadeOutTime, Color color, IEnumerable<Camera> targets)
         {
             switch (State)
@@ -54,8 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             {
                 Debug.LogWarning("Target color is not fully opaque.");
             }
-
-            await Task.Yield();
 
             // Create our material
             if (quadMaterial == null)
@@ -129,6 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             State = CameraFaderState.Opaque;
         }
 
+        /// <inheritdoc />
         public async Task FadeInAsync(float fadeInTime)
         {
             if (quads.Count == 0)
@@ -176,6 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             State = CameraFaderState.Clear;
         }
 
+        /// <inheritdoc />
         public void OnDestroy()
         {
             DestroyQuads();

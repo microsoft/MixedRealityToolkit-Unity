@@ -14,7 +14,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     {
         CameraFaderState State { get; }
 
+        /// <summary>
+        /// Applies a fade-out effect over time.
+        /// </summary>
+        /// <param name="fadeOutTime">The duration of the fade</param>
+        /// <param name="color">The color of the fade</param>
+        /// <param name="targets">Which cameras will receive the effect</param>
+        /// <returns></returns>
         Task FadeOutAsync(float fadeOutTime, Color color, IEnumerable<Camera> targets);
+
+        /// <summary>
+        /// Applies a fade-in effect over time. Must be called after FadeOutAsync has completed.
+        /// </summary>
+        /// <param name="fadeInTime">The duration of the fade</param>
+        /// <returns></returns>
         Task FadeInAsync(float fadeInTime);
 
         /// <summary>
