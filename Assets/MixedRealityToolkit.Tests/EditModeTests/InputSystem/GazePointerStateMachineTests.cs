@@ -11,6 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
     class GazePointerStateMachineTests
     {
+        [TearDown]
+        public void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
         [Test]
         public void TestHeadGazeHandAndSpeechBehaviour()
         {
