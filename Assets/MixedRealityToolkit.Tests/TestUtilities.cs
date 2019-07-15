@@ -153,6 +153,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 MixedRealityToolkit.ConfirmInitialized();
             }
 
+            BaseEventSystem.enableDanglingHandlerDiagnostics = true;
+
             // Tests
             Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
@@ -172,6 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             MixedRealityToolkit.SetInstanceInactive(MixedRealityToolkit.Instance);
             MixedRealityPlayspace.Destroy();
+
+            BaseEventSystem.enableDanglingHandlerDiagnostics = false;
         }
 
         private static T GetDefaultMixedRealityProfile<T>() where T : BaseMixedRealityProfile
