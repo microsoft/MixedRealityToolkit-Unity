@@ -70,7 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
 
         protected abstract string Keyword { get; }
-        protected abstract string KeywordProperty { get; }
         protected abstract string ClippingSideProperty { get; }
 
         protected MaterialPropertyBlock materialPropertyBlock;
@@ -113,16 +112,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        protected void OnValidate()
+        {
+            ToggleClippingFeature(true);
+            RestoreUnassignedMaterials();
+        }
+
         protected void OnEnable()
         {
             Initialize();
             UpdateRenderers();
             ToggleClippingFeature(true);
-
-            if (!Application.isPlaying)
-            {   // Previously in OnValidate. Only needed in edit mode.
-                RestoreUnassignedMaterials();
-            }
 
             if (useOnPreRender)
             {
@@ -273,12 +273,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             if (keywordOn)
             {
                 material.EnableKeyword(Keyword);
-                material.SetFloat(KeywordProperty, 1.0f);
             }
             else
             {
                 material.DisableKeyword(Keyword);
-                material.SetFloat(KeywordProperty, 0.0f);
             }
         }
 
