@@ -82,14 +82,6 @@ MonoBehaviour:
     priority: 0
     runtimePlatform: -1
     deviceManagerProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseDeviceManager,
-        Microsoft.MixedReality.Toolkit
-    componentName: Unity Mouse Device Manager
-    priority: 0
-    runtimePlatform: -1
-    deviceManagerProfile: {fileID: 11400000, guid: cc2a0fa97d2f9f14996ffd20776bab57,
-      type: 2}
   focusProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.FocusProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
   raycastProviderType:
