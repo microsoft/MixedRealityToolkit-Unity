@@ -11,13 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [MixedRealityServiceProfile(typeof(MouseDeviceManager))]
     public class MixedRealityMouseInputProfile : BaseMixedRealityProfile
     {
-        [SerializeField]
-        [Tooltip("The type of Mouse you want to use")]
-        [Extends(typeof(OrdinaryMouseController), TypeGrouping.ByNamespaceFlat, true)]
-        private SystemType mouseController = default;
-
-        public System.Type MouseController => mouseController.Type;
-
         [Header("Mouse Input Settings")]
         [SerializeField]
         [Range(0.1f, 10f)]
@@ -27,6 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Defines the mouse cursor speed. 
         /// Multiplier that gets applied to the mouse delta before converting to world space.
         /// </summary>
-        public float MouseSpeed => mouseSpeed;
+        public float MouseSpeed => mouseSpeed;      
     }
 }
