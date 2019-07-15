@@ -1457,13 +1457,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             boxCollider = gameObject.GetComponent<BoxCollider>();
             if (boxCollider == null)
             {
-                boxCollider = gameObject.AddComponent<BoxCollider>();
-                bounds = boxCollider.bounds;
-                DestroyImmediate(boxCollider);
+                bounds = new Bounds(transform.position, transform.lossyScale);
             }
             else
             {
-                bounds = boxCollider.bounds;
+                bounds = new Bounds(transform.TransformPoint(boxCollider.center), Vector3.Scale(transform.lossyScale, boxCollider.size));
             }
 
             return bounds;
