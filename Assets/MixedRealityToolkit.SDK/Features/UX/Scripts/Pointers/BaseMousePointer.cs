@@ -25,21 +25,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Range(0.01f, 1f)]
-        [Tooltip("The distance the mouse cursor must move during one frame to reappear")]
+        [Tooltip("Movement threshold to reach before un-hiding the mouse cursor")]
         private float movementThresholdToUnHide = 0.1f;
 
         /// <summary>
-        /// The distance the mouse cursor must move during one frame to reappear
+        /// Movement threshold to reach before un-hiding the mouse cursor
         /// </summary>
         public float MovementThresholdToUnHide => movementThresholdToUnHide;
 
         [SerializeField]
         [Range(0f, 10f)]
-        [Tooltip("The time it takes for the immobile mouse cursor to hide")]
+        [Tooltip("Time the mouse cursor must stay immobile to be hidden")]
         private float hideTimeout = 3.0f;
 
         /// <summary>
-        /// The time it takes for the immobile mouse cursor to hide
+        /// Time the mouse cursor must stay immobile to be hidden
         /// </summary>
         public float HideTimeout => hideTimeout;
 
