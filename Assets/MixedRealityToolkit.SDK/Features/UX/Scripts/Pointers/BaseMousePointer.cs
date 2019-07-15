@@ -21,7 +21,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IMixedRealityMousePointer Implementation
 
-        public bool HideCursorWhenInactive => hideTimeout > 0;
+        [SerializeField]
+        [Tooltip("If true, the cursor will hide on movement timeout")]
+        private bool hideCursorWhenInactive = true;
+
+        /// <summary>
+        /// If true, the cursor will hide on movement timeout
+        /// </summary>
+        public bool HideCursorWhenInactive => hideCursorWhenInactive;
 
         [SerializeField]
         [Range(0.01f, 1f)]
@@ -175,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
-            if (hideTimeout <= 0 || isDisabled) { return; }
+            if (!hideCursorWhenInactive || isDisabled) { return; }
 
             timeoutTimer += Time.unscaledDeltaTime;
 

@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Spatial Mouse Pointer Implementation.
     /// </summary>
-    public class SpatialMousePointer : BaseMousePointer
+    public class MousePointer : BaseMousePointer
     {
         private MixedRealityMouseInputProfile mouseInputProfile = null;
 
