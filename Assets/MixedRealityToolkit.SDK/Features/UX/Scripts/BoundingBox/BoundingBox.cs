@@ -1360,20 +1360,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
             KeyValuePair<Transform, Bounds> rendererBoundsByTransform;
             colliderCorners.Clear();
 
-            foreach (Transform targetTransform in Target.GetComponentsInChildren<Transform>())
+            foreach (Transform childTransform in Target.GetComponentsInChildren<Transform>())
             {
-                if (targetTransform == rigRoot) continue;
+                if (childTransform == rigRoot) continue;
 
                 if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
                 {
-                    Collider collider = targetTransform.GetComponent<Collider>();
-                    colliderByTransform = collider != null ? new KeyValuePair<Transform, Collider>(targetTransform, collider) : new KeyValuePair<Transform, Collider>();
+                    Collider collider = childTransform.GetComponent<Collider>();
+                    colliderByTransform = collider != null ? new KeyValuePair<Transform, Collider>(childTransform, collider) : new KeyValuePair<Transform, Collider>();
                 }
 
                 if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
                 {
-                    MeshFilter meshFilter = targetTransform.GetComponent<MeshFilter>();
-                    rendererBoundsByTransform = meshFilter != null && meshFilter.sharedMesh != null ? new KeyValuePair<Transform, Bounds>(targetTransform, meshFilter.sharedMesh.bounds) : new KeyValuePair<Transform, Bounds>();
+                    MeshFilter meshFilter = childTransform.GetComponent<MeshFilter>();
+                    rendererBoundsByTransform = meshFilter != null && meshFilter.sharedMesh != null ? new KeyValuePair<Transform, Bounds>(childTransform, meshFilter.sharedMesh.bounds) : new KeyValuePair<Transform, Bounds>();
                 }
 
                 // Encapsulate the collider bounds if criteria match
@@ -1404,11 +1404,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return finalBounds;
             }
 
-            finalBounds = new Bounds(colliderCorners[0], Vector3.zero);
+            Transform targetTransform = Target.transform;
+
+            finalBounds = new Bounds(targetTransform.InverseTransformPoint(colliderCorners[0]), Vector3.zero);
 
             for (int i = 1; i < colliderCorners.Count; i++)
             {
-                finalBounds.Encapsulate(colliderCorners[i]);
+                finalBounds.Encapsulate(targetTransform.InverseTransformPoint(colliderCorners[i]));
             }
 
             return finalBounds;
