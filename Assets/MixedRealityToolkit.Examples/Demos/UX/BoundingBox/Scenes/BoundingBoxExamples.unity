@@ -364,7 +364,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 0
   mediumScale: 1
   closeScale: 1.5
@@ -373,7 +373,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -605,7 +605,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 1
   mediumScale: 1
   closeScale: 1
@@ -614,7 +614,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -1168,63 +1168,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1001 &217601027
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 100002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_Name
-      value: CoffeeCup
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
 --- !u!1 &271045611
 GameObject:
   m_ObjectHideFlags: 0
@@ -2107,7 +2050,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 0
   mediumScale: 1
   closeScale: 1
@@ -2116,7 +2059,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -3369,7 +3312,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 1
   mediumScale: 1
   closeScale: 1
@@ -3378,7 +3321,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -3999,7 +3942,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 1
   mediumScale: 1
   closeScale: 1
@@ -4008,7 +3951,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -4668,7 +4611,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 1
   mediumScale: 1
   closeScale: 1.5
@@ -4677,7 +4620,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -5308,7 +5251,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 1
   mediumScale: 1
   closeScale: 1.5
@@ -5317,7 +5260,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
