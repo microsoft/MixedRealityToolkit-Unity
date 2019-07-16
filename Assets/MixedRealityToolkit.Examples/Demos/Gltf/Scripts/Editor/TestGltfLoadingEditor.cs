@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf.Editor
             
             if (needsCopy)
             {
-                EditorGUILayout.HelpBox("glTF uri was not discovered in the streaming assets folder. Please copy over files to test example scene", MessageType.Warning);
+                EditorGUILayout.HelpBox("glTF path was not discovered in the streaming assets folder. Please copy over files to test example scene", MessageType.Warning);
             }
 
             if (GUILayout.Button("Copy GLTF Directory to Streaming Assets"))
