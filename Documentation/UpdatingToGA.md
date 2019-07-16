@@ -147,6 +147,10 @@ Based on customer feedback, support for easy removal of previously observed spat
 
 - The `Microsoft.MixedReality.Toolkit` namespace has been added to `ReadOnlyAttribute`, `BeginReadOnlyGroupAttribute`, and `EndReadOnlyGroupAttribute`.
 
+### PointerClickHandler
+
+The `PointerClickHandler` class has been removed. The `PointerHandler` should be used instead, it provides the same functionality.
+
 ## Assembly name changes
 
 In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.
