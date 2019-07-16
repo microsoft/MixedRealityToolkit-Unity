@@ -8878,7 +8878,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.Editor.BaseInputHandlerInspector.html",
-          "hash": "KhqXLlr1fNBlkfQR9MwBKQ=="
+          "hash": "yGLAGux3Z/S1fVaFtysxog=="
         }
       },
       "is_incremental": false,
@@ -9042,18 +9042,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.Editor.PointerClickHandlerInspector.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.Editor.PointerClickHandlerInspector.html",
-          "hash": "vKtbGY1GfFOMU5/1yBmetg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.Editor.SpeechCommandPropertyDrawer.yml",
       "output": {
         ".html": {
@@ -9082,7 +9070,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.Editor.html",
-          "hash": "7VMEZKfUatcsJjo+cV3ubA=="
+          "hash": "Cdqw5Ugi+KS5hwou9qmaFw=="
         }
       },
       "is_incremental": false,
@@ -10774,7 +10762,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.PointerClickHandler.html",
-          "hash": "Uq97PapAXoWGUYf2vXTQLA=="
+          "hash": "o4ca4T+Ons2hJp7zjKpDLg=="
         }
       },
       "is_incremental": false,
@@ -17794,7 +17782,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "5jH46FnXWSudxWUbEVFtXg=="
+          "hash": "oORz2BmTwGfgUxFFBvjD2A=="
         }
       },
       "is_incremental": false,
@@ -17869,7 +17857,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1045,
+          "total_file_count": 1044,
           "skipped_file_count": 0
         }
       }
