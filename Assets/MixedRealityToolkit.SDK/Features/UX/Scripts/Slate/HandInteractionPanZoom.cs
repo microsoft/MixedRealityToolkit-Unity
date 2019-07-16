@@ -12,7 +12,8 @@ using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class HandInteractionPanZoom : BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
+    public class HandInteractionPanZoom : 
+        BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
     {
         /// <summary>
         /// Internal data stored for each hand or pointer.

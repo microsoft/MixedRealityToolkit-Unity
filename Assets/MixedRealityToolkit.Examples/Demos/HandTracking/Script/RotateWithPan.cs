@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         public void OnPanning(HandPanEventData eventData)
         {
-            Vector3 eulers = new Vector3(eventData.PanPosition.y * (2.0f * Mathf.PI), eventData.PanPosition.x * (2.0f * Mathf.PI), 0.0f);
+            Vector3 eulers = new Vector3(eventData.PanDelta.y * (2.0f * Mathf.PI), eventData.PanDelta.x * (2.0f * Mathf.PI), 0.0f);
             eulers *= Mathf.Rad2Deg;
             eulers *= 0.2f;
             transform.localEulerAngles += eulers;
