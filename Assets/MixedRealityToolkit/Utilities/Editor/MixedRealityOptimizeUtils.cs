@@ -52,6 +52,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 #endif
         }
 
+        public static bool IsHololensDepthBufferFormat16bit()
+        {
+#if UNITY_2019_1_OR_NEWER
+            return PlayerSettings.VRWindowsMixedReality.depthBufferFormat == PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit;
+#else
+            var playerSettings = GetSettingsObject("PlayerSettings");
+            var property = playerSettings?.FindProperty("vrSettings.hololens.depthFormat");
+            return property != null && property.intValue == 0;
+#endif
+        }
+
         public static void SetDepthBufferFormat(bool set16BitDepthBuffer)
         {
             int depthFormat = set16BitDepthBuffer ? 0 : 1;
@@ -73,6 +84,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 "vrSettings.hololens.depthFormat",
                 property => property.intValue = depthFormat);
 #endif
+        }
+
+        public static bool IsRealtimeGlobalIlluminationEnabled()
+        {
+            var lightmapSettings = GetLighmapSettings();
+            var property = lightmapSettings?.FindProperty("m_GISettings.m_EnableRealtimeLightmaps");
+            return property != null && property.boolValue;
+        }
+
+        public static void SetRealtimeGlobalIlluminationEnabled(bool enabled)
+        {
+            var lightmapSettings = GetLighmapSettings();
+            ChangeProperty(lightmapSettings, "m_GISettings.m_EnableRealtimeLightmaps", property => property.boolValue = enabled);
+        }
+
+        public static bool IsBakedGlobalIlluminationEnabled()
+        {
+            var lightmapSettings = GetLighmapSettings();
+            var property = lightmapSettings?.FindProperty("m_GISettings.m_EnableBakedLightmaps");
+            return property != null && property.boolValue;
+        }
+
+        public static void SetBakedGlobalIlluminationEnabled(bool enabled)
+        {
+            var lightmapSettings = GetLighmapSettings();
+            ChangeProperty(lightmapSettings, "m_GISettings.m_EnableBakedLightmaps", property => property.boolValue = enabled);
         }
 
         public static void ChangeProperty(SerializedObject target, string name, Action<SerializedProperty> changer)
