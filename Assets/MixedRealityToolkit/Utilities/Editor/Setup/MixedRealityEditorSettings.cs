@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
+        private const string MSFT_AudioSpatializerPlugin = "MS HRTF Spatializer";
 
         [Obsolete("Use the 'MixedRealityToolkitFiles' APIs.")]
         public static string MixedRealityToolkit_AbsoluteFolderPath
@@ -261,6 +262,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     // If depth format is 24-bit, advise to consider 16-bit for performance.
                     Debug.LogWarning("<b>Depth Buffer Sharing</b> has 24-bit depth format selected. Consider using 16-bit for performance. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+                }
+
+                if (!AudioSettings.GetSpatializerPluginName().Equals(MSFT_AudioSpatializerPlugin))
+                {
+                    // If using UWP, developers should use the Microsoft Audio Spatilizer plugin
+                    Debug.LogWarning("<b>Audio Spatializer Plugin</b> not currently set to <i>" + MSFT_AudioSpatializerPlugin + "</i>. Switch to <i>" + MSFT_AudioSpatializerPlugin + "</i> under <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i>");
                 }
             }
         }
