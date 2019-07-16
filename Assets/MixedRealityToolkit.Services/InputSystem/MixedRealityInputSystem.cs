@@ -1047,7 +1047,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandlePointerEvent(pointerEventData, OnInputClickedEventHandler);
 
-            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
+            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the PointerHandler.
         }
 
         #endregion Pointer Click
