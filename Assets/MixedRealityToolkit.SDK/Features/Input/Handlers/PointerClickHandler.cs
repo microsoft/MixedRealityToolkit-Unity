@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This component handles pointer clicks from all types of input sources.<para/>
     /// i.e. a primary mouse button click, motion controller selection press, or hand tap.
     /// </summary>
+    [System.Obsolete("Use PointerHandler instead of PointerClickHandler")]
     public class PointerClickHandler : BaseInputHandler, IMixedRealityPointerHandler
     {
         [SerializeField]
