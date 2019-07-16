@@ -77,10 +77,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// This enum defines the criteria by which bounds are chosen
+        /// This enum defines what volume type the bound calculation depends on and its priority
         /// to it.
         /// </summary>
-        public enum BoundsCalculationCriteria
+        public enum BoundsCalculationMethod
         {
             ColliderOverRenderer = 0,
             RendererOverCollider,
@@ -88,6 +88,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             RendererOnly,
         }
 
+        /// <summary>
+        /// This enum defines how the BoundingBox gets activated
+        /// </summary>
         public enum BoundingBoxActivationType
         {
             ActivateOnStart = 0,
@@ -136,16 +139,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("")]
-        private BoundsCalculationCriteria boundsCalculationCriteria = BoundsCalculationCriteria.ColliderOverRenderer;
-        public BoundsCalculationCriteria BoundsCriteria
+        [Tooltip("Defines the volume type and the priority for the bounds calculation")]
+        private BoundsCalculationMethod boundsCalculationMethod = BoundsCalculationMethod.ColliderOverRenderer;
+        public BoundsCalculationMethod CalculationMethod
         {
-            get { return boundsCalculationCriteria; }
+            get { return boundsCalculationMethod; }
             set
             {
-                if (boundsCalculationCriteria != value)
+                if (boundsCalculationMethod != value)
                 {
-                    boundsCalculationCriteria = value;
+                    boundsCalculationMethod = value;
                     CreateRig();
                 }
             }
@@ -1354,13 +1357,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (targetTransform == rigRoot) continue;
 
-                if (boundsCalculationCriteria != BoundsCalculationCriteria.RendererOnly)
+                if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
                 {
                     Collider collider = targetTransform.GetComponent<Collider>();
                     colliderByTransform = collider != null ? new KeyValuePair<Transform, Collider>(targetTransform, collider) : new KeyValuePair<Transform, Collider>();
                 }
 
-                if (boundsCalculationCriteria != BoundsCalculationCriteria.ColliderOnly)
+                if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
                 {
                     MeshFilter meshFilter = targetTransform.GetComponent<MeshFilter>();
                     rendererBoundsByTransform = meshFilter != null && meshFilter.sharedMesh != null ? new KeyValuePair<Transform, Bounds>(targetTransform, meshFilter.sharedMesh.bounds) : new KeyValuePair<Transform, Bounds>();
@@ -1368,19 +1371,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // Encapsulate the collider bounds if criteria match
 
-                if (boundsCalculationCriteria == BoundsCalculationCriteria.ColliderOnly ||
-                    boundsCalculationCriteria == BoundsCalculationCriteria.ColliderOverRenderer)
+                if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly ||
+                    boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer)
                 {
                     if (AddColliderBoundsToTarget(colliderByTransform)) { continue; }
-                    if (boundsCalculationCriteria == BoundsCalculationCriteria.ColliderOnly) { continue; }
+                    if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly) { continue; }
                 }
 
                 // Encapsulate the renderer bounds if criteria match
 
-                if (boundsCalculationCriteria != BoundsCalculationCriteria.ColliderOnly)
+                if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
                 {
                     if (AddRendererBoundsToTarget(rendererBoundsByTransform)) { continue; }
-                    if (boundsCalculationCriteria == BoundsCalculationCriteria.RendererOnly) { continue; }
+                    if (boundsCalculationMethod == BoundsCalculationMethod.RendererOnly) { continue; }
                 }
 
                 // Do the collider for the one case that we chose RendererOverCollider and did not find a renderer
