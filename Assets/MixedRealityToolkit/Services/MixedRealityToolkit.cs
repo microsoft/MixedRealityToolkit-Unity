@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (concreteType == null)
             {
-                Debug.LogError("Unable to register a service with a null concrete type.");
+                Debug.LogError($"Unable to register {typeof(T).Name} service with a null concrete type.");
                 return false;
             }
 
@@ -961,17 +961,34 @@ namespace Microsoft.MixedReality.Toolkit
         private void DisableAllServices()
         {
             // Disable all systems
-            ExecuteOnAllServices(service => service.Disable());
+            ExecuteOnAllServicesReverseOrder(service => service.Disable());
         }
 
         private void DestroyAllServices()
         {
             // NOTE: Service instances are destroyed as part of the unregister process.
 
-            // Unregister core services (active systems).
-            List<Type> serviceTypes = activeSystems.Keys.ToList<Type>();
-            foreach (Type type in serviceTypes)
+            // Unregister extension services first
+            var orderedRegisteredServices = registeredMixedRealityServices.OrderByDescending(service => service.Item2.Priority);
+
+            foreach (Tuple<Type, IMixedRealityService> serviceTuple in orderedRegisteredServices)
             {
+                if (serviceTuple.Item2 is IMixedRealityExtensionService)
+                {
+                    UnregisterService<IMixedRealityExtensionService>((IMixedRealityExtensionService)serviceTuple.Item2);
+                }
+            }
+            registeredMixedRealityServices.Clear();
+
+            // Unregister core services (active systems) second.
+            // We need to destroy services in backwards order as those which are initialized 
+            // later may rely on those which are initialized first.
+            var orderedActiveSystems = activeSystems.OrderByDescending(m => m.Value.Priority);
+
+            foreach (var system in orderedActiveSystems)
+            {
+                Type type = system.Key;
+
                 if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
                 {
                     UnregisterService<IMixedRealityBoundarySystem>();
@@ -1001,20 +1018,7 @@ namespace Microsoft.MixedReality.Toolkit
                     UnregisterService<IMixedRealityTeleportSystem>();
                 }
             }
-            serviceTypes.Clear();
             activeSystems.Clear();
-
-            // Unregister extension services.
-            List<Tuple<Type, IMixedRealityService>> serviceTuples = new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices.ToArray());
-            foreach (Tuple<Type, IMixedRealityService> serviceTuple in serviceTuples)
-            {
-                if (serviceTuple.Item2 is IMixedRealityExtensionService)
-                {
-                    UnregisterService<IMixedRealityExtensionService>((IMixedRealityExtensionService)serviceTuple.Item2);
-                }
-            }
-            serviceTuples.Clear();
-            registeredMixedRealityServices.Clear();
         }
 
         private bool ExecuteOnAllServices(Action<IMixedRealityService> execute)
@@ -1035,9 +1039,29 @@ namespace Microsoft.MixedReality.Toolkit
             return true;
         }
 
-#endregion Multiple Service Management
+        private bool ExecuteOnAllServicesReverseOrder(Action<IMixedRealityService> execute)
+        {
+            // If the Mixed Reality Toolkit is not configured, stop.
+            if (!HasProfileAndIsInitialized) { return false; }
 
-#region Service Utilities
+            var orderedRegisteredServices = registeredMixedRealityServices.OrderByDescending(service => service.Item2.Priority);
+            foreach (var service in orderedRegisteredServices)
+            {
+                execute(service.Item2);
+            }
+
+            var orderedActiveSystems = activeSystems.OrderByDescending(m => m.Value.Priority);
+            foreach (var system in orderedActiveSystems)
+            {
+                execute(system.Value);
+            }
+
+            return true;
+        }
+
+        #endregion Multiple Service Management
+
+        #region Service Utilities
 
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.

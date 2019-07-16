@@ -71,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (!Enabled) { return; }
 
             UpdateSourceData(interactionSourceState);
+            UpdateVelocity(interactionSourceState);
 
             if (Interactions == null)
             {
@@ -102,6 +103,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             LastSourceStateReading = interactionSourceState;
         }
 
+        public void UpdateVelocity(InteractionSourceState interactionSourceState)
+        {
+            Vector3 newVelocity;
+            bool isVelocityValid = interactionSourceState.sourcePose.TryGetVelocity(out newVelocity);
+            if (isVelocityValid)
+            {
+                Velocity = newVelocity;
+            }
+            Vector3 newAngularVelocity;
+            bool isAngularVelocityValid = interactionSourceState.sourcePose.TryGetAngularVelocity(out newAngularVelocity);
+            if(isAngularVelocityValid)
+            {
+                AngularVelocity = newAngularVelocity;
+            }
+        }
+
         /// <summary>
         /// Update the source input from the device.
         /// </summary>
@@ -130,6 +147,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
 
                 IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentSourceRotation);
+
+                // We want the source to follow the Playspace, so fold in the playspace transform here to 
+                // put the source pose into world space.
+                currentSourcePosition = MixedRealityPlayspace.TransformPoint(currentSourcePosition);
+                currentSourceRotation = MixedRealityPlayspace.Rotation * currentSourceRotation;
 
                 // Devices are considered tracked if we receive position OR rotation data from the sensors.
                 TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
