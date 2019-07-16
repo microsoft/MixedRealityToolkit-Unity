@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Utility class to make input recording service accessible through game objects.

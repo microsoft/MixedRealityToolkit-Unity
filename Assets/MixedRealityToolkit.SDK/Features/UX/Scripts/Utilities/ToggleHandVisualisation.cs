@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class ToggleHandVisualisation : MonoBehaviour
     {
