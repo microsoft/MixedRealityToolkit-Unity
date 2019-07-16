@@ -8,11 +8,12 @@ using UInput = UnityEngine.Input;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Screen Space Mouse Pointer Implementation.
+    /// Uses the desktop mouse cursor instead of any mouse representation within the scene.
+    /// It's movement is bound to screenspace.
     /// </summary>
     public class ScreenSpaceMousePointer : BaseMousePointer
     {
-        private Vector2 mousePosition;
+        private Vector2 lastMousePosition;
 
         protected override string ControllerName => "ScreenSpace Mouse Pointer";
 
@@ -27,14 +28,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            if ((mousePosition - (Vector2) UInput.mousePosition).magnitude >= MovementThresholdToUnHide)
+            Vector3 currentMousePosition = UInput.mousePosition;
+
+            if ((lastMousePosition - (Vector2)currentMousePosition).magnitude >= MovementThresholdToUnHide)
             {
                 SetVisibility(true);
             }
-            mousePosition = UInput.mousePosition;
+
+            lastMousePosition = currentMousePosition;
 
             Camera mainCamera = CameraCache.Main;
-            Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+            Ray ray = mainCamera.ScreenPointToRay(currentMousePosition);
             Rays[0].CopyRay(ray, float.MaxValue);
 
             transform.position = mainCamera.transform.position;

@@ -22,31 +22,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region IMixedRealityMousePointer Implementation
 
         [SerializeField]
-        [Tooltip("Should the mouse cursor be hidden when no active input is received?")]
+        [Tooltip("If true, the cursor will hide on movement timeout")]
         private bool hideCursorWhenInactive = true;
 
         /// <summary>
-        ///  Should the mouse cursor be hidden when no active input is received?
+        /// If true, the cursor will hide on movement timeout
         /// </summary>
         public bool HideCursorWhenInactive => hideCursorWhenInactive;
 
         [SerializeField]
         [Range(0.01f, 1f)]
-        [Tooltip("What is the movement threshold to reach before un-hiding mouse cursor?")]
+        [Tooltip("Movement threshold to reach before un-hiding the mouse cursor")]
         private float movementThresholdToUnHide = 0.1f;
 
         /// <summary>
-        /// What is the movement threshold to reach before un-hiding mouse cursor?
+        /// Movement threshold to reach before un-hiding the mouse cursor
         /// </summary>
         public float MovementThresholdToUnHide => movementThresholdToUnHide;
 
         [SerializeField]
         [Range(0f, 10f)]
-        [Tooltip("How long should it take before the mouse cursor is hidden?")]
+        [Tooltip("Time the mouse cursor must stay immobile to be hidden")]
         private float hideTimeout = 3.0f;
 
         /// <summary>
-        /// How long should it take before the mouse cursor is hidden?
+        /// Time the mouse cursor must stay immobile to be hidden
         /// </summary>
         public float HideTimeout => hideTimeout;
 
