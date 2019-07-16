@@ -14130,18 +14130,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.InteractionReceiver.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractionReceiver.html",
-          "hash": "lBafD1N7bbP9psZc0ITeTw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.LoaderController.yml",
       "output": {
         ".html": {
@@ -14722,7 +14710,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "Pfx2IxxyhR3srmz3iOU9zA=="
+          "hash": "CsqzhOgN9GsjcrB5+PRygg=="
         }
       },
       "is_incremental": false,
@@ -17782,7 +17770,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "oORz2BmTwGfgUxFFBvjD2A=="
+          "hash": "8Q21MY4nbfTmnZAj47CSew=="
         }
       },
       "is_incremental": false,
@@ -17834,11 +17822,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1043,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -17847,17 +17834,18 @@
           "total_file_count": 117,
           "skipped_file_count": 0
         },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1044,
           "skipped_file_count": 0
         }
       }
