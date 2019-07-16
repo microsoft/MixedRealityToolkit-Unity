@@ -141,7 +141,7 @@
     - name: Build Window
       href: Utilities/BuildWindow.md
     - name: Dependency Window
-      href: DependencyWindow.md
+      href: Utilities/DependencyWindow.md
     - name: Optimize Window
       href: Utilities/OptimizeWindow.md
     - name: Extension Service Creation Wizard
