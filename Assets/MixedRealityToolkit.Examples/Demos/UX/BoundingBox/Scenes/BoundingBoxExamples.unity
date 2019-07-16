@@ -337,6 +337,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -352,9 +353,11 @@ MonoBehaviour:
   scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
+  scaleHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
     type: 3}
   rotationHandleSize: 0.016
+  rotateHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
@@ -363,7 +366,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 0
   mediumScale: 1
   closeScale: 1.5
@@ -372,7 +375,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -580,6 +583,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -593,8 +597,10 @@ MonoBehaviour:
   scaleHandlePrefab: {fileID: 0}
   scaleHandleSlatePrefab: {fileID: 0}
   scaleHandleSize: 0.016
+  scaleHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 0}
   rotationHandleSize: 0.016
+  rotateHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
@@ -603,7 +609,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 1
   mediumScale: 1
   closeScale: 1
@@ -612,7 +618,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -2024,6 +2030,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -2037,8 +2044,10 @@ MonoBehaviour:
   scaleHandlePrefab: {fileID: 0}
   scaleHandleSlatePrefab: {fileID: 0}
   scaleHandleSize: 0.016
+  scaleHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 0}
   rotationHandleSize: 0.016
+  rotateHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
@@ -2047,7 +2056,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 0
   mediumScale: 1
   closeScale: 1
@@ -2056,7 +2065,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -2393,7 +2402,7 @@ PrefabInstance:
     - target: {fileID: 8503270331930508642, guid: c0931c4da6d91ea429abedb10290dd16,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.907
+      value: 0.9132
       objectReference: {fileID: 0}
     - target: {fileID: 8503270331930508642, guid: c0931c4da6d91ea429abedb10290dd16,
         type: 3}
@@ -3285,6 +3294,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -3298,8 +3308,10 @@ MonoBehaviour:
   scaleHandlePrefab: {fileID: 0}
   scaleHandleSlatePrefab: {fileID: 0}
   scaleHandleSize: 0.016
+  scaleHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 0}
   rotationHandleSize: 0.016
+  rotateHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
@@ -3308,7 +3320,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 1
   mediumScale: 1
   closeScale: 1
@@ -3317,7 +3329,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -3914,6 +3926,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -3927,8 +3940,10 @@ MonoBehaviour:
   scaleHandlePrefab: {fileID: 0}
   scaleHandleSlatePrefab: {fileID: 0}
   scaleHandleSize: 0.016
+  scaleHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 0}
   rotationHandleSize: 0.016
+  rotateHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
@@ -3937,7 +3952,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 1
   mediumScale: 1
   closeScale: 1
@@ -3946,7 +3961,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -4579,6 +4594,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -4594,9 +4610,11 @@ MonoBehaviour:
   scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
+  scaleHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
     type: 3}
   rotationHandleSize: 0.016
+  rotateHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
@@ -4605,7 +4623,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 1
   mediumScale: 1
   closeScale: 1.5
@@ -4614,7 +4632,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -5017,6 +5035,7 @@ MonoBehaviour:
   layout: 0
   radius: 1.5
   radialRange: 180
+  distance: 1
   rows: 1
   cellWidth: 0.4
   cellHeight: 0.5
@@ -5217,6 +5236,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -5232,9 +5252,11 @@ MonoBehaviour:
   scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
+  scaleHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
     type: 3}
   rotationHandleSize: 0.016
+  rotateHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
@@ -5243,7 +5265,7 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   proximityEffectActive: 1
   handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
+  handleCloseProximity: 0.016
   farScale: 1
   mediumScale: 1
   closeScale: 1.5
@@ -5252,7 +5274,7 @@ MonoBehaviour:
   closeGrowRate: 0.3
   handlesIgnoreCollider: {fileID: 0}
   debugText: {fileID: 0}
-  hideElementsInInspector: 1
+  hideElementsInInspector: 0
   RotateStarted:
     m_PersistentCalls:
       m_Calls:

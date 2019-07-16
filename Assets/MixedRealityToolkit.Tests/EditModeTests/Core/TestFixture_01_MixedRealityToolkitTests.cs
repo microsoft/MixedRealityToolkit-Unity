@@ -12,6 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 {
     public class TestFixture_01_MixedRealityToolkitTests
     {
+        [TearDown]
+        public void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
         #region Service Locator Tests
 
         [Test]

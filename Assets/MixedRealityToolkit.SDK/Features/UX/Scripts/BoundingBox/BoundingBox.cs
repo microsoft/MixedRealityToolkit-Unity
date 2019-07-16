@@ -422,6 +422,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
+        [Tooltip("Additional padding to apply to the collider on scale handle to make handle easier to hit")]
+        private Vector3 scaleHandleColliderPadding = new Vector3(0.016f, 0.016f, 0.016f);
+        public Vector3 ScaleHandleColliderPadding
+        {
+            get { return scaleHandleColliderPadding; }
+            set
+            {
+                if (scaleHandleColliderPadding != value)
+                {
+                    scaleHandleColliderPadding = value;
+                    CreateRig();
+                }
+            }
+        }
+
+        [SerializeField]
         [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead")]
         GameObject rotationHandlePrefab = null;
         public GameObject RotationHandleSlatePrefab
@@ -453,9 +469,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        [SerializeField]
+        [Tooltip("Additional padding to apply to the collider on rotate handle to make handle easier to hit")]
+        private Vector3 rotateHandleColliderPadding = new Vector3(0.016f, 0.016f, 0.016f);
+        public Vector3 RotateHandleColliderPadding
+        {
+            get { return rotateHandleColliderPadding; }
+            set
+            {
+                if (rotateHandleColliderPadding != value)
+                {
+                    rotateHandleColliderPadding = value;
+                    CreateRig();
+                }
+            }
+        }
 
         [SerializeField]
-        [Tooltip("Only used if rotationHandlePrefab is specified. Determines the type of collider that will surround the rotation handle prefab.")]
+        [Tooltip("Determines the type of collider that will surround the rotation handle prefab.")]
         private RotationHandlePrefabCollider rotationHandlePrefabColliderType = RotationHandlePrefabCollider.Box;
         public RotationHandlePrefabCollider RotationHandlePrefabColliderType
         {
@@ -587,7 +618,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float handleCloseProximity = 0.03f;
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range")]
-        private float farScale = 1.0f; 
+        private float farScale = 1.0f;
         public float FarScale
         {
             get
@@ -710,7 +741,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public UnityEvent ScaleStopped = new UnityEvent();
         #endregion Serialized Fields
 
-       
+
         #region Private Fields
 
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
@@ -869,7 +900,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         #endregion Public Properties
 
-       
+
         #region Public Methods
 
         /// <summary>
@@ -986,7 +1017,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (proximityEffectActive)
                 {
-                   HandleProximityScaling();
+                    HandleProximityScaling();
                 }
             }
             else if (boundsOverride != null && HasBoundsOverrideChanged())
@@ -1013,7 +1044,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion MonoBehaviour Methods
 
-       
+
         #region Private Methods
 
         private void DestroyRig()
@@ -1088,9 +1119,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Vector3 prevDir = Vector3.ProjectOnPlane(prevGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
                     Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
                     Quaternion q = Quaternion.FromToRotation(prevDir, currentDir);
-                    Vector3 axis;
-                    float angle;
-                    q.ToAngleAxis(out angle, out axis);
+                    q.ToAngleAxis(out float angle, out Vector3 axis);
                     Target.transform.RotateAround(rigRoot.transform.position, axis, angle);
                 }
                 else if (currentHandleType == HandleType.Scale)
@@ -1142,23 +1171,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             for (int i = 0; i < boundsCorners.Length; ++i)
             {
-                GameObject corner = new GameObject();
-                corner.name = "corner_" + i.ToString();
+                GameObject corner = new GameObject
+                {
+                    name = "corner_" + i.ToString()
+                };
                 corner.transform.parent = rigRoot.transform;
                 corner.transform.localPosition = boundsCorners[i];
-
-                BoxCollider collider = corner.AddComponent<BoxCollider>();
-                collider.size = scaleHandleSize * Vector3.one;
-
-                // In order for the corner to be grabbed using near interaction we need
-                // to add NearInteractionGrabbable;
-                var g = corner.EnsureComponent<NearInteractionGrabbable>();
-                g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
 
                 GameObject visualsScale = new GameObject();
                 visualsScale.name = "visualsScale";
                 visualsScale.transform.parent = corner.transform;
                 visualsScale.transform.localPosition = Vector3.zero;
+
                 // Compute mirroring scale
                 {
                     Vector3 p = boundsCorners[i];
@@ -1190,28 +1214,65 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     cornerVisual = Instantiate(prefabToInstantiate, visualsScale.transform);
                 }
 
-                cornerVisual.name = "visuals";
-
-                // this is the size of the corner visuals
-                var cornerbounds = GetMaxBounds(cornerVisual);
-                // we need to multiply by this amount to get to desired scale handle size
-                var invScale = scaleHandleSize / cornerbounds.size.x;
-                cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
-
                 if (isFlattened)
                 {
                     // Rotate 2D slate handle asset for proper orientation
                     cornerVisual.transform.Rotate(0, 0, -90);
                 }
 
+                cornerVisual.name = "visuals";
+
+                // this is the size of the corner visuals
+                var cornerbounds = GetMaxBounds(cornerVisual);
+                float maxDim = Mathf.Max(
+                    Mathf.Max(cornerbounds.size.x, cornerbounds.size.y),
+                    cornerbounds.size.z);
+                cornerbounds.size = maxDim * Vector3.one;
+                // we need to multiply by this amount to get to desired scale handle size
+                var invScale = scaleHandleSize / cornerbounds.size.x;
+                cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
+
                 ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
 
+                AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, scaleHandleColliderPadding);
                 corners.Add(corner.transform);
                 cornerVisuals.Add(cornerVisual.transform);
                 cornersProximate.Add(HandleProximityState.FullsizeNoProximity);
                 Renderer renderer = cornerVisual.GetComponentInChildren<Renderer>();
                 cornerRenderers.Add(renderer ?? null);
             }
+        }
+
+        /// <summary>
+        /// Add all common components to a corner or rotate affordance
+        /// </summary>
+        /// <param name="afford"></param>
+        /// <param name="bounds"></param>
+        private void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, CursorContextInfo.CursorAction cursorType, Vector3 colliderPadding)
+        {
+            if (colliderType == RotationHandlePrefabCollider.Box)
+            {
+                BoxCollider collider = afford.AddComponent<BoxCollider>();
+                collider.size = bounds.size;
+                collider.center = bounds.center;
+                collider.size += colliderPadding;
+            }
+            else
+            {
+                SphereCollider sphere = afford.AddComponent<SphereCollider>();
+                sphere.center = bounds.center;
+                sphere.radius = bounds.extents.x;
+                sphere.radius += Mathf.Max( Mathf.Max(colliderPadding.x, colliderPadding.y), colliderPadding.z);
+            }
+
+            // In order for the affordance to be grabbed using near interaction we need
+            // to add NearInteractionGrabbable;
+            var g = afford.EnsureComponent<NearInteractionGrabbable>();
+            g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
+
+            var contextInfo = afford.EnsureComponent<CursorContextInfo>();
+            contextInfo.CurrentCursorAction = cursorType;
+            contextInfo.ObjectCenter = rigRoot.transform;
         }
 
         private Bounds GetMaxBounds(GameObject g)
@@ -1251,87 +1312,100 @@ namespace Microsoft.MixedReality.Toolkit.UI
             edgeAxes[10] = CardinalAxisType.Z;
             edgeAxes[11] = CardinalAxisType.Z;
 
-            if (rotationHandlePrefab == null)
+            for (int i = 0; i < edgeCenters.Length; ++i)
             {
-                for (int i = 0; i < edgeCenters.Length; ++i)
+                GameObject midpoint = new GameObject();
+                midpoint.name = "midpoint_" + i.ToString();
+                midpoint.transform.position = edgeCenters[i];
+                midpoint.transform.parent = rigRoot.transform;
+
+                GameObject midpointVisual;
+                if (rotationHandlePrefab != null)
                 {
-                    GameObject ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    ball.name = "midpoint_" + i.ToString();
+                    midpointVisual = Instantiate(rotationHandlePrefab);
+                }
+                else
+                {
+                    midpointVisual = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    Destroy(midpointVisual.GetComponent<SphereCollider>());
+                }
 
-                    ball.transform.localScale = new Vector3(rotationHandleSize, rotationHandleSize, rotationHandleSize);
-                    ball.transform.position = edgeCenters[i];
-                    ball.transform.parent = rigRoot.transform;
+                // Align handle with its edge assuming that the prefab is initially aligned with the up direction 
+                if (edgeAxes[i] == CardinalAxisType.X)
+                {
+                    Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.right);
+                    midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
+                }
+                else if (edgeAxes[i] == CardinalAxisType.Z)
+                {
+                    Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
+                    midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
+                }
 
-                    var contextInfo = ball.EnsureComponent<CursorContextInfo>();
-                    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Rotate;
-                    contextInfo.ObjectCenter = rigRoot.transform;
+                Bounds midpointBounds = GetMaxBounds(midpointVisual);
+                float maxDim = Mathf.Max(
+                    Mathf.Max(midpointBounds.size.x, midpointBounds.size.y),
+                    midpointBounds.size.z);
+                float invScale = rotationHandleSize / maxDim;
 
-                    // In order for the ball to be grabbed using near interaction we need
-                    // to add NearInteractionGrabbable;
-                    var g = ball.EnsureComponent<NearInteractionGrabbable>();
-                    g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
+                midpointVisual.transform.parent = midpoint.transform;
+                midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
+                midpointVisual.transform.localPosition = Vector3.zero;
 
-                    balls.Add(ball.transform);
-                    ballVisuals.Add(ball.transform);
+                AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale), rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, rotateHandleColliderPadding);
 
-                    ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
-                    ballRenderers.Add(ball.GetComponent<Renderer>());
-                    if (handleMaterial != null)
-                    {
-                        Renderer renderer = ball.GetComponent<Renderer>();
-                        renderer.material = handleMaterial;
-                    }
+                balls.Add(midpoint.transform);
+                ballVisuals.Add(midpointVisual.transform);
+
+
+                ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
+                ballRenderers.Add(midpointVisual.GetComponent<Renderer>());
+                if (handleMaterial != null)
+                {
+                    Renderer renderer = midpointVisual.GetComponent<Renderer>();
+                    ApplyMaterialToAllRenderers(midpointVisual, handleMaterial);
                 }
             }
-            else
-            {
-                    for (int i = 0; i < edgeCenters.Length; ++i)
-                    {
-                        GameObject ball = Instantiate(rotationHandlePrefab, rigRoot.transform);
-                        ball.name = "midpoint_" + i.ToString();
-                        ball.transform.localPosition = edgeCenters[i];
+            //if (rotationHandlePrefab == null)
+            //{
+            //    //for (int i = 0; i < edgeCenters.Length; ++i)
+            //    //{
+            //    //    GameObject ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            //    //    ball.name = "midpoint_" + i.ToString();
 
-                        // Align handle with its edge assuming that the prefab is initially aligned with the up direction 
-                        if (edgeAxes[i] == CardinalAxisType.X)
-                        {
-                            Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.right);
-                            ball.transform.localRotation = realignment * ball.transform.localRotation;
-                        }
-                        else if (edgeAxes[i] == CardinalAxisType.Z)
-                        {
-                            Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
-                            ball.transform.localRotation = realignment * ball.transform.localRotation;
-                        }
+            //    //    ball.transform.localScale = new Vector3(rotationHandleSize, rotationHandleSize, rotationHandleSize);
+            //    //    ball.transform.position = edgeCenters[i];
+            //    //    ball.transform.parent = rigRoot.transform;
 
-                        if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Sphere)
-                        {
-                            SphereCollider sphereCollider = ball.AddComponent<SphereCollider>();
-                            sphereCollider.radius = 0.5f * rotationHandleSize;
-                            float localScale = ball.transform.localScale.x;
-                            sphereCollider.radius = localScale;
-                        }
-                        else if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
-                        {
-                            Debug.Assert(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box);
-                            BoxCollider collider = ball.AddComponent<BoxCollider>();
-                            float localScale = ball.transform.localScale.x;
-                            (collider as BoxCollider).size = new Vector3(localScale, localScale, localScale);
-                        }
+            //    //    var contextInfo = ball.EnsureComponent<CursorContextInfo>();
+            //    //    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Rotate;
+            //    //    contextInfo.ObjectCenter = rigRoot.transform;
 
-                        // In order for the ball to be grabbed using near interaction we need
-                        // to add NearInteractionGrabbable;
-                        var g = ball.EnsureComponent<NearInteractionGrabbable>();
-                        g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
+            //    //    // In order for the ball to be grabbed using near interaction we need
+            //    //    // to add NearInteractionGrabbable;
+            //    //    var g = ball.EnsureComponent<NearInteractionGrabbable>();
+            //    //    g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
 
-                        ApplyMaterialToAllRenderers(ball, handleMaterial);
 
-                        balls.Add(ball.transform);
-                        ballVisuals.Add(ball.transform);
-                        ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
-                        Renderer renderer = ball.GetComponentInChildren<Renderer>();
-                        ballRenderers.Add(renderer ?? null);
-                }
-            }
+            //    //}
+            //}
+            //else
+            //{
+            //    for (int i = 0; i < edgeCenters.Length; ++i)
+            //    {
+            //        GameObject ball = Instantiate(rotationHandlePrefab, rigRoot.transform);
+            //        ball.name = "midpoint_" + i.ToString();
+            //        ball.transform.localPosition = edgeCenters[i];
+
+
+
+            //        balls.Add(ball.transform);
+            //        ballVisuals.Add(ball.transform);
+            //        ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
+            //        Renderer renderer = ball.GetComponentInChildren<Renderer>();
+            //        ballRenderers.Add(renderer ?? null);
+            //    }
+            //}
 
             if (links != null)
             {
@@ -2027,8 +2101,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 //only use proximity effect if nothing is being dragged or grabbed
                 if (currentPointer == null && forceFar == false)
                 {
-                    Vector3 point;
-                    if (TryGetPointerPoint(Handedness.Left, out point))
+                    if (TryGetPointerPoint(Handedness.Left, out Vector3 point))
                     {
                         inputPoints.Add(point);
                     }
@@ -2111,8 +2184,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return true;
             }
 
-            MixedRealityPose pose;
-            if (HandJointUtils.TryGetJointPose(Utilities.TrackedHandJoint.IndexTip, handed, out pose))
+            if (HandJointUtils.TryGetJointPose(Utilities.TrackedHandJoint.IndexTip, handed, out MixedRealityPose pose))
             {
                 point = pose.Position;
                 return true;
@@ -2398,7 +2470,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Unused Event Handlers
 
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
-        
+
         #endregion Unused Event Handlers
     }
 }
