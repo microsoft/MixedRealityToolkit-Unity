@@ -587,7 +587,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float handleCloseProximity = 0.03f;
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range")]
-        private float farScale = 1.0f; 
+        private float farScale = 1.0f;
         public float FarScale
         {
             get
@@ -710,7 +710,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public UnityEvent ScaleStopped = new UnityEvent();
         #endregion Serialized Fields
 
-       
+
         #region Private Fields
 
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
@@ -869,7 +869,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         #endregion Public Properties
 
-       
+
         #region Public Methods
 
         /// <summary>
@@ -986,7 +986,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (proximityEffectActive)
                 {
-                   HandleProximityScaling();
+                    HandleProximityScaling();
                 }
             }
             else if (boundsOverride != null && HasBoundsOverrideChanged())
@@ -1013,7 +1013,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion MonoBehaviour Methods
 
-       
+
         #region Private Methods
 
         private void DestroyRig()
@@ -1147,23 +1147,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 corner.transform.parent = rigRoot.transform;
                 corner.transform.localPosition = boundsCorners[i];
 
-                var contextInfo = corner.EnsureComponent<CursorContextInfo>();
-                contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Scale;
-                contextInfo.ObjectCenter = rigRoot.transform;
-
-
-                BoxCollider collider = corner.AddComponent<BoxCollider>();
-                collider.size = scaleHandleSize * Vector3.one;
-
-                // In order for the corner to be grabbed using near interaction we need
-                // to add NearInteractionGrabbable;
-                var g = corner.EnsureComponent<NearInteractionGrabbable>();
-                g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
-
-                GameObject visualsScale = new GameObject();
+                    GameObject visualsScale = new GameObject();
                 visualsScale.name = "visualsScale";
                 visualsScale.transform.parent = corner.transform;
                 visualsScale.transform.localPosition = Vector3.zero;
+
                 // Compute mirroring scale
                 {
                     Vector3 p = boundsCorners[i];
@@ -1211,16 +1199,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
 
-                var contextInfo = corner.EnsureComponent<CursorContextInfo>();
-                contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Scale;
-                contextInfo.ObjectCenter = rigRoot.transform;
-
+                AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale));
                 corners.Add(corner.transform);
                 cornerVisuals.Add(cornerVisual.transform);
                 cornersProximate.Add(HandleProximityState.FullsizeNoProximity);
                 Renderer renderer = cornerVisual.GetComponentInChildren<Renderer>();
                 cornerRenderers.Add(renderer ?? null);
             }
+        }
+
+        /// <summary>
+        /// Add all common components to a corner or rotate affordance
+        /// </summary>
+        /// <param name="corner"></param>
+        /// <param name="cornerBounds"></param>
+        private void AddComponentsToAffordance(GameObject corner, Bounds cornerBounds)
+        {
+            BoxCollider collider = corner.AddComponent<BoxCollider>();
+            collider.size = cornerBounds.size;
+            collider.center = cornerBounds.center;
+
+            // In order for the corner to be grabbed using near interaction we need
+            // to add NearInteractionGrabbable;
+            var g = corner.EnsureComponent<NearInteractionGrabbable>();
+            g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
+
+            var contextInfo = corner.EnsureComponent<CursorContextInfo>();
+            contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Scale;
+            contextInfo.ObjectCenter = rigRoot.transform;
         }
 
         private Bounds GetMaxBounds(GameObject g)
@@ -1294,55 +1300,55 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                    for (int i = 0; i < edgeCenters.Length; ++i)
+                for (int i = 0; i < edgeCenters.Length; ++i)
+                {
+                    GameObject ball = Instantiate(rotationHandlePrefab, rigRoot.transform);
+                    ball.name = "midpoint_" + i.ToString();
+                    ball.transform.localPosition = edgeCenters[i];
+
+                    // Align handle with its edge assuming that the prefab is initially aligned with the up direction 
+                    if (edgeAxes[i] == CardinalAxisType.X)
                     {
-                        GameObject ball = Instantiate(rotationHandlePrefab, rigRoot.transform);
-                        ball.name = "midpoint_" + i.ToString();
-                        ball.transform.localPosition = edgeCenters[i];
+                        Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.right);
+                        ball.transform.localRotation = realignment * ball.transform.localRotation;
+                    }
+                    else if (edgeAxes[i] == CardinalAxisType.Z)
+                    {
+                        Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
+                        ball.transform.localRotation = realignment * ball.transform.localRotation;
+                    }
 
-                        // Align handle with its edge assuming that the prefab is initially aligned with the up direction 
-                        if (edgeAxes[i] == CardinalAxisType.X)
-                        {
-                            Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.right);
-                            ball.transform.localRotation = realignment * ball.transform.localRotation;
-                        }
-                        else if (edgeAxes[i] == CardinalAxisType.Z)
-                        {
-                            Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
-                            ball.transform.localRotation = realignment * ball.transform.localRotation;
-                        }
+                    if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Sphere)
+                    {
+                        SphereCollider sphereCollider = ball.AddComponent<SphereCollider>();
+                        sphereCollider.radius = 0.5f * rotationHandleSize;
+                        float localScale = ball.transform.localScale.x;
+                        sphereCollider.radius = localScale;
+                    }
+                    else if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
+                    {
+                        Debug.Assert(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box);
+                        BoxCollider collider = ball.AddComponent<BoxCollider>();
+                        float localScale = ball.transform.localScale.x;
+                        (collider as BoxCollider).size = new Vector3(localScale, localScale, localScale);
+                    }
 
-                        if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Sphere)
-                        {
-                            SphereCollider sphereCollider = ball.AddComponent<SphereCollider>();
-                            sphereCollider.radius = 0.5f * rotationHandleSize;
-                            float localScale = ball.transform.localScale.x;
-                            sphereCollider.radius = localScale;
-                        }
-                        else if (rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box)
-                        {
-                            Debug.Assert(rotationHandlePrefabColliderType == RotationHandlePrefabCollider.Box);
-                            BoxCollider collider = ball.AddComponent<BoxCollider>();
-                            float localScale = ball.transform.localScale.x;
-                            (collider as BoxCollider).size = new Vector3(localScale, localScale, localScale);
-                        }
+                    var contextInfo = ball.EnsureComponent<CursorContextInfo>();
+                    contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Rotate;
+                    contextInfo.ObjectCenter = rigRoot.transform;
 
-                        var contextInfo = ball.EnsureComponent<CursorContextInfo>();
-                        contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Rotate;
-                        contextInfo.ObjectCenter = rigRoot.transform;
+                    // In order for the ball to be grabbed using near interaction we need
+                    // to add NearInteractionGrabbable;
+                    var g = ball.EnsureComponent<NearInteractionGrabbable>();
+                    g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
 
-                        // In order for the ball to be grabbed using near interaction we need
-                        // to add NearInteractionGrabbable;
-                        var g = ball.EnsureComponent<NearInteractionGrabbable>();
-                        g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
+                    ApplyMaterialToAllRenderers(ball, handleMaterial);
 
-                        ApplyMaterialToAllRenderers(ball, handleMaterial);
-
-                        balls.Add(ball.transform);
-                        ballVisuals.Add(ball.transform);
-                        ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
-                        Renderer renderer = ball.GetComponentInChildren<Renderer>();
-                        ballRenderers.Add(renderer ?? null);
+                    balls.Add(ball.transform);
+                    ballVisuals.Add(ball.transform);
+                    ballsProximate.Add(HandleProximityState.FullsizeNoProximity);
+                    Renderer renderer = ball.GetComponentInChildren<Renderer>();
+                    ballRenderers.Add(renderer ?? null);
                 }
             }
 
@@ -2411,7 +2417,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Unused Event Handlers
 
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
-        
+
         #endregion Unused Event Handlers
     }
 }
