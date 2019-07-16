@@ -147,7 +147,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// This tests the minimum and maximum scaling for the bounding box.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ScaleMinMax()
         {

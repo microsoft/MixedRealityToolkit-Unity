@@ -34,6 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
         #region Scale Utilities
 
+        /// <summary>
+        /// Sets the minimum/maximum scale for the transform helper.
+        /// </summary>
+        /// <param name="min">Minimum scale</param>
+        /// <param name="max">Maximum scale</param>
+        /// <param name="relativeToInitialState">If true the values will be multiplied by scale of target at startup. If false they will be in absolute local scale.</param>
         public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
         {
             if (relativeToInitialState)
@@ -48,6 +54,14 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             }
         }
 
+        /// <summary>
+        /// Clamps the given scale to the scale limits set by <see cref="SetScaleLimits"/> such that:
+        /// - No one component of the returned vector will be greater than the max scale.
+        /// - No one component of the returned vector will be less than the min scale.
+        /// - The returned vector's direction will be the same as the given vector
+        /// </summary>
+        /// <param name="scale">Scale value to clamp</param>
+        /// <returns>The clamped scale vector</returns>
         public Vector3 ClampScale(Vector3 scale)
         {
             if (Vector3.Min(maximumScale, scale) != scale)

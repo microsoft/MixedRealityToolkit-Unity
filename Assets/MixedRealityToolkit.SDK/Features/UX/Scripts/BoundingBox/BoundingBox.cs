@@ -1794,6 +1794,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var target = Target;
             if (target != null)
             {
+                isChildOfTarget = transform.IsChildOf(target.transform);
+
                 transformHelper = this.EnsureComponent<TransformHelper>();
                 transformHelper.Initialize(target.transform);
                 transformHelper.SetScaleLimits(scaleMinimum, scaleMaximum);
