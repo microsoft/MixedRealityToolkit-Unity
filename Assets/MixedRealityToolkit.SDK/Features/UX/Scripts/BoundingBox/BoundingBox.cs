@@ -82,8 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public enum BoundsCalculationMethod
         {
-            ColliderOverRenderer = 0,
-            RendererOverCollider,
+            RendererOverCollider = 0,
+            ColliderOverRenderer,
             ColliderOnly,
             RendererOnly,
         }
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("Defines the volume type and the priority for the bounds calculation")]
-        private BoundsCalculationMethod boundsCalculationMethod = BoundsCalculationMethod.ColliderOverRenderer;
+        private BoundsCalculationMethod boundsCalculationMethod = BoundsCalculationMethod.RendererOverCollider;
         public BoundsCalculationMethod CalculationMethod
         {
             get { return boundsCalculationMethod; }
