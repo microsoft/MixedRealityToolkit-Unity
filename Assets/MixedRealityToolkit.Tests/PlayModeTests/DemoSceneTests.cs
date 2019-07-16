@@ -50,6 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SanityTests
             Scene scene = SceneManager.GetSceneByName(HandInteractionExamplesSceneName);
             if (scene.isLoaded)
             {
+                Scene playModeTestScene = SceneManager.CreateScene("Empty");
+                SceneManager.SetActiveScene(playModeTestScene);
                 SceneManager.UnloadSceneAsync(scene.buildIndex);
             }
         }
