@@ -192,6 +192,9 @@ SetDimensionIndex(0);
 <li>Grab: A hand is currently grabbing in the bounds of the object, use NearInteractionGrabbable to enable</li>
 </ul>
 <p>States have corresponding properties and Methods in the Interactable, like SetFocus(bool focus) or HasFocus.</p>
+<h2 id="interactable-goals-and-architecture">Interactable goals and architecture</h2>
+<img src="Images/Interactable/Interactable_overview.png" width="750">
+<img src="Images/Interactable/Interactable_details.png" width="1450">
 <h2 id="extending-themes">Extending themes</h2>
 <p>Extend <code>InteractableThemeBase</code> to create a new theme that will show up in the theme property drop-down list. Themes can be created to control anything based on state changes. We could have a custom component on a GameObject that is driven by a custom theme with the values for each state being set in the inspector.</p>
 <p>Setup the configuration of the theme settings in the constructor.</p>
