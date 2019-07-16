@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SpatialMouseCursor
+  m_Name: MouseCursor
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: ALBEDO_OFF ALPHA_USAGE_OFF AMBIENTLIGHT_OFF CUBEMAP_OFF EMISSIVE_OFF
     ETC1_EXTERNAL_ALPHA FRESNEL_OFF LIGHTMAP_OFF LIGHTPROBES_OFF LIGHT_OFF NEARCLIP_OFF
@@ -77,6 +77,7 @@ Material:
     - _AlbedoAssignedAtRuntime: 0
     - _AlphaTestThreshold: 0.05
     - _BlendOp: 0
+    - _BlendedClippingWidth: 1
     - _BorderLight: 0
     - _BorderLightOpaque: 0
     - _BorderLightOpaqueAlpha: 1
