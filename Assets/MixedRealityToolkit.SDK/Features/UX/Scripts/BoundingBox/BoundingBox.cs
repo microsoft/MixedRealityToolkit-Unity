@@ -2095,7 +2095,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void HandleProximityScaling(bool forceFar = false)
         {
-            if (corners.Count > 0 || balls.Count > 0)
+            if (corners?.Count > 0 || balls?.Count > 0)
             {
                 inputPoints.Clear();
                 //only use proximity effect if nothing is being dragged or grabbed
