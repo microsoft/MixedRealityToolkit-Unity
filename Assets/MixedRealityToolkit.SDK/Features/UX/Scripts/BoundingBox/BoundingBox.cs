@@ -649,8 +649,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Half the size of the current bounds
         private Vector3 currentBoundsExtents;
 
-        //private BoundsCalculationMethod boundsMethod = BoundsCalculationMethod.Colliders;
-
         private List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
         private List<Transform> links;
         // List of corner root transforms. Use these to position corners
@@ -1128,10 +1126,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Mesh currentMesh;
             foreach (MeshFilter r in g.GetComponentsInChildren<MeshFilter>())
             {
-                if ((currentMesh = r.sharedMesh) == null)
-                    continue;
+                if ((currentMesh = r.sharedMesh) == null) { continue; }
 
-                b.Encapsulate(currentMesh.bounds);
+                if (b.size == Vector3.zero)
+                {
+                    b = r.sharedMesh.bounds;
+                }
+                else
+                {
+                    b.Encapsulate(currentMesh.bounds);
+                }
             }
             return b;
         }
@@ -1340,9 +1344,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 cachedTargetCollider.size = bounds.size;
             }
 
-            Vector3 scale = cachedTargetCollider.transform.lossyScale;
-            Vector3 invScale = new Vector3(1.0f / scale[0], 1.0f / scale[1], 1.0f / scale[2]);
-            cachedTargetCollider.size += Vector3.Scale(boxPadding, invScale);
+            if (boxPadding != Vector3.zero)
+            {
+                Vector3 scale = cachedTargetCollider.transform.lossyScale;
+                Vector3 invScale = new Vector3(1.0f / scale[0], 1.0f / scale[1], 1.0f / scale[2]);
+                cachedTargetCollider.size += Vector3.Scale(boxPadding, invScale);
+            }
 
             cachedTargetCollider.EnsureComponent<NearInteractionGrabbable>();
         }
@@ -1409,23 +1416,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool AddRendererBoundsToTarget(KeyValuePair<Transform, Bounds> rendererBoundsByTarget)
         {
-            if (rendererBoundsByTarget.Key == null) { return false; }
+            if (rendererBoundsByTarget.Key != null)
+            {
+                Vector3[] cornersToWorld = null;
+                rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
+                colliderCorners.AddRange(cornersToWorld);
+                return true;
+            }
 
-            Vector3[] cornersToWorld = null;
-            rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
-            colliderCorners.AddRange(cornersToWorld);
-
-            return true;
-        }
+            return false;
+    }
 
         private bool AddColliderBoundsToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
-            if (colliderByTransform.Key == null) { return false; }
+            if (colliderByTransform.Key != null)
+            {
+                BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, colliderCorners, 0);
+                return true;
+            }
 
-            BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, colliderCorners, 0);
-
-            return true;
+            return false;
         }
+
 
         private void SetMaterials()
         {
@@ -2069,17 +2081,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
         #endregion Unused Event Handlers
-
-        List<Vector3> interestingPoints = new List<Vector3>();
-        void OnDrawGizmos()
-        {
-            if (interestingPoints.Count == 0)
-                return;
-
-            foreach(var p in interestingPoints)
-            {
-                Gizmos.DrawSphere(p, .2f);
-            }
-        }
     }
 }
