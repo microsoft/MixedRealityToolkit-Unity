@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator Test01_ManipulationHandlerInstantiate()
+        public IEnumerator Instantiate()
         {
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator Test02_ManipulationHandlerGazeHover()
+        public IEnumerator GazeHover()
         {
 
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator ManipulationHandlerForceRelease()
+        public IEnumerator ForceRelease()
         {
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
