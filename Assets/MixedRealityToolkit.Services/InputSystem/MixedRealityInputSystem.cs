@@ -76,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool IsInputEnabled => disabledRefCount <= 0;
 
         private int disabledRefCount;
+        private bool isInputModuleAdded = false;
 
         private SourceStateEventData sourceStateEventData;
         private SourcePoseEventData<TrackingState> sourceTrackingEventData;
@@ -151,6 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // There is no input module attached to the camera, add one.
                 CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                isInputModuleAdded = true;
             }
             else if ((inputModules.Length == 1) && (inputModules[0] is MixedRealityInputModule))
             { /* Nothing to do, a MixedRealityInputModule was applied in the editor. */ }
@@ -269,6 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (Application.isPlaying)
                 {
+                    GazeProvider.GazePointer.BaseCursor.Destroy();
                     UnityEngine.Object.Destroy(GazeProvider as Component);
                 }
                 else
@@ -294,6 +297,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             deviceManagers.Clear();
 
             InputDisabled?.Invoke();
+        }
+
+        public override void Destroy()
+        {
+            if (isInputModuleAdded)
+            {
+                var inputModule = CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>();
+                if (inputModule)
+                {
+                    if (Application.isPlaying)
+                    {
+                        inputModule.DeactivateModule();
+                        UnityEngine.Object.Destroy(inputModule);
+                    }
+                    else
+                    {
+                        UnityEngine.Object.DestroyImmediate(inputModule);
+                    }
+                }
+            }
+
+            base.Destroy();
         }
 
         #endregion IMixedRealityService Implementation
@@ -1022,7 +1047,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandlePointerEvent(pointerEventData, OnInputClickedEventHandler);
 
-            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
+            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the PointerHandler.
         }
 
         #endregion Pointer Click

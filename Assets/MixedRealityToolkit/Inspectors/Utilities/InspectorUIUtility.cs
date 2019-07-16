@@ -38,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly string Emoji = "\u263A";
 
         public static readonly Texture HelpIcon = EditorGUIUtility.IconContent("_Help").image;
+        public static readonly Texture SuccessIcon = EditorGUIUtility.IconContent("Collab").image;
+        public static readonly Texture WarningIcon = EditorGUIUtility.IconContent("console.warnicon").image;
+        public static readonly Texture InfoIcon = EditorGUIUtility.IconContent("console.infoicon").image;
 
         /// <summary>
         /// A data container for managing scrolling lists or nested drawers in custom inspectors.
@@ -444,10 +447,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             bool drawSection = false;
             drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
-            EditorGUILayout.BeginVertical();
             GUI.color = tColor;
             EditorGUI.indentLevel = indent;
-
             return drawSection;
         }
 
@@ -456,7 +457,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void DrawSectionEnd(int indent)
         {
-            EditorGUILayout.EndVertical();
             EditorGUI.indentLevel = indent;
         }
 

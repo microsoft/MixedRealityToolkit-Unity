@@ -8,6 +8,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
     public class DefaultPrimaryPointerSelectorTests
     {
+        [TearDown]
+        public void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
         [Test]
         public void Test()
         {

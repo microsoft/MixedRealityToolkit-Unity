@@ -37,16 +37,14 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_VERTEX_COLORS)] _VertexColors("Vertex Colors", Float) = 0.0
         [Toggle(_VERTEX_EXTRUSION)] _VertexExtrusion("Vertex Extrusion", Float) = 0.0
         _VertexExtrusionValue("Vertex Extrusion Value", Float) = 0.0
-        [Toggle(_CLIPPING_PLANE)] _ClippingPlane("Clipping Plane", Float) = 0.0
-        [Toggle(_CLIPPING_SPHERE)] _ClippingSphere("Clipping Sphere", Float) = 0.0
-        [Toggle(_CLIPPING_BOX)] _ClippingBox("Clipping Box", Float) = 0.0
+        _BlendedClippingWidth("Blended Clipping With", Range(0.0, 10.0)) = 1.0
         [Toggle(_CLIPPING_BORDER)] _ClippingBorder("Clipping Border", Float) = 0.0
-        _ClippingBorderWidth("Clipping Border Width", Range(0.005, 1.0)) = 0.025
+        _ClippingBorderWidth("Clipping Border Width", Range(0.0, 1.0)) = 0.025
         _ClippingBorderColor("Clipping Border Color", Color) = (1.0, 0.2, 0.0, 1.0)
         [Toggle(_NEAR_PLANE_FADE)] _NearPlaneFade("Near Plane Fade", Float) = 0.0
         [Toggle(_NEAR_LIGHT_FADE)] _NearLightFade("Near Light Fade", Float) = 0.0
-        _FadeBeginDistance("Fade Begin Distance", Range(0.01, 10.0)) = 0.85
-        _FadeCompleteDistance("Fade Complete Distance", Range(0.01, 10.0)) = 0.5
+        _FadeBeginDistance("Fade Begin Distance", Range(0.0, 10.0)) = 0.85
+        _FadeCompleteDistance("Fade Complete Distance", Range(0.0, 10.0)) = 0.5
         _FadeMinValue("Fade Min Value", Range(0.0, 1.0)) = 0.0
 
         // Fluent options.
@@ -70,7 +68,7 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_BORDER_LIGHT_OPAQUE)] _BorderLightOpaque("Border Light Opaque", Float) = 0.0
         _BorderWidth("Border Width", Range(0.0, 1.0)) = 0.1
         _BorderMinValue("Border Min Value", Range(0.0, 1.0)) = 0.1
-        _EdgeSmoothingValue("Edge Smoothing Value", Range(0.0001, 0.2)) = 0.002
+        _EdgeSmoothingValue("Edge Smoothing Value", Range(0.0, 0.2)) = 0.002
         _BorderLightOpaqueAlpha("Border Light Opaque Alpha", Range(0.0, 1.0)) = 1.0
         [Toggle(_INNER_GLOW)] _InnerGlow("Inner Glow", Float) = 0.0
         _InnerGlowColor("Inner Glow Color (RGB) and Intensity (A)", Color) = (1.0, 1.0, 1.0, 0.75)
@@ -216,8 +214,10 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #pragma multi_compile_instancing
             #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile _ UNITY_COLORSPACE_GAMMA
             #pragma multi_compile _ _MULTI_HOVER_LIGHT
+            #pragma multi_compile _ _CLIPPING_PLANE
+            #pragma multi_compile _ _CLIPPING_SPHERE
+            #pragma multi_compile _ _CLIPPING_BOX
 
             #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON
             #pragma shader_feature _DISABLE_ALBEDO_MAP
@@ -235,9 +235,6 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _RIM_LIGHT
             #pragma shader_feature _VERTEX_COLORS
             #pragma shader_feature _VERTEX_EXTRUSION
-            #pragma shader_feature _CLIPPING_PLANE
-            #pragma shader_feature _CLIPPING_SPHERE
-            #pragma shader_feature _CLIPPING_BOX
             #pragma shader_feature _CLIPPING_BORDER
             #pragma shader_feature _NEAR_PLANE_FADE
             #pragma shader_feature _NEAR_LIGHT_FADE
@@ -459,6 +456,10 @@ Shader "Mixed Reality Toolkit/Standard"
             fixed _ClipBoxSide;
             float4 _ClipBoxSize;
             float4x4 _ClipBoxInverseTransform;
+#endif
+
+#if defined(_CLIPPING_PRIMITIVE)
+            float _BlendedClippingWidth;
 #endif
 
 #if defined(_CLIPPING_BORDER)
@@ -886,12 +887,10 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 #if defined(_CLIPPING_BORDER)
                 fixed3 primitiveBorderColor = lerp(_ClippingBorderColor, fixed3(0.0, 0.0, 0.0), primitiveDistance / _ClippingBorderWidth);
-                albedo.rgb += primitiveBorderColor * ((primitiveDistance < _ClippingBorderWidth) ? 1.0 : 0.0);
+                albedo.rgb += primitiveBorderColor * IF((primitiveDistance < _ClippingBorderWidth), 1.0, 0.0);
 #endif
 #if defined(_ALPHA_CLIP)
                 albedo *= (primitiveDistance > 0.0);
-#else
-                albedo *= saturate(primitiveDistance);
 #endif
 #endif
 
@@ -1157,6 +1156,11 @@ Shader "Mixed Reality Toolkit/Standard"
                 // Hover and proximity lighting should occur after near plane fading.
 #if defined(_HOVER_LIGHT) || defined(_PROXIMITY_LIGHT)
                 output.rgb += fluentLightColor * _FluentLightIntensity * pointToLight;
+#endif
+
+                // Perform non-alpha clipped primitive clipping on the final output.
+#if defined(_CLIPPING_PRIMITIVE) && !defined(_ALPHA_CLIP)
+                output *= saturate(primitiveDistance * (1.0f / _BlendedClippingWidth));
 #endif
                 return output;
             }
