@@ -412,13 +412,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static void DrawDivider()
         {
             EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
-            /*
-            GUIStyle styleHR = new GUIStyle(GUI.skin.box);
-            styleHR.stretchWidth = true;
-            styleHR.fixedHeight = 1;
-            styleHR.border = new RectOffset(1, 1, 1, 0);
-            GUILayout.Box("", styleHR);
-            */
         }
 
         /// <summary>
