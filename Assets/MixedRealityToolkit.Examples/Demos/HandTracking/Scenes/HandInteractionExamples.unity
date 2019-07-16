@@ -167,6 +167,7 @@ MonoBehaviour:
   layout: 0
   radius: 2
   radialRange: 60
+  distance: 1
   rows: 1
   cellWidth: 0.032
   cellHeight: 0.04
@@ -7563,6 +7564,7 @@ MonoBehaviour:
   scaleMaximum: 2
   scaleMinimum: 0.2
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -8962,6 +8964,11 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: hideElementsInInspector
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 937ce507dd7ee334ba569554e24adbdd, type: 3}
 --- !u!4 &830778565 stripped
@@ -9240,6 +9247,7 @@ MonoBehaviour:
   scaleMaximum: 2
   scaleMinimum: 0.2
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -11409,6 +11417,7 @@ MonoBehaviour:
   layout: 0
   radius: 2
   radialRange: 60
+  distance: 1
   rows: 1
   cellWidth: 0.048
   cellHeight: 0.036
@@ -11846,6 +11855,7 @@ MonoBehaviour:
   layout: 0
   radius: 2
   radialRange: 30
+  distance: 1
   rows: 1
   cellWidth: 0.12
   cellHeight: 0.12
@@ -14448,6 +14458,7 @@ MonoBehaviour:
   layout: 0
   radius: 2
   radialRange: 180
+  distance: 1
   rows: 1
   cellWidth: 0.06
   cellHeight: 0.05
@@ -14692,6 +14703,7 @@ MonoBehaviour:
   layout: 0
   radius: 2
   radialRange: 30
+  distance: 1
   rows: 1
   cellWidth: 0.12
   cellHeight: 0.12
@@ -15827,6 +15839,7 @@ MonoBehaviour:
   layout: 0
   radius: 2
   radialRange: 30
+  distance: 1
   rows: 1
   cellWidth: 0.12
   cellHeight: 0.12
@@ -16607,6 +16620,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 4
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0.01, y: 0.01, z: 0.01}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -16912,6 +16926,7 @@ MonoBehaviour:
   scaleMaximum: 2
   scaleMinimum: 0.2
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -18278,6 +18293,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -19644,6 +19660,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -20299,6 +20316,7 @@ MonoBehaviour:
   layout: 0
   radius: 2
   radialRange: 60
+  distance: 1
   rows: 1
   cellWidth: 0.032
   cellHeight: 0.04
@@ -22071,6 +22089,7 @@ MonoBehaviour:
   scaleMaximum: 2
   scaleMinimum: 0.2
   flattenAxis: 0
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}

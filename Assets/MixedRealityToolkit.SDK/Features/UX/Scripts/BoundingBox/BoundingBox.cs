@@ -1174,8 +1174,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     // instantiate default prefab, a cube. Remove the box collider from it
                     cornerVisual = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cornerVisual.transform.parent = visualsScale.transform;
                     cornerVisual.transform.localPosition = Vector3.zero;
+                    cornerVisual.transform.parent = visualsScale.transform;
                     Destroy(cornerVisual.GetComponent<BoxCollider>());
                 }
                 else
@@ -1183,19 +1183,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     cornerVisual = Instantiate(prefabToInstantiate, visualsScale.transform);
                 }
 
-                cornerVisual.name = "visuals";
-
-                // this is the size of the corner visuals
-                var cornerbounds = GetMaxBounds(cornerVisual);
-                // we need to multiply by this amount to get to desired scale handle size
-                var invScale = scaleHandleSize / cornerbounds.size.x;
-                cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
-
                 if (isFlattened)
                 {
                     // Rotate 2D slate handle asset for proper orientation
                     cornerVisual.transform.Rotate(0, 0, -90);
                 }
+
+                cornerVisual.name = "visuals";
+
+                // this is the size of the corner visuals
+                var cornerbounds = GetMaxBounds(cornerVisual);
+                float maxDim = Mathf.Max(
+                    Mathf.Max(cornerbounds.size.x, cornerbounds.size.y),
+                    cornerbounds.size.z);
+                cornerbounds.size = maxDim * Vector3.one;
+                // we need to multiply by this amount to get to desired scale handle size
+                var invScale = scaleHandleSize / cornerbounds.size.x;
+                cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
 
                 ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
 

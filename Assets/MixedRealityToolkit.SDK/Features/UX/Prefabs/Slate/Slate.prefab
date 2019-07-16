@@ -164,7 +164,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7779420037177669557}
   - component: {fileID: 7779420037177669560}
-  - component: {fileID: 7779420037177669563}
   - component: {fileID: 7779420037177669562}
   - component: {fileID: 7779420037177669567}
   - component: {fileID: 7779420037177669561}
@@ -208,19 +207,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.82326704, y: 0.9999999, z: 12.678262}
   m_Center: {x: -0.088367194, y: -0.00000022043137, z: -1.767082}
---- !u!114 &7779420037177669563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7779420037177669556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 006b19a3d56ab0d468466cdb4fad3027, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panComponent: {fileID: 0}
 --- !u!114 &7779420037177669562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,7 +472,6 @@ GameObject:
   - component: {fileID: 7779420038095343088}
   - component: {fileID: 7779420038095343091}
   - component: {fileID: 7779420038095343090}
-  - component: {fileID: 7779420038095343085}
   - component: {fileID: 7779420038095343089}
   - component: {fileID: 6478522880476602763}
   - component: {fileID: 1666450981}
@@ -569,19 +554,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.99999946, z: 0.5373085}
   m_Center: {x: -0.000000035977287, y: -0.0000004786908, z: 0.20846602}
---- !u!114 &7779420038095343085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7779420038095343086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b95aaec558d535742a71fbcbeaa2de23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manipulatorToDisable: {fileID: 7779420037177669562}
 --- !u!114 &7779420038095343089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1023,6 +995,7 @@ MonoBehaviour:
   layout: 0
   radius: 2
   radialRange: 60
+  distance: 1
   rows: 1
   cellWidth: 0.033
   cellHeight: 0.04
@@ -1119,7 +1092,7 @@ MonoBehaviour:
   orientationType: 5
   localOffset: {x: 0, y: 0, z: 0}
   worldOffset: {x: 0, y: -0.1, z: 0.5}
-  useAngleSteppingForWorldOffset: 0
+  useAngleStepping: 0
   tetherAngleSteps: 24
 --- !u!65 &7779420039263858272
 BoxCollider:
@@ -1152,6 +1125,7 @@ MonoBehaviour:
   scaleMaximum: 5
   scaleMinimum: 0.3
   flattenAxis: 4
+  flattenAxisDisplayScale: 0
   boxPadding: {x: 0, y: 0, z: 0}
   boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
   boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
@@ -1169,7 +1143,7 @@ MonoBehaviour:
   scaleHandleSize: 0.016
   rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
     type: 3}
-  rotationHandleSize: 0.016
+  rotationHandleSize: 0.03
   rotationHandlePrefabColliderType: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
