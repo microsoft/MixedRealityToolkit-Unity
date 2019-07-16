@@ -176,11 +176,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             if (UpdateSolvers)
             {
+                //Before calling solvers, update goal to be the transform so that working and transform will match
+                GoalPosition = transform.position;
+                GoalRotation = transform.rotation;
+                GoalScale = transform.localScale;
+
                 for (int i = 0; i < solvers.Count; ++i)
                 {
                     Solver solver = solvers[i];
 
-                    if (solver.enabled)
+                    if (solver != null && solver.enabled)
                     {
                         solver.SolverUpdateEntry();
                     }

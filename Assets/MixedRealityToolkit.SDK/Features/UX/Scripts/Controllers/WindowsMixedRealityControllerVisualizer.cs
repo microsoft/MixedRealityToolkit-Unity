@@ -15,9 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (UseSourcePoseData &&
                 eventData.SourceId == Controller?.InputSource.SourceId)
             {
-                TrackingState = TrackingState.Tracked;
-                transform.localPosition = eventData.SourceData.Position;
-                transform.localRotation = eventData.SourceData.Rotation * inverseRotation;
+                base.OnSourcePoseChanged(eventData);
+                transform.localRotation *= inverseRotation;
             }
         }
     }
