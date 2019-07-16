@@ -8,76 +8,55 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UITextMeshProConverter : Editor
+public class UITextMeshProConverter : EditorWindow
 {
-    /*
-    [MenuItem("Utils/Select Text Components")]
-    public static void SelectText(MenuCommand command)
+    private TMP_FontAsset ReplacementFontAsset;
+
+    [MenuItem("Mixed Reality Toolkit/Utilities/Text Mesh Converter", false, 0)]
+    public static void OpenWindow()
     {
-        Transform[] ts = FindObjectsOfType<Transform>();
-        List<GameObject> selection = new List<GameObject>();
-        foreach (Transform t in ts)
-        {
-            Text[] cs = t.gameObject.GetComponents<Text>();
-            if (cs.Length > 0)
-            {
-                selection.Add(t.gameObject);
-            }
-        }
-        Selection.objects = selection.ToArray();
-    }*/
+        // Dock it next to the Scene View.
+        var window = GetWindow<UITextMeshProConverter>();
+        window.titleContent = new GUIContent("Text Mesh Pro Converter", EditorGUIUtility.IconContent("TextMesh Icon").image);
+        window.Show();
+    }
 
-    [MenuItem("Mixed Reality Toolkit/UI/Convert Text To Text Mesh Pro UGUI", false, 2000)]
-    public static void ConvertTextToTextMeshPro()
+    private void OnGUI()
     {
-        if (Selection.gameObjects == null)
+        ReplacementFontAsset = (TMP_FontAsset)EditorGUILayout.ObjectField("Replacement TMP Font Asset", ReplacementFontAsset, typeof(TMP_FontAsset), false);
+
+        if (GUILayout.Button("Convert Selected Text Mesh"))
         {
-            EditorUtility.DisplayDialog(
-                "ERROR!", "You must select a Unity UI Text Object to convert.", "OK", "");
-            return;
+            ConvertTextMesh();
         }
 
-
-        Material MRTKTextMeshProMaterial = (Material)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/StandardAssets/Materials/MRTKTextMeshPro.mat", typeof(Material));
-        if (MRTKTextMeshProMaterial == null)
+        if (GUILayout.Button("Convert Selected Text GUI"))
         {
-            EditorUtility.DisplayDialog("ERROR!", "Could not find MRTKTextMeshPro.mat", "OK", "");
-            return;
+            ConvertText();
         }
+    }
 
-        Dictionary<string, TMP_FontAsset> fontMap = new Dictionary<string, TMP_FontAsset>();
-        string[] fontAssets = UnityEditor.AssetDatabase.FindAssets("t:TMP_FontAsset");
-        foreach(string fontAssetGUID in fontAssets)
-        {
-            string fontAssetPath = AssetDatabase.GUIDToAssetPath(fontAssetGUID);
-            var tmp_fontAsset = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(fontAssetPath);
-            //tmp_fontAsset.material.shader
+    //[MenuItem("Mixed Reality Toolkit/UI/Convert Text To Text Mesh Pro UGUI", false, 2000)]
+    public void ConvertText()
+    {
+        if (!NullChecks()) return;
 
-            if (tmp_fontAsset != null)
-            {
-                fontMap[tmp_fontAsset.name] = tmp_fontAsset;
-            }
-        }
-
-        List<Text> textGameObjects = new List<Text>();
+        List<Text> textObjects = new List<Text>();
+        List<GameObject> textGameObjects = new List<GameObject>();
         foreach (var gameObject in Selection.gameObjects)
         {
             Text uiText = gameObject.GetComponent<Text>();
-
-            /*
-            if (!fontMap.ContainsKey(uiText.font.name))
+            if (uiText != null)
             {
-                TMPro_FontAssetCreatorWindow.ShowFontAtlasCreatorWindow(uiText.font);
-                return;
-            }*/
-
-            textGameObjects.Add(uiText);
+                textObjects.Add(uiText);
+                textGameObjects.Add(gameObject);
+            }
         }
 
-        Resources.Load<TMP_FontAsset>("Fonts & Materials/Anton SDF");
-        foreach (Text uiText in textGameObjects)
+        Undo.RecordObjects(textGameObjects.ToArray(), "Convert to Text Mesh Pro");
+
+        foreach (Text uiText in textObjects)
         {
-            //Text uiText = gameObject.GetComponent<Text>();
             GameObject gameObject = uiText.gameObject;
 
             Font font = uiText.font;
@@ -100,13 +79,12 @@ public class UITextMeshProConverter : Editor
             DestroyImmediate(uiText);
 
             TextMeshProUGUI textMesh = gameObject.AddComponent<TextMeshProUGUI>();
-
-            //textMesh.font = fontMap[font.name];
+            textMesh.font = ReplacementFontAsset;
             textMesh.fontSize = fontSize;
-            textMesh.fontStyle = GetTmpFontStyle(fontStyle);
+            textMesh.fontStyle = ConvertToTMPFontStyle(fontStyle);
             textMesh.enableWordWrapping = (horizWrap == HorizontalWrapMode.Wrap);
             textMesh.text = textValue;
-            textMesh.alignment = GetTmpAlignment(anchor);
+            textMesh.alignment = ConvertTextAnchorToTMPTextAlignment(anchor);
             textMesh.color = color;
             textMesh.lineSpacing = lineSpacing;
 
@@ -118,87 +96,137 @@ public class UITextMeshProConverter : Editor
             textMesh.rectTransform.localScale = localScale;
             textMesh.rectTransform.pivot = pivot;
             textMesh.rectTransform.sizeDelta = sizeDelta;
+        }
+    }
 
-            textMesh.material = new Material(textMesh.material);
-            //Material test = new Material(textMesh.fontSharedMaterial);
-            //MRTKTextMeshProMaterial.CopyPropertiesFromMaterial(textMesh.fontSharedMaterial);
-            //textMesh.fontSharedMaterial = test;
-            //MRTKTextMeshProMaterial.CopyPropertiesFromMaterial(textMesh.material);
-            //textMesh.fontSharedMaterial = MRTKTextMeshProMaterial;
+    //[MenuItem("Mixed Reality Toolkit/UI/Convert Text To Text Mesh Pro UGUI", false, 2000)]
+    public void ConvertTextMesh()
+    {
+        if (!NullChecks()) return;
+
+        List<TextMesh> textMeshObjects = new List<TextMesh>();
+        List<GameObject> textGameObjects = new List<GameObject>();
+        foreach (var gameObject in Selection.gameObjects)
+        {
+            TextMesh uiTextMesh = gameObject.GetComponent<TextMesh>();
+
+            if (uiTextMesh != null)
+            {
+                textMeshObjects.Add(uiTextMesh);
+                textGameObjects.Add(gameObject);
+            }
         }
 
-        /*
-        Text uiText = Selection.activeGameObject.GetComponent<Text>();
-        if (uiText == null)
+        foreach (TextMesh uiText in textMeshObjects)
+        {
+            Undo.RegisterCompleteObjectUndo(uiText.gameObject, "Convert to Text Mesh Pro");
+            //Undo.RecordObject(uiText.gameObject, "Convert to Text Mesh Pro");
+
+            GameObject gameObject = uiText.gameObject;
+
+            Font font = uiText.font;
+            int fontSize = uiText.fontSize;
+            FontStyle fontStyle = uiText.fontStyle;
+            //HorizontalWrapMode horizWrap = uiText.wrap;
+            string textValue = uiText.text;
+            TextAlignment alignment = uiText.alignment;
+            Color color = uiText.color;
+            float lineSpacing = uiText.lineSpacing;
+
+            /*
+            var anchoredPosition3D = uiText.rectTransform.anchoredPosition3D;
+            var anchorMax = uiText.rectTransform.anchorMax;
+            var anchorMin = uiText.rectTransform.anchorMin;
+            var localPosition = uiText.rectTransform.localPosition;
+            var localRotation = uiText.rectTransform.localRotation;
+            var localScale = uiText.rectTransform.localScale;
+            var pivot = uiText.rectTransform.pivot;
+            var sizeDelta = uiText.rectTransform.sizeDelta;
+            */
+
+            DestroyImmediate(uiText);
+
+            TextMeshPro textMesh = gameObject.AddComponent<TextMeshPro>();
+
+            //textMesh.font = fontMap[font.name];
+            textMesh.fontSize = fontSize;
+            textMesh.fontStyle = ConvertToTMPFontStyle(fontStyle);
+            //textMesh.enableWordWrapping = (horizWrap == HorizontalWrapMode.Wrap);
+            textMesh.text = textValue;
+            textMesh.alignment = ConvertTextAlignmentToTMPTextAlignment(alignment);
+            textMesh.color = color;
+            textMesh.lineSpacing = lineSpacing;
+
+            textMesh.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 40);
+            /*
+            textMesh.rectTransform.anchoredPosition3D = anchoredPosition3D;
+            textMesh.rectTransform.anchorMax = anchorMax;
+            textMesh.rectTransform.anchorMin = anchorMin;
+            textMesh.rectTransform.localPosition = localPosition;
+            textMesh.rectTransform.localRotation = localRotation;
+            textMesh.rectTransform.localScale = localScale;
+            textMesh.rectTransform.pivot = pivot;
+            textMesh.rectTransform.sizeDelta = sizeDelta;
+            */
+
+            textMesh.font = ReplacementFontAsset;
+
+            Undo.FlushUndoRecordObjects();
+        }
+    }
+
+    private bool NullChecks()
+    {
+        if (Selection.gameObjects == null)
         {
             EditorUtility.DisplayDialog(
                 "ERROR!", "You must select a Unity UI Text Object to convert.", "OK", "");
-            return;
+            return false;
         }
 
-        MenuCommand command = new MenuCommand(uiText);
-
-        tmp.fontStyle = GetTmpFontStyle(uiText.fontStyle);
-
-        tmp.fontSize = uiText.fontSize;
-        tmp.fontSizeMin = uiText.resizeTextMinSize;
-        tmp.fontSizeMax = uiText.resizeTextMaxSize;
-        tmp.enableAutoSizing = uiText.resizeTextForBestFit;
-        tmp.alignment = GetTmpAlignment(uiText.alignment);
-        tmp.text = uiText.text;
-        tmp.color = uiText.color;
-
-        tmp.transform.SetParent(uiText.transform.parent);
-        tmp.name = uiText.name;
-
-        tmp.rectTransform.anchoredPosition3D = uiText.rectTransform.anchoredPosition3D;
-        tmp.rectTransform.anchorMax = uiText.rectTransform.anchorMax;
-        tmp.rectTransform.anchorMin = uiText.rectTransform.anchorMin;
-        tmp.rectTransform.localPosition = uiText.rectTransform.localPosition;
-        tmp.rectTransform.localRotation = uiText.rectTransform.localRotation;
-        tmp.rectTransform.localScale = uiText.rectTransform.localScale;
-        tmp.rectTransform.pivot = uiText.rectTransform.pivot;
-        tmp.rectTransform.sizeDelta = uiText.rectTransform.sizeDelta;
-
-        tmp.transform.SetSiblingIndex(uiText.transform.GetSiblingIndex());
-
-        // Copy all other components
-        Component[] components = uiText.GetComponents<Component>();
-        int componentsCopied = 0;
-        for (int i = 0; i < components.Length; i++)
+        if (ReplacementFontAsset == null)
         {
-            var thisType = components[i].GetType();
-            if (thisType == typeof(Text) ||
-                thisType == typeof(RectTransform) ||
-                thisType == typeof(Transform) ||
-                thisType == typeof(CanvasRenderer))
-                continue;
-
-            UnityEditorInternal.ComponentUtility.CopyComponent(components[i]);
-            UnityEditorInternal.ComponentUtility.PasteComponentAsNew(tmp.gameObject);
-
-            componentsCopied++;
+            EditorUtility.DisplayDialog("ERROR!", "You must select a Replacement Text Mesh Pro Font Asset.", "OK", "");
+            return false;
         }
 
-        if (componentsCopied == 0)
-            Undo.DestroyObjectImmediate((Object)uiText.gameObject);
-        else
-        {
-            EditorUtility.DisplayDialog(
-                "uGUI to TextMesh Pro",
-                string.Format(
-                    "{0} components copied. Please check for accuracy as some references may not transfer properly.",
-                    componentsCopied),
-                "OK",
-                "");
-            uiText.name += " OLD";
-            uiText.gameObject.SetActive(false);
-        }
-        */
+        return true;
     }
 
+    /*
+     *         Dictionary<string, TMP_FontAsset> fontMap = new Dictionary<string, TMP_FontAsset>();
+        string[] fontAssets = UnityEditor.AssetDatabase.FindAssets("t:TMP_FontAsset");
+        foreach (string fontAssetGUID in fontAssets)
+        {
+            string fontAssetPath = AssetDatabase.GUIDToAssetPath(fontAssetGUID);
+            var tmp_fontAsset = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(fontAssetPath);
+            //tmp_fontAsset.material.shader
 
-    private static FontStyles GetTmpFontStyle(FontStyle uGuiFontStyle)
+            if (tmp_fontAsset != null)
+            {
+                fontMap[tmp_fontAsset.name] = tmp_fontAsset;
+            }
+        }
+        */
+
+    /*
+    [MenuItem("Utils/Select Text Components")]
+    public static void SelectText(MenuCommand command)
+    {
+        Transform[] ts = FindObjectsOfType<Transform>();
+        List<GameObject> selection = new List<GameObject>();
+        foreach (Transform t in ts)
+        {
+            Text[] cs = t.gameObject.GetComponents<Text>();
+            if (cs.Length > 0)
+            {
+                selection.Add(t.gameObject);
+            }
+        }
+        Selection.objects = selection.ToArray();
+    }*/
+
+    private static TMPro.FontStyles ConvertToTMPFontStyle(UnityEngine.FontStyle uGuiFontStyle)
     {
         FontStyles tmp = FontStyles.Normal;
         switch (uGuiFontStyle)
@@ -221,8 +249,22 @@ public class UITextMeshProConverter : Editor
         return tmp;
     }
 
+    private static TMPro.TextAlignmentOptions ConvertTextAlignmentToTMPTextAlignment(UnityEngine.TextAlignment textMeshAlignment)
+    {
+        switch(textMeshAlignment)
+        {
+            case TextAlignment.Left:
+                return TextAlignmentOptions.MidlineLeft;
+            case TextAlignment.Center:
+                return TextAlignmentOptions.Midline;
+            case TextAlignment.Right:
+                return TextAlignmentOptions.MidlineRight;
+        }
 
-    private static TextAlignmentOptions GetTmpAlignment(TextAnchor uGuiAlignment)
+        return TextAlignmentOptions.Midline;
+    }
+
+    private static TMPro.TextAlignmentOptions ConvertTextAnchorToTMPTextAlignment(UnityEngine.TextAnchor uGuiAlignment)
     {
         TextAlignmentOptions alignment = TextAlignmentOptions.TopLeft;
 

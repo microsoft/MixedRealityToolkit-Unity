@@ -6,19 +6,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
+using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     public class ShowSliderValue : MonoBehaviour
     {
         [SerializeField]
-        private TextMesh textMesh = null;
+        private TextMeshPro textMesh = null;
 
         public void OnSliderUpdated(SliderEventData eventData)
         {
             if (textMesh == null)
             {
-                textMesh = GetComponent<TextMesh>();
+                textMesh = GetComponent<TextMeshPro>();
             }
 
             if (textMesh != null)
