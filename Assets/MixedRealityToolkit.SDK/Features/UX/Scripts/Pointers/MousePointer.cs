@@ -8,7 +8,9 @@ using Microsoft.MixedReality.Toolkit.Physics;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Spatial Mouse Pointer Implementation.
+    /// The MousePointer represents a mouse cursor in world space.
+    /// It uses spherical movement around the camera.
+    /// Its movement is bound to screenspace, but based in the delta movement of the computer mouse.
     /// </summary>
     public class MousePointer : BaseMousePointer
     {

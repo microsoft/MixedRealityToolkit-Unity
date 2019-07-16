@@ -8,7 +8,8 @@ using UInput = UnityEngine.Input;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Uses the desktop mouse cursor instead of any spatial mouse representation.
+    /// Uses the desktop mouse cursor instead of any mouse representation within the scene.
+    /// It's movement is bound to screenspace.
     /// </summary>
     public class ScreenSpaceMousePointer : BaseMousePointer
     {
