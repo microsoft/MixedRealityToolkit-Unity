@@ -281,7 +281,6 @@ PlayerSettings:
   - m_BuildTarget: Metro
     m_Enabled: 1
     m_Devices:
-    - None
     - WindowsMR
   - m_BuildTarget: N3DS
     m_Enabled: 0
