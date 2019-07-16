@@ -140,7 +140,7 @@
     items:
     - name: Build Window
       href: Utilities/BuildWindow.md
-    - name: Build Window
+    - name: Dependency Window
       href: DependencyWindow.md
     - name: Optimize Window
       href: Utilities/OptimizeWindow.md
