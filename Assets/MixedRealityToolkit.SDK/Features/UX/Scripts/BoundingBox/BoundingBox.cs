@@ -77,16 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// This enum is used internally to define how an object's bounds are calculated in order to fit the boundingbox
-        /// to it.
-        /// </summary>
-        private enum BoundsCalculationMethod
-        {
-            Colliders = 0,
-            MeshFilters
-        }
-
-        /// <summary>
         /// This enum defines the criteria by which bounds are chosen
         /// to it.
         /// </summary>
