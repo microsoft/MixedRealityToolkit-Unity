@@ -108,6 +108,7 @@ This part handles the runtime parts of the service.</p>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystemEditor.html">IMixedRealitySceneSystemEditor</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -192,7 +193,7 @@ This part handles the runtime parts of the service.</p>
   <h5 id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DocLink(&quot;https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html&quot;)]
-public class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem, IMixedRealityEventSystem, IMixedRealityEventSource, IEqualityComparer, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+public class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem, IMixedRealityEventSystem, IMixedRealityEventSource, IEqualityComparer, IMixedRealityDataProvider, IMixedRealityService, IDisposable, IMixedRealitySceneSystemEditor</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -286,58 +287,6 @@ Useful if you want to present an ordered list of options, or if you want to trac
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_ContentScenes_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.ContentScenes*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_ContentScenes" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.ContentScenes">ContentScenes</h4>
-  <div class="markdown level1 summary"><p>Returns all content scenes found in profile.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SceneInfo[] ContentScenes { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.SceneInfo.html">SceneInfo</a>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_ContentTags_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.ContentTags*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_ContentTags" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.ContentTags">ContentTags</h4>
-  <div class="markdown level1 summary"><p>Returns all content tags found in profile scenes.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;string&gt; ContentTags { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_LightingOperationInProgress_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.LightingOperationInProgress*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_LightingOperationInProgress" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.LightingOperationInProgress">LightingOperationInProgress</h4>
   <div class="markdown level1 summary"><p>True if the scene system is transitioning from one lighting scene to anthother.
@@ -385,58 +334,6 @@ Lighting operations will not impede other operations.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_LightingScenes_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.LightingScenes*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_LightingScenes" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.LightingScenes">LightingScenes</h4>
-  <div class="markdown level1 summary"><p>Returns all lighting scenes found in profile.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SceneInfo[] LightingScenes { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.SceneInfo.html">SceneInfo</a>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_ManagerScene_" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.ManagerScene*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_ManagerScene" data-uid="Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.ManagerScene">ManagerScene</h4>
-  <div class="markdown level1 summary"><p>Returns the manager scene found in profile.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SceneInfo ManagerScene { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.SceneInfo.html">SceneInfo</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -1657,6 +1554,9 @@ If a scene operation is in progress, no action will be taken.</p>
   </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystemEditor.html">IMixedRealitySceneSystemEditor</a>
   </div>
 </article>
           </div>

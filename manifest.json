@@ -6166,7 +6166,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.FocusProviderInspector.html",
-          "hash": "UdebCGCBWXW7gY8QJklm3g=="
+          "hash": "KGzNCXhWi32/aqXWywGpqQ=="
         }
       },
       "is_incremental": false,
@@ -6586,7 +6586,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.SceneSystemInspector.html",
-          "hash": "3zdyNenuqU9L7DLFBH2hjA=="
+          "hash": "68YOBYKgXPITr2BST/cnqQ=="
         }
       },
       "is_incremental": false,
@@ -6646,7 +6646,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.SpatialAwarenessSystemInspector.html",
-          "hash": "+JO9Uf0dKplNpMcEs4wUFQ=="
+          "hash": "7tsJXfZIctphLbwNYC5bOA=="
         }
       },
       "is_incremental": false,
@@ -6682,7 +6682,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.TeleportSystemInspector.html",
-          "hash": "QvZJaNv1JgPnKWgTY+plRA=="
+          "hash": "A4o/wxVNjMSgsgMjXn3k7Q=="
         }
       },
       "is_incremental": false,
@@ -12102,6 +12102,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystemEditor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystemEditor.html",
+          "hash": "qQou8Q78FShfUFFi6LkYkg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SceneSystem.LightingSceneTransitionType.yml",
       "output": {
         ".html": {
@@ -12118,7 +12130,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.html",
-          "hash": "8AVEWE35FgqhfJsWOSsT7Q=="
+          "hash": "+wdx1kXU/AsGqIkCm77PNA=="
         }
       },
       "is_incremental": false,
@@ -12202,7 +12214,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.html",
-          "hash": "NtkFlz5rDtziTdPGsqFIoQ=="
+          "hash": "9nar3IHpqOkAbMCjYWeCdA=="
         }
       },
       "is_incremental": false,
@@ -17770,7 +17782,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "ePbpDgHG/97Av5ojHTeK+w=="
+          "hash": "SGRZDQyJ4FpWD5gLSFFVaw=="
         }
       },
       "is_incremental": false,
@@ -17829,16 +17841,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1043,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 117,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1044,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
