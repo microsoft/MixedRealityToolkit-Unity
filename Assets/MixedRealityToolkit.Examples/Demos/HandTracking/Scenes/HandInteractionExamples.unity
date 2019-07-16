@@ -7580,6 +7580,7 @@ MonoBehaviour:
   scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
+  handleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
     type: 3}
   rotationHandleSize: 0.016
@@ -9261,6 +9262,7 @@ MonoBehaviour:
   scaleHandlePrefab: {fileID: 0}
   scaleHandleSlatePrefab: {fileID: 0}
   scaleHandleSize: 0.016
+  handleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 0}
   rotationHandleSize: 0.016
   rotationHandlePrefabColliderType: 1
@@ -16636,6 +16638,7 @@ MonoBehaviour:
   scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
+  handleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 100000, guid: b1b91cc294648bc4da669c0dc8ed7a43, type: 3}
   rotationHandleSize: 0.016
   rotationHandlePrefabColliderType: 1
@@ -16940,6 +16943,7 @@ MonoBehaviour:
   scaleHandlePrefab: {fileID: 0}
   scaleHandleSlatePrefab: {fileID: 0}
   scaleHandleSize: 0.016
+  handleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 0}
   rotationHandleSize: 0.016
   rotationHandlePrefabColliderType: 1
@@ -18307,6 +18311,7 @@ MonoBehaviour:
   scaleHandlePrefab: {fileID: 0}
   scaleHandleSlatePrefab: {fileID: 0}
   scaleHandleSize: 0.016
+  handleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 0}
   rotationHandleSize: 0.016
   rotationHandlePrefabColliderType: 1
@@ -19676,6 +19681,7 @@ MonoBehaviour:
   scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
+  handleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
     type: 3}
   rotationHandleSize: 0.016
@@ -22105,6 +22111,7 @@ MonoBehaviour:
   scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
     type: 3}
   scaleHandleSize: 0.016
+  handleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
     type: 3}
   rotationHandleSize: 0.016

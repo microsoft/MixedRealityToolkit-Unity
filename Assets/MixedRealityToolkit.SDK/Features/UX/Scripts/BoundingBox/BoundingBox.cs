@@ -422,6 +422,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
+        [Tooltip("Additional padding to apply to the collider on scale handle to make handle easier to hit")]
+        private Vector3 scaleHandleColliderPadding = new Vector3(0.016f, 0.016f, 0.016f);
+        public Vector3 ScaleHandleColliderPadding
+        {
+            get { return scaleHandleColliderPadding; }
+            set
+            {
+                if (scaleHandleColliderPadding != value)
+                {
+                    scaleHandleColliderPadding = value;
+                    CreateRig();
+                }
+            }
+        }
+
+        [SerializeField]
         [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead")]
         GameObject rotationHandlePrefab = null;
         public GameObject RotationHandleSlatePrefab
@@ -453,6 +469,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        [SerializeField]
+        [Tooltip("Additional padding to apply to the collider on rotate handle to make handle easier to hit")]
+        private Vector3 rotateHandleColliderPadding = new Vector3(0.016f, 0.0f, 0.016f);
+        public Vector3 RotateHandleColliderPadding
+        {
+            get { return rotateHandleColliderPadding; }
+            set
+            {
+                if (rotateHandleColliderPadding != value)
+                {
+                    rotateHandleColliderPadding = value;
+                    CreateRig();
+                }
+            }
+        }
 
         [SerializeField]
         [Tooltip("Determines the type of collider that will surround the rotation handle prefab.")]
@@ -1174,8 +1205,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     // instantiate default prefab, a cube. Remove the box collider from it
                     cornerVisual = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cornerVisual.transform.localPosition = Vector3.zero;
                     cornerVisual.transform.parent = visualsScale.transform;
+                    cornerVisual.transform.localPosition = Vector3.zero;
                     Destroy(cornerVisual.GetComponent<BoxCollider>());
                 }
                 else
@@ -1203,7 +1234,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
 
-                AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale);
+                AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, scaleHandleColliderPadding);
                 corners.Add(corner.transform);
                 cornerVisuals.Add(cornerVisual.transform);
                 cornersProximate.Add(HandleProximityState.FullsizeNoProximity);
@@ -1217,19 +1248,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="afford"></param>
         /// <param name="bounds"></param>
-        private void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, CursorContextInfo.CursorAction cursorType)
+        private void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, CursorContextInfo.CursorAction cursorType, Vector3 colliderPadding)
         {
             if (colliderType == RotationHandlePrefabCollider.Box)
             {
                 BoxCollider collider = afford.AddComponent<BoxCollider>();
                 collider.size = bounds.size;
                 collider.center = bounds.center;
+                collider.size += colliderPadding;
             }
             else
             {
                 SphereCollider sphere = afford.AddComponent<SphereCollider>();
                 sphere.center = bounds.center;
                 sphere.radius = bounds.extents.x;
+                sphere.radius += Mathf.Max( Mathf.Max(colliderPadding.x, colliderPadding.y), colliderPadding.z);
             }
 
             // In order for the affordance to be grabbed using near interaction we need
@@ -1313,14 +1346,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 float maxDim = Mathf.Max(
                     Mathf.Max(midpointBounds.size.x, midpointBounds.size.y),
                     midpointBounds.size.z);
-                midpointBounds.size = maxDim * Vector3.one;
                 float invScale = rotationHandleSize / maxDim;
 
                 midpointVisual.transform.parent = midpoint.transform;
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
 
-                AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale), rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate);
+                AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale), rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, rotateHandleColliderPadding);
 
                 balls.Add(midpoint.transform);
                 ballVisuals.Add(midpointVisual.transform);
