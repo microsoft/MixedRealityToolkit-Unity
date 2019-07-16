@@ -6,18 +6,39 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    public class RotateWithPan : MonoBehaviour, IMixedRealityHandPanHandler
+    public class RotateWithPan : MonoBehaviour
     {
         private Renderer rd;
-
-        private void Start()
+        [SerializeField]
+        [Tooltip("The pan object to listen to events from. If null, will listen on this object or look for first descendant")]
+        private HandInteractionPanZoom panInputSource;
+        private void OnEnable()
         {
             rd = GetComponent<Renderer>();
+            if (panInputSource == null)
+            {
+                panInputSource = GetComponentInChildren<HandInteractionPanZoom>();
+            }
+            if (panInputSource == null)
+            {
+                Debug.LogError("RotateWithPan did not find a HandInteractionPanZoom to listen to, the component will not work", gameObject);
+            }
+            else
+            {
+                panInputSource.PanStarted.AddListener(OnPanStarted);
+                panInputSource.PanStopped.AddListener(OnPanEnded);
+                panInputSource.PanUpdated.AddListener(OnPanning);
+            }
         }
 
-        // Update is called once per frame
-        private void Update()
+        private void OnDisable()
         {
+            if (panInputSource != null)
+            {
+                panInputSource.PanStarted.RemoveListener(OnPanStarted);
+                panInputSource.PanStopped.RemoveListener(OnPanEnded);
+                panInputSource.PanUpdated.RemoveListener(OnPanning);
+            }
         }
 
         public void OnPanEnded(HandPanEventData eventData)
@@ -26,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             {
                 rd.material.color = new Color(1.0f, 1.0f, 1.0f);
             }
+
         }
 
         public void OnPanning(HandPanEventData eventData)

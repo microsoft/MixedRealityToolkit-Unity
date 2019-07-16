@@ -79,11 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Range(0.0f, 99.0f)]
         private float panZoomSmoothing = 80.0f;
 
-        [Header("Receiver Objects")]
-        [SerializeField]
-        [Tooltip("Each object listed must have a script that implements the IHandPanHandler interface or it will not receive events")]
-        private GameObject[] panEventReceivers = null;
-
         [Header("Visual affordance")]
         [SerializeField]
         [Tooltip("If affordance geometry is desired to emphasize the touch points(leftPoint and rightPoint) and the center point between them (reticle), assign them here.")]
@@ -104,10 +99,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return currentScale; }
         }
+        [SerializeField]
+        [Tooltip("Current pan amount, in UV coordinates.")]
+        private Vector2 currentPan;
+        /// <summary>
+        /// Returns the current pan amount, in UV coordinates (0 being no pan, 1, being pan of the entire ) 
+        /// </summary>
+        public Vector2  CurrentPan
+        {
+            get { return totalUVOffset; }
+        }
 
         [Header("Events")]
-        public UnityEvent PanStarted;
-        public UnityEvent PanStopped;
+        public PanUnityEvent PanStarted = new PanUnityEvent();
+        public PanUnityEvent PanStopped = new PanUnityEvent();
+        public PanUnityEvent PanUpdated = new PanUnityEvent();
 
         #endregion Serialized Fields
 
@@ -143,7 +149,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Color defaultProximityLightCenterColor;
         private List<Vector2> unTransformedUVs = new List<Vector2>();
         private Dictionary<uint, HandPanData> handDataMap = new Dictionary<uint, HandPanData>();
-        private List<IMixedRealityHandPanHandler> handlerInterfaces = new List<IMixedRealityHandPanHandler>();
         List<Vector2> uvs = new List<Vector2>();
         List<Vector2> uvsOrig = new List<Vector2>();
         #endregion Private Properties
@@ -296,19 +301,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             proximityLightCenterColorID = Shader.PropertyToID("_ProximityLightCenterColorOverride");
             defaultProximityLightCenterColor = (currentMaterial != null) ? currentMaterial.GetColor(proximityLightCenterColorID) : 
                                                                                    new Color(0.0f, 0.0f, 0.0f, 0.0f);
-
-            //get event targets
-            foreach (GameObject gameObject in panEventReceivers)
-            {
-                if (gameObject != null)
-                {
-                    IMixedRealityHandPanHandler handler = gameObject.GetComponent<IMixedRealityHandPanHandler>();
-                    if (handler != null)
-                    {
-                        handlerInterfaces.Add(handler);
-                    }
-                }
-            }
 
             //precache references
             meshFilter = gameObject.GetComponent<MeshFilter>();
@@ -697,23 +689,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             position = Vector3.zero;
             return false;
         }
-        private IMixedRealityHandPanHandler[] GetInterfaces()
-        {
-            List<IMixedRealityHandPanHandler> interfaces = new List<IMixedRealityHandPanHandler>();
-            GameObject[] gameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
-
-            foreach (var gameObject in gameObjects)
-            {
-                IMixedRealityHandPanHandler[] childrenInterfaces = gameObject.GetComponentsInChildren<IMixedRealityHandPanHandler>();
-                foreach (var childInterface in childrenInterfaces)
-                {
-                    interfaces.Add(childInterface);
-                }
-            }
-
-            return interfaces.ToArray();
-
-        }
         #endregion Private Methods
 
 
@@ -722,7 +697,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             UpdateTouchUVOffset(sourceId);
             FirePanStarted(sourceId);
-            PanStarted?.Invoke();
         }
         private void EndTouch(uint sourceId)
         {
@@ -730,7 +704,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 handDataMap.Remove(sourceId);
                 FirePanEnded(0);
-                PanStopped?.Invoke();
             }
         }
         private void EndAllTouches()
@@ -751,42 +724,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             HandPanEventData eventData = new HandPanEventData(EventSystem.current);
             eventData.Initialize(handDataMap[sourceId].touchingSource, GetUvOffset());
-
-            foreach (IMixedRealityHandPanHandler handler in handlerInterfaces)
-            {
-                if (handler != null)
-                {
-                    handler.OnPanStarted(eventData);
-                }
-            }
+            PanStarted?.Invoke(eventData);
         }
         private void FirePanEnded(uint sourceId)
         {
             HandPanEventData eventData = new HandPanEventData(EventSystem.current);
             eventData.Initialize(null, Vector2.zero);
-
-            foreach (IMixedRealityHandPanHandler handler in handlerInterfaces)
-            {
-                if (handler != null)
-                {
-                    handler.OnPanEnded(eventData);
-                }
-            }
+            PanStopped?.Invoke(eventData);
         }
         private void FirePanning(uint sourceId)
         {
-            if (handlerInterfaces.Count > 0 && handDataMap.ContainsKey(sourceId))
+            if (handDataMap.ContainsKey(sourceId))
             {
                 HandPanEventData eventData = new HandPanEventData(EventSystem.current);
                 eventData.Initialize(handDataMap[sourceId].touchingSource, GetUvOffset());
-
-                foreach (IMixedRealityHandPanHandler handler in handlerInterfaces)
-                {
-                    if (handler != null)
-                    {
-                        handler.OnPanning(eventData);
-                    }
-                }
+                PanUpdated?.Invoke(eventData);
+            }
+            else if (sourceId == 0)
+            {
+                // we are no longer touching but the pan is still updating
+                HandPanEventData eventData = new HandPanEventData(EventSystem.current);
+                eventData.Initialize(null, GetUvOffset());
+                PanUpdated?.Invoke(eventData);
             }
         }
         #endregion Fire Events to Listening Objects
