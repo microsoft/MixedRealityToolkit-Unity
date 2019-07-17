@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return h.MoveTo(panObject.transform.position);
             yield return h.Move(new Vector3(0, -0.05f, 0), 10);
 
-            Assert.AreEqual(totalPanDelta.y, 0.1f, "pan delta is not correct");
+            Assert.AreEqual(0.1, totalPanDelta.y, 0.05,  "pan delta is not correct");
 
             yield return h.Hide();
             yield return new WaitForSeconds(0.5f);
