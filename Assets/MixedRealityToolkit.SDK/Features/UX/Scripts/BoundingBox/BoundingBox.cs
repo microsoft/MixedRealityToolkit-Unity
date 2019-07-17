@@ -1344,14 +1344,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 cachedTargetCollider.size = bounds.size;
             }
 
-            if (boxPadding != Vector3.zero)
-            {
-                Vector3 scale = cachedTargetCollider.transform.lossyScale;
-                Vector3 invScale = new Vector3(1.0f / scale[0], 1.0f / scale[1], 1.0f / scale[2]);
-                cachedTargetCollider.size += Vector3.Scale(boxPadding, invScale);
-            }
+            CalculateBoxPadding();
 
             cachedTargetCollider.EnsureComponent<NearInteractionGrabbable>();
+        }
+
+        private void CalculateBoxPadding()
+        {
+            if (boxPadding == Vector3.zero) { return; }
+
+            Vector3 scale = cachedTargetCollider.transform.lossyScale;
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (scale[i] == 0f) { return; }
+
+                scale[i] = 1f / scale[i];
+            }
+
+            cachedTargetCollider.size += Vector3.Scale(boxPadding, scale);
         }
 
         private Bounds GetTargetBounds()
