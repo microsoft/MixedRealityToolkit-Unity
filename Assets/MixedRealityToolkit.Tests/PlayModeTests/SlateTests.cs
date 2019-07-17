@@ -17,6 +17,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -59,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return h.MoveTo(panObject.transform.position);
             yield return h.Move(new Vector3(0, -0.05f, 0), 10);
 
-            Assert.AreEqual(0.1, totalPanDelta.y, 0.05,  "pan delta is not correct");
+            Assert.AreEqual(0.1, totalPanDelta.y, 0.05, "pan delta is not correct");
 
             yield return h.Hide();
         }
@@ -118,6 +119,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator Prefab_GGVScroll()
         {
             InstantiateFromPrefab(Vector3.forward);
+            yield return RunGGVScrollTest(0.2f);
+        }
+
+        /// <summary>
+        /// Test hand ray scroll instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator Instantiate_GGVScroll()
+        {
+            InstantiateFromCode(Vector3.forward);
+            yield return RunGGVScrollTest(0.08f);
+        }
+
+        private IEnumerator RunGGVScrollTest(float expectedScroll)
+        {
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
             Vector2 totalPanDelta = Vector2.zero;
@@ -128,11 +144,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return h.Show(Vector3.zero);
             yield return h.Move(new Vector3(0.0f, -0.1f, 0f));
 
-            Assert.AreEqual(0.2, totalPanDelta.y, 0.05, "pan delta is not correct");
+            Assert.AreEqual(expectedScroll, totalPanDelta.y, 0.05, "pan delta is not correct");
 
             yield return h.Hide();
         }
 
+        private void InstantiateFromCode(Vector3 pos)
+        {
+            panObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            panObject.transform.position = pos;
+            //panObject.AddComponent<BoxCollider>();
+            panZoom = panObject.AddComponent<HandInteractionPanZoom>();
+            panObject.AddComponent<NearInteractionTouchable>();
+
+        }
         /// <summary>
         /// Instantiates a slate from the default prefab at position, looking at the camera
         /// </summary>
@@ -143,7 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             panObject = UnityEngine.Object.Instantiate(prefab) as GameObject;
             Assert.IsNotNull(panObject);
             panObject.transform.position = position;
-            // g.transform.LookAt(CameraCache.Main.transform.position);
             panZoom = panObject.GetComponentInChildren<HandInteractionPanZoom>();
             Assert.IsNotNull(panZoom);
         }

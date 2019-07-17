@@ -294,14 +294,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                this.GetComponent<Renderer>().material.mainTexture.wrapMode = TextureWrapMode.Repeat;
+                if (this.GetComponent<Renderer>()?.material?.mainTexture != null)
+                {
+                    this.GetComponent<Renderer>().material.mainTexture.wrapMode = TextureWrapMode.Repeat;
+                }
             }
 
             //get material
             currentMaterial = this.gameObject.GetComponent<Renderer>().material;
             proximityLightCenterColorID = Shader.PropertyToID("_ProximityLightCenterColorOverride");
-            defaultProximityLightCenterColor = (currentMaterial != null) ? currentMaterial.GetColor(proximityLightCenterColorID) : 
-                                                                                   new Color(0.0f, 0.0f, 0.0f, 0.0f);
+            bool materialValid = currentMaterial != null && currentMaterial.HasProperty(proximityLightCenterColorID);
+            defaultProximityLightCenterColor = materialValid ? 
+                currentMaterial.GetColor(proximityLightCenterColorID) :
+                new Color(0.0f, 0.0f, 0.0f, 0.0f);
 
             //precache references
             meshFilter = gameObject.GetComponent<MeshFilter>();
