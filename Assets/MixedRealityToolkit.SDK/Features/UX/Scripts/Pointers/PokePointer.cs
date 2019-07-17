@@ -213,7 +213,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (Result?.CurrentPointerTarget != null && closestProximityTouchable != null)
             {
-                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point);
+                // Start position of the ray is offset by PokeThreshold, subtract to get distance between surface and pointer position.
+                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - closestProximityTouchable.PokeThreshold;
                 bool newIsDown = (distToFront < closestProximityTouchable.PokeThreshold);
                 bool newIsUp = (distToFront > closestProximityTouchable.PokeThreshold + closestProximityTouchable.DebounceThreshold);
 

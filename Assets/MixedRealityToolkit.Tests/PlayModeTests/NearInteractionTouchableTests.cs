@@ -510,11 +510,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float margin = 0.001f;
             Vector3 pStart = center + new Vector3(0, 0, -touchableDistance - 0.5f);
             Vector3 pTouch = center + new Vector3(0, 0, -touchableDistance + margin);
-            // XXX the PokeThreshold ray start offset is not taken into account (see remarks above)
-            Vector3 pPoke = center + new Vector3(0, 0, -colliderThickness);
-            Vector3 pDebounce = center + new Vector3(0, 0, -colliderThickness - touchable.DebounceThreshold - margin);
-            //Vector3 pPoke = center + new Vector3(0, 0, -colliderThickness - touchable.PokeThreshold + margin);
-            //Vector3 pDebounce = center + new Vector3(0, 0, -colliderThickness - touchable.PokeThreshold - touchable.DebounceThreshold - margin);
+            Vector3 pPoke = center + new Vector3(0, 0, -colliderThickness - touchable.PokeThreshold + margin);
+            Vector3 pDebounce = center + new Vector3(0, 0, -colliderThickness - touchable.PokeThreshold - touchable.DebounceThreshold - margin);
             Vector3 pEnd = center + new Vector3(0, 0, touchableDistance + 0.5f);
 
             // Test return beyond DebounceThreshold
