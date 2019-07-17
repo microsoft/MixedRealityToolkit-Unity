@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.1123, y: 0.101}
-  m_SizeDelta: {x: 150, y: 5}
+  m_AnchoredPosition: {x: 0.192, y: 0.101}
+  m_SizeDelta: {x: 200, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &23139670000901594
 MeshRenderer:
@@ -270,7 +270,6 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 4097
-  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 1
@@ -297,6 +296,7 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
+  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -311,12 +311,9 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
-  m_inputSource: 3
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 23139670000901594}
   m_subTextObjects:
@@ -336,11 +333,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: F
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -410,6 +402,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 1e3cd518fc252894f8dcede422f1792f, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: F
       objectReference: {fileID: 0}
     - target: {fileID: 1623408358297322333, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
@@ -481,11 +483,6 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.0916836
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 1e3cd518fc252894f8dcede422f1792f, type: 3}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -526,11 +523,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: BFlat
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -601,6 +593,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.55
       objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: cb811ff0fcdbb2a40a8398f721cc28a1, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: BFlat
+      objectReference: {fileID: 0}
     - target: {fileID: 1623408358297322333, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -641,12 +643,6 @@ PrefabInstance:
       propertyPath: bounds.y
       value: 0.15360159
       objectReference: {fileID: 0}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: Profiles.Array.data[0].Themes.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
-        type: 2}
     - target: {fileID: 6113324524881885153, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_Center.x
@@ -677,31 +673,6 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 0.21615738
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: cb811ff0fcdbb2a40a8398f721cc28a1, type: 3}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: startPushDistance
-      value: -0.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: maxPushDistance
-      value: -0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: pressDistance
-      value: -0.018
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: releaseDistanceDelta
-      value: 0.001
-      objectReference: {fileID: 0}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -727,6 +698,32 @@ PrefabInstance:
       propertyPath: debugMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: Profiles.Array.data[0].Themes.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
+        type: 2}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: startPushDistance
+      value: -0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: pressDistance
+      value: -0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: releaseDistanceDelta
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
 --- !u!4 &4785474610859267622 stripped
@@ -742,11 +739,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -817,6 +809,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.55
       objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e4154763f07adb7418e874d20d0bfc37, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1623408358297322333, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -857,12 +859,6 @@ PrefabInstance:
       propertyPath: bounds.y
       value: 0.15360159
       objectReference: {fileID: 0}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: Profiles.Array.data[0].Themes.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
-        type: 2}
     - target: {fileID: 6113324524881885153, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_Size.x
@@ -893,31 +889,6 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 0.21362025
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: e4154763f07adb7418e874d20d0bfc37, type: 3}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: startPushDistance
-      value: -0.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: pressDistance
-      value: -0.018
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: maxPushDistance
-      value: -0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: releaseDistanceDelta
-      value: 0.001
-      objectReference: {fileID: 0}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -943,6 +914,32 @@ PrefabInstance:
       propertyPath: debugMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: Profiles.Array.data[0].Themes.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
+        type: 2}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: startPushDistance
+      value: -0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: pressDistance
+      value: -0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: releaseDistanceDelta
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
 --- !u!4 &8104353317294266436 stripped
@@ -958,11 +955,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: EFlat
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1033,6 +1025,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.55
       objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5ad4c6b5880452d4a813c8714b5d4338, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: EFlat
+      objectReference: {fileID: 0}
     - target: {fileID: 1623408358297322333, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1073,12 +1075,6 @@ PrefabInstance:
       propertyPath: bounds.y
       value: 0.15360159
       objectReference: {fileID: 0}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: Profiles.Array.data[0].Themes.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
-        type: 2}
     - target: {fileID: 6113324524881885153, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_Center.x
@@ -1109,31 +1105,6 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 0.21607357
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 5ad4c6b5880452d4a813c8714b5d4338, type: 3}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: startPushDistance
-      value: -0.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: maxPushDistance
-      value: -0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: pressDistance
-      value: -0.018
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: releaseDistanceDelta
-      value: 0.001
-      objectReference: {fileID: 0}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -1159,6 +1130,32 @@ PrefabInstance:
       propertyPath: debugMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: Profiles.Array.data[0].Themes.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
+        type: 2}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: startPushDistance
+      value: -0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: pressDistance
+      value: -0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: releaseDistanceDelta
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
 --- !u!4 &8163201548161550002 stripped
@@ -1174,11 +1171,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: B
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1248,6 +1240,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c376d65467e4f844ba94a19350918427, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: B
       objectReference: {fileID: 0}
     - target: {fileID: 1623408358297322333, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
@@ -1319,11 +1321,6 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.09155402
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: c376d65467e4f844ba94a19350918427, type: 3}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -1364,11 +1361,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: D
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1439,6 +1431,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.55
       objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: dbaf577a8176a8a49aeee479ce6fba46, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: D
+      objectReference: {fileID: 0}
     - target: {fileID: 1598528672386795578, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: localCenter.x
@@ -1494,11 +1496,6 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.091950856
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: dbaf577a8176a8a49aeee479ce6fba46, type: 3}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -1544,11 +1541,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: E
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1619,6 +1611,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.55
       objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6bb977d2eec33d34e9d4683d95a325da, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: E
+      objectReference: {fileID: 0}
     - target: {fileID: 1623408358297322333, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1679,11 +1681,6 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 0.1929646
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 6bb977d2eec33d34e9d4683d95a325da, type: 3}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -1724,11 +1721,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: A
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1798,6 +1790,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 36e555a3b848ed844a6774ec59b878d2, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: A
       objectReference: {fileID: 0}
     - target: {fileID: 1623408358297322333, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
@@ -1869,11 +1871,6 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.09161218
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 36e555a3b848ed844a6774ec59b878d2, type: 3}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -1914,11 +1911,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: C
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1989,6 +1981,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.55
       objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c9292cc9ccb6e104e8448c8aec5603ff, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: C
+      objectReference: {fileID: 0}
     - target: {fileID: 1598528672386795578, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: localCenter.x
@@ -2013,36 +2015,6 @@ PrefabInstance:
         type: 3}
       propertyPath: bounds.y
       value: 0.25169295
-      objectReference: {fileID: 0}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 82230964513154690}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Play
-      objectReference: {fileID: 0}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6113324524881885153, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
@@ -2074,26 +2046,6 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.09189119
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: c9292cc9ccb6e104e8448c8aec5603ff, type: 3}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -2119,6 +2071,51 @@ PrefabInstance:
       propertyPath: debugMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 82230964513154690}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
 --- !u!4 &4431650471674568 stripped
@@ -2140,11 +2137,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: FSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2215,6 +2207,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.55
       objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0008aa109f6a9f34b9658d73a0c38e74, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: FSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1623408358297322333, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2255,12 +2257,6 @@ PrefabInstance:
       propertyPath: bounds.y
       value: 0.15360159
       objectReference: {fileID: 0}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: Profiles.Array.data[0].Themes.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
-        type: 2}
     - target: {fileID: 6113324524881885153, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_Center.x
@@ -2291,31 +2287,6 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 0.21893312
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 0008aa109f6a9f34b9658d73a0c38e74, type: 3}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: startPushDistance
-      value: -0.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: maxPushDistance
-      value: -0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: pressDistance
-      value: -0.018
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: releaseDistanceDelta
-      value: 0.001
-      objectReference: {fileID: 0}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -2341,6 +2312,32 @@ PrefabInstance:
       propertyPath: debugMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: Profiles.Array.data[0].Themes.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
+        type: 2}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: startPushDistance
+      value: -0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: pressDistance
+      value: -0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: releaseDistanceDelta
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
 --- !u!4 &655251079398066782 stripped
@@ -2356,11 +2353,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: G
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2430,6 +2422,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 577b302235decc047a09254a91858236, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: G
       objectReference: {fileID: 0}
     - target: {fileID: 1623408358297322333, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
@@ -2501,11 +2503,6 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.09157215
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 577b302235decc047a09254a91858236, type: 3}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -2546,11 +2543,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4326490268959450}
     m_Modifications:
-    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_Name
-      value: GSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 6066724869436565231, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2621,6 +2613,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.55
       objectReference: {fileID: 0}
+    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b8c73329dfc0a344a8461642b241c30d, type: 3}
+    - target: {fileID: 6069707849138787997, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: m_Name
+      value: GSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1623408358297322333, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2661,12 +2663,6 @@ PrefabInstance:
       propertyPath: bounds.y
       value: 0.15360159
       objectReference: {fileID: 0}
-    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: Profiles.Array.data[0].Themes.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
-        type: 2}
     - target: {fileID: 6113324524881885153, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: m_Center.x
@@ -2697,31 +2693,6 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 0.21663448
       objectReference: {fileID: 0}
-    - target: {fileID: 6132438213147574949, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: b8c73329dfc0a344a8461642b241c30d, type: 3}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: startPushDistance
-      value: -0.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: maxPushDistance
-      value: -0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: pressDistance
-      value: -0.018
-      objectReference: {fileID: 0}
-    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
-        type: 3}
-      propertyPath: releaseDistanceDelta
-      value: 0.001
-      objectReference: {fileID: 0}
     - target: {fileID: 8581070781098212652, guid: f47f1e79863e27c46904308902d30551,
         type: 3}
       propertyPath: textMesh
@@ -2746,6 +2717,32 @@ PrefabInstance:
         type: 3}
       propertyPath: debugMessage
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749174556681977289, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: Profiles.Array.data[0].Themes.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b90fb55d87f02284692d35afe63695d5,
+        type: 2}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: startPushDistance
+      value: -0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: pressDistance
+      value: -0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 319790547772577881, guid: f47f1e79863e27c46904308902d30551,
+        type: 3}
+      propertyPath: releaseDistanceDelta
+      value: 0.001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f47f1e79863e27c46904308902d30551, type: 3}
