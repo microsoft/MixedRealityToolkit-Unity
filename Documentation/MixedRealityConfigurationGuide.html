@@ -84,14 +84,7 @@
 
 <p><img src="Images/MRTK_Logo_Rev.png" alt=""></p>
 <p>The Mixed Reality Toolkit centralizes as much of the configuration required to manage the toolkit as possible (except for true runtime &quot;things&quot;).</p>
-<p><strong>This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit, more in-depth guides for each of the features is coming soon.</strong></p>
-<blockquote>
-<p>Configuration Profile Usage Guide is coming soon</p>
-</blockquote>
-<p>In some cases, it might make sense to swap out the underlying system that provides a capability with either a custom developed service or an alternate 3rd party implementation (e.g. swapping out the speech provider from an OS version to one on Azure)</p>
-<blockquote>
-<p>Guide to building Registered Services is coming soon</p>
-</blockquote>
+<p><strong>This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit</strong></p>
 <h2 id="the-main-mixed-reality-toolkit-configuration-profile">The main Mixed Reality Toolkit configuration profile</h2>
 <p>The main configuration profile, which is attached to the <em>MixedRealityToolkit</em> GameObject in your Scene, provides the main entry point for the Toolkit in your project.</p>
 <blockquote>
@@ -149,9 +142,6 @@
 <a name="inputsystem"></a>
 <h2 id="input-system-settings">Input system settings</h2>
 <p>The Mixed Reality Project provides a robust and well-trained input system for routing all the input events around the project which is selected by default.</p>
-<blockquote>
-<p>The MRTK also allows you to write your own input system and you can use the selection below to switch the system used without rewriting the toolkit. For more information on writing your own systems, <a href="">please see this guide to building Registered Services</a> (Coming soon)</p>
-</blockquote>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png" width="650px" style="display:block;">
 <p>Behind the Input System provided by the MRTK are several other systems, these help to drive and manage the complex inter-weavings required to abstract out the complexities of a multi-platform / mixed reality framework.</p>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png" width="650px" style="display:block;">
@@ -175,9 +165,6 @@
 <a name="teleportation"></a>
 <h2 id="teleportation-system-selection">Teleportation system selection</h2>
 <p>The Mixed Reality Project provides a full featured Teleportation system for managing teleportation events in the project which is selected by default.</p>
-<blockquote>
-<p>The MRTK also allows you to write your own Teleportation System and you can use the selection below to switch the system used without rewriting the toolkit. For more information on writing your own systems, <a href="">please see this guide to building Registered Services</a> (Coming soon)</p>
-</blockquote>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png" width="650px" style="display:block;">
 <hr>
 <a name="spatialawareness"></a>
@@ -194,9 +181,6 @@ or later programmatically as well as setting the extents for the field of view.<
 <a name="diagnostic"></a>
 <h2 id="diagnostics-settings">Diagnostics settings</h2>
 <p>An optional but highly useful feature of the MRTK is the plugin diagnostics functionality. This presents a style of debug log in to the scene</p>
-<blockquote>
-<p>The MRTK also allows you to write your own diagnostic system and you can use the selection below to switch the system used without rewriting the toolkit. For more information on writing your own systems, please see this guide to building Registered Services (Coming soon)</p>
-</blockquote>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png" width="650px" style="display:block;">
 <p>The diagnostics profile provides several simple systems to monitor whilst the project is running, including a handy On/Off switch to enable / disable the display pane in the scene.</p>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png" width="650px" style="display:block;">
@@ -213,7 +197,6 @@ or later programmatically as well as setting the extents for the field of view.<
 <p>You can read more about the underlying framework and its implementation in <a href="https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2">Stephen Hodgson's article on the Mixed Reality Framework</a></p>
 </blockquote>
 <p>Any registered service still gets the full advantage of all of the Unity events, without the overhead and cost of implementing a MonoBehaviour or clunky singleton patterns. This allows for pure C# components with no scene overhead for running both foreground and background processes, e.g. spawning systems, runtime gamelogic, or practically anything else.</p>
-<p>Check out the <a href="">Guide to building Registered Services</a> (Coming Soon) for more details about creating your own services</p>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png" width="650px" style="display:block;">
 <hr>
 <a name="inputactions"></a>
@@ -300,9 +283,6 @@ or later programmatically as well as setting the extents for the field of view.<
 <h2 id="pointer-configuration">Pointer configuration</h2>
 <p>Pointers are used to drive interactivity in the scene from any input device, giving both a direction and hit test with any object in a scene (that has a collider attached, or is a UI component). Pointers are by default automatically configured for controllers, headsets (gaze / focus) and mouse / touch input.</p>
 <p>Pointers can also be visualized within the active scene using one of the many line components provided by the Mixed Reality Toolkit, or any of your own if they implement the MRTK IMixedRealityPointer interface.</p>
-<blockquote>
-<p>See the <a href="">Guide to Pointers documentation</a> <strong>Coming Soon</strong> for more information on creating your own pointers.</p>
-</blockquote>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png" width="650px" style="display:block;">
 <ul>
 <li>Pointing Extent: Determines the global pointing extent for all pointers, including gaze.</li>
