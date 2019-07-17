@@ -133,6 +133,9 @@ This defines a modification to an Unity animation parameter, based on cursor sta
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html">BaseInputHandler</a></h4>
       <section><p>Base class for the Mixed Reality Toolkit's SDK input handlers.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html">BaseMousePointer</a></h4>
+      <section><p>Base Mouse Pointer Implementation.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html">BaseNearInteractionTouchable</a></h4>
       <section><p>Base class for all NearInteractionTouchables.</p>
 </section>
@@ -341,7 +344,9 @@ the controller class.</p>
       <section><p>Configuration profile settings for setting up and consuming Speech Commands.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MousePointer.html">MousePointer</a></h4>
-      <section><p>Internal Touch Pointer Implementation.</p>
+      <section><p>The MousePointer represents a mouse cursor in world space.
+It uses spherical movement around the camera.
+Its movement is bound to screenspace, but based in the delta movement of the computer mouse.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html">NearInteractionGrabbable</a></h4>
       <section><p>Add a NearInteractionGrabbable component to any GameObject that has a collidable
@@ -380,6 +385,10 @@ i.e. a primary mouse button click, motion controller selection press, or hand ta
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html">PokePointer</a></h4>
       <section><p>A near interaction pointer that generates touch events based on touchables in close proximity.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ScreenSpaceMousePointer.html">ScreenSpaceMousePointer</a></h4>
+      <section><p>Uses the desktop mouse cursor instead of any mouse representation within the scene.
+It's movement is bound to screenspace.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer.html">ShellHandRayPointer</a></h4>
       <section></section>
