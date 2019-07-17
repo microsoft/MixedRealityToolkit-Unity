@@ -7,8 +7,8 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
-    [CustomEditor(typeof(MousePointer))]
-    public class MousePointerInspector : BaseControllerPointerInspector
+    [CustomEditor(typeof(BaseMousePointer))]
+    public class BaseMousePointerInspector : BaseControllerPointerInspector
     {
         private SerializedProperty hideCursorWhenInactive;
         private SerializedProperty hideTimeout;
