@@ -32,22 +32,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [TearDown]
         public void TearDown()
         {
+            GameObject.Destroy(panObject);
+            GameObject.Destroy(panZoom);
             PlayModeTestUtilities.TearDown();
         }
 
         
         const string slatePrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Slate/Slate.prefab";
 
-        
+        GameObject panObject;
+        HandInteractionPanZoom panZoom;
+
         /// <summary>
         /// Tests touch scrolling instantiated from prefab
         /// </summary>
         [UnityTest]
         public IEnumerator Prefab_TouchScroll()
         {
-            InstantiateFromPrefab(Vector3.forward, out GameObject panObject, out HandInteractionPanZoom panzoom);
+            InstantiateFromPrefab(Vector3.forward);
             Vector2 totalPanDelta = Vector2.zero;
-            panzoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
+            panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
 
             TestHand h = new TestHand(Handedness.Right); ;
             yield return h.MoveTo(panObject.transform.position);
@@ -56,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(totalPanDelta.y, 0.1f, "pan delta is not correct");
 
             yield return h.Hide();
-            GameObject.Destroy(panObject);
             yield return new WaitForSeconds(0.5f);
         }
 
@@ -64,15 +67,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Instantiates a slate from the default prefab at position, looking at the camera
         /// </summary>
         /// <returns></returns>
-        private void InstantiateFromPrefab(Vector3 position, out GameObject g, out HandInteractionPanZoom panzoom)
+        private void InstantiateFromPrefab(Vector3 position)
         {
             UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath(slatePrefabAssetPath, typeof(UnityEngine.Object));
-            g = UnityEngine.Object.Instantiate(prefab) as GameObject;
-            Assert.IsNotNull(g);
-            g.transform.position = position;
+            panObject = UnityEngine.Object.Instantiate(prefab) as GameObject;
+            Assert.IsNotNull(panObject);
+            panObject.transform.position = position;
             // g.transform.LookAt(CameraCache.Main.transform.position);
-            panzoom = g.GetComponentInChildren<HandInteractionPanZoom>();
-            Assert.IsNotNull(panzoom);
+            panZoom = panObject.GetComponentInChildren<HandInteractionPanZoom>();
+            Assert.IsNotNull(panZoom);
         }
 
     }
