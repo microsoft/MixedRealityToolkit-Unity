@@ -100,13 +100,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return currentScale; }
         }
-        [SerializeField]
-        [Tooltip("Current pan amount, in UV coordinates.")]
-        private Vector2 currentPan;
+
         /// <summary>
-        /// Returns the current pan amount, in UV coordinates (0 being no pan, 1, being pan of the entire ) 
+        /// Returns the current pan delta (pan value - previous pan value)
+        /// in UV coordinates (0 being no pan, 1, being pan of the entire ) 
         /// </summary>
-        public Vector2  CurrentPan
+        public Vector2  CurrentPanDelta
         {
             get { return totalUVOffset; }
         }
@@ -332,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 else
                 {
                     totalUVOffset = new Vector2(totalUVOffset.x * momentumHorizontal, totalUVOffset.y * momentumVertical);
-                    FirePanning(0);
+                    RaisePanning(0);
                 }
             }
         }
@@ -702,43 +701,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void StartTouch(uint sourceId)
         {
             UpdateTouchUVOffset(sourceId);
-            FirePanStarted(sourceId);
+            RaisePanStarted(sourceId);
         }
         private void EndTouch(uint sourceId)
         {
             if (handDataMap.ContainsKey(sourceId) == true)
             {
                 handDataMap.Remove(sourceId);
-                FirePanEnded(0);
+                RaisePanEnded(0);
             }
         }
         private void EndAllTouches()
         {
             handDataMap.Clear();
-            FirePanEnded(0);
+            RaisePanEnded(0);
         }
         private void MoveTouch(uint sourceId)
         {
             UpdateTouchUVOffset(sourceId);
-            FirePanning(sourceId);
+            RaisePanning(sourceId);
         }
         #endregion Internal State Handlers
 
 
         #region Fire Events to Listening Objects
-        private void FirePanStarted(uint sourceId)
+        private void RaisePanStarted(uint sourceId)
         {
             HandPanEventData eventData = new HandPanEventData(EventSystem.current);
             eventData.Initialize(handDataMap[sourceId].touchingSource, GetUvOffset());
             PanStarted?.Invoke(eventData);
         }
-        private void FirePanEnded(uint sourceId)
+        private void RaisePanEnded(uint sourceId)
         {
             HandPanEventData eventData = new HandPanEventData(EventSystem.current);
             eventData.Initialize(null, Vector2.zero);
             PanStopped?.Invoke(eventData);
         }
-        private void FirePanning(uint sourceId)
+        private void RaisePanning(uint sourceId)
         {
             if (handDataMap.ContainsKey(sourceId))
             {

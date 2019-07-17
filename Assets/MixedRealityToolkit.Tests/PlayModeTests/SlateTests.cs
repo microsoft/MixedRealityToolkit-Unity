@@ -23,6 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class SlateTests
     {
+        const string slatePrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Slate/Slate.prefab";
+
+        GameObject panObject;
+        HandInteractionPanZoom panZoom;
+
         [SetUp]
         public void Setup()
         {
@@ -39,12 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.PopHandSimulationProfile();
             PlayModeTestUtilities.TearDown();
         }
-
-        
-        const string slatePrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Slate/Slate.prefab";
-
-        GameObject panObject;
-        HandInteractionPanZoom panZoom;
 
         /// <summary>
         /// Tests touch scrolling instantiated from prefab
@@ -113,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test hand ray scroll instantiated from prefab
+        /// Test ggv scroll instantiated from prefab
         /// </summary>
         [UnityTest]
         public IEnumerator Prefab_GGVScroll()
@@ -132,6 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return RunGGVScrollTest(0.08f);
         }
 
+        /// <summary>
+        /// Scroll a slate using GGV and ensure that the slate scrolls
+        /// expected amount. Assumes panZoom has already been created.
+        /// </summary>
+        /// <param name="expectedScroll">The amount panZoom is expected to scroll</param>
+        /// <returns></returns>
         private IEnumerator RunGGVScrollTest(float expectedScroll)
         {
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
@@ -153,7 +158,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             panObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
             panObject.transform.position = pos;
-            //panObject.AddComponent<BoxCollider>();
             panZoom = panObject.AddComponent<HandInteractionPanZoom>();
             panObject.AddComponent<NearInteractionTouchable>();
 

@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class RotateWithPan : MonoBehaviour
     {
         private Renderer rd;
