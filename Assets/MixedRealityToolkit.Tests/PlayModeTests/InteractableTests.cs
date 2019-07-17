@@ -495,8 +495,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             interactableObject = Object.Instantiate(interactablePrefab) as GameObject;
             interactable = interactableObject.GetComponent<Interactable>();
             Assert.IsNotNull(interactable);
- 
-            //Find the target object for the interactable transformation
+
+            // Find the target object for the interactable transformation
             translateTargetObject = interactableObject.transform.Find("Cylinder");
             Assert.IsNotNull(translateTargetObject, "Object 'Cylinder' could not be found under example object Model_PushButton.");
 
