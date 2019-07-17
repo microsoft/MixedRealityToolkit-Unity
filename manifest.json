@@ -7989,7 +7989,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.RotateWithPan.html",
-          "hash": "vgsqswwmZAQOnNdyzJFXcQ=="
+          "hash": "y5gDKAxUwF8H70MJpIC6IA=="
         }
       },
       "is_incremental": false,
@@ -8001,7 +8001,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.html",
-          "hash": "dCh1yuoqUVoTGj/g5xNKSQ=="
+          "hash": "rGUevA8mHE3at8D/TLXm2w=="
         }
       },
       "is_incremental": false,
@@ -8613,7 +8613,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseFocusHandler.html",
-          "hash": "XjmsBqmEp3Qwi1v1ndADZw=="
+          "hash": "wITj8Z91ka+u6TS68Ve1PA=="
         }
       },
       "is_incremental": false,
@@ -9233,18 +9233,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandInteractionPan.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandInteractionPan.html",
-          "hash": "lO5OOXMWa/XHm/uCfCH1kg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandInteractionPanZoom.HandPanData.yml",
       "output": {
         ".html": {
@@ -9261,7 +9249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandInteractionPanZoom.html",
-          "hash": "XediK5rK/lJ2c3eb127oTA=="
+          "hash": "TuQcrXftpCsXU2trWhyEAw=="
         }
       },
       "is_incremental": false,
@@ -9309,7 +9297,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandPanEventData.html",
-          "hash": "oynHpxK48S56ymEzfles3g=="
+          "hash": "4MeDCn3V46RGfLLXldWc5Q=="
         }
       },
       "is_incremental": false,
@@ -9634,18 +9622,6 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler.html",
           "hash": "HtgzWFHetNZiHshMDlIAYw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandPanHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandPanHandler.html",
-          "hash": "8Rx8sqARjXMPGWKEVdZoZA=="
         }
       },
       "is_incremental": false,
@@ -10793,6 +10769,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.PanUnityEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.PanUnityEvent.html",
+          "hash": "NHQmQKjig+05K78E/XOTBA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.PointerClickHandler.yml",
       "output": {
         ".html": {
@@ -11301,7 +11289,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "9/nMQWm5TOIei7FvzUKRgw=="
+          "hash": "Fg9sQJ9B4YRsYZR8d/CXRA=="
         }
       },
       "is_incremental": false,
@@ -13061,6 +13049,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.SlateTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SlateTests.html",
+          "hash": "sEa8/lJ4DlMmv2aMDnWstQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.SpeechTests.yml",
       "output": {
         ".html": {
@@ -13149,7 +13149,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "r2NZMBDUVCrJCAUDYU2Pzg=="
+          "hash": "s5mOm8FatLv48E3BZD9apg=="
         }
       },
       "is_incremental": false,
@@ -17817,7 +17817,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "1xs1S0S60c7f/ZxNv7taGA=="
+          "hash": "9zqhLrYKpMuCMlffIn+FUw=="
         }
       },
       "is_incremental": false,
@@ -17869,9 +17869,9 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
@@ -17882,9 +17882,9 @@
           "total_file_count": 116,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
