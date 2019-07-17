@@ -105,7 +105,7 @@
 <p>The surface magnetism scripts rely on a <em>LayerMask</em> for raycasting. As a recommendation, create a custom layer mask (the example uses <em>Surface</em>). Note that using <em>default</em> or <em>everything</em> will result in UI components or cursors contributing to the solver. Note that this can produce weird and unexpected behavior, for example objects lurching toward the user and so on.</p>
 <p>When <em>UpdateLinkedTransform</em> is true, the solver will calculate position &amp; orientation, but will not apply it. This lets other components use the transform values.</p>
 <img src="Images/Solver/MRTK_Solver_Orbital.png" width="450">
-*Example of using Orbital solver in the [Slate](README_Slate.md) prefab.*
+<p><em>Example of using Orbital solver in the <a href="README_Slate.html">Slate</a> prefab.</em></p>
 <h2 id="expectations-for-extending-or-adding-to-the-solver-system">Expectations for extending or adding to the solver system</h2>
 <p>To create a new solver script, you will want to extend from the abstract base class, <em>Solver</em>. This will ensure your new solver will tie into the state tracking and execution from both Solver and SolverHandler. The power with solvers comes from them being modular in nature, so as you extend Solver, keep this in mind. Its better to have many small solver scripts vs. one big one.</p>
 <h2 id="known-issues">Known Issues</h2>
