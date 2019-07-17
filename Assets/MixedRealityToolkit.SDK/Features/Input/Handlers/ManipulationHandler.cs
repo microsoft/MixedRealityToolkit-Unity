@@ -565,7 +565,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             hostTransform.rotation = Quaternion.Lerp(hostTransform.rotation, targetRotationTwoHands, lerpAmount);
             hostTransform.localScale = Vector3.Lerp(hostTransform.localScale, targetScale, lerpAmount);
         }
-        
+
+        private Quaternion ApplyConstraints(Quaternion newRotation)
+        {
+            // apply constraint on rotation diff
+            Quaternion diffRotation = newRotation * Quaternion.Inverse(hostTransform.rotation);
+            switch (constraintOnRotation)
+            {
+                case RotationConstraintType.XAxisOnly:
+                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.right);
+                    break;
+                case RotationConstraintType.YAxisOnly:
+                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.up);
+                    break;
+                case RotationConstraintType.ZAxisOnly:
+                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.forward);
+                    break;
+            }
+
+            return diffRotation * hostTransform.rotation;
+        }
+		
         private void HandleOneHandMoveUpdated()
         {
             Debug.Assert(pointerIdToPointerMap.Count == 1);
@@ -603,19 +623,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             else
             {
                 targetRotation = pointer.Rotation * objectToHandRotation;
-                switch (constraintOnRotation)
-                {
-                    case RotationConstraintType.XAxisOnly:
-                        targetRotation.eulerAngles = Vector3.Scale(targetRotation.eulerAngles, Vector3.right);
-                        break;
-                    case RotationConstraintType.YAxisOnly:
-                        targetRotation.eulerAngles = Vector3.Scale(targetRotation.eulerAngles, Vector3.up);
-                        break;
-                    case RotationConstraintType.ZAxisOnly:
-                        targetRotation.eulerAngles = Vector3.Scale(targetRotation.eulerAngles, Vector3.forward);
-                        break;
-                }
             }
+
+            targetRotation = ApplyConstraints(targetRotation);
 
             Vector3 targetPosition;
             if (IsNearManipulation())
