@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test hand ray scroll instantiated from prefab
+        /// Test touch zomming instantiated from prefab
         /// </summary>
         [UnityTest]
         public IEnumerator Prefab_TouchZoom()
