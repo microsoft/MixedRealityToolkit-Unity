@@ -64,6 +64,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test hand ray scroll instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator Prefab_RayScroll()
+        {
+            InstantiateFromPrefab(Vector3.forward);
+            Vector2 totalPanDelta = Vector2.zero;
+            panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
+
+            TestHand h = new TestHand(Handedness.Right); ;
+            yield return h.MoveTo(panObject.transform.position);
+            yield return h.Move(new Vector3(0, -0.05f, 0), 10);
+
+            Assert.AreEqual(0.1, totalPanDelta.y, 0.05, "pan delta is not correct");
+
+            yield return h.Hide();
+            yield return new WaitForSeconds(0.5f);
+        }
+
+
+        /// <summary>
         /// Instantiates a slate from the default prefab at position, looking at the camera
         /// </summary>
         /// <returns></returns>
