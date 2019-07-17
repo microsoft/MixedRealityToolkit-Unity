@@ -73,9 +73,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
 
-            TestHand h = new TestHand(Handedness.Right); ;
-            yield return h.MoveTo(panObject.transform.position);
+            TestHand h = new TestHand(Handedness.Right);
+            Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.25f, 0.5f));
+            yield return h.Show(CameraCache.Main.ScreenToWorldPoint(screenPoint));
+
+            yield return h.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return h.Move(new Vector3(0, -0.05f, 0), 10);
+            yield return h.SetGesture(ArticulatedHandPose.GestureId.Open);
 
             Assert.AreEqual(0.1, totalPanDelta.y, 0.05, "pan delta is not correct");
 
