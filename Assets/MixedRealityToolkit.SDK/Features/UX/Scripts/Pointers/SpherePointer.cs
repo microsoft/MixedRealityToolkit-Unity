@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Additional distance between SphereCastRadius and NearObjectRadius")]
         private float nearObjectMargin = 0.2f;
         /// <summary>
-        /// Additional distance between <see cref="SphereCastRadius"/> and <see cref="NearObjectRadius"/>.
+        /// Additional distance between <see cref="BaseControllerPointer.SphereCastRadius"/> and <see cref="NearObjectRadius"/>.
         /// </summary>
         /// <remarks>
         /// This creates a dead zone in which far interaction is disabled before objects become grabbable.
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Distance at which the pointer is considered "near" an object.
         /// </summary>
         /// <remarks>
-        /// Sum of <see cref="SphereCastRadius"/> and <see cref="NearObjectMargin"/>. Entering the <see cref="NearObjectRadius"/> disables far interaction.
+        /// Sum of <see cref="BaseControllerPointer.SphereCastRadius"/> and <see cref="NearObjectMargin"/>. Entering the <see cref="NearObjectRadius"/> disables far interaction.
         /// </remarks>
         public float NearObjectRadius => SphereCastRadius + NearObjectMargin;
 
