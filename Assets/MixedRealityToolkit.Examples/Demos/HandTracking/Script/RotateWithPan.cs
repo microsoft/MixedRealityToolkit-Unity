@@ -7,7 +7,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
-    /// 
+    /// Rotates a game object in response to panning motion from the specified
+    /// panzoom component.
     /// </summary>
     public class RotateWithPan : MonoBehaviour
     {
