@@ -60,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(0.1, totalPanDelta.y, 0.05,  "pan delta is not correct");
 
             yield return h.Hide();
-            yield return new WaitForSeconds(0.5f);
         }
 
         /// <summary>
@@ -84,7 +83,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(0.1, totalPanDelta.y, 0.05, "pan delta is not correct");
 
             yield return h.Hide();
-            yield return new WaitForSeconds(0.5f);
+        }
+
+        /// <summary>
+        /// Test hand ray scroll instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator Prefab_TouchZoom()
+        {
+            InstantiateFromPrefab(Vector3.forward);
+            Debug.Log("Scale at start: " + panZoom.CurrentScale);
+
+            TestHand h = new TestHand(Handedness.Right);
+            yield return h.Show(Vector3.zero);
+
+            yield return h.MoveTo(panZoom.transform.position, 10);
+
+            TestHand h2 = new TestHand(Handedness.Left);
+            yield return h2.Show(Vector3.zero);
+            yield return h2.MoveTo(panZoom.transform.position + Vector3.right * -0.01f, 10);
+
+            yield return h.Move(new Vector3(0.01f, 0f, 0f));
+            yield return h2.Move(new Vector3(-0.01f, 0f, 0f));
+            Assert.AreEqual(0.4, panZoom.CurrentScale, 0.1, "slate did not zoom in using two finger touch");
+
+            yield return h.Hide();
         }
 
 
