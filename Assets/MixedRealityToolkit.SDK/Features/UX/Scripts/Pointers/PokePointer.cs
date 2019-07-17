@@ -105,10 +105,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             sceneQueryBufferSize = Mathf.Max(sceneQueryBufferSize, 1);
         }
 
+        /// <inheritdoc />
         public bool IsNearObject
         {
             get { return (closestProximityTouchable != null); }
         }
+
+        /// <inheritdoc />
+        public override bool IsInteractionEnabled => base.IsInteractionEnabled && IsNearObject;
 
         public override void OnPreSceneQuery()
         {
