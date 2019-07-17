@@ -153,6 +153,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 MixedRealityToolkit.ConfirmInitialized();
             }
 
+            // Todo: this condition shouldn't be here.
+            // It's here due to some edit mode tests initializing Mrtk instance in Edit mode, causing some of 
+            // event handler registration to live over tests and cause next tests to fail.
+            // Exact reason requires investigation.
+            if (Application.isPlaying)
+            {
+                BaseEventSystem.enableDanglingHandlerDiagnostics = true;
+            }
+
             // Tests
             Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
@@ -171,7 +180,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void ShutdownMixedRealityToolkit()
         {
             MixedRealityToolkit.SetInstanceInactive(MixedRealityToolkit.Instance);
-            MixedRealityPlayspace.Destroy();
+            if (Application.isPlaying)
+            {
+                MixedRealityPlayspace.Destroy();
+            }
+
+            BaseEventSystem.enableDanglingHandlerDiagnostics = false;
         }
 
         private static T GetDefaultMixedRealityProfile<T>() where T : BaseMixedRealityProfile
@@ -187,6 +201,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var dist = (actual - expected).magnitude;
             Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+        }
+
+        public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message)
+        {
+            var dist = (val1 - val2).magnitude;
+            Debug.Assert(dist >= vector3DistanceEpsilon, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
     }
 }

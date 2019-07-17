@@ -13,6 +13,12 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public abstract class BaseEventSystem : BaseService, IMixedRealityEventSystem
     {
+        // Utility flag controlling error messages in 'Destroy' method for reporting dangling event handlers.
+        // This may generate false warnings in usual Unity play mode due to arbitrary order 
+        // of disabling and destroying components. It is enabled by tests and can be enabled for debugging purposes.
+        // Variable is static to be shared between all event system instances.
+        public static bool enableDanglingHandlerDiagnostics = false;
+
         private static int eventExecutionDepth = 0;
         private readonly Type eventSystemHandlerType = typeof(IEventSystemHandler);
 
@@ -241,6 +247,32 @@ namespace Microsoft.MixedReality.Toolkit
             else
             {
                 postponedObjectActions.Add(Tuple.Create(Action.Remove, listener));
+            }
+        }
+
+        public override void Destroy()
+        {
+            if(!enableDanglingHandlerDiagnostics)
+            {
+                return;
+            }
+
+            foreach (var listener in EventListeners)
+            {
+                Debug.LogError("Event system is destroyed, while still having a registered listener. " +
+                    "Make sure that all global event listeners have been unregistered before destroying the event system. " +
+                    $"Dangling listener: object {listener.name}");
+            }
+
+            foreach (var typeEntry in EventHandlersByType)
+            {
+                for (int index = 0; index < typeEntry.Value.Count; index++)
+                {
+                    var handlerEntry = typeEntry.Value[index];
+                    Debug.LogError("Event system is being destroyed while still having a registered listener. " +
+                        "Make sure that all global event listeners have been unregistered before destroying the event system. " +
+                        $"Dangling listener: handler {handlerEntry.handler}");
+                }
             }
         }
 

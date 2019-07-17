@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [MixedRealityServiceInspector(typeof(MixedRealityTeleportSystem))]
+    [MixedRealityServiceInspector(typeof(IMixedRealityTeleportSystem))]
     public class TeleportSystemInspector : BaseMixedRealityServiceInspector
     {
         private static readonly Color enabledColor = GUI.backgroundColor;
@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void DrawInspectorGUI(object target)
         {
-            MixedRealityTeleportSystem teleport = (MixedRealityTeleportSystem)target;
+            IMixedRealityTeleportSystem teleport = (IMixedRealityTeleportSystem)target;
 
             EditorGUILayout.LabelField("Event Listeners", EditorStyles.boldLabel);
 

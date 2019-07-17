@@ -5,6 +5,10 @@
     href: HTKToMRTKPortingGuide.md
   - name: Updating from RC2 to GA
     href: UpdatingToGA.md
+  - name: Performance
+    href: Performance/PerfGettingStarted.md
+  - name: Hologram Stabilization
+    href: Hologram-Stabilization.md
 - name: Architecture
   items:
   - name: Overview
@@ -132,10 +136,16 @@
       href: Packaging/MRTK_Packages.md
     - name: MRTK Componentization
       href: Packaging/MRTK_Modularization.md
-  - name: Performance
-    href: Performance/PerfGettingStarted.md
-  - name: Extension Service Creation Wizard
-    href: Utilities/ExtensionServiceCreationWizard.md
+  - name: Utilities
+    items:
+    - name: Build Window
+      href: Utilities/BuildWindow.md
+    - name: Dependency Window
+      href: Utilities/DependencyWindow.md
+    - name: Optimize Window
+      href: Utilities/OptimizeWindow.md
+    - name: Extension Service Creation Wizard
+      href: Utilities/ExtensionServiceCreationWizard.md
   - name: Experimental Features
     href: ExperimentalFeatures.md
   - name: Advanced topics

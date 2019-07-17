@@ -10,6 +10,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
     public class TestFixture_03_InputSystemTests
     {
+        [TearDown]
+        public void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
         [Test]
         public void Test01_CreateMixedRealityInputSystem()
         {
