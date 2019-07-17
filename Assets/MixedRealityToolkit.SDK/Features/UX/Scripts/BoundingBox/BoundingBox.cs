@@ -1429,26 +1429,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool AddRendererBoundsToTarget(KeyValuePair<Transform, Bounds> rendererBoundsByTarget)
         {
-            if (rendererBoundsByTarget.Key != null)
-            {
-                Vector3[] cornersToWorld = null;
-                rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
-                colliderCorners.AddRange(cornersToWorld);
-                return true;
-            }
+            if (rendererBoundsByTarget.Key == null) { return false; }
 
-            return false;
+            Vector3[] cornersToWorld = null;
+            rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
+            colliderCorners.AddRange(cornersToWorld);
+            return true;
     }
 
         private bool AddColliderBoundsToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
-            if (colliderByTransform.Key != null)
-            {
-                BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, colliderCorners, 0);
-                return true;
-            }
+            if (colliderByTransform.Key == null) { return false; }
 
-            return false;
+            BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, colliderCorners, 0);
+            return true;
         }
 
 
