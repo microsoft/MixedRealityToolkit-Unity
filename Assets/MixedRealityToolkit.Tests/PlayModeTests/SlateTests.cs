@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Setup()
         {
             PlayModeTestUtilities.Setup();
+            PlayModeTestUtilities.PushHandSimulationProfile();
             TestUtilities.PlayspaceToOriginLookingForward();
         }
 
@@ -34,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             GameObject.Destroy(panObject);
             GameObject.Destroy(panZoom);
+            PlayModeTestUtilities.PopHandSimulationProfile();
             PlayModeTestUtilities.TearDown();
         }
 
@@ -92,7 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator Prefab_TouchZoom()
         {
             InstantiateFromPrefab(Vector3.forward);
-            Debug.Log("Scale at start: " + panZoom.CurrentScale);
 
             TestHand h = new TestHand(Handedness.Right);
             yield return h.Show(Vector3.zero);
@@ -110,6 +111,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return h.Hide();
         }
 
+        /// <summary>
+        /// Test hand ray scroll instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator Prefab_GGVScroll()
+        {
+            InstantiateFromPrefab(Vector3.forward);
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+
+            Vector2 totalPanDelta = Vector2.zero;
+            panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
+
+            TestHand h = new TestHand(Handedness.Right);
+            yield return h.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return h.Show(Vector3.zero);
+            yield return h.Move(new Vector3(0.0f, -0.1f, 0f));
+
+            Assert.AreEqual(0.2, totalPanDelta.y, 0.05, "pan delta is not correct");
+
+            yield return h.Hide();
+        }
 
         /// <summary>
         /// Instantiates a slate from the default prefab at position, looking at the camera
