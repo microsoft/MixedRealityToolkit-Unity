@@ -21,21 +21,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
         [Tooltip("The relative asset path to the glTF asset in the Streaming Assets folder.")]
         private string uri = "\\GltfModels\\Lantern\\glTF\\Lantern.gltf";
 
-        private void OnValidate()
+        public string Uri
         {
-            var path = $"{Application.streamingAssetsPath}{uri}";
-            path = path.Replace("/", "\\");
-
-            if (!File.Exists(path) &&
-                Application.isEditor)
+            get
             {
-                DirectoryCopy($"{Application.dataPath}\\MixedRealityToolkit.Examples\\Demos\\Gltf\\Models",
-                              $"{Application.streamingAssetsPath}\\GltfModels");
-#if UNITY_EDITOR
-                UnityEditor.AssetDatabase.Refresh(UnityEditor.ImportAssetOptions.ForceUpdate);
-#endif
+                return uri;
             }
         }
+
+        [SerializeField]
+        [Tooltip("Scale factor to apply on load")]
+        private float ScaleFactor = 1.0f;
+
+        [SerializeField]
+        public GameObject DebugText;
 
         private async void Start()
         {
@@ -45,13 +44,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
             if (!File.Exists(path))
             {
                 Debug.LogError($"Unable to find the glTF object at {path}");
+                this.DebugText.SetActive(true);
+                return;
             }
+
+            this.DebugText.SetActive(false);
 
             GltfObject gltfObject = null;
 
             try
             {
                 gltfObject = await GltfUtility.ImportGltfObjectFromPathAsync(path);
+
+                // Put object in front of user
+                gltfObject.GameObjectReference.transform.position = new Vector3(0.0f, 0.0f, 1.0f);
+
+                gltfObject.GameObjectReference.transform.localScale *= this.ScaleFactor;
             }
             catch (Exception e)
             {
@@ -63,43 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
                 Debug.Log("Import successful");
             }
         }
-
-        private void DirectoryCopy(string sourceDirName, string destDirName)
-        {
-            // Get the subdirectories for the specified directory.
-            var sourceDirectory = new DirectoryInfo(sourceDirName);
-
-            if (!sourceDirectory.Exists)
-            {
-                Debug.LogError($"Source directory does not exist or could not be found: {sourceDirName}");
-            }
-
-            var subDirectories = sourceDirectory.GetDirectories();
-
-            if (!Directory.Exists(destDirName))
-            {
-                Directory.CreateDirectory(destDirName);
-            }
-
-            var files = sourceDirectory.GetFiles();
-
-            foreach (FileInfo file in files)
-            {
-                if (file.Extension.EndsWith(".meta")) { continue; }
-
-                string tempPath = Path.Combine(destDirName, file.Name);
-
-                if (!File.Exists(tempPath))
-                {
-                    file.CopyTo(tempPath, false);
-                }
-            }
-
-            foreach (var subDirectory in subDirectories)
-            {
-                string tempPath = Path.Combine(destDirName, subDirectory.Name);
-                DirectoryCopy(subDirectory.FullName, tempPath);
-            }
-        }
+        
     }
 }
