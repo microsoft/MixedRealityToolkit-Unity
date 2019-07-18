@@ -517,9 +517,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (!IsSetupValid) { return; }
 
             UpdatePointers();
+            UpdateGazeProvider();
             UpdateFocusedObjects();
 
             PrimaryPointer = primaryPointerSelector?.Update();
+        }
+
+        /// <summary>
+        /// Update the hit information for the gaze provider.
+        /// 
+        /// For the sake of StabilizationPlaneModifier and potentially other 
+        /// components that care where the user's looking, we need to do a gaze 
+        /// raycast even if gaze isn't used for focus.
+        /// </summary>
+        private void UpdateGazeProvider()
+        {
+            // We only update if interaction is not enabled because if interaction is enabled 
+            // for this pointer, we have already updated hit data
+            if (!gazeProviderPointingData.Pointer.IsInteractionEnabled)
+            {
+                var raycastProvider = InputSystem.RaycastProvider;
+                // Should we just use a local variable instead of this member?
+                // Unclear why we use the member everywhere...maybe to reduce allocaionts
+                hitResult3d.Clear();
+                LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
+
+                QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
+                    hitResult3d, maxQuerySceneResults);
+                ((GazeProvider)InputSystem.GazeProvider).UpdateGazeInfoFromHit(hitResult3d.raycastHit);
+            }
         }
 
         #endregion IMixedRealityService Implementation
@@ -848,8 +874,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerData.Pointer.OnPreSceneQuery();
 
             // If pointer interaction isn't enabled, clear its result object and return
-            if (pointerData.Pointer != gazeProviderPointingData.Pointer &&
-                !pointerData.Pointer.IsInteractionEnabled)
+            if (!pointerData.Pointer.IsInteractionEnabled)
             {
                 // Don't clear the previous focused object since we still want to trigger FocusExit events
                 pointerData.ResetFocusedObjects(false);
