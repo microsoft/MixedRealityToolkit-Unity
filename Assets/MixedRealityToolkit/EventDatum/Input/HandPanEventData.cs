@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <remarks>Source State events do not have an associated <see cref="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputAction"/>.</remarks>
     public class HandPanEventData : BaseInputEventData
     {
-        public Vector2 PanPosition
+        public Vector2 PanDelta
         {
             get;
             private set;
@@ -25,9 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Populates the event with data.
         /// </summary>
         /// <param name="inputSource"></param>
-        public void Initialize(IMixedRealityInputSource source, Vector2 pos)
+        public void Initialize(IMixedRealityInputSource source, Vector2 delta)
         {
-            PanPosition = pos;
+            PanDelta = delta;
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             isFocusRequiredRuntime = isFocusRequired;
         }
 
-        protected void Update()
+        protected virtual void Update()
         {
             if(isFocusRequiredRuntime != isFocusRequired)
             {

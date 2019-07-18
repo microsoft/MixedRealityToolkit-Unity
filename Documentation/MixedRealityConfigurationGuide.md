@@ -4,14 +4,7 @@
 
 The Mixed Reality Toolkit centralizes as much of the configuration required to manage the toolkit as possible (except for true runtime "things").
 
-**This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit, more in-depth guides for each of the features is coming soon.**
-
-
-> Configuration Profile Usage Guide is coming soon
-
-In some cases, it might make sense to swap out the underlying system that provides a capability with either a custom developed service or an alternate 3rd party implementation (e.g. swapping out the speech provider from an OS version to one on Azure)
-
-> Guide to building Registered Services is coming soon
+**This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit**
 
 ## The main Mixed Reality Toolkit configuration profile
 
@@ -85,8 +78,6 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 
 The Mixed Reality Project provides a robust and well-trained input system for routing all the input events around the project which is selected by default.
 
-> The MRTK also allows you to write your own input system and you can use the selection below to switch the system used without rewriting the toolkit. For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
-
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png" width="650px" style="display:block;">
 
 Behind the Input System provided by the MRTK are several other systems, these help to drive and manage the complex inter-weavings required to abstract out the complexities of a multi-platform / mixed reality framework.
@@ -122,8 +113,6 @@ The boundary system translates the perceived boundary reported by the underlying
 
 The Mixed Reality Project provides a full featured Teleportation system for managing teleportation events in the project which is selected by default.
 
-> The MRTK also allows you to write your own Teleportation System and you can use the selection below to switch the system used without rewriting the toolkit. For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
-
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png" width="650px" style="display:block;">
 
 ---
@@ -152,8 +141,6 @@ This is only applicable for devices that can provide a scanned environment.
 
 An optional but highly useful feature of the MRTK is the plugin diagnostics functionality. This presents a style of debug log in to the scene
 
-> The MRTK also allows you to write your own diagnostic system and you can use the selection below to switch the system used without rewriting the toolkit. For more information on writing your own systems, please see this guide to building Registered Services (Coming soon)
-
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png" width="650px" style="display:block;">
 
 The diagnostics profile provides several simple systems to monitor whilst the project is running, including a handy On/Off switch to enable / disable the display pane in the scene.
@@ -180,8 +167,6 @@ One of the more advanced areas of the Mixed Reality Toolkit is its [service loca
 > You can read more about the underlying framework and its implementation in [Stephen Hodgson's article on the Mixed Reality Framework](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)
 
 Any registered service still gets the full advantage of all of the Unity events, without the overhead and cost of implementing a MonoBehaviour or clunky singleton patterns. This allows for pure C# components with no scene overhead for running both foreground and background processes, e.g. spawning systems, runtime gamelogic, or practically anything else.
-
-Check out the [Guide to building Registered Services]() (Coming Soon) for more details about creating your own services
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png" width="650px" style="display:block;">
 
@@ -235,8 +220,6 @@ Input action Rules can be configured for any of the available input axis. Howeve
 Pointers are used to drive interactivity in the scene from any input device, giving both a direction and hit test with any object in a scene (that has a collider attached, or is a UI component). Pointers are by default automatically configured for controllers, headsets (gaze / focus) and mouse / touch input.
 
 Pointers can also be visualized within the active scene using one of the many line components provided by the Mixed Reality Toolkit, or any of your own if they implement the MRTK IMixedRealityPointer interface.
-
-> See the [Guide to Pointers documentation]() **Coming Soon** for more information on creating your own pointers.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png" width="650px" style="display:block;">
 
