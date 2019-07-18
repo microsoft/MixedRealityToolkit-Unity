@@ -458,10 +458,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 7428662621771460844}
+  startPushDistance: 0
   maxPushDistance: 0.018
   pressDistance: 0.01
   releaseDistanceDelta: 0.001
-  returnRate: 25
+  returnSpeed: 25
+  releaseOnTouchEnd: 1
+  enforceFrontPush: 1
+  distanceSpaceMode: 0
   TouchBegin:
     m_PersistentCalls:
       m_Calls:
@@ -550,6 +554,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  currentPushDistance: 0
 --- !u!114 &6293782215702940609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,7 +582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enabled: 1
-  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
+  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputAction:
     id: 0
     description: 
@@ -585,6 +590,7 @@ MonoBehaviour:
   InputActionId: 0
   IsGlobal: 0
   Dimensions: 1
+  StartDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: Select
@@ -615,6 +621,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
+  dimensionIndex: 0
 --- !u!82 &6293782215702940638
 AudioSource:
   m_ObjectHideFlags: 0
@@ -723,11 +730,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  pokeThreshold: 0.25
+  debounceThreshold: 0.01
+  touchableCollider: {fileID: 6293782215702940611}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
-  eventsToReceive: 0
-  touchableSurface: 0
   bounds: {x: 0.032, y: 0.032}
 --- !u!1 &6293782216070504610
 GameObject:
