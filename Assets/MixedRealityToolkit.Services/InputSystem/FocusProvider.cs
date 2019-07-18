@@ -840,36 +840,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void UpdatePointer(PointerData pointer)
+        private void UpdatePointer(PointerData pointerData)
         {
             // Call the pointer's OnPreSceneQuery function
             // This will give it a chance to prepare itself for raycasts
             // e.g., by building its Rays array
-            pointer.Pointer.OnPreSceneQuery();
+            pointerData.Pointer.OnPreSceneQuery();
 
             // If pointer interaction isn't enabled, clear its result object and return
-            if (!pointer.Pointer.IsInteractionEnabled)
+            if (!pointerData.Pointer.IsInteractionEnabled)
             {
                 // Don't clear the previous focused object since we still want to trigger FocusExit events
-                pointer.ResetFocusedObjects(false);
+                pointerData.ResetFocusedObjects(false);
             }
             else
             {
                 // If the pointer is locked, keep the focused object the same.
                 // This will ensure that we execute events on those objects
                 // even if the pointer isn't pointing at them.
-                if (pointer.Pointer.IsFocusLocked && pointer.Pointer.IsTargetPositionLockedOnFocusLock)
+                if (pointerData.Pointer.IsFocusLocked && pointerData.Pointer.IsTargetPositionLockedOnFocusLock)
                 {
-                    pointer.UpdateFocusLockedHit();
+                    pointerData.UpdateFocusLockedHit();
                 }
                 else
                 {
-                    LayerMask[] prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
+                    LayerMask[] prioritizedLayerMasks = (pointerData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
 
                     // Perform raycast to determine focused object
                     var raycastProvider = InputSystem.RaycastProvider;
                     hitResult3d.Clear();
-                    QueryScene(pointer.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults);
+                    QueryScene(pointerData.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults);
                     PointerHitResult hit = hitResult3d;
 
                     int hitResult3dLayer = hitResult3d.hitObject?.layer ?? -1;
@@ -878,7 +878,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // If we have a hit in the highest priority layer, we can go ahead and truncate the pointer before doing the UI raycast
                         // (if it's not highest priority it's possible the UI raycast could produce a higher-priority hit that is further than the physics hit,
                         // and we'd lose that hit if the pointer were truncated)
-                        TruncatePointerRayToHit(pointer.Pointer, hitResult3d);
+                        TruncatePointerRayToHit(pointerData.Pointer, hitResult3d);
                     }
 
                     // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
@@ -886,7 +886,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
                         hitResultUi.Clear();
-                        RaycastGraphics(pointer.Pointer, pointer.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                        RaycastGraphics(pointerData.Pointer, pointerData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
 
                         hit = GetPrioritizedHitResult(hit, hitResultUi, prioritizedLayerMasks);
                     }
@@ -894,27 +894,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (hit != hitResult3d || hitResult3dLayer > 0)
                     {
                         // Truncate if we didn't already for this hit
-                        TruncatePointerRayToHit(pointer.Pointer, hitResult3d);
+                        TruncatePointerRayToHit(pointerData.Pointer, hitResult3d);
                     }
 
                     // Make sure to keep focus on the previous object if focus is locked (no target position lock here).
-                    if (pointer.Pointer.IsFocusLocked && pointer.Pointer.Result?.CurrentPointerTarget != null)
+                    if (pointerData.Pointer.IsFocusLocked && pointerData.Pointer.Result?.CurrentPointerTarget != null)
                     {
-                        hit.hitObject = pointer.Pointer.Result.CurrentPointerTarget;
+                        hit.hitObject = pointerData.Pointer.Result.CurrentPointerTarget;
                     }
 
                     // Apply the hit result only now so changes in the current target are detected only once per frame.
-                    pointer.UpdateHit(hit);
+                    pointerData.UpdateHit(hit);
 
                     // Set the pointer's result last
-                    pointer.Pointer.Result = pointer;
+                    pointerData.Pointer.Result = pointerData;
                 }
             }
 
             // Call the pointer's OnPostSceneQuery function.
             // This will give it a chance to respond to raycast results
             // e.g., by updating its appearance.
-            pointer.Pointer.OnPostSceneQuery();
+            pointerData.Pointer.OnPostSceneQuery();
         }
 
         private void TruncatePointerRayToHit(IMixedRealityPointer pointer, PointerHitResult hit)
