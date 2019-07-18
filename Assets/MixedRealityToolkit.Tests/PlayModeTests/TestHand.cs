@@ -50,30 +50,60 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
         }
 
-        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30)
+        public IEnumerator MoveToSteps(Vector3 newPosition, int numSteps)
         {
             Vector3 oldPosition = position;
             position = newPosition;
-            yield return PlayModeTestUtilities.MoveHandFromTo(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService);
+            yield return PlayModeTestUtilities.MoveHandSteps(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService);
             yield return new WaitForFixedUpdate();
         }
 
-        public IEnumerator Move(Vector3 delta, int numSteps = 30)
+        public IEnumerator MoveTo(Vector3 newPosition)
         {
-            yield return MoveTo(position + delta, numSteps);
+            yield return MoveToSteps(newPosition, PlayModeTestUtilities.HandMoveStepsDefault);
+        }
+
+        public IEnumerator MoveToFast(Vector3 newPosition)
+        {
+            yield return MoveToSteps(newPosition, PlayModeTestUtilities.HandMoveStepsFast);
+        }
+
+        public IEnumerator MoveToSlow(Vector3 newPosition)
+        {
+            yield return MoveToSteps(newPosition, PlayModeTestUtilities.HandMoveStepsSlow);
+        }
+
+        public IEnumerator MoveSteps(Vector3 delta, int numSteps)
+        {
+            yield return MoveToSteps(position + delta, numSteps);
+        }
+
+        public IEnumerator Move(Vector3 delta)
+        {
+            yield return MoveSteps(position, PlayModeTestUtilities.HandMoveStepsDefault);
+        }
+
+        public IEnumerator MoveFast(Vector3 delta)
+        {
+            yield return MoveSteps(position, PlayModeTestUtilities.HandMoveStepsFast);
+        }
+
+        public IEnumerator MoveSlow(Vector3 delta)
+        {
+            yield return MoveSteps(position, PlayModeTestUtilities.HandMoveStepsSlow);
         }
 
         public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId)
         {
             gestureId = newGestureId;
-            yield return PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService);
+            yield return PlayModeTestUtilities.SetHandState(position, gestureId, handedness, simulationService);
             yield return new WaitForFixedUpdate();
         }
 
-        public IEnumerator GrabAndThrowAt(Vector3 positionToRelease, int numSteps = 30)
+        public IEnumerator GrabAndThrowAt(Vector3 positionToRelease)
         {
             yield return SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return MoveTo(positionToRelease, numSteps);
+            yield return MoveTo(positionToRelease);
             yield return SetGesture(ArticulatedHandPose.GestureId.Open);
         }
 

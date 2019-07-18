@@ -123,9 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private PointerHandler handler;
 
-        // Keeping this low by default so the test runs fast. Increase it to be able to see hand movements in the editor.
-        private const int numFramesPerMove = 1;
-
         // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
         [SetUp]
         public void SetUp()
@@ -184,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move hand closer to the collider so it gives it focus
             Vector3 rightFocusPos = new Vector3(0.05f, 0, 1.5f);
-            yield return rightHand.MoveTo(rightFocusPos, numFramesPerMove);
+            yield return rightHand.MoveTo(rightFocusPos);
 
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
@@ -201,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Maintain pinch for a number of frames
             previousNumPointerDragged = handler.state.numPointerDragged;
-            yield return rightHand.MoveTo(rightFocusPos, numFramesPerMove);
+            yield return rightHand.MoveTo(rightFocusPos);
 
             Assert.Greater(handler.state.numPointerDragged, previousNumPointerDragged);
             handler.state.AssertEqual(expected);
@@ -214,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Move back to no focus
-            yield return rightHand.MoveTo(rightNoFocusPos, numFramesPerMove);
+            yield return rightHand.MoveTo(rightNoFocusPos);
 
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
@@ -235,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move left hand to give focus
             Vector3 leftFocusPos = new Vector3(-0.05f, 0, 1.5f);
-            yield return leftHand.MoveTo(leftFocusPos, numFramesPerMove);
+            yield return leftHand.MoveTo(leftFocusPos);
 
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;
@@ -243,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Move right hand to give focus
-            yield return rightHand.MoveTo(rightFocusPos, numFramesPerMove);
+            yield return rightHand.MoveTo(rightFocusPos);
 
             // Focus enter should not be raised as the object is already in focus.
             expected.numBeforeFocusChange++;
@@ -286,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Move left out of focus
-            yield return leftHand.MoveTo(leftNoFocusPos, numFramesPerMove);
+            yield return leftHand.MoveTo(leftNoFocusPos);
 
             // Focus exit should not be raised as the object is still in focus.
             expected.numBeforeFocusChange++;
@@ -294,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handler.state.AssertEqual(expected);
 
             // Move right out of focus
-            yield return rightHand.MoveTo(rightNoFocusPos, numFramesPerMove);
+            yield return rightHand.MoveTo(rightNoFocusPos);
 
             expected.numBeforeFocusChange++;
             expected.numFocusChanged++;

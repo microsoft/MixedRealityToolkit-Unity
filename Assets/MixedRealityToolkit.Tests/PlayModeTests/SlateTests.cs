@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             TestHand h = new TestHand(Handedness.Right); ;
             yield return h.MoveTo(panObject.transform.position);
-            yield return h.Move(new Vector3(0, -0.05f, 0), 10);
+            yield return h.Move(new Vector3(0, -0.05f, 0));
 
             Assert.AreEqual(0.1, totalPanDelta.y, 0.05, "pan delta is not correct");
 
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return h.Show(CameraCache.Main.ScreenToWorldPoint(screenPoint));
 
             yield return h.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return h.Move(new Vector3(0, -0.05f, 0), 10);
+            yield return h.Move(new Vector3(0, -0.05f, 0));
             yield return h.SetGesture(ArticulatedHandPose.GestureId.Open);
 
             Assert.AreEqual(0.1, totalPanDelta.y, 0.05, "pan delta is not correct");
@@ -98,11 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestHand h = new TestHand(Handedness.Right);
             yield return h.Show(Vector3.zero);
 
-            yield return h.MoveTo(panZoom.transform.position, 10);
+            yield return h.MoveTo(panZoom.transform.position);
 
             TestHand h2 = new TestHand(Handedness.Left);
             yield return h2.Show(Vector3.zero);
-            yield return h2.MoveTo(panZoom.transform.position + Vector3.right * -0.01f, 10);
+            yield return h2.MoveTo(panZoom.transform.position + Vector3.right * -0.01f);
 
             yield return h.Move(new Vector3(0.01f, 0f, 0f));
             yield return h2.Move(new Vector3(-0.01f, 0f, 0f));

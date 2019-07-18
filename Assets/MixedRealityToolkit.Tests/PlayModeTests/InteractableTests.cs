@@ -86,13 +86,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move the hand forward to intersect the interactable
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            int numSteps = 32;
             Vector3 p1 = new Vector3(0.0f, 0f, 0f);
             Vector3 p2 = new Vector3(0.05f, 0f, 0.51f);
             Vector3 p3 = new Vector3(0.0f, 0f, 0.0f);
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
 
             float pressStartTime = Time.time;
             bool wasTranslated = false;
@@ -103,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Move the hand back
-            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p2, p3, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
 
@@ -228,13 +227,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move the hand forward to intersect the interactable
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            int numSteps = 32;
             Vector3 p1 = new Vector3(0.0f, 0f, 0f);
             Vector3 p2 = new Vector3(0.05f, 0f, 0.51f);
             Vector3 p3 = new Vector3(0.0f, 0f, 0.0f);
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
 
             float pressStartTime = Time.time;
             bool wasTranslated = false;
@@ -245,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Move the hand back
-            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p2, p3, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
 

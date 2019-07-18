@@ -24,9 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     // Tests to verify that cursor state is updated correctly
     public class BaseCursorTests
     {
-        // Keeping this low by default so the test runs fast. Increase it to be able to see hand movements in the editor.
-        private const int numFramesPerMove = 1;
-
         GameObject cube;
 
         // Initializes MRTK, instantiates the test content prefab 
@@ -102,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move hand closer to the collider so the cursor is on it
             Vector3 onObjectPos = new Vector3(0.05f, 0, 1.5f);
-            yield return hand.MoveTo(onObjectPos, numFramesPerMove);
+            yield return hand.MoveTo(onObjectPos);
             VerifyCursorStateFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorStateEnum.InteractHover);
 
             // Trigger pinch
@@ -118,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             VerifyCursorStateFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorStateEnum.InteractHover);
 
             // Move back so the cursor is no longer on the object
-            yield return hand.MoveTo(offObjectPos, numFramesPerMove);
+            yield return hand.MoveTo(offObjectPos);
             VerifyCursorStateFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorStateEnum.Interact);
         }
 

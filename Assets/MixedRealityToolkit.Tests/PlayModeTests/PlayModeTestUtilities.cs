@@ -35,6 +35,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // Unity's default scene name for a recently created scene
         const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
 
+        public const int HandMoveStepsFast = 3;
+        public const int HandMoveStepsSlow = 30;
+
+        // Keep number of steps low so tests run fast in batch mode.
+        private const int handMoveStepsDefaultBatchMode = 5;
+        // Increased number of steps to be able to see hand movements in the editor test runner.
+        private const int handMoveStepsDefaultEditor = 20;
+        public static int HandMoveStepsDefault => Application.isBatchMode ? handMoveStepsDefaultBatchMode : handMoveStepsDefaultEditor;
+
         private static Stack<MixedRealityInputSimulationProfile> inputSimulationProfiles = new Stack<MixedRealityInputSimulationProfile>();
 
         /// <summary>
@@ -238,10 +247,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         internal static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
-            yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
+            yield return MoveHandSteps(handPos, handPos, 1, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
         }
 
-        internal static IEnumerator MoveHandFromTo(
+        /// <summary>
+        /// Move a hand controller over a given number of steps.
+        /// </summary>
+        internal static IEnumerator MoveHandSteps(
             Vector3 startPos, Vector3 endPos, int numSteps,
             ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
@@ -250,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             for (int i = 1; i <= numSteps; i++)
             {
-                float t = i / (float) numSteps;
+                float t = i / (float)numSteps;
                 Vector3 handPos = Vector3.Lerp(startPos, endPos, t);
                 var handDataGenerator = GenerateHandPose(
                         gestureId,
@@ -260,6 +272,36 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 handData.Update(true, isPinching, handDataGenerator);
                 yield return null;
             }
+        }
+
+        /// <summary>
+        /// Move a hand controller using the default number of steps.
+        /// </summary>
+        internal static IEnumerator MoveHand(
+            Vector3 startPos, Vector3 endPos,
+            ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
+        {
+            yield return MoveHandSteps(startPos, endPos, HandMoveStepsDefault, gestureId, handedness, inputSimulationService);
+        }
+
+        /// <summary>
+        /// Move a hand controller with minimal number of steps.
+        /// </summary>
+        internal static IEnumerator MoveHandFast(
+            Vector3 startPos, Vector3 endPos,
+            ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
+        {
+            yield return MoveHandSteps(startPos, endPos, HandMoveStepsFast, gestureId, handedness, inputSimulationService);
+        }
+
+        /// <summary>
+        /// Move a hand controller with large number of steps.
+        /// </summary>
+        internal static IEnumerator MoveHandSlow(
+            Vector3 startPos, Vector3 endPos,
+            ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
+        {
+            yield return MoveHandSteps(startPos, endPos, HandMoveStepsSlow, gestureId, handedness, inputSimulationService);
         }
 
         internal static IEnumerator HideHand(Handedness handedness, InputSimulationService inputSimulationService)

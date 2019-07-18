@@ -23,9 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     // Tests to verify sphere pointer distances
     public class SpherePointerTests
     {
-        // Keeping this low by default so the test runs fast. Increase it to be able to see hand movements in the editor.
-        private const int numFramesPerMove = 3;
-
         private float colliderSurfaceZ;
 
         // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
@@ -72,34 +69,34 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.False(pointer.IsInteractionEnabled);
 
             // Move hand closer to the collider to enable IsNearObject
-            yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
+            yield return rightHand.MoveTo(nearObjectPos - margin);
             Assert.False(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
-            yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
+            yield return rightHand.MoveTo(nearObjectPos + margin);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
 
             // Move hand closer to the collider to enable IsInteractionEnabled
-            yield return rightHand.MoveTo(interactionEnabledPos - margin, numFramesPerMove);
+            yield return rightHand.MoveTo(interactionEnabledPos - margin);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
-            yield return rightHand.MoveTo(interactionEnabledPos + margin, numFramesPerMove);
+            yield return rightHand.MoveTo(interactionEnabledPos + margin);
             Assert.True(pointer.IsNearObject);
             Assert.True(pointer.IsInteractionEnabled);
             // Move hand back out to disable IsInteractionEnabled
-            yield return rightHand.MoveTo(interactionEnabledPos - margin, numFramesPerMove);
+            yield return rightHand.MoveTo(interactionEnabledPos - margin);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
 
             // Move hand back out to disable IsNearObject
-            yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
+            yield return rightHand.MoveTo(nearObjectPos + margin);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
-            yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
+            yield return rightHand.MoveTo(nearObjectPos - margin);
             Assert.False(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
 
-            yield return rightHand.MoveTo(idlePos, numFramesPerMove);
+            yield return rightHand.MoveTo(idlePos);
             Assert.False(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
         }
