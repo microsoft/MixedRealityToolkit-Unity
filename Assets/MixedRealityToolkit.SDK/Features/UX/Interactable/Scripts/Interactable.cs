@@ -939,7 +939,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnFocusEnter(FocusEventData eventData)
         {
-            Debug.Assert(focusingPointers.Count > 0, "OnFocusEnter called but focusingPointers == 0");
+            Debug.Assert(focusingPointers.Count > 0,
+                "OnFocusEnter called but focusingPointers == 0. Most likely caused by the presence of a child object " +
+                "that is handling IMixedRealityFocusChangedHandler");
             if (CanInteract())
             {
                 SetFocus(true);
