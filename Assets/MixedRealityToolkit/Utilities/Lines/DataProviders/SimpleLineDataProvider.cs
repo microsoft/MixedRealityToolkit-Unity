@@ -17,7 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// The Starting point of this line.
         /// </summary>
         /// <remarks>Always located at this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s <see href="https://docs.unity3d.com/ScriptReference/Transform-position.html">Transform.position</see></remarks>
-        public MixedRealityPose StartPoint => startPoint;
+        public MixedRealityPose StartPoint
+        {
+            get { return startPoint; }
+            set { startPoint = value; }
+        }
 
         [SerializeField]
         [Tooltip("The point where this line will end.\nNote: Start point is always located at the GameObject's transform position.")]
