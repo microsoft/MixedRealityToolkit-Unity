@@ -7980,6 +7980,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.TetheredPlacement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.TetheredPlacement.html",
+          "hash": "H7FymTWZe/JnUYajG124kA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ToggleBoundingBox.yml",
       "output": {
         ".html": {
@@ -8020,7 +8032,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "0Og4DC7XNPR74wwsDQzRaw=="
+          "hash": "L/MrLt8DBxcbUo2UGVCivg=="
         }
       },
       "is_incremental": false,
@@ -17992,7 +18004,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "wRgH8SnMS1g0mqt183vl6w=="
+          "hash": "sbs1ByhhEdB+GZqYthxibg=="
         }
       },
       "is_incremental": false,
@@ -18067,7 +18079,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1056,
+          "total_file_count": 1057,
           "skipped_file_count": 0
         }
       }
