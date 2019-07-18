@@ -3,7 +3,7 @@
 
 MRTK has a set of tests to ensure that changes to our code do not regress existing behavior. When you add a new feature, please:
 
-1. Run the tests locally to make sure your changes don't regress existing behavior (you will not be able to check in if any tests faile)
+1. Run the tests locally to make sure your changes don't regress existing behavior (you will not be able to check in if any tests fail)
 2. Write new tests to ensure that other people don't break your feature in the future.
 
 If you fix a bug, please consider writing a test to ensure that this bug doesn't regress in the future as well.
