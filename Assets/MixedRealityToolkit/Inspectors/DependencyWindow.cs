@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Dependency Window", false, 3)]
         private static void ShowWindow()
         {
-            var window = GetWindow<DependencyWindow>();
+            var window = GetWindow<DependencyWindow>(typeof(SceneView));
             window.titleContent = new GUIContent(windowTitle, EditorGUIUtility.IconContent("d_EditCollider").image);
             window.minSize = new Vector2(580.0f, 380.0f);
             window.RefreshDependencyGraph();
@@ -113,6 +113,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             else if (selectedToolbarIndex == 1)
             {
                 excludeUnityScenes = EditorGUILayout.Toggle("Exclude Unity Scenes", excludeUnityScenes);
+
+                string tooltip = "Although certain asset types may not be directly referenced by other assets as tracked via Unity meta files, these assets may be utilized and/or necessary to a project in other ways.\n\nThus, this list of asset extensions are ignored and always excluded in the list below.\n\n";
+                foreach(string extension in assetsWhichCanBeUnreferenced)
+                {
+                    tooltip += extension + "\n";
+                }
+
+                EditorGUILayout.LabelField(new GUIContent("Some asset types are always excluded", InspectorUIUtility.HelpIcon, tooltip));
 
                 DrawUnreferencedAssetList();
             }

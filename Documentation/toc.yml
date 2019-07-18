@@ -55,11 +55,6 @@
       href: EyeTracking/EyeTracking_Main.md
   - name: In-Editor Input Simulation
     href: InputSimulation/InputSimulationService.md
-  - name: Input Animation Recording
-    href: InputSimulation/InputAnimationRecording.md
-    items:
-    - name: Input Animation File Format Specification
-      href: InputSimulation/InputAnimationFileFormat.md
   - name: UX Building Blocks
     items:
     - name: Interactable
@@ -144,6 +139,11 @@
       href: Utilities/DependencyWindow.md
     - name: Optimize Window
       href: Utilities/OptimizeWindow.md
+    - name: Input Animation Recording
+      href: InputSimulation/InputAnimationRecording.md
+      items:
+      - name: Input Animation File Format Specification
+        href: InputSimulation/InputAnimationFileFormat.md
     - name: Extension Service Creation Wizard
       href: Utilities/ExtensionServiceCreationWizard.md
   - name: Experimental Features
