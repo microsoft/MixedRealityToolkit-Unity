@@ -1589,29 +1589,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
             KeyValuePair<Transform, Bounds> rendererBoundsByTransform;
             colliderCorners.Clear();
 
-            // Collect all Transforms except for the rigRoot and its children
+            // Collect all Transforms except for the rigRoot(s) transform structure(s)
+            // Its possible we have two rigRoots here, the one about to be deleted and the new one
+            // Since those have the gizmo structure childed, be need to ommit them completely in the calculation of the bounds
+            // This can only happen by name unless there is a better idea of tracking the rigRoot that needs destruction
 
-            Transform[] childTransforms;
+            List<Transform> childTransforms = new List<Transform>();
+            childTransforms.Add(Target.transform);
 
-            if (hideElementsInInspector)
+            foreach (Transform childTransform in Target.transform)
             {
-                childTransforms = Target.GetComponentsInChildren<Transform>();
+                if (childTransform.name.Equals(rigRootName)) { continue; }
+                childTransforms.AddRange(childTransform.GetComponentsInChildren<Transform>());
             }
-            else
-            {
-                // in this case all gizmo representations are children of the rigRoot gameObject, so we need to skip it
-                List<Transform> strippedChildTransforms = new List<Transform>(new[] { Target.transform });
-                foreach (Transform childTransform in Target.transform)
-                {
-                    if (childTransform.name.Equals(rigRootName)) { continue; }
-                    strippedChildTransforms.AddRange(childTransform.GetComponentsInChildren<Transform>());
-                }
-                childTransforms = strippedChildTransforms.ToArray();
-            }
+
+            // Iterate transforms and collect bound volumes
 
             foreach (Transform childTransform in childTransforms)
             {
-                if (childTransform == rigRoot) continue;
+                if (childTransform == rigRoot) { continue; }
 
                 if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
                 {
@@ -1646,16 +1642,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 AddColliderBoundsToTarget(colliderByTransform);
             }
 
-            Bounds finalBounds = new Bounds();
-
-            if (colliderCorners.Count == 0)
-            {
-                return finalBounds;
-            }
+            if (colliderCorners.Count == 0) { return new Bounds(); }
 
             Transform targetTransform = Target.transform;
 
-            finalBounds = new Bounds(targetTransform.InverseTransformPoint(colliderCorners[0]), Vector3.zero);
+            Bounds finalBounds = new Bounds(targetTransform.InverseTransformPoint(colliderCorners[0]), Vector3.zero);
 
             for (int i = 1; i < colliderCorners.Count; i++)
             {
