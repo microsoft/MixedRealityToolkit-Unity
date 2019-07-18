@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected GUIStyle boxStyle;
         protected bool layoutComplete = false;
+        private const float ThemeStateFontScale = 1.2f;
 
         protected virtual void OnEnable()
         {
@@ -1052,7 +1053,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     SerializedProperty noEasing = settingsItem.FindPropertyRelative("NoEasing");
                     if (!noEasing.boolValue)
                     {
-                        InspectorUIUtility.DrawDivider();
                         enabled.boolValue = EditorGUILayout.Toggle(new GUIContent("Easing", "should the theme animate state values"), enabled.boolValue);
 
                         if (enabled.boolValue)
@@ -1227,7 +1227,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 for (int n = 0; n < states.Length; n++)
                 {
-                    InspectorUIUtility.DrawLabel(states[n].Name, 12, InspectorUIUtility.ColorTint50);
+                    InspectorUIUtility.DrawLabel(states[n].Name, (int)(InspectorUIUtility.DefaultFontSize * ThemeStateFontScale), InspectorUIUtility.ColorTint50);
 
                     for (int j = 0; j < settings.arraySize; j++)
                     {

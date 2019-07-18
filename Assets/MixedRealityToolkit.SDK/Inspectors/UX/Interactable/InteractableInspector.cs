@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             #endregion
 
-            InspectorUIUtility.DrawDivider();
+            EditorGUILayout.Space();
 
             if (!ProfilesSetup && !showProfiles)
             {
@@ -362,7 +362,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     EditorGUILayout.BeginHorizontal();
 
-                        //InspectorUIUtility.DrawLabel(targetName, 12, InspectorUIUtility.ColorTint100);
                         EditorGUILayout.PropertyField(gameObject, new GUIContent("Target", "Target gameObject for this theme properties to manipulate"));
                         bool triggered = InspectorUIUtility.SmallButton(new GUIContent(InspectorUIUtility.Minus, "Remove Profile"), i, RemoveProfile);
 
@@ -580,7 +579,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             #endregion
 
-            InspectorUIUtility.DrawDivider();
+            EditorGUILayout.Space();
 
             #region Events settings
 
