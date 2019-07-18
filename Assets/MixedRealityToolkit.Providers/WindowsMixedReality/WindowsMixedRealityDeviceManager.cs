@@ -522,7 +522,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             switch (interactionSource.kind)
             {
                 case InteractionSourceKind.Controller:
-                    pointers = RequestPointers(SupportedControllerType.WindowsMixedReality, controllingHand);
+                    if (interactionSource.supportsPointing)
+                    {
+                        pointers = RequestPointers(SupportedControllerType.WindowsMixedReality, controllingHand);
+                    }
+                    else
+                    {
+                        pointers = RequestPointers(SupportedControllerType.GGVHand, controllingHand);
+                    }
                     inputSourceType = InputSourceType.Controller;
                     break;
                 case InteractionSourceKind.Hand:
