@@ -32,8 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [SetUp]
         public void SetUp()
         {
-            TestUtilities.InitializeMixedRealityToolkit(true);
-            TestUtilities.PlayspaceToOriginLookingForward();
+            PlayModeTestUtilities.Setup();
 
             float centerZ = 2.0f;
             float scale = 0.2f;
@@ -50,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [TearDown]
         public void TearDown()
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
 
         [UnityTest]
