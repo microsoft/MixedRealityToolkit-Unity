@@ -436,8 +436,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             bool drawSection = false;
 
-            EditorGUI.indentLevel++;
-            drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
+            // To make foldout render properly, indent only this control
+            using (new EditorGUI.IndentLevelScope())
+            {
+                drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
+            }
 
             return drawSection;
         }
@@ -447,7 +450,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void DrawSectionEnd()
         {
-            EditorGUI.indentLevel--;
         }
 
         /// <summary>

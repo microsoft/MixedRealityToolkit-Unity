@@ -142,7 +142,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (showStates)
             {
                 GUI.enabled = !isPlayMode;
-                EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+                }
                 GUI.enabled = true;
             }
 
@@ -444,43 +447,40 @@ namespace Microsoft.MixedReality.Toolkit.UI
                                 showSettings = true;
                             }
 
-                            using (new EditorGUI.IndentLevelScope())
+                            InspectorUIUtility.ListSettings settings = listSettings[i];
+                            bool show = InspectorUIUtility.DrawSectionStart(themeItem.objectReferenceValue.name + " (Click to edit)", showSettings, FontStyle.Normal);
+
+                            if (show != showSettings)
                             {
-                                InspectorUIUtility.ListSettings settings = listSettings[i];
-                                bool show = InspectorUIUtility.DrawSectionStart(themeItem.objectReferenceValue.name + " (Click to edit)", showSettings, FontStyle.Normal);
-
-                                if (show != showSettings)
-                                {
-                                    EditorPrefs.SetBool(prefKey, show);
-                                    settings.Show = show;
-                                }
-
-                                if (show)
-                                {
-                                    SerializedObject themeObj = new SerializedObject(themeItem.objectReferenceValue);
-                                    SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
-                                    themeObj.Update();
-
-                                    GUILayout.Space(5);
-
-                                    if (themeObjSettings.arraySize < 1)
-                                    {
-                                        AddThemeProperty(new int[] { i, t, 0 });
-                                    }
-
-                                    int[] location = new int[] { i, t, 0 };
-                                    State[] iStates = GetStates();
-
-                                    ThemeInspector.RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location, iStates, ThemePropertiesBoxMargin);
-                                    InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), location, AddThemeProperty);
-                                    ThemeInspector.RenderThemeStates(themeObjSettings, iStates, ThemePropertiesBoxMargin);
-
-                                    themeObj.ApplyModifiedProperties();
-                                }
-                                listSettings[i] = settings;
-
-                                InspectorUIUtility.DrawSectionEnd();
+                                EditorPrefs.SetBool(prefKey, show);
+                                settings.Show = show;
                             }
+
+                            if (show)
+                            {
+                                SerializedObject themeObj = new SerializedObject(themeItem.objectReferenceValue);
+                                SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
+                                themeObj.Update();
+
+                                GUILayout.Space(5);
+
+                                if (themeObjSettings.arraySize < 1)
+                                {
+                                    AddThemeProperty(new int[] { i, t, 0 });
+                                }
+
+                                int[] location = new int[] { i, t, 0 };
+                                State[] iStates = GetStates();
+
+                                ThemeInspector.RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location, iStates, ThemePropertiesBoxMargin);
+                                InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), location, AddThemeProperty);
+                                ThemeInspector.RenderThemeStates(themeObjSettings, iStates, ThemePropertiesBoxMargin);
+
+                                themeObj.ApplyModifiedProperties();
+                            }
+                            listSettings[i] = settings;
+
+                            InspectorUIUtility.DrawSectionEnd();
 
                             validProfileCnt++;
                         }
