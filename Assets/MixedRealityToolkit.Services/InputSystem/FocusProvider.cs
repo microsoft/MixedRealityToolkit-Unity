@@ -517,7 +517,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (!IsSetupValid) { return; }
 
             UpdatePointers();
-            UpdateGazeProvider();
+            if (gazeProviderPointingData?.Pointer != null)
+            {
+                UpdateGazeProvider();
+            }
             UpdateFocusedObjects();
 
             PrimaryPointer = primaryPointerSelector?.Update();
@@ -529,6 +532,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// For the sake of StabilizationPlaneModifier and potentially other 
         /// components that care where the user's looking, we need to do a gaze 
         /// raycast even if gaze isn't used for focus.
+        /// Assumes gaze provider is not null;
         /// </summary>
         private void UpdateGazeProvider()
         {
