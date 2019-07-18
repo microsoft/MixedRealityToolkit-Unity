@@ -92,6 +92,7 @@
 <ul>
 <li><a href="#event-system">Event System</a></li>
 <li><a href="#spatial-awareness">Spatial Awareness</a></li>
+<li><a href="#clipping-sphere">Clipping Sphere</a></li>
 </ul>
 <h3 id="event-system">Event System</h3>
 <p><strong>Changes</strong></p>
@@ -204,6 +205,10 @@ class SampleHandler2 : MonoBehaviour, IMixedRealitySpeechHandler
 <li>IMixedRealitySpatialAwarenessSystem.ClearObservations&lt;T&gt;(string name)</li>
 <li>IMixedRealitySpatialAwarenessObserver.ClearObservations()</li>
 </ul>
+<h3 id="clipping-sphere">Clipping Sphere</h3>
+<p>The ClippingSphere interface has changed to mirror the APIs found in the ClippingBox and ClippingPlane.</p>
+<h4 id="changes-1">Changes</h4>
+<p>The ClippingSphere's Radius property is now implicitly calculated based on the transform scale. Before developers would have to specify the radius of the ClippingSphere in the inspector. If you want to change the radius, just update the transform scale of the transform as you normally would.</p>
 <h3 id="nearinteractiontouchable-and-pokepointer">NearInteractionTouchable and PokePointer</h3>
 <ul>
 <li>NearInteractionTouchable does not handle Unity UI canvas touching any longer. The NearInteractionTouchableUnityUI class must be used for Unity UI touchables now.</li>
