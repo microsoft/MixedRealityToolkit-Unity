@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    Arguments = $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
+                    Arguments = $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
                     WorkingDirectory = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer"
                 });
 
@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             .ThenBy(p => p.ToLower().Contains("professional"))
                             .ThenBy(p => p.ToLower().Contains("community")).First();
 
-                        return $@"{bestPath}\MSBuild\15.0\Bin\MSBuild.exe";
+                        return bestPath;
                     }
                 }
             }
