@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // If states value is not provided, try to use Default states type
             if (states.objectReferenceValue == null)
             {
-                GetDefaultInteractableStates(states);
+                states.objectReferenceValue = ThemeInspector.GetDefaultInteractableStates();
             }
 
             GUI.enabled = !isPlayMode;
@@ -569,25 +569,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             #endregion
 
             serializedObject.ApplyModifiedProperties();
-        }
-
-        private static void GetDefaultInteractableStates(SerializedProperty states)
-        {
-            AssetDatabase.Refresh();
-            string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
-            if (stateLocations.Length > 0)
-            {
-                for (int i = 0; i < stateLocations.Length; i++)
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(stateLocations[i]);
-                    States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
-                    if (defaultStates != null)
-                    {
-                        states.objectReferenceValue = defaultStates;
-                        break;
-                    }
-                }
-            }
         }
 
         private static string BuildThemeTitle(SelectionModes selectionMode, int themeIndex)

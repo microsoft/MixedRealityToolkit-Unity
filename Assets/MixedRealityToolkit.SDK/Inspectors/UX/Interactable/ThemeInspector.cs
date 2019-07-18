@@ -104,57 +104,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected bool RenderStates()
         {
             // States
-            bool showStates = false;
-            bool drawerStarted = false;
             SerializedProperty states = serializedObject.FindProperty("States");
-            if (states.objectReferenceValue != null)
-            {
-                string statesPrefKey = target.name + "Settings_States";
-                bool prefsShowStates = EditorPrefs.GetBool(statesPrefKey);
 
-                showStates = InspectorUIUtility.DrawSectionFoldout(states.objectReferenceValue.name + " (Click to edit)", prefsShowStates, FontStyle.Normal);
-                drawerStarted = true;
-
-                if (showStates != prefsShowStates)
-                {
-                    EditorPrefs.SetBool(statesPrefKey, showStates);
-                }
-            }
-            else
+            // If states value is not provided, try to use Default states type
+            if (states.objectReferenceValue == null)
             {
-                string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
-                if (stateLocations.Length > 0)
-                {
-                    for (int k = 0; k < stateLocations.Length; k++)
-                    {
-                        string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
-                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
-                        if (defaultStates != null)
-                        {
-                            states.objectReferenceValue = defaultStates;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    showStates = true;
-                }
+                states.objectReferenceValue = GetDefaultInteractableStates();
             }
 
-            if (showStates)
-            {
-                EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"), true);
-            }
-
-            if (drawerStarted)
-            {
-                InspectorUIUtility.DrawSectionEnd();
-            }
+            GUI.enabled = !(EditorApplication.isPlaying || EditorApplication.isPaused);
+            EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+            GUI.enabled = true;
 
             if (states.objectReferenceValue == null)
             {
-                InspectorUIUtility.DrawError("Please assign a States object! Ex: DefaultInteractableStates");
+                InspectorUIUtility.DrawError("Please assign a States object!");
+                EditorGUILayout.EndVertical();
                 serializedObject.ApplyModifiedProperties();
                 return false;
             }
@@ -1358,6 +1323,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             info.ShaderOptions = properties.ToArray();
             return info;
+        }
+        public static States GetDefaultInteractableStates()
+        {
+            AssetDatabase.Refresh();
+            string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
+            if (stateLocations.Length > 0)
+            {
+                for (int i = 0; i < stateLocations.Length; i++)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(stateLocations[i]);
+                    States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
+                    if (defaultStates != null)
+                    {
+                        return defaultStates;
+                        //states.objectReferenceValue = defaultStates;
+                    }
+                }
+            }
+
+            return null;
         }
 
         public static ShaderPropertyType ShaderUtilConvert(ShaderUtil.ShaderPropertyType type)
