@@ -807,9 +807,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 pointerMediator.Value.UpdatePointers();
             }
 
-            foreach (var pointer in pointers)
+            foreach (var pointerData in pointers)
             {
-                UpdatePointer(pointer);
+                UpdatePointer(pointerData);
 
                 var pointerProfile = profile.PointerProfile;
 
@@ -827,7 +827,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         rayColor = Color.green;
                     }
 
-                    if (!pointer.Pointer.IsActive)
+                    if (!pointerData.Pointer.IsActive)
                     {
                         // Only draw pointers that are currently active, but make sure to 
                         // increment color even if pointer is disabled so that the color for e.g. the 
@@ -835,7 +835,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         continue;
                     }
 
-                    Debug.DrawRay(pointer.StartPoint, (pointer.Details.Point - pointer.StartPoint), rayColor);
+                    Debug.DrawRay(pointerData.StartPoint, (pointerData.Details.Point - pointerData.StartPoint), rayColor);
                 }
             }
         }
@@ -848,7 +848,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerData.Pointer.OnPreSceneQuery();
 
             // If pointer interaction isn't enabled, clear its result object and return
-            if (!pointerData.Pointer.IsInteractionEnabled)
+            if (pointerData.Pointer != gazeProviderPointingData.Pointer &&
+                !pointerData.Pointer.IsInteractionEnabled)
             {
                 // Don't clear the previous focused object since we still want to trigger FocusExit events
                 pointerData.ResetFocusedObjects(false);
