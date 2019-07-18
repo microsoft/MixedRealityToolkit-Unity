@@ -30,6 +30,7 @@ The surface magnetism scripts rely on a *LayerMask* for raycasting. As a recomme
 When *UpdateLinkedTransform* is true, the solver will calculate position & orientation, but will not apply it. This lets other components use the transform values.
 
 <img src="../Documentation/Images/Solver/MRTK_Solver_Orbital.png" width="450">
+
 *Example of using Orbital solver in the [Slate](README_Slate.md) prefab.*
 
 ## Expectations for extending or adding to the solver system ##
