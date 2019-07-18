@@ -173,7 +173,7 @@ Here are some suggested next steps:
 # Tools
 |  [![Optimize Window](/Images/MRTK_Icon_OptimizeWindow.png)](/Utilities/OptimizeWindow.md) [Optimize Window](/Utilities/OptimizeWindow.md) | [![Dependency Window](/Images/MRTK_Icon_DependencyWindow.png)](/Utilities/DependencyWindow.md) [Dependency Window](/Utilities/DependencyWindow.md) | [![Build Window](/Images/MRTK_Icon_BuildWindow.png)](/Utilities/BuildWindow.md) [Build Window](/Utilities/BuildWindow.md) | [![Input recording](/Images/MRTK_Icon_InputRecording.png)](/InputSimulation/InputAnimationRecording.md) [Input recording](/InputSimulation/InputAnimationRecording.md) |
 |:--- | :--- | :--- | :--- |
-| Automate configuration of Mixed Reality projects for performance optimizations | Analyze dependencies between assets and identify unused assets |  Configure and execute end-to-end build process for Mixed Reality applications | Record and playback head movement and hand tracking data ins editor |
+| Automate configuration of Mixed Reality projects for performance optimizations | Analyze dependencies between assets and identify unused assets |  Configure and execute end-to-end build process for Mixed Reality applications | Record and playback head movement and hand tracking data in-editor |
 
 # Upgrading from the HoloToolkit (HTK/MRTK v1)
 
