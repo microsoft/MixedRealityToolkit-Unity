@@ -31,11 +31,17 @@
     <Configuration>InEditor</Configuration>
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(UnityPlatform)' == ''">
+    <UnityPlatform>$(Platform)</UnityPlatform>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(UnityConfiguration)' == ''">
+    <UnityConfiguration>$(Configuration)</UnityConfiguration>
+  </PropertyGroup>
+  
   <PropertyGroup>
     <Configurations>InEditor;Player</Configurations>
     <Platforms><!--SUPPORTED_PLATFORMS_TOKEN--></Platforms>
-    <UnityPlatform>$(Platform)</UnityPlatform>
-    <UnityConfiguration>$(Configuration)</UnityConfiguration>
   </PropertyGroup>
 
   <!-- This is special cased here for WSA player only-->

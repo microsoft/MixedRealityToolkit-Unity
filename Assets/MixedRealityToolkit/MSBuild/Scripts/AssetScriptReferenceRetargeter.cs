@@ -32,12 +32,18 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
             public string Name { get; }
 
+            public string Guid { get; }
+
             public Dictionary<string, ClassInformation> CompiledClasses { get; }
 
-            public AssemblyInformation(string name)
+            public Dictionary<string, int> ExecutionOrderEntries { get; }
+
+            public AssemblyInformation(string name, string dllGuid)
             {
                 Name = name;
+                Guid = dllGuid;
                 CompiledClasses = new Dictionary<string, ClassInformation>();
+                ExecutionOrderEntries = new Dictionary<string, int>();
             }
         }
 
@@ -97,6 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     ClassInformation compiledClassInfo = compiledClass.Value;
                     if (scriptFilesReferences.TryGetValue(compiledClass.Key, out ClassInformation scriptClassInfo))
                     {
+                        if (scriptClassInfo.ExecutionOrder != 0)
+                        {
+                            pair.Value.ExecutionOrderEntries.Add($"{scriptClassInfo.Namespace}.{scriptClassInfo.Name}", scriptClassInfo.ExecutionOrder);
+                        }
+
                         remapDictionary.Add(scriptClassInfo.Guid, new Tuple<string, long>(compiledClassInfo.Guid, compiledClassInfo.FileId));
                         scriptFilesReferences.Remove(compiledClass.Key);
                     }
@@ -107,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 }
             }
 
-            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary, asmDefMappings);
+            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary, compiledClassReferences);
         }
 
         private static Dictionary<string, string> RetrieveAsmDefGuids(string[] allFiles)
@@ -132,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         /// <param name="remapDictionary">Script file guid references to final editor DLL guid and fileID.</param>
         /// <param name="dllGuids">DLL name to DLL file guid mapping.</param>
-        private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary, Dictionary<string, string> dllGuids)
+        private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary, Dictionary<string, AssemblyInformation> assemblyInformation)
         {
             if (Directory.Exists(outputDirectory))
             {
@@ -185,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             IEnumerable<Task> tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t.Item1, t.Item2, remapDictionary)));
             Task.WhenAll(tasks).Wait();
 
-            PostProcess(outputDirectory, dllGuids);
+            PostProcess(outputDirectory, assemblyInformation);
         }
 
         private static async Task ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary)
@@ -339,11 +350,12 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 {
                     if (dll.name.Contains("MixedReality"))
                     {
-                        AssemblyInformation assemblyInformation = new AssemblyInformation(dll.name);
                         if (!asmDefMappings.TryGetValue($"{dll.name}.dll", out string newDllGuid))
                         {
                             throw new InvalidOperationException($"No guid based on .asmdef was generated for DLL '{dll.name}'.");
                         }
+
+                        AssemblyInformation assemblyInformation = new AssemblyInformation(dll.name, newDllGuid);
 
                         File.Copy(Path.Combine(tmpDirPath, $"{dll.name}.dll"), Path.Combine(outputDirectory, $"{dll.name}.dll"));
                         File.Copy(Path.Combine(tmpDirPath, $"{dll.name}.dll.meta"), Path.Combine(outputDirectory, $"{dll.name}.dll.meta"));
@@ -385,12 +397,12 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
         }
 
-        private static void PostProcess(string outputPath, Dictionary<string, string> dllGuids)
+        private static void PostProcess(string outputPath, Dictionary<string, AssemblyInformation> assemblyInformation)
         {
             DirectoryInfo outputDirectory = new DirectoryInfo(outputPath);
             RecursiveFolderCleanup(outputDirectory);
             CopyIntermediaryAssemblies(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
-            UpdateMetaFiles(dllGuids);
+            UpdateMetaFiles(assemblyInformation);
         }
 
         private static void CopyIntermediaryAssemblies(string outputPath)
@@ -420,22 +432,22 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private static string ProcessMetaTemplate(string templateText, string guid, Dictionary<string, int> executionOrderEntries = null)
         {
-            if (!Utilities.TryGetTextTemplate(templateText, "PROJECT_GUID", out string projectGuidTemplate))
+            if (!Utilities.TryGetTextTemplate(templateText, "PROJECT_GUID", out string projectGuidTemplate, out string projectGuidTemplateBody))
             {
                 throw new FormatException("Incorrect format for the meta template, doesn't contain a place for project_guid.");
             }
 
             Dictionary<string, string> tokenReplacements = new Dictionary<string, string>()
             {
-                { projectGuidTemplate, projectGuidTemplate.Replace("<PROJECT_GUID_TOKEN>", guid) }
+                { projectGuidTemplate, projectGuidTemplateBody.Replace("<PROJECT_GUID_TOKEN>", guid) }
             };
 
-            if (Utilities.TryGetTextTemplate(templateText, "EXECUTION_ORDER", out string executionOrderTemplate)
-                && Utilities.TryGetTextTemplate(templateText, "EXECUTION_ORDER_ENTRY", out string executionOrderEntryTemplate))
+            if (Utilities.TryGetTextTemplate(templateText, "EXECUTION_ORDER", out string executionOrderTemplate, out string executionOrderTemplateBody)
+                && Utilities.TryGetTextTemplate(templateText, "EXECUTION_ORDER_ENTRY", out string executionOrderEntryTemplate, out string executionOrderEntryTemplateBody))
             {
                 if ((executionOrderEntries?.Count ?? 0) == 0)
                 {
-                    tokenReplacements.Add(executionOrderTemplate, executionOrderTemplate.Replace("<EMPTY_TOKEN>", "{}"));
+                    tokenReplacements.Add(executionOrderTemplate, executionOrderTemplateBody.Replace("<EMPTY_TOKEN>", "{}"));
                     tokenReplacements.Add(executionOrderEntryTemplate, string.Empty);
                 }
                 else
@@ -443,14 +455,14 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     List<string> entries = new List<string>();
                     foreach (KeyValuePair<string, int> pair in executionOrderEntries)
                     {
-                        entries.Add(Utilities.ReplaceTokens(executionOrderEntryTemplate, new Dictionary<string, string>()
+                        entries.Add(Utilities.ReplaceTokens(executionOrderEntryTemplateBody, new Dictionary<string, string>()
                         {
                             { "<SCRIPT_FULL_NAME_TOKEN>", pair.Key },
                             { "<SCRIPT_EXECUTION_VALUE_TOKEN>", pair.Value.ToString() }
                         }));
                     }
 
-                    tokenReplacements.Add(executionOrderTemplate, executionOrderTemplate.Replace("<EMPTY_TOKEN>", string.Empty));
+                    tokenReplacements.Add(executionOrderTemplate, executionOrderTemplateBody.Replace("<EMPTY_TOKEN>", string.Empty));
                     tokenReplacements.Add(executionOrderEntryTemplate, string.Join("\r\n", entries));
                 }
             }
@@ -458,7 +470,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             return Utilities.ReplaceTokens(templateText, tokenReplacements);
         }
 
-        private static void UpdateMetaFiles(Dictionary<string, string> dllGuids)
+        private static void UpdateMetaFiles(Dictionary<string, AssemblyInformation> assemblyInformation)
         {
             if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.Unknown, out FileInfo editorMetaFile))
             {
@@ -482,10 +494,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 if (dllFile.Extension.Equals(".meta"))
                 {
                     string dllFileName = dllFile.Name.Remove(dllFile.Name.Length - 5);
-                    if (dllGuids.TryGetValue(dllFileName, out string guid))
-                    {
-                        File.WriteAllText(dllFile.FullName, ProcessMetaTemplate(metaFileTemplate, guid, null));
-                    }
+                    AssemblyInformation asmInfo = assemblyInformation[Path.GetFileNameWithoutExtension(dllFileName)];
+                    File.WriteAllText(dllFile.FullName, ProcessMetaTemplate(metaFileTemplate, asmInfo.Guid, asmInfo.ExecutionOrderEntries));
                 }
             }
 
@@ -514,18 +524,15 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         //Editor is guid + 1; which has done when we processed Editor DLLs
                         //Standalone is guid + 2
                         //UAP is guid + 3
-                        dllGuid = dllGuids[file.Name];
-                        dllGuid = CycleGuidForward(dllGuid);
+                        AssemblyInformation asmInfo = assemblyInformation[Path.GetFileNameWithoutExtension(file.Name)];
+                        dllGuid = CycleGuidForward(asmInfo.Guid);
                         if (isUAP)
                         {
                             dllGuid = CycleGuidForward(dllGuid);
                         }
 
-                        if (dllGuids.ContainsKey(file.Name))
-                        {
-                            metaFilePath = $"{file.FullName}.meta";
-                            File.WriteAllText(metaFilePath, ProcessMetaTemplate(metaFileTemplate, dllGuid, null));
-                        }
+                        metaFilePath = $"{file.FullName}.meta";
+                        File.WriteAllText(metaFilePath, ProcessMetaTemplate(metaFileTemplate, dllGuid, asmInfo.ExecutionOrderEntries));
                     }
                 }
             }

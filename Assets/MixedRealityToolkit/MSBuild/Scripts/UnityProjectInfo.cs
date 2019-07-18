@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEditorInternal;
@@ -120,6 +121,31 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 .ToDictionary(t => t.AssetsRelativePath);
         }
 
+        private string GetProjectEntry(CSProjectInfo projectInfo, string projectEntryTemplateBody)
+        {
+            StringBuilder toReturn = new StringBuilder(Utilities.ReplaceTokens(projectEntryTemplateBody, new Dictionary<string, string>() {
+                        { "<PROJECT_NAME>", projectInfo.Name },
+                        { "<PROJECT_RELATIVE_PATH>", Path.GetFileName(projectInfo.ReferencePath.AbsolutePath) },
+                        { "<PROJECT_GUID>", projectInfo.Guid.ToString().ToUpper() } }));
+
+            if (projectInfo.ProjectDependencies.Count > 0)
+            {
+                string projectDependencyStartSection = "    ProjectSection(ProjectDependencies) = postProject";
+                string projectDependencyGuid = "        {<DependencyGuid>} = {<DependencyGuid>}";
+                string projectDependencyStopSection = "    EndProjectSection";
+                toReturn.AppendLine(projectDependencyStartSection);
+
+                foreach (CSProjectDependency<CSProjectInfo> project in projectInfo.ProjectDependencies)
+                {
+                    toReturn.AppendLine(projectDependencyGuid.Replace("<DependencyGuid>", project.Dependency.Guid.ToString().ToUpper()));
+                }
+
+                toReturn.AppendLine(projectDependencyStopSection);
+            }
+            toReturn.AppendLine("EndProject");
+            return toReturn.ToString();
+        }
+
         /// <summary>
         /// Exports the projec tinfo into a solution file, and the CSProject files.
         /// </summary>
@@ -135,30 +161,56 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 File.Delete(solutionFilePath);
             }
 
-            if (Utilities.TryGetTextTemplate(solutionTemplateText, "PROJECT", out string projectEntryTemplate)
-                && Utilities.TryGetTextTemplate(solutionTemplateText, "CONFIGURATION_PLATFORM", out string configurationPlatformEntry)
-                && Utilities.TryGetTextTemplate(solutionTemplateText, "CONFIGURATION_PLATFORM_MAPPING", out string configurationPlatformMappingTemplate)
-                && Utilities.TryGetTextTemplate(solutionTemplateText, "CONFIGURATION_PLATFORM_ENABLED", out string configurationPlatformEnabledTemplate))
+            if (Utilities.TryGetTextTemplate(solutionTemplateText, "PROJECT", out string projectEntryTemplate, out string projectEntryTemplateBody)
+                && Utilities.TryGetTextTemplate(solutionTemplateText, "CONFIGURATION_PLATFORM", out string configurationPlatformEntry, out string configurationPlatformEntryBody)
+                && Utilities.TryGetTextTemplate(solutionTemplateText, "CONFIGURATION_PLATFORM_MAPPING", out string configurationPlatformMappingTemplate, out string configurationPlatformMappingTemplateBody)
+                && Utilities.TryGetTextTemplate(solutionTemplateText, "CONFIGURATION_PLATFORM_ENABLED", out string configurationPlatformEnabledTemplate, out string configurationPlatformEnabledTemplateBody))
             {
-                IEnumerable<string> projectEntries = CSProjects.Select(t =>
-                    Utilities.ReplaceTokens(projectEntryTemplate, new Dictionary<string, string>() {
-                        {"#PROJECT_TEMPLATE ", string.Empty },
-                        { "<PROJECT_NAME>", t.Value.Name },
-                        { "<PROJECT_RELATIVE_PATH>", Path.GetFileName(t.Value.ReferencePath.AbsolutePath) },
-                        { "<PROJECT_GUID>", t.Value.Guid.ToString() } }));
+                CSProjectInfo[] unorderedProjects = CSProjects.Select(t => t.Value).ToArray();
+                List<CSProjectInfo> orderedProjects = new List<CSProjectInfo>();
+
+                while (orderedProjects.Count < unorderedProjects.Length)
+                {
+                    bool oneRemoved = false;
+                    for (int i = 0; i < unorderedProjects.Length; i++)
+                    {
+                        if (unorderedProjects[i] == null)
+                        {
+                            continue;
+                        }
+
+                        if (unorderedProjects[i].ProjectDependencies.Count == 0 || unorderedProjects[i].ProjectDependencies.All(t => orderedProjects.Contains(t.Dependency)))
+                        {
+                            orderedProjects.Add(unorderedProjects[i]);
+
+                            unorderedProjects[i] = null;
+                            oneRemoved = true;
+                        }
+                    }
+
+                    if (!oneRemoved)
+                    {
+                        Debug.LogError($"Possible circular dependency.");
+                        break;
+                    }
+                }
+
+                File.WriteAllLines(Path.Combine(generatedProjectPath, "buildall.bat"), orderedProjects.Select(t => $"dotnet build {t.ReferencePath.AbsolutePath} -p:\"UnityConfiguration=%1;UnityPlatform=%2;MSBuildExtensionsPath=%~3\" --no-dependencies"));
+
+                IEnumerable<string> projectEntries = orderedProjects.Select(t => GetProjectEntry(t, projectEntryTemplateBody));
 
                 string[] twoConfigs = new string[] {
-                    configurationPlatformEntry.Replace("#CONFIGURATION_PLATFORM_TEMPLATE ", string.Empty).Replace("<Configuration>", "InEditor"),
-                    configurationPlatformEntry.Replace("#CONFIGURATION_PLATFORM_TEMPLATE ", string.Empty).Replace("<Configuration>", "Player")
+                    configurationPlatformEntryBody.Replace("<Configuration>", "InEditor"),
+                    configurationPlatformEntryBody.Replace("<Configuration>", "Player")
                 };
 
-                IEnumerable<string> configPlatforms = availablePlatforms
-                    .SelectMany(p => twoConfigs.Select(t => t.Replace("<Platform>", p.Name.ToString())));
+                IEnumerable<string> configPlatforms = twoConfigs
+                    .SelectMany(t => availablePlatforms.Select(p => t.Replace("<Platform>", p.Name.ToString())));
 
                 List<string> configurationMappings = new List<string>();
                 List<string> enabledConfigurations = new List<string>();
 
-                foreach (CSProjectInfo project in CSProjects.Values)
+                foreach (CSProjectInfo project in orderedProjects.Select(t => t))
                 {
                     string ConfigurationTemplateReplace(string template, string guid, string configuration, string platform)
                     {
@@ -176,11 +228,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     {
                         foreach (CompilationPlatformInfo platform in availablePlatforms)
                         {
-                            configurationMappings.Add(ConfigurationTemplateReplace(configurationPlatformMappingTemplate, guid.ToString(), configuration, platform.Name));
+                            configurationMappings.Add(ConfigurationTemplateReplace(configurationPlatformMappingTemplateBody, guid.ToString(), configuration, platform.Name));
 
-                            if (!platforms.ContainsKey(platform.BuildTarget))
+                            if (platforms.ContainsKey(platform.BuildTarget))
                             {
-                                enabledConfigurations.Add(ConfigurationTemplateReplace(configurationPlatformEnabledTemplate, guid.ToString(), configuration, platform.Name));
+                                enabledConfigurations.Add(ConfigurationTemplateReplace(configurationPlatformEnabledTemplateBody, guid.ToString(), configuration, platform.Name));
                             }
                         }
                     }

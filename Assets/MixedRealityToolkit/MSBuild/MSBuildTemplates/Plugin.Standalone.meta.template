@@ -4,8 +4,8 @@ PluginImporter:
   externalObjects: {}
   serializedVersion: 2
   iconMap: {}
-#EXECUTION_ORDER_TEMPLATE  executionOrder: <EMPTY_TOKEN>
-#EXECUTION_ORDER_ENTRY_TEMPLATE    <SCRIPT_FULL_NAME_TOKEN>: <SCRIPT_EXECUTION_VALUE_TOKEN>
+#EXECUTION_ORDER_TEMPLATE   executionOrder: <EMPTY_TOKEN>
+#EXECUTION_ORDER_ENTRY_TEMPLATE     <SCRIPT_FULL_NAME_TOKEN>: <SCRIPT_EXECUTION_VALUE_TOKEN>
   defineConstraints: []
   isPreloaded: 0
   isOverridable: 0

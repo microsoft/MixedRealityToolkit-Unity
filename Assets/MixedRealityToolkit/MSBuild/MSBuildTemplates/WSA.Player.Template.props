@@ -22,6 +22,9 @@
     <Reference Include="WinRTLegacy">
       <HintPath>$(UnityEditorInstallFolder)Data\PlaybackEngines\MetroSupport\Managed\UAP\WinRTLegacy.dll</HintPath>
     </Reference>
+    <Reference Include="Windows">
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\UnionMetadata\$(TargetPlatformVersion)\windows.winmd</HintPath>
+    </Reference>
 
     <!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
     <Reference Include="##REFERENCE_TOKEN##">

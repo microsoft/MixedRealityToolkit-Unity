@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         };
 
         public const string CSharpVersion = "7.3";
-        public const string DefaultMinUWPSDK = "10.0.14393.0";
+        public readonly static Version DefaultMinUWPSDK = new Version("10.0.14393.0");
 
         private static readonly string uwpMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
         private static readonly string uwpTargetPlatformVersion = EditorUserBuildSettings.wsaUWPSDK;
@@ -145,9 +146,9 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 }
 
                 string minUWPPlatform = uwpMinPlatformVersion;
-                if (string.IsNullOrWhiteSpace(minUWPPlatform))
+                if (string.IsNullOrWhiteSpace(minUWPPlatform) || new Version(minUWPPlatform) < DefaultMinUWPSDK)
                 {
-                    minUWPPlatform = DefaultMinUWPSDK;
+                    minUWPPlatform = DefaultMinUWPSDK.ToString();
                 }
 
                 Dictionary<string, string> platformTokens = new Dictionary<string, string>()

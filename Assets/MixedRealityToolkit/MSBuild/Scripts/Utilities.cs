@@ -262,18 +262,28 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Helper to fetch a normal text file based template ('prefixed with #')
         /// </summary>
-        public static bool TryGetTextTemplate(string text, string templateName, out string template)
+        public static bool TryGetTextTemplate(string text, string templateName, out string fullTemplate)
         {
-            string regex = $"^(\\s*#{templateName}_TEMPLATE .*)$";
+            return TryGetTextTemplate(text, templateName, out fullTemplate, out string _);
+        }
+
+        /// <summary>
+        /// Helper to fetch a normal text file based template ('prefixed with #')
+        /// </summary>
+        public static bool TryGetTextTemplate(string text, string templateName, out string fullTemplate, out string templateBody)
+        {
+            string regex = $"^\\s*#{templateName}_TEMPLATE (.*)$";
             Match result = Regex.Match(text, regex, RegexOptions.Multiline);
 
-            if (result.Success && result.Groups[1].Success && result.Groups[1].Captures.Count > 0)
+            if (result.Success)
             {
-                template = result.Groups[1].Captures[0].Value;
+                fullTemplate = result.Groups[0].Captures[0].Value;
+                templateBody = result.Groups[1].Captures[0].Value;
                 return true;
             }
 
-            template = null;
+            fullTemplate = null;
+            templateBody = null;
             return false;
         }
 

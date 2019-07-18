@@ -63,6 +63,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         public ProjectType ProjectType { get; }
 
         /// <summary>
+        /// Gets a list of project dependencies.
+        /// </summary>
+        public IReadOnlyCollection<CSProjectDependency<CSProjectInfo>> ProjectDependencies { get; }
+
+        /// <summary>
         /// Creates a new instance of the CSProject info.
         /// </summary>
         /// <param name="availablePlatforms">A list of platforms available to MSBuild.</param>
@@ -85,6 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             {
                 Debug.LogError($"The assembly project '{Name}' doesn't contain any supported in-editor or player platform targets.");
             }
+
+            ProjectDependencies = new ReadOnlyCollection<CSProjectDependency<CSProjectInfo>>(csProjectDependencies);
         }
 
         private ProjectType GetProjectType(AssemblyDefinitionInfo assemblyDefinitionInfo, Assembly assembly)
@@ -248,14 +255,16 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             {
                 normalized = "PackagesCopy" + normalized.Substring("Packages".Length);
             }
-            else if (normalized.StartsWith("Assets"))
+
+            string sourcePath = normalized;
+            if (sourcePath.StartsWith("Assets"))
             {
-                normalized = "..\\" + normalized;
+                sourcePath = "..\\" + sourcePath;
             }
 
             sourceIncludes.Add(Utilities.ReplaceTokens(sourceIncludeTemplate, new Dictionary<string, string>()
             {
-                {"##RELATIVE_SOURCE_PATH##", $"..\\{normalized}" },
+                {"##RELATIVE_SOURCE_PATH##", $"..\\{sourcePath}" },
                 {"##PROJECT_LINK_PATH##", normalized.Replace("Assets\\", string.Empty) }
             }));
         }
