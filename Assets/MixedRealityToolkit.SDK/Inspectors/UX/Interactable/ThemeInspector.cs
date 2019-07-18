@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 string statesPrefKey = target.name + "Settings_States";
                 bool prefsShowStates = EditorPrefs.GetBool(statesPrefKey);
 
-                showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", prefsShowStates, FontStyle.Normal);
+                showStates = InspectorUIUtility.DrawSectionFoldout(states.objectReferenceValue.name + " (Click to edit)", prefsShowStates, FontStyle.Normal);
                 drawerStarted = true;
 
                 if (showStates != prefsShowStates)

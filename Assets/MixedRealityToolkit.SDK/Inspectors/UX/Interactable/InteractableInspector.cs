@@ -98,61 +98,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
             // States
-            bool showStates = false;
             SerializedProperty states = serializedObject.FindProperty("States");
-            bool drawerStarted = false;
-            string statesPrefKey = "Settings_States";
-            bool prefsShowStates = EditorPrefs.GetBool(statesPrefKey);
 
-            if (states.objectReferenceValue != null)
+            // If states value is not provided, try to use Default states type
+            if (states.objectReferenceValue == null)
             {
-                showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", prefsShowStates, FontStyle.Normal);
-                drawerStarted = true;
-                if (showStates != prefsShowStates)
-                {
-                    EditorPrefs.SetBool(statesPrefKey, showStates);
-                }
-            }
-            else
-            {
-                AssetDatabase.Refresh();
-                string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
-                if (stateLocations.Length > 0)
-                {
-                    for (int i = 0; i < stateLocations.Length; i++)
-                    {
-                        string path = AssetDatabase.GUIDToAssetPath(stateLocations[i]);
-                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
-                        if (defaultStates != null)
-                        {
-                            states.objectReferenceValue = defaultStates;
-                            break;
-                        }
-                    }
-
-                    showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", prefsShowStates, FontStyle.Normal);
-                    drawerStarted = true;
-                }
-                else
-                {
-                    showStates = true;
-                }
+                GetDefaultInteractableStates(states);
             }
 
-            if (showStates)
-            {
-                GUI.enabled = !isPlayMode;
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
-                }
-                GUI.enabled = true;
-            }
-
-            if (drawerStarted)
-            {
-                InspectorUIUtility.DrawSectionEnd();
-            }
+            GUI.enabled = !isPlayMode;
+                EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+            GUI.enabled = true;
 
             if (states.objectReferenceValue == null)
             {
@@ -331,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             #region Profiles
 
-            bool isProfilesOpen = InspectorUIUtility.DrawSectionStart("Profiles", showProfiles, FontStyle.Bold, InspectorUIUtility.TitleFontSize);
+            bool isProfilesOpen = InspectorUIUtility.DrawSectionFoldout("Profiles", showProfiles, FontStyle.Bold, InspectorUIUtility.TitleFontSize);
 
             if (showProfiles != isProfilesOpen)
             {
@@ -448,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
 
                             InspectorUIUtility.ListSettings settings = listSettings[i];
-                            bool show = InspectorUIUtility.DrawSectionStart(themeItem.objectReferenceValue.name + " (Click to edit)", showSettings, FontStyle.Normal);
+                            bool show = InspectorUIUtility.DrawSectionFoldout(themeItem.objectReferenceValue.name + " (Click to edit)", showSettings, FontStyle.Normal);
 
                             if (show != showSettings)
                             {
@@ -479,8 +435,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                                 themeObj.ApplyModifiedProperties();
                             }
                             listSettings[i] = settings;
-
-                            InspectorUIUtility.DrawSectionEnd();
 
                             validProfileCnt++;
                         }
@@ -575,15 +529,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
            
             ProfilesSetup = validProfileCnt == profileList.arraySize + themeCnt;
 
-            InspectorUIUtility.DrawSectionEnd();
-
             #endregion
 
             EditorGUILayout.Space();
 
             #region Events settings
 
-            bool isEventsOpen = InspectorUIUtility.DrawSectionStart("Events", showEvents, FontStyle.Bold, InspectorUIUtility.TitleFontSize);
+            bool isEventsOpen = InspectorUIUtility.DrawSectionFoldout("Events", showEvents, FontStyle.Bold, InspectorUIUtility.TitleFontSize);
             if (showEvents != isEventsOpen)
             {
                 showEvents = isEventsOpen;
@@ -614,10 +566,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            InspectorUIUtility.DrawSectionEnd();
             #endregion
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private static void GetDefaultInteractableStates(SerializedProperty states)
+        {
+            AssetDatabase.Refresh();
+            string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
+            if (stateLocations.Length > 0)
+            {
+                for (int i = 0; i < stateLocations.Length; i++)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(stateLocations[i]);
+                    States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
+                    if (defaultStates != null)
+                    {
+                        states.objectReferenceValue = defaultStates;
+                        break;
+                    }
+                }
+            }
         }
 
         private static string BuildThemeTitle(SelectionModes selectionMode, int themeIndex)

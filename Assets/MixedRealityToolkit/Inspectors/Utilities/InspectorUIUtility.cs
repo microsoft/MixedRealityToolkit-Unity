@@ -424,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="open"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static bool DrawSectionStart(string headerName, bool open = true, FontStyle style = FontStyle.Bold, int size = 0)
+        public static bool DrawSectionFoldout(string headerName, bool open = true, FontStyle style = FontStyle.Bold, int size = 0)
         {
             GUIStyle sectionStyle = new GUIStyle(EditorStyles.foldout);
             sectionStyle.fontStyle = style;
@@ -443,13 +443,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return drawSection;
-        }
-
-        /// <summary>
-        /// Draws section end (initiated by next Header attribute)
-        /// </summary>
-        public static void DrawSectionEnd()
-        {
         }
 
         /// <summary>
