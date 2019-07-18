@@ -774,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "VAHe7BUX3KbB54K3PBLyHw=="
+          "hash": "gApMi5zTIcenApdpR4zRUA=="
         }
       },
       "is_incremental": false,
@@ -3027,10 +3027,32 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_BuildWindow.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_BuildWindow.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRTK_Icon_ControllerVisualization.png",
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/MRTK_Icon_ControllerVisualization.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_DependencyWindow.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_DependencyWindow.png"
         }
       },
       "is_incremental": false,
@@ -3115,10 +3137,32 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_InputRecording.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_InputRecording.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRTK_Icon_InputSystem.png",
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/MRTK_Icon_InputSystem.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_OptimizeWindow.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_OptimizeWindow.png"
         }
       },
       "is_incremental": false,
@@ -5218,7 +5262,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "cRBVCfCHc+FEIxXnyv2umw=="
+          "hash": "JyHdcZsFwOlkaY+WyMxzKQ=="
         }
       },
       "is_incremental": false,
@@ -5230,7 +5274,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "VTWGOiDtPHKKTh7QZhnW3Q=="
+          "hash": "UIpIU9t/b8pkSXeEQ21n4A=="
         }
       },
       "is_incremental": false,
