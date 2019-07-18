@@ -170,6 +170,10 @@ Here are some suggested next steps:
 |  [![Eye Tracking: Target Selection](Images/EyeTracking/mrtk_et_targetselect.png)](EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](Images/EyeTracking/mrtk_et_navigation.png)](EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](Images/EyeTracking/mrtk_et_heatmaps.png)](EyeTracking/EyeTracking_Visualization.md) [Eye Tracking: Heat Map](EyeTracking/EyeTracking_Visualization.md) |
 | Combine eyes, voice and hand input to quickly and effortlessly select holograms across your scene | Learn how to auto scroll text or fluently zoom into focused content based on what you are looking at| Examples for logging, loading and visualizing what users have been looking at in your app |
 
+# Tools
+|  [![Optimize Window](Images/MRTK_Icon_OptimizeWindow.png)](Utilities/OptimizeWindow.md) [Optimize Window](Utilities/OptimizeWindow.md) | [![Dependency Window](Images/MRTK_Icon_DependencyWindow.png)](Utilities/DependencyWindow.md) [Dependency Window](Utilities/DependencyWindow.md) | [![Build Window](Images/MRTK_Icon_BuildWindow.png)](Utilities/BuildWindow.md) [Build Window](Utilities/BuildWindow.md) | [![Input recording](Images/MRTK_Icon_InputRecording.png)](InputSimulation/InputAnimationRecording.md) [Input recording](InputSimulation/InputAnimationRecording.md) |
+|:--- | :--- | :--- | :--- |
+| Automate configuration of Mixed Reality projects for performance optimizations | Analyze dependencies between assets and identify unused assets |  Configure and execute end-to-end build process for Mixed Reality applications | Record and playback head movement and hand tracking data in-editor |
 
 # Upgrading from the HoloToolkit (HTK/MRTK v1)
 
