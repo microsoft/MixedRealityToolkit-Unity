@@ -9513,7 +9513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html",
-          "hash": "yx7t7rsUPj+NlP7dFYVTaQ=="
+          "hash": "nagJNne49zUKx6llzJBlBQ=="
         }
       },
       "is_incremental": false,
@@ -9525,7 +9525,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html",
-          "hash": "yCDLhFNOLjapcoB54pQ5vw=="
+          "hash": "5lct7J1tHseXEDj+M29aGQ=="
         }
       },
       "is_incremental": false,
