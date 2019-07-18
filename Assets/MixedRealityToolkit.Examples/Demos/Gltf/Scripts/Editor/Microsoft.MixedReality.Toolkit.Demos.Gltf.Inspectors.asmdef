@@ -1,0 +1,16 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Demos.Gltf.Inspectors",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Demos.Gltf"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

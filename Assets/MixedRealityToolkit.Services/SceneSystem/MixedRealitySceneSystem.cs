@@ -130,26 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public string SourceName { get; } = "Mixed Reality Scene System";
 
-        /// <summary>
-        /// Returns the manager scene found in profile.
-        /// </summary>
-        public SceneInfo ManagerScene => profile.ManagerScene;
-
-        /// <summary>
-        /// Returns all lighting scenes found in profile.
-        /// </summary>
-        public SceneInfo[] LightingScenes => contentTracker.SortedLightingScenes;
-
-        /// <summary>
-        /// Returns all content scenes found in profile.
-        /// </summary>
-        public SceneInfo[] ContentScenes => contentTracker.SortedContentScenes;
-
-        /// <summary>
-        /// Returns all content tags found in profile scenes.
-        /// </summary>
-        public IEnumerable<string> ContentTags => profile.ContentTags;
-
         #endregion
 
         #region Service Methods
@@ -316,8 +296,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <inheritdoc />
         public async void SetLightingScene(string newLightingSceneName, LightingSceneTransitionType transitionType = LightingSceneTransitionType.None, float transitionDuration = 1f)
         {
-            Debug.Log("Set lighting scene: " + newLightingSceneName);
-
             if (ActiveLightingScene == newLightingSceneName)
             {   // Nothing to do here
                 return;
@@ -356,7 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             List<string> lightingSceneNames = new List<string>();
             // Create a list of lighting scenes to unload
-            foreach (SceneInfo lso in LightingScenes)
+            foreach (SceneInfo lso in profile.LightingScenes)
             {
                 if (lso.Name != newLightingSceneName)
                 {
@@ -808,7 +786,8 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public Scene GetScene(string sceneName)
         {
             Scene scene = default(Scene);
-            RuntimeSceneUtils.FindScene(sceneName, out scene, out int sceneIndex);
+            int sceneIndex;
+            RuntimeSceneUtils.FindScene(sceneName, out scene, out sceneIndex);
             return scene;
         }
 

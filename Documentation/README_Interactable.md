@@ -169,6 +169,13 @@ There are currently 17 states total that you can used to drive themes, though so
 
 States have corresponding properties and Methods in the Interactable, like SetFocus(bool focus) or HasFocus.
 
+## Interactable goals and architecture ##
+
+<img src="../Documentation/Images/Interactable/Interactable_overview.png" width="750">
+
+
+<img src="../Documentation/Images/Interactable/Interactable_details.png" width="1450">
+
 
 ## Extending themes ##
 Extend `InteractableThemeBase` to create a new theme that will show up in the theme property drop-down list. Themes can be created to control anything based on state changes. We could have a custom component on a GameObject that is driven by a custom theme with the values for each state being set in the inspector.
