@@ -218,6 +218,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         InputSystem.RaisePointerClicked(this, selectAction, 0, Controller.ControllerHandedness);
                         InputSystem.RaisePointerUp(this, selectAction, Controller.ControllerHandedness);
+
+                        // For GGV, the gaze pointer does not set this value itself. 
+                        // See comment in OnInputDown for more details.
+                        gazeProvider.GazePointer.IsFocusLocked = false;
                     }
                 }
             }
@@ -240,6 +244,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             c.SourceDownIds.Add(eventData.SourceId);
                         }
                         InputSystem.RaisePointerDown(this, selectAction, Controller.ControllerHandedness);
+
+                        // For GGV, the gaze pointer does not set this value itself as it does not receive input 
+                        // events from the hands. Because this value is important for certain gaze behaviour, 
+                        // such as positioning the gaze cursor, it is necessary to set it here.
+                        gazeProvider.GazePointer.IsFocusLocked = (gazeProvider.GazePointer.Result?.Details.Object != null);
                     }
                 }
             }
@@ -345,6 +354,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     // Raise OnInputUp if pointer is lost while select is pressed
                     InputSystem.RaisePointerUp(this, selectAction, lastControllerHandedness);
+
+                    // For GGV, the gaze pointer does not set this value itself. 
+                    // See comment in OnInputDown for more details.
+                    gazeProvider.GazePointer.IsFocusLocked = false;
                 }
                 
                 // Destroy the pointer since nobody else is destroying us
