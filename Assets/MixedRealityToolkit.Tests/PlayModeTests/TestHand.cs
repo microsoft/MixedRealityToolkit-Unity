@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         private Handedness handedness;
         private Vector3 position;
+        private Quaternion rotation = Quaternion.identity;
         private ArticulatedHandPose.GestureId gestureId = ArticulatedHandPose.GestureId.Open;
         private InputSimulationService simulationService;
 
@@ -61,6 +62,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator Move(Vector3 delta, int numSteps = 30)
         {
             yield return MoveTo(position + delta, numSteps);
+        }
+
+        public IEnumerator SetRotation(Quaternion newRotation, int numSteps = 30)
+        {
+            Quaternion oldRotation = rotation;
+            rotation = newRotation;
+            yield return PlayModeTestUtilities.SetHandRotation(oldRotation, newRotation, position, gestureId, handedness, numSteps, simulationService);
         }
 
         public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId)
