@@ -56,6 +56,11 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 |  [![Eye Tracking: Target Selection](Documentation/Images/EyeTracking/mrtk_et_targetselect.png)](Documentation/EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](Documentation/EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](Documentation/Images/EyeTracking/mrtk_et_navigation.png)](Documentation/EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](Documentation/EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)](Documentation/EyeTracking/EyeTracking_Visualization.md) [Eye Tracking: Heat Map](Documentation/EyeTracking/EyeTracking_Visualization.md) |
 | Combine eyes, voice and hand input to quickly and effortlessly select holograms across your scene | Learn how to auto scroll text or fluently zoom into focused content based on what you are looking at| Examples for logging, loading and visualizing what users have been looking at in your app |
 
+# Tools
+|  [![Optimize Window](Documentation/Images/MRTK_Icon_OptimizeWindow.png)](Documentation/Utilities/OptimizeWindow.md) [Optimize Window](Documentation/Utilities/OptimizeWindow.md) | [![Dependency Window](Documentation/Images/MRTK_Icon_DependencyWindow.png)](Documentation/Utilities/DependencyWindow.md) [Dependency Window](Documentation/Utilities/DependencyWindow.md) | [![Build Window](Documentation/Images/MRTK_Icon_BuildWindow.png)](Documentation/Utilities/BuildWindow.md) [Build Window](Documentation/Utilities/BuildWindow.md) | [![Input recording](Documentation/Images/MRTK_Icon_InputRecording.png)](Documentation/InputSimulation/InputAnimationRecording.md) [Input recording](Documentation/InputSimulation/InputAnimationRecording.md) |
+|:--- | :--- | :--- | :--- |
+| Automate configuration of Mixed Reality projects for performance optimizations | Analyze dependencies between assets and identify unused assets |  Configure and execute end-to-end build process for Mixed Reality applications | Record and playback head movement and hand tracking data ins editor |
+
 # Example Scenes
 Explore MRTK's various types of interactions and UI controls in [this example scene](Documentation/README_HandInteractionExamples.md).
 

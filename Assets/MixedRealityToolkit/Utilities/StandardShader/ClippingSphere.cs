@@ -12,14 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [ExecuteInEditMode]
     public class ClippingSphere : ClippingPrimitive
     {
-        [Tooltip("The radius of the clipping sphere.")]
-        [SerializeField]
-        protected float radius = 0.5f;
-
         /// <summary>
-        /// The radius of the clipping sphere.
+        /// The radius of the clipping sphere, which is determined by the largest axis of the transform's scale.
         /// </summary>
-        public float Radius => radius;
+        public float Radius
+        {
+            get
+            {
+                Vector3 lossyScale = transform.lossyScale * 0.5f;
+                return Mathf.Max(Mathf.Max(lossyScale.x, lossyScale.y), lossyScale.z);
+            }
+        }
 
         private int clipSphereID;
 
@@ -37,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (enabled)
             {
-                Gizmos.DrawWireSphere(transform.position, radius);
+                Gizmos.DrawWireSphere(transform.position, Radius);
             }
         }
 
@@ -51,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected override void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock)
         {
             Vector3 position = transform.position;
-            Vector4 sphere = new Vector4(position.x, position.y, position.z, radius);
+            Vector4 sphere = new Vector4(position.x, position.y, position.z, Radius);
             materialPropertyBlock.SetVector(clipSphereID, sphere);
         }
     }
