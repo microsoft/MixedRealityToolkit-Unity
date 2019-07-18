@@ -6,18 +6,19 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    [System.Obsolete("This component is no longer supported", true)]
     public class RotateWithPan : MonoBehaviour, IMixedRealityHandPanHandler
     {
         private Renderer rd;
 
+        private void Awake()
+        {
+            Debug.LogError(this.GetType().Name + " is deprecated");
+        }
+
         private void Start()
         {
             rd = GetComponent<Renderer>();
-        }
-
-        // Update is called once per frame
-        private void Update()
-        {
         }
 
         public void OnPanEnded(HandPanEventData eventData)

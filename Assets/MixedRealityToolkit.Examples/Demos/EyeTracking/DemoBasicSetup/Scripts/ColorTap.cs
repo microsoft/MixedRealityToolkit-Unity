@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
+    [System.Obsolete("This component is no longer supported", true)]
     public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
     {
         [SerializeField]
@@ -24,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void Awake()
         {
+            Debug.LogError(this.GetType().Name + " is deprecated");
             material = GetComponent<Renderer>().material;
         }
 
