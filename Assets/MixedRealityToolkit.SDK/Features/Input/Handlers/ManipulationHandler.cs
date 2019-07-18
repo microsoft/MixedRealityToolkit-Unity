@@ -238,6 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Dictionary<uint, PointerData> pointerIdToPointerMap = new Dictionary<uint, PointerData>();
         private Quaternion objectToHandRotation;
         private Vector3 objectToHandTranslation;
+        private Vector3 hostLocalGrabPoint;
         private bool isNearManipulation;
         // This can probably be consolidated so that we use same for one hand and two hands
         private Quaternion targetRotationTwoHands;
@@ -620,12 +621,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector3 targetPosition;
             if (IsNearManipulation())
             {
-                // make sure to apply pointer rotation to hand to object offset as well
-                targetPosition = (pointer.Rotation * objectToHandTranslation) + pointer.Position;
+                // Compute the host position such that the grab point falls on the pointer
+                targetPosition = pointerData.GrabPoint - targetRotation * hostLocalGrabPoint;
             }
             else
             {
-                targetPosition = moveLogic.Update(pointerData.GrabPoint, IsNearManipulation());
+                targetPosition = moveLogic.Update(pointerData.GrabPoint, false);
             }
 
             float lerpAmount = GetLerpAmount();
@@ -665,6 +666,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
             objectToHandRotation = worldToPalmRotation * hostTransform.rotation;
             objectToHandTranslation = worldToPalmRotation * (hostTransform.position - pointer.Position);
+
+            Vector3 worldGrabPoint = pointerData.GrabPoint;
+            // Compute the grab point in local space of the host
+            hostLocalGrabPoint = Quaternion.Inverse(hostTransform.rotation) * (worldGrabPoint - hostTransform.position);
 
             startObjectRotationCameraSpace = Quaternion.Inverse(CameraCache.Main.transform.rotation) * hostTransform.rotation;
             var cameraFlat = CameraCache.Main.transform.forward;
