@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Physics
@@ -17,11 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// </summary>
     public class TwoHandMoveLogic
     {
-        private static readonly Vector3 offsetPosition = new Vector3(0, -0.2f, 0);
         private readonly MovementConstraintType movementConstraint;
 
-        private float handRefDistance;
-        private float objRefDistance;
+        private float pointerRefDistance;
 
         /// <summary>
         /// Constructor.
@@ -32,82 +31,43 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             this.movementConstraint = movementConstraint;
         }
 
-        /// <summary>
-        /// The initial angle between the hand and the object
-        /// </summary>
-        private Quaternion gazeAngularOffset;
+        Vector3 pointerToGrab;
+        Vector3 grabToObject;
+        Quaternion worldToPointerRotation;
+        Vector3 originalScale;
 
-        private const float NearDistanceScale = 1.0f;
-        private const float FarDistanceScale = 2.0f;
-
-        public void Setup(Vector3 startHandPositionMeters, Vector3 manipulationObjectPosition)
+        public void Setup(MixedRealityPose pointerCentroidPose, Vector3 grabCentroid, Vector3 objectPosition, Vector3 objectScale)
         {
-            var newHandPosition = startHandPositionMeters;
-
-            // The pivot is just below and in front of the head.
-            var pivotPosition = GetHandPivotPosition();
-
-            objRefDistance = Vector3.Distance(manipulationObjectPosition, pivotPosition);
-            handRefDistance = Vector3.Distance(newHandPosition, pivotPosition);
-
-            var objDirection = Vector3.Normalize(manipulationObjectPosition - pivotPosition);
-            var handDirection = Vector3.Normalize(newHandPosition - pivotPosition);
-
-            // We transform the forward vector of the object, the direction of the object, and the direction of the hand
-            // to camera space so everything is relative to the user's perspective.
-            objDirection = CameraCache.Main.transform.InverseTransformDirection(objDirection);
-            handDirection = CameraCache.Main.transform.InverseTransformDirection(handDirection);
-
-            // Store the original rotation between the hand an object
-            gazeAngularOffset = Quaternion.FromToRotation(handDirection, objDirection);
+            Vector3 headPosition = CameraCache.Main.transform.position;
+            
+            pointerRefDistance = Vector3.Distance(pointerCentroidPose.Position, headPosition);
+            
+            worldToPointerRotation = Quaternion.Inverse(pointerCentroidPose.Rotation);
+            pointerToGrab = worldToPointerRotation * (grabCentroid - pointerCentroidPose.Position);
+            grabToObject = worldToPointerRotation * (objectPosition - grabCentroid);
+            originalScale = objectScale;
         }
 
-        public Vector3 Update(Vector3 centroid, bool isNearMode)
+        public Vector3 Update(MixedRealityPose pointerCentroidPose, Vector3 objectScale, bool usePointerRotation, bool isTwoHand)
         {
-            float distanceScale = isNearMode ? NearDistanceScale : FarDistanceScale;
-
-            var newHandPosition = centroid;
-            var pivotPosition = GetHandPivotPosition();
-
-            // Compute the pivot -> hand vector in camera space
-            var newHandDirection = Vector3.Normalize(newHandPosition - pivotPosition);
-            newHandDirection = CameraCache.Main.transform.InverseTransformDirection(newHandDirection);
-
-            // The direction the object should face is the current hand direction rotated by the original hand -> object rotation.
-            var targetDirection = Vector3.Normalize(gazeAngularOffset * newHandDirection);
-            targetDirection = CameraCache.Main.transform.TransformDirection(targetDirection);
-
-            var targetDistance = objRefDistance;
+            Vector3 headPosition = CameraCache.Main.transform.position;
+            float distanceRatio = 1.0f;
 
             if (movementConstraint != MovementConstraintType.FixDistanceFromHead)
             {
                 // Compute how far away the object should be based on the ratio of the current to original hand distance
-                var currentHandDistance = Vector3.Magnitude(newHandPosition - pivotPosition);
-                var distanceRatio = currentHandDistance / handRefDistance;
-                var distanceOffset = distanceRatio > 0 ? (distanceRatio - 1f) * distanceScale : 0;
-                targetDistance += distanceOffset;
+                var currentHandDistance = Vector3.Magnitude(pointerCentroidPose.Position - headPosition);
+                distanceRatio = currentHandDistance / pointerRefDistance;
             }
 
-            var newPosition = pivotPosition + (targetDirection * targetDistance);
-            var newDistance = Vector3.Distance(newPosition, pivotPosition);
-
-            if (newDistance > 4f)
+            Vector3 scaledGrabToObject =  Vector3.Scale(grabToObject, worldToPointerRotation * objectScale.Div(originalScale));
+            Vector3 adjustedPointerToObject = (pointerToGrab * distanceRatio) + scaledGrabToObject;
+            if (isTwoHand || usePointerRotation)
             {
-                newPosition = pivotPosition + Vector3.Normalize(newPosition - pivotPosition) * 4f;
+                adjustedPointerToObject = pointerCentroidPose.Rotation * adjustedPointerToObject;
             }
 
-            return newPosition;
+            return adjustedPointerToObject + pointerCentroidPose.Position;
         }
-
-        /// <summary>
-        /// Get the hand pivot position located a bit lower and behind the camera.
-        /// </summary>
-        /// <returns>A point that is below and just in front of the head.</returns>
-        public static Vector3 GetHandPivotPosition()
-        {
-            Vector3 pivot = CameraCache.Main.transform.position + offsetPosition - CameraCache.Main.transform.forward * 0.2f; // a bit lower and behind
-            return pivot;
-        }
-
     }
 }

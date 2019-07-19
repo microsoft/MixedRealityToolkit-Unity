@@ -237,7 +237,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         private Dictionary<uint, PointerData> pointerIdToPointerMap = new Dictionary<uint, PointerData>();
         private Quaternion objectToHandRotation;
-        private Vector3 objectToHandTranslation;
         private Vector3 hostLocalGrabPoint;
         private bool isNearManipulation;
         // This can probably be consolidated so that we use same for one hand and two hands
@@ -295,6 +294,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 count++;
             }
             return sum / Math.Max(1, count);
+        }
+
+        private MixedRealityPose GetAveragePointerPose()
+        {
+            Debug.Assert(pointerIdToPointerMap.Count > 1);
+
+            var handsEnumerator = pointerIdToPointerMap.Values.GetEnumerator();
+            handsEnumerator.MoveNext();
+            var hand1 = handsEnumerator.Current.pointer;
+            handsEnumerator.MoveNext();
+            var hand2 = handsEnumerator.Current.pointer;
+            handsEnumerator.Dispose();
+            
+            MixedRealityPose pose = new MixedRealityPose();
+            pose.Position = (hand1.Position + hand2.Position) / 2;
+
+            Vector3 right = hand1.Position - hand2.Position;
+
+            // WIP
+            Vector3 forward = Quaternion.AngleAxis(90, Vector3.up) * right;
+            Vector3 up = Vector3.Cross(forward, right);
+            pose.Rotation = rotateLogic.Update(GetHandPositionMap(), targetRotationTwoHands, constraintOnRotation);
+
+            Debug.DrawRay(pose.Position, right.normalized, Color.red);
+            Debug.DrawRay(pose.Position, up.normalized, Color.green);
+            Debug.DrawRay(pose.Position, Vector3.Cross(right, up).normalized, Color.blue);
+
+            return pose;
         }
 
         private Vector3 GetPointersVelocity()
@@ -547,7 +574,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if ((currentState & State.Moving) > 0)
             {
-                targetPosition = moveLogic.Update(GetPointersCentroid(), IsNearManipulation());
+                MixedRealityPose pose = GetAveragePointerPose();
+                targetPosition = moveLogic.Update(pose, hostTransform.localScale, true, true);
             }
 
             var handPositionMap = GetHandPositionMap();
@@ -631,16 +659,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             targetRotation = ApplyConstraints(targetRotation);
-            Vector3 targetPosition;
-            if (IsNearManipulation())
-            {
-                // Compute the host position such that the grab point falls on the pointer
-                targetPosition = pointerData.GrabPoint - targetRotation * hostLocalGrabPoint;
-            }
-            else
-            {
-                targetPosition = moveLogic.Update(pointerData.GrabPoint, false);
-            }
+            MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
+            Vector3 targetPosition = moveLogic.Update(pointerPose, hostTransform.localScale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, false);
 
             float lerpAmount = GetLerpAmount();
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
@@ -657,9 +677,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 rotateLogic.Setup(handPositionMap, hostTransform, ConstraintOnRotation);
             }
-            if ((newState & State.Moving) > 0)
+            if ((newState & State.Moving) > 0) 
             {
-                moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
+                MixedRealityPose pose = GetAveragePointerPose();
+                moveLogic.Setup(pose, GetPointersCentroid(), hostTransform.position, hostTransform.localScale);
             }
             if ((newState & State.Scaling) > 0)
             {
@@ -673,7 +694,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Assert.IsTrue(pointerIdToPointerMap.Count == 1);
             PointerData pointerData = GetFirstPointer();
             IMixedRealityPointer pointer = pointerData.pointer;
-            moveLogic.Setup(pointerData.GrabPoint, hostTransform.position);
 
             // cache objects rotation on start to have a reference for constraint calculations
             // if we don't cache this on manipulation start the near rotation might drift off the hand
@@ -683,7 +703,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // Calculate relative transform from object to hand.
             Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
             objectToHandRotation = worldToPalmRotation * hostTransform.rotation;
-            objectToHandTranslation = worldToPalmRotation * (hostTransform.position - pointer.Position);
+
+            MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
+            moveLogic.Setup(pointerPose, pointerData.GrabPoint, hostTransform.position, hostTransform.localScale);
 
             Vector3 worldGrabPoint = pointerData.GrabPoint;
             // Compute the grab point in local space of the host
