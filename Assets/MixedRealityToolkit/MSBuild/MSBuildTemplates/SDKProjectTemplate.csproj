@@ -44,12 +44,12 @@
     <Platforms><!--SUPPORTED_PLATFORMS_TOKEN--></Platforms>
   </PropertyGroup>
 
-  <!-- This is special cased here for WSA player only-->
   <PropertyGroup>
     <BaseIntermediateOutputPath>$(BuildFolder)obj\$(UnityConfiguration)\$(UnityPlatform)\$(ProjectGuid)\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
   </PropertyGroup>
   
+  <!-- This is special cased here for WSA player only-->
   <PropertyGroup Condition="'$(UnityConfiguration)|$(UnityPlatform)' == 'Player|WSA'">
     <OutputPath>$(BuildFolder)$(UnityConfiguration)\$(UnityPlatform)\</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
@@ -80,7 +80,7 @@
     <DefaultItemExcludes>$(DefaultItemExcludes)obj;bin;*.asmdef;*.asmdef.meta;*.csmap;</DefaultItemExcludes>
   </PropertyGroup>
 
-  <!--PROJECT_REFERENCE_SET_TEMPLATE_START-->
+<!--PROJECT_REFERENCE_SET_TEMPLATE_START-->
   <ItemGroup Condition="'$(UnityConfiguration)'=='##REFERENCE_CONFIGURATION_TOKEN##'">
 <!--PROJECT_REFERENCE_TEMPLATE_START-->
     <ProjectReference Include="##REFERENCE_TOKEN##" Condition="##CONDITION_TOKEN##">

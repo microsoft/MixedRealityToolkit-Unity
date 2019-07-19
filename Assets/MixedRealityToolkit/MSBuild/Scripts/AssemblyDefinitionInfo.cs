@@ -59,13 +59,16 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// </summary>
         public void Validate(IEnumerable<CompilationPlatformInfo> availablePlatforms)
         {
+            excludePlatforms = excludePlatforms ?? Array.Empty<string>();
+            includePlatforms = includePlatforms ?? Array.Empty<string>();
+
             if (excludePlatforms.Length > 0 && includePlatforms.Length > 0)
             {
-                Debug.LogError($"Assembly definition file '{name}' contains both excluded and included platform list, will refer to only included.");
-                excludePlatforms = Array.Empty<string>();
+                // Throw, because this means something is broken. This isn't supported according to unity: https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html
+                throw new InvalidOperationException($"Assembly definition file '{name}' contains both excluded and included platform list, will refer to only included.");
             }
 
-            // Is the EditorPlatfrom included?
+            // Is the EditorPlatform included?
             if (includePlatforms.Contains(EditorPlatform))
             {
                 EditorPlatformSupported = true;
@@ -78,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
             else if (excludePlatforms.Length == 0) // So included platforms is length 0, as first if will be true if not 0. Means rely on excluded.
             {
-                NonEditorPlatformSupported = true;
+                EditorPlatformSupported = true;
                 NonEditorPlatformSupported = true;
             }
             else

@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
             else if (templateFolders.Length > 1)
             {
-                Debug.LogWarning($"Stange, more than one directory exists for template files:\n {string.Join("\n", templateFolders)}");
+                Debug.LogWarning($"Strange, more than one directory exists for template files:\n {string.Join("\n", templateFolders)}");
             }
 
             string[] files = AssetDatabase.FindAssets("*", templateFolders);

@@ -1,7 +1,7 @@
-﻿#if UNITY_EDITOR
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if UNITY_EDITOR
 using System;
 using UnityEditor;
 
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
             if (@this == BuildTargetGroup.Unknown)
             {
-                //TODO this may be different on older unity versions
+                // This may be different on older unity versions
                 return TargetFramework.Net46;
             }
 

@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// Given a non-editor <see cref="AssemblyDefinitionPlatform"/> platform, creates an instances of CompilationPlatform fetching defines and references.
         /// </summary>
         /// <param name="platform">The platform to use for parsing.</param>
-        /// <returns>The <see cref="CompilationPlatformInfo"/> containing building infromation for the platform.</returns>
+        /// <returns>The <see cref="CompilationPlatformInfo"/> containing building information for the platform.</returns>
         public static CompilationPlatformInfo GetCompilationPlatform(AssemblyDefinitionPlatform platform)
         {
             if (platform.BuildTarget == BuildTarget.NoTarget)
@@ -41,26 +41,20 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             HashSet<string> platformCommonReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
             HashSet<string> playerReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
 
+            // Set the editor flag to get the updated set of references/defines.
             builder.flags = AssemblyBuilderFlags.EditorAssembly;
             HashSet<string> inEditorDefines = new HashSet<string>(builder.defaultDefines);
-            platformCommonDefines.RemoveWhere(t => !inEditorDefines.Contains(t));
+            platformCommonDefines.IntersectWith(inEditorDefines);
 
             HashSet<string> inEditorReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
-            platformCommonReferences.RemoveWhere(t => !inEditorReferences.Contains(t));
+            platformCommonReferences.IntersectWith(inEditorReferences);
 
             // Remove the common
-            playerDefines.RemoveWhere(t => platformCommonDefines.Contains(t));
-            inEditorDefines.RemoveWhere(t => platformCommonDefines.Contains(t));
+            playerDefines.ExceptWith(platformCommonDefines);
+            inEditorDefines.ExceptWith(platformCommonDefines);
 
-            playerReferences.RemoveWhere(t => platformCommonReferences.Contains(t));
-            inEditorReferences.RemoveWhere(t => platformCommonReferences.Contains(t));
-
-            // Get specialized
-            playerDefines.RemoveWhere(t => platformCommonDefines.Contains(t));
-            inEditorDefines.RemoveWhere(t => platformCommonDefines.Contains(t));
-
-            playerReferences.RemoveWhere(t => platformCommonReferences.Contains(t));
-            inEditorReferences.RemoveWhere(t => platformCommonReferences.Contains(t));
+            playerReferences.ExceptWith(platformCommonReferences);
+            inEditorReferences.ExceptWith(platformCommonReferences);
 
             return new CompilationPlatformInfo(platform.Name, platform.BuildTarget,
                 platformCommonDefines, playerDefines, inEditorDefines,

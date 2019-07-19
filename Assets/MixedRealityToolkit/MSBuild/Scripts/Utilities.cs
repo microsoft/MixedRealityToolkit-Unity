@@ -27,11 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         public static readonly string MSBuildOutputFolder = GetNormalizedPath(Application.dataPath.Replace("Assets", MSBuildFolderName), true);
         public const string PackagesCopyFolderName = "PackagesCopy";
 
-        private static string AssetsPath;
+        private static readonly string assetsPath;
 
         static Utilities()
         {
-            AssetsPath = Path.GetFullPath(Application.dataPath);
+            assetsPath = Path.GetFullPath(Application.dataPath);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
             if (assetsRelativePath.StartsWith(AssetsFolderName))
             {
-                return Path.GetFullPath(assetsRelativePath.Replace(AssetsFolderName, AssetsPath));
+                return Path.GetFullPath(assetsRelativePath.Replace(AssetsFolderName, assetsPath));
             }
 
             throw new InvalidOperationException("Not a path known to be relative to the project's Asset folder.");
@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
             if (path.StartsWith(PackagesFolderName))
             {
-                return Path.GetFullPath(MSBuildOutputFolder + path.Replace(PackagesFolderName, PackagesCopyFolderName));
+                return Path.GetFullPath(Path.Combine(MSBuildOutputFolder, path.Replace(PackagesFolderName, PackagesCopyFolderName)));
             }
 
             throw new InvalidOperationException("Not a path known to be relative to project's Package folder.");
@@ -84,12 +84,12 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
             absolutePath = Path.GetFullPath(absolutePath);
 
-            if (!absolutePath.Contains(AssetsPath))
+            if (!absolutePath.Contains(assetsPath))
             {
-                throw new ArgumentException(nameof(absolutePath), $"Absolute path '{absolutePath}' is not a Unity Assets relative path ('{AssetsPath}')");
+                throw new ArgumentException(nameof(absolutePath), $"Absolute path '{absolutePath}' is not a Unity Assets relative path ('{assetsPath}')");
             }
 
-            return absolutePath.Replace(AssetsPath, AssetsFolderName);
+            return absolutePath.Replace(assetsPath, AssetsFolderName);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         /// <summary>
-        /// Gets a relative path between two knwon relative paths (inside Assets or Pacakges)
+        /// Gets a relative path between two known relative paths (inside Assets or Packages)
         /// </summary>
         public static string GetRelativePathForKnownFolders(string thisKnownFolder, string thatKnownFolder)
         {
@@ -112,10 +112,114 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         /// <summary>
+        /// Reads until some contents is encountered, or the end of the stream is reached.
+        /// </summary>
+        /// <param name="reader">The <see cref="StreamReader"/> to use for reading.</param>
+        /// <param name="contents">The contents to search for in the lines being read.</param>
+        /// <returns>The line on which some of the contents was found.</returns>
+        public static string ReadUntil(this StreamReader reader, params string[] contents)
+        {
+            return ReadWhile(reader, line => !contents.Any(c => line.Contains(c)));
+        }
+
+        /// <summary>
+        /// A helper to check whether a DLL is a managed assembly.
+        /// </summary>
+        /// <param name="assemblyPath">The path to the assembly.</param>
+        /// <remarks>Taken from https://stackoverflow.com/questions/367761/how-to-determine-whether-a-dll-is-a-managed-assembly-or-native-prevent-loading. </remarks>
+        /// <returns>True if a managed assembly.</returns>
+        public static bool IsManagedAssembly(string assemblyPath)
+        {
+            using (Stream fileStream = new FileStream(assemblyPath, FileMode.Open, FileAccess.Read))
+            using (BinaryReader binaryReader = new BinaryReader(fileStream))
+            {
+                if (fileStream.Length < 64)
+                {
+                    return false;
+                }
+
+                //PE Header starts @ 0x3C (60). Its a 4 byte header.
+                fileStream.Position = 0x3C;
+                uint peHeaderPointer = binaryReader.ReadUInt32();
+                if (peHeaderPointer == 0)
+                {
+                    peHeaderPointer = 0x80;
+                }
+
+                // Ensure there is at least enough room for the following structures:
+                //     24 byte PE Signature & Header
+                //     28 byte Standard Fields         (24 bytes for PE32+)
+                //     68 byte NT Fields               (88 bytes for PE32+)
+                // >= 128 byte Data Dictionary Table
+                if (peHeaderPointer > fileStream.Length - 256)
+                {
+                    return false;
+                }
+
+                // Check the PE signature.  Should equal 'PE\0\0'.
+                fileStream.Position = peHeaderPointer;
+                uint peHeaderSignature = binaryReader.ReadUInt32();
+                if (peHeaderSignature != 0x00004550)
+                {
+                    return false;
+                }
+
+                // skip over the PEHeader fields
+                fileStream.Position += 20;
+
+                const ushort PE32 = 0x10b;
+                const ushort PE32Plus = 0x20b;
+
+                // Read PE magic number from Standard Fields to determine format.
+                var peFormat = binaryReader.ReadUInt16();
+                if (peFormat != PE32 && peFormat != PE32Plus)
+                {
+                    return false;
+                }
+
+                // Read the 15th Data Dictionary RVA field which contains the CLI header RVA.
+                // When this is non-zero then the file contains CLI data otherwise not.
+                ushort dataDictionaryStart = (ushort)(peHeaderPointer + (peFormat == PE32 ? 232 : 248));
+                fileStream.Position = dataDictionaryStart;
+
+                uint cliHeaderRva = binaryReader.ReadUInt32();
+                if (cliHeaderRva == 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Reads while the predicate is satisifed, returns the line on which it failed.
+        /// </summary>
+        /// <param name="reader">The <see cref="StreamReader"/> to use for reading.</param>
+        /// <param name="predicate">The predicate that should return false when reading should stop.</param>
+        /// <returns>The line on which the predicate returned false.</returns>
+        public static string ReadWhile(this StreamReader reader, System.Func<string, bool> predicate)
+        {
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+                if (!predicate(line))
+                {
+                    return line;
+                }
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Copies the source directory to the output directory creating all the directories first then copying.
         /// </summary>
         public static void CopyDirectory(string sourcePath, string destinationPath)
         {
+            // Create the root directory itself
+            Directory.CreateDirectory(destinationPath);
+
             foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
             {
                 Directory.CreateDirectory(dirPath.Replace(sourcePath, destinationPath));
@@ -344,7 +448,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         public static IEnumerable<Version> GetUWPSDKs()
         {
-            // May also be of interest to GetReferences
 #if UNITY_EDITOR
             Type uwpReferences = Type.GetType("UnityEditor.Scripting.Compilers.UWPReferences, UnityEditor.dll");
             MethodInfo getInstalledSDKS = uwpReferences.GetMethod("GetInstalledSDKs", BindingFlags.Static | BindingFlags.Public);

@@ -34,17 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     public class PluginAssemblyInfo : ReferenceItemInfo
     {
         /// <summary>
-        /// Ges the type of Plugin.
+        /// Gets the type of Plugin
         /// </summary>
         public PluginType Type { get; }
 
         /// <summary>
-        /// Gets the path relative to the assets folder.
-        /// </summary>
-        public string AssetsRelativePath { get; }
-
-        /// <summary>
-        /// Gets whether this plugin is auto referenced.
+        /// Gets whether this plugin is auto referenced, as in whether the generated projects will automatically reference this plugin.
         /// </summary>
         public bool AutoReferenced { get; private set; }
 
@@ -55,69 +50,80 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// </summary>
         public HashSet<string> DefineConstraints { get; private set; }
 
-        ///// <summary>
-        ///// Creates a new instance of the <see cref="PluginAssemblyInfo"/>.
-        ///// </summary>
-        ///// <param name="availablePlatforms"></param>
-        ///// <param name="guid"></param>
-        ///// <param name="assetsRelativePath"></param>
-        //public PluginAssemblyInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, Guid guid, string assetsRelativePath)
-        //    : this(availablePlatforms, guid, assetsRelativePath, Path.GetFullPath(Utilities.GetFullPathFromKnownRelative(assetsRelativePath)))
-        //{
-
-        //}
-
         /// <summary>
         /// Creates a new instance of the <see cref="PluginAssemblyInfo"/>.
         /// </summary>
-        public PluginAssemblyInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, Guid guid, string assetsRelativePath, string fullPath)
-            : base(availablePlatforms, guid, new Uri(fullPath), Path.GetFileNameWithoutExtension(fullPath))
+        public PluginAssemblyInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, Guid guid, string fullPath, PluginType type)
+             : base(availablePlatforms, guid, new Uri(fullPath), Path.GetFileNameWithoutExtension(fullPath))
         {
-            AssetsRelativePath = assetsRelativePath;
-            PluginImporter importer = (PluginImporter)AssetImporter.GetAtPath(AssetsRelativePath);
+            Type = type;
 
-            Type = importer.isNativePlugin ? PluginType.Native : PluginType.Managed;
-
-            ParseYAMLFile();
+            if (Type == PluginType.Managed)
+            {
+                ParseYAMLFile();
+            }
         }
 
         private void ParseYAMLFile()
         {
+            // This approach doesn't work for native YAML parsing
+
             Dictionary<string, bool> enabledPlatforms = new Dictionary<string, bool>();
             using (StreamReader reader = new StreamReader(ReferencePath.AbsolutePath + ".meta"))
             {
                 DefineConstraints = new HashSet<string>();
 
                 // Parse define constraints
-                string defineConstraints = ReadUntil(reader, "defineConstraints:");
-                if (!defineConstraints.Contains("[]"))
+                string defineConstraints = reader.ReadUntil("defineConstraints:", "isExplicitlyReferenced:", "platformData:");
+                string isExplicitlyReferenced;
+                if (defineConstraints.Contains("defineConstraints:"))
                 {
-                    ReadWhile(reader, line =>
+                    if (!defineConstraints.Contains("[]"))
                     {
-                        line = line.Trim();
-                        if (line.StartsWith("-"))
+                        reader.ReadWhile(line =>
                         {
-                            string define = line.Substring(1).Trim();
-
-                            if (define.StartsWith("'") && define.EndsWith("'"))
+                            line = line.Trim();
+                            if (line.StartsWith("-"))
                             {
-                                define = define.Substring(1, define.Length - 2);
-                            }
+                                string define = line.Substring(1).Trim();
 
-                            DefineConstraints.Add(define);
-                            return true;
-                        }
+                                if (define.StartsWith("'") && define.EndsWith("'"))
+                                {
+                                    define = define.Substring(1, define.Length - 2);
+                                }
+
+                                DefineConstraints.Add(define);
+                                return true;
+                            }
                         // else
                         return false;
-                    });
+                        });
+                    }
+
+                    // Since succeded, read until isExplicitlyReferenced or platformData
+                    isExplicitlyReferenced = reader.ReadUntil("isExplicitlyReferenced:", "platformData:");
+                }
+                else
+                {
+                    // If it's not defineConstraints, then it's one of the other 3
+                    isExplicitlyReferenced = defineConstraints;
+                }
+               
+                if (isExplicitlyReferenced.Contains("isExplicitlyReferenced:"))
+                {
+                    AutoReferenced = isExplicitlyReferenced.Split(':')[1].Trim().Equals("0");
+                }
+                else
+                {
+                    // Is default true?
+                    AutoReferenced = true;
                 }
 
-                // Read until isExplicitlyReferenced
-                string isExplicitlyReferenced = ReadUntil(reader, "isExplicitlyReferenced:");
-                AutoReferenced = isExplicitlyReferenced.Split(':')[1].Trim().Equals("0");
-
-                // Read until platform data
-                ReadUntil(reader, "platformData:");
+                if (!isExplicitlyReferenced.Contains("platformData:"))
+                {
+                    // Read until platform data
+                    reader.ReadUntil("platformData:");
+                }
 
                 ParsePlatformData(reader, enabledPlatforms);
             }
@@ -148,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private void ParsePlatformData(StreamReader reader, Dictionary<string, bool> enabledPlatforms)
         {
-            if (ReadUntil(reader, "first:", "userData:").Contains("userData:") || reader.EndOfStream)
+            if (reader.ReadUntil("first:", "userData:").Contains("userData:") || reader.EndOfStream)
             {
                 // We reached the end
                 return;
@@ -156,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             if (reader.ReadLine().Contains("'': Any")) // Try use exclude method
             {
-                string settingsLine = ReadUntil(reader, "settings:", "userData:");
+                string settingsLine = reader.ReadUntil("settings:", "userData:");
                 if (settingsLine.Contains("userData:"))
                 {
                     return;
@@ -165,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 // We are fine to use exclude method if we have a set of settings
                 if (!settingsLine.Contains("settings: {}"))
                 {
-                    ReadWhile(reader, l =>
+                    reader.ReadWhile(l =>
                     {
                         if (l.Contains("Exclude"))
                         {
@@ -183,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             // else fall through to use -first method 
 
             string line;
-            while ((line = ReadUntil(reader, "first:", "userData:")).Contains("first:") && !reader.EndOfStream)
+            while ((line = reader.ReadUntil("first:", "userData:")).Contains("first:") && !reader.EndOfStream)
             {
                 string[] platformLineParts = reader.ReadLine().Split(':');
                 string platform = platformLineParts[1].Trim();
@@ -192,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 {
                     platform = $"Facebook{platform}";
                 }
-                string enabledLine = ReadUntil(reader, "enabled:");
+                string enabledLine = reader.ReadUntil("enabled:");
 
                 enabledPlatforms.Add(platform, enabledLine.Split(':')[1].Trim() == "1");
             }
@@ -262,25 +268,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     Debug.LogError($"Platform '{platformName}' was specified as enabled by '{ReferencePath.AbsolutePath}' plugin, but not available in processed compilation settings.");
                 }
             }
-        }
-
-        private string ReadUntil(StreamReader reader, params string[] contents)
-        {
-            return ReadWhile(reader, line => !contents.Any(c => line.Contains(c)));
-        }
-
-        private string ReadWhile(StreamReader reader, System.Func<string, bool> predicate)
-        {
-            while (!reader.EndOfStream)
-            {
-                string line = reader.ReadLine();
-                if (!predicate(line))
-                {
-                    return line;
-                }
-            }
-
-            return string.Empty;
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         public Assembly Assembly { get; }
 
         /// <summary>
-        /// The associated assembly definition info if available.
+        /// The associated Assembly-Definition info if available.
         /// </summary>
         public AssemblyDefinitionInfo AssemblyDefinitionInfo { get; }
 
@@ -72,12 +72,16 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// </summary>
         /// <param name="availablePlatforms">A list of platforms available to MSBuild.</param>
         /// <param name="guid">The unique Guid of this reference item.</param>
-        /// <param name="assemblyDefinitionInfo">The associated assembly definition info.</param>
+        /// <param name="assemblyDefinitionInfo">The associated Assembly-Definition info.</param>
         /// <param name="assembly">The Unity assembly object associated with this csproj.</param>
         /// <param name="baseOutputPath">The output path where everything will be outputted.</param>
         internal CSProjectInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, Guid guid, AssemblyDefinitionInfo assemblyDefinitionInfo, Assembly assembly, string baseOutputPath)
             : base(availablePlatforms, guid, new Uri(Path.Combine(baseOutputPath, $"{assembly.name}.csproj")), assembly.name)
         {
+            if (Name.Contains("Timeline"))
+            {
+                Debug.Log("Here");
+            }
             AssemblyDefinitionInfo = assemblyDefinitionInfo;
             Assembly = assembly;
 
@@ -110,13 +114,14 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 case "Assembly-CSharp-firstpass-editor":
                     return ProjectType.PredefinedEditorAssembly;
                 default:
-                    Debug.LogError($"Predefined assembly '{assembly.name}' was not recognized, this generally means it should be added to the switch statement in CSProjectInfo:GetProjectType. Treating is as a PredefinedAssembly instead of PredefinedEditorAssembly.");
-                    return ProjectType.PredefinedAssembly;
+                    throw new InvalidOperationException($"Predefined assembly '{assembly.name}' was not recognized, this generally means it should be added to the switch statement in CSProjectInfo:GetProjectType. Treating is as a PredefinedAssembly instead of PredefinedEditorAssembly.");
             }
         }
 
         private ReadOnlyDictionary<BuildTarget, CompilationPlatformInfo> GetCompilationPlatforms(bool inEditor)
         {
+            // - handle all PredfinedAssemblies
+            // - EditorAsmDef and PredefinedEditorAssembly for inEditor
             bool returnAllPlatforms = ProjectType == ProjectType.PredefinedAssembly
                 || (inEditor && ProjectType == ProjectType.PredefinedEditorAssembly)
                 || (inEditor && ProjectType == ProjectType.EditorAsmDef)
@@ -127,6 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 return new ReadOnlyDictionary<BuildTarget, CompilationPlatformInfo>(availablePlatforms.ToDictionary(t => t.BuildTarget, t => t));
             }
 
+            // - EditorAsmDef and PredefinedEditorAssembly for not inEditor
             bool returnNoPlatforms = (!inEditor && ProjectType == ProjectType.PredefinedEditorAssembly)
                 || (!inEditor && ProjectType == ProjectType.EditorAsmDef)
                 || (!inEditor && ProjectType == ProjectType.AsmDef && AssemblyDefinitionInfo.TestAssembly);
@@ -136,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 return new ReadOnlyDictionary<BuildTarget, CompilationPlatformInfo>(new Dictionary<BuildTarget, CompilationPlatformInfo>());
             }
 
-            // We only are an asmdef at this point, as we handle all predefined assembly at line 130, inEditor && predefined editor assembly at line 130, and !inEditor && predefined editor assembly at line 139
+            // We only are an asmdef at this point, as above we handle all PredfinedAssemblies, then EditorAsmDef and PredefinedEditorAssembly for inEditor and not inEditor cases above
             Func<CompilationPlatformInfo, bool> predicate = AssemblyDefinitionInfo.includePlatforms.Length > 0
                 ? predicate = (t) => AssemblyDefinitionInfo.includePlatforms.Contains(t.Name)
                 : predicate = (t) => !AssemblyDefinitionInfo.excludePlatforms.Contains(t.Name);
@@ -312,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     pluginReferences.Add(Utilities.ReplaceTokens(pluginReferenceTemplate, new Dictionary<string, string>()
                     {
                         { "##REFERENCE_TOKEN##", dependency.Dependency.Name },
-                        { "##CONDITION_TOKEN##", platformConditions.Count == 0 ? "'false'" : string.Join(" OR ", platformConditions)},
+                        { "##CONDITION_TOKEN##", platformConditions.Count == 0 ? "false" : string.Join(" OR ", platformConditions)},
                         { "<!--HINT_PATH_TOKEN-->", dependency.Dependency.ReferencePath.AbsolutePath }
                     }));
 
@@ -347,27 +353,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
 
             return toReturn;
-        }
-
-        private string GetDefaultPlatform(IReadOnlyDictionary<BuildTarget, CompilationPlatformInfo> platforms)
-        {
-
-            if (platforms.TryGetValue(BuildTarget.StandaloneWindows, out CompilationPlatformInfo defaultPlatform)
-                || platforms.TryGetValue(BuildTarget.StandaloneWindows64, out defaultPlatform)
-                || platforms.TryGetValue(BuildTarget.WSAPlayer, out defaultPlatform)
-                || platforms.TryGetValue(BuildTarget.Android, out defaultPlatform)
-                || platforms.TryGetValue(BuildTarget.iOS, out defaultPlatform)
-                || platforms.TryGetValue(BuildTarget.NoTarget, out defaultPlatform))
-            {
-                return defaultPlatform.Name;
-            }
-
-            return string.Empty;
-        }
-
-        private string GetProjectReferenceString(string path)
-        {
-            return $"<ProjectReference Include=\"{path}\" />";
         }
     }
 }

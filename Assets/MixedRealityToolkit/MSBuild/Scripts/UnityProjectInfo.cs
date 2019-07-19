@@ -20,13 +20,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     /// </summary>
     public class UnityProjectInfo
     {
-        private const string SDKProjectTypeGuid = "FAE04EC0-301F-11D3-BF4B-00C04F79EFBC";
-
         private IEnumerable<CompilationPlatformInfo> availablePlatforms;
 
         public IReadOnlyDictionary<string, CSProjectInfo> CSProjects { get; }
 
-        public IReadOnlyDictionary<string, PluginAssemblyInfo> Plugins { get; }
+        public IReadOnlyCollection<PluginAssemblyInfo> Plugins { get; }
 
         public UnityProjectInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, string projectOutputPath)
         {
@@ -71,9 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 csProjects.Add(pair.Key, toAdd);
             }
 
-            Plugins = new ReadOnlyDictionary<string, PluginAssemblyInfo>(ScanForPluginDLLs());
+            Plugins = new ReadOnlyCollection<PluginAssemblyInfo>(ScanForPluginDLLs());
 
-            foreach (PluginAssemblyInfo plugin in Plugins.Values)
+            foreach (PluginAssemblyInfo plugin in Plugins)
             {
                 if (plugin.Type == PluginType.Native)
                 {
@@ -100,9 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     }
                 }
 
-
-                // TODO Find a better way to filter which plugins should be included; project.Assembly.allReferences isn't correct 
-                foreach (PluginAssemblyInfo plugin in Plugins.Values)
+                foreach (PluginAssemblyInfo plugin in Plugins)
                 {
                     if (plugin.AutoReferenced && plugin.Type != PluginType.Native)
                     {
@@ -110,15 +106,46 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     }
                 }
             }
-
         }
 
-        private Dictionary<string, PluginAssemblyInfo> ScanForPluginDLLs()
+        private List<PluginAssemblyInfo> ScanForPluginDLLs()
         {
-            return Directory.GetFiles(Application.dataPath, "*.dll", SearchOption.AllDirectories)
-                .Select(t => new { FullPath = t, AssetsRelativePath = Utilities.GetAssetsRelativePathFrom(t) })
-                .Select(t => new PluginAssemblyInfo(availablePlatforms, Guid.Parse(AssetDatabase.AssetPathToGUID(t.AssetsRelativePath)), t.AssetsRelativePath, t.FullPath))
-                .ToDictionary(t => t.AssetsRelativePath);
+            List<PluginAssemblyInfo> toReturn = new List<PluginAssemblyInfo>();
+
+            foreach (string assetAssemblyPath in Directory.GetFiles(Application.dataPath, "*.dll", SearchOption.AllDirectories))
+            {
+                string assetRelativePath = Utilities.GetAssetsRelativePathFrom(assetAssemblyPath);
+                PluginImporter importer = (PluginImporter)AssetImporter.GetAtPath(assetRelativePath);
+                PluginAssemblyInfo toAdd = new PluginAssemblyInfo(availablePlatforms, Guid.Parse(AssetDatabase.AssetPathToGUID(assetRelativePath)), assetAssemblyPath, importer.isNativePlugin ? PluginType.Native : PluginType.Managed);
+                toReturn.Add(toAdd);
+            }
+
+            foreach (string packageDllPath in Directory.GetFiles(Utilities.GetFullPathFromPackagesRelative("Packages"), "*.dll", SearchOption.AllDirectories))
+            {
+                string metaPath = packageDllPath + ".meta";
+
+                if (!File.Exists(metaPath))
+                {
+                    Debug.LogWarning($"Skipping a packages DLL that didn't have an associated meta: '{packageDllPath}'");
+                    continue;
+                }
+                Guid guid;
+                using (StreamReader reader = new StreamReader(metaPath))
+                {
+                    string guidLine = reader.ReadUntil("guid");
+                    if (!Guid.TryParse(guidLine.Split(':')[1].Trim(), out guid))
+                    {
+                        Debug.LogWarning($"Skipping a packages DLL that didn't have a valid guid in the .meta file: '{packageDllPath}'");
+                        continue;
+                    }
+                }
+
+                bool isManaged = Utilities.IsManagedAssembly(packageDllPath);
+                PluginAssemblyInfo toAdd = new PluginAssemblyInfo(availablePlatforms, guid, packageDllPath, isManaged ? PluginType.Managed : PluginType.Native);
+                toReturn.Add(toAdd);
+            }
+
+            return toReturn;
         }
 
         private string GetProjectEntry(CSProjectInfo projectInfo, string projectEntryTemplateBody)
@@ -147,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         /// <summary>
-        /// Exports the projec tinfo into a solution file, and the CSProject files.
+        /// Exports the project info into a solution file, and the CSProject files.
         /// </summary>
         /// <param name="solutionTemplateText">The solution file template text.</param>
         /// <param name="projectFileTemplateText">The project file template text.</param>

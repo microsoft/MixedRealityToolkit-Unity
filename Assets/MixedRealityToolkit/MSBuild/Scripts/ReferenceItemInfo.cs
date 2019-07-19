@@ -31,15 +31,16 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         public string Name { get; }
 
         /// <summary>
+        /// Gets a set of platforms supported for the InEditor configuration.
         /// </summary>
         /// <remarks>
-        /// In the editor, we can support all patforms if it's a pre-defined assembly, or an asmdef with Editor platform checked. 
+        /// In the editor, we can support all platforms if it's a pre-defined assembly, or an asmdef with Editor platform checked. 
         /// Otherwise we fallback to just the platforms specified in the editor.
         /// </remarks>
         public IReadOnlyDictionary<BuildTarget, CompilationPlatformInfo> InEditorPlatforms { get; protected set; }
 
         /// <summary>
-        /// 
+        /// Gets a set of platforms supported for the Player configuration.
         /// </summary>
         /// <remarks>
         /// In the player, we support any platform if pre-defined assembly, or the ones explicitly specified in the AsmDef player.
