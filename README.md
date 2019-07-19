@@ -2,19 +2,20 @@
 
 # What is the Mixed Reality Toolkit
 
-MRTK is a Microsoft driven open source project. 
-
-MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity. The latest Release of MRTK (V2) supports HoloLens/HoloLens 2, Windows Mixed Reality, and OpenVR platforms.
+MRTK-Unity is a Microsoft driven project that provides a set of components and features to accelerate cross-platform MR app development in Unity. Here are some things MRTK does:
  
 * Provides the **basic building blocks for Unity development on HoloLens, Windows Mixed Reality, and OpenVR**.
-* Showcases UX best practices with **UI controls that match Windows Mixed Reality and HoloLens Shell**. 
 * Enables **rapid prototyping** via in-editor simulation that allows you to see changes immediately.
-* **Extensible framework** provides developers ability to swap out core components and extend.
+* Designed as an **extensible framework** that provides developers ability to swap out core components.
 * **Supports a wide range of platforms**, including
   * Microsoft HoloLens
   * Microsoft HoloLens 2
   * Windows Mixed Reality headsets
   * OpenVR headsets (HTC Vive / Oculus Rift)
+
+# Getting Started with MRTK 
+| [![Getting Started](Documentation/Images/MRTK_Icon_GettingStarted.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)<br/>[MRTK Getting Started Guide](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)| [![Getting Started](Documentation/Images/MRTK_Icon_Documentation.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/)<br/>[MRTK Documentation](https://microsoft.github.io/MixedRealityToolkit-Unity/)|
+|:---|:---|
 
 # Build Status
 
@@ -33,12 +34,6 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 | :--- | :--- | :--- | :--- | :--- |
 | ![](Documentation/Images/MRTK_Icon_UIControls.png) [UI Controls](https://microsoft.github.io/MixedRealityToolkit-Unity/README.html#ui-and-interaction-building-blocks)<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_Solver.png) [Solvers](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Solver.html)<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_SceneSystem.png) [Multi-Scene<br/> Manager](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html) | ![](Documentation/Images/MRTK_Icon_SpatialUnderstanding.png) [Spatial<br/> Awareness](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html) | ![](Documentation/Images/MRTK_Icon_Diagnostics.png) [Diagnostic<br/> Tool](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html) |
 | ![](Documentation/Images/MRTK_Icon_StandardShader.png) [MRTK Standard Shader](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_MRTKStandardShader.html?q=shader) | ![](Documentation/Images/MRTK_Icon_VoiceCommand.png) [Speech](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Speech.html)<br/> & [Dictation](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Dictation.html) | ![](Documentation/Images/MRTK_Icon_Boundary.png) [Boundary<br/>System](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html)| ![](Documentation/Images/MRTK_Icon_InputSystem.png) [In-Editor<br/>Simulation](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html) | ![](Documentation/Images/MRTK_Icon_Experimental.png) [Experimental<br/>Features](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/ExperimentalFeatures.html)|
-
-
-
-# Getting Started with MRTK 
-| [![Getting Started](Documentation/Images/MRTK_Icon_GettingStarted.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)<br/>[MRTK Getting Started Guide](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)| [![Getting Started](Documentation/Images/MRTK_Icon_Documentation.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/)<br/>[MRTK Documentation](https://microsoft.github.io/MixedRealityToolkit-Unity/)|
-|:---|:---|
 
 
 # UI and Interaction Building blocks
