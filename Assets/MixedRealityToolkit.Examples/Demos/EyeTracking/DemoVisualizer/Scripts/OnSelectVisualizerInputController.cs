@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// When the button is selected, it triggers starting the specified scene.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
+    [System.Obsolete("This component is no longer supported", true)]
     public class OnSelectVisualizerInputController : BaseEyeFocusHandler, IMixedRealityPointerHandler
     {
         [SerializeField]
@@ -19,6 +20,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         [Tooltip("Optional AudioClip which is played when the button is selected.")]
         private AudioClip audio_OnSelect;
+
+        private void Awake()
+        {
+            Debug.LogError(this.GetType().Name + " is deprecated");
+        }
 
         private void OnTargetSelected()
         {
