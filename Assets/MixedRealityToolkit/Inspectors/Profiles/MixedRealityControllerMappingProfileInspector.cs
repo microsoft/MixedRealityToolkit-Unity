@@ -109,6 +109,32 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                         var controllerMappingProperty = controllerList.GetArrayElementAtIndex(i);
                         var handednessProperty = controllerMappingProperty.FindPropertyRelative("handedness");
 
+                        #region Profile Migration
+
+                        // Between MRTK v2 RC2 and GA, the HoloLens clicker and HoloLens voice select input were migrated from
+                        // SupportedControllerType.WindowsMixedReality && Handedness.None to SupportedControllerType.GGVHand && Handedness.None
+                        if (supportedControllerType == SupportedControllerType.WindowsMixedReality && handedness == Handedness.None)
+                        {
+                            for (int j = 0; j < thisProfile.MixedRealityControllerMappingProfiles.Length; j++)
+                            {
+                                if (thisProfile.MixedRealityControllerMappingProfiles[j].SupportedControllerType == SupportedControllerType.GGVHand &&
+                                    thisProfile.MixedRealityControllerMappingProfiles[j].Handedness == Handedness.None)
+                                {
+                                    if (horizontalScope != null) { horizontalScope.Dispose(); horizontalScope = null; }
+
+                                    serializedObject.ApplyModifiedProperties();
+                                    thisProfile.MixedRealityControllerMappingProfiles[j].Interactions[0].MixedRealityInputAction = controllerMapping.Interactions[5].MixedRealityInputAction;
+                                    thisProfile.MixedRealityControllerMappingProfiles[j].Interactions[1].MixedRealityInputAction = controllerMapping.Interactions[1].MixedRealityInputAction;
+                                    serializedObject.Update();
+                                    controllerList.DeleteArrayElementAtIndex(i);
+                                    EditorUtility.DisplayDialog("Mappings updated", "The \"HoloLens Voice and Clicker\" mappings have been migrated to a new serialization. Please save this asset.", "Okay, thanks!");
+                                    return;
+                                }
+                            }
+                        }
+
+                        #endregion Profile Migration
+
                         if (!useCustomInteractionMappings)
                         {
                             bool skip = false;
