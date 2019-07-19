@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Hide every line renderer except the contextual one
             foreach (BaseMixedRealityLineRenderer lineRenderer in LineRenderers)
             {
-                lineRenderer.enabled = IsInteractionEnabled && lineRenderer == lineToShow;
+                lineRenderer.enabled = lineRenderer == lineToShow;
             }
         }
 

@@ -172,7 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             foreach (BaseMixedRealityLineRenderer lineRenderer in lineRenderers)
             {
                 // Renderers are enabled by default if line is enabled
-                lineRenderer.enabled = IsInteractionEnabled;
                 maxClampLineSteps = Mathf.Max(maxClampLineSteps, lineRenderer.LineStepCount);
                 lineRenderer.LineColor = lineColor;
             }
