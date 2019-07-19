@@ -1916,6 +1916,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 257
+  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -1942,7 +1943,6 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
-  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -1957,9 +1957,12 @@ MonoBehaviour:
     lineCount: 3
     pageCount: 1
     materialCount: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 0
+  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 927663222}
   m_subTextObjects:
@@ -2191,6 +2194,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 257
+  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -2217,7 +2221,6 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
-  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -2232,9 +2235,12 @@ MonoBehaviour:
     lineCount: 2
     pageCount: 1
     materialCount: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 0
+  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 950522198}
   m_subTextObjects:
@@ -3024,6 +3030,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 257
+  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -3050,7 +3057,6 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
-  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -3065,9 +3071,12 @@ MonoBehaviour:
     lineCount: 3
     pageCount: 1
     materialCount: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 0
+  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1174163763}
   m_subTextObjects:
@@ -3176,6 +3185,16 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224474001465818384, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -322.7954
+      objectReference: {fileID: 0}
+    - target: {fileID: 224367413309412084, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -322.81204
+      objectReference: {fileID: 0}
     - target: {fileID: 114090657554267990, guid: 427730042d0a7ac41b1d81947f081754,
         type: 3}
       propertyPath: m_Text
@@ -3184,10 +3203,9 @@ PrefabInstance:
     - target: {fileID: 114924912107220086, guid: 427730042d0a7ac41b1d81947f081754,
         type: 3}
       propertyPath: m_Text
-      value: "\nWhat are users looking at? Find out in this scenario!  \n\nLearn about
+      value: "\nWhat are users looking at? Find out in this scenario.\n\nLearn about
         how to:\n   -   Record user input\n   -   Load user input logs \n   -   Visualize
-        eye tracking data\n\nHelpful Eye Tracking visualizations include:\n   -  2D
-        Heatmaps\n   -  More will be added soon...\n\t\n\t"
+        eye tracking data\n\t"
       objectReference: {fileID: 0}
     - target: {fileID: 114924912107220086, guid: 427730042d0a7ac41b1d81947f081754,
         type: 3}
@@ -3608,6 +3626,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 257
+  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -3634,7 +3653,6 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
-  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -3649,9 +3667,12 @@ MonoBehaviour:
     lineCount: 3
     pageCount: 1
     materialCount: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 0
+  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1430322693}
   m_subTextObjects:
@@ -3813,6 +3834,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 257
+  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -3839,7 +3861,6 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
-  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -3854,9 +3875,12 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 0
+  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1459441110}
   m_subTextObjects:
@@ -4355,12 +4379,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c2137cb90a424174ca9c1de8d41039d6, type: 2}
-    - target: {fileID: 4533479808247404465, guid: 231a4253eb1a74d4e87393459447cc95,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
-        type: 2}
     - target: {fileID: 4533479808247404462, guid: 231a4253eb1a74d4e87393459447cc95,
         type: 3}
       propertyPath: m_Mesh
@@ -4415,6 +4433,12 @@ PrefabInstance:
     - target: {fileID: 4533479808247404460, guid: 231a4253eb1a74d4e87393459447cc95,
         type: 3}
       propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
+        type: 2}
+    - target: {fileID: 4533479808247404465, guid: 231a4253eb1a74d4e87393459447cc95,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
         type: 2}
@@ -5616,11 +5640,6 @@ PrefabInstance:
       propertyPath: OnLookAway.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 92775347}
-    - target: {fileID: 4533479807553497658, guid: 231a4253eb1a74d4e87393459447cc95,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4533479808247404461, guid: 231a4253eb1a74d4e87393459447cc95,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -5631,12 +5650,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.015
       objectReference: {fileID: 0}
-    - target: {fileID: 4533479808247404465, guid: 231a4253eb1a74d4e87393459447cc95,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
-        type: 2}
     - target: {fileID: 4533479808247404462, guid: 231a4253eb1a74d4e87393459447cc95,
         type: 3}
       propertyPath: m_Mesh
@@ -5667,6 +5680,17 @@ PrefabInstance:
     - target: {fileID: 4533479808247404460, guid: 231a4253eb1a74d4e87393459447cc95,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4533479808247404465, guid: 231a4253eb1a74d4e87393459447cc95,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
+        type: 2}
+    - target: {fileID: 4533479807553497658, guid: 231a4253eb1a74d4e87393459447cc95,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
