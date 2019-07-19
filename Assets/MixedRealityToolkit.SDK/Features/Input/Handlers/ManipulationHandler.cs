@@ -247,6 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Quaternion startObjectRotationCameraSpace;
         private Quaternion startObjectRotationFlatCameraSpace;
+        private Quaternion hostWorldRotationOnManipulationStart;
 
         #endregion
 
@@ -569,7 +570,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Quaternion ApplyConstraints(Quaternion newRotation)
         {
             // apply constraint on rotation diff
-            Quaternion diffRotation = newRotation * Quaternion.Inverse(hostTransform.rotation);
+            Quaternion diffRotation = newRotation * Quaternion.Inverse(hostWorldRotationOnManipulationStart);
             switch (constraintOnRotation)
             {
                 case RotationConstraintType.XAxisOnly:
@@ -583,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     break;
             }
 
-            return diffRotation * hostTransform.rotation;
+            return diffRotation * hostWorldRotationOnManipulationStart;
         }
 		
         private void HandleOneHandMoveUpdated()
@@ -670,6 +671,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             PointerData pointerData = GetFirstPointer();
             IMixedRealityPointer pointer = pointerData.pointer;
             moveLogic.Setup(pointerData.GrabPoint, hostTransform.position);
+			
+			// cache objects rotation on start to have a reference for constraint calculations
+            // if we don't cache this on manipulation start the near rotation might drift off the hand
+            // over time
+            hostWorldRotationOnManipulationStart = hostTransform.rotation;
 
             // Calculate relative transform from object to hand.
             Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);

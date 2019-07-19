@@ -272,7 +272,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 float t = i / (float)numSteps;
                 Quaternion handRotation = Quaternion.Lerp(fromRotation, toRotation, t);
-                Vector3 eulerRotCheck = handRotation.eulerAngles;
                 var handDataGenerator = GenerateHandPose(
                         gestureId,
                         handedness,
