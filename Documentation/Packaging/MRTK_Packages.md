@@ -6,6 +6,7 @@ The MRTK currently has two packages:
 
 - [Foundation](#foundation-package)
 - [Examples](#examples-package)
+- [Tools](#tools-package)
 
 ## Foundation Package
 
@@ -139,3 +140,13 @@ This package also contains eye tracking demos, which are [documented here](../Ey
 
 More generally, any new feature in the MRTK should contain a corresponding example in the examples package, roughly following
 the same folder structure and location.
+
+## Tools Package
+
+The tools package contains utilities that are useful for creating mixed reality experiences whose code will ultimately not
+ship as part of an application.
+
+- [Dependency Window](../Utilities/DependencyWindow.md)
+- [Extension Service Creation Wizard](../Utilities/ExtensionServiceCreationWizard.md)
+- [Optimize Window](../Utilities/OptimizeWindow.md)
+- [Screenshot Utility](../Utilities/ScreenshotUtility.md)
