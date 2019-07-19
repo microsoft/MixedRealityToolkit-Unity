@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
             catch (IOException ex)
             {
-                if (ex.Message.Contains(@".vs\MRTK\v15\Server\sqlite3\db.lock"))
+                if (ex.Message.Contains(@"db.lock"))
                 {
                     Debug.LogError("Generated project appears to be still open with Visual Studio.");
                     throw new InvalidDataException("Generated project appears to be still open with Visual Studio.", ex);

@@ -45,8 +45,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <BaseIntermediateOutputPath>$(BuildFolder)obj\$(UnityConfiguration)\$(UnityPlatform)\$(ProjectGuid)\</BaseIntermediateOutputPath>
-    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>$(BuildFolder)obj\$(ProjectGuid)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(UnityConfiguration)\$(UnityPlatform)\</IntermediateOutputPath>
   </PropertyGroup>
   
   <!-- This is special cased here for WSA player only-->

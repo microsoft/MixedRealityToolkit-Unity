@@ -31,7 +31,7 @@ Write-Verbose $unityEditor;
 function RunUnityTask
 {
     param([string]$taskName, [string]$methodToExecute)
-
+    Write-Output "Starting runing Unity task: $($taskName)"
     $logFile = New-Item -Path "Logs\Unity.$($taskName).$($Version).log" -ItemType File -Force
     
     $ProjectLocation = Resolve-Path "$(Get-Location)\..\"
@@ -50,21 +50,46 @@ function RunUnityTask
     
     Remove-Job $ljob
     Stop-Process $proc
+    if ($proc.ExitCode -ge 1)
+    {
+        Write-Error "Failed to execute Unity Task '$($taskName)', see log '$($logFile)' for more information."
+        exit($proc.ExitCode)
+    }
 }
 
 $OriginalPath = Get-Location
 try
 {
     Set-Location (Split-Path $MyInvocation.MyCommand.Path)
-    Set-Location "..\\..\\NuGet"
+    Set-Location "..\\..\\"
+    New-Item -ItemType Directory "NuGet" -ErrorAction SilentlyContinue
+    Set-Location "NuGet"
 
     ### Run MSBuild Generation
     RunUnityTask -taskName "MSBuildGeneration" -methodToExecute "Microsoft.MixedReality.Toolkit.MSBuild.MSBuildTools.GenerateSDKProjects"
 
     ### Build all the needed flavors for MRTK
-    ..\MSBuild\Projects\buildall.bat InEditor WindowsStandalone32 $MSBuildExtensionsPath
-    ..\MSBuild\Projects\buildall.bat Player WindowsStandalone32 $MSBuildExtensionsPath
-    ..\MSBuild\Projects\buildall.bat Player WSA $MSBuildExtensionsPath 
+    Write-Output "============ Building InEditor WindowsStandalone32 ============ "
+    ..\MSBuild\Projects\buildall.bat InEditor WindowsStandalone32 $MSBuildExtensionsPath > "Logs\Build.InEditor.WindowsStandalone32.$($Version).log"
+    if ($lastexitcode -ge 1)
+    {
+            Write-Error "Building InEditor WindowsStandalone32 Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WindowsStandalone32.$($Version).log";
+        exit($lastexitcode)
+    }
+    Write-Output "============ Building Player WindowsStandalone32 ============ "
+    ..\MSBuild\Projects\buildall.bat Player WindowsStandalone32 $MSBuildExtensionsPath > "Logs\Build.Player.WindowsStandalone32.$($Version).log"
+    if ($lastexitcode -ge 1)
+    {
+        Write-Error "Building Player WindowsStandalone32 Failed! See log file for more information $(Get-Location)\Logs\Build.Player.WindowsStandalone32.$($Version).log";
+        exit($lastexitcode)
+    }
+    Write-Output "============ Building Player WSA ============ "
+    ..\MSBuild\Projects\buildall.bat Player WSA $MSBuildExtensionsPath  > "Logs\Build.Player.WSA.$($Version).log"
+    if ($lastexitcode -ge 1)
+    {
+        Write-Error "Building Player WSA Failed! See log file for more information $(Get-Location)\Logs\Build.Player.WSA.$($Version).log";
+        exit($lastexitcode)
+    }
 
 
     ### Run Asset regargetting:
