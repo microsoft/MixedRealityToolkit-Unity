@@ -252,21 +252,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
 
                 gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
+                gazeProvider.HasUpdated = false;
             }
 
             public override void OnPostSceneQuery()
             {
                 if (Result != null)
                 {
-                    gazeProvider.HitInfo = Result.Details.LastRaycastHit;
-                    gazeProvider.GazeTarget = Result.Details.Object;
-
-                    if (Result.Details.Object != null)
-                    {
-                        gazeProvider.lastHitDistance = (Result.Details.Point - Rays[0].Origin).magnitude;
-                        gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
-                        gazeProvider.HitNormal = Result.Details.Normal;
-                    }
+                    gazeProvider.UpdateGazeInfoFromHit(Result.Details.LastRaycastHit);
                 }
 
                 if (isDown)
@@ -523,6 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         internal void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
         {
+            HasUpdated = true;
             HitInfo = raycastHit;
             if (raycastHit.transform != null)
             {
@@ -576,6 +570,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Initially the parameter will return null until it has received valid information from the eye tracking system.
         /// </summary>
         public bool? IsEyeCalibrationValid => isEyeCalibrated;
+        public bool HasUpdated { get; private set; }
         #endregion Utilities
     }
 }

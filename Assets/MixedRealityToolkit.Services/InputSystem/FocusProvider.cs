@@ -532,19 +532,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void UpdateGazeProvider()
         {
-            // We only update if interaction is not enabled because if interaction is enabled 
-            // for this pointer, we have already updated hit data
-            if (!gazeProviderPointingData.Pointer.IsInteractionEnabled)
+            GazeProvider gazeProvider = (GazeProvider)InputSystem.GazeProvider;
+            if (!gazeProvider.HasUpdated)
             {
                 var raycastProvider = InputSystem.RaycastProvider;
-                // Should we just use a local variable instead of this member?
-                // Unclear why we use the member everywhere...maybe to reduce allocaionts
                 hitResult3d.Clear();
                 LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
 
                 QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
                     hitResult3d, maxQuerySceneResults);
-                ((GazeProvider)InputSystem.GazeProvider).UpdateGazeInfoFromHit(hitResult3d.raycastHit);
+                gazeProvider.UpdateGazeInfoFromHit(hitResult3d.raycastHit);
             }
         }
 
