@@ -528,12 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Update the hit information for the gaze provider.
-        /// 
-        /// For the sake of StabilizationPlaneModifier and potentially other 
-        /// components that care where the user's looking, we need to do a gaze 
-        /// raycast even if gaze isn't used for focus.
-        /// Assumes gaze provider is not null;
+        /// Updates the the gaze raycast provider even in scenarios where gaze isn't used for focus
         /// </summary>
         private void UpdateGazeProvider()
         {
