@@ -11,6 +11,7 @@ Since the release of RC2, there have been a number of API changes including some
 
 - [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
+- [Clipping Sphere](#clipping-sphere)
 
 ### Event System
 
@@ -134,6 +135,14 @@ Based on customer feedback, support for easy removal of previously observed spat
 - IMixedRealitySpatialAwarenessSystem.ClearObservations\<T\>(string name)
 - IMixedRealitySpatialAwarenessObserver.ClearObservations()
 
+### Clipping Sphere
+
+The ClippingSphere interface has changed to mirror the APIs found in the ClippingBox and ClippingPlane.
+
+#### Changes
+
+The ClippingSphere's Radius property is now implicitly calculated based on the transform scale. Before developers would have to specify the radius of the ClippingSphere in the inspector. If you want to change the radius, just update the transform scale of the transform as you normally would.
+
 ### NearInteractionTouchable and PokePointer
 
 - NearInteractionTouchable does not handle Unity UI canvas touching any longer. The NearInteractionTouchableUnityUI class must be used for Unity UI touchables now.
@@ -146,6 +155,10 @@ Based on customer feedback, support for easy removal of previously observed spat
 ### ReadOnlyAttribute
 
 - The `Microsoft.MixedReality.Toolkit` namespace has been added to `ReadOnlyAttribute`, `BeginReadOnlyGroupAttribute`, and `EndReadOnlyGroupAttribute`.
+
+### PointerClickHandler
+
+The `PointerClickHandler` class has been deprecated. The `PointerHandler` should be used instead, it provides the same functionality.
 
 ## Assembly name changes
 

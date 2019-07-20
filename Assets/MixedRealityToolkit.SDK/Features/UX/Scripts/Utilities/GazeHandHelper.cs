@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// the mixedrealitypose - eventdata received on input changed contains the handposition in eventdata.inputdata.position
     /// It also contains useful retrieval functions.
     /// </summary>
-    /// 
+    [System.Obsolete("This component is no longer supported", true)]
     public class GazeHandHelper
     {
         #region Private Variables

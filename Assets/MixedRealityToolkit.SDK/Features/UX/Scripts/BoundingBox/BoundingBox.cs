@@ -997,7 +997,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region MonoBehaviour Methods
 
-        private void Start()
+        private void OnEnable()
         {
             CreateRig();
             CaptureInitialState();
@@ -1019,6 +1019,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 Active = true;
                 Active = false;
             }
+        }
+
+        private void OnDisable()
+        {
+            DestroyRig();
         }
 
         private void Update()

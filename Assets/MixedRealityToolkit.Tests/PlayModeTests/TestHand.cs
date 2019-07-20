@@ -76,6 +76,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return MoveTo(positionToRelease, numSteps);
             yield return SetGesture(ArticulatedHandPose.GestureId.Open);
         }
+
+        public T GetPointer<T>() where T : class, IMixedRealityPointer
+        {
+            var hand = simulationService.GetHandDevice(handedness);
+            foreach (var pointer in hand.InputSource.Pointers)
+            {
+                if (pointer is T)
+                {
+                    return pointer as T;
+                }
+            }
+            return null;
+        }
     }
 }
 #endif
