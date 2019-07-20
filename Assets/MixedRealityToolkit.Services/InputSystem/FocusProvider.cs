@@ -32,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
+
         private int maxQuerySceneResults = 128;
 
         public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators
@@ -179,6 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// to do a gaze raycast even if gaze isn't used for focus.
         /// </summary>
         private PointerData gazeProviderPointingData;
+        private PointerHitResult gazeHitResult;
 
         /// <summary>
         /// Cached <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> reference to the new raycast position.
@@ -515,13 +517,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void Update()
         {
             if (!IsSetupValid) { return; }
-
+            
             UpdatePointers();
 
             if (gazeProviderPointingData?.Pointer != null)
             {
                 UpdateGazeProvider();
             }
+
             UpdateFocusedObjects();
 
             PrimaryPointer = primaryPointerSelector?.Update();
@@ -532,17 +535,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void UpdateGazeProvider()
         {
-            GazeProvider gazeProvider = (GazeProvider)InputSystem.GazeProvider;
-            if (!gazeProvider.HasUpdated)
+            // The gaze hit result may be populated from previous raycasts this frame, only recompute
+            // another raycast if it's not populated
+            if (gazeHitResult == null)
             {
-                var raycastProvider = InputSystem.RaycastProvider;
                 hitResult3d.Clear();
+                var raycastProvider = InputSystem.RaycastProvider;
                 LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
-
                 QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
                     hitResult3d, maxQuerySceneResults);
-                gazeProvider.UpdateGazeInfoFromHit(hitResult3d.raycastHit);
+                gazeHitResult = hitResult3d;
             }
+            
+            ((GazeProvider)InputSystem.GazeProvider).UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+
+            // Zero out value after every use to ensure the hit result is updated every frame.
+            gazeHitResult = null;
         }
 
         #endregion IMixedRealityService Implementation
@@ -893,6 +901,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     var raycastProvider = InputSystem.RaycastProvider;
                     hitResult3d.Clear();
                     QueryScene(pointerData.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults);
+
+                    if (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    {
+                        gazeHitResult = hitResult3d;
+                    }
+
                     PointerHitResult hit = hitResult3d;
 
                     int hitResult3dLayer = hitResult3d.hitObject?.layer ?? -1;
