@@ -93,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                 SetStatus("Change target bounds override size");
                 bc.size = new Vector3(0.5f, 0.1f, 1);
+                bbox.CreateRig();
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Remove target bounds override");
@@ -230,6 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                 bbox.WireframeEdgeRadius = 1f;
                 bbox.CreateRig();
+                SetStatus("Delete GameObject");
                 yield return WaitForSpeechCommand();
 
                 Destroy(multiRoot);
