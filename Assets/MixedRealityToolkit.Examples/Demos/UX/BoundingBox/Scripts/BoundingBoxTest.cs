@@ -93,7 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                 SetStatus("Change target bounds override size");
                 bc.size = new Vector3(0.5f, 0.1f, 1);
-                bbox.CreateRig();
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Remove target bounds override");
