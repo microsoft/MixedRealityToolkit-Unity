@@ -80,7 +80,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// This enum defines what volume type the bound calculation depends on and its priority
-        /// to it.
+        /// for it.
+        /// RendererOverCollider: Used Renderers for the bounds calculation and Colliders as a fallback
+        /// ColliderOverRenderer: Used Colliders for the bounds calculation and Renderers as a fallback
+        /// ColliderOnly: Omits Renderers and uses Colliders for the bounds calculation exclusively
+        /// ColliderOnly: Omits Colliders and uses Renderers for the bounds calculation exclusively
         /// </summary>
         public enum BoundsCalculationMethod
         {
