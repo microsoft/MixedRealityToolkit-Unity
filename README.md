@@ -1,20 +1,23 @@
 <img src="Documentation/Images/MRTK_Logo_Rev.png">
 
 # What is the Mixed Reality Toolkit
-
-MRTK is a Microsoft driven open source project. 
-
-MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity. The latest Release of MRTK (V2) supports HoloLens/HoloLens 2, Windows Mixed Reality, and OpenVR platforms.
+MRTK-Unity is a Microsoft driven project that provides a set of components and features to accelerate cross-platform MR app development in Unity. Here are some things MRTK does:
  
 * Provides the **basic building blocks for Unity development on HoloLens, Windows Mixed Reality, and OpenVR**.
-* Showcases UX best practices with **UI controls that match Windows Mixed Reality and HoloLens Shell**. 
 * Enables **rapid prototyping** via in-editor simulation that allows you to see changes immediately.
-* **Extensible framework** provides developers ability to swap out core components and extend.
+* Designed as an **extensible framework** that provides developers ability to swap out core components.
 * **Supports a wide range of platforms**, including
   * Microsoft HoloLens
   * Microsoft HoloLens 2
   * Windows Mixed Reality headsets
   * OpenVR headsets (HTC Vive / Oculus Rift)
+
+
+# Getting Started with MRTK 
+| [![Getting Started](Documentation/Images/MRTK_Icon_GettingStarted.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)<br/>[MRTK Getting Started Guide](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)| [![Getting Started](Documentation/Images/MRTK_Icon_Documentation.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/)<br/>[MRTK Documentation](https://microsoft.github.io/MixedRealityToolkit-Unity/)|
+|:---|:---|
+
+
 
 # Build Status
 
@@ -36,11 +39,6 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 
 
 
-# Getting Started with MRTK 
-| [![Getting Started](Documentation/Images/MRTK_Icon_GettingStarted.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)<br/>[MRTK Getting Started Guide](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)| [![Getting Started](Documentation/Images/MRTK_Icon_Documentation.png)](https://microsoft.github.io/MixedRealityToolkit-Unity/)<br/>[MRTK Documentation](https://microsoft.github.io/MixedRealityToolkit-Unity/)|
-|:---|:---|
-
-
 # UI and Interaction Building blocks
 |  [![Button](Documentation/Images/Button/MRTK_Button_Main.png)](Documentation/README_Button.md) [Button](Documentation/README_Button.md) | [![Bounding Box](Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)](Documentation/README_BoundingBox.md) [Bounding Box](Documentation/README_BoundingBox.md) | [![Manipulation Handler](Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)](Documentation/README_ManipulationHandler.md) [Manipulation Handler](Documentation/README_ManipulationHandler.md) |
 |:--- | :--- | :--- |
@@ -55,6 +53,11 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 | Slider UI for adjusting values supporting direct hand tracking interaction | MRTK's Standard shader supports various Fluent design elements with performance | Demonstrates how to use Solver to attach objects to the hand joints |
 |  [![Eye Tracking: Target Selection](Documentation/Images/EyeTracking/mrtk_et_targetselect.png)](Documentation/EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](Documentation/EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](Documentation/Images/EyeTracking/mrtk_et_navigation.png)](Documentation/EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](Documentation/EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)](Documentation/EyeTracking/EyeTracking_Visualization.md) [Eye Tracking: Heat Map](Documentation/EyeTracking/EyeTracking_Visualization.md) |
 | Combine eyes, voice and hand input to quickly and effortlessly select holograms across your scene | Learn how to auto scroll text or fluently zoom into focused content based on what you are looking at| Examples for logging, loading and visualizing what users have been looking at in your app |
+
+# Tools
+|  [![Optimize Window](Documentation/Images/MRTK_Icon_OptimizeWindow.png)](Documentation/Utilities/OptimizeWindow.md) [Optimize Window](Documentation/Utilities/OptimizeWindow.md) | [![Dependency Window](Documentation/Images/MRTK_Icon_DependencyWindow.png)](Documentation/Utilities/DependencyWindow.md) [Dependency Window](Documentation/Utilities/DependencyWindow.md) | [![Build Window](Documentation/Images/MRTK_Icon_BuildWindow.png)](Documentation/Utilities/BuildWindow.md) [Build Window](Documentation/Utilities/BuildWindow.md) | [![Input recording](Documentation/Images/MRTK_Icon_InputRecording.png)](Documentation/InputSimulation/InputAnimationRecording.md) [Input recording](Documentation/InputSimulation/InputAnimationRecording.md) |
+|:--- | :--- | :--- | :--- |
+| Automate configuration of Mixed Reality projects for performance optimizations | Analyze dependencies between assets and identify unused assets |  Configure and execute end-to-end build process for Mixed Reality applications | Record and playback head movement and hand tracking data ins editor |
 
 # Example Scenes
 Explore MRTK's various types of interactions and UI controls in [this example scene](Documentation/README_HandInteractionExamples.md).

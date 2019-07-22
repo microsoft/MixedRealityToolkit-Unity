@@ -889,9 +889,6 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed3 primitiveBorderColor = lerp(_ClippingBorderColor, fixed3(0.0, 0.0, 0.0), primitiveDistance / _ClippingBorderWidth);
                 albedo.rgb += primitiveBorderColor * IF((primitiveDistance < _ClippingBorderWidth), 1.0, 0.0);
 #endif
-#if defined(_ALPHA_CLIP)
-                albedo *= (primitiveDistance > 0.0);
-#endif
 #endif
 
 #if defined(_DISTANCE_TO_EDGE)
@@ -1006,11 +1003,15 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_ROUND_CORNERS)
                 albedo *= roundCornerClip;
+                pointToLight *= roundCornerClip;
 #endif
 
 #if defined(_ALPHA_CLIP)
 #if !defined(_ALPHATEST_ON)
                 _Cutoff = 0.5;
+#endif
+#if defined(_CLIPPING_PRIMITIVE)
+                albedo *= (primitiveDistance > 0.0);
 #endif
                 clip(albedo.a - _Cutoff);
                 albedo.a = 1.0;
