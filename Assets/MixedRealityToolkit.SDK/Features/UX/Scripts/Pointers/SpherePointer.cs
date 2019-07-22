@@ -14,6 +14,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override SceneQueryType SceneQueryType { get { return raycastMode; } set { raycastMode = value; } }
 
         [SerializeField]
+        [Min(0.0f)]
+        [Tooltip("Additional distance between SphereCastRadius and NearObjectRadius")]
+        private float nearObjectMargin = 0.2f;
+        /// <summary>
+        /// Additional distance between <see cref="BaseControllerPointer.SphereCastRadius"/> and <see cref="NearObjectRadius"/>.
+        /// </summary>
+        /// <remarks>
+        /// This creates a dead zone in which far interaction is disabled before objects become grabbable.
+        /// </remarks>
+        public float NearObjectMargin => nearObjectMargin;
+
+        /// <summary>
+        /// Distance at which the pointer is considered "near" an object.
+        /// </summary>
+        /// <remarks>
+        /// Sum of <see cref="BaseControllerPointer.SphereCastRadius"/> and <see cref="NearObjectMargin"/>. Entering the <see cref="NearObjectRadius"/> disables far interaction.
+        /// </remarks>
+        public float NearObjectRadius => SphereCastRadius + NearObjectMargin;
+
+        [SerializeField]
         private bool debugMode = false;
 
         private Transform debugSphere;
@@ -29,8 +49,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                Vector3 position;
-                if (TryGetNearGraspPoint(out position))
+                if (TryGetNearGraspPoint(out Vector3 position))
+                {
+                    return UnityEngine.Physics.CheckSphere(position, NearObjectRadius, ~UnityEngine.Physics.IgnoreRaycastLayer);
+                }
+
+                return false;
+            }
+        }
+
+        public override bool IsInteractionEnabled
+        {
+            get
+            {
+                if (IsFocusLocked)
+                {
+                    return true;
+                }
+                else if (base.IsInteractionEnabled && TryGetNearGraspPoint(out Vector3 position))
                 {
                     return UnityEngine.Physics.CheckSphere(position, SphereCastRadius, ~UnityEngine.Physics.IgnoreRaycastLayer);
                 }
@@ -38,8 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return false;
             }
         }
-
-        public override bool IsInteractionEnabled => IsFocusLocked || (IsNearObject && base.IsInteractionEnabled);
 
         /// <inheritdoc />
         public override void OnPreSceneQuery()

@@ -6,10 +6,16 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    [System.Obsolete("This component is no longer supported", true)]
     public class GrabTouchExample : MonoBehaviour, IMixedRealityTouchHandler, IMixedRealityInputHandler
     {
         [SerializeField]
         private MixedRealityInputAction grabAction = MixedRealityInputAction.None;
+
+        private void Awake()
+        {
+            Debug.LogError(this.GetType().Name + " is deprecated");
+        }
 
         public void OnInputDown(InputEventData eventData)
         {

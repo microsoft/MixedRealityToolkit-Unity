@@ -330,11 +330,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 TestUtilities.PlayspaceToOriginLookingForward();
 
                 yield return hand.Show(initialHandPosition);
+                var pointer = hand.GetPointer<SpherePointer>();
+                Assert.IsNotNull(pointer);
+
                 yield return hand.MoveTo(initialGrabPosition, numHandSteps);
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
                 // save relative pos grab point to object
-                Vector3 initialOffsetGrabToObjPivot = MixedRealityPlayspace.InverseTransformPoint(initialGrabPosition) - MixedRealityPlayspace.InverseTransformPoint(testObject.transform.position);
+                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(pointer.Position);
 
                 // full circle
                 const int degreeStep = 360 / numCircleSteps;
@@ -359,8 +362,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     yield return hand.MoveTo(newHandPosition, numHandSteps);
 
                     // make sure that the offset between grab point and object pivot hasn't changed while rotating
-                    Vector3 offsetRotated = MixedRealityPlayspace.InverseTransformPoint(newHandPosition) - MixedRealityPlayspace.InverseTransformPoint(testObject.transform.position);
-                    TestUtilities.AssertAboutEqual(offsetRotated, initialOffsetGrabToObjPivot, "Grab point on object changed during rotation");
+                    Vector3 grabPoint = pointer.Position;
+                    Vector3 cornerRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
+                    TestUtilities.AssertAboutEqual(cornerRotated, grabPoint, "Grab point on object changed during rotation");
                 }
 
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);

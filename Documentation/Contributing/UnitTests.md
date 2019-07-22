@@ -1,5 +1,37 @@
 
-# Writing tests for your code
+# MRTK Tests
+
+MRTK has a set of tests to ensure that changes to our code do not regress existing behavior. When you add a new feature, please:
+
+1. Run the tests locally to make sure your changes don't regress existing behavior (you will not be able to check in if any tests fail)
+2. Write new tests to ensure that other people don't break your feature in the future.
+
+If you fix a bug, please consider writing a test to ensure that this bug doesn't regress in the future as well.
+
+## Executing tests locally
+The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) can be found under Window > General > Test Runner and will show all available MRTK play and edit mode tests. 
+
+You can also run the [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6) script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script
+
+Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1
+```
+    .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe"
+```
+
+Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1, output results to C:\playmode_test_out
+```
+    .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
+```
+
+
+## Executing tests on github / CI
+MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR. 
+
+Only after all of the tests passed successfully the PR can be merged into mrtk_development. 
+
+> Some tests will only fail when run from the command line. You can run the tests locally from command line using similar setup to what it done in MRTK's CI by running `scripts\test\run_playmode_tests.ps1`
+
+## Writing Tests for your code
 To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes.
 
 Preferrably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.
@@ -140,15 +172,6 @@ TestUtilities.ShutdownMixedRealityToolkit();
 
 Please refer to the API docs of [TestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.TestUtilities) and [PlayModeTestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities) for further methods of these util classes as they're extended on a regular basis while new tests get added to MRTK.
 
-
-## Executing tests locally
-The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) can be found under Window > General > Test Runner and will show all available MRTK play and edit mode tests. 
-
-
-## Executing tests on github / CI
-MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR. 
-
-Only after all of the tests passed successfully the PR can be merged into mrtk_development. 
 
 ## See also
 * [Documentation portal generation guide](DevDocGuide.md)
