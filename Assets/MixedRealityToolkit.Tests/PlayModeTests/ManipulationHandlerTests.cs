@@ -514,7 +514,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             float testRotation = 45;
-            const int numRotSteps = 30;
+            const int numRotSteps = 10;
             Quaternion testQuaternion = Quaternion.Euler(testRotation, testRotation, testRotation);
 
             // rotate without constraint

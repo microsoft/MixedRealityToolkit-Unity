@@ -671,8 +671,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             PointerData pointerData = GetFirstPointer();
             IMixedRealityPointer pointer = pointerData.pointer;
             moveLogic.Setup(pointerData.GrabPoint, hostTransform.position);
-			
-			// cache objects rotation on start to have a reference for constraint calculations
+
+            // cache objects rotation on start to have a reference for constraint calculations
             // if we don't cache this on manipulation start the near rotation might drift off the hand
             // over time
             hostWorldRotationOnManipulationStart = hostTransform.rotation;
