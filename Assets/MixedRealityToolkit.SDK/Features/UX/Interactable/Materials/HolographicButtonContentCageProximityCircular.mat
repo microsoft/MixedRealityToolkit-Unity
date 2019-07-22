@@ -10,7 +10,8 @@ Material:
   m_Name: HolographicButtonContentCageProximityCircular
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT _BORDER_LIGHT_OPAQUE _DISABLE_ALBEDO_MAP
-    _IGNORE_Z_SCALE _NEAR_LIGHT_FADE _NEAR_PLANE_FADE _PROXIMITY_LIGHT _ROUND_CORNERS
+    _HOVER_LIGHT _IGNORE_Z_SCALE _NEAR_LIGHT_FADE _NEAR_PLANE_FADE _PROXIMITY_LIGHT
+    _PROXIMITY_LIGHT_TWO_SIDED _ROUND_CORNERS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -41,14 +42,14 @@ Material:
     - _AlbedoAlphaMode: 0
     - _AlbedoAssignedAtRuntime: 0
     - _BlendOp: 0
-    - _BlendedClippingWidth: 1
+    - _BlendedClippingWidth: 0.0001
     - _BorderLight: 1
     - _BorderLightOpaque: 1
     - _BorderLightOpaqueAlpha: 1
     - _BorderLightReplacesAlbedo: 0
     - _BorderLightUsesHoverColor: 0
     - _BorderMinValue: 1
-    - _BorderWidth: 0.04
+    - _BorderWidth: 0.02
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
     - _ColorWriteMask: 15
@@ -69,10 +70,10 @@ Material:
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
     - _FadeBeginDistance: 0.01
-    - _FadeCompleteDistance: 0.15
+    - _FadeCompleteDistance: 0.4
     - _FadeMinValue: 0
     - _FluentLightIntensity: 1
-    - _HoverLight: 0
+    - _HoverLight: 1
     - _IgnoreZScale: 1
     - _InnerGlow: 0
     - _InnerGlowPower: 4
@@ -88,7 +89,7 @@ Material:
     - _NormalMapScale: 1
     - _ProximityLight: 1
     - _ProximityLightSubtractive: 0
-    - _ProximityLightTwoSided: 0
+    - _ProximityLightTwoSided: 1
     - _Reflections: 0
     - _Refraction: 0
     - _RefractiveIndex: 0
