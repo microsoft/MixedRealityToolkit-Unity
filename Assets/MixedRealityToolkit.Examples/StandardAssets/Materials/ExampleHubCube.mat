@@ -74,7 +74,7 @@ Material:
     - _EnvironmentColoring: 0
     - _FadeBeginDistance: 0.01
     - _FadeCompleteDistance: 0.18
-    - _FadeMinValue: 0
+    - _FadeMinValue: 0.02
     - _FluentLightIntensity: 0.825
     - _HoverLight: 1
     - _HoverLightOpaque: 0
@@ -121,7 +121,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 2.1254904, g: 2.1254904, b: 2.1254904, a: 1}
+    - _Color: {r: 0.8692682, g: 0.8692682, b: 0.8692682, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
