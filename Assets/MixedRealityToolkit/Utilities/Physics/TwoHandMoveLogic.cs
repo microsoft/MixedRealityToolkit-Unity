@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             originalScale = objectScale;
         }
 
-        public Vector3 Update(MixedRealityPose pointerCentroidPose, Vector3 objectScale, bool usePointerRotation, bool isTwoHand)
+        public Vector3 Update(MixedRealityPose pointerCentroidPose, Vector3 objectScale, bool usePointerRotation)
         {
             Vector3 headPosition = CameraCache.Main.transform.position;
             float distanceRatio = 1.0f;
@@ -60,9 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 distanceRatio = currentHandDistance / pointerRefDistance;
             }
 
-            Vector3 scaledGrabToObject =  Vector3.Scale(grabToObject, worldToPointerRotation * objectScale.Div(originalScale));
+            Vector3 scaledGrabToObject = worldToPointerRotation * Vector3.Scale(Quaternion.Inverse(worldToPointerRotation) * grabToObject, objectScale.Div(originalScale));
             Vector3 adjustedPointerToObject = (pointerToGrab * distanceRatio) + scaledGrabToObject;
-            if (isTwoHand || usePointerRotation)
+            if (usePointerRotation)
             {
                 adjustedPointerToObject = pointerCentroidPose.Rotation * adjustedPointerToObject;
             }

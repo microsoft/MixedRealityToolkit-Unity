@@ -310,16 +310,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MixedRealityPose pose = new MixedRealityPose();
             pose.Position = (hand1.Position + hand2.Position) / 2;
 
-            Vector3 right = hand1.Position - hand2.Position;
-
             // WIP
-            Vector3 forward = Quaternion.AngleAxis(90, Vector3.up) * right;
+            Vector3 right = hand1.Position - hand2.Position;
+            Vector3 forward = (hand1.Rotation * Vector3.forward + hand2.Rotation * Vector3.forward);
             Vector3 up = Vector3.Cross(forward, right);
-            pose.Rotation = rotateLogic.Update(GetHandPositionMap(), targetRotationTwoHands, constraintOnRotation);
+            //pose.Rotation = rotateLogic.Update(GetHandPositionMap(), targetRotationTwoHands, constraintOnRotation);
+            pose.Rotation = Quaternion.LookRotation(forward);
 
             Debug.DrawRay(pose.Position, right.normalized, Color.red);
             Debug.DrawRay(pose.Position, up.normalized, Color.green);
-            Debug.DrawRay(pose.Position, Vector3.Cross(right, up).normalized, Color.blue);
+            Debug.DrawRay(pose.Position, forward.normalized, Color.blue);
 
             return pose;
         }
@@ -575,7 +575,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if ((currentState & State.Moving) > 0)
             {
                 MixedRealityPose pose = GetAveragePointerPose();
-                targetPosition = moveLogic.Update(pose, hostTransform.localScale, true, true);
+                targetPosition = moveLogic.Update(pose, hostTransform.localScale, true);
             }
 
             var handPositionMap = GetHandPositionMap();
@@ -660,7 +660,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             targetRotation = ApplyConstraints(targetRotation);
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            Vector3 targetPosition = moveLogic.Update(pointerPose, hostTransform.localScale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, false);
+            Vector3 targetPosition = moveLogic.Update(pointerPose, hostTransform.localScale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
 
             float lerpAmount = GetLerpAmount();
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
