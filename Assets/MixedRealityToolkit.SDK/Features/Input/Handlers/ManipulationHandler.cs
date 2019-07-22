@@ -627,6 +627,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 case RotateInOneHandType.RotateAboutObjectCenter:
                 case RotateInOneHandType.RotateAboutGrabPoint:
                     targetRotation = pointer.Rotation * objectToHandRotation;
+                    break;
             }
 
             targetRotation = ApplyConstraints(targetRotation);
