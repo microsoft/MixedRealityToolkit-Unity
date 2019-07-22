@@ -188,14 +188,14 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 0}
-      key1: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
+      key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 1}
       key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 1}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 1}
+      key6: {r: 0, g: 0, b: 0, a: 1}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
+      ctime0: 42020
       ctime1: 65535
       ctime2: 0
       ctime3: 0
@@ -205,15 +205,15 @@ LineRenderer:
       ctime7: 0
       atime0: 0
       atime1: 6361
-      atime2: 22359
-      atime3: 39514
-      atime4: 57632
-      atime5: 65535
-      atime6: 0
+      atime2: 15806
+      atime3: 24479
+      atime4: 39514
+      atime5: 57632
+      atime6: 65535
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 6
+      m_NumAlphaKeys: 7
     numCornerVertices: 8
     numCapVertices: 8
     alignment: 0
@@ -294,7 +294,7 @@ MonoBehaviour:
   stepMode: 0
   lineStepCount: 16
   pointDistributionMode: 1
-  customPointDistributionLength: 0.1
+  customPointDistributionLength: 0.2
   customPointDistributionCurve:
     serializedVersion: 2
     m_Curve:
@@ -341,14 +341,14 @@ MonoBehaviour:
   lineColor:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
-    key1: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
+    key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 1}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 1}
+    key6: {r: 0, g: 0, b: 0, a: 1}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
+    ctime0: 42020
     ctime1: 65535
     ctime2: 0
     ctime3: 0
@@ -358,15 +358,15 @@ MonoBehaviour:
     ctime7: 0
     atime0: 0
     atime1: 6361
-    atime2: 22359
-    atime3: 39514
-    atime4: 57632
-    atime5: 65535
-    atime6: 0
+    atime2: 15806
+    atime3: 24479
+    atime4: 39514
+    atime5: 57632
+    atime6: 65535
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 6
+    m_NumAlphaKeys: 7
   lineWidth:
     serializedVersion: 2
     m_Curve:
@@ -427,7 +427,7 @@ MonoBehaviour:
   roundedCaps: 1
   lineRenderer: {fileID: 120690711267243118}
   tileMaterialByWorldLength: 0
-  tileMaterialScale: 2
+  tileMaterialScale: 1
 --- !u!114 &114269887534944512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -618,8 +618,8 @@ MonoBehaviour:
   lineRendererSelected: {fileID: 114903794112201558}
   lineRendererNoTarget: {fileID: 7488119136884840896}
   inertia: {fileID: 3980487836371375048}
-  startPointLerp: 0.33
-  endPointLerp: 0.66
+  startPointLerp: 0.267
+  endPointLerp: 0.637
 --- !u!114 &3980487836371375048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,7 +634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bezier: {fileID: 8090720277987393429}
   inertia: 15
-  dampen: 12
+  dampen: 6
   seekTargetStrength: 5
   p1Target: {x: 0, y: 0, z: 0.33}
   p2Target: {x: 0, y: 0, z: 0.66}
