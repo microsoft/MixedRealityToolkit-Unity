@@ -53,7 +53,7 @@ A user aligned cube volume is a rectangular shape that rotates to align with the
 
 #### Sphere
 
-A spherical volume with a center at the world space origin. The X value of the [Observation Extents](#bservation-extents) property will be used as the radius of the sphere.
+A spherical volume with a center at the world space origin. The X value of the [Observation Extents](#observation-extents) property will be used as the radius of the sphere.
 
 ### Observation Extents
 
