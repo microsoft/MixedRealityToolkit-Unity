@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         { "<PROJECT_RELATIVE_PATH>", Path.GetFileName(projectInfo.ReferencePath.AbsolutePath) },
                         { "<PROJECT_GUID>", projectInfo.Guid.ToString().ToUpper() } }));
 
-            if (projectInfo.ProjectDependencies.Count > 0)
+            if (false && projectInfo.ProjectDependencies.Count > 0)
             {
                 string projectDependencyStartSection = "    ProjectSection(ProjectDependencies) = postProject";
                 string projectDependencyGuid = "        {<DependencyGuid>} = {<DependencyGuid>}";
@@ -169,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                 toReturn.AppendLine(projectDependencyStopSection);
             }
-            toReturn.AppendLine("EndProject");
+            toReturn.Append("EndProject");
             return toReturn.ToString();
         }
 
@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     .SelectMany(t => availablePlatforms.Select(p => t.Replace("<Platform>", p.Name.ToString())));
 
                 List<string> configurationMappings = new List<string>();
-                List<string> enabledConfigurations = new List<string>();
+                List<string> disabled = new List<string>();
 
                 foreach (CSProjectInfo project in orderedProjects.Select(t => t))
                 {
@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     {
                         return Utilities.ReplaceTokens(template, new Dictionary<string, string>()
                         {
-                            { "<PROJECT_GUID_TOKEN>", guid },
+                            { "<PROJECT_GUID_TOKEN>", guid.ToString().ToUpper() },
                             { "<PROJECT_CONFIGURATION_TOKEN>", configuration },
                             { "<PROJECT_PLATFORM_TOKEN>", platform },
                             { "<SOLUTION_CONFIGURATION_TOKEN>", configuration },
@@ -259,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                             if (platforms.ContainsKey(platform.BuildTarget))
                             {
-                                enabledConfigurations.Add(ConfigurationTemplateReplace(configurationPlatformEnabledTemplateBody, guid.ToString(), configuration, platform.Name));
+                                configurationMappings.Add(ConfigurationTemplateReplace(configurationPlatformEnabledTemplateBody, guid.ToString(), configuration, platform.Name));
                             }
                         }
                     }
@@ -270,10 +270,10 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                 solutionTemplateText = Utilities.ReplaceTokens(solutionTemplateText, new Dictionary<string, string>()
                 {
-                    { projectEntryTemplate, string.Join(string.Empty, projectEntries)},
+                    { projectEntryTemplate, string.Join(Environment.NewLine, projectEntries)},
                     { configurationPlatformEntry, string.Join(string.Empty, configPlatforms)},
                     { configurationPlatformMappingTemplate, string.Join(string.Empty, configurationMappings) },
-                    { configurationPlatformEnabledTemplate, string.Join(string.Empty, enabledConfigurations) }
+                    { configurationPlatformEnabledTemplate, string.Join(string.Empty, disabled) }
                 });
             }
             else

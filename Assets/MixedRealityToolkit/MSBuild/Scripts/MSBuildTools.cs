@@ -75,6 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             List<CompilationPlatformInfo> platforms = CompilationPipeline.GetAssemblyDefinitionPlatforms()
                 .Where(t => supportedBuildTargets.Contains(t.BuildTarget))
                 .Select(CompilationPlatformInfo.GetCompilationPlatform)
+                .OrderBy(t => t.Name)
                 .ToList();
 
             CompilationPlatformInfo editorPlatform = CompilationPlatformInfo.GetEditorPlatform();
