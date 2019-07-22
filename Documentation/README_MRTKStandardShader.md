@@ -29,7 +29,7 @@ One of the primary advantages to using the MRTK Standard shader over the Unity s
 
 Unity Standard shader statistics example
 
-![Unity Standard Shader Statistics](../Documentation/Images/Performance/UnityStandardShader-Stats.png)
+![Unity Standard Shader Statistics](../Documentation/Images/Performance/UnityStandardShader-Stats.PNG)
 
 MRTK Standard shader statistics example
 
