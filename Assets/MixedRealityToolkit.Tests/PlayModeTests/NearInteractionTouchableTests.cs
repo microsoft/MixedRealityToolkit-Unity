@@ -356,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var button = UnityUiUtilities.CreateButton(Color.gray, Color.blue, Color.green);
             button.transform.SetParent(canvas.transform, false);
             var text = UnityUiUtilities.CreateText("test");
-            text.transform.SetParent(button.transform);
+            text.transform.SetParent(button.transform, false);
 
             canvas.transform.position = objectPosition;
 
@@ -390,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var toggle = UnityUiUtilities.CreateToggle(Color.gray, Color.blue, Color.green);
             toggle.transform.SetParent(canvas.transform, false);
             var text = UnityUiUtilities.CreateText("test");
-            text.transform.SetParent(toggle.transform);
+            text.transform.SetParent(toggle.transform, false);
 
             canvas.transform.position = objectPosition;
 
