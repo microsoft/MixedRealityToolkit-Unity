@@ -259,10 +259,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SourceDownIds.Remove(eventData.SourceId);
 
             if (!IsSourceDetected && SetVisibilityOnSourceDetected)
-                {
-                    SetVisibility(false);
-                }
+            {
+                SetVisibility(false);
             }
+        }
 
         #endregion IMixedRealitySourceStateHandler Implementation
 
