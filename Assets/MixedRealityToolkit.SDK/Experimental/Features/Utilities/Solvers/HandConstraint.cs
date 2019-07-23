@@ -283,6 +283,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                 }
             }
 
+            // Check to make sure none of the hand's pointer's a locked. We don't want to track a hand which is currently
+            // interacting with something else.
+            foreach (var pointer in hand.InputSource.Pointers)
+            {
+                if (pointer.IsFocusLocked)
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
 
