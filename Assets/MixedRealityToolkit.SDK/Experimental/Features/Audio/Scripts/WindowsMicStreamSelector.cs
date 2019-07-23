@@ -3,8 +3,10 @@
 
 // todo: only support windows standalone and uwp builds
 
+using Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement;
+using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using UnityEngine;
 
@@ -13,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
     /// <summary>
     /// todo
     /// </summary>
-    public class WindowsMicrophoneStreamSelector
+    public class WindowsMicrophoneStreamSelector : IDisposable
     {
         /// <summary>
         /// Constructor
@@ -34,70 +36,189 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
 
         private float gain = 1.0f; // todo: what is a reasonable range?
 
-        /// <inheritdoc />
+        /// <summary>
+        /// todo
+        /// </summary>
         public float Gain
         {
             get => gain;
 
             set
             {
-                if (0 == MicSetGain(value))
+                if ((gain != value) &&
+                    ValidateResult((WindowsMicrophoneStreamErrorCode)MicSetGain(value)))
                 {
                     gain = value;
-                }
-                else
-                {
-                    // todo: errror
                 }
             }
         }
 
-        /// <inheritdoc />
-        public int InitializeMicrophone()
+        private bool initialized = false;
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        public void Initialize(WindowsMicrophoneStreamType streamType)
+        {
+            if (!initialized &&
+                ValidateResult((WindowsMicrophoneStreamErrorCode)MicInitializeCustomRate((int)streamType, AudioSettings.outputSampleRate)))
+            {
+                initialized = true;
+            }
+        }
+
+        private bool paused = false;
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        public void Pause()
+        {
+            if (!paused &&
+                ValidateResult((WindowsMicrophoneStreamErrorCode)MicPause()))
+            {
+                paused = true;
+            }
+        }
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        public void Resume()
+        {
+            if (paused &&
+                ValidateResult((WindowsMicrophoneStreamErrorCode)MicResume()))
+            {
+                paused = false;
+            }
+        }
+
+        private bool recording = false;
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        public void StartRecording()
         {
             throw new System.NotImplementedException();
         }
 
-        /// <inheritdoc />
-        public int Pause()
+        private bool streaming = false;
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        public void StartStream(bool keepData, bool localPlayback)
         {
-            throw new System.NotImplementedException();
+            if (!streaming &&
+                ValidateResult((WindowsMicrophoneStreamErrorCode)MicStartStream(keepData, localPlayback, null)))
+            {
+                streaming = true;
+            }
         }
 
-        /// <inheritdoc />
-        public int Resume()
+        /// <summary>
+        /// todo
+        /// </summary>
+        public void StopRecording(/* todo */)
         {
-            throw new System.NotImplementedException();
+            // todo
+            //if (recording &&
+            //    ValidateResult((WindowsMicrophoneStreamErrorCode)MicStopRecording())
+            //{
+            //    recording = false;
+            //}
         }
 
-        /// <inheritdoc />
-        public int StartRecording()
+        /// <summary>
+        /// todo
+        /// </summary>
+        public void StopStream()
         {
-            throw new System.NotImplementedException();
+            if (streaming &&
+                ValidateResult((WindowsMicrophoneStreamErrorCode)MicStopStream()))
+            {
+                streaming = false;
+            }
         }
 
-        /// <inheritdoc />
-        public int StartStream()
+        /// <summary>
+        /// todo
+        /// </summary>
+        public void Uninitialize()
         {
-            throw new System.NotImplementedException();
+            if (!initialized &&
+                ValidateResult((WindowsMicrophoneStreamErrorCode)MicDestroy()))
+            {
+                initialized = false;
+            }
         }
 
-        /// <inheritdoc />
-        public int StopRecording()
+        /// <summary>
+        /// Validates the success or failure of return value and prints a developer friendly message as appropriate.
+        /// </summary>
+        /// <param name="returnValue">The return value to validate.</param>
+        /// <returns>
+        /// True if the return value indicates success, false otherwise.
+        /// </returns>
+        private bool ValidateResult(WindowsMicrophoneStreamErrorCode returnValue)
         {
-            throw new System.NotImplementedException();
-        }
+            bool success = false;
 
-        /// <inheritdoc />
-        public int StopStream()
-        {
-            throw new System.NotImplementedException();
-        }
+            switch (returnValue)
+            {
+                case WindowsMicrophoneStreamErrorCode.Success:
+                    success = true;
+                    break;
+                    
+                case WindowsMicrophoneStreamErrorCode.AlreadyRecording:
+                    Debug.LogWarning("The microphone stream is currently recording.");
+                    success = false;
+                    break;
 
-        /// <inheritdoc />
-        public int UninitializeMicrophone()
-        {
-            throw new System.NotImplementedException();
+                case WindowsMicrophoneStreamErrorCode.AlreadyRunning:
+                    Debug.LogWarning("The microphone has already been initialized.");
+                    success = false;
+                    break;
+
+                case WindowsMicrophoneStreamErrorCode.GraphDoesNotExist:
+                    Debug.LogError("A microphone is not connected or the stream has not been initialized.");
+                    success = false;
+                    break;
+
+                case WindowsMicrophoneStreamErrorCode.NoAudioDevice:
+                case WindowsMicrophoneStreamErrorCode.NoInputDevice:
+                    Debug.LogError("A microphone does not appear to be configured on this system.");
+                    success = false;
+                    break;
+
+                case WindowsMicrophoneStreamErrorCode.ChannelCountMismatch:
+                    Debug.LogError("The microphone appears to be misconfigured. Pleae try setting different mono/stereo options in the operating system settings.");
+                    success = false;
+                    break;
+
+                case WindowsMicrophoneStreamErrorCode.FileCreationPermissionError:
+                    Debug.LogError("Unable to create a file in the Music Library. Please ensure the proper permissions are configured.");
+                    success = false;
+                    break;
+
+                case WindowsMicrophoneStreamErrorCode.NeedMicCapabilityEnabled:
+                    Debug.LogError("Unable to access the microphone. Please ensure the proper capabilies are configured.");
+                    success = false;
+                    break;
+
+                case WindowsMicrophoneStreamErrorCode.NotEnoughData:
+                    // Generally the device has recently been started and has not produced enough data.
+                    success = false;
+                    break;
+
+                default:
+                    Debug.LogError($"An unexpected error ({(int)returnValue}) has occcured.");
+                    success = false;
+                    break;
+            }
+
+            return success;
         }
 
         #region IDisposable implementation
@@ -112,13 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         {
             if (!hasBeenDisposed)
             {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects).
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
+                Uninitialize();
 
                 hasBeenDisposed = true;
             }
@@ -179,6 +294,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
     /// </summary>
     enum WindowsMicrophoneStreamErrorCode
     {
+        /// <summary>
+        /// todo
+        /// </summary>
+        Success = 0,
+
         /// <summary>
         /// todo
         /// </summary>
