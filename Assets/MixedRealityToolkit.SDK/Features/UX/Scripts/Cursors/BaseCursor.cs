@@ -146,6 +146,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (ReferenceEquals(pointer?.BaseCursor, this))
                 {
+                    // if the previous pointer was attached to this cursor, null out the
+                    // pointer's cursor reference - that way we don't have multiple pointers
+                    // trying to use the same cursor
                     pointer.BaseCursor = null;
                 }
 
@@ -253,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-                SourceDownIds.Remove(eventData.SourceId);
+            SourceDownIds.Remove(eventData.SourceId);
 
             if (!IsSourceDetected && SetVisibilityOnSourceDetected)
                 {
