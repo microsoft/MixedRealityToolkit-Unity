@@ -4,6 +4,7 @@
 // todo: only support windows standalone and uwp builds
 
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using UnityEngine;
 
@@ -12,14 +13,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
     /// <summary>
     /// todo
     /// </summary>
-    public class WindowsMicrophoneStreamService : IMicrophoneStreamService
+    public class WindowsMicrophoneStreamSelector
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        public WindowsMicrophoneStreamService(
-            IMixedRealityServiceRegistrar registrar,
-            WindowsMicrophoneStreamServiceProfile profile)
+        public WindowsMicrophoneStreamSelector()
 
         {
             // todo
@@ -28,117 +27,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// Finalizer.
         /// </summary>
-        ~WindowsMicrophoneStreamService()
+        ~WindowsMicrophoneStreamSelector()
         {
            Dispose(false);
         }
 
-
-        /// <summary>
-        /// todo
-        /// </summary>
-        void ReadProfile()
-        {
-            // todo
-        }
-
-        #region IDisposable implementation
-
-        private bool hasBeenDisposed = false;
-
-        /// <summary>
-        /// todo
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!hasBeenDisposed)
-            {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects).
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                hasBeenDisposed = true;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            System.GC.SuppressFinalize(this);
-        }
-
-        #endregion IDisposable implementation
-
-        #region IMixedRealityExtensionService implementation
-
-        /// <inheritdoc />
-        public string Name => throw new System.NotImplementedException();
-
-        /// <inheritdoc />
-        public uint Priority => throw new System.NotImplementedException();
-
-        /// <inheritdoc />
-        public BaseMixedRealityProfile ConfigurationProfile => throw new System.NotImplementedException();
-
-        /// <inheritdoc />
-        public void Destroy()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void Disable()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void Enable()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void Initialize()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void LateUpdate()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void Reset()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void Update()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        #endregion IMixedRealityExtensionService implementation
-
-        #region IMicrophoneStreamService implementation
+        private float gain = 1.0f; // todo: what is a reasonable range?
 
         /// <inheritdoc />
         public float Gain
         {
-            get => throw new System.NotImplementedException();
-            set => throw new System.NotImplementedException();
+            get => gain;
+
+            set
+            {
+                if (0 == MicSetGain(value))
+                {
+                    gain = value;
+                }
+                else
+                {
+                    // todo: errror
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -189,7 +100,40 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
             throw new System.NotImplementedException();
         }
 
-        #endregion IMicrophoneStreamService implementation
+        #region IDisposable implementation
+
+        private bool hasBeenDisposed = false;
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!hasBeenDisposed)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                hasBeenDisposed = true;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            System.GC.SuppressFinalize(this);
+        }
+
+        #endregion IDisposable implementation
 
         #region MicStream.dll p/invoke methods
 
