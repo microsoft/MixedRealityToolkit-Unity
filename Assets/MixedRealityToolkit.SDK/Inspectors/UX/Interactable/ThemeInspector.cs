@@ -25,11 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected static string[] shaderOptions;
         protected static State[] themeStates;
 
-        // indent tracker
-        protected static int indentOnSectionStart = 0;
-
         protected GUIStyle boxStyle;
         protected bool layoutComplete = false;
+        private const float ThemeStateFontScale = 1.2f;
 
         protected virtual void OnEnable()
         {
@@ -106,57 +104,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected bool RenderStates()
         {
             // States
-            bool showStates = false;
-            bool drawerStarted = false;
             SerializedProperty states = serializedObject.FindProperty("States");
-            if (states.objectReferenceValue != null)
-            {
-                string statesPrefKey = target.name + "Settings_States";
-                bool prefsShowStates = EditorPrefs.GetBool(statesPrefKey);
-                EditorGUI.indentLevel = indentOnSectionStart + 1;
-                showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart, prefsShowStates, FontStyle.Normal, false);
-                drawerStarted = true;
 
-                if (showStates != prefsShowStates)
-                {
-                    EditorPrefs.SetBool(statesPrefKey, showStates);
-                }
-            }
-            else
+            // If states value is not provided, try to use Default states type
+            if (states.objectReferenceValue == null)
             {
-                string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
-                if (stateLocations.Length > 0)
-                {
-                    for (int k = 0; k < stateLocations.Length; k++)
-                    {
-                        string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
-                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
-                        if (defaultStates != null)
-                        {
-                            states.objectReferenceValue = defaultStates;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    showStates = true;
-                }
+                states.objectReferenceValue = GetDefaultInteractableStates();
             }
 
-            if (showStates)
-            {
-                EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"), true);
-            }
-
-            if (drawerStarted)
-            {
-                InspectorUIUtility.DrawSectionEnd(indentOnSectionStart);
-            }
+            GUI.enabled = !(EditorApplication.isPlaying || EditorApplication.isPaused);
+            EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+            GUI.enabled = true;
 
             if (states.objectReferenceValue == null)
             {
-                InspectorUIUtility.DrawError("Please assign a States object! Ex: DefaultInteractableStates");
+                InspectorUIUtility.DrawError("Please assign a States object!");
+                EditorGUILayout.EndVertical();
                 serializedObject.ApplyModifiedProperties();
                 return false;
             }
@@ -874,12 +837,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return copyTo;
         }
 
-        public static void RenderThemeSettings(SerializedProperty themeSettings, SerializedObject themeObj, InteractableTypesContainer themeOptions, SerializedProperty gameObject, int[] listIndex, State[] states)
+        public static void RenderThemeSettings(SerializedProperty themeSettings, SerializedObject themeObj, InteractableTypesContainer themeOptions, SerializedProperty gameObject, int[] listIndex, State[] states, int margin = 0)
         {
-            GUIStyle box = InspectorUIUtility.Box(0);
+            GUIStyle box = InspectorUIUtility.Box(margin);
+
             if (themeObj != null)
             {
-                box = InspectorUIUtility.Box(34);
                 themeObj.Update();
             }
 
@@ -888,9 +851,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SerializedProperty settingsItem = themeSettings.GetArrayElementAtIndex(n);
                 SerializedProperty className = settingsItem.FindPropertyRelative("Name");
 
-                EditorGUI.indentLevel = indentOnSectionStart;
-
                 EditorGUILayout.BeginVertical(box);
+
                 // a dropdown for the type of theme, they should make sense
                 // show theme dropdown
                 int id = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions.ClassNames);
@@ -928,13 +890,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
 
                 SerializedProperty sProps = settingsItem.FindPropertyRelative("Properties");
-                EditorGUI.indentLevel = indentOnSectionStart + 1;
-
                 int animatorCount = 0;
                 int idCount = 0;
+
                 for (int p = 0; p < sProps.arraySize; p++)
                 {
-
                     SerializedProperty item = sProps.GetArrayElementAtIndex(p);
                     SerializedProperty propId = item.FindPropertyRelative("PropId");
                     SerializedProperty name = item.FindPropertyRelative("Name");
@@ -1049,9 +1009,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     RenderValue(value, name.stringValue, name.stringValue, type);
                 }
 
-                EditorGUI.indentLevel = indentOnSectionStart;
-                GUILayout.Space(5);
-
                 if (animatorCount < sProps.arraySize)
                 {
                     // show theme properties
@@ -1061,19 +1018,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     SerializedProperty noEasing = settingsItem.FindPropertyRelative("NoEasing");
                     if (!noEasing.boolValue)
                     {
-                        InspectorUIUtility.DrawDivider();
                         enabled.boolValue = EditorGUILayout.Toggle(new GUIContent("Easing", "should the theme animate state values"), enabled.boolValue);
 
                         if (enabled.boolValue)
                         {
-                            EditorGUI.indentLevel = indentOnSectionStart + 1;
-                            SerializedProperty time = easing.FindPropertyRelative("LerpTime");
-                            SerializedProperty curve = easing.FindPropertyRelative("Curve");
+                            using (new EditorGUI.IndentLevelScope())
+                            {
+                                SerializedProperty time = easing.FindPropertyRelative("LerpTime");
+                                SerializedProperty curve = easing.FindPropertyRelative("Curve");
 
-                            time.floatValue = EditorGUILayout.FloatField(new GUIContent("Duration", "animation duration"), time.floatValue);
-                            EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve"));
-
-                            EditorGUI.indentLevel = indentOnSectionStart;
+                                time.floatValue = EditorGUILayout.FloatField(new GUIContent("Duration", "animation duration"), time.floatValue);
+                                EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve"));
+                            }
                         }
                     }
                     else
@@ -1228,54 +1184,53 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public static void RenderThemeStates(SerializedProperty settings, State[] states, int margin)
+        public static void RenderThemeStates(SerializedProperty settings, State[] states, int margin = 0)
         {
             GUIStyle box = InspectorUIUtility.Box(margin);
 
             EditorGUILayout.BeginVertical(box);
-            for (int n = 0; n < states.Length; n++)
-            {
-                InspectorUIUtility.DrawLabel(states[n].Name, 12, InspectorUIUtility.ColorTint50);
 
-                EditorGUI.indentLevel = indentOnSectionStart + 1;
-
-                for (int j = 0; j < settings.arraySize; j++)
+                for (int n = 0; n < states.Length; n++)
                 {
-                    SerializedProperty settingsItem = settings.GetArrayElementAtIndex(j);
+                    InspectorUIUtility.DrawLabel(states[n].Name, (int)(InspectorUIUtility.DefaultFontSize * ThemeStateFontScale), InspectorUIUtility.ColorTint50);
 
-                    SerializedProperty properties = settingsItem.FindPropertyRelative("Properties");
-
-                    for (int i = 0; i < properties.arraySize; i++)
+                    for (int j = 0; j < settings.arraySize; j++)
                     {
-                        SerializedProperty propertyItem = properties.GetArrayElementAtIndex(i);
-                        SerializedProperty name = propertyItem.FindPropertyRelative("Name");
-                        SerializedProperty type = propertyItem.FindPropertyRelative("Type");
-                        SerializedProperty values = propertyItem.FindPropertyRelative("Values");
-                        SerializedProperty shaderNames = propertyItem.FindPropertyRelative("ShaderOptionNames");
-                        SerializedProperty propId = propertyItem.FindPropertyRelative("PropId");
+                        SerializedProperty settingsItem = settings.GetArrayElementAtIndex(j);
 
-                        string shaderPropName = "Shader";
-
-                        if (shaderNames.arraySize > propId.intValue)
+                        SerializedProperty properties = settingsItem.FindPropertyRelative("Properties");
+                        using (new EditorGUI.IndentLevelScope())
                         {
-                            SerializedProperty propName = shaderNames.GetArrayElementAtIndex(propId.intValue);
-                            shaderPropName = propName.stringValue.Substring(1);
-                        }
+                            for (int i = 0; i < properties.arraySize; i++)
+                            {
+                                SerializedProperty propertyItem = properties.GetArrayElementAtIndex(i);
+                                SerializedProperty name = propertyItem.FindPropertyRelative("Name");
+                                SerializedProperty type = propertyItem.FindPropertyRelative("Type");
+                                SerializedProperty values = propertyItem.FindPropertyRelative("Values");
+                                SerializedProperty shaderNames = propertyItem.FindPropertyRelative("ShaderOptionNames");
+                                SerializedProperty propId = propertyItem.FindPropertyRelative("PropId");
 
-                        if (n >= values.arraySize)
-                        {
-                            // the state values for this theme were not created yet
-                            continue;
-                        }
+                                string shaderPropName = "Shader";
 
-                        SerializedProperty item = values.GetArrayElementAtIndex(n);
-                        RenderValue(item, name.stringValue, shaderPropName, (InteractableThemePropertyValueTypes)type.intValue);
+                                if (shaderNames.arraySize > propId.intValue)
+                                {
+                                    SerializedProperty propName = shaderNames.GetArrayElementAtIndex(propId.intValue);
+                                    shaderPropName = propName.stringValue.Substring(1);
+                                }
+
+                                if (n >= values.arraySize)
+                                {
+                                    // the state values for this theme were not created yet
+                                    continue;
+                                }
+
+                                SerializedProperty item = values.GetArrayElementAtIndex(n);
+                                RenderValue(item, name.stringValue, shaderPropName, (InteractableThemePropertyValueTypes)type.intValue);
+                            }
+                        }
                     }
-                }
-
-                EditorGUI.indentLevel = indentOnSectionStart;
-            }
-            GUILayout.Space(5);
+                }// for loop
+                GUILayout.Space(5);
 
             EditorGUILayout.EndVertical();
             GUILayout.Space(5);
@@ -1368,6 +1323,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             info.ShaderOptions = properties.ToArray();
             return info;
+        }
+        public static States GetDefaultInteractableStates()
+        {
+            AssetDatabase.Refresh();
+            string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
+            if (stateLocations.Length > 0)
+            {
+                for (int i = 0; i < stateLocations.Length; i++)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(stateLocations[i]);
+                    States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
+                    if (defaultStates != null)
+                    {
+                        return defaultStates;
+                        //states.objectReferenceValue = defaultStates;
+                    }
+                }
+            }
+
+            return null;
         }
 
         public static ShaderPropertyType ShaderUtilConvert(ShaderUtil.ShaderPropertyType type)
