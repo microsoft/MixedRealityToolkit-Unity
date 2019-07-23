@@ -1036,14 +1036,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7779420039263858270}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.3
-  rotateLerpTime: 0.3
+  moveLerpTime: 0.5
+  rotateLerpTime: 0.5
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
@@ -1053,12 +1053,12 @@ MonoBehaviour:
   minDistance: 0.4
   maxDistance: 1
   minViewDegrees: 0
-  maxViewDegrees: 20
+  maxViewDegrees: 25
   aspectV: 1
   ignoreAngleClamp: 0
   ignoreDistanceClamp: 0
   useFixedVerticalPosition: 1
-  fixedVerticalPosition: -0.1
+  fixedVerticalPosition: -0.2
   orientToReferenceDirection: 0
 --- !u!65 &7779420039263858272
 BoxCollider:
