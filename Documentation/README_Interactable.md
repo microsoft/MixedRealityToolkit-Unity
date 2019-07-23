@@ -1,4 +1,4 @@
-# Interactable #
+# Interactable
 
 ![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)
 
@@ -51,8 +51,7 @@ The ability to add multiple layers to Themes to create controls like Toggles or 
 
 **Public Properties**
 
-ClickCount - a read only value that tracks how many clicks have occured.
-
+ClickCount - a read only value that tracks how many clicks have occurred.
 
 ## Profiles and Themes ##
 
@@ -64,7 +63,7 @@ Themes work a lot like materials. They are scriptable objects that contain a lis
 
 <img src="../Documentation/Images/Interactable/DefaultTheme_button.png" width="450">
 
-A default theme will be provided whenever an target object is added to a profile. It is not advised to edit the default theme, like in the case MRTK is updated, the theme could get overridden. A "Create Theme" button is provided whenever the default theme is used to make it easier to create a new themes. 
+A default theme will be provided whenever an target object is added to a profile. It is not advised to edit the default theme, like in the case MRTK is updated, the theme could get overridden. A "Create Theme" button is provided whenever the default theme is used to make it easier to create a new themes.
 
 <img src="../Documentation/Images/Interactable/DefaultTheme_values.png" width="450">
 
@@ -77,8 +76,8 @@ A default theme will be provided whenever an target object is added to a profile
 The best way to save a profile of a button, with all the themes and targets setup, is to create a prefab of your button.
 Note that themes that manipulate mesh objects (color or shader themes) are able to detect the shader properties in the material assigned to the target object. A drop down list of shader properties will define how the values of the theme are applied and is a convenience of this ability. Conflicts can arise if the same theme is used on objects that do not share the same material shader setting. Best practice is to create a separate theme for objects with different shaders; this is not an issue when using the same color theme on a text object and a mesh object, because all the shader properties are ignored on text objects.
 
-
 ### Creating Toggles and Multi-Dimension buttons
+
 Toggle or multi-dimension buttons can be created in the Profile using the [`Selection Mode`](xref:Microsoft.MixedReality.Toolkit.UI.SelectionModes) field. In the Toggle mode, a new toggled theme is added for each Target in the Profile. When the Interactable is toggled on, the Toggled Theme will be used to provide an additional layer of visual feedback.
 
 While the [`Selection Mode`](xref:Microsoft.MixedReality.Toolkit.UI.SelectionModes) is set to Toggle, the Is Toggled check box can be used to set the default value of the control which will be visible during runtime.
@@ -95,14 +94,14 @@ With dimensions being a numeric value, up to 9 themes can be added to control th
 
 Developers can assess the [`DimensionIndex`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) to determine which dimension is currently active.
 
-```
+```csharp
 //Access the current DimensionIndex
 GetDimensionIndex();
 
 //Set the DimensionIndex - toggled
 SetDimensionIndex(1);
 
-//Set the DimensinIndex - Untoggled
+//Set the DimensionIndex - Untoggled
 SetDimensionIndex(0);
 ```
 
@@ -113,6 +112,7 @@ Every click event will advance the DimensionIndex which will increase until the 
 **See the Events section to learn about Toggle Events.**
 
 ## Events
+
 You can use Interactable to detect input events other than just OnClick. The Events feature provides a way to enable functionality to extend a button, but not really visual or needed to provide feedback based on state changes.
 
 <img src="../Documentation/Images/Interactable/Events.png" width="450">
@@ -135,7 +135,7 @@ You can use Interactable to detect input events other than just OnClick. The Eve
 
 *Example of a modified OnClick event to spawn a gameObject on click*
 
-Events can be placed on an object to monitor a separate interactable. Use `InteractableReceiver` for a single event (from the list) or `InteractableReceiverList` for a list of events similar to the interactable event list.
+Events can be placed on an object to monitor a separate interactable. Use [`InteractableReceiver`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableReceiver) for a single event (from the list) or [`InteractableReceiverList`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableReceiverList) for a list of events similar to the interactable event list.
 
 <img src="../Documentation/Images/Interactable/InteractableReceiver.png" width="450">
 
@@ -149,6 +149,7 @@ States are a list of terms that can be used to define interactions phases, like 
 <img src="../Documentation/Images/Interactable/DefaultStates.png" width="450">
 
 Interactable states provide two major roles:
+
 * Establish a list of states that are relevant for the Interactable. This list will be displayed in the themes and can also be referenced by the events.
 * Controls how different interaction phases are ranked into states. For instance, a press state is also in a focused state, but the InteractableStates class will define it is a press state based on the ranking preferences setup in the State ScriptableObject.
 
@@ -158,14 +159,18 @@ The InteractableStates State Model will handle any state list with a layered ran
 
 The DefaultInteractableStates list contains 4 states:
 
-- **Default**: Nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.
-- **Focus**: The object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.
-- **Press**: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus. This state will also get set as a fallback to Physcial Press.
-- **Disabled**: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.
+* **Default**: Nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.
+
+* **Focus**: The object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.
+
+* **Press**: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus. This state will also get set as a fallback to Physical Press.
+
+* **Disabled**: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.
 
 A bit value (#) is assigned to the state depending on the order in the list.
 
 There are currently 17 states total that you can used to drive themes, though some are meant to be driven by other components. Here's a list of those with built-in functionality.
+
 - Default, Focus, Pressed and Disabled are mentioned above
 - Visited: the Interactable has been clicked.
 - Toggled: The button is in a toggled state or Dimension idex is an odd number.
@@ -176,16 +181,15 @@ There are currently 17 states total that you can used to drive themes, though so
 
 States have corresponding properties and Methods in the Interactable, like SetFocus(bool focus) or HasFocus.
 
-## Interactable goals and architecture ##
+## Interactable goals and architecture
 
 <img src="../Documentation/Images/Interactable/Interactable_overview.png" width="750">
 
-
 <img src="../Documentation/Images/Interactable/Interactable_details.png" width="1450">
 
+## Extending themes
 
-## Extending themes ##
-Extend `InteractableThemeBase` to create a new theme that will show up in the theme property drop-down list. Themes can be created to control anything based on state changes. We could have a custom component on a GameObject that is driven by a custom theme with the values for each state being set in the inspector.
+Extend [`InteractableThemeBase`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase) to create a new theme that will show up in the theme property drop-down list. Themes can be created to control anything based on state changes. We could have a custom component on a GameObject that is driven by a custom theme with the values for each state being set in the inspector.
 
 Setup the configuration of the theme settings in the constructor.
 
@@ -205,10 +209,13 @@ public NewCustomTheme()
 }
 ```
 
-- **Name**: The display name of the property, this will display next to the property field under each state title.
-- **Types**: Allow filtering based on components on the object. In this case, this theme will show up in the list when assigned to an object with a Transform.
-- **Name**: The name that will show up in the inspector.
-- **ThemeProperties**: A list of properties that theme will store to be used when the state changes.
+* **Name**: The display name of the property, this will display next to the property field under each state title.
+
+* **Types**: Allow filtering based on components on the object. In this case, this theme will show up in the list when assigned to an object with a Transform.
+
+* **Name**: The name that will show up in the inspector.
+
+* **ThemeProperties**: A list of properties that theme will store to be used when the state changes.
 
 Each Theme Property has a name, type (defining the fields to display for each state), a set of values for each state and a default value for the fields. The state fields can also be hidden in the inspector, if the theme does not require them to be visible.
 
@@ -248,19 +255,22 @@ public override void SetValue(InteractableThemeProperty property, int index, flo
 ```
 
 The SetValue function is used to set the property value based on the current state.
-- **Property**: A list of property values per state, set through the theme inspector.
-- **Index**: Correlates to the current state.
-- **Percentage**: A float value between 0 and 1. It will be the eased value if an Animation curve is used.
+
+* **Property**: A list of property values per state, set through the theme inspector.
+
+* **Index**: Correlates to the current state.
+
+* **Percentage**: A float value between 0 and 1. It will be the eased value if an Animation curve is used.
 
 Custom Settings added to the new class will also be displayed in the inspector. If there are properties that need to be exposed in the inspector but do not need to be based on states, they should be added to the Custom Settings list.
 
 ### Extending shader themes
 
-If creating a custom interactable theme to modify shader properties, it is advised to extend the `InteractableShaderTheme` class. Please see the `InteractableColorTheme` class as an example to extend the `InteractableShaderTheme` class.
+If creating a custom interactable theme to modify shader properties, it is advised to extend the [`InteractableShaderTheme`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme) class. Please see the [`InteractableColorTheme`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme) class as an example to extend the [`InteractableShaderTheme`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme) class.
 
-Regardless of whether extending the `InteractableShaderTheme` class or not, it is highly recommended to set shader properties 1) via [**MaterialPropertyBlock**](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) and 2) using the shader properties integer keys instead of string keys. Unity assigns integer keys for all shader properties in a project at runtime.See [**Shader.PropertyToID**](https://docs.unity3d.com/ScriptReference/Shader.PropertyToID.html) for more details on. The integer key for an interactable property can be accessed via  `InteractableThemeProperty.GetShaderPropertyId()`. 
+Regardless of whether extending the [`InteractableShaderTheme`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme) class or not, it is highly recommended to set shader properties 1) via [`MaterialPropertyBlock`](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) and 2) using the shader properties integer keys instead of string keys. Unity assigns integer keys for all shader properties in a project at runtime.See [`Shader.PropertyToID`](https://docs.unity3d.com/ScriptReference/Shader.PropertyToID.html) for more details on. The integer key for an interactable property can be accessed via  `InteractableThemeProperty.GetShaderPropertyId()`.
 
-Both of these two steps will help with performance. [**MaterialPropertyBlock**](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) will ensure a new material instance is not created for every object modifying a shader property and integer shader property IDs will eliminate the string-to-int lookup step performed by Unity when using string keys (i.e "_Color") on set/get functions.
+Both of these two steps will help with performance. [`MaterialPropertyBlock`](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) will ensure a new material instance is not created for every object modifying a shader property and integer shader property IDs will eliminate the string-to-int lookup step performed by Unity when using string keys (i.e "_Color") on set/get functions.
 
 ``` csharp
 public override void SetValue(InteractableThemeProperty property, int index, float percentage)
@@ -268,22 +278,25 @@ public override void SetValue(InteractableThemeProperty property, int index, flo
      renderer.GetPropertyBlock(propertyBlock);
 
      int propId = property.GetShaderPropertyId();
-     
+
      Color newColor = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
      block.SetColor(propId, color);
-             
+
      renderer.SetPropertyBlock(propertyBlock);
  }
 ```
 
-## Extending events ##
-Like Themes, events can be extended to detect any state pattern or to expose functionality. 
+## Extending events
+
+Like Themes, events can be extended to detect any state pattern or to expose functionality.
 
 Custom events can be created and used in two main ways:
-* Extend `ReceiverBase` to create a custom event that will show up in the dropdown list of event types. A Unity event is provided by default, but additional Unity events can be added or the event can be set to hide Unity events. This functionality allows a designer to work with an engineer on a project to create a custom event that the designer or implementer to setup in the editor.
-* Extend `ReceiverBaseMonoBehavior` to create a completely custom event component that can reside on the interactable or another object. The `ReceiverBaseMonoBehavior` will reference the interactable to detect state changes. This approach is the most direct for engineers that do not want to work through the inspector.
 
-### Example for extending `ReceiverBase` ###
+* Extend [`ReceiverBase`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) to create a custom event that will show up in the dropdown list of event types. A Unity event is provided by default, but additional Unity events can be added or the event can be set to hide Unity events. This functionality allows a designer to work with an engineer on a project to create a custom event that the designer or implementer to setup in the editor.
+* Extend [`ReceiverBaseMonoBehavior`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBaseMonoBehavior) to create a completely custom event component that can reside on the interactable or another object. The [`ReceiverBaseMonoBehavior`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBaseMonoBehavior) will reference the interactable to detect state changes. This approach is the most direct for engineers that do not want to work through the inspector.
+
+### Example for extending `ReceiverBase`
+
 `MixedRealityToolkit.Examples` contains an example extension of ReceiverBase to display status information about the interactable.
 
 ``` csharp
@@ -348,8 +361,9 @@ ReceiverBase scripts use InspectorField attributes to expose custom properties i
         public Vector3 EffectOffset = Vector3.zero;
 ```
 
-## Extending states ##
-The functionality of how states are ranked can be overridden by extending `InteractableStates` class. Override the `CompareStates` method to manually control the ranking.
+## Extending states
+
+The functionality of how states are ranked can be overridden by extending [`InteractableStates`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableStates) class. Override the `CompareStates` method to manually control the ranking.
 
 ``` csharp
 public override State CompareStates()
@@ -369,4 +383,5 @@ public override State CompareStates()
 ```
 
 ## See also
-- [MRTK Standard Shader](README_MRTKStandardShader.md)
+
+* [MRTK Standard Shader](README_MRTKStandardShader.md)

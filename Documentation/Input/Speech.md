@@ -8,7 +8,7 @@ Speech input providers, like *Windows Speech Input*, don't create any controller
 
 <img src="../../Documentation/Images/Input/SpeechCommands.png" style="max-width:100%;">
 
-You can use the [**`Speech Input Handler`**](xref:Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler) script to handle speech commands using [**UnityEvents**](https://docs.unity3d.com/Manual/UnityEvents.html). 
+You can use the [**`Speech Input Handler`**](xref:Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler) script to handle speech commands using [**UnityEvents**](https://docs.unity3d.com/Manual/UnityEvents.html).
 
 ## Example Scene
 

@@ -32,7 +32,7 @@ Input events are generally fired on two different channels:
 ### Objects in focus
 
 Events can be sent directly to a GameObject that has focus. For example, an object might
-have a script that implements [IMixedRealityTouchHandler](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Interfaces/InputSystem/Handlers/IMixedRealityHandTrackHandler.cs).
+have a script that implements [`IMixedRealityTouchHandler`](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Interfaces/InputSystem/Handlers/IMixedRealityHandTrackHandler.cs).
 This object would get touch events when focused by a hand that is near it. These types of
 events go "up" the GameObject hierarchy until it finds a GameObject that is capable of handling
 the event.
@@ -43,7 +43,7 @@ in [DispatchEventToObjectFocusedByPointer](https://github.com/microsoft/MixedRea
 ### Global listeners
 
 Events can be sent to global listeners. It's possible to register for all input events by using
-the input systems's [IMixedRealityEventSystem](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem)
+the input systems's [`IMixedRealityEventSystem`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem)
 interface. It's recommended to use the [RegisterHandler](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.RegisterHandler``1(IEventSystemHandler))
 method for registering for global events - the deprecated `Register` function will cause listeners
 to get notified of ALL input events, rather than just input events of a particular type

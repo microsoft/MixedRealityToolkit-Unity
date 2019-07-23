@@ -32,17 +32,16 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 
 ![MRTK Configured Scene Hierarchy](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
-2. Navigate the Inspector panel to the Boundary System section and check Enable
+1. Navigate the Inspector panel to the Boundary System section and check Enable
 
 ![Enable the Boundary System](../../Documentation/Images/Boundary/MRTKConfig_Boundary.png)
 
-3. Select the Boundary System implementation
+1. Select the Boundary System implementation
 
-![Select the Boundarys System Implementation](../../Documentation/Images/Boundary/BoundarySelectSystemType.png)
+![Select the Boundary's System Implementation](../../Documentation/Images/Boundary/BoundarySelectSystemType.png)
 
 > [!NOTE]
-> Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the boundary system pre-configured to use the MixedRealityBoundarySystem from the Mixed Reality 
-Toolkit Boundary System Service package.
+> Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the boundary system pre-configured to use the MixedRealityBoundarySystem from the Mixed Reality Toolkit Boundary System Service package.
 
 ## Configure Boundary Visualization
 
@@ -64,4 +63,3 @@ Once the boundary system is configured with the desired visualization options, t
 
 - [Boundary API documentation](xref:Microsoft.MixedReality.Toolkit.Boundary)
 - [Configuring the Boundary Visualization](ConfiguringBoundaryVisualization.md)
-- [Using Boundaries in an Application](../TODO.md)

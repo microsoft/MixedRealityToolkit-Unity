@@ -3,6 +3,7 @@
 MRTK feature an recording system by which head movement and hand tracking data can be stored in animation files. The recorded data can then be played back using the input simulation system.
 
 Recording input is a useful tool in a variety of situations:
+
 * Creating automated tests for interaction, manipulations, solvers, etc.
   Creating the movement of controllers and hands for these tests can be time consuming. Recording input directly can speed up the process and provide real-world data.
   See [Writing tests using input animation](#writing-tests-using-input-animation)
@@ -18,15 +19,15 @@ Two input system services are provided to record and play back input respectivel
 
 ## Input Recording Service
 
-[Input Recording Service](xref:Microsoft.MixedReality.Toolkit.Input.InputRecordingService) takes data from the main camera transform and active hand controllers and stores it in an internal buffer. When requested this data is then serialized into binary files for storage and later replay.
+[`InputRecordingService`](xref:Microsoft.MixedReality.Toolkit.Input.InputRecordingService) takes data from the main camera transform and active hand controllers and stores it in an internal buffer. When requested this data is then serialized into binary files for storage and later replay.
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_RecordingDiagram.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_RecordingDiagram.png" title="Recording input animation" width="80%" class="center" />
 </a>
 
-To start recording input call the [StartRecording](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.StartRecording) function. [StopRecording](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.StopRecording) will pause recording (but not discard the data recorded so far, use [DiscardRecordedInput](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.DiscardRecordedInput) to do this if needed).
+To start recording input call the [`StartRecording`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.StartRecording) function. [`StopRecording`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.StopRecording) will pause recording (but not discard the data recorded so far, use [`DiscardRecordedInput`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.DiscardRecordedInput) to do this if needed).
 
-By default the size of the recording buffer is limited to 30 seconds. This allows the recording service to keep recording in the background without accumulating too much data, and then save the last 30 seconds when required. The time interval can be changed using the [RecordingBufferTimeLimit](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.RecordingBufferTimeLimit) property, or recording can be unlimited using the [UseBufferTimeLimit](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.UseBufferTimeLimit) option.
+By default the size of the recording buffer is limited to 30 seconds. This allows the recording service to keep recording in the background without accumulating too much data, and then save the last 30 seconds when required. The time interval can be changed using the [`RecordingBufferTimeLimit`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.RecordingBufferTimeLimit) property, or recording can be unlimited using the [`UseBufferTimeLimit`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.UseBufferTimeLimit) option.
 
 The data in the recording buffer can be saved in a binary file using the [SaveInputAnimation](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.SaveInputAnimation*) function.
 
@@ -34,7 +35,7 @@ For details on the binary file format see [Input Animation File Format Specifica
 
 ## Input Playback Service
 
-[Input Playback Service](xref:Microsoft.MixedReality.Toolkit.Input.InputPlaybackService) reads a binary file with input animation data and then applies this data through the [Input Simulation Service](xref:Microsoft.MixedReality.Toolkit.Input.InputSimulationService) to recreate the recorded movements.
+[`Input Playback Service`](xref:Microsoft.MixedReality.Toolkit.Input.InputPlaybackService) reads a binary file with input animation data and then applies this data through the [Input Simulation Service](xref:Microsoft.MixedReality.Toolkit.Input.InputSimulationService) to recreate the recorded movements.
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_PlaybackDiagram.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_PlaybackDiagram.png" title="Playing back input animation" width="80%" class="center" />
@@ -47,9 +48,9 @@ Call [Play](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlayback
 The current animation time can also be controlled directly with the [LocalTime](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.LocalTime) property.
 
 > [!WARNING]
-> Looping or resetting input animation or setting [LocalTime](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.LocalTime) directly by scrubbing the timeline may yield unexpected results when manipulating the scene! Only the input movements are recorded, any additional changes such as moving objects or flipping switches will not be reset. Make sure to reload the scene if irreversible changes have been made.
+> Looping or resetting input animation or setting [`LocalTime`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.LocalTime) directly by scrubbing the timeline may yield unexpected results when manipulating the scene! Only the input movements are recorded, any additional changes such as moving objects or flipping switches will not be reset. Make sure to reload the scene if irreversible changes have been made.
 
-# Editor tools for recording and playing input animation
+## Editor tools for recording and playing input animation
 
 A number of tools exist in the Unity editor for recording and examining input animation. These tools can be accessed in the _Input Recording_ window, which can be opened from the _"Mixed Reality Toolkit > Utilities > Input Recording"_ menu.
 
@@ -57,16 +58,18 @@ A number of tools exist in the Unity editor for recording and examining input an
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsMenu.png" title="Editor tools menu" width="80%" class="center" />
 </a>
 
-> Note: Input recording and playback only works during play mode.
+> [!NOTE]
+> Input recording and playback only works during play mode.
 
 The input recording window has two modes:
+
 * _Recording_ for recording input during play mode and saving it to animation files.
 
   <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsRecording.png">
     <img src="../../Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsRecording.png" title="Recording mode" width="80%" class="center" />
   </a>
 
-  When toggling on the recording button the [Input Recording Service](xref:Microsoft.MixedReality.Toolkit.Input.InputRecordingService) is enabled to record input.
+  When toggling on the recording button the [`InputRecordingService`](xref:Microsoft.MixedReality.Toolkit.Input.InputRecordingService) is enabled to record input.
   When toggling off the recording button a file save selection is shown and the recorded input animation is saved to the selected destination.
 
   The buffer time limit can also be changed in this mode.
@@ -80,18 +83,20 @@ The input recording window has two modes:
   An animation must be loaded in this mode first. After recording input in recording mode the resulting animation is automatically loaded. Alternatively click the "Load" button to select an existing animation file.
 
   The time control buttons from left to right are:
-  - _Reset_ the playback time to the start of the animation.
-  - _Play_ animation continuously over time.
-  - _Step_ forward one time step.
+
+    - _Reset_ the playback time to the start of the animation.
+    - _Play_ animation continuously over time.
+    - _Step_ forward one time step.
+
   The slider can also be used to scrub through the animation timeline.
 
 > [!WARNING]
 > Looping or resetting input animation or scrubbing the timeline may yield unexpected results when manipulating the scene! Only the input movements are recorded, any additional changes such as moving objects or flipping switches will not be reset. Make sure to reload the scene if irreversible changes have been made.
 
-# Conversion to and from AnimationClip
+## Conversion to and from AnimationClip
 
 >TODO: added in separate PR
 
-# Writing tests using input animation
+## Writing tests using input animation
 
 >TODO
