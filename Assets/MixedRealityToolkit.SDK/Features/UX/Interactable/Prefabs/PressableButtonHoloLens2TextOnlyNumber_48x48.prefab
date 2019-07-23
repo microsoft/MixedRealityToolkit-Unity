@@ -218,17 +218,17 @@ PrefabInstance:
     - target: {fileID: 4093808206373223125, guid: daa0726e9f4321044bc455f2849304f1,
         type: 3}
       propertyPath: m_Name
-      value: PressableButtonTextOnly2_48x48
+      value: PressableButtonHoloLens2TextOnlyNumber_48x48
       objectReference: {fileID: 0}
     - target: {fileID: 4093808206893841460, guid: daa0726e9f4321044bc455f2849304f1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.2672
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4093808206893841460, guid: daa0726e9f4321044bc455f2849304f1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.015
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4093808206893841460, guid: daa0726e9f4321044bc455f2849304f1,
         type: 3}
