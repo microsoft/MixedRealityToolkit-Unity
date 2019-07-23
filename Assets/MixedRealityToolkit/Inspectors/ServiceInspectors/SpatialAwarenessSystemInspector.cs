@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [MixedRealityServiceInspector(typeof(MixedRealitySpatialAwarenessSystem))]
+    [MixedRealityServiceInspector(typeof(IMixedRealitySpatialAwarenessSystem))]
     public class SpatialAwarenessSystemInspector : BaseMixedRealityServiceInspector
     {
         private const string ShowObserverBoundaryKey = "MRTK_SpatialAwarenessSystemInspector_ShowObserverBoundaryKey";
@@ -26,11 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         
         public override void DrawInspectorGUI(object target)
         {
-            MixedRealitySpatialAwarenessSystem spatial = (MixedRealitySpatialAwarenessSystem)target;
+            IMixedRealitySpatialAwarenessSystem spatial = (IMixedRealitySpatialAwarenessSystem)target;
+            IMixedRealityDataProviderAccess dataProviderAccess = (IMixedRealityDataProviderAccess)spatial;
 
             EditorGUILayout.LabelField("Observers", EditorStyles.boldLabel);
             int observerIndex = 0;
-            foreach (IMixedRealitySpatialAwarenessObserver observer in spatial.GetObservers())
+            foreach (IMixedRealitySpatialAwarenessObserver observer in dataProviderAccess.GetDataProviders())
             {
                 GUI.color = observer.IsRunning ? enabledColor : disabledColor;
 
@@ -88,10 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            MixedRealitySpatialAwarenessSystem spatial = (MixedRealitySpatialAwarenessSystem)target;
+            IMixedRealitySpatialAwarenessSystem spatial = (IMixedRealitySpatialAwarenessSystem)target;
+            IMixedRealityDataProviderAccess dataProviderAccess = (IMixedRealityDataProviderAccess)spatial;
 
             int observerIndex = 0;
-            foreach (IMixedRealitySpatialAwarenessObserver observer in spatial.GetObservers())
+            foreach (IMixedRealitySpatialAwarenessObserver observer in dataProviderAccess.GetDataProviders())
             {
                 Gizmos.color = GetObserverColor(observerIndex);
 

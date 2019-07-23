@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [DisallowMultipleComponent]
     public class GazeProvider :
-        InputSystemGlobalListener,
+        InputSystemGlobalHandlerListener,
         IMixedRealityGazeProvider,
         IMixedRealityEyeGazeProvider,
         IMixedRealityInputHandler
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("If true, the gaze cursor will disappear when the pointer's focus is locked, to prevent the cursor from floating idly in the world.")]
-        private bool setCursorInvisibleWhenFocusLocked = true;
+        private bool setCursorInvisibleWhenFocusLocked = false;
 
         [SerializeField]
         [Tooltip("Maximum distance at which the gaze can hit a GameObject.")]
@@ -335,7 +335,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnValidate()
         {
-            Debug.Assert(minHeadVelocityThreshold < maxHeadVelocityThreshold, "Minimum head velocity threshold should be less than the maximum velocity threshold.");
+            if (minHeadVelocityThreshold > maxHeadVelocityThreshold)
+            {
+                Debug.LogWarning("Minimum head velocity threshold should be less than the maximum velocity threshold. Changing now.");
+                minHeadVelocityThreshold = maxHeadVelocityThreshold;
+            }
         }
 
         protected override void OnEnable()
@@ -437,6 +441,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion MonoBehaviour Implementation
+
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
 
         #region IMixedRealityInputHandler Implementation
 

@@ -140,10 +140,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             set
             {
-                if (value != toolTipText)
-                {
-                    toolTipText = value;
-                    RefreshLocalContent();                   
+                toolTipText = value;
+                if (!Application.isPlaying)
+                {   // Only force refresh in edit mode
+                    RefreshLocalContent();
                 }
             }
             get { return toolTipText; }
@@ -176,7 +176,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set
             {
                 contentScale = value;
-                RefreshLocalContent();
+                if (!Application.isPlaying)
+                {   // Only force refresh in edit mode
+                    RefreshLocalContent();
+                }
             }
         }
 
@@ -194,7 +197,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set
             {
                 fontSize = value;
-                RefreshLocalContent();
+                if (!Application.isPlaying)
+                {   // Only force refresh in edit mode
+                    RefreshLocalContent();
+                }
             }
         }
 
@@ -350,20 +356,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        protected virtual void OnValidate()
-        {
-            ValidateHeirarchy();
-
-            label.EnsureComponent<TextMeshPro>();
-            gameObject.EnsureComponent<ToolTipConnector>();
-        }
-
         /// <summary>
         /// virtual functions
         /// </summary>
         protected virtual void OnEnable()
         {
             ValidateHeirarchy();
+
+            label.EnsureComponent<TextMeshPro>();
+            gameObject.EnsureComponent<ToolTipConnector>();
 
             // Get our line if it exists
             if (toolTipLine == null)
@@ -384,8 +385,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 highlights.Add(highlight);
             }
-
-            RefreshLocalContent();
 
             contentParent.SetActive(false);
             ShowBackground = showBackground;

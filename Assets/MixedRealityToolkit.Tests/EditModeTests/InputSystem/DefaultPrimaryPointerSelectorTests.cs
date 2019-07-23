@@ -3,16 +3,22 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
     public class DefaultPrimaryPointerSelectorTests
     {
+        [TearDown]
+        public void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
         [Test]
         public void Test()
         {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+
             var selector = new DefaultPrimaryPointerSelector();
             selector.Initialize();
 

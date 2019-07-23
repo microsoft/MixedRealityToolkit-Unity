@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
     /// <summary>
     /// Provides a solver that constrains the target to a region safe for hand constrained content.
     /// </summary>
-    [RequireComponent(typeof(InputSystemGlobalListener))]
     [RequireComponent(typeof(HandBounds))]
     public class HandConstraint : Solver, IMixedRealitySourceStateHandler
     {
@@ -167,6 +166,34 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         protected IMixedRealityHand trackedHand = null;
         protected List<IMixedRealityHand> handStack = new List<IMixedRealityHand>();
         protected HandBounds handBounds = null;
+
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+        }
+
+        protected virtual void OnDisable()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+        }
 
         /// <inheritdoc />
         public override void SolverUpdate()

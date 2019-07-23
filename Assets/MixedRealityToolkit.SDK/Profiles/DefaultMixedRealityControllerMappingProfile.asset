@@ -1199,8 +1199,8 @@ MonoBehaviour:
         id: 1
         description: Select
         axisConstraint: 2
-      keyCode: 0
-      axisCodeX: AXIS_9
+      keyCode: 344
+      axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
@@ -1264,7 +1264,7 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 338
+      keyCode: 346
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -1300,9 +1300,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 7
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 2
+        description: Menu
+        axisConstraint: 2
       keyCode: 337
       axisCodeX: 
       axisCodeY: 
@@ -1425,8 +1425,8 @@ MonoBehaviour:
         id: 1
         description: Select
         axisConstraint: 2
-      keyCode: 0
-      axisCodeX: AXIS_10
+      keyCode: 345
+      axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
@@ -1490,7 +1490,7 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 339
+      keyCode: 347
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -2870,6 +2870,19 @@ MonoBehaviour:
       axisCodeY: AXIS_18
       invertXAxis: 0
       invertYAxis: 0
+    - id: 12
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX:
+      axisCodeY:
+      invertXAxis: 0
+      invertYAxis: 0
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
@@ -3029,6 +3042,19 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: AXIS_19
       axisCodeY: AXIS_20
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 12
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX:
+      axisCodeY:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:

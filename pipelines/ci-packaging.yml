@@ -1,0 +1,19 @@
+# CI build producing developer packages.
+
+variables:
+  UnityVersion: Unity2018.3.7f1
+  MRTKVersion: 2.0.0
+
+jobs:
+- job: CIDeveloperValidation
+  timeoutInMinutes: 90
+  pool:
+    name: On-Prem Unity
+    demands:
+    - Unity2018.3.7f1
+    - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
+  steps:
+  - template: templates/ci-common.yml
+    parameters:
+      packagingEnabled: true

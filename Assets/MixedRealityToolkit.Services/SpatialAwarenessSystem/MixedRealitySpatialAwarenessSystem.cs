@@ -11,7 +11,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
-    public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem, IMixedRealityDataProviderAccess, IMixedRealityCapabilityCheck
+    public class MixedRealitySpatialAwarenessSystem : 
+        BaseCoreSystem, 
+        IMixedRealitySpatialAwarenessSystem, 
+        IMixedRealityDataProviderAccess, 
+        IMixedRealityCapabilityCheck
     {
         public MixedRealitySpatialAwarenessSystem(
             IMixedRealityServiceRegistrar registrar,
@@ -170,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         private GameObject spatialAwarenessObjectParent = null;
 
         /// <inheritdoc />
-        public GameObject SpatialAwarenessObjectParent => spatialAwarenessObjectParent != null ? spatialAwarenessObjectParent : (spatialAwarenessObjectParent = CreateSpatialAwarenessParent);
+        public GameObject SpatialAwarenessObjectParent => spatialAwarenessObjectParent != null ? spatialAwarenessObjectParent : (spatialAwarenessObjectParent = CreateSpatialAwarenessObjectParent);
 
         /// <summary>
         /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
@@ -178,10 +182,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <returns>
         /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which spatial awareness created objects will be parented.
         /// </returns>
-        private GameObject CreateSpatialAwarenessParent => new GameObject("Spatial Awareness System");
+        private GameObject CreateSpatialAwarenessObjectParent
+        {
+            get
+            {
+                GameObject newParent = new GameObject("Spatial Awareness System");
+                MixedRealityPlayspace.AddChild(newParent.transform);
+
+                return newParent;
+            }
+        }
 
         /// <inheritdoc />
-        public GameObject CreateSpatialAwarenessObjectParent(string name)
+        public GameObject CreateSpatialAwarenessObservationParent(string name)
         {
             GameObject objectParent = new GameObject(name);
 
@@ -360,56 +373,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         }
 
         /// <inheritdoc />
-        public void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject)
+        public void ClearObservations()
         {
-            meshEventData.Initialize(observer, meshId, meshObject);
-            HandleEvent(meshEventData, OnMeshAdded);
-        }
-
-        /// <summary>
-        /// Event sent whenever a mesh is added.
-        /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshAdded =
-            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
+            for (int i = 0; i < observers.Count; i++)
             {
-                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
-                handler.OnObservationAdded(spatialEventData);
-            };
+                observers[i].ClearObservations();
+            }
+        }
 
         /// <inheritdoc />
-        public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject)
+        public void ClearObservations<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
-            meshEventData.Initialize(observer, meshId, meshObject);
-            HandleEvent(meshEventData, OnMeshUpdated);
+            T observer = GetObserver<T>(name);
+            observer?.ClearObservations();
         }
-
-        /// <summary>
-        /// Event sent whenever a mesh is updated.
-        /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshUpdated =
-            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
-            {
-                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
-                handler.OnObservationUpdated(spatialEventData);
-            };
-
-
-        /// <inheritdoc />
-        public void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, int meshId)
-        {
-            meshEventData.Initialize(observer, meshId, null);
-            HandleEvent(meshEventData, OnMeshRemoved);
-        }
-
-        /// <summary>
-        /// Event sent whenever a mesh is discarded.
-        /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshRemoved =
-            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
-            {
-                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
-                handler.OnObservationRemoved(spatialEventData);
-            };
 
         #endregion IMixedRealitySpatialAwarenessSystem Implementation
     }

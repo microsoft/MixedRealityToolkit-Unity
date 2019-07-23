@@ -59,6 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected bool IsHoldPressed = false;
 
+        private bool isCursorInstantiatedFromPrefab = false;
+
         /// <summary>
         /// Set a new cursor for this <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>
         /// </summary>
@@ -68,21 +70,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (cursorInstance != null)
             {
-                if (Application.isEditor)
-                {
-                    DestroyImmediate(cursorInstance);
-                }
-                else
-                {
-                    Destroy(cursorInstance);
-                }
-
+                DestroyCursorInstance();
                 cursorInstance = newCursor;
             }
 
             if (cursorInstance == null && cursorPrefab != null)
             {
                 cursorInstance = Instantiate(cursorPrefab, transform);
+                isCursorInstantiatedFromPrefab = true;
             }
 
             if (cursorInstance != null)
@@ -121,6 +116,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private void DestroyCursorInstance()
+        {
+            if (cursorInstance != null)
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(cursorInstance);
+                }
+                else
+                {
+                    DestroyImmediate(cursorInstance);
+                }
+            }
+        }
+
         #region MonoBehaviour Implementation
 
         protected override void OnEnable()
@@ -138,12 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             SetCursor();
-
-            BaseCursor c = BaseCursor as BaseCursor;
-            if (c != null)
-            {
-                c.VisibleSourcesCount++;
-            }
         }
 
         protected override async void Start()
@@ -184,6 +188,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (c != null)
             {
                 c.VisibleSourcesCount--;
+            }
+
+            // Need to destroy instantiated cursor prefab if it was added by the controller itself in 'OnEnable'
+            if (isCursorInstantiatedFromPrefab)
+            {
+                // Manually reset base cursor before destroying it
+                BaseCursor.Destroy();
+                DestroyCursorInstance();
+                isCursorInstantiatedFromPrefab = false;
             }
         }
 
@@ -458,6 +471,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
+            if(!IsInteractionEnabled) { return; }
+
             base.OnInputUp(eventData);
 
             if (eventData.SourceId == InputSourceParent.SourceId)
@@ -480,6 +495,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnInputDown(InputEventData eventData)
         {
+            if (!IsInteractionEnabled) { return; }
+
             base.OnInputDown(eventData);
 
             if (eventData.SourceId == InputSourceParent.SourceId)

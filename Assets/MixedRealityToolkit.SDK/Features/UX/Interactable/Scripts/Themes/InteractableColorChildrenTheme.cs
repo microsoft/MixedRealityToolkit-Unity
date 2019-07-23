@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             InteractableThemePropertyValue color = new InteractableThemePropertyValue();
 
-            string propId = property.GetShaderPropId();
+            int propId = property.GetShaderPropertyId();
 
             if (propertyBlocks.Count > 0)
             {
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Color color = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
 
-            string propId = property.GetShaderPropId();
+            int propId = property.GetShaderPropertyId();
 
             for (int i = 0; i < propertyBlocks.Count; i++)
             {

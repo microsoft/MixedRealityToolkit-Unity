@@ -17,7 +17,10 @@ Both of these input sources use the _Gesture Settings_ profile to translate Unit
 
 ## Gesture Events
 
-Gesture events are received by implementing one of the gesture handler interfaces: [`IMixedRealityGestureHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler)  and [`IMixedRealityGestureHandler<TYPE>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) (see table of [event handlers](InputEvents.md)).
+Gesture events are received by implementing one of the gesture handler interfaces: [`IMixedRealityGestureHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler) or [`IMixedRealityGestureHandler<TYPE>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) (see table of [event handlers](InputEvents.md)).
+
+See [Example Scene](#example-scene) for an example implementation of a gesture event handler.
+
 When implementing the generic version, the *OnGestureCompleted* and *OnGestureUpdated* events can receive typed data of the following types:
 - `Vector2` - 2D position gesture. Produced by touch screens to inform of their [`deltaPosition`](https://docs.unity3d.com/ScriptReference/Touch-deltaPosition.html).
 - `Vector3` - 3D position gesture. Produced by HoloLens to inform of:
@@ -25,3 +28,34 @@ When implementing the generic version, the *OnGestureCompleted* and *OnGestureUp
   - [`normalizedOffset`](https://docs.unity3d.com/ScriptReference/XR.WSA.Input.NavigationUpdatedEventArgs-normalizedOffset.html) of a navigation event
 - `Quaternion` - 3D rotation gesture. Available to custom input sources but not currently produced by any of the existing ones.
 - `MixedRealityPose` - Combined 3D position/rotation gesture. Available to custom input sources but not currently produced by any of the existing ones.
+
+## Order of events
+
+There are two principal chains of events, depending on user input:
+
+- "Hold":
+    1. Hold tap:
+        * start _Manipulation_
+    1. Hold tap beyond [HoldStartDuration](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.HoldStartDuration):
+        * start _Hold_
+    1. Release tap:
+        * complete _Hold_
+        * complete _Manipulation_
+
+- "Move":
+    1. Hold tap:
+        * start _Manipulation_
+    1. Hold tap beyond [HoldStartDuration](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.HoldStartDuration):
+        * start _Hold_
+    1. Move hand beyond [NavigationStartThreshold](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.NavigationStartThreshold):
+        * cancel _Hold_
+        * start _Navigation_
+    1. Release tap:
+        * complete _Manipulation_
+        * complete _Navigation_
+
+## Example Scene
+
+The **HandInteractionGestureEventsExample** scene in `MixedRealityToolkit.Examples\Demos\HandTracking\Scenes` shows how to use the pointer Result to spawn an object at the hit location.
+
+[Gesture Tester script](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Script/GestureTester.cs) is an example implementation to visualize gesture events via GameObjects. The handler functions change the color of indicator objects and display the last recorded event in text objects in the scene.

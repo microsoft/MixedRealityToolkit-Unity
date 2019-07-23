@@ -2,9 +2,7 @@
 
 The _Hand Tracking profile_ is found under the _Input System profile_. It contains settings for customizing hand representation.
 
-<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_HandTrackingProfile.png">
-  <img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_HandTrackingProfile.png" title="Hand Tracking Profile" width="50%" class="center" />
-</a>
+<img src="../../Documentation/Images/Input/HandTrackingProfile.png" width="650px" style="display:block;">
 
 ## Joint Prefabs
 
@@ -12,22 +10,17 @@ Joint prefabs are visualized using simple prefabs. The _Palm_ and _Index Finger_
 
 By default the hand joint prefabs are simple geometric primitives. These can be replaced if desired. If no prefab is specified at all, empty [GameObjects](href:https://docs.unity3d.com/ScriptReference/GameObject.html) are created instead.
 
-| Warning: Avoid using complex scripts or expensive rendering in joint prefabs, since joint objects are transformed on every frame and can have significant performance cost! |
-| --- |
+**Warning: Avoid using complex scripts or expensive rendering in joint prefabs, since joint objects are transformed on every frame and can have significant performance cost!**
 
-<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png">
-  <img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png" title="Hand Joint Visualizers" width="50%" class="center" />
-</a>
+<img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png" width="350px"  style="display:block;">
 
 ## Hand Mesh Prefab
 
 The hand mesh is used if fully defined mesh data is provided by the hand tracking device. The mesh renderable in the prefab is replaced by data from the device, so a dummy mesh such as a cube is sufficient. The material of the prefab is used for the hand mesh.
 
-<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png">
-  <img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png" title="Full Hand Mesh" width="50%" class="center" />
-</a>
+<img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png" width="350px"  style="display:block;">
 
-Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely using the _Enable Hand Mesh Updates_ option.
+Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely by unchecking **Enable Hand Mesh Visualization** option.
 
 # Scripting
 

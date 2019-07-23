@@ -93,5 +93,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 this.AppendSymbols(value);
             }
         }
+
+        /// <inheritdoc />
+        public string LogDirectory { get; set; }
     }
 }

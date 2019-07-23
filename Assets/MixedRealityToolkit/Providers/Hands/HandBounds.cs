@@ -52,12 +52,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnEnable()
         {
-            InputSystem?.Register(gameObject);
+            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
         }
 
         private void OnDisable()
         {
-            InputSystem?.Unregister(gameObject);
+            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
         }
 
         private void OnDrawGizmos()

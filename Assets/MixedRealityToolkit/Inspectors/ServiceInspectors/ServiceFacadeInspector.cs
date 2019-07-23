@@ -25,7 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         static ServiceFacadeEditor()
         {
             // Register this on startup so we can update whether a facade inspector is updated or not
+#if UNITY_2019_1_OR_NEWER
+            SceneView.duringSceneGui += DrawSceneGUI;
+#else
             SceneView.onSceneGUIDelegate += DrawSceneGUI;
+#endif
         }
 
         private static List<string> dataProviderList = new List<string>();
@@ -122,25 +126,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         /// <summary>
         /// Draws button linking to documentation.
         /// </summary>
-        /// <param name="serviceType"></param>
-        /// <returns></returns>
+        /// <param name="serviceType">type of service to target</param>
+        /// <returns>true if doc link is found, false otherwise</returns>
         private bool DrawDocLink(Type serviceType)
         {
             DocLinkAttribute docLink = serviceType.GetCustomAttribute<DocLinkAttribute>();
             if (docLink != null)
             {
-                GUIContent buttonContent = new GUIContent();
-                buttonContent.image = EditorGUIUtility.IconContent("_Help").image;
-                buttonContent.text = " Documentation";
-                buttonContent.tooltip = docLink.URL;
-
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(MixedRealityInspectorUtility.DocLinkWidth)))
-                {
-                    Application.OpenURL(docLink.URL);
-                }
+                InspectorUIUtility.RenderDocLinkButton(docLink.URL);
 
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
@@ -172,37 +168,47 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             }
             return false;
         }
-               
+
         /// <summary>
-        /// Draws the custom inspector gui for service type.
+        /// Draws the custom inspector gui for all of the service's interfaces that have custom inspectors.
         /// </summary>
         /// <param name="facade"></param>
         /// <returns></returns>
         private bool DrawInspector(ServiceFacade facade)
         {
-            IMixedRealityServiceInspector inspectorInstance;
-            if (GetServiceInspectorInstance(facade.ServiceType, out inspectorInstance))
+            bool drewInspector = false;
+            foreach (Type interfaceType in facade.ServiceType.GetInterfaces())
             {
-                inspectorInstance.DrawInspectorGUI(facade.Service);
-                return true;
+                IMixedRealityServiceInspector inspectorInstance;
+                if (GetServiceInspectorInstance(interfaceType, out inspectorInstance))
+                {
+                    inspectorInstance.DrawInspectorGUI(facade.Service);
+                    drewInspector = true;
+                }
             }
-            return false;
+            return drewInspector;
         }
 
         /// <summary>
-        /// Draws the profile for the service type, if wanted by inspector and found.
+        /// Draws the profile for all of the service's interfaces that have custom inspectors, if wanted by inspector and found.
         /// </summary>
         /// <param name="serviceType"></param>
         /// <returns></returns>
         private bool DrawProfile(Type serviceType)
         {
-            IMixedRealityServiceInspector inspectorInstance;
-            if (GetServiceInspectorInstance(serviceType, out inspectorInstance))
+            bool drawProfileField = true;
+            foreach (Type interfaceType in serviceType.GetInterfaces())
             {
-                if (!inspectorInstance.DrawProfileField)
-                {   // We've been instructed to skip drawing a profile by the inspector
-                    return false;
+                IMixedRealityServiceInspector inspectorInstance;
+                if (GetServiceInspectorInstance(interfaceType, out inspectorInstance))
+                {
+                    drawProfileField &= inspectorInstance.DrawProfileField;
                 }
+            }
+
+            if (!drawProfileField)
+            {   // We've been instructed to skip drawing a profile by the inspector
+                return false;
             }
 
             bool foundAndDrewProfile = false;
@@ -333,14 +339,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             InitializeServiceInspectorLookup();
 
             // Find and draw the custom inspector
-            IMixedRealityServiceInspector inspectorInstance;
-            if (!GetServiceInspectorInstance(facade.ServiceType, out inspectorInstance))
+            foreach (Type interfaceType in facade.ServiceType.GetInterfaces())
             {
-                return;
+                IMixedRealityServiceInspector inspectorInstance;
+                if (GetServiceInspectorInstance(interfaceType, out inspectorInstance))
+                {
+                    // If we've implemented a facade inspector, draw gizmos now
+                    inspectorInstance.DrawGizmos(facade.Service);
+                }
             }
-
-            // If we've implemented a facade inspector, draw gizmos now
-            inspectorInstance.DrawGizmos(facade.Service);
         }
 
         /// <summary>
@@ -366,15 +373,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                     continue;
                 }
 
-                IMixedRealityServiceInspector inspectorInstance;
-                if (!GetServiceInspectorInstance(inspectorTypePair.Key, out inspectorInstance))
+                foreach (Type interfaceType in inspectorTypePair.Key.GetInterfaces())
                 {
-                    continue;
-                }
+                    IMixedRealityServiceInspector inspectorInstance;
+                    if (!GetServiceInspectorInstance(interfaceType, out inspectorInstance))
+                    {
+                        continue;
+                    }
 
-                if (Selection.Contains(facade) || inspectorInstance.AlwaysDrawSceneGUI)
-                {
-                    inspectorInstance.DrawSceneGUI(facade.Service, sceneView);
+                    if (Selection.Contains(facade) || inspectorInstance.AlwaysDrawSceneGUI)
+                    {
+                        inspectorInstance.DrawSceneGUI(facade.Service, sceneView);
+                    }
                 }
             }
         }
@@ -382,15 +392,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         /// <summary>
         /// Gets an instance of the service type. Returns false if no instance is found.
         /// </summary>
-        /// <param name="serviceType"></param>
+        /// <param name="interfaceType"></param>
         /// <param name="inspectorInstance"></param>
         /// <returns></returns>
-        private static bool GetServiceInspectorInstance(Type serviceType, out IMixedRealityServiceInspector inspectorInstance)
+        private static bool GetServiceInspectorInstance(Type interfaceType, out IMixedRealityServiceInspector inspectorInstance)
         {
             inspectorInstance = null;
 
             Type inspectorType;
-            if (inspectorTypeLookup.TryGetValue(serviceType, out inspectorType))
+            if (inspectorTypeLookup.TryGetValue(interfaceType, out inspectorType))
             {
                 if (!inspectorInstanceLookup.TryGetValue(inspectorType, out inspectorInstance))
                 {

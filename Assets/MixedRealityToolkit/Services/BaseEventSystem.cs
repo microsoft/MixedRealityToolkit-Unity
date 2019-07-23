@@ -13,6 +13,12 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public abstract class BaseEventSystem : BaseService, IMixedRealityEventSystem
     {
+        // Utility flag controlling error messages in 'Destroy' method for reporting dangling event handlers.
+        // This may generate false warnings in usual Unity play mode due to arbitrary order 
+        // of disabling and destroying components. It is enabled by tests and can be enabled for debugging purposes.
+        // Variable is static to be shared between all event system instances.
+        public static bool enableDanglingHandlerDiagnostics = false;
+
         private static int eventExecutionDepth = 0;
         private readonly Type eventSystemHandlerType = typeof(IEventSystemHandler);
 
@@ -27,8 +33,32 @@ namespace Microsoft.MixedReality.Toolkit
         private List<Tuple<Action, Type, IEventSystemHandler>> postponedActions = new List<Tuple<Action, Type, IEventSystemHandler>>();
         private List<Tuple<Action, GameObject>> postponedObjectActions = new List<Tuple<Action, GameObject>>();
 
-        /// <inheritdoc />
-        public Dictionary<Type, List<IEventSystemHandler>> EventHandlersByType { get; } = new Dictionary<Type, List<IEventSystemHandler>>();
+        public struct EventHandlerEntry
+        {
+            public IEventSystemHandler handler;
+
+            // Cached value, whether handler is implemented by a unity component, and this component's object
+            // is in EventListeners collection.
+            // Cached for performance reasons.
+            public bool parentObjectIsInObjectCollection;
+
+            public EventHandlerEntry(IEventSystemHandler h, bool isParentListener = false)
+            {
+                handler = h;
+                parentObjectIsInObjectCollection = isParentListener;
+            }
+
+            // For better diagnostics in Unit tests
+            public override string ToString()
+            {
+                return $"{handler}. Parent object registered: {parentObjectIsInObjectCollection}";
+            }
+        }
+
+        /// <summary>
+        /// List of all event handlers grouped by type that are registered to this Event System.
+        /// </summary>
+        public Dictionary<Type, List<EventHandlerEntry>> EventHandlersByType { get; } = new Dictionary<Type, List<EventHandlerEntry>>();
 
     #region IMixedRealityEventSystem Implementation
 
@@ -51,22 +81,20 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // Send events to all handlers registered via RegisterHandler API.
-            List<IEventSystemHandler> handlers;
+            List<EventHandlerEntry> handlers;
             if (EventHandlersByType.TryGetValue(typeof(T), out handlers))
             {
                 for (int i = handlers.Count - 1; i >= 0; i--)
                 {
-                    var handler = handlers[i];
-                    // If handler is a unity component, need to make sure, that it didn't receive an event
-                    // when we were sending it to Game objects above.
-                    // Do that by checking if its parent is registered in EventListeners.
-                    var componentHandler = handler as Component;
-                    if (componentHandler && EventListeners.Contains(componentHandler.gameObject))
+                    var handlerEntry = handlers[i];
+
+                    // If handler's parent is in object collection (traversed above), it has already received an event.
+                    if(handlerEntry.parentObjectIsInObjectCollection)
                     {
                         continue;
                     }
 
-                    eventHandler.Invoke((T)handler, eventData);
+                    eventHandler.Invoke((T)handlerEntry.handler, eventData);
                 }
             }
 
@@ -104,12 +132,18 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
+            if (handler == null)
+            {
+                return;
+            }
+
             // #if due to Microsoft.MixedReality.Toolkit.ReflectionExtensions overload of Type.IsInterface
             #if WINDOWS_UWP && !ENABLE_IL2CPP
-                Debug.Assert(typeof(T).IsInterface());
+                Debug.Assert(typeof(T).IsInterface(), "RegisterHandler must be called with an interface as a generic parameter.");
             #else
-                Debug.Assert(typeof(T).IsInterface);
+                Debug.Assert(typeof(T).IsInterface, "RegisterHandler must be called with an interface as a generic parameter.");
             #endif
+            Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()), "Handler passed to RegisterHandler doesn't implement a type given as generic parameter.");
 
             TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
         }
@@ -117,12 +151,18 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler
         {
+            if (handler == null)
+            {
+                return;
+            }
+
             // #if due to Microsoft.MixedReality.Toolkit.ReflectionExtensions overload of Type.IsInterface
             #if WINDOWS_UWP && !ENABLE_IL2CPP
-                Debug.Assert(typeof(T).IsInterface());
+                Debug.Assert(typeof(T).IsInterface(), "UnregisterHandler must be called with an interface as a generic parameter.");
             #else
-                Debug.Assert(typeof(T).IsInterface);
+                Debug.Assert(typeof(T).IsInterface, "UnregisterHandler must be called with an interface as a generic parameter.");
             #endif
+            Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()), "Handler passed to UnregisterHandler doesn't implement a type given as generic parameter.");
 
             TraverseEventSystemHandlerHierarchy<T>(handler, UnregisterHandler);
         }
@@ -137,6 +177,35 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 if (!EventListeners.Contains(listener))
                 {
+                    // Due to how events are sent to game objects, if any of registered handlers sits on a 
+                    // registered object it will receive any event passed to this object.
+                    // We need to mark such handlers, so they don't receive their events twice.
+                    // It can be checked in HandleEvent with less code, but this becomes a 
+                    // performance bottleneck with many handlers in the system
+
+                    bool report = false;
+                    foreach (var typeEntry in EventHandlersByType)
+                    {
+                        for (int index = 0; index < typeEntry.Value.Count; index++)
+                        {
+                            var handlerEntry = typeEntry.Value[index];
+
+                            var comp = handlerEntry.handler as Component;
+
+                            if (comp != null && comp.gameObject == listener)
+                            {
+                                handlerEntry.parentObjectIsInObjectCollection = true;
+                                typeEntry.Value[index] = handlerEntry;
+                                report = true;
+                            }
+                        }
+                    }
+
+                    if (report)
+                    {
+                        WarnAboutConflictingApis(listener.name);
+                    }
+
                     EventListeners.Add(listener);
                 }
             }
@@ -153,12 +222,57 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 if (EventListeners.Contains(listener))
                 {
+                    // Reset cached flags in handler collection as object will not intercept the events anymore.
+                    // This is a slow loop, which is here to maintain backward compatibility and enable co-existing of
+                    // new and old API.
+                    foreach (var typeEntry in EventHandlersByType)
+                    {
+                        for (int index = 0; index < typeEntry.Value.Count; index++)
+                        {
+                            var handlerEntry = typeEntry.Value[index];
+
+                            // if cache flag is true, handler is guaranteed to be a unity component.
+                            if (handlerEntry.parentObjectIsInObjectCollection && (handlerEntry.handler as Component).gameObject == listener)
+                            {
+                                // Don't need to report, because it was reported during registration
+                                handlerEntry.parentObjectIsInObjectCollection = false;
+                                typeEntry.Value[index] = handlerEntry;
+                            }
+                        }
+                    }
+
                     EventListeners.Remove(listener);
                 }
             }
             else
             {
                 postponedObjectActions.Add(Tuple.Create(Action.Remove, listener));
+            }
+        }
+
+        public override void Destroy()
+        {
+            if(!enableDanglingHandlerDiagnostics)
+            {
+                return;
+            }
+
+            foreach (var listener in EventListeners)
+            {
+                Debug.LogError("Event system is destroyed, while still having a registered listener. " +
+                    "Make sure that all global event listeners have been unregistered before destroying the event system. " +
+                    $"Dangling listener: object {listener.name}");
+            }
+
+            foreach (var typeEntry in EventHandlersByType)
+            {
+                for (int index = 0; index < typeEntry.Value.Count; index++)
+                {
+                    var handlerEntry = typeEntry.Value[index];
+                    Debug.LogError("Event system is being destroyed while still having a registered listener. " +
+                        "Make sure that all global event listeners have been unregistered before destroying the event system. " +
+                        $"Dangling listener: handler {handlerEntry.handler}");
+                }
             }
         }
 
@@ -192,39 +306,59 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void AddHandlerToMap(Type handlerType, IEventSystemHandler handler)
         {
-            List<IEventSystemHandler> handlers;
+            bool isParentObjectRegistered = false;
 
+            var componentHandler = handler as Component;
+            if (componentHandler != null && EventListeners.Contains(componentHandler.gameObject))
+            {
+                isParentObjectRegistered = true;
+                WarnAboutConflictingApis(componentHandler.gameObject.name);
+            }
+
+            List<EventHandlerEntry> handlers;
             if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
-                handlers = new List<IEventSystemHandler> { handler };
+                handlers = new List<EventHandlerEntry> { new EventHandlerEntry(handler, isParentObjectRegistered) };
                 EventHandlersByType.Add(handlerType, handlers);
                 return;
             }
 
-            if (!handlers.Contains(handler))
+            bool handlerExists = false;
+            for (int i = handlers.Count - 1; i >= 0; i--)
             {
-                handlers.Add(handler);
+                if (handlers[i].handler == handler)
+                {
+                    handlerExists = true;
+                    break;
+                }
+            }
+
+            if (!handlerExists)
+            {
+                handlers.Add(new EventHandlerEntry(handler, isParentObjectRegistered));
             }
         }
 
         /// <inheritdoc />
         private void RemoveHandlerFromMap(Type handlerType, IEventSystemHandler handler)
         {
-            List<IEventSystemHandler> handlers;
-
+            List<EventHandlerEntry> handlers;
             if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
                 return;
             }
 
-            if (handlers.Contains(handler))
+            for (int i = handlers.Count - 1; i >= 0; i--)
             {
-                handlers.Remove(handler);
-
-                if (handlers.Count == 0)
+                if (handlers[i].handler == handler)
                 {
-                    EventHandlersByType.Remove(handlerType);
+                    handlers.RemoveAt(i);
                 }
+            }
+
+            if (handlers.Count == 0)
+            {
+                EventHandlersByType.Remove(handlerType);
             }
         }
 
@@ -259,6 +393,13 @@ namespace Microsoft.MixedReality.Toolkit
                     func(iface, handler);
                 }
             }
+        }
+
+        private void WarnAboutConflictingApis(string objectName)
+        {
+            Debug.LogError("Detected simultaneous usage of IMixedRealityEventSystem.Register and IMixedRealityEventSystem.RegisterHandler " +
+                $"on the same game object '{objectName}' for global input events registration. This is a compatibility behavior which might " +
+                "cause performance issues. It is recommended to remove or replace usages of 'Register/Unregister' methods with 'RegisterHandler/UnregisterHandler'.");
         }
 
     #endregion Utilities

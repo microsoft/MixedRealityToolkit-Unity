@@ -3,4 +3,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Utilities.Gltf.Importers")]
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Gltf.Importers")]

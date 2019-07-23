@@ -175,7 +175,7 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
   endPoint:
-    position: {x: 0, y: 0.21824491, z: 0}
+    position: {x: 0, y: 0.21504645, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &114570207066485496
 MonoBehaviour:
@@ -224,7 +224,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.34085464
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
+      value: 0.34085464
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -278,6 +278,8 @@ MonoBehaviour:
   roundedEdges: 1
   roundedCaps: 1
   lineRenderer: {fileID: 120256979407580908}
+  tileMaterialByWorldLength: 0
+  tileMaterialScale: 1
 --- !u!120 &120256979407580908
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -317,7 +319,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0.21824491, z: 0}
+  - {x: 0, y: 0.21504645, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
@@ -326,7 +328,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.34085464
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -335,7 +337,7 @@ LineRenderer:
         outWeight: 0
       - serializedVersion: 3
         time: 1
-        value: 1
+        value: 0.34085464
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -599,6 +601,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4411840848280898}
+  - component: {fileID: 7620802568987799818}
   m_Layer: 0
   m_Name: ContentParent
   m_TagString: Untagged
@@ -622,6 +625,20 @@ Transform:
   m_Father: {fileID: 4599297741613436}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7620802568987799818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486990241750050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2547b4dd088644d6aaf64f45df657c79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pivotAxis: 0
+  targetTransform: {fileID: 0}
 --- !u!1 &1524834073222450
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,7 +670,7 @@ Transform:
   m_GameObject: {fileID: 1524834073222450}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.001}
-  m_LocalScale: {x: 0.14953244, y: 0.031755086, z: 1}
+  m_LocalScale: {x: 0.15317991, y: 0.03495355, z: 1}
   m_Children: []
   m_Father: {fileID: 4411840848280898}
   m_RootOrder: 1
@@ -683,7 +700,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bf8139ce01f74164bb3003ed8a498e41, type: 2}
+  - {fileID: 2100000, guid: ec72a3a105768f746b556a8dfdae61a8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -993,6 +1010,8 @@ MonoBehaviour:
   roundedEdges: 1
   roundedCaps: 1
   lineRenderer: {fileID: 1969122736175639554}
+  tileMaterialByWorldLength: 0
+  tileMaterialScale: 1
 --- !u!1 &1532502621088038
 GameObject:
   m_ObjectHideFlags: 0

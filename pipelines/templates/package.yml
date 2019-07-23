@@ -1,4 +1,7 @@
 # [Template] Create NuGet packages.
+parameters:
+  version: '$(MRTKVersion)-$(Build.BuildNumber)'
+  packDestination: '$(Build.SourcesDirectory)/artifacts'
 
 steps:
 - task: 333b11bd-d341-40d9-afcf-b32d5ce6f23b@2  # NuGetCommand
@@ -6,7 +9,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: 'NuGet/**/*.nuspec'
-    packDestination: '$(Build.SourcesDirectory)/artifacts'
-    buildProperties: 'version=$(MRTKVersion)-$(Build.BuildNumber)'
+    packDestination: ${{ parameters.packDestination }}
+    buildProperties: 'version=${{ parameters.version }}'
 
 

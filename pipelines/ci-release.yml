@@ -2,7 +2,8 @@
 
 variables:
   UnityVersion: Unity2018.3.7f1
-  MRTKVersion: 2.0.0
+  MRTKVersion: 2.0.0  # Major.Minor.Patch
+  MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
 
 jobs:
 - job: CIReleaseValidation
@@ -33,11 +34,55 @@ jobs:
       downloadType: 'single'
       artifactName: 'NuGet'
       downloadPath: '$(Build.SourcesDirectory)'
+
+  - powershell: |
+      $Authorization = "Basic " + [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes('$(scriptsRepoVSTSuser):$(scriptsRepoPAT)'))
+      git clone -c http.extraheader="AUTHORIZATION: $Authorization" -b mrtk $(scriptsRepoURL) $(Build.ArtifactStagingDirectory)\scripts
+    displayName: "Clone release scripts"
+
+  # sign all DLLs
   - template: templates/tasks/signing.yml
     parameters:
-      ConfigName: "MRTKSignConfig.xml"
-  - template: templates/package.yml
+      ConfigName: "$(Build.ArtifactStagingDirectory)/scripts/signconfig/MRTKSignConfig.xml"
+
+  # Create pre-release packages
+  - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
+    - template: templates/package.yml
+      parameters:
+        version: '$(MRTKVersion)-$(Build.BuildNumber).prerelease'
+        packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
+  - ${{ if ne(variables['MRTKReleaseTag'], '') }}:
+    - template: templates/package.yml
+      parameters:
+        version: '$(MRTKVersion)-$(Build.BuildNumber).prerelease.$(MRTKReleaseTag)'
+        packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
+
+  # Create release packages
+  - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
+    - template: templates/package.yml
+      parameters:
+        version: '$(MRTKVersion)'
+        packDestination: '$(Build.SourcesDirectory)\artifacts\release'
+  - ${{ if ne(variables['MRTKReleaseTag'], '') }}:
+    - template: templates/package.yml
+      parameters:
+        version: '$(MRTKVersion)-$(MRTKReleaseTag)'
+        packDestination: '$(Build.SourcesDirectory)\artifacts\release'        
+
   - template: templates/tasks/signing.yml
     parameters:
-      ConfigName: "MRTKNuGetSignConfig.xml"
-  - template: templates/publishpackages.yml
+      ConfigName: "$(Build.ArtifactStagingDirectory)/scripts/signconfig/MRTKNuGetSignConfig.xml"
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Packages'
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)\artifacts'
+      ArtifactName: 'mrtk-unity-packages'
+
+  - task: 333b11bd-d341-40d9-afcf-b32d5ce6f23b@2  # NuGetCommand
+    displayName: 'NuGet push'
+    inputs:
+      command: push
+      packagesToPush: '$(Build.SourcesDirectory)/artifacts/prerelease/**/*.nupkg;!$(Build.SourcesDirectory)/artifacts/prerelease/**/*.symbols.nupkg'
+      publishVstsFeed: '$(NuGetFeedId)'
+      buildProperties: 'version=$(MRTKVersion)-$(Build.BuildNumber)'

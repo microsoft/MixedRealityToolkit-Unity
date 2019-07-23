@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// A game object with the "EyeTrackingTarget" script attached reacts to being looked at independent of other available inputs.
     /// </summary>
-    public class EyeTrackingTarget : InputSystemGlobalListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
+    public class EyeTrackingTarget : InputSystemGlobalHandlerListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
     {
         [Tooltip("Select action that are specific to when the target is looked at.")]
         [SerializeField]
@@ -183,7 +183,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnDisable();
             OnEyeFocusStop();
-        }      
+        }
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+        }
 
         private void UpdateHitTarget()
         {

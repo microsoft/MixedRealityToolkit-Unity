@@ -81,13 +81,14 @@ This windows can be automatically filled out by selecting a Unity Standard shade
 ## Additional Feature Documentation
 Below are extra details on a handful of features details available with the MRTK/Standard shader.
 
-Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside).
+Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  **ClippingExamples** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
 
 ![primitiveclipping](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif)
 
 [**ClippingPlane.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane), [**ClippingSphere.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere), and [**ClippingBox.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingBox) can be used to easily control clipping primitive properties.
 
 ![primitiveclippinggizmos](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClippingGizmos.gif)
+
 
 Built in configurable stencil test support to achieve a wide array of effects. Such as portals:
 
@@ -112,3 +113,6 @@ Per pixel clipping textures, local edge based anti aliasing, and normal map scal
 Vertex extrusion in world space. Useful for visualizing extruded bounding volumes or transitions in/out meshes.
 
 ![normalmapscale](../Documentation/Images/MRTKStandardShader/MRTK_VertexExtrusion.gif)
+
+## See also
+- [Interactable](README_Interactable.md)

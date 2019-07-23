@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Tests.Services;
 using NUnit.Framework;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -11,12 +12,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 {
     public class TestFixture_01_MixedRealityToolkitTests
     {
+        [TearDown]
+        public void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
         #region Service Locator Tests
 
         [Test]
         public void Test_01_InitializeMixedRealityToolkit()
         {
-            TestUtilities.CreateScenes();
+            TestUtilities.EditorCreateScenes();
             MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
             MixedRealityToolkit.ConfirmInitialized();
@@ -29,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [Test]
         public void Test_02_TestNoMixedRealityConfigurationFound()
         {
-            TestUtilities.CreateScenes();
+            TestUtilities.EditorCreateScenes();
             MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
             MixedRealityToolkit.ConfirmInitialized();
@@ -654,7 +661,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [Test]
         public void Test_08_04_CreateMultipleInstancesInMultipleScenes()
         {
-            TestUtilities.CreateScenes(3);
+            TestUtilities.EditorCreateScenes(3);
 
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
@@ -688,7 +695,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [TearDown]
         public void CleanupMixedRealityToolkitTests()
         {
-            TestUtilities.TearDownScenes();
+            TestUtilities.EditorTearDownScenes();
         }
     }
 }

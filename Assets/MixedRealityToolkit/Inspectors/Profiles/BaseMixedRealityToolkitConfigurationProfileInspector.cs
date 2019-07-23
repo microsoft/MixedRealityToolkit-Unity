@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -67,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            MixedRealityEditorUtility.RenderMixedRealityToolkitLogo();
+            MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
         }
 
         /// <summary>
@@ -80,39 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile)
-            {   // Can't proceed without an active profile
-                return;
-            }
-
-            // Find the service associated with this profile
-            MixedRealityServiceProfileAttribute profileAttribute = profileObject.GetType().GetCustomAttribute<MixedRealityServiceProfileAttribute>();
-            if (profileAttribute == null)
-            {   // Can't proceed without the profile attribute.
-                return;
-            }
-
-            IMixedRealityService service;
-            if (MixedRealityToolkit.Instance.ActiveSystems.TryGetValue(profileAttribute.ServiceType, out service))
+            DocLinkAttribute docLink = profileObject.GetType().GetCustomAttribute<DocLinkAttribute>();
+            if (docLink != null)
             {
-                DocLinkAttribute docLink = service.GetType().GetCustomAttribute<DocLinkAttribute>();
-
-                if (docLink != null)
-                {
-                    var buttonContent = new GUIContent()
-                    {
-                        image = MixedRealityEditorUtility.HelpIcon,
-                        text = " Documentation",
-                        tooltip = docLink.URL,
-                    };
-
-                    if (MixedRealityEditorUtility.RenderIndentedButton(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(MixedRealityInspectorUtility.DocLinkWidth)))
-                    {
-                        Application.OpenURL(docLink.URL);
-                    }
-                }
-
-                return;
+                InspectorUIUtility.RenderDocLinkButton(docLink.URL);
             }
         }
 
@@ -184,10 +154,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var profile = target as BaseMixedRealityProfile;
             if (!RenderAsSubProfile)
             {
+                CheckEditorPlayMode();
+
                 if (!profile.IsCustomProfile)
                 {
                     EditorGUILayout.HelpBox("Default MRTK profiles cannot be edited. Create a clone of this profile to modify settings.", MessageType.Warning);
-                    if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Clone"), EditorStyles.miniButton))
+                    if (InspectorUIUtility.RenderIndentedButton(new GUIContent("Clone"), EditorStyles.miniButton))
                     {
                         MixedRealityProfileCloneWindow.OpenWindow(null, (BaseMixedRealityProfile)target, null);
                     }
@@ -203,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     if (!MixedRealityToolkit.IsInitialized)
                     {
                         EditorGUILayout.HelpBox("There is not a MRTK instance in your scene. Some properties may not be editable", MessageType.Error);
-                        if (MixedRealityEditorUtility.RenderIndentedButton(new GUIContent("Add Mixed Reality Toolkit instance to scene"), EditorStyles.miniButton))
+                        if (InspectorUIUtility.RenderIndentedButton(new GUIContent("Add Mixed Reality Toolkit instance to scene"), EditorStyles.miniButton))
                         {
                             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(MixedRealityInspectorUtility.GetDefaultConfigProfile());
                             // After the toolkit has been created, set the selection back to this item so the user doesn't get lost
@@ -230,6 +202,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
+        }
+
+        /// <summary>
+        /// If application is playing, then show warning to the user and disable inspector GUI
+        /// </summary>
+        /// <returns>true if application is playing, false otherwise</returns>
+        protected bool CheckEditorPlayMode()
+        {
+            if (Application.isPlaying)
+            {
+                EditorGUILayout.HelpBox("Mixed Reality Toolkit settings cannot be edited while in play mode.", MessageType.Warning);
+                GUI.enabled = false;
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
