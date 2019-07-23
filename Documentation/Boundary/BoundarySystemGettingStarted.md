@@ -24,7 +24,7 @@ boundary system and a Virtual Reality platform configured with a boundary.
 
 ## Enable Boundary System
 
-The boundary system is managed by the MixedRealityToolkit object (or another [service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component). 
+The boundary system is managed by the MixedRealityToolkit object (or another [service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component).
 
 The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.
 

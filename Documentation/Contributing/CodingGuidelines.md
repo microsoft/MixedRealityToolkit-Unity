@@ -53,7 +53,7 @@ The currently defined namespaces are:
 
 For namespaces with a large amount of types, it is acceptable to create a limited number of sub-namespaces to aid in scoping usage.
 
-### Do:
+### Do
 
 ```c#
 namespace Microsoft.MixedReality.Toolkit.Boundary
@@ -65,11 +65,12 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 Omitting the namespace for an interface, class or data type will cause your change to be blocked.
 
 ## Spaces vs Tabs
+
 Please be sure to use 4 spaces instead of tabs when contributing to this project.
 
 Additionally, ensure that spaces are added for conditional / loop functions like if / while / for
 
-### Don't:
+### Don't
 
 ```c#
 private Foo () // < - space between Foo and ()
@@ -78,7 +79,7 @@ private Foo () // < - space between Foo and ()
     {
         DoThing();
     }
-    
+
     while(true) // <- no space between while and ()
     {
         Do();
@@ -86,7 +87,7 @@ private Foo () // < - space between Foo and ()
 }
 ```
 
-### Do:
+### Do
 
  ```c#
 private Foo()
@@ -95,7 +96,7 @@ private Foo()
     {
         DoThing();
     }
-    
+
     while (true)
     {
         Do();
@@ -107,7 +108,7 @@ private Foo()
 
 Do not to add additional spaces between square brackets and parenthesis:
 
-### Don't:
+### Don't
 
 ```c#
 private Foo()
@@ -118,7 +119,7 @@ private Foo()
 
 ```
 
-### Do:
+### Do
 
 ```c#
 private Foo()
@@ -130,17 +131,16 @@ private Foo()
 
 ## Naming Conventions
 
-Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private properties and fields.
->The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
+Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private properties and fields. The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
 
-### Don't:
+### Don't
 
 ```c#
 public string myProperty; // <- Starts with a lower case letter
 private string MyProperty; // <- Starts with an uppercase case letter
 ```
 
-### Do:
+### Do
 
  ```c#
 public string MyProperty;
@@ -158,7 +158,7 @@ Always declare an access modifier for all fields, properties and methods.
 
 - Use [expression-bodied members](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members) and [auto properties](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements) where possible
 
-### Don't:
+### Don't
 
 ```c#
 // protected field should be private
@@ -172,7 +172,7 @@ void Foo() { }
 void Bar() { }
 ```
 
-### Do:
+### Do
 
  ```c#
 public int MyVariable { get; protected set; } = 0;
@@ -186,7 +186,7 @@ protected virtual void FooBar() { }
 
 Always use braces after each statement block, and place them on the next line.
 
-### Don't:
+### Don't
 
 ```c#
 private Foo()
@@ -198,7 +198,7 @@ private Foo()
 }
 ```
 
-### Don't:
+### Don't
 
 ```c#
 private Foo() { // <- Open bracket on same line
@@ -207,7 +207,7 @@ private Foo() { // <- Open bracket on same line
 }
 ```
 
-### Do:
+### Do
 
 ```c#
 private Foo()
@@ -227,7 +227,7 @@ private Foo()
 
 If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoids compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.
 
-### Don't:
+### Don't
 
 ```c#
 public class MyClass
@@ -238,7 +238,7 @@ public class MyClass
 }
 ```
 
-### Do:
+### Do
 
  ```c#
  // Private references for use inside the class only
@@ -250,9 +250,10 @@ public class MyClass
 }
  ```
 
- ### Do:
+### Do
 
  MyStruct.cs
+
  ```c#
  // Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
 public struct MyStruct
@@ -263,6 +264,7 @@ public struct MyStruct
 ```
 
 MyEnumType.cs
+
 ```c#
 public enum MuEnumType
 {
@@ -272,6 +274,7 @@ public enum MuEnumType
 ```
 
 MyClass.cs
+
 ```c#
 public class MyClass
 {
@@ -280,11 +283,11 @@ public class MyClass
 }
  ```
 
-## Initialize Enums.
+## Initialize Enums
 
 To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)
 
-### Don't:
+### Don't
 
 ```c#
 public enum Value
@@ -295,7 +298,7 @@ public enum Value
 }
 ```
 
-### Do:
+### Do
 
  ```c#
 public enum ValueType
@@ -306,11 +309,11 @@ public enum ValueType
 }
  ```
 
-## Order Enums for appropriate extension.
+## Order Enums for appropriate extension
 
 It is critical that if an Enum is likely to be extended in the future, to order defaults at the top of the Enum, this ensures Enum indexes are not affected with new additions.
 
-### Don't:
+### Don't
 
 ```c#
 public enum SDKType
@@ -323,7 +326,7 @@ public enum SDKType
 }
 ```
 
-### Do:
+### Do
 
  ```c#
     /// <summary>
@@ -356,8 +359,11 @@ public enum SDKType
 ```
 
 ## End Enum names with "Type"
+
 Enum names should clearly indicate their nature by using the Type suffix.
-### Don't:
+
+### Don't
+
 ```c#
 public enum Ordering
 {
@@ -366,6 +372,7 @@ public enum Ordering
     Third
 }
 ```
+
 ```c#
 public enum OrderingEnum
 {
@@ -374,7 +381,9 @@ public enum OrderingEnum
     Third
 }
 ```
-### Do:
+
+### Do
+
 ```c#
 public enum OrderingType
 {
@@ -384,14 +393,13 @@ public enum OrderingType
 }
 ```
 
-
-## Review Enum use for Bitfields.
+## Review Enum use for Bitfields
 
 If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left & Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly
 
 The Handedness.cs file has a concrete implementation for this
 
-### Don't:
+### Don't
 
 ```c#
 public enum Handedness
@@ -402,7 +410,7 @@ public enum Handedness
 }
 ```
 
-### Do:
+### Do
 
  ```c#
  [flags]
@@ -414,7 +422,6 @@ public enum HandednessType
     Both = Left | Right
 }
  ```
-
 
 ## Best Practices, including Unity recommendations
 
@@ -429,20 +436,20 @@ If you need to have the ability to edit your field in the inspector, it's best p
 > [!NOTE]
 > The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`, where a data class is required to have all public fields for the serialization to work.
 
-### Don't:
+### Don't
 
 ```c#
 public float MyValue;
 ```
 
-### Do:
+### Do
 
  ```c#
  // private field, only accessible within script (field is not serialized in Unity)
  private float myValue;
   ```
 
-### Do:
+### Do
 
  ```c#
  // Enable private field to be configurable only in editor (field is correctly serialized in Unity)
@@ -452,18 +459,18 @@ public float MyValue;
 
 ---
 
- ### Don't:
+### Don't
 
  ```c#
  private float myValue1;
  private float myValue2;
- 
+
  public float MyValue1
  {
      get{ return myValue1; }
      set{ myValue1 = value }
  }
- 
+
  public float MyValue2
  {
      get{ return myValue2; }
@@ -471,7 +478,7 @@ public float MyValue;
  }
 ```
 
- ### Do:
+### Do
 
  ```c#
  // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
@@ -489,17 +496,17 @@ public float MyValue;
  }
  ```
 
-## Use `for` instead of `foreach` when possible.
+## Use `for` instead of `foreach` when possible
 
 In some cases a foreach is required, e.g. when looping over an IEnumerable.  But for performance benefit, avoid foreach when you can.
 
-### Don't:
+### Don't
 
 ```c#
 foreach(var item in items)
 ```
 
-### Do:
+### Do
 
  ```c#
 int length = items.length; // cache reference to list/array length
@@ -510,7 +517,7 @@ for(int i=0; i < length; i++)
 
 With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.
 
-### Don't:
+### Don't
 
 ```c#
 void Update()
@@ -519,9 +526,9 @@ void Update()
 }
 ```
 
-### Do:
+### Do
 
- ```c#
+```c#
 [SerializeField] // To enable setting the reference in the inspector.
 private Renderer myRenderer;
 
@@ -544,12 +551,12 @@ private void Update()
 
 Unity will create a new material each time you use ".material", which will cause a memory leak if not cleaned up properly.
 
-### Don't:
+### Don't
 
 ```c#
 public class MyClass
 {
-    void Update() 
+    void Update()
     {
         Material myMaterial = GetComponent<Renderer>().material;
         myMaterial.SetColor("_Color", Color.White);
@@ -570,24 +577,24 @@ public class MyClass
         cachedMaterial = GetComponent<Renderer>().material;
     }
 
-    void Update() 
+    void Update()
     {
         cachedMaterial.SetColor("_Color", Color.White);
     }
-    
+
     private void OnDestroy()
     {
         Destroy(cachedMaterial);
     }
 }
  ```
-
 > [!NOTE]
 > Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
 
 ## Use [platform dependent compilation](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html) to ensure the Toolkit won't break the build on another platform
 
 * Use `WINDOWS_UWP` in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to `UNITY_WSA && !UNITY_EDITOR` and should be used in favor of.
+
 * Use `UNITY_WSA` to use UWP-specific Unity APIs, such as the `UnityEngine.XR.WSA` namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.
 
 This chart can help you decide which `#if` to use, depending on your use cases and the build settings you expect.
