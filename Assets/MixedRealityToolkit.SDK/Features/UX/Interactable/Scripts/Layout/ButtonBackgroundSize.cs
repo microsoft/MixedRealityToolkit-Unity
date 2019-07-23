@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// The designer or engineer can take pixel based redlines and create UI at 1:1 scale.
     /// </summary>
     [ExecuteInEditMode]
+    [System.Obsolete("This component is no longer supported", true)]
     public class ButtonBackgroundSize : MonoBehaviour
     {
         /// <summary>
@@ -88,6 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 newScale = new Vector3(ItemSize.x / BasePixelScale, ItemSize.y / BasePixelScale, ItemSize.z / BasePixelScale);
             transform.localScale = newScale;
+        }
+
+        private void Awake()
+        {
+            Debug.LogError(this.GetType().Name + " is deprecated");
         }
 
         // Update is called once per frame
