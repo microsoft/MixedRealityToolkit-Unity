@@ -34,7 +34,7 @@ All public classes, structs, enums, functions, properties, fields posted to the 
 
 This ensures documentation is properly generated and disseminated for all all classes, methods, and properties.
 
->Any script files submitted without proper summary tags will be rejected.
+Any script files submitted without proper summary tags will be rejected.
 
 ## MRTK namespace rules
 
@@ -152,11 +152,11 @@ private string myProperty;
 
 Always declare an access modifier for all fields, properties and methods.
 
->All Unity API Methods should be `private` by default, unless you need to override them in a derived class. In this case `protected` should be used.
+- All Unity API Methods should be `private` by default, unless you need to override them in a derived class. In this case `protected` should be used.
 
->Fields should always be `private`, with `public` or `protected` property accessors.
+- Fields should always be `private`, with `public` or `protected` property accessors.
 
->Use [expression-bodied members](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members) and [auto properties](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements) where possible
+- Use [expression-bodied members](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members) and [auto properties](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements) where possible
 
 ### Don't:
 
@@ -282,9 +282,7 @@ public class MyClass
 
 ## Initialize Enums.
 
-To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value.
-
-> E.G. Value 1 = 0  (Remaining values are not required)
+To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)
 
 ### Don't:
 
@@ -391,7 +389,7 @@ public enum OrderingType
 
 If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left & Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly
 
-> The Handedness.cs file has a concrete implementation for this
+The Handedness.cs file has a concrete implementation for this
 
 ### Don't:
 
@@ -428,7 +426,8 @@ Always use private fields and public properties if access to the field is needed
 
 If you need to have the ability to edit your field in the inspector, it's best practice to follow the rules for Encapsulation and serialize your backing field.
 
->The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`, where a data class is required to have all public fields for the serialization to work.
+> [!NOTE]
+> The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`, where a data class is required to have all public fields for the serialization to work.
 
 ### Don't:
 
@@ -583,7 +582,8 @@ public class MyClass
 }
  ```
 
->Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
+> [!NOTE]
+> Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
 
 ## Use [platform dependent compilation](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html) to ensure the Toolkit won't break the build on another platform
 

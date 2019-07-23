@@ -4,7 +4,8 @@ At the heart of the input system is the [MixedRealityInputSystem](https://github
 which is a service that is responsible for initializing and operating all of the input related
 functionality associated with the MRTK.
 
-> Note that it is assumed that readers have already read and have a basic understanding of the
+> [!NOTE]
+> It is assumed that readers have already read and have a basic understanding of the
 > [terminology](Terminology.md) section.
 
 This service is responsible for:

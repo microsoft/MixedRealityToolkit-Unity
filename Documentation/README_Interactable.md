@@ -23,27 +23,34 @@ The basic features allow for button style interactions, such as pointer focus an
 <img src="../Documentation/Images/Interactable/InputFeatures_short.png" width="450">
 
 **Input Actions**
+
 Select the action, from the input configuration or controller mapping profile, that the interactable should react to.
 See [Overview of the input system in MRTK](./Input/Overview.md) for more on how input actions are setup and intended to be used in the application.
 
 **Enabled**
+
 Sets the interactables enabled state, which will disable some input handling and update the themes to reflect the current state which is disabled.
 
 This is different from disabling input all together (using *Enable Input*). It means that a specific button that would normally be interactive will be disabled and has a visual look and feel to denote its disabled state. A typical example of this would be a submit button waiting for all the required input fields to be completed.
 
 **IsGlobal**
+
 Focus is not required to detect input actions, default behavior is false.
- 
+
 **Voice Commands**
+
 Select a Speech Command that has been setup in the MRTK Speech Commands Profile to trigger an OnClick event. This will also provide an automated Focus and Press state change to drive any theme feedback.
- 
+
 **Requires Focus (Only available when a speech command is selected)**
+
 The voice command requires the interactable to have focus to listen for the voice command. There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts. Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.
 
 **Selection Mode**
+
 The ability to add multiple layers to Themes to create controls like Toggles or multi-dimensional (sequential) buttons. _See Creating Toggles._
 
 **Public Properties**
+
 ClickCount - a read only value that tracks how many clicks have occured.
 
 

@@ -21,10 +21,11 @@ The *service* container uses a predefined *interface* type for storage and retri
 
 Current system interfaces provided by the Mixed Reality Toolkit include:
 
-* IMixedRealityInputSystem
-* IMixedRealityBoundarySystem
-* IMixedRealityTeleportSystem
+* [IMixedRealityInputSystem](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem)
+* [IMixedRealityBoundarySystem](xref:Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem)
+* [IMixedRealityTeleportSystem](xref:Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportSystem)
 
 When creating your own implementations of these systems, you must ensure each complies with the interfaces provided by the Mixed Reality Toolkit (e.g. if you replace the InputSystem with another of your own design).
 
-> All services must also inherit from the **BaseService** class or implement `IMixedRealityService`, to implement the functions required by the `MixedRealityToolkit` so their life-cycles are handled appropriately. (E.G. Initialize, Update, Destroy are called correctly.)
+> [!NOTE]
+> All services must also inherit from the **BaseService** class or implement [IMixedRealityService](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService), to implement the functions required by the `MixedRealityToolkit` so their life-cycles are handled appropriately. (E.G. Initialize, Update, Destroy are called correctly.)

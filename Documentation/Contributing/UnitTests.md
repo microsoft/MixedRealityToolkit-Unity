@@ -29,6 +29,7 @@ MRTK's CI will build MRTK in all configurations and run all edit and play mode t
 
 Only after all of the tests passed successfully the PR can be merged into mrtk_development. 
 
+> [!NOTE]
 > Some tests will only fail when run from the command line. You can run the tests locally from command line using similar setup to what it done in MRTK's CI by running `scripts\test\run_playmode_tests.ps1`
 
 ## Writing Tests for your code

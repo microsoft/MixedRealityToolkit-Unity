@@ -10,7 +10,8 @@ Joint prefabs are visualized using simple prefabs. The _Palm_ and _Index Finger_
 
 By default the hand joint prefabs are simple geometric primitives. These can be replaced if desired. If no prefab is specified at all, empty [GameObjects](href:https://docs.unity3d.com/ScriptReference/GameObject.html) are created instead.
 
-**Warning: Avoid using complex scripts or expensive rendering in joint prefabs, since joint objects are transformed on every frame and can have significant performance cost!**
+> [!WARNING]
+> Avoid using complex scripts or expensive rendering in joint prefabs, since joint objects are transformed on every frame and can have significant performance cost!**
 
 <img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png" width="350px"  style="display:block;">
 
@@ -28,10 +29,10 @@ Position and rotation can be requested from the input system for each individual
 
 Alternatively the system allows access to [GameObjects](https://docs.unity3d.com/ScriptReference/GameObject.html) that follow the joints. This can be useful if another GameObject should track a joint continuously.
 
-| Note: Joint object are destroyed when hand tracking is lost! Make sure that any scripts using the joint object handle the `null` case gracefully to avoid errors! |
-| --- |
-
 Available joints are listed in the [TrackedHandJoint](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedHandJoint) enum.
+
+> [!NOTE]
+> Joint object are destroyed when hand tracking is lost! Make sure that any scripts using the joint object handle the `null` case gracefully to avoid errors!
 
 ## Accessing a given Hand Controller
 
