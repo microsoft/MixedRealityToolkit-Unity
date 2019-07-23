@@ -31,24 +31,24 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             this.movementConstraint = movementConstraint;
         }
 
-        Vector3 pointerToGrab;
-        Vector3 grabToObject;
-        Quaternion worldToPointerRotation;
-        Vector3 originalScale;
+        private Quaternion worldToPointerRotation;
+        private Vector3 pointerLocalGrabPoint;
+        private Vector3 objectLocalGrabPoint;
 
-        public void Setup(MixedRealityPose pointerCentroidPose, Vector3 grabCentroid, Vector3 objectPosition, Vector3 objectScale)
+        public void Setup(MixedRealityPose pointerCentroidPose, Vector3 grabCentroid, MixedRealityPose objectPose, Vector3 objectScale)
         {
             Vector3 headPosition = CameraCache.Main.transform.position;
             
             pointerRefDistance = Vector3.Distance(pointerCentroidPose.Position, headPosition);
             
             worldToPointerRotation = Quaternion.Inverse(pointerCentroidPose.Rotation);
-            pointerToGrab = worldToPointerRotation * (grabCentroid - pointerCentroidPose.Position);
-            grabToObject = worldToPointerRotation * (objectPosition - grabCentroid);
-            originalScale = objectScale;
+            pointerLocalGrabPoint = worldToPointerRotation * (grabCentroid - pointerCentroidPose.Position);
+
+            objectLocalGrabPoint = Quaternion.Inverse(objectPose.Rotation) * (grabCentroid - objectPose.Position);
+            objectLocalGrabPoint = objectLocalGrabPoint.Div(objectScale);
         }
 
-        public Vector3 Update(MixedRealityPose pointerCentroidPose, Vector3 objectScale, bool usePointerRotation)
+        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool usePointerRotation)
         {
             Vector3 headPosition = CameraCache.Main.transform.position;
             float distanceRatio = 1.0f;
@@ -60,14 +60,14 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 distanceRatio = currentHandDistance / pointerRefDistance;
             }
 
-            Vector3 scaledGrabToObject = worldToPointerRotation * Vector3.Scale(Quaternion.Inverse(worldToPointerRotation) * grabToObject, objectScale.Div(originalScale));
-            Vector3 adjustedPointerToObject = (pointerToGrab * distanceRatio) + scaledGrabToObject;
+            Vector3 scaledGrabToObject = Vector3.Scale(objectLocalGrabPoint, objectScale);
+            Vector3 adjustedPointerToGrab = (pointerLocalGrabPoint * distanceRatio);
             if (usePointerRotation)
             {
-                adjustedPointerToObject = pointerCentroidPose.Rotation * adjustedPointerToObject;
+                adjustedPointerToGrab = pointerCentroidPose.Rotation * adjustedPointerToGrab;
             }
 
-            return adjustedPointerToObject + pointerCentroidPose.Position;
+            return adjustedPointerToGrab - objectRotation * scaledGrabToObject + pointerCentroidPose.Position;
         }
     }
 }
