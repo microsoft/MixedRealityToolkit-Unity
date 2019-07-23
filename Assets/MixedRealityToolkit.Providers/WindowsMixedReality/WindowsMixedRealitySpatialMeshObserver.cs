@@ -236,12 +236,45 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             {
                 if (value != SpatialAwarenessMeshLevelOfDetail.Custom)
                 {
-                    // For non-custom levels, the enum value is the appropriate triangles per cubic meter.
-                    TrianglesPerCubicMeter = (int)value;
+                    TrianglesPerCubicMeter = LookupTriangleDensity(value);
                 }
 
                 levelOfDetail = value;
             }
+        }
+
+        /// <summary>
+        /// Maps <see cref="SpatialAwarenessMeshLevelOfDetail"/> to <see cref="TrianglesPerCubicMeter"/>.
+        /// </summary>
+        /// <param name="levelOfDetail">The desired level of density for the spatial mesh.</param>
+        /// <returns>
+        /// The number of triangles per cubic meter that will result in the desired level of density.
+        /// </returns>
+        private int LookupTriangleDensity(SpatialAwarenessMeshLevelOfDetail levelOfDetail)
+        {
+            int triangleDensity = 0;
+
+            switch(levelOfDetail)
+            {
+                case SpatialAwarenessMeshLevelOfDetail.Coarse:
+                    triangleDensity = 0;
+                    break;
+
+                case SpatialAwarenessMeshLevelOfDetail.Medium:
+                    triangleDensity = 400;
+                    break;
+
+                case SpatialAwarenessMeshLevelOfDetail.Fine:
+                    triangleDensity = 200;
+                    break;
+
+                default:
+                    Debug.LogWarning($"There is no triangle density lookup for {levelOfDetail}, defaulting to Coarse");
+                    triangleDensity = 0;
+                    break;
+            }
+
+            return triangleDensity;
         }
 
         private Dictionary<int, SpatialAwarenessMeshObject> meshes = new Dictionary<int, SpatialAwarenessMeshObject>();
