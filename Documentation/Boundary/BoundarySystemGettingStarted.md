@@ -38,7 +38,7 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 
 1. Select the Boundary System implementation
 
-![Select the Boundary's System Implementation](../../Documentation/Images/Boundary/BoundarySelectSystemType.png)
+![Select the Boundary System Implementation](../../Documentation/Images/Boundary/BoundarySelectSystemType.png)
 
 > [!NOTE]
 > Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the boundary system pre-configured to use the MixedRealityBoundarySystem from the Mixed Reality Toolkit Boundary System Service package.
