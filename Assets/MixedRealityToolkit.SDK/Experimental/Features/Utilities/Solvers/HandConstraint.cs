@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         /// <summary>
         /// Specifies a zone that is safe for the constraint to solve to without intersecting the hand.
         /// </summary>
-        public enum HandSafeZone
+        public enum SolverSafeZone
         {
             /// <summary>
             /// On the left hand with palm up, the area right of the palm.
@@ -43,20 +43,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         [Experimental]
         [Header("Hand Constraint")]
         [SerializeField]
-        [Tooltip("Which part of the hand to move the tracked object towards.")]
-        private HandSafeZone safeZone = HandSafeZone.UlnarSide;
+        [Tooltip("Which part of the hand to move the solver towards.")]
+        private SolverSafeZone safeZone = SolverSafeZone.UlnarSide;
 
         /// <summary>
         /// Which part of the hand to move the tracked object towards.
         /// </summary>
-        public HandSafeZone SafeZone
+        public SolverSafeZone SafeZone
         {
             get { return safeZone; }
             set { safeZone = value; }
         }
 
         [SerializeField]
-        [Tooltip("Additional offset to apply to the intersection point with the hand bounds.")]
+        [Tooltip("Additional offset to apply to the intersection point with the hand bounds along the intersection point normal.")]
         private float safeZoneBuffer = 0.1f;
 
         /// <summary>
@@ -94,22 +94,54 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             set { hideHandCursorsOnActivate = value; }
         }
 
-        [SerializeField]
-        [Tooltip("Should the solver billboard to the camera or use the tracked object rotation?")]
-        private bool billboardToCamera = true;
-
         /// <summary>
-        /// Should the solver billboard to the camera or use the tracked object rotation?
+        /// TODO
         /// </summary>
-        public bool BillboardToCamera
+        public enum SolverRotationBehavior
         {
-            get { return billboardToCamera; }
-            set { billboardToCamera = value; }
+            /// <summary>
+            /// TODO
+            /// </summary>
+            None = 0,
+            /// <summary>
+            /// TODO
+            /// </summary>
+            LookAtMainCamera = 2,
+            /// <summary>
+            /// TODO
+            /// </summary>
+            LookAtTrackedObject = 3
         }
 
         [SerializeField]
-        [Tooltip("Additional position offset to apply in billboard (camera) space.")]
-        private Vector3 billboardAdditionalOffset = Vector3.zero;
+        [Tooltip("TODO")]
+        private SolverRotationBehavior rotationBehavior = SolverRotationBehavior.LookAtMainCamera;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public SolverRotationBehavior RotationBehavior
+        {
+            get { return rotationBehavior; }
+            set { rotationBehavior = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("TODO")]
+        private float handednessYawRotation = 20.0f;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public float HandednessYawRotation
+        {
+            get { return handednessYawRotation; }
+            set
+            {
+                handednessYawRotation = value;
+                yawRotation = Quaternion.Euler(0.0f, handednessYawRotation, 0.0f);
+            }
+        }
 
         [SerializeField]
         [Tooltip("Event which is triggered when a hand begins being tracked.")]
@@ -168,6 +200,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         protected HandBounds handBounds = null;
 
         private IMixedRealityInputSystem inputSystem = null;
+        private Quaternion yawRotation = Quaternion.identity;
+        private readonly Quaternion handToWorldRotation = Quaternion.Euler(-90.0f, 0.0f, 180.0f);
 
         /// <summary>
         /// The active instance of the input system.
@@ -178,8 +212,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             {
                 if (inputSystem == null)
                 {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                    MixedRealityServiceRegistry.TryGetService(out inputSystem);
                 }
+
                 return inputSystem;
             }
         }
@@ -216,10 +251,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                 ChangeTrackedObjectType(newActivehand);
             }
 
-            // Update the goal position.
+            // Update the goal position and rotation.
             GoalPosition = CalculateGoalPosition();
-            GoalRotation = billboardToCamera ? Quaternion.LookRotation(CameraCache.Main.transform.forward) : 
-                                               SolverHandler.TransformTarget.rotation;
+            GoalRotation = CalculateGoalRotation();
 
             if (trackedHand != null)
             {
@@ -274,15 +308,59 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                 }
             }
 
-            goalPosition += CameraCache.Main.transform.TransformDirection(billboardAdditionalOffset);
-
             return goalPosition;
+        }
+
+        /// <summary>
+        /// Determines the solver's goal rotation based off of the SolverRotationBehavior.
+        /// </summary>
+        /// <returns>The new goal rotation.</returns>
+        protected virtual Quaternion CalculateGoalRotation()
+        {
+            var goalRotation = SolverHandler.TransformTarget.rotation;
+
+            switch (rotationBehavior)
+            {
+                case SolverRotationBehavior.LookAtMainCamera:
+                    {
+                        goalRotation = Quaternion.LookRotation(GoalPosition - CameraCache.Main.transform.position);
+                    }
+                    break;
+
+                case SolverRotationBehavior.LookAtTrackedObject:
+                    {
+                        goalRotation *= handToWorldRotation;
+                    }
+                    break;
+            }
+
+            if (rotationBehavior != SolverRotationBehavior.None)
+            {
+                switch (SolverHandler.TrackedObjectToReference)
+                {
+                    case TrackedObjectType.HandJointLeft:
+                    case TrackedObjectType.MotionControllerLeft:
+                        {
+                            goalRotation *= Quaternion.Inverse(yawRotation);
+                        }
+                        break;
+
+                    case TrackedObjectType.HandJointRight:
+                    case TrackedObjectType.MotionControllerRight:
+                        {
+                            goalRotation *= yawRotation;
+                        }
+                        break;
+                }
+            }
+
+            return goalRotation;
         }
 
         /// <summary>
         /// Enables/disables all cursors on the currently tracked hand.
         /// </summary>
-        /// <param name="visible">Is the cursor visable?</param>
+        /// <param name="visible">Is the cursor visible?</param>
         /// <param name="frameDelay">Delay one frame before performing the toggle to allow the pointers to instantiate their cursors.</param>
         /// <returns></returns>
         protected virtual IEnumerator ToggleCursor(bool visible, bool frameDelay = false)
@@ -371,16 +449,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             return false;
         }
 
-        private static Ray CalculateSafeZoneRay(Vector3 origin, Handedness handedness, HandSafeZone handSafeZone)
+        private static Ray CalculateSafeZoneRay(Vector3 origin, Handedness handedness, SolverSafeZone handSafeZone)
         {
             Vector3 direction;
+            var cameraForward = CameraCache.Main.transform.forward;
 
             switch (handSafeZone)
             {
                 default:
-                case HandSafeZone.UlnarSide:
+                case SolverSafeZone.UlnarSide:
                     {
-                        direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+                        direction = Vector3.Cross(cameraForward, Vector3.up);
 
                         if (handedness == Handedness.Left)
                         {
@@ -389,9 +468,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                     }
                     break;
 
-                case HandSafeZone.RadialSide:
+                case SolverSafeZone.RadialSide:
                     {
-                        direction = -Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+                        direction = -Vector3.Cross(cameraForward, Vector3.up);
 
                         if (handedness == Handedness.Left)
                         {
@@ -400,15 +479,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                     }
                     break;
 
-                case HandSafeZone.AboveFingerTips:
+                case SolverSafeZone.AboveFingerTips:
                     {
-                        direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.right);
+                        direction = Vector3.Cross(cameraForward, Vector3.right);
                     }
                     break;
 
-                case HandSafeZone.BelowWrist:
+                case SolverSafeZone.BelowWrist:
                     {
-                        direction = -Vector3.Cross(CameraCache.Main.transform.forward, Vector3.right);
+                        direction = -Vector3.Cross(cameraForward, Vector3.right);
                     }
                     break;
             }
@@ -417,6 +496,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         }
 
         #region MonoBehaviour Implementation
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+            HandednessYawRotation = handednessYawRotation;
+        }
 
         protected void Start()
         {
