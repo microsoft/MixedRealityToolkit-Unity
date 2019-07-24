@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
         private static readonly GUIContent RemoveObserverContent = new GUIContent("-", "Remove Spatial Observer");
 
         private static readonly GUIContent ComponentTypeContent = new GUIContent("Type");
-        private static readonly GUIContent RuntimePlatformContent = new GUIContent("Platform(s)");
+        private static readonly GUIContent RuntimePlatformContent = new GUIContent("Supported Platform(s)");
 
         private SerializedProperty observerConfigurations;
 
