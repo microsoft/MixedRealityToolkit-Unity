@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var buildInfo = new UwpBuildInfo
             {
                 OutputDirectory = buildDirectory,
-                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
+                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled && !string.IsNullOrEmpty(scene.path)).Select(scene => scene.path),
                 BuildAppx = !showDialog,
                 BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
                 GazeInputCapabilityEnabled = UwpBuildDeployPreferences.GazeInputCapabilityEnabled,

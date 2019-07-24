@@ -1359,10 +1359,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Get the appx path
             FileInfo[] files = new DirectoryInfo(buildPath).GetFiles("*.appx");
             files = files.Length == 0 ? new DirectoryInfo(buildPath).GetFiles("*.appxbundle") : files;
+            files = files.Length == 0 ? new DirectoryInfo(buildPath).GetFiles("*.msix") : files;
+            files = files.Length == 0 ? new DirectoryInfo(buildPath).GetFiles("*.msixbundle") : files;
 
             if (files.Length == 0)
             {
-                Debug.LogErrorFormat("No APPX found in folder build folder ({0})", buildPath);
+                Debug.LogErrorFormat("No APPX or MSIX found in folder build folder ({0})", buildPath);
                 return;
             }
 

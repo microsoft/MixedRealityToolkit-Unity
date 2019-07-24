@@ -17,6 +17,6 @@ Windows Dictation Input Provider | *None* *
 Windows Mixed Reality Device Manager | WMR Articulated Hand, WMR Controller, WMR GGV Hand
 Windows Speech Input Provider | *None* *
 
-\* Dictation and Speech providers don't create any controllers, they raise their own specialized input events directly.
+Dictation and Speech providers don't create any controllers, they raise their own specialized input events directly.
 
 Custom input providers can be created implementing the [`IMixedRealityInputDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager) interface.
