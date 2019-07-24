@@ -756,12 +756,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.SmoothingActive = false;
             manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneAndTwoHanded;
 
+            var scaleHandler = testObject.EnsureComponent<TransformScaleHandler>();
+            scaleHandler.ScaleMinimum = minScale;
+            scaleHandler.ScaleMaximum = maxScale;
+
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
             yield return new WaitForFixedUpdate();
             yield return null;
-
-            manipHandler.SetScaleLimits(minScale, maxScale);
 
             const int numHandSteps = 1;
 
@@ -784,18 +786,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(Vector3.one * initialScale, testObject.transform.localScale);
 
             // Move hands beyond max scale limit
-            yield return leftHand.MoveTo(new Vector3(-manipHandler.ScaleMaximum, 0, 0) + leftGrabPosition, numHandSteps);
-            yield return rightHand.MoveTo(new Vector3(manipHandler.ScaleMaximum, 0, 0) + rightGrabPosition, numHandSteps);
+            yield return leftHand.MoveTo(new Vector3(-scaleHandler.ScaleMaximum, 0, 0) + leftGrabPosition, numHandSteps);
+            yield return rightHand.MoveTo(new Vector3(scaleHandler.ScaleMaximum, 0, 0) + rightGrabPosition, numHandSteps);
 
             // Assert scale at max
-            Assert.AreEqual(Vector3.one * manipHandler.ScaleMaximum, testObject.transform.localScale);
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMaximum, testObject.transform.localScale);
 
             // Move hands beyond min scale limit
-            yield return leftHand.MoveTo(new Vector3(manipHandler.ScaleMinimum, 0, 0) + leftGrabPosition, numHandSteps);
-            yield return rightHand.MoveTo(new Vector3(-manipHandler.ScaleMinimum, 0, 0) + rightGrabPosition, numHandSteps);
+            yield return leftHand.MoveTo(new Vector3(scaleHandler.ScaleMinimum, 0, 0) + leftGrabPosition, numHandSteps);
+            yield return rightHand.MoveTo(new Vector3(-scaleHandler.ScaleMinimum, 0, 0) + rightGrabPosition, numHandSteps);
 
             // Assert scale at min
-            Assert.AreEqual(Vector3.one * manipHandler.ScaleMinimum, testObject.transform.localScale);
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, testObject.transform.localScale);
         }
     }
 }

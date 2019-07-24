@@ -3,56 +3,91 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Physics
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Helper class containing move/rotate/scale related utility functions.
     /// <summary>
-    public class TransformHelper : MonoBehaviour
+    public class TransformScaleHandler : MonoBehaviour
     {
         #region Properties
 
-        private Transform targetTransform;
-        
-        private Vector3 initialScale;
-        private Vector3 minimumScale;
-        private Vector3 maximumScale;
+        [SerializeField]
+        [Tooltip("Transform being scaled. Defaults to the object of the component.")]
+        private Transform targetTransform = null;
 
-        public float ScaleMinimum => minimumScale.x;
-        public float ScaleMaximum => maximumScale.x;
+        public Transform TargetTransform
+        {
+            get => targetTransform;
+            set => targetTransform = value;
+        }
+
+        private Vector3 initialScale;
+
+        [SerializeField]
+        [Tooltip("Minimum scaling allowed")]
+        private  float scaleMinimum = 0.2f;
+
+        private Vector3 minimumScale;
+        
+        public float ScaleMinimum
+        {
+            get => minimumScale.x;
+            set
+            {
+                scaleMinimum = value;
+                SetScaleLimits();
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Maximum scaling allowed")]
+        private float scaleMaximum = 2f;
+
+        private Vector3 maximumScale;
+        
+        public float ScaleMaximum
+        {
+            get => maximumScale.x;
+            set
+            {
+                scaleMaximum = value;
+                SetScaleLimits();
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Min/max scaling relative to initial scale if true")]
+        private bool relativeToInitialState = true;
+        
+        public bool RelativeToInitialState
+        {
+            get => relativeToInitialState;
+            set
+            {
+                relativeToInitialState = value;
+                SetScaleLimits();
+            }
+        }
 
         #endregion Properties
 
-        public void Initialize(Transform transform)
+        #region MonoBehaviour Methods
+
+        public void Start()
         {
             if (targetTransform == null)
             {
                 targetTransform = transform;
-                initialScale = transform.localScale;
             }
+            initialScale = targetTransform.localScale;
+
+            SetScaleLimits();
         }
 
-        #region Scale Utilities
+        #endregion MonoBehaviour Methods
 
-        /// <summary>
-        /// Sets the minimum/maximum scale for the transform helper.
-        /// </summary>
-        /// <param name="min">Minimum scale</param>
-        /// <param name="max">Maximum scale</param>
-        /// <param name="relativeToInitialState">If true the values will be multiplied by scale of target at startup. If false they will be in absolute local scale.</param>
-        public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
-        {
-            if (relativeToInitialState)
-            {
-                maximumScale = initialScale * max;
-                minimumScale = initialScale * min;
-            }
-            else
-            {
-                maximumScale = new Vector3(max, max, max);
-                minimumScale = new Vector3(min, min, min);
-            }
-        }
+        #region Public Methods
 
         /// <summary>
         /// Clamps the given scale to the scale limits set by <see cref="SetScaleLimits"/> such that:
@@ -117,6 +152,24 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             return scale;
         }
 
-        #endregion Scale Utilities
+        #endregion Public Methods
+
+        #region Private Methods
+        
+        private void SetScaleLimits()
+        {
+            if (relativeToInitialState)
+            {
+                minimumScale = initialScale * scaleMinimum;
+                maximumScale = initialScale * scaleMaximum;
+            }
+            else
+            {
+                minimumScale = new Vector3(scaleMinimum, scaleMinimum, scaleMinimum);
+                maximumScale = new Vector3(scaleMaximum, scaleMaximum, scaleMaximum);
+            }
+        }
+
+        #endregion Private Methods
     }
 }

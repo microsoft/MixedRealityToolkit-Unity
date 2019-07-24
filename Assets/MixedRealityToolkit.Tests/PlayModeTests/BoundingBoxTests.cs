@@ -154,10 +154,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float maxScale = 2f;
 
             var bbox = InstantiateSceneAndDefaultBbox();
+            var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
+            scaleHandler.ScaleMinimum = minScale;
+            scaleHandler.ScaleMaximum = maxScale;
             yield return null;
 
             Vector3 initialScale = bbox.transform.localScale;
-            bbox.SetScaleLimits(minScale, maxScale);
 
             const int numHandSteps = 1;
 
@@ -174,16 +176,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(initialScale, bbox.transform.localScale);
 
             // Move hands beyond max scale limit
-            yield return hand.MoveTo(new Vector3(bbox.ScaleMaximum * 2, bbox.ScaleMaximum * 2, 0) + frontRightCornerPos, numHandSteps);
+            yield return hand.MoveTo(new Vector3(scaleHandler.ScaleMaximum * 2, scaleHandler.ScaleMaximum * 2, 0) + frontRightCornerPos, numHandSteps);
 
             // Assert scale at max
-            Assert.AreEqual(Vector3.one * bbox.ScaleMaximum, bbox.transform.localScale);
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMaximum, bbox.transform.localScale);
 
             // Move hands beyond min scale limit
-            yield return hand.MoveTo(new Vector3(-bbox.ScaleMinimum * 2, -bbox.ScaleMinimum * 2, 0) + frontRightCornerPos, numHandSteps);
+            yield return hand.MoveTo(new Vector3(-scaleHandler.ScaleMinimum * 2, -scaleHandler.ScaleMinimum * 2, 0) + frontRightCornerPos, numHandSteps);
 
             // Assert scale at min
-            Assert.AreEqual(Vector3.one * bbox.ScaleMinimum, bbox.transform.localScale);
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, bbox.transform.localScale);
 
             GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object

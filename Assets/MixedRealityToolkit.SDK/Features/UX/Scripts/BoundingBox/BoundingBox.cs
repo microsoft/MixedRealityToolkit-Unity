@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Physics;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -161,9 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
+        [Obsolete("Use a TransformScaleHandler script rather than setting minimum on BoundingBox directly", false)]
         [Tooltip("Minimum scaling allowed relative to the initial size")]
         private float scaleMinimum = 0.2f;
         [SerializeField]
+        [Obsolete("Use a TransformScaleHandler script rather than setting maximum on BoundingBox directly")]
         [Tooltip("Maximum scaling allowed relative to the initial size")]
         private float scaleMaximum = 2.0f;
 
@@ -172,13 +173,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Public property for the scale minimum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
+        [Obsolete("Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for min scale")]
         public float ScaleMinimum
         {
             get
             {
-                if (transformHelper != null)
+                if (scaleHandler != null)
                 {
-                    return transformHelper.ScaleMinimum;
+                    return scaleHandler.ScaleMinimum;
                 }
                 return 0.0f;
             }
@@ -188,16 +190,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Public property for the scale maximum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
+        [Obsolete("Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for max scale")]
         public float ScaleMaximum
         {
             get
             {
-                if (transformHelper != null)
+                if (scaleHandler != null)
                 {
-                    return transformHelper.ScaleMaximum;
+                    return scaleHandler.ScaleMaximum;
                 }
-                return 0.0f;
-            }
+                return 0.0f;            }
         }
 
         [Header("Box Display")]
@@ -827,7 +829,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        private TransformHelper transformHelper;
+        private TransformScaleHandler scaleHandler;
 
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
@@ -943,11 +945,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="min">Minimum scale</param>
         /// <param name="max">Maximum scale</param>
         /// <param name="relativeToInitialState">If true the values will be multiplied by scale of target at startup. If false they will be in absolute local scale.</param>
+        [Obsolete("Use a TransformScaleHandler script rather than setting min/max scale on BoundingBox directly")]
         public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
         {
-            scaleMaximum = max;
             scaleMinimum = min;
-            transformHelper.SetScaleLimits(min, max, relativeToInitialState);
+            scaleMaximum = max;
         }
 
         /// <summary>
@@ -1137,10 +1139,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
-                    Vector3 clampedScale = transformHelper.ClampScale(newScale);
-                    if (clampedScale != newScale)
+                    Vector3 clampedScale = newScale;
+                    if (scaleHandler != null)
                     {
-                        scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
+                        clampedScale = scaleHandler.ClampScale(newScale);
+                        if (clampedScale != newScale)
+                        {
+                            scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
+                        }
                     }
 
                     Target.transform.localScale = clampedScale;
@@ -1796,9 +1802,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 isChildOfTarget = transform.IsChildOf(target.transform);
 
-                transformHelper = this.EnsureComponent<TransformHelper>();
-                transformHelper.Initialize(target.transform);
-                transformHelper.SetScaleLimits(scaleMinimum, scaleMaximum);
+                scaleHandler = GetComponent<TransformScaleHandler>();
+                if (scaleHandler == null)
+                {
+                    scaleHandler = gameObject.AddComponent<TransformScaleHandler>();
+
+                    scaleHandler.TargetTransform = Target.transform;
+                #pragma warning disable 0618
+                    scaleHandler.ScaleMinimum = scaleMinimum;
+                    scaleHandler.ScaleMaximum = scaleMaximum;
+                #pragma warning restore 0618
+                }
             }
         }
 

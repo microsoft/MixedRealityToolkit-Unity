@@ -148,46 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => constraintOnMovement = value;
         }
 
-        [SerializeField]
-        [Tooltip("Minimum scaling allowed relative to the initial size")]
-        private float scaleMinimum = 0.2f;
-
-        /// <summary>
-        /// Public property for the scale maximum, in the target's local scale.
-        /// Set this value with SetScaleLimits.
-        /// </summary>
-        public float ScaleMinimum
-        {
-            get
-            {
-                if (transformHelper != null)
-                {
-                    return transformHelper.ScaleMinimum;
-                }
-                return 0.0f;
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Maximum scaling allowed relative to the initial size")]
-        private float scaleMaximum = 2.0f;
-
-        /// <summary>
-        /// Public property for the scale maximum, in the target's local scale.
-        /// Set this value with SetScaleLimits.
-        /// </summary>
-        public float ScaleMaximum
-        {
-            get
-            {
-                if (transformHelper != null)
-                {
-                    return transformHelper.ScaleMaximum;
-                }
-                return 0.0f;
-            }
-        }
-
         [Header("Smoothing")]
         [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing. ")]
@@ -281,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Quaternion startObjectRotationFlatCameraSpace;
         private Quaternion hostWorldRotationOnManipulationStart;
 
-        private TransformHelper transformHelper;
+        private TransformScaleHandler scaleHandler;
 
         #endregion
 
@@ -300,28 +260,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 hostTransform = transform;
             }
 
-            transformHelper = this.EnsureComponent<TransformHelper>();
-            transformHelper.Initialize(hostTransform);
-            transformHelper.SetScaleLimits(scaleMinimum, scaleMaximum);
+            scaleHandler = this.GetComponent<TransformScaleHandler>();
         }
         #endregion MonoBehaviour Functions
-
-        #region Public Methods
-
-        /// <summary>
-        /// Sets the minimum/maximum scale for the manipulation handler at runtime.
-        /// </summary>
-        /// <param name="min">Minimum scale</param>
-        /// <param name="max">Maximum scale</param>
-        /// <param name="relativeToInitialState">If true the values will be multiplied by scale of target at startup. If false they will be in absolute local scale.</param>
-        public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
-        {
-            scaleMaximum = max;
-            scaleMinimum = min;
-            transformHelper.SetScaleLimits(min, max, relativeToInitialState);
-        }
-
-        #endregion Public Methods
 
         #region Private Methods
         private Vector3 GetPointersCentroid()
@@ -659,7 +600,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // Currently the two hand rotation algorithm doesn't allow for lerping, but it should. Fix this.
             hostTransform.rotation = Quaternion.Lerp(hostTransform.rotation, targetRotationTwoHands, lerpAmount);
 
-            targetScale = transformHelper.ClampScale(targetScale);
+            if (scaleHandler != null)
+            {
+                targetScale = scaleHandler.ClampScale(targetScale);
+            }
             hostTransform.localScale = Vector3.Lerp(hostTransform.localScale, targetScale, lerpAmount);
         }
 
