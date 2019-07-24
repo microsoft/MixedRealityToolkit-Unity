@@ -143,10 +143,10 @@ the same folder structure and location.
 
 ## Tools Package
 
-The tools package contains utilities that are useful for creating mixed reality experiences whose code will ultimately not
+The tools package contains tools that are useful for creating mixed reality experiences whose code will ultimately not
 ship as part of an application.
 
-- [Dependency Window](../Utilities/DependencyWindow.md)
-- [Extension Service Creation Wizard](../Utilities/ExtensionServiceCreationWizard.md)
-- [Optimize Window](../Utilities/OptimizeWindow.md)
-- [Screenshot Utility](../Utilities/ScreenshotUtility.md)
+- [Dependency Window](../Tools/DependencyWindow.md)
+- [Extension Service Creation Wizard](../Tools/ExtensionServiceCreationWizard.md)
+- [Optimize Window](../Tools/OptimizeWindow.md)
+- [Screenshot Utility](../Tools/ScreenshotUtility.md)
