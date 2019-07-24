@@ -31,43 +31,48 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             this.movementConstraint = movementConstraint;
         }
 
-        private Quaternion worldToPointerRotation;
         private Vector3 pointerLocalGrabPoint;
         private Vector3 objectLocalGrabPoint;
+        private Vector3 pointerToObject;
 
         public void Setup(MixedRealityPose pointerCentroidPose, Vector3 grabCentroid, MixedRealityPose objectPose, Vector3 objectScale)
         {
-            Vector3 headPosition = CameraCache.Main.transform.position;
-            
+            Vector3 headPosition = CameraCache.Main.transform.position;            
             pointerRefDistance = Vector3.Distance(pointerCentroidPose.Position, headPosition);
             
-            worldToPointerRotation = Quaternion.Inverse(pointerCentroidPose.Rotation);
+            Quaternion worldToPointerRotation = Quaternion.Inverse(pointerCentroidPose.Rotation);
             pointerLocalGrabPoint = worldToPointerRotation * (grabCentroid - pointerCentroidPose.Position);
 
             objectLocalGrabPoint = Quaternion.Inverse(objectPose.Rotation) * (grabCentroid - objectPose.Position);
             objectLocalGrabPoint = objectLocalGrabPoint.Div(objectScale);
+
+            pointerToObject = objectPose.Position - pointerCentroidPose.Position;
         }
 
-        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool usePointerRotation)
+        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool isNearMode, bool usePointerRotation)
         {
-            Vector3 headPosition = CameraCache.Main.transform.position;
-            float distanceRatio = 1.0f;
-
-            if (movementConstraint != MovementConstraintType.FixDistanceFromHead)
+            if (!isNearMode || usePointerRotation)
             {
-                // Compute how far away the object should be based on the ratio of the current to original hand distance
-                var currentHandDistance = Vector3.Magnitude(pointerCentroidPose.Position - headPosition);
-                distanceRatio = currentHandDistance / pointerRefDistance;
-            }
+                Vector3 headPosition = CameraCache.Main.transform.position;
+                float distanceRatio = 1.0f;
 
-            Vector3 scaledGrabToObject = Vector3.Scale(objectLocalGrabPoint, objectScale);
-            Vector3 adjustedPointerToGrab = (pointerLocalGrabPoint * distanceRatio);
-            if (usePointerRotation)
-            {
+                if (movementConstraint != MovementConstraintType.FixDistanceFromHead)
+                {
+                    // Compute how far away the object should be based on the ratio of the current to original hand distance
+                    var currentHandDistance = Vector3.Magnitude(pointerCentroidPose.Position - headPosition);
+                    distanceRatio = currentHandDistance / pointerRefDistance;
+                }
+
+                Vector3 scaledGrabToObject = Vector3.Scale(objectLocalGrabPoint, objectScale);
+                Vector3 adjustedPointerToGrab = (pointerLocalGrabPoint * distanceRatio);
                 adjustedPointerToGrab = pointerCentroidPose.Rotation * adjustedPointerToGrab;
-            }
 
-            return adjustedPointerToGrab - objectRotation * scaledGrabToObject + pointerCentroidPose.Position;
+                return adjustedPointerToGrab - objectRotation * scaledGrabToObject + pointerCentroidPose.Position;
+            }
+            else
+            {
+                return pointerCentroidPose.Position + pointerToObject;
+            }
         }
     }
 }

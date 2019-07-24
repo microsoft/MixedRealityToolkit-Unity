@@ -336,8 +336,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.MoveTo(initialGrabPosition, numHandSteps);
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
+                yield return new WaitForFixedUpdate();
+                yield return null;
+
                 // save relative pos grab point to object
-                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(pointer.Position);
+                Vector3 initialOffsetGrabToObjPivot = pointer.Position - testObject.transform.position;
+                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(manipHandler.GetPointerGrabPoint(pointer.PointerId));
 
                 // full circle
                 const int degreeStep = 360 / numCircleSteps;
@@ -345,7 +349,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 // rotating the pointer in a circle around "the user" 
                 for (int i = 1; i <= numCircleSteps; ++i)
                 {
-
                     // rotate main camera (user)
                     MixedRealityPlayspace.PerformTransformation(
                     p =>
@@ -361,10 +364,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     Vector3 newHandPosition = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialGrabPosition;
                     yield return hand.MoveTo(newHandPosition, numHandSteps);
 
-                    // make sure that the offset between grab point and object pivot hasn't changed while rotating
-                    Vector3 grabPoint = pointer.Position;
-                    Vector3 cornerRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
-                    TestUtilities.AssertAboutEqual(cornerRotated, grabPoint, "Grab point on object changed during rotation");
+                    if (type == ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter)
+                    {
+                        // make sure that the offset between hand and object centre hasn't changed while rotating
+                        Vector3 offsetRotated = pointer.Position - testObject.transform.position;
+                        TestUtilities.AssertAboutEqual(offsetRotated, initialOffsetGrabToObjPivot, $"Object offset changed during rotation using {type}");
+                    }
+                    else
+                    {
+                        // make sure that the offset between grab point and object pivot hasn't changed while rotating
+                        Vector3 grabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
+                        Vector3 cornerRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
+                        TestUtilities.AssertAboutEqual(cornerRotated, grabPoint, $"Grab point on object changed during rotation using {type}");
+                    }
                 }
 
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);

@@ -224,14 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 get
                 {
-                    if (IsNearPointer())
-                    {
-                        return pointer.Position;
-                    }
-                    else
-                    {
-                        return (pointer.Rotation * initialGrabPointInPointer) + pointer.Position;
-                    }
+                    return (pointer.Rotation * initialGrabPointInPointer) + pointer.Position;
                 }
             }
         }
@@ -251,21 +244,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion
 
         #region MonoBehaviour Functions
-
-        /// <summary>
-        /// Releases the object that is currently manipulated
-        /// </summary>
-        public void ForceEndManipulation()
-        {
-            // release rigidbody and clear pointers
-            ReleaseRigidBody();
-            pointerIdToPointerMap.Clear();
-
-            // end manipulation
-            State newState = State.Start;
-            InvokeStateUpdateFunctions(currentState, newState);
-            currentState = newState;
-        }
 
         private void Awake()
         {
@@ -492,6 +470,37 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         #endregion Private Methods
 
+        #region Public Methods
+
+        /// <summary>
+        /// Releases the object that is currently manipulated
+        /// </summary>
+        public void ForceEndManipulation()
+        {
+            // release rigidbody and clear pointers
+            ReleaseRigidBody();
+            pointerIdToPointerMap.Clear();
+
+            // end manipulation
+            State newState = State.Start;
+            InvokeStateUpdateFunctions(currentState, newState);
+            currentState = newState;
+        }
+
+        /// <summary>
+        /// Gets the grab point for the given pointer id
+        /// </summary>
+        public Vector3 GetPointerGrabPoint(uint pointerId)
+        {
+            if (pointerIdToPointerMap.ContainsKey(pointerId))
+            {
+                return pointerIdToPointerMap[pointerId].GrabPoint;
+            }
+            return Vector3.zero;
+        }
+
+        #endregion Public Methods
+
         #region Hand Event Handlers
 
         /// <inheritdoc />
@@ -571,12 +580,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var targetPosition = hostTransform.position;
             var targetScale = hostTransform.localScale;
 
-            if ((currentState & State.Moving) > 0)
-            {
-                MixedRealityPose pose = GetAveragePointerPose();
-                targetPosition = moveLogic.Update(pose, hostTransform.rotation, hostTransform.localScale, true);
-            }
-
             var handPositionMap = GetHandPositionMap();
 
             if ((currentState & State.Rotating) > 0)
@@ -586,6 +589,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if ((currentState & State.Scaling) > 0)
             {
                 targetScale = scaleLogic.UpdateMap(handPositionMap);
+            }
+
+            if ((currentState & State.Moving) > 0)
+            {
+                MixedRealityPose pose = GetAveragePointerPose();
+                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, IsNearManipulation(), true);
             }
 
             float lerpAmount = GetLerpAmount();
@@ -659,7 +668,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             targetRotation = ApplyConstraints(targetRotation);
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            Vector3 targetPosition = moveLogic.Update(pointerPose, hostTransform.rotation, hostTransform.localScale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
+            Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, IsNearManipulation(), rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
+            //Debug.DrawRay(pointer.Position, Vector3.up, Color.magenta);
+            Debug.DrawRay(pointerData.GrabPoint, Vector3.up, Color.cyan);
 
             float lerpAmount = GetLerpAmount();
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
