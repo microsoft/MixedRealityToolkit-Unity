@@ -18,4 +18,5 @@ The window can also display just a list of all assets which are not referenced b
 
 ![](../../Documentation/Images/DependencyWindow/MRTK_Dependency_Window_Unreferenced.png)
 
-Note, if assets are modified, added, or removed while the dependency window is in use it is advised to refresh the dependency graph for the most "up to date" results.
+> [!NOTE]
+> If assets are modified, added, or removed while the dependency window is in use it is advised to refresh the dependency graph for the most "up to date" results.
