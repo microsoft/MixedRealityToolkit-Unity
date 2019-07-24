@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 goalRotation.x = goalRotation.z = 0f;
             }
 
-            if(UseFixedVerticalPosition == true)
+            if (UseFixedVerticalPosition == true)
             {
                 goalPosition.y = ReferencePoint.y + FixedVerticalPosition;
             }
