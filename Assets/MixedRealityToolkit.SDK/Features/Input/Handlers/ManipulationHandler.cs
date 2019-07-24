@@ -275,28 +275,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private MixedRealityPose GetAveragePointerPose()
         {
-            Debug.Assert(pointerIdToPointerMap.Count > 1);
+            Vector3 sumPos = Vector3.zero;
+            Vector3 sumDir = Vector3.zero;
+            int count = 0;
+            foreach (var p in pointerIdToPointerMap.Values)
+            {
+                sumPos += p.pointer.Position;
+                sumDir += p.pointer.Rotation * Vector3.forward;
+                count++;
+            }
 
-            var handsEnumerator = pointerIdToPointerMap.Values.GetEnumerator();
-            handsEnumerator.MoveNext();
-            var hand1 = handsEnumerator.Current.pointer;
-            handsEnumerator.MoveNext();
-            var hand2 = handsEnumerator.Current.pointer;
-            handsEnumerator.Dispose();
-            
             MixedRealityPose pose = new MixedRealityPose();
-            pose.Position = (hand1.Position + hand2.Position) / 2;
 
-            // WIP
-            Vector3 right = hand1.Position - hand2.Position;
-            Vector3 forward = (hand1.Rotation * Vector3.forward + hand2.Rotation * Vector3.forward);
-            Vector3 up = Vector3.Cross(forward, right);
-            //pose.Rotation = rotateLogic.Update(GetHandPositionMap(), targetRotationTwoHands, constraintOnRotation);
-            pose.Rotation = Quaternion.LookRotation(forward);
-
-            Debug.DrawRay(pose.Position, right.normalized, Color.red);
-            Debug.DrawRay(pose.Position, up.normalized, Color.green);
-            Debug.DrawRay(pose.Position, forward.normalized, Color.blue);
+            if (count > 0)
+            {
+                pose.Position = sumPos / count;
+                pose.Rotation = Quaternion.LookRotation(sumDir / count);
+            }
 
             return pose;
         }
