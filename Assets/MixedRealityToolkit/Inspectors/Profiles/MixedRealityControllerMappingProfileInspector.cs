@@ -128,11 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                     {
                                         MixedRealityInteractionMapping currentMapping = controllerMapping.Interactions[k];
 
-                                        if (currentMapping.Description.Equals("Trigger Press (Select)"))
+                                        if (currentMapping.InputType == DeviceInputType.Select)
                                         {
                                             thisProfile.MixedRealityControllerMappingProfiles[j].Interactions[0].MixedRealityInputAction = currentMapping.MixedRealityInputAction;
                                         }
-                                        else if (currentMapping.Description.Equals("Spatial Grip"))
+                                        else if (currentMapping.InputType == DeviceInputType.SpatialGrip)
                                         {
                                             thisProfile.MixedRealityControllerMappingProfiles[j].Interactions[1].MixedRealityInputAction = currentMapping.MixedRealityInputAction;
                                         }
