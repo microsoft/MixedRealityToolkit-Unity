@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Extension Service Creation Wizard | Mixed Reality Toolkit Documentation </title>
+    <title>Screenshot Utility | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Extension Service Creation Wizard | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Screenshot Utility | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
@@ -80,39 +80,17 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="extension-service-creation-wizard">Extension Service Creation Wizard</h1>
+<h1 id="screenshot-utility">Screenshot Utility</h1>
 
-<p>Making the transition from singletons to services can be difficult. This wizard can supplement our other documentation and sample code by enabling devs to create new services with (roughly) the same ease as creating a new Monobehaviour script. To learn about creating services from scratch, see our <a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html">Guide to building Registered Services</a> (Coming soon).</p>
-<h3 id="launching-the-wizard">Launching the wizard</h3>
-<p>Launch the wizard from the main menu: <strong>MixedRealityToolkit/Utilities/Create Extension Service</strong> - the wizard will then take you through the process of generating your service script, interface and profile class.</p>
-<h3 id="editing-your-service-script">Editing your service script</h3>
-<p>By default, your new script assets will be generated in the MixedRealityToolkit.Extensions folder. Once you've completed the wizard, navigate here and open your new service script.</p>
-<p>Generated service scripts include some prompts similar to new Monbehavior scripts. They will let you know where to initialize and update your service.</p>
-<pre><code>namespace Microsoft.MixedReality.Toolkit.Extensions
-{
-    [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone|SupportedPlatforms.MacStandalone|SupportedPlatforms.LinuxStandalone|SupportedPlatforms.WindowsUniversal)]
-    public class NewService : BaseExtensionService, INewService, IMixedRealityExtensionService
-    {
-        private NewServiceProfile newServiceProfile;
-
-        public NewService(IMixedRealityServiceRegistrar registrar,  string name,  uint priority,  BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) 
-        {
-            newServiceProfile = (NewServiceProfile)profile;
-        }
-
-        public override void Initialize()
-        {
-            // Do service initialization here.
-        }
-
-        public override void Update()
-        {
-            // Do service updates here.
-        }
-    }
-}
-</code></pre>
-<p>If you chose to register your service in the wizard, all you have to do is edit this script and your service will automatically be updated. Otherwise you can read about <a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html">registering your new service here</a>.</p>
+<p>Often taking screenshots in Unity for documentation and promotional imagery can be burdensome and the output often looks less than desirable. This is where the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Tools/ScreenshotUtility">ScreenshotUtility</a> class comes into play.</p>
+<p>The ScreenshotUtility class aides in taking screenshots via menu items and public APIs within the Unity editor. Screenshots can be captured at various resolutions and with transparent clear colors for use in easy post compositing of images. Taking screenshots from a standalone build is not supported by this tool.</p>
+<h3 id="taking-screenshots">Taking Screenshots</h3>
+<p>Screenshots can be easily capture while in the editor by selecting <em>Mixed Reality Toolkit-&gt;Utilities-&gt;Take Screenshot</em> and then selecting your desired option. Make sure to have the game window tab visible if capturing while not playing, or a screenshot may not be saved.</p>
+<p>By default, all screenshots are saved to your <a href="https://docs.unity3d.com/ScriptReference/Application-temporaryCachePath.html">temporary cache path</a>, the path to the screenshot will be displayed in the Unity console.</p>
+<p><img src="../Images/ScreenshotUtility/MRTK_ScreenshotUtility_Menu_Item.png" alt=""></p>
+<h3 id="example-screenshot-capture">Example Screenshot Capture</h3>
+<p>The below screenshot was captured with the <em>&quot;4x Resolution (Transparent Background)&quot;</em> option. This outputs a high-resolution image with whatever pixels normally represented by the clear color saved as transparent pixels. This technique helps developers showcase their application for the store, or other media outlets, by overlaying this image on top of other imagery.</p>
+<p><img src="../Images/ScreenshotUtility/MRTK_ScreenshotUtility_Example_Capture.png" alt=""></p>
 </article>
           </div>
           
@@ -121,7 +99,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Utilities/ExtensionServiceCreationWizard.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Tools/ScreenshotUtility.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
