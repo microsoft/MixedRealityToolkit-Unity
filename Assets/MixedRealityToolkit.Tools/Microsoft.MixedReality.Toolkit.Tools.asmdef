@@ -6,7 +6,9 @@
         "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
