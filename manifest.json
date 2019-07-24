@@ -4271,6 +4271,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessMeshObserverProfile_TypesPlatforms.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessMeshObserverProfile_TypesPlatforms.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessProfile.png",
       "output": {
         "resource": {
@@ -5153,7 +5164,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.html",
-          "hash": "iBDzNzJdVpw1jdiB78DLvQ=="
+          "hash": "wiCUsggixtfKOedJXnJXRw=="
         }
       },
       "is_incremental": false,
@@ -5165,7 +5176,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html",
-          "hash": "N5FQYU/7zH8Zyzt5k2aEpQ=="
+          "hash": "ddOphr//fQr5sS6sYinQmA=="
         }
       },
       "is_incremental": false,
@@ -12544,7 +12555,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile.html",
-          "hash": "W9tBB8Dg/u3jk+EUrEifdQ=="
+          "hash": "4xPl86N68K6CCCdidRqefQ=="
         }
       },
       "is_incremental": false,
