@@ -123,8 +123,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                     if (horizontalScope != null) { horizontalScope.Dispose(); horizontalScope = null; }
 
                                     serializedObject.ApplyModifiedProperties();
-                                    thisProfile.MixedRealityControllerMappingProfiles[j].Interactions[0].MixedRealityInputAction = controllerMapping.Interactions[5].MixedRealityInputAction;
-                                    thisProfile.MixedRealityControllerMappingProfiles[j].Interactions[1].MixedRealityInputAction = controllerMapping.Interactions[1].MixedRealityInputAction;
+
+                                    for (int k = 0; k < controllerMapping.Interactions.Length; k++)
+                                    {
+                                        MixedRealityInteractionMapping currentMapping = controllerMapping.Interactions[k];
+
+                                        if (currentMapping.Description.Equals("Trigger Press (Select)"))
+                                        {
+                                            thisProfile.MixedRealityControllerMappingProfiles[j].Interactions[0].MixedRealityInputAction = currentMapping.MixedRealityInputAction;
+                                        }
+                                        else if (currentMapping.Description.Equals("Spatial Grip"))
+                                        {
+                                            thisProfile.MixedRealityControllerMappingProfiles[j].Interactions[1].MixedRealityInputAction = currentMapping.MixedRealityInputAction;
+                                        }
+                                    }
+
                                     serializedObject.Update();
                                     controllerList.DeleteArrayElementAtIndex(i);
                                     EditorUtility.DisplayDialog("Mappings updated", "The \"HoloLens Voice and Clicker\" mappings have been migrated to a new serialization. Please save this asset.", "Okay, thanks!");
