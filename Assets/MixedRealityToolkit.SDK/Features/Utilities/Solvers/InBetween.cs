@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 trackedObjectForSecondTransform = value;
                 if (secondSolverHandler != null)
                 {
-                    secondSolverHandler.TrackedObjectToReference = value;
+                    secondSolverHandler.TrackedTargetType = value;
                 }
             }
         }
@@ -93,11 +93,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 if (secondTransformOverride != null)
                 {
-                    secondSolverHandler.TransformTarget = secondTransformOverride;
+                    secondSolverHandler.SetTransformOverride(secondTransformOverride);
                 }
                 else
                 {
-                    secondSolverHandler.TrackedObjectToReference = trackedObjectForSecondTransform;
+                    secondSolverHandler.TrackedTargetType = trackedObjectForSecondTransform;
                 }
             }
         }

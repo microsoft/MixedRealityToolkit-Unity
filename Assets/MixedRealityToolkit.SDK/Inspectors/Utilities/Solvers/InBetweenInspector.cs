@@ -39,8 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                 EditorGUILayout.PropertyField(trackedObjectProperty);
                 trackedObjectChanged = EditorGUI.EndChangeCheck();
 
-                if (trackedObjectProperty.intValue == (int)TrackedObjectType.HandJointLeft ||
-                trackedObjectProperty.intValue == (int)TrackedObjectType.HandJointRight)
+                if (trackedObjectProperty.intValue == (int)TrackedObjectType.HandJoint)
                 {
                     EditorGUILayout.PropertyField(secondTrackedHandJointProperty);
                 }
