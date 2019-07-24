@@ -516,6 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GazeTarget = raycastHit.transform.gameObject;
                 var ray = GazePointer.Rays[0];
                 var lhd = (raycastHit.point - ray.Origin).magnitude;
+                lastHitDistance = lhd;
                 HitPosition = ray.Origin + lhd * ray.Direction;
                 HitNormal = raycastHit.normal;
             }
