@@ -121,7 +121,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 1.2692683, g: 1.2692683, b: 1.2692683, a: 1}
+    - _Color: {r: 1.4692683, g: 1.4692683, b: 1.4692683, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
