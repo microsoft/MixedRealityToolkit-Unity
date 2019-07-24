@@ -40,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             BelowWrist = 3
         }
 
-        [Experimental]
         [Header("Hand Constraint")]
         [SerializeField]
         [Tooltip("Which part of the hand to move the solver towards.")]
@@ -70,15 +69,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Should the solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.")]
-        private bool transitionBetweenHands = true;
+        private bool autoTransitionBetweenHands = true;
 
         /// <summary>
         /// Should the solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.
         /// </summary>
-        public bool TransitionBetweenHands
+        public bool AutoTransitionBetweenHands
         {
-            get { return transitionBetweenHands; }
-            set { transitionBetweenHands = value; }
+            get { return autoTransitionBetweenHands; }
+            set { autoTransitionBetweenHands = value; }
         }
 
         [SerializeField]
@@ -95,52 +94,36 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         }
 
         /// <summary>
-        /// TODO
+        /// Specifies how the solver should rotate when tracking the hand. 
         /// </summary>
         public enum SolverRotationBehavior
         {
             /// <summary>
-            /// TODO
+            /// The solver simply follows the rotation of the tracked object. 
             /// </summary>
             None = 0,
             /// <summary>
-            /// TODO
+            /// The solver faces the main camera (user).
             /// </summary>
             LookAtMainCamera = 2,
             /// <summary>
-            /// TODO
+            /// The solver faces the tracked object. A hand to world transformation is applied to work with 
+            /// traditional user facing UI (-z is forward).
             /// </summary>
             LookAtTrackedObject = 3
         }
 
         [SerializeField]
-        [Tooltip("TODO")]
+        [Tooltip("Specifies how the solver should rotate when tracking the hand. ")]
         private SolverRotationBehavior rotationBehavior = SolverRotationBehavior.LookAtMainCamera;
 
         /// <summary>
-        /// TODO
+        /// Specifies how the solver should rotate when tracking the hand. 
         /// </summary>
         public SolverRotationBehavior RotationBehavior
         {
             get { return rotationBehavior; }
             set { rotationBehavior = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("TODO")]
-        private float handednessYawRotation = 20.0f;
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public float HandednessYawRotation
-        {
-            get { return handednessYawRotation; }
-            set
-            {
-                handednessYawRotation = value;
-                yawRotation = Quaternion.Euler(0.0f, handednessYawRotation, 0.0f);
-            }
         }
 
         [SerializeField]
@@ -200,7 +183,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         protected HandBounds handBounds = null;
 
         private IMixedRealityInputSystem inputSystem = null;
-        private Quaternion yawRotation = Quaternion.identity;
         private readonly Quaternion handToWorldRotation = Quaternion.Euler(-90.0f, 0.0f, 180.0f);
 
         /// <summary>
@@ -270,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         protected virtual bool IsHandActive(IMixedRealityHand hand)
         {
             // If transitioning between hands is not allowed, make sure the TrackedObjectType matches the hand.
-            if (!transitionBetweenHands)
+            if (!autoTransitionBetweenHands)
             {
                 TrackedObjectType trackedObjectType;
 
@@ -346,19 +328,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
             if (rotationBehavior != SolverRotationBehavior.None)
             {
+                var additionalRotation = SolverHandler.AdditionalRotation;
+
+                // Invert the yaw based on handedness to allow the rotation to look similar on both hands.
                 switch (SolverHandler.TrackedObjectToReference)
                 {
                     case TrackedObjectType.HandJointLeft:
                     case TrackedObjectType.MotionControllerLeft:
                         {
-                            goalRotation *= Quaternion.Inverse(yawRotation);
+                            goalRotation *= Quaternion.Euler(additionalRotation.x, -additionalRotation.y, additionalRotation.z);
                         }
                         break;
 
                     case TrackedObjectType.HandJointRight:
                     case TrackedObjectType.MotionControllerRight:
                         {
-                            goalRotation *= yawRotation;
+                            goalRotation *= Quaternion.Euler(additionalRotation.x, additionalRotation.y, additionalRotation.z);
                         }
                         break;
                 }
@@ -506,13 +491,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         }
 
         #region MonoBehaviour Implementation
-
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            HandednessYawRotation = handednessYawRotation;
-        }
 
         protected void Start()
         {
