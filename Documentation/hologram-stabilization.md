@@ -93,7 +93,8 @@ Along with ensuring the correct configurations are met to ensure visual stabilit
 
 Devices such as the HoloLens are constantly scanning and learning about the environment. Thus, as the HoloLens tracks movement & position in space, it's estimates will be updated and the [Unity coordinate system adjusted](https://docs.microsoft.com/en-us/windows/mixed-reality/coordinate-systems-in-unity). For example, if a GameObject is placed 1m from the camera at start, as the HoloLens tracks the environment, it may realize the physical point where the GameObject is located is actually 1.1m away. This would result in the hologram drifting. Applying a WorldAnchor to a GameObject will enable the anchor to control the object's transform so that the object will remain at the correct physical location (i.e update to 1.1m away instead of 1m at runtime). To persist [WorldAnchors](https://docs.unity3d.com/ScriptReference/XR.WSA.WorldAnchor.html) across app sessions, developers can employ the [WorldAnchorStore](https://docs.unity3d.com/ScriptReference/XR.WSA.Persistence.WorldAnchorStore.html) to [save and load WorldAnchors](https://docs.microsoft.com/en-us/windows/mixed-reality/persistence-in-unity).
 
->Note: Once a WorldAnchor component has been added to a GameObject, it is not possible to modify that GameObject's transform (i.e transform.position = x). A developer must remove the WorldAnchor to edit the transform.
+> [!NOTE]
+> Once a WorldAnchor component has been added to a GameObject, it is not possible to modify that GameObject's transform (i.e transform.position = x). A developer must remove the WorldAnchor to edit the transform.
 
 ```csharp
 WorldAnchor m_anchor;
