@@ -110,7 +110,7 @@ Please make sure whenever you perform changes on any of the documentation files 
 External xref services for resolving links to external libraries/apis can be added to the docfx.json build settings file in the property <em>xrefService</em>.</p>
 <p>For external apis that don't provide an xref service hrefs to the documentation website can be added to the comments.</p>
 <p>Examples:</p>
-<pre><code>/// Links to MRTK internal class SystemType
+<pre><code class="lang-csharp">/// Links to MRTK internal class SystemType
 ///&lt;see cref=&quot;Microsoft.MixedReality.Toolkit.Utilities.SystemType&quot;/&gt;
 
 /// Links to external API - link provided by xref service
@@ -178,10 +178,10 @@ Depending on whether you want to have the &quot;Improve this doc&quot; to point 
 </code></pre>
 <p>If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.</p>
 <ol start="2">
-<li>create your docfx docs by calling docfx docfx.json in the root of the repo</li>
-<li>create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder</li>
-<li>add your version number into the versionArray in web/version.js</li>
-<li>push the modified version.js to mrtk_development branch and the changes in gh-pages branch</li>
+<li>Create your docfx docs by calling docfx docfx.json in the root of the repo</li>
+<li>Create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder</li>
+<li>Add your version number into the versionArray in web/version.js</li>
+<li>Push the modified version.js to mrtk_development branch and the changes in gh-pages branch</li>
 </ol>
 <p>CI will pick up the changes done to the version.js file and update the version dropdown automatically.</p>
 <h3 id="supporting-development-branches-on-ci">Supporting development branches on CI</h3>
@@ -202,8 +202,11 @@ Depending on whether you want to have the &quot;Improve this doc&quot; to point 
 <ul>
 <li>xml tag errors - docfx like any other xml parser can't handle malformed xml tags.</li>
 <li>typos in crefs</li>
-<li>incomplete namespace identifiers - docfx won't need the full namespace to the symbol you're referring to but the relative part of the namespace that's not included in the surrounding namespace of the cref.<br>
-Example: if you're in a namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput and the file you want to link in is Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityServiceRegistrar your cref can look like this: cref=&quot;Interfaces.IMixedRealityServiceRegistrar&quot;</li>
+<li>incomplete namespace identifiers - docfx won't need the full namespace to the symbol you're referring to but the relative part of the namespace that's not included in the surrounding namespace of the cref.
+<ul>
+<li>Example: if you're in a namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput and the file you want to link in is Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityServiceRegistrar your cref can look like this: cref=&quot;Interfaces.IMixedRealityServiceRegistrar&quot;</li>
+</ul>
+</li>
 <li>External crefs - As long as there's no xref service available (and listed in the docfx build file) crefs to external libraries won't work. If you still want to link to a specific external symbol that doesn't have xref service but an online api documentation you can use a href instead. Example: linking to EditorPrefs of Unity: <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see></li>
 </ul>
 </li>

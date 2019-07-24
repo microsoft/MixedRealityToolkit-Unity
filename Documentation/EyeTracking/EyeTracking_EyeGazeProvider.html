@@ -114,8 +114,7 @@ Again, if 'IsEyeGazeValid' is false, this will be based on the user's <em>head</
 </li>
 </ul>
 <h2 id="examples-for-using-mixedrealitytoolkitinputsystemeyegazeprovider">Examples for using MixedRealityToolkit.InputSystem.EyeGazeProvider</h2>
-<p>Here is an example from the
-<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze.html">FollowEyeGaze.cs</a>:</p>
+<p>Here is an example from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze.html">FollowEyeGaze.cs</a>:</p>
 <ul>
 <li>Get the point of a hologram that the user is looking at:</li>
 </ul>
@@ -127,7 +126,7 @@ gameObject.transform.position = MixedRealityToolkit.InputSystem.EyeGazeProvider.
 </ul>
 <pre><code class="lang-csharp">// If no target is hit, show the object at a default distance along the gaze ray.
 gameObject.transform.position = 
-MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeOrigin + 
+MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeOrigin +
 MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
 </code></pre>
 <hr>

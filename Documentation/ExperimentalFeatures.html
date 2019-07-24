@@ -103,9 +103,10 @@
 <code>MRTK.SDK/Experimental/Features/Utilities/Solvers/HandConstraintPalmUp.cs</code></p>
 <p>The example scene went into:
 <code>MRTK.Examples/Experimental/HandTracking/Scenes/HandBasedMenuExample.unity</code></p>
-<blockquote>
+<div class="NOTE">
+<h5>Note</h5>
 <p>We considered not having a single Experimental root folder and instead putting Experimental under say <code>MRTK.Examples/HandTracking/Scenes/Experimental/HandBasedMenuExample.unity</code>. We decided to go with folders at the base to make the experimental features easier to discover.</p>
-</blockquote>
+</div>
 <h3 id="experimental-code-should-be-in-a-special-namespace">Experimental Code should be in a special namespace</h3>
 <p>Ensure that the experimental code lives in an experimental namespace that matches the non-experimental location. For example,
 if your component is part of solvers at <code>Microsoft.MixedReality.Toolkit.Utilities.Solvers</code>, its namespace should be <code>Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers</code>.</p>

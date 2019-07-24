@@ -89,31 +89,22 @@
 <li>HoloLens 2 articulated hand tracking</li>
 </ul>
 <p>Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.</p>
-<table>
-<thead>
-<tr>
-<th><strong>Warning</strong>: This does not work when using Unity's XR Holographic Emulation -&gt; Emulation Mode = &quot;Simulate in Editor&quot;. Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = &quot;None&quot;</th>
-</tr>
-</thead>
-</table>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>This does not work when using Unity's XR Holographic Emulation &gt; Emulation Mode = &quot;Simulate in Editor&quot;. Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = <em>&quot;None&quot;</em></p>
+</div>
 <h2 id="enabling-the-input-simulation-service">Enabling the Input Simulation Service</h2>
 <p>Input simulation is enabled by default in MRTK.</p>
 <p>Input simulation is an optional <a href="../MixedRealityServices.html">Mixed Reality service</a>. It can be added as a data provider in the <a href="../TODO.html">Input System profile</a>.</p>
 <ul>
-<li><p><strong>Type</strong> must be <em>Microsoft.MixedReality.Toolkit.Input &gt; InputSimulationService</em>.</p>
-</li>
-<li><p><strong>Platform(s)</strong> should always be <em>Windows Editor</em> since the service depends on keyboard and mouse input.</p>
-</li>
-<li><p><strong>Profile</strong> has all settings for input simulation.</p>
-<table>
-<thead>
-<tr>
-<th><strong>Warning</strong>: Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type <em>Input Simulation</em> or it will not work!</th>
-</tr>
-</thead>
-</table>
-</li>
+<li><strong>Type</strong> must be <em>Microsoft.MixedReality.Toolkit.Input &gt; InputSimulationService</em>.</li>
+<li><strong>Platform(s)</strong> should always be <em>Windows Editor</em> since the service depends on keyboard and mouse input.</li>
+<li><strong>Profile</strong> has all settings for input simulation.</li>
 </ul>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type <em>Input Simulation</em> or it will not work!</p>
+</div>
 <a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png">
   <img src="../Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png" title="Full Hand Mesh" width="80%" class="center">
 </a>
@@ -199,13 +190,10 @@ as is shown in the image above).</p>
 </li>
 </ol>
 <p>Each of the mouse buttons can be mapped to transform the hand shape into a different gesture using the <em>Left/Middle/Right Mouse Hand Gesture</em> settings. The <em>Default Hand Gesture</em> is the shape of the hand when no button is pressed.</p>
-<table>
-<thead>
-<tr>
-<th>Note: The <em>Pinch</em> gesture is the only gesture that performs the &quot;Select&quot; action at this point.</th>
-</tr>
-</thead>
-</table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <em>Pinch</em> gesture is the only gesture that performs the &quot;Select&quot; action at this point.</p>
+</div>
 <h2 id="one-hand-manipulation">One-Hand Manipulation</h2>
 <ol>
 <li>Press and hold hand control key (Space/Left Shift)</li>

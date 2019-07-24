@@ -85,10 +85,11 @@
 <p>At the heart of the input system is the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/MixedRealityInputSystem.cs">MixedRealityInputSystem</a>,
 which is a service that is responsible for initializing and operating all of the input related
 functionality associated with the MRTK.</p>
-<blockquote>
-<p>Note that it is assumed that readers have already read and have a basic understanding of the
+<div class="NOTE">
+<h5>Note</h5>
+<p>It is assumed that readers have already read and have a basic understanding of the
 <a href="Terminology.html">terminology</a> section.</p>
-</blockquote>
+</div>
 <p>This service is responsible for:</p>
 <ul>
 <li>Reading the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Definitions/InputSystem/MixedRealityInputSystemProfile.cs">input system profile</a></li>
@@ -110,7 +111,7 @@ documentation.</li>
 <p>Input events are generally fired on two different channels:</p>
 <h3 id="objects-in-focus">Objects in focus</h3>
 <p>Events can be sent directly to a GameObject that has focus. For example, an object might
-have a script that implements <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Interfaces/InputSystem/Handlers/IMixedRealityHandTrackHandler.cs">IMixedRealityTouchHandler</a>.
+have a script that implements <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Interfaces/InputSystem/Handlers/IMixedRealityHandTrackHandler.cs"><code>IMixedRealityTouchHandler</code></a>.
 This object would get touch events when focused by a hand that is near it. These types of
 events go &quot;up&quot; the GameObject hierarchy until it finds a GameObject that is capable of handling
 the event.</p>
@@ -118,7 +119,7 @@ the event.</p>
 in <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/MixedRealityInputSystem.cs#L471">DispatchEventToObjectFocusedByPointer</a>.</p>
 <h3 id="global-listeners">Global listeners</h3>
 <p>Events can be sent to global listeners. It's possible to register for all input events by using
-the input systems's <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html">IMixedRealityEventSystem</a>
+the input system's <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html"><code>IMixedRealityEventSystem</code></a>
 interface. It's recommended to use the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_RegisterHandler__1_IEventSystemHandler_">RegisterHandler</a>
 method for registering for global events - the deprecated <code>Register</code> function will cause listeners
 to get notified of ALL input events, rather than just input events of a particular type

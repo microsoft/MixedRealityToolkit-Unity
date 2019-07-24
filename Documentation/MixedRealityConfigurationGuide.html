@@ -87,25 +87,24 @@
 <p><strong>This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit</strong></p>
 <h2 id="the-main-mixed-reality-toolkit-configuration-profile">The main Mixed Reality Toolkit configuration profile</h2>
 <p>The main configuration profile, which is attached to the <em>MixedRealityToolkit</em> GameObject in your Scene, provides the main entry point for the Toolkit in your project.</p>
-<blockquote>
+<div class="NOTE">
+<h5>Note</h5>
 <p>The Mixed Reality Toolkit &quot;locks&quot; the default configuration screens to ensure you always have a common start point for your project and it is encouraged to start defining your own settings as your project evolves. The MRTK configuration is not editable during playmode.</p>
-</blockquote>
+</div>
 <p><img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png" alt=""></p>
-<blockquote>
 <p>All the &quot;default&quot; profiles for the Mixed Reality Toolkit can be found in the SDK project in the folder Assets\MixedRealityToolkit.SDK\Profiles</p>
-</blockquote>
-<blockquote>
+<div class="IMPORTANT">
+<h5>Important</h5>
 <p>DefaultHoloLens2ConfigurationProfile is optimized for HoloLens 2. See <a href="Profiles/Profiles.html">Profiles</a> for the details.</p>
-</blockquote>
+</div>
 <p>When you open the main Mixed Reality Toolkit Configuration Profile, you will see the following screen in the inspector:</p>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png" width="650px" style="display:block;">
-<blockquote>
 <p>If you select a MixedRealityToolkitConfigurationProfile asset without the MixedRealityToolkit in the scene, it will ask you if you want the MRTK to automatically setup the scene for you. This is optional, however, there must be an active MixedRealityToolkit object in the scene to access all the configuration screens.</p>
-</blockquote>
 <p>This houses the current active runtime configuration for the project.</p>
-<blockquote>
-<p>Note, almost any profile can be swapped out at runtime, with the exception of the InputActions configuration (see later). The profiles with then automatically adapt to the new configuration / runtime environment automatically.</p>
-</blockquote>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Almost any profile can be swapped out at runtime, with the exception of the InputActions configuration (see later). The profiles with then automatically adapt to the new configuration / runtime environment automatically.</p>
+</div>
 <p>From here you can navigate to all the configuration profiles for the MRTK, including:</p>
 <ul>
 <li><a href="#experience">Experience settings</a></li>
@@ -193,9 +192,7 @@ or later programmatically as well as setting the extents for the field of view.<
 <a name="services"></a>
 <h2 id="additional-services-settings">Additional services settings</h2>
 <p>One of the more advanced areas of the Mixed Reality Toolkit is its <a href="https://en.wikipedia.org/wiki/Service_locator_pattern">service locator pattern</a> implementation which allows the registering of any &quot;Service&quot; with the framework. This allows the framework to be both extended with new features / systems easily but also allows for projects to take advantage of these capabilities to register their own runtime components.</p>
-<blockquote>
-<p>You can read more about the underlying framework and its implementation in <a href="https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2">Stephen Hodgson's article on the Mixed Reality Framework</a></p>
-</blockquote>
+<p>One can read more about the underlying framework and its implementation in <a href="https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2">Stephen Hodgson's article on the Mixed Reality Framework</a></p>
 <p>Any registered service still gets the full advantage of all of the Unity events, without the overhead and cost of implementing a MonoBehaviour or clunky singleton patterns. This allows for pure C# components with no scene overhead for running both foreground and background processes, e.g. spawning systems, runtime gamelogic, or practically anything else.</p>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png" width="650px" style="display:block;">
 <hr>
@@ -264,18 +261,17 @@ or later programmatically as well as setting the extents for the field of view.<
 </tbody>
 </table>
 <p>Events utilizing input actions are not limited to physical controllers and can still be utilized within the project to have runtime effects generate new actions.</p>
-<blockquote>
+<div class="NOTE">
+<h5>Note</h5>
 <p>Input actions are one of the few components which is not editable at runtime, they are a design time configuration only. This profile should not be swapped out whilst the project is running due to the framework (and your projects) dependency on the ID's generated for each action.</p>
-</blockquote>
+</div>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png" width="650px" style="display:block;">
 <hr>
 <a name="inputactionrules"></a>
 <h2 id="input-actions-rules">Input actions rules</h2>
 <p>Input action rules provide a way to automatically translate an event raised for one input action in to different actions based on its data value. These are managed seamlessly within the framework and do not incur any performance costs.</p>
 <p>For example, converting the single dual axis input event from a DPad in to the 4 corresponding &quot;Dpad Up&quot; / &quot;DPad Down&quot; / &quot;Dpad Left&quot; / &quot;Dpad Right&quot; actions (as shown in the image below).</p>
-<blockquote>
 <p>This could also be done in your own code. However, seeing as this was a very common pattern, the framework provides a mechanism to do this &quot;out of the box&quot;</p>
-</blockquote>
 <p>Input action Rules can be configured for any of the available input axis. However, input actions from one axis type can be translated to another input action of the same axis type. You can map a dual axis action to another dual axis action, but not to a digital or none action.</p>
 <p><img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png" alt=""></p>
 <hr>
@@ -296,17 +292,19 @@ or later programmatically as well as setting the extents for the field of view.<
 <a name="gestures"></a>
 <h2 id="gestures-configuration">Gestures configuration</h2>
 <p>Gestures are a system specific implementation allowing you to assign input actions to the various &quot;Gesture&quot; input methods provided by various SDKs (e.g. HoloLens).</p>
-<blockquote>
-<p>Note, the current implementation is for the HoloLens only and will be enhanced for other systems as they are added to the Toolkit in the future (no dates yet).</p>
-</blockquote>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The current Gestures implementation is for the HoloLens only and will be enhanced for other systems as they are added to the Toolkit in the future (no dates yet).</p>
+</div>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png" width="650px" style="display:block;">
 <hr>
 <a name="speech"></a>
 <h2 id="speech-commands">Speech Commands</h2>
 <p>Like gestures, some runtime platforms also provide intelligent &quot;Speech to Text&quot; functionality with the ability to generate commands that can be received by a Unity project. This configuration profile allows you to configure registered &quot;words&quot; and translate them in to input actions that can be received by your project. They can also be attached to keyboard actions if required.</p>
-<blockquote>
+<div class="IMPORTANT">
+<h5>Important</h5>
 <p>The system currently only supports speech when running on Windows 10 platforms, e.g. HoloLens and Windows 10 desktop and will be enhanced for other systems as they are added to MRTK in the future (no dates yet).</p>
-</blockquote>
+</div>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png" width="650px" style="display:block;">
 <hr>
 <a name="mapping"></a>
@@ -334,9 +332,10 @@ or later programmatically as well as setting the extents for the field of view.<
 <h2 id="controller-visualization-settings">Controller visualization settings</h2>
 <p>In addition to the controller mapping, a separate configuration profile is provided to customize how your controllers are presented within your scenes.</p>
 <p>This can be configured at a &quot;Global&quot; (all instances of a controller for a specific hand) or specific to an individual controller type / hand.</p>
-<blockquote>
+<div class="IMPORTANT">
+<h5>Important</h5>
 <p>The MRTK does not currently support native SDK's controller models as Unity does not yet provide the capability to load / render gLTF models, which is the default type of models provided by most SDKs. This will be enhanced when this is available.</p>
-</blockquote>
+</div>
 <p>If your controller representation in the scene needs to be offset from the physical controller position, then simply set that offset against the controller model's prefab (e.g. setting the transform position of the controller prefab with an offset position).</p>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png" width="650px" style="display:block;">
 <a name="inspectors"></a>

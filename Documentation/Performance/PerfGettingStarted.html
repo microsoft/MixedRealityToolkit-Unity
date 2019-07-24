@@ -87,9 +87,10 @@
 <h3 id="visual-profiler">Visual Profiler</h3>
 <p>To continuously track performance over the lifetime of development, it is highly recommended to always show a framerate visual while running &amp; debugging an application. The Mixed Reality Toolkit provides the <a href="../Diagnostics/UsingVisualProfiler.html">Visual Profiler</a> diagnostic tool which gives real-time information about the current FPS and memory usage in application view. The Visual Profiler can be configured via the <a href="../Diagnostics/DiagnosticsSystemGettingStarted.html">Diagnostics System Settings</a> under the <a href="../MixedRealityConfigurationGuide.html">MRTK Profiles Inspector</a>.</p>
 <p>Furthermore, it is particularly important to utilize the Visual Profiler to track framerate when running on device as opposed to running in Unity editor or an emulator. The most accurate performance results will be depicted when running on device with <a href="https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-set-debug-and-release-configurations?view=vs-2019">Release configuration builds</a>.</p>
-<blockquote>
-<p>Note: If building for Windows Mixed Reality, then deploy with <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/exporting-and-building-a-unity-visual-studio-solution#building_and_deploying_a_unity_visual_studio_solution">MASTER configuration builds</a></p>
-</blockquote>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If building for Windows Mixed Reality, then deploy with <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/exporting-and-building-a-unity-visual-studio-solution#building_and_deploying_a_unity_visual_studio_solution">MASTER configuration builds</a></p>
+</div>
 <p><img src="../Images/Diagnostics/VisualProfiler.png" alt="Visual Profiler Interface"></p>
 <h3 id="optimize-window">Optimize Window</h3>
 <p>The <a href="../Utilities/OptimizeWindow.html">MRTK Optimize Window</a> offers information and automation tools to help mixed reality developers set up their environment for the best performing results and identify potential bottlenecks in their scene &amp; assets. Certain key configurations in Unity can help deliver substantially more optimized results for mixed reality projects.</p>

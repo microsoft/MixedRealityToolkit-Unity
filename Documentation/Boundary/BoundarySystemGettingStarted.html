@@ -101,43 +101,41 @@ boundary system and a Virtual Reality platform configured with a boundary.</p>
 <li><a href="#build-and-deploy">Build and deploy</a> to a VR platform with a configured boundary</li>
 </ol>
 <h2 id="enable-boundary-system">Enable Boundary System</h2>
-<p>The boundary system is managed by the MixedRealityToolkit object (or another
-<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component).</p>
-<blockquote>
+<p>The boundary system is managed by the MixedRealityToolkit object (or another <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component).</p>
 <p>The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.</p>
-</blockquote>
 <ol>
 <li>Select the MixedRealityToolkit object in the scene hierarchy.</li>
 </ol>
 <p><img src="../Images/MRTK_ConfiguredHierarchy.png" alt="MRTK Configured Scene Hierarchy"></p>
-<ol start="2">
+<ol>
 <li>Navigate the Inspector panel to the Boundary System section and check Enable</li>
 </ol>
 <p><img src="../Images/Boundary/MRTKConfig_Boundary.png" alt="Enable the Boundary System"></p>
-<ol start="3">
+<ol>
 <li>Select the Boundary System implementation</li>
 </ol>
-<p><img src="../Images/Boundary/BoundarySelectSystemType.png" alt="Select the Boundarys System Implementation"></p>
-<blockquote>
-<p>Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the boundary system pre-configured to use the MixedRealityBoundarySystem from the Mixed Reality
-Toolkit Boundary System Service package.</p>
-</blockquote>
+<p><img src="../Images/Boundary/BoundarySelectSystemType.png" alt="Select the Boundary System Implementation"></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the boundary system pre-configured to use the MixedRealityBoundarySystem from the Mixed Reality Toolkit Boundary System Service package.</p>
+</div>
 <h2 id="configure-boundary-visualization">Configure Boundary Visualization</h2>
 <p>The boundary system uses a configuration profile to specify which boundary components are to be displayed and to configure their appearance. Please see <a href="ConfiguringBoundaryVisualization.html">Configuring the Boundary Visualization</a> for more information pertaining to the available visualization options.</p>
 <p><img src="../Images/Boundary/BoundaryVisualizationProfile.png" alt="Boundary Visualization Options"></p>
-<blockquote>
+<div class="NOTE">
+<h5>Note</h5>
 <p>Users of the default profile (DefaultMixedRealitBoundarySystemProfile) will have the boundary system pre-configured to display a floor plane, the play area and the tracked area.</p>
-</blockquote>
+</div>
 <h2 id="build-and-deploy">Build and Deploy</h2>
 <p>Once the boundary system is configured with the desired visualization options, the project can be built deployed to the target platform.</p>
-<blockquote>
+<div class="NOTE">
+<h5>Note</h5>
 <p>Using Play Mode, in Unity, enables in editor visualization of the configured boundary. This feature enables rapid development and testing without requiring the build and deploy step. Be sure to do final acceptance testing using an built and deployed version of the application, running on the target hardware and platform.</p>
-</blockquote>
+</div>
 <h2 id="see-also">See Also</h2>
 <ul>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Boundary.html">Boundary API documentation</a></li>
 <li><a href="ConfiguringBoundaryVisualization.html">Configuring the Boundary Visualization</a></li>
-<li><a href="../TODO.html">Using Boundaries in an Application</a></li>
 </ul>
 </article>
           </div>

@@ -104,9 +104,7 @@
     }
 </code></pre>
 <p>This ensures documentation is properly generated and disseminated for all all classes, methods, and properties.</p>
-<blockquote>
 <p>Any script files submitted without proper summary tags will be rejected.</p>
-</blockquote>
 <h2 id="mrtk-namespace-rules">MRTK namespace rules</h2>
 <p>The Mixed Reality Toolkit uses a feature based namespace model, where all foundational namespaces begin with &quot;Microsoft.MixedReality.Toolkit&quot;. In general, you need not specify the toolkit layer (ex: Core, Providers, Services) in your namespaces.</p>
 <p>The currently defined namespaces are:</p>
@@ -121,7 +119,7 @@
 <li>Microsoft.MixedReality.Toolkit.Utilities</li>
 </ul>
 <p>For namespaces with a large amount of types, it is acceptable to create a limited number of sub-namespaces to aid in scoping usage.</p>
-<h3 id="do">Do:</h3>
+<h3 id="do">Do</h3>
 <pre><code class="lang-c#">namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     // Interface, class or data type definition.
@@ -131,28 +129,28 @@
 <h2 id="spaces-vs-tabs">Spaces vs Tabs</h2>
 <p>Please be sure to use 4 spaces instead of tabs when contributing to this project.</p>
 <p>Additionally, ensure that spaces are added for conditional / loop functions like if / while / for</p>
-<h3 id="dont">Don't:</h3>
+<h3 id="dont">Don't</h3>
 <pre><code class="lang-c#">private Foo () // &lt; - space between Foo and ()
 {
     if(Bar==null) // &lt;- no space between if and ()
     {
         DoThing();
     }
-    
+
     while(true) // &lt;- no space between while and ()
     {
         Do();
     }
 }
 </code></pre>
-<h3 id="do-1">Do:</h3>
+<h3 id="do-1">Do</h3>
 <pre><code class="lang-c#">private Foo()
 {
    if (Bar==null)
    {
        DoThing();
    }
-   
+
    while (true)
    {
        Do();
@@ -161,7 +159,7 @@
 </code></pre>
 <h2 id="spacing">Spacing</h2>
 <p>Do not to add additional spaces between square brackets and parenthesis:</p>
-<h3 id="dont-1">Don't:</h3>
+<h3 id="dont-1">Don't</h3>
 <pre><code class="lang-c#">private Foo()
 {
     int[ ] var = new int [ 9 ];
@@ -169,7 +167,7 @@
 }
 
 </code></pre>
-<h3 id="do-2">Do:</h3>
+<h3 id="do-2">Do</h3>
 <pre><code class="lang-c#">private Foo()
 {
     int[] var = new int[9];
@@ -177,31 +175,27 @@
 }
 </code></pre>
 <h2 id="naming-conventions">Naming Conventions</h2>
-<p>Always use <code>PascalCase</code> for public / protected / virtual properties, and <code>camelCase</code> for private properties and fields.</p>
-<blockquote>
-<p>The only exception to this is for data structures that require the fields to be serialized by the <code>JsonUtility</code>.</p>
-</blockquote>
-<h3 id="dont-2">Don't:</h3>
+<p>Always use <code>PascalCase</code> for public / protected / virtual properties, and <code>camelCase</code> for private properties and fields. The only exception to this is for data structures that require the fields to be serialized by the <code>JsonUtility</code>.</p>
+<h3 id="dont-2">Don't</h3>
 <pre><code class="lang-c#">public string myProperty; // &lt;- Starts with a lower case letter
 private string MyProperty; // &lt;- Starts with an uppercase case letter
 </code></pre>
-<h3 id="do-3">Do:</h3>
+<h3 id="do-3">Do</h3>
 <pre><code class="lang-c#">public string MyProperty;
 protected string MyProperty;
 private string myProperty;
 </code></pre>
 <h2 id="access-modifiers">Access Modifiers</h2>
 <p>Always declare an access modifier for all fields, properties and methods.</p>
-<blockquote>
-<p>All Unity API Methods should be <code>private</code> by default, unless you need to override them in a derived class. In this case <code>protected</code> should be used.</p>
-</blockquote>
-<blockquote>
-<p>Fields should always be <code>private</code>, with <code>public</code> or <code>protected</code> property accessors.</p>
-</blockquote>
-<blockquote>
-<p>Use <a href="https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members">expression-bodied members</a> and <a href="https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements">auto properties</a> where possible</p>
-</blockquote>
-<h3 id="dont-3">Don't:</h3>
+<ul>
+<li><p>All Unity API Methods should be <code>private</code> by default, unless you need to override them in a derived class. In this case <code>protected</code> should be used.</p>
+</li>
+<li><p>Fields should always be <code>private</code>, with <code>public</code> or <code>protected</code> property accessors.</p>
+</li>
+<li><p>Use <a href="https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members">expression-bodied members</a> and <a href="https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements">auto properties</a> where possible</p>
+</li>
+</ul>
+<h3 id="dont-3">Don't</h3>
 <pre><code class="lang-c#">// protected field should be private
 protected int myVariable = 0;
 
@@ -212,7 +206,7 @@ public int MyVariable { get { return myVariable; } }
 void Foo() { }
 void Bar() { }
 </code></pre>
-<h3 id="do-4">Do:</h3>
+<h3 id="do-4">Do</h3>
 <pre><code class="lang-c#">public int MyVariable { get; protected set; } = 0;
 
 private void Foo() { }
@@ -221,7 +215,7 @@ protected virtual void FooBar() { }
 </code></pre>
 <h2 id="use-braces">Use Braces</h2>
 <p>Always use braces after each statement block, and place them on the next line.</p>
-<h3 id="dont-4">Don't:</h3>
+<h3 id="dont-4">Don't</h3>
 <pre><code class="lang-c#">private Foo()
 {
     if (Bar==null) // &lt;- missing braces surrounding if action
@@ -230,13 +224,13 @@ protected virtual void FooBar() { }
         DoTheOtherThing();
 }
 </code></pre>
-<h3 id="dont-5">Don't:</h3>
+<h3 id="dont-5">Don't</h3>
 <pre><code class="lang-c#">private Foo() { // &lt;- Open bracket on same line
     if (Bar==null) DoThing(); &lt;- if action on same line with no surrounding brackets 
     else DoTheOtherThing();
 }
 </code></pre>
-<h3 id="do-5">Do:</h3>
+<h3 id="do-5">Do</h3>
 <pre><code class="lang-c#">private Foo()
 {
     if (Bar==true)
@@ -251,7 +245,7 @@ protected virtual void FooBar() { }
 </code></pre>
 <h2 id="public-classes-structs-and-enums-should-all-go-in-their-own-files">Public classes, structs, and enums should all go in their own files.</h2>
 <p>If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoids compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.</p>
-<h3 id="dont-6">Don't:</h3>
+<h3 id="dont-6">Don't</h3>
 <pre><code class="lang-c#">public class MyClass
 {
     public struct MyStruct() { }
@@ -259,7 +253,7 @@ protected virtual void FooBar() { }
     public class MyNestedClass() { }
 }
 </code></pre>
-<h3 id="do-6">Do:</h3>
+<h3 id="do-6">Do</h3>
 <pre><code class="lang-c#">// Private references for use inside the class only
 public class MyClass
 {
@@ -268,7 +262,7 @@ public class MyClass
    private class MyNestedClass() { }
 }
 </code></pre>
-<h3 id="do-7">Do:</h3>
+<h3 id="do-7">Do</h3>
 <p>MyStruct.cs</p>
 <pre><code class="lang-c#">// Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
 public struct MyStruct
@@ -291,12 +285,9 @@ public struct MyStruct
     private MyEnumType myEnumReference;
 }
 </code></pre>
-<h2 id="initialize-enums">Initialize Enums.</h2>
-<p>To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value.</p>
-<blockquote>
-<p>E.G. Value 1 = 0  (Remaining values are not required)</p>
-</blockquote>
-<h3 id="dont-7">Don't:</h3>
+<h2 id="initialize-enums">Initialize Enums</h2>
+<p>To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)</p>
+<h3 id="dont-7">Don't</h3>
 <pre><code class="lang-c#">public enum Value
 {
     Value1, &lt;- no initializer
@@ -304,7 +295,7 @@ public struct MyStruct
     Value3
 }
 </code></pre>
-<h3 id="do-8">Do:</h3>
+<h3 id="do-8">Do</h3>
 <pre><code class="lang-c#">public enum ValueType
 {
    Value1 = 0,
@@ -312,9 +303,9 @@ public struct MyStruct
    Value3
 }
 </code></pre>
-<h2 id="order-enums-for-appropriate-extension">Order Enums for appropriate extension.</h2>
+<h2 id="order-enums-for-appropriate-extension">Order Enums for appropriate extension</h2>
 <p>It is critical that if an Enum is likely to be extended in the future, to order defaults at the top of the Enum, this ensures Enum indexes are not affected with new additions.</p>
-<h3 id="dont-8">Don't:</h3>
+<h3 id="dont-8">Don't</h3>
 <pre><code class="lang-c#">public enum SDKType
 {
     WindowsMR,
@@ -324,7 +315,7 @@ public struct MyStruct
     Other &lt;- anonymous value left to end of enum
 }
 </code></pre>
-<h3 id="do-9">Do:</h3>
+<h3 id="do-9">Do</h3>
 <pre><code class="lang-c#">   /// &lt;summary&gt;
    /// The SDKType lists the VR SDK's that are supported by the MRTK
    /// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
@@ -355,7 +346,7 @@ public struct MyStruct
 </code></pre>
 <h2 id="end-enum-names-with-type">End Enum names with &quot;Type&quot;</h2>
 <p>Enum names should clearly indicate their nature by using the Type suffix.</p>
-<h3 id="dont-9">Don't:</h3>
+<h3 id="dont-9">Don't</h3>
 <pre><code class="lang-c#">public enum Ordering
 {
     First,
@@ -370,7 +361,7 @@ public struct MyStruct
     Third
 }
 </code></pre>
-<h3 id="do-10">Do:</h3>
+<h3 id="do-10">Do</h3>
 <pre><code class="lang-c#">public enum OrderingType
 {
     First = 0,
@@ -378,12 +369,10 @@ public struct MyStruct
     Third
 }
 </code></pre>
-<h2 id="review-enum-use-for-bitfields">Review Enum use for Bitfields.</h2>
+<h2 id="review-enum-use-for-bitfields">Review Enum use for Bitfields</h2>
 <p>If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left &amp; Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly</p>
-<blockquote>
 <p>The Handedness.cs file has a concrete implementation for this</p>
-</blockquote>
-<h3 id="dont-10">Don't:</h3>
+<h3 id="dont-10">Don't</h3>
 <pre><code class="lang-c#">public enum Handedness
 {
     None,
@@ -391,7 +380,7 @@ public struct MyStruct
     Right
 }
 </code></pre>
-<h3 id="do-11">Do:</h3>
+<h3 id="do-11">Do</h3>
 <pre><code class="lang-c#">[flags]
 public enum HandednessType
 {
@@ -406,23 +395,24 @@ public enum HandednessType
 <h2 id="encapsulation">Encapsulation</h2>
 <p>Always use private fields and public properties if access to the field is needed from outside the class or struct.  Be sure to co-locate the private field and the public property. This makes it easier to see, at a glance, what backs the property and that the field is modifiable by script.</p>
 <p>If you need to have the ability to edit your field in the inspector, it's best practice to follow the rules for Encapsulation and serialize your backing field.</p>
-<blockquote>
+<div class="NOTE">
+<h5>Note</h5>
 <p>The only exception to this is for data structures that require the fields to be serialized by the <code>JsonUtility</code>, where a data class is required to have all public fields for the serialization to work.</p>
-</blockquote>
-<h3 id="dont-11">Don't:</h3>
+</div>
+<h3 id="dont-11">Don't</h3>
 <pre><code class="lang-c#">public float MyValue;
 </code></pre>
-<h3 id="do-12">Do:</h3>
+<h3 id="do-12">Do</h3>
 <pre><code class="lang-c#">// private field, only accessible within script (field is not serialized in Unity)
 private float myValue;
 </code></pre>
-<h3 id="do-13">Do:</h3>
+<h3 id="do-13">Do</h3>
 <pre><code class="lang-c#">// Enable private field to be configurable only in editor (field is correctly serialized in Unity)
 [SerializeField] 
 private float myValue;
 </code></pre>
 <hr>
-<h3 id="dont-12">Don't:</h3>
+<h3 id="dont-12">Don't</h3>
 <pre><code class="lang-c#">private float myValue1;
 private float myValue2;
 
@@ -438,7 +428,7 @@ public float MyValue2
     set{ myValue2 = value }
 }
 </code></pre>
-<h3 id="do-14">Do:</h3>
+<h3 id="do-14">Do</h3>
 <pre><code class="lang-c#">// Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
 [SerializeField]
 [ToolTip(&quot;If using a tooltip, the text should match the public property's summary documentation, if appropriate.&quot;)]
@@ -453,47 +443,47 @@ public float MyValue
     set{ myValue = value }
 }
 </code></pre>
-<h2 id="use-for-instead-of-foreach-when-possible">Use <code>for</code> instead of <code>foreach</code> when possible.</h2>
+<h2 id="use-for-instead-of-foreach-when-possible">Use <code>for</code> instead of <code>foreach</code> when possible</h2>
 <p>In some cases a foreach is required, e.g. when looping over an IEnumerable.  But for performance benefit, avoid foreach when you can.</p>
-<h3 id="dont-13">Don't:</h3>
+<h3 id="dont-13">Don't</h3>
 <pre><code class="lang-c#">foreach(var item in items)
 </code></pre>
-<h3 id="do-15">Do:</h3>
+<h3 id="do-15">Do</h3>
 <pre><code class="lang-c#">int length = items.length; // cache reference to list/array length
 for(int i=0; i &lt; length; i++)
 </code></pre>
 <h2 id="cache-values-and-serialize-them-in-the-sceneprefab-whenever-possible">Cache values and serialize them in the scene/prefab whenever possible.</h2>
 <p>With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.</p>
-<h3 id="dont-14">Don't:</h3>
+<h3 id="dont-14">Don't</h3>
 <pre><code class="lang-c#">void Update()
 {
     gameObject.GetComponent&lt;Renderer&gt;().Foo(Bar);
 }
 </code></pre>
-<h3 id="do-16">Do:</h3>
+<h3 id="do-16">Do</h3>
 <pre><code class="lang-c#">[SerializeField] // To enable setting the reference in the inspector.
 private Renderer myRenderer;
 
 private void Awake()
 {
-   // If you didn't set it in the inspector, then we cache it on awake.
-   if (myRenderer == null)
-   {
-       myRenderer = gameObject.GetComponent&lt;Renderer&gt;();
-   }
+    // If you didn't set it in the inspector, then we cache it on awake.
+    if (myRenderer == null)
+    {
+        myRenderer = gameObject.GetComponent&lt;Renderer&gt;();
+    }
 }
 
 private void Update()
 {
-   myRenderer.Foo(Bar);
+    myRenderer.Foo(Bar);
 }
 </code></pre>
 <h2 id="cache-references-to-materials-do-not-call-the-material-each-time">Cache references to materials, do not call the &quot;.material&quot; each time.</h2>
 <p>Unity will create a new material each time you use &quot;.material&quot;, which will cause a memory leak if not cleaned up properly.</p>
-<h3 id="dont-15">Don't:</h3>
+<h3 id="dont-15">Don't</h3>
 <pre><code class="lang-c#">public class MyClass
 {
-    void Update() 
+    void Update()
     {
         Material myMaterial = GetComponent&lt;Renderer&gt;().material;
         myMaterial.SetColor(&quot;_Color&quot;, Color.White);
@@ -511,24 +501,27 @@ public class MyClass
        cachedMaterial = GetComponent&lt;Renderer&gt;().material;
    }
 
-   void Update() 
+   void Update()
    {
        cachedMaterial.SetColor(&quot;_Color&quot;, Color.White);
    }
-   
+
    private void OnDestroy()
    {
        Destroy(cachedMaterial);
    }
 }
 </code></pre>
-<blockquote>
+<div class="NOTE">
+<h5>Note</h5>
 <p>Alternatively, use Unity's &quot;SharedMaterial&quot; property which does not create a new material each time it is referenced.</p>
-</blockquote>
+</div>
 <h2 id="use-platform-dependent-compilation-to-ensure-the-toolkit-wont-break-the-build-on-another-platform">Use <a href="https://docs.unity3d.com/Manual/PlatformDependentCompilation.html">platform dependent compilation</a> to ensure the Toolkit won't break the build on another platform</h2>
 <ul>
-<li>Use <code>WINDOWS_UWP</code> in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to <code>UNITY_WSA &amp;&amp; !UNITY_EDITOR</code> and should be used in favor of.</li>
-<li>Use <code>UNITY_WSA</code> to use UWP-specific Unity APIs, such as the <code>UnityEngine.XR.WSA</code> namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.</li>
+<li><p>Use <code>WINDOWS_UWP</code> in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to <code>UNITY_WSA &amp;&amp; !UNITY_EDITOR</code> and should be used in favor of.</p>
+</li>
+<li><p>Use <code>UNITY_WSA</code> to use UWP-specific Unity APIs, such as the <code>UnityEngine.XR.WSA</code> namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.</p>
+</li>
 </ul>
 <p>This chart can help you decide which <code>#if</code> to use, depending on your use cases and the build settings you expect.</p>
 <table>
