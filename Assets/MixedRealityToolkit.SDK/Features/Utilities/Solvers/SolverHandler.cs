@@ -129,6 +129,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set { updateSolvers = value; }
         }
 
+        protected readonly List<Solver> solvers = new List<Solver>();
+
+        /// <summary>
+        /// List of solvers that this handler will manage and update
+        /// </summary>
+        public IReadOnlyCollection<Solver> Solvers
+        {
+            get
+            {
+                return solvers.AsReadOnly();
+            }
+
+            set
+            {
+                if (value != null)
+                {
+                    this.solvers.Clear();
+                    this.solvers.AddRange(value);
+                }
+            }
+        }
+
         /// <summary>
         /// The position the solver is trying to move to.
         /// </summary>
@@ -172,8 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         // Hidden GameObject managed by this component and attached as a child to the tracked target type (i.e head, hand etc)
         private GameObject trackingTarget;
-
-        protected readonly List<Solver> solvers = new List<Solver>();
 
         private float lastUpdateTime;
 
@@ -265,15 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (target != null)
             {
                 this.transformOverride = target;
-            }
-        }
-
-        public void SetSolvers(Solver[] newSolvers)
-        {
-            if (newSolvers != null)
-            {
-                this.solvers.Clear();
-                this.solvers.AddRange(newSolvers);
+                RefreshTrackedObject();
             }
         }
 
