@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
     /// <summary>
     /// todo
     /// </summary>
-    public class WindowsMicrophoneStreamSelector : IDisposable
+    public class WindowsMicrophoneStreamSelector
     {
         /// <summary>
         /// Constructor
@@ -24,14 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
 
         {
             // todo
-        }
-
-        /// <summary>
-        /// Finalizer.
-        /// </summary>
-        ~WindowsMicrophoneStreamSelector()
-        {
-           Dispose(false);
         }
 
         private float gain = 1.0f; // todo: what is a reasonable range?
@@ -98,9 +90,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// todo
         /// </summary>
-        public void StartRecording()
+        public void StartRecording(string fileName, bool preview)
         {
-            throw new System.NotImplementedException();
+            if (!recording &&
+                ValidateResult((WindowsMicrophoneStreamErrorCode)MicStartRecording(fileName, preview)))
+            {
+                recording = true;
+            }
         }
 
         private bool streaming = false;
@@ -108,10 +104,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// todo
         /// </summary>
-        public void StartStream(bool keepData, bool localPlayback)
+        public void StartStream(bool keepData, bool preview)
         {
             if (!streaming &&
-                ValidateResult((WindowsMicrophoneStreamErrorCode)MicStartStream(keepData, localPlayback, null)))
+                ValidateResult((WindowsMicrophoneStreamErrorCode)MicStartStream(keepData, preview, null)))
             {
                 streaming = true;
             }
@@ -120,14 +116,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// todo
         /// </summary>
-        public void StopRecording(/* todo */)
+        public string StopRecording()
         {
-            // todo
-            //if (recording &&
-            //    ValidateResult((WindowsMicrophoneStreamErrorCode)MicStopRecording())
-            //{
-            //    recording = false;
-            //}
+            if (!recording)
+            {
+                // todo: log message
+                return string.Empty;
+            }
+
+            StringBuilder fullPath = new StringBuilder();
+            MicStopRecording(fullPath);
+            recording = false;
+            return fullPath.ToString();
         }
 
         /// <summary>
@@ -221,36 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
             return success;
         }
 
-        #region IDisposable implementation
-
-        private bool hasBeenDisposed = false;
-
-        /// <summary>
-        /// todo
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!hasBeenDisposed)
-            {
-                Uninitialize();
-
-                hasBeenDisposed = true;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            System.GC.SuppressFinalize(this);
-        }
-
-        #endregion IDisposable implementation
-
-        #region MicStream.dll p/invoke methods
+        #region MicStream.dll methods
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate void LiveMicCallback();
@@ -286,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         [DllImport("MicStreamSelector", ExactSpelling = true)]
         private static extern int MicStopStream();
 
-        #endregion MicStream.dll p/invoke methods
+        #endregion MicStream.dll methods
     }
 
     /// <summary>
