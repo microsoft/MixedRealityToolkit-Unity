@@ -483,15 +483,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Gets the grab point for the given pointer id
+        /// Gets the grab point for the given pointer id.
+        /// Only use if you know that your given pointer id corresponds to a pointer that has grabbed
+        /// this component.
         /// </summary>
         public Vector3 GetPointerGrabPoint(uint pointerId)
         {
-            if (pointerIdToPointerMap.ContainsKey(pointerId))
-            {
-                return pointerIdToPointerMap[pointerId].GrabPoint;
-            }
-            return Vector3.zero;
+            Assert.IsTrue(pointerIdToPointerMap.ContainsKey(pointerId));
+            return pointerIdToPointerMap[pointerId].GrabPoint;
         }
 
         #endregion Public Methods
@@ -664,8 +663,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             targetRotation = ApplyConstraints(targetRotation);
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
             Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, IsNearManipulation(), rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
-            //Debug.DrawRay(pointer.Position, Vector3.up, Color.magenta);
-            Debug.DrawRay(pointerData.GrabPoint, Vector3.up, Color.cyan);
 
             float lerpAmount = GetLerpAmount();
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
