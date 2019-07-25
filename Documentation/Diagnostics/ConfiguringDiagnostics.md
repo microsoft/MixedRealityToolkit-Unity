@@ -12,7 +12,7 @@ The diagnostics system profile provides options for configuring:
 
 Indicates whether or not the diagnostics system is to display the configured diagnostic options.
 
-> When disabled, all configured diagnostic options will be hidden.
+When disabled, all configured diagnostic options will be hidden.
 
 #### Programmatically controlling the Diagnostics System
 

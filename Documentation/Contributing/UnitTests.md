@@ -9,16 +9,19 @@ MRTK has a set of tests to ensure that changes to our code do not regress existi
 If you fix a bug, please consider writing a test to ensure that this bug doesn't regress in the future as well.
 
 ## Executing tests locally
-The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) can be found under Window > General > Test Runner and will show all available MRTK play and edit mode tests. 
+
+The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) can be found under Window > General > Test Runner and will show all available MRTK play and edit mode tests.
 
 You can also run the [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6) script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script
 
 Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1
+
 ```
     .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe"
 ```
 
 Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1, output results to C:\playmode_test_out
+
 ```
     .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
 ```
@@ -29,6 +32,7 @@ MRTK's CI will build MRTK in all configurations and run all edit and play mode t
 
 Only after all of the tests passed successfully the PR can be merged into mrtk_development. 
 
+> [!NOTE]
 > Some tests will only fail when run from the command line. You can run the tests locally from command line using similar setup to what it done in MRTK's CI by running `scripts\test\run_playmode_tests.ps1`
 
 ## Writing Tests for your code
@@ -139,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// the name of this method will be used as test name in the unity test runner
         public void TestEditModeExampleFeature()
         {
-            
+
         }
     }
 }
@@ -151,8 +155,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 This section shows some of the commonly used code snippets / methods when writing tests for MRTK.
 
 There are two Utility classes that help with setting up MRTK and testing interactions with components in MRTK
-* [TestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.TestUtilities)
-* [PlayModeTestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities) 
+
+* [`TestUtilities`](xref:Microsoft.MixedReality.Toolkit.Tests.TestUtilities)
+* [`PlayModeTestUtilities`](xref:Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities)
 
 TestUtilities provide the following methods to set up your MRTK scene and gameobjects:
 
@@ -170,9 +175,8 @@ TestUtilities.InitializePlayspace();
 TestUtilities.ShutdownMixedRealityToolkit();
 ```
 
-Please refer to the API docs of [TestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.TestUtilities) and [PlayModeTestUtilities](xref:Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities) for further methods of these util classes as they're extended on a regular basis while new tests get added to MRTK.
-
+Please refer to the API docs of [`TestUtilities`](xref:Microsoft.MixedReality.Toolkit.Tests.TestUtilities) and [`PlayModeTestUtilities`](xref:Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities) for further methods of these util classes as they're extended on a regular basis while new tests get added to MRTK.
 
 ## See also
-* [Documentation portal generation guide](DevDocGuide.md)
 
+* [Documentation portal generation guide](DevDocGuide.md)

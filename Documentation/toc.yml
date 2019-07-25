@@ -131,21 +131,21 @@
       href: Packaging/MRTK_Packages.md
     - name: MRTK Componentization
       href: Packaging/MRTK_Modularization.md
-  - name: Utilities
+  - name: Tools
     items:
     - name: Build Window
-      href: Utilities/BuildWindow.md
+      href: Tools/BuildWindow.md
     - name: Dependency Window
-      href: Utilities/DependencyWindow.md
+      href: Tools/DependencyWindow.md
     - name: Optimize Window
-      href: Utilities/OptimizeWindow.md
+      href: Tools/OptimizeWindow.md
     - name: Input Animation Recording
       href: InputSimulation/InputAnimationRecording.md
       items:
       - name: Input Animation File Format Specification
         href: InputSimulation/InputAnimationFileFormat.md
     - name: Extension Service Creation Wizard
-      href: Utilities/ExtensionServiceCreationWizard.md
+      href: Tools/ExtensionServiceCreationWizard.md
   - name: Scene Transition Service
     href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
   - name: Experimental Features

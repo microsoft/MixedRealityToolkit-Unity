@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: 3b33a4e5e0c7d0044a34529b0e796bab
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: main/glTF Scene MRTK_Logo
+    100002: main/glTF Scene MRTK_Logo/Shape1
+    100004: main/glTF Scene MRTK_Logo/Shape1/Shape1:PIV
+    100006: main/glTF Scene MRTK_Logo/Shape002
+    100008: main/glTF Scene MRTK_Logo/Shape002/Shape002:PIV
+    400000: main/glTF Scene MRTK_Logo/Transform
+    400002: main/glTF Scene MRTK_Logo/Shape1/Transform
+    400004: main/glTF Scene MRTK_Logo/Shape1/Shape1:PIV/Transform
+    400006: main/glTF Scene MRTK_Logo/Shape002/Transform
+    400008: main/glTF Scene MRTK_Logo/Shape002/Shape002:PIV/Transform
+    2100000: eyelid
+    2100002: eyeball
+    2300000: main/glTF Scene MRTK_Logo/Shape1/Shape1:PIV/MeshRenderer
+    2300002: main/glTF Scene MRTK_Logo/Shape002/Shape002:PIV/MeshRenderer
+    2800000: Texture_0
+    3300000: main/glTF Scene MRTK_Logo/Shape1/Shape1:PIV/MeshFilter
+    3300002: main/glTF Scene MRTK_Logo/Shape002/Shape002:PIV/MeshFilter
+    4300000: Shape1Shape
+    4300002: Shape002Shape
+    11400000: glTF data
+    100100000: main
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 75911c45f303c8f45927f5efeaa50cc4, type: 3}
