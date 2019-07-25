@@ -14,6 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Is Focus required to receive input events on this GameObject?")]
         private bool isFocusRequired = true;
 
+        // Helper variable used to register/unregister handlers during play mode
+        private bool isFocusRequiredRuntime = true;
+
         /// <summary>
         /// Is Focus required to receive input events on this GameObject?
         /// </summary>
@@ -39,11 +42,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 base.Start();
             }
+
+            isFocusRequiredRuntime = isFocusRequired;
+        }
+
+        protected virtual void Update()
+        {
+            if(isFocusRequiredRuntime != isFocusRequired)
+            {
+                isFocusRequiredRuntime = isFocusRequired;
+
+                // If focus wasn't required before and is required now, unregister global handlers.
+                // Otherwise, register them.
+                if (isFocusRequired)
+                {
+                    UnregisterHandlers();
+                }
+                else
+                {
+                    RegisterHandlers();
+                }
+            }
         }
 
         protected override void OnDisable()
         {
-            if (!isFocusRequired)
+            if (!isFocusRequiredRuntime)
             {
                 base.OnDisable();
             }

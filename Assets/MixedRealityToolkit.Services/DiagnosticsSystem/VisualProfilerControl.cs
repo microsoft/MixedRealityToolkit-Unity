@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         {
             if (DiagnosticsSystem != null)
             {
-                DiagnosticsSystem.ShowDiagnostics = !DiagnosticsSystem.ShowDiagnostics;
+                DiagnosticsSystem.ShowProfiler = !DiagnosticsSystem.ShowProfiler;
             }
         }
 

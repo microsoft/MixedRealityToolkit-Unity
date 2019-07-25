@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This component handles pointer clicks from all types of input sources.<para/>
     /// i.e. a primary mouse button click, motion controller selection press, or hand tap.
     /// </summary>
+    [System.Obsolete("Use PointerHandler instead of PointerClickHandler", true)]
     public class PointerClickHandler : BaseInputHandler, IMixedRealityPointerHandler
     {
         [SerializeField]
@@ -22,6 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("The input actions to be recognized on pointer clicked.")]
         private InputActionEventPair onPointerClickedActionEvent;
+
+        private void Awake()
+        {
+            Debug.LogError("PointerClickHandler is deprecated. Use PointerHandler instead", this.gameObject);
+        }
 
         #region InputSystemGlobalHandlerListener Implementation
 

@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             MixedRealityToolkit instance = (MixedRealityToolkit)target;
 
-            if (MixedRealityToolkit.Instance == null)
+            if (MixedRealityToolkit.Instance == null && instance.isActiveAndEnabled)
             {   // See if an active instance exists at all. If it doesn't register this instance preemptively.
                 MixedRealityToolkit.SetActiveInstance(instance);
             }

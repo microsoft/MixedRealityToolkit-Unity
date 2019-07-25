@@ -182,6 +182,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
+        public virtual void Destroy()
+        {
+            // Cursor needs to unregister its input handlers explicitly, while input system is still active.
+            // If this would be done from OnDestroy, it will happen in the end of Update loop,
+            // when the input system itself is already destroyed.
+            UnregisterManagers();
+        }
+
+        /// <inheritdoc />
         public bool IsVisible => PrimaryCursorVisual != null ? PrimaryCursorVisual.gameObject.activeInHierarchy : gameObject.activeInHierarchy;
 
         /// <inheritdoc />
@@ -333,11 +342,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             TargetedObject = null;
             visibleSourcesCount = 0;
             OnCursorStateChange(CursorStateEnum.Contextual);
-        }
-
-        private void OnDestroy()
-        {
-            UnregisterManagers();
         }
 
         #endregion MonoBehaviour Implementation

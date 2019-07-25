@@ -9,7 +9,113 @@ Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes 
 
 Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.
 
+- [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
+- [Clipping Sphere](#clipping-sphere)
+
+### Event System
+
+**Changes**
+
+- The `IMixedRealityEventSystem` old API methods `Register` and `Unregister` have been marked as obsolete. They are preserved for backwards compatibility.
+- `InputSystemGlobalListener` has been marked as obsolete. Its functionality has not changed.
+- `BaseInputHandler` base class has been changed from `InputSystemGlobalListener` to `InputSystemGlobalHandlerListener`. This is a breaking change for any descendants of `BaseInputHandler`.
+
+**Motivation behind the change**
+
+The old event system API `Register` and `Unregister` could potentially cause multiple issues in runtime, main being:
+
+- If a component registers for global events, it would receive global input events of *all* types.
+- If one of the components on an object registers for global input events, all components on this object will receive global input events of *all* types.
+- If two components on the same object register to global events, and then one is disabled in runtime, the second one stops receiving global events.
+
+New API `RegisterHandler` and `UnregisterHandler`:
+
+- Provides an explicit and granular control over which input events should be listened to globally and which should be focused-based.
+- Allows multiple components on the same object to listen to global events independently on each other.
+
+**How to migrate**
+
+- If you have been calling `Register`/`Unregister` API directly before, replace these calls with calls to `RegisterHandler`/`UnregisterHandler`. Use handler interfaces you implement as generic parameters. If you implement multiple interfaces, and several of them listen to global input events, call `RegisterHandler` multiple times.
+- If you have been inheriting from `InputSystemGlobalListener`, change inheritance to `InputSystemGlobalHandlerListener`. Implement `RegisterHandlers` and `UnregisterHandlers` abstract methods. In the implementation call `inputSystem.RegisterHandler` (`inputSystem.UnregisterHandler`) to register on all handler interfaces you want to listen global events for.
+- If you have been inheriting from `BaseInputHandler`, implement `RegisterHandlers` and `UnregisterHandlers` abstract methods (same as for `InputSystemGlobalListener`).
+
+**Examples of migration**
+
+```csharp
+// Old
+class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+{
+    private void OnEnable()
+    {
+        InputSystem?.Register(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        InputSystem?.Unregister(gameObject);
+    }
+}
+
+// Migrated
+class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+{
+    private void OnEnable()
+    {
+        InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+        InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
+    }
+
+    private void OnDisable()
+    {
+        InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+        InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
+    }
+}
+```
+
+```csharp
+// Old
+class SampleHandler2 : InputSystemGlobalListener, IMixedRealitySpeechHandler
+{
+}
+
+// Migrated
+class SampleHandler2 : InputSystemGlobalHandlerListener, IMixedRealitySpeechHandler
+{
+    private void RegisterHandlers()
+    {
+        InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+    }
+
+    private void UnregisterHandlers()
+    {
+        InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+    }
+}
+
+// Alternative migration
+class SampleHandler2 : MonoBehaviour, IMixedRealitySpeechHandler
+{
+    private void OnEnable()
+    {
+        IMixedRealityInputSystem inputSystem;
+        if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))
+        {
+            inputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        IMixedRealityInputSystem inputSystem;
+        if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))
+        {
+            inputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+        }
+    }
+}
+```
 
 ### Spatial Awareness
 
@@ -29,6 +135,14 @@ Based on customer feedback, support for easy removal of previously observed spat
 - IMixedRealitySpatialAwarenessSystem.ClearObservations\<T\>(string name)
 - IMixedRealitySpatialAwarenessObserver.ClearObservations()
 
+### Clipping Sphere
+
+The ClippingSphere interface has changed to mirror the APIs found in the ClippingBox and ClippingPlane.
+
+#### Changes
+
+The ClippingSphere's Radius property is now implicitly calculated based on the transform scale. Before developers would have to specify the radius of the ClippingSphere in the inspector. If you want to change the radius, just update the transform scale of the transform as you normally would.
+
 ### NearInteractionTouchable and PokePointer
 
 - NearInteractionTouchable does not handle Unity UI canvas touching any longer. The NearInteractionTouchableUnityUI class must be used for Unity UI touchables now.
@@ -41,6 +155,14 @@ Based on customer feedback, support for easy removal of previously observed spat
 ### ReadOnlyAttribute
 
 - The `Microsoft.MixedReality.Toolkit` namespace has been added to `ReadOnlyAttribute`, `BeginReadOnlyGroupAttribute`, and `EndReadOnlyGroupAttribute`.
+
+### PointerClickHandler
+
+The `PointerClickHandler` class has been deprecated. The `PointerHandler` should be used instead, it provides the same functionality.
+
+### HoloLens clicker support
+
+- The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
 
 ## Assembly name changes
 
