@@ -12,7 +12,7 @@ This page discusses different options for accessing eye gaze data and eye gaze s
 
 To select holographic content using eye gaze, there are several options:
 
-**1. Use the primary focus pointer:**
+[**1. Use the primary focus pointer:**](EyeTracking_TargetSelection.md#1-use-generic-focus-and-pointer-handlers)**
 
 This can be understood as your prioritized cursor.
 By default, if the hands are in view, then this would be hand rays.
@@ -32,7 +32,7 @@ In this case, the most flexible solution is to use the primary focus handler as 
 > [!IMPORTANT]
 > Please note that if hand rays are enabled, the head or eye gaze focus pointer are disabled as soon as the hands come into view. If you want to support a [_'look and pinch'_ interaction, you need to disable the hand ray](EyeTracking_EyesAndHands.md#how-to-disable-the-hand-ray). In our eye tracking sample scenes, we have disabled the hand ray to allow for showcasing richer interactions using eyes + hand motions - see for example [Eye-Supported Positioning](EyeTracking_Positioning.md).
 
-**2. Use both eye focus and hand rays at the same time:** 
+[**2. Use both eye focus and hand rays at the same time:**](EyeTracking_TargetSelection.html#2-independent-eye-gaze-specific-eyetrackingtarget)
 
 There might be instances where you want to be more specific which type of focus pointers can trigger certain events and allow for simultaneously using multiple far interaction techniques.
 
