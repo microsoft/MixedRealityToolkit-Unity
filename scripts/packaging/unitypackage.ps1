@@ -86,6 +86,9 @@ $packages = @{
     "Examples" = @(
         "Assets\MixedRealityToolkit.Examples"
     );
+    "Tools" = @(
+        "Assets\MixedRealityToolkit.Tools"
+    );
 }
 
 function GetPackageVersion() {
@@ -165,7 +168,7 @@ foreach ($entry in $packages.GetEnumerator()) {
 
     Write-Verbose "Generating .unitypackage: $unityPackagePath"
     Write-Verbose "Log location: $logFileName"
-    
+
     # Assumes that unity package building has failed, unless we
     # succeed down below after running the Unity packaging step.
     $exitCode = 1
@@ -206,5 +209,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     }
     catch { Write-Error $_ }
 
-    exit $exitCode
+    if ($exitCode -ne 0) {
+        exit $exitCode
+    }
 }

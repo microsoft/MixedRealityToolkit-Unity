@@ -10,13 +10,14 @@ To continuously track performance over the lifetime of development, it is highly
 
 Furthermore, it is particularly important to utilize the Visual Profiler to track framerate when running on device as opposed to running in Unity editor or an emulator. The most accurate performance results will be depicted when running on device with [Release configuration builds](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-set-debug-and-release-configurations?view=vs-2019).
 
->Note: If building for Windows Mixed Reality, then deploy with [MASTER configuration builds](https://docs.microsoft.com/en-us/windows/mixed-reality/exporting-and-building-a-unity-visual-studio-solution#building_and_deploying_a_unity_visual_studio_solution)
+> [!NOTE]
+> If building for Windows Mixed Reality, then deploy with [MASTER configuration builds](https://docs.microsoft.com/en-us/windows/mixed-reality/exporting-and-building-a-unity-visual-studio-solution#building_and_deploying_a_unity_visual_studio_solution)
 
 ![Visual Profiler Interface](../../Documentation/Images/Diagnostics/VisualProfiler.png)
 
 ### Optimize Window
 
-The [MRTK Optimize Window](../Utilities/OptimizeWindow.md) offers information and automation tools to help mixed reality developers set up their environment for the best performing results and identify potential bottlenecks in their scene & assets. Certain key configurations in Unity can help deliver substantially more optimized results for mixed reality projects.
+The [MRTK Optimize Window](../Tools/OptimizeWindow.md) offers information and automation tools to help mixed reality developers set up their environment for the best performing results and identify potential bottlenecks in their scene & assets. Certain key configurations in Unity can help deliver substantially more optimized results for mixed reality projects.
 
 Generally these settings involve rendering configurations that are ideal for mixed reality. Mixed reality applications are unique compared to traditional 3D graphics development in that there are two screens (i.e two eyes) to render for the entire scene.
 

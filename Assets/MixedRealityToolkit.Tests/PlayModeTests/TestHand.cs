@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         private Handedness handedness;
         private Vector3 position;
+        private Quaternion rotation = Quaternion.identity;
         private ArticulatedHandPose.GestureId gestureId = ArticulatedHandPose.GestureId.Open;
         private InputSimulationService simulationService;
 
@@ -63,6 +64,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return MoveTo(position + delta, numSteps);
         }
 
+        public IEnumerator SetRotation(Quaternion newRotation, int numSteps = 30)
+        {
+            Quaternion oldRotation = rotation;
+            rotation = newRotation;
+            yield return PlayModeTestUtilities.SetHandRotation(oldRotation, newRotation, position, gestureId, handedness, numSteps, simulationService);
+        }
+
         public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId)
         {
             gestureId = newGestureId;
@@ -75,6 +83,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return MoveTo(positionToRelease, numSteps);
             yield return SetGesture(ArticulatedHandPose.GestureId.Open);
+        }
+
+        public T GetPointer<T>() where T : class, IMixedRealityPointer
+        {
+            var hand = simulationService.GetHandDevice(handedness);
+            foreach (var pointer in hand.InputSource.Pointers)
+            {
+                if (pointer is T)
+                {
+                    return pointer as T;
+                }
+            }
+            return null;
         }
     }
 }

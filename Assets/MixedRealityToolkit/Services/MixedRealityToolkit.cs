@@ -195,6 +195,14 @@ namespace Microsoft.MixedReality.Toolkit
             catch (Exception e)
             {
                 Debug.LogError($"Failed to register the {concreteType.Name} service: {e.GetType()} - {e.Message}");
+
+                // Failures to create the concrete type generally surface as nested exceptions - just logging
+                // the top level exception itself may not be helpful. If there is a nested exception (for example,
+                // null reference in the constructor of the object itself), it's helpful to also surface those here.
+                if (e.InnerException != null)
+                {
+                    Debug.LogError("Underlying exception information: " + e.InnerException);
+                }
                 return false;
             }
 

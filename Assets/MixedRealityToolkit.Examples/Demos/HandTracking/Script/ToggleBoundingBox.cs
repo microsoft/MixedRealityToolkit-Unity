@@ -6,9 +6,15 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [System.Obsolete("This component is no longer supported", true)]
     public class ToggleBoundingBox : MonoBehaviour
     {
         public BoundingBox boundingBox;
+
+        private void Awake()
+        {
+            Debug.LogError(this.GetType().Name + " is deprecated");
+        }
 
         public void ToggleBoundingBoxActiveState()
         {
