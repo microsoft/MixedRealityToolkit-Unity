@@ -3,10 +3,16 @@
 
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
+    /// <summary>
+    /// Adds menu items to automate reserializing specific files in Unity.
+    /// </summary>
+    /// <remarks>
+    /// Reserialization can be needed between Unity versions or when the
+    /// underlying script or asset definitions are changed.
+    /// </remarks>
     public class ReserializeUtility
     {
         [MenuItem("Mixed Reality Toolkit/Utilities/Reserialize/Prefabs, Scenes, and ScriptableObjects")]
