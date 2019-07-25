@@ -69,9 +69,13 @@ Here is a simple example from [ColorTap.cs](xref:Microsoft.MixedReality.Toolkit.
 
 ### Selecting a focused hologram 
 
-To select focused holograms, use PointerHandler to listener for input event to confirm a selection. For example, adding the _IMixedRealityPointerHandler_ will make them react to simple pointer input. The _IMixedRealityPointerHandler_ interface requires implementing the following three interface members: _OnPointerUp_, _OnPointerDown_, and _OnPointerClicked_.
+To select a focused hologram, use _PointerHandler_ to listen for input events to confirm a selection. 
+For example, adding the _IMixedRealityPointerHandler_ will make them react to simple pointer input. 
+The _IMixedRealityPointerHandler_ interface requires implementing the following three interface members: 
+_OnPointerUp_, _OnPointerDown_, and _OnPointerClicked_.
 
-In the example below, we change the color of a hologram by looking at it and pinching or saying "select", which action is required to trigger the event is defined by `eventData.MixedRealityInputAction == selectAction` whereby we can set the type of `selectAction` in the Unity Editor - by default it's the "Select" action. The types of available [MixedRealityInputActions](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/InputActions.html) can be configured in the MRTK Profile via _MRTK Configuration Profile_ -> _Input_ -> _Input Actions_.
+In the example below, we change the color of a hologram by looking at it and pinching or saying "select".
+The required action to trigger the event is defined by `eventData.MixedRealityInputAction == selectAction` whereby we can set the type of `selectAction` in the Unity Editor - by default it's the "Select" action. The types of available [MixedRealityInputActions](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/InputActions.html) can be configured in the MRTK Profile via _MRTK Configuration Profile_ -> _Input_ -> _Input Actions_.
 
 ```csharp
    public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
