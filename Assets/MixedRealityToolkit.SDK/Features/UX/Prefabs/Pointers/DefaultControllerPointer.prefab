@@ -45,7 +45,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247086986094436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 04b1ba3412a235c4d8c3eb2a18528b67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -136,20 +135,28 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0.00009899999}
-  - {x: 0, y: 0, z: 0.06608878}
-  - {x: 0, y: 0, z: 0.13209635}
-  - {x: 0, y: 0, z: 0.19813946}
-  - {x: 0, y: 0, z: 0.26423594}
-  - {x: 0, y: 0, z: 0.3304035}
-  - {x: 0, y: 0, z: 0.3966599}
-  - {x: 0, y: 0, z: 0.46302295}
-  - {x: 0, y: 0, z: 0.52951044}
-  - {x: 0, y: 0, z: 0.59614}
-  - {x: 0, y: 0, z: 0.66292953}
-  - {x: 0, y: 0, z: 0.7298968}
-  - {x: 0, y: 0, z: 0.7970595}
-  - {x: 0, y: 0, z: 0.8644354}
-  - {x: 0, y: 0, z: 0.93204236}
+  - {x: 0, y: 0, z: 0.0431347}
+  - {x: 0, y: 0, z: 0.08617534}
+  - {x: 0, y: 0, z: 0.12922585}
+  - {x: 0, y: 0, z: 0.17229114}
+  - {x: 0, y: 0, z: 0.21537617}
+  - {x: 0, y: 0, z: 0.25848585}
+  - {x: 0, y: 0, z: 0.30162507}
+  - {x: 0, y: 0, z: 0.3447989}
+  - {x: 0, y: 0, z: 0.3880121}
+  - {x: 0, y: 0, z: 0.43126965}
+  - {x: 0, y: 0, z: 0.47457656}
+  - {x: 0, y: 0, z: 0.5179376}
+  - {x: 0, y: 0, z: 0.56135786}
+  - {x: 0, y: 0, z: 0.6048422}
+  - {x: 0, y: 0, z: 0.64839554}
+  - {x: 0, y: 0, z: 0.6920228}
+  - {x: 0, y: 0, z: 0.735729}
+  - {x: 0, y: 0, z: 0.77951896}
+  - {x: 0, y: 0, z: 0.82339764}
+  - {x: 0, y: 0, z: 0.86736983}
+  - {x: 0, y: 0, z: 0.9114408}
+  - {x: 0, y: 0, z: 0.95561516}
   - {x: 0, y: 0, z: 0.999898}
   m_Parameters:
     serializedVersion: 3
@@ -181,14 +188,14 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 0}
-      key1: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
+      key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 1}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 1}
+      key6: {r: 0, g: 0, b: 0, a: 1}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
+      ctime0: 42020
       ctime1: 65535
       ctime2: 0
       ctime3: 0
@@ -198,15 +205,15 @@ LineRenderer:
       ctime7: 0
       atime0: 0
       atime1: 6361
-      atime2: 57632
-      atime3: 65535
-      atime4: 0
-      atime5: 0
-      atime6: 0
+      atime2: 15806
+      atime3: 24479
+      atime4: 39514
+      atime5: 57632
+      atime6: 65535
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 4
+      m_NumAlphaKeys: 7
     numCornerVertices: 8
     numCapVertices: 8
     alignment: 0
@@ -224,7 +231,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247086986094436}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 1287d4d138a242f794bcfc01354d3ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -288,7 +294,7 @@ MonoBehaviour:
   stepMode: 0
   lineStepCount: 16
   pointDistributionMode: 1
-  customPointDistributionLength: 0.1
+  customPointDistributionLength: 0.2
   customPointDistributionCurve:
     serializedVersion: 2
     m_Curve:
@@ -317,6 +323,8 @@ MonoBehaviour:
   roundedEdges: 1
   roundedCaps: 1
   lineRenderer: {fileID: 120690711267243118}
+  tileMaterialByWorldLength: 0
+  tileMaterialScale: 1
 --- !u!114 &7488119136884840896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,7 +334,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247086986094436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 1287d4d138a242f794bcfc01354d3ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -334,14 +341,14 @@ MonoBehaviour:
   lineColor:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
-    key1: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
+    key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 1}
+    key6: {r: 0, g: 0, b: 0, a: 1}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
+    ctime0: 42020
     ctime1: 65535
     ctime2: 0
     ctime3: 0
@@ -351,15 +358,15 @@ MonoBehaviour:
     ctime7: 0
     atime0: 0
     atime1: 6361
-    atime2: 57632
-    atime3: 65535
-    atime4: 0
-    atime5: 0
-    atime6: 0
+    atime2: 15806
+    atime3: 24479
+    atime4: 39514
+    atime5: 57632
+    atime6: 65535
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
+    m_NumAlphaKeys: 7
   lineWidth:
     serializedVersion: 2
     m_Curve:
@@ -388,7 +395,7 @@ MonoBehaviour:
   colorOffset: 0
   widthOffset: 0
   stepMode: 0
-  lineStepCount: 16
+  lineStepCount: 24
   pointDistributionMode: 1
   customPointDistributionLength: 0.1
   customPointDistributionCurve:
@@ -419,6 +426,8 @@ MonoBehaviour:
   roundedEdges: 1
   roundedCaps: 1
   lineRenderer: {fileID: 120690711267243118}
+  tileMaterialByWorldLength: 0
+  tileMaterialScale: 1
 --- !u!114 &114269887534944512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,7 +437,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247086986094436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 2a969079783d81144bce7e89bd03ac89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -490,8 +498,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 5
   LineColorValid:
     serializedVersion: 2
-    key0: {r: 0.9386792, g: 1, b: 0.99509436, a: 0}
-    key1: {r: 0.9111338, g: 0.9880838, b: 0.990566, a: 1}
+    key0: {r: 1, g: 1, b: 1, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0.6666667}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -577,8 +585,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 4
   LineColorLockFocus:
     serializedVersion: 2
-    key0: {r: 0.504717, g: 1, b: 0.9848293, a: 0}
-    key1: {r: 0.083704144, g: 0.8157769, b: 0.9339623, a: 1}
+    key0: {r: 1, g: 1, b: 1, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -594,12 +602,12 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 1311
-    atime2: 58018
+    atime1: 4241
+    atime2: 56283
     atime3: 63415
-    atime4: 0
-    atime5: 0
-    atime6: 0
+    atime4: 63415
+    atime5: 63415
+    atime6: 63415
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
@@ -610,8 +618,8 @@ MonoBehaviour:
   lineRendererSelected: {fileID: 114903794112201558}
   lineRendererNoTarget: {fileID: 7488119136884840896}
   inertia: {fileID: 3980487836371375048}
-  startPointLerp: 0.33
-  endPointLerp: 0.66
+  startPointLerp: 0.267
+  endPointLerp: 0.637
 --- !u!114 &3980487836371375048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,13 +629,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247086986094436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 9f0601d0cb497ac4a95c6f4b33459229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bezier: {fileID: 8090720277987393429}
   inertia: 15
-  dampen: 12
+  dampen: 6
   seekTargetStrength: 5
   p1Target: {x: 0, y: 0, z: 0.33}
   p2Target: {x: 0, y: 0, z: 0.66}

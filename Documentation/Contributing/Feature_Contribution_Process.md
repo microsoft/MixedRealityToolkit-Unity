@@ -51,7 +51,7 @@ The initial work that should be submitted, is to implement:
 * Configuration profiles
 * Event data
 
-> If needed, the architectural document can be updated to align with any changes to the implementation.
+If needed, the architectural document can be updated to align with any changes to the implementation.
 
 Please ensure that all existing Unit Tests and any new tests are all passing prior to submission.
 

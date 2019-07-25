@@ -256,19 +256,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public override void OnPostSceneQuery()
             {
-                if (Result != null)
-                {
-                    gazeProvider.HitInfo = Result.Details.LastRaycastHit;
-                    gazeProvider.GazeTarget = Result.Details.Object;
-
-                    if (Result.Details.Object != null)
-                    {
-                        gazeProvider.lastHitDistance = (Result.Details.Point - Rays[0].Origin).magnitude;
-                        gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
-                        gazeProvider.HitNormal = Result.Details.Normal;
-                    }
-                }
-
                 if (isDown)
                 {
                     InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
@@ -519,6 +506,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             InputSystem?.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
+        }
+
+        internal void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
+        {
+            HitInfo = raycastHit;
+            if (raycastHit.transform != null)
+            {
+                GazeTarget = raycastHit.transform.gameObject;
+                var ray = GazePointer.Rays[0];
+                var lhd = (raycastHit.point - ray.Origin).magnitude;
+                lastHitDistance = lhd;
+                HitPosition = ray.Origin + lhd * ray.Direction;
+                HitNormal = raycastHit.normal;
+            }
+            else
+            {
+                GazeTarget = null;
+                HitPosition = Vector3.zero;
+                HitNormal = Vector3.zero;
+            }
         }
 
         /// <summary>
