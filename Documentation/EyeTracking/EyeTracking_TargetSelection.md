@@ -12,7 +12,7 @@ This page discusses different options for accessing eye gaze data and eye gaze s
 
 To select holographic content using eye gaze, there are several options:
 
-[**1. Use the primary focus pointer:**](EyeTracking_TargetSelection.md#1-use-generic-focus-and-pointer-handlers)**
+[**1. Use the primary focus pointer:**](EyeTracking_TargetSelection.md#1-use-generic-focus-and-pointer-handlers)
 
 This can be understood as your prioritized cursor.
 By default, if the hands are in view, then this would be hand rays.
