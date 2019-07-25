@@ -52,7 +52,7 @@ LightmapSettings:
     m_AlbedoBoost: 1
     m_EnvironmentLightingMode: 0
     m_EnableBakedLightmaps: 1
-    m_EnableRealtimeLightmaps: 1
+    m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 10
     m_Resolution: 2
@@ -17768,6 +17768,16 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224474001465818384, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -322.7954
+      objectReference: {fileID: 0}
+    - target: {fileID: 224367413309412084, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -322.81216
+      objectReference: {fileID: 0}
     - target: {fileID: 1738098756133216, guid: 427730042d0a7ac41b1d81947f081754, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -28459,7 +28469,7 @@ PrefabInstance:
     - target: {fileID: 1420004699088280648, guid: 499768ed6e537bd498b9fdc4689708a3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.415
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 1420004699088280648, guid: 499768ed6e537bd498b9fdc4689708a3,
         type: 3}
@@ -28506,21 +28516,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1420004700468430834, guid: 499768ed6e537bd498b9fdc4689708a3,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1420004700468430828, guid: 499768ed6e537bd498b9fdc4689708a3,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1420004700468430828, guid: 499768ed6e537bd498b9fdc4689708a3,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1420004698951824090, guid: 499768ed6e537bd498b9fdc4689708a3,
         type: 3}
       propertyPath: m_Mesh
@@ -28532,6 +28527,21 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1420004698951824084, guid: 499768ed6e537bd498b9fdc4689708a3,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420004700468430834, guid: 499768ed6e537bd498b9fdc4689708a3,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420004700468430828, guid: 499768ed6e537bd498b9fdc4689708a3,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420004700468430828, guid: 499768ed6e537bd498b9fdc4689708a3,
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
