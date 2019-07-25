@@ -81,6 +81,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         }
 
         [SerializeField]
+        [Tooltip("TODO")]
+        private bool updateWhenOppositeHandNear = false;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public bool UpdateWhenOppositeHandNear
+        {
+            get { return updateWhenOppositeHandNear; }
+            set { updateWhenOppositeHandNear = value; }
+        }
+
+        [SerializeField]
         [Tooltip("When a hand is activated for tracking, should the cursor(s) be disabled on that hand?")]
         private bool hideHandCursorsOnActivate = true;
 
@@ -201,17 +214,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             }
         }
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
-        }
-
-        protected virtual void OnDisable()
-        {
-            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
-        }
-
         /// <inheritdoc />
         public override void SolverUpdate()
         {
@@ -233,15 +235,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                 ChangeTrackedObjectType(newActivehand);
             }
 
-            // Update the goal position and rotation.
-            GoalPosition = CalculateGoalPosition();
-            GoalRotation = CalculateGoalRotation();
-
+            // Update the goal position and rotation if a tracked hand is present.
             if (trackedHand != null)
             {
-                UpdateWorkingPositionToGoal();
-                UpdateWorkingRotationToGoal();
+                if (updateWhenOppositeHandNear || !IsOppositeHandNear(trackedHand))
+                {
+                    GoalPosition = CalculateGoalPosition();
+                    GoalRotation = CalculateGoalRotation();
+                }
             }
+
+
+            UpdateWorkingPositionToGoal();
+            UpdateWorkingRotationToGoal();
         }
 
         /// <summary>
@@ -377,6 +383,34 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         }
 
         /// <summary>
+        /// Performs an intersection test to see if the left hand is near the right hand or vice versa.
+        /// </summary>
+        /// <param name="hand">The hand to check against.</param>
+        /// <returns>True, when hands are near each other.</returns>
+        protected virtual bool IsOppositeHandNear(IMixedRealityHand hand)
+        {
+            if (hand != null)
+            {
+                Bounds oppositeHandBounds, trackedHandBounds;
+
+                if (handBounds.Bounds.TryGetValue((hand.ControllerHandedness == Handedness.Left) ? Handedness.Right : Handedness.Left, out oppositeHandBounds) &&
+                    handBounds.Bounds.TryGetValue(hand.ControllerHandedness, out trackedHandBounds))
+                {
+                    // Double the size of the hand bounds to allow for greater tolerance.
+                    trackedHandBounds.Expand(trackedHandBounds.extents);
+                    oppositeHandBounds.Expand(oppositeHandBounds.extents);
+
+                    if (trackedHandBounds.Intersects(oppositeHandBounds))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Swaps out the currently tracked hand while triggered appropriate events.
         /// </summary>
         /// <param name="hand">Which hand to track now.</param>
@@ -447,14 +481,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         private static Ray CalculateSafeZoneRay(Vector3 origin, Handedness handedness, SolverSafeZone handSafeZone)
         {
             Vector3 direction;
-            var cameraForward = CameraCache.Main.transform.forward;
 
             switch (handSafeZone)
             {
                 default:
                 case SolverSafeZone.UlnarSide:
                     {
-                        direction = Vector3.Cross(cameraForward, Vector3.up);
+                        direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
 
                         if (handedness == Handedness.Left)
                         {
@@ -465,7 +498,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
                 case SolverSafeZone.RadialSide:
                     {
-                        direction = -Vector3.Cross(cameraForward, Vector3.up);
+                        direction = -Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
 
                         if (handedness == Handedness.Left)
                         {
@@ -476,13 +509,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
                 case SolverSafeZone.AboveFingerTips:
                     {
-                        direction = Vector3.Cross(cameraForward, Vector3.right);
+                        direction = CameraCache.Main.transform.up;
                     }
                     break;
 
                 case SolverSafeZone.BelowWrist:
                     {
-                        direction = -Vector3.Cross(cameraForward, Vector3.right);
+                        direction = -CameraCache.Main.transform.up;
                     }
                     break;
             }
@@ -492,14 +525,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
         #region MonoBehaviour Implementation
 
-        protected void Start()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+
             handBounds = GetComponent<HandBounds>();
 
             // Initially no hands are tacked or active.
             trackedHand = null;
             onLastHandLost.Invoke();
             onHandDeactivate.Invoke();
+        }
+
+        protected virtual void OnDisable()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         #endregion MonoBehaviour Implementation
