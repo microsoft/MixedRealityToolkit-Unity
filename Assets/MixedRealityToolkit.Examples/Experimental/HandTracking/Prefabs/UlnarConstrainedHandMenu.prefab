@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 4650336336052702770}
   - component: {fileID: 4650336336052702773}
   m_Layer: 0
-  m_Name: UlnarConstraintTwoHand
+  m_Name: UlnarConstrainedHandMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -212,7 +212,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   facingThreshold: 75
-  requireFlatHand: 1
+  requireFlatHand: 0
   flatHandThreshold: 45
 --- !u!1 &4650336336463898692
 GameObject:

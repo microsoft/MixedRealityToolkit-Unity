@@ -81,11 +81,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("TODO")]
+        [Tooltip("Should the solver continue to move when the opposite hand (hand which is not being tracked) is near the tracked hand. This can improve stability when one hand occludes the other.")]
         private bool updateWhenOppositeHandNear = false;
 
         /// <summary>
-        /// TODO
+        /// Should the solver continue to move when the opposite hand (hand which is not being tracked) is near the tracked hand. This can improve stability when one hand occludes the other."
         /// </summary>
         public bool UpdateWhenOppositeHandNear
         {
