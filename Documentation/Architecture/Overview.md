@@ -37,12 +37,7 @@ how it should be extended, and how it should be configured.
 
 At a high level the MRTK can be broken down in the following ways:
 
-![Architecture Overview Diagram, Part 1](../../Documentation/Images/Architecture/OverviewDiagramPart1.png)
-
-Note that the below diagram is a horizontal continuation of the first (where the
-MixedRealityToolkit (Runtime Object) and "Inspectors and Profiles" )
-
-![Architecture Overview Diagram, Part 2](../../Documentation/Images/Architecture/OverviewDiagramPart2.png)
+![Architecture Overview Diagram](../../Documentation/Images/Architecture/MRTK_Architecture.png)
 
 The MRTK also contains another set of grab-bag utilities that have little to no
 dependencies on the rest of the MRTK (to list a few: build tools, solvers, audio

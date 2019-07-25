@@ -603,26 +603,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         bool skip = false;
                         var description = interactionDescription.stringValue;
-                        if (currentControllerMapping.SupportedControllerType == SupportedControllerType.WindowsMixedReality
+                        if (currentControllerMapping.SupportedControllerType == SupportedControllerType.GGVHand
                             && currentControllerMapping.Handedness == Handedness.None)
                         {
-                            if (description == "Grip Press" ||
-                                description == "Trigger Position" ||
-                                description == "Trigger Touch" ||
-                                description == "Touchpad Position" ||
-                                description == "Touchpad Touch" ||
-                                description == "Touchpad Press" ||
-                                description == "Menu Press" ||
-                                description == "Thumbstick Position" ||
-                                description == "Thumbstick Press"
-                                )
+                            if (description != "Select")
                             {
                                 skip = true;
-                            }
-
-                            if (description == "Trigger Press (Select)")
-                            {
-                                description = "Air Tap (Select)";
                             }
                         }
 

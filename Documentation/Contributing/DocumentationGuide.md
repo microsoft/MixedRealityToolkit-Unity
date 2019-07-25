@@ -50,6 +50,18 @@ To mark areas in the documentation that need to be revisited later again, please
 
 Also consider adding pages with TODOs to the [documentation TODO list](DocsToDo.md).
 
+### Highlighted sections
+
+To highlight specific points to the reader, use *> [!NOTE]* , *> [!WARNING]* , and *> [!IMPORTANT]* to produce the following styles. It is recommended to use notes for general points and warning/important points only for special relevant cases.
+
+> [!NOTE]
+> Example of a note
+
+> [!WARNING]
+> Example of a warning
+
+> [!IMPORTANT]
+> Example of an important comment
 
 ## Page layout
 

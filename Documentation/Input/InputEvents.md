@@ -4,6 +4,7 @@ At the script level you consume input events by implementing one of the event ha
 
 > [!IMPORTANT]
 > By default a script will receive events only while in focus by a pointer. To receive events while out of focus, in addition to implementing the desired handler interfaces, you have to do one of the following:
+>
 > - (Preferred) Register the script as a global listener via [`MixedRealityToolkit.InputSystem.RegisterHandler`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem) in `OnEnable` (`UnregisterHandler` explicitly in `OnDisable`). `RegisterHandler` needs to be called multiple times for listening to global input events on multiple interfaces. This method is preferred because `InputSystemGlobalHandlerListener` (see below) might be an unnecessary complication in most cases.
 > - Derive the script from [`InputSystemGlobalHandlerListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener). This component is provided primarily to ease migration from `InputSystemGlobalListener`. It should also be used if having an `InputSystem` property on the component is beneficial (it is used in the rest of component's logic). It requires implementing its abstract methods `RegisterHandlers` and `UnregisterHandlers`. In these implementations [`MixedRealityToolkit.InputSystem.RegisterHandler`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem) should be used to list the interfaces the global events should be received for.
 
@@ -20,4 +21,3 @@ Handler | Events | Description
 [`IMixedRealityHandJointHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler) | Hand Joints Updated | Raised by articulated hand controllers when hand joints are updated.
 [`IMixedRealityHandMeshHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler) | Hand Mesh Updated | Raised by articulated hand controllers when a hand mesh is updated.
 [`IMixedRealityInputActionHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputActionHandler) | Action Started / Ended | Raise to indicate action start and end for inputs mapped to actions.
-
