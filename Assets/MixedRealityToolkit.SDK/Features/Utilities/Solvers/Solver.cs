@@ -81,7 +81,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected Vector3 GoalScale
         {
             get { return SolverHandler.GoalScale; }
-            set { SolverHandler.GoalScale = value; }
+            set {
+                if (SolverHandler == null)
+                {
+                    SolverHandler = GetComponent<SolverHandler>();
+                }
+                SolverHandler.GoalScale = value; }
         }
 
         /// <summary>
@@ -171,6 +176,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             GoalScale = maintainScale ? transform.localScale : Vector3.one;
+            if (SolverHandler == null)
+            {
+                SolverHandler = GetComponent<SolverHandler>();
+            }
         }
 
         /// <summary>
@@ -178,6 +187,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         protected virtual void OnEnable()
         {
+            if (SolverHandler == null)
+            {
+                SolverHandler = GetComponent<SolverHandler>();
+            }
             if (SolverHandler != null)
             {
                 SnapGoalTo(GoalPosition, GoalRotation, GoalScale);
