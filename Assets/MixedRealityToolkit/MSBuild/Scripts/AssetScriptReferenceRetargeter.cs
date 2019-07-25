@@ -134,6 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 {
                     throw new InvalidDataException("AsmDef meta file must have changed, as we can no longer parse a guid out of it.");
                 }
+                guid = CycleGuidForward(guid);
                 dllGuids.Add($"{dllName}.dll", guid);
             }
 
@@ -517,7 +518,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 foreach (FileInfo file in mapping.Value)
                 {
                     string dllGuid = mapping.Key.Guid;
-                    dllGuid = CycleGuidForward(dllGuid);
+                    // First cycle happens in RetrieveAsmDefGuids
+                    // dllGuid = CycleGuidForward(dllGuid);
 
                     if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("EditorPlayer"))
                     {

@@ -20,7 +20,7 @@
 
 	<Content Include="$(MSBuildThisFileDirectory)..\link.xml" Condition=" '$(MRTKIncludeContent)' == 'true' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>link.xml</Link>
+      <Link>MRTK\link.xml</Link>
     </Content>
 
     <!-- Get all the dlls for the target player, and store the Identity in a custom OriginalPath metadata.
