@@ -1,0 +1,31 @@
+# [Template] Run a Unity script that generates MSBuild projects.
+
+steps:
+- powershell: |
+   # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
+   $editor = Get-ChildItem ${Env:$(UnityVersion)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+   
+   $outDir = "$(Build.ArtifactStagingDirectory)\build"
+   $logFile = New-Item -Path "$outDir\build\projectgeneration_log.log" -ItemType File -Force
+   
+   $method = "Microsoft.MixedReality.Toolkit.MSBuild.MSBuildTools.GenerateSDKProjects"
+   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -batchmode -executeMethod $method -logFile $($logFile.FullName) -nographics -quit" -PassThru
+   $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
+   
+   while (-not $proc.HasExited -and $ljob.HasMoreData)
+   {
+       Receive-Job $ljob
+       Start-Sleep -Milliseconds 200
+   }
+   Receive-Job $ljob
+   
+   Stop-Job $ljob
+   
+   Remove-Job $ljob
+   Stop-Process $proc
+
+   if ($proc.ExitCode -ne 0)
+   {
+       exit $proc.ExitCode
+   }
+  displayName: 'Generate SDK Projects'

@@ -331,12 +331,16 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             try
             {
+                Utilities.EnsureCleanDirectory(outputDirectory);
+
                 foreach (Assembly dll in dlls)
                 {
                     if (dll.name.Contains("MixedReality"))
                     {
                         string dllPath = Utilities.GetFullPathFromAssetsRelative($"Assets/../MSBuild/Publish/InEditor/WindowsStandalone32/{dll.name}.dll");
                         File.Copy(dllPath, Path.Combine(tmpDirPath, $"{dll.name}.dll"), true);
+                        File.Copy(dllPath, Path.Combine(outputDirectory, $"{dll.name}.dll"));
+                        File.Copy(Path.ChangeExtension(dllPath, ".pdb"), Path.Combine(outputDirectory, $"{dll.name}.pdb"));
                     }
                 }
 
@@ -345,7 +349,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                 Dictionary<string, AssemblyInformation> toReturn = new Dictionary<string, AssemblyInformation>();
 
-                Utilities.EnsureCleanDirectory(outputDirectory);
                 foreach (Assembly dll in dlls)
                 {
                     if (dll.name.Contains("MixedReality"))
@@ -356,9 +359,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         }
 
                         AssemblyInformation assemblyInformation = new AssemblyInformation(dll.name, newDllGuid);
-
-                        File.Copy(Path.Combine(tmpDirPath, $"{dll.name}.dll"), Path.Combine(outputDirectory, $"{dll.name}.dll"));
-                        File.Copy(Path.Combine(tmpDirPath, $"{dll.name}.dll.meta"), Path.Combine(outputDirectory, $"{dll.name}.dll.meta"));
 
                         Object[] assets = AssetDatabase.LoadAllAssetsAtPath(Path.Combine("Assets", temporaryDirectoryName, $"{dll.name}.dll"));
 
@@ -401,11 +401,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
             DirectoryInfo outputDirectory = new DirectoryInfo(outputPath);
             RecursiveFolderCleanup(outputDirectory);
-            CopyIntermediaryAssemblies(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
+            CopyPluginContents(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
             UpdateMetaFiles(assemblyInformation);
         }
 
-        private static void CopyIntermediaryAssemblies(string outputPath)
+        private static void CopyPluginContents(string outputPath)
         {
             foreach (KeyValuePair<string, string> sourceToOutputPair in sourceToOutputFolders)
             {
@@ -422,11 +422,20 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 }
                 Directory.CreateDirectory(pluginPath);
 
-                FileInfo[] dlls = directory.GetFiles("Microsoft.MixedReality.Toolkit*.dll", SearchOption.AllDirectories);
-                foreach (FileInfo dll in dlls)
-                {
-                    File.Copy(dll.FullName, Path.Combine(pluginPath, dll.Name), true);
-                }
+                CopyFiles(directory, pluginPath, "Microsoft.MixedReality.Toolkit*.dll");
+                CopyFiles(directory, pluginPath, "Microsoft.MixedReality.Toolkit*.pdb");
+            }
+        }
+
+        private static void CopyFiles(DirectoryInfo directory, string pluginPath, string searchString)
+        {
+            FileInfo[] dlls = directory.GetFiles(searchString, SearchOption.AllDirectories);
+            foreach (FileInfo dll in dlls)
+            {
+                string source = dll.FullName;
+                string destination = Path.Combine(pluginPath, dll.Name);
+
+                File.Copy(source, destination, true);
             }
         }
 
@@ -489,51 +498,68 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             string metaFileTemplate = File.ReadAllText(editorMetaFile.FullName);
 
-            foreach (FileInfo dllFile in new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins")).GetFiles("*", SearchOption.AllDirectories))
-            {
-                if (dllFile.Extension.Equals(".meta"))
-                {
-                    string dllFileName = dllFile.Name.Remove(dllFile.Name.Length - 5);
-                    AssemblyInformation asmInfo = assemblyInformation[Path.GetFileNameWithoutExtension(dllFileName)];
-                    File.WriteAllText(dllFile.FullName, ProcessMetaTemplate(metaFileTemplate, asmInfo.Guid, asmInfo.ExecutionOrderEntries));
-                }
-            }
+            Dictionary<AssemblyInformation, FileInfo[]> mappings = new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins"))
+                .GetDirectories("*", SearchOption.AllDirectories)
+                .SelectMany(t => t.EnumerateFiles().Where(f => f.FullName.EndsWith(".dll") || f.FullName.EndsWith(".pdb")))
+                .GroupBy(t => Path.GetFileNameWithoutExtension(t.Name))
+                .ToDictionary(t => assemblyInformation[t.Key], t => t.ToArray());
 
-            DirectoryInfo[] directories = new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins")).GetDirectories("*", SearchOption.AllDirectories);
-            string dllGuid = string.Empty;
-            bool isUAP = false;
-            foreach (DirectoryInfo directory in directories)
+            foreach (KeyValuePair<AssemblyInformation, FileInfo[]> mapping in mappings)
             {
-                isUAP = false;
-                if (!directory.Name.Equals("EditorPlayer"))
-                {
-                    if (directory.Name.Contains("Standalone") || directory.Parent.Name.Contains("Standalone"))
-                    {
-                        metaFileTemplate = File.ReadAllText(standaloneMetaFile.FullName);
-                    }
-                    else if (directory.Name.Contains("UAP") || directory.Parent.Name.Contains("UAP"))
-                    {
-                        metaFileTemplate = File.ReadAllText(uapMetaFile.FullName);
-                        isUAP = true;
-                    }
+                //Editor is guid + 1; which has done when we processed Editor DLLs
+                //Standalone is guid + 2
+                //UAP is guid + 3
+                //Editor PDB is + 4
+                //Standalone PDB is +5
+                //UAP PDB is +6
 
-                    FileInfo[] files = directory.GetFiles("*.dll", SearchOption.TopDirectoryOnly);
-                    string metaFilePath = string.Empty;
-                    foreach (FileInfo file in files)
+                foreach (FileInfo file in mapping.Value)
+                {
+                    string dllGuid = mapping.Key.Guid;
+                    if (file.Extension.Equals(".dll"))
                     {
-                        //Editor is guid + 1; which has done when we processed Editor DLLs
-                        //Standalone is guid + 2
-                        //UAP is guid + 3
-                        AssemblyInformation asmInfo = assemblyInformation[Path.GetFileNameWithoutExtension(file.Name)];
-                        dllGuid = CycleGuidForward(asmInfo.Guid);
-                        if (isUAP)
+                        dllGuid = CycleGuidForward(dllGuid);
+
+                        if (file.DirectoryName.EndsWith("EditorPlayer"))
                         {
-                            dllGuid = CycleGuidForward(dllGuid);
+                            goto WriteMeta;
                         }
 
-                        metaFilePath = $"{file.FullName}.meta";
-                        File.WriteAllText(metaFilePath, ProcessMetaTemplate(metaFileTemplate, dllGuid, asmInfo.ExecutionOrderEntries));
+                        dllGuid = CycleGuidForward(dllGuid);
+
+                        if (file.DirectoryName.EndsWith("Standalone"))
+                        {
+                            goto WriteMeta;
+                        }
+
+                        dllGuid = CycleGuidForward(dllGuid);
+
+                        if (file.DirectoryName.EndsWith("UAP"))
+                        {
+                            goto WriteMeta;
+                        }
+                    } // else .pdb
+
+                    if (file.DirectoryName.EndsWith("EditorPlayer"))
+                    {
+                        goto WriteMeta;
                     }
+
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    if (file.DirectoryName.EndsWith("Standalone"))
+                    {
+                        goto WriteMeta;
+                    }
+
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    // if (file.DirectoryName.EndsWith("UAP"))
+                    // Just fall through
+
+                    WriteMeta:
+                    string metaFilePath = $"{file.FullName}.meta";
+                    File.WriteAllText(metaFilePath, ProcessMetaTemplate(metaFileTemplate, dllGuid, mapping.Key.ExecutionOrderEntries));
                 }
             }
         }
