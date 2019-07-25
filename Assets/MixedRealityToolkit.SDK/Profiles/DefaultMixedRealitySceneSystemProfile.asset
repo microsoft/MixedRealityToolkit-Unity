@@ -64,39 +64,45 @@ MonoBehaviour:
   - Name: EyeTrackingDemo-02-TargetSelection
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
     Included: 1
-    BuildIndex: 13
+    BuildIndex: 7
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 55643f7e4eceb734784192b162f565e0, type: 3}
   - Name: EyeTrackingDemo-03-Navigation
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
     Included: 1
-    BuildIndex: 12
+    BuildIndex: 8
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 5df475f0bf57b1f488d59e0e16040d9a, type: 3}
   - Name: EyeTrackingDemo-04-TargetPositioning
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity
     Included: 1
-    BuildIndex: 11
+    BuildIndex: 9
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 91ded1f5ef2ae854ba4ac94eca7a2494, type: 3}
   - Name: EyeTrackingDemo-05-Visualizer
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity
     Included: 1
-    BuildIndex: 9
+    BuildIndex: 10
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 2d6c43a82f3a88c4dbdc3b5e99a68d8a, type: 3}
   - Name: ClippingExamples
     Path: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/ClippingExamples.unity
     Included: 1
-    BuildIndex: 8
+    BuildIndex: 11
     Tag: Untagged
     Asset: {fileID: 102900000, guid: e532091edada3e04aa706112e8d5f310, type: 3}
   - Name: TooltipExamples
     Path: Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity
     Included: 1
-    BuildIndex: 10
+    BuildIndex: 12
     Tag: Untagged
     Asset: {fileID: 102900000, guid: de90a43947eced441b4c426e11f35f28, type: 3}
+  - Name: HandBasedMenuExample
+    Path: Assets/MixedRealityToolkit.Examples/Experimental/HandTracking/Scenes/HandBasedMenuExample.unity
+    Included: 1
+    BuildIndex: 13
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: b456277ac9c031c42a26c564af362d39, type: 3}
   permittedLightingSceneComponentTypes:
   - reference: UnityEngine.Transform, UnityEngine.CoreModule
   - reference: UnityEngine.GameObject, UnityEngine.CoreModule
