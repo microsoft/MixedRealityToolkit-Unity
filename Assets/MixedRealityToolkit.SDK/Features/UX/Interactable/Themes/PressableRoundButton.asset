@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: 
   Settings:
   - Name: InteractableOffsetTheme
-    AssemblyQualifiedName:  Microsoft.MixedReality.Toolkit.UI.InteractableOffsetTheme,
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableOffsetTheme,
       Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Offset
@@ -514,6 +514,8 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
+    CustomSettings: []
+    CustomHistory: []
     Easing:
       Enabled: 0
       Curve:
