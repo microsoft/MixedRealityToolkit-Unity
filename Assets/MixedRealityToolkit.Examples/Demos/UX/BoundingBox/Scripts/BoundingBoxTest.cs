@@ -6,14 +6,14 @@ using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Text;
+using TMPro;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     public class BoundingBoxTest : MonoBehaviour, IMixedRealitySpeechHandler
     {
-
-        public TextMesh statusText;
+        public TextMeshPro statusText;
 
         public Material darkGrayMaterial;
         public Material redMaterial;

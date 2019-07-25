@@ -16,8 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private Vector3 RespawnPoint;
         private Quaternion RespawnOrientation;
 
+        private Rigidbody rigidBody;
+
         private void Start()
         {
+            rigidBody = GetComponent<Rigidbody>();
+
             LockSpawnPoint();
         }
 
@@ -27,6 +31,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             if (distanceSqr > DistanceThreshold * DistanceThreshold)
             {
+                // Reset any velocity from falling or moving when respawning to original location
+                if (rigidBody != null)
+                {
+                    rigidBody.velocity = Vector3.zero;
+                    rigidBody.angularVelocity = Vector3.zero;
+                }
+
                 this.transform.SetPositionAndRotation(RespawnPoint, RespawnOrientation);
             }
         }
