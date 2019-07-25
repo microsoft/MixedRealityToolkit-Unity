@@ -586,7 +586,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentName
-      value: PressableButtonExample
+      value: EyeTrackingDemo-02-TargetSelection
       objectReference: {fileID: 0}
     - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1008,7 +1008,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentName
-      value: PressableButtonExample
+      value: EyeTrackingDemo-04-TargetPositioning
       objectReference: {fileID: 0}
     - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1584,7 +1584,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentName
-      value: PressableButtonExample
+      value: EyeTrackingDemo-05-Visualizer
       objectReference: {fileID: 0}
     - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1744,7 +1744,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentName
-      value: PressableButtonExample
+      value: EyeTrackingDemo-03-Navigation
       objectReference: {fileID: 0}
     - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}

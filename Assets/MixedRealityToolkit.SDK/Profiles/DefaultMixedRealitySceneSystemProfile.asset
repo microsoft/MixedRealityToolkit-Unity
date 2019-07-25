@@ -27,46 +27,76 @@ MonoBehaviour:
   - Name: DefaultLightingScene
     Path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultLightingScene.unity
     Included: 1
-    BuildIndex: 6
+    BuildIndex: 1
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 7e54e36c44f826c438c95da79f8de638, type: 3}
   contentScenes:
   - Name: MRTKExamplesHub
     Path: Assets/MixedRealityToolkit.Examples/Demos/MRTKExamplesHub.unity
     Included: 1
-    BuildIndex: 2
+    BuildIndex: 3
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 63a00118e809c754f9c7911bb85d635f, type: 3}
   - Name: HandInteractionExamples
     Path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
     Included: 1
-    BuildIndex: 1
+    BuildIndex: 2
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 3dd4a396b5225f8469b9a1eb608bfa57, type: 3}
   - Name: MaterialGallery
     Path: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/MaterialGallery.unity
     Included: 1
-    BuildIndex: 3
+    BuildIndex: 4
     Tag: Untagged
     Asset: {fileID: 102900000, guid: c6b1477d31864dff836e9738518eae60, type: 3}
   - Name: PressableButtonExample
     Path: Assets/MixedRealityToolkit.Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity
     Included: 1
-    BuildIndex: 4
+    BuildIndex: 5
     Tag: Untagged
     Asset: {fileID: 102900000, guid: b2d06bb8d7f107d4783a56c796c5c120, type: 3}
   - Name: BoundingBoxExamples
     Path: Assets/MixedRealityToolkit.Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity
     Included: 1
-    BuildIndex: 5
+    BuildIndex: 6
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 9da574c0affd04d42a6b1e5db09e82b4, type: 3}
-  - Name: EyeTrackingDemo-01-BasicSetup
-    Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-01-BasicSetup.unity
+  - Name: EyeTrackingDemo-02-TargetSelection
+    Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
     Included: 1
-    BuildIndex: 7
+    BuildIndex: 13
     Tag: Untagged
-    Asset: {fileID: 102900000, guid: 3ac2cf3aa0e281340babd2053d8b7d46, type: 3}
+    Asset: {fileID: 102900000, guid: 55643f7e4eceb734784192b162f565e0, type: 3}
+  - Name: EyeTrackingDemo-03-Navigation
+    Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
+    Included: 1
+    BuildIndex: 12
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 5df475f0bf57b1f488d59e0e16040d9a, type: 3}
+  - Name: EyeTrackingDemo-04-TargetPositioning
+    Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity
+    Included: 1
+    BuildIndex: 11
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 91ded1f5ef2ae854ba4ac94eca7a2494, type: 3}
+  - Name: EyeTrackingDemo-05-Visualizer
+    Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity
+    Included: 1
+    BuildIndex: 9
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 2d6c43a82f3a88c4dbdc3b5e99a68d8a, type: 3}
+  - Name: ClippingExamples
+    Path: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/ClippingExamples.unity
+    Included: 1
+    BuildIndex: 8
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: e532091edada3e04aa706112e8d5f310, type: 3}
+  - Name: TooltipExamples
+    Path: Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity
+    Included: 1
+    BuildIndex: 10
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: de90a43947eced441b4c426e11f35f28, type: 3}
   permittedLightingSceneComponentTypes:
   - reference: UnityEngine.Transform, UnityEngine.CoreModule
   - reference: UnityEngine.GameObject, UnityEngine.CoreModule
@@ -116,4 +146,4 @@ MonoBehaviour:
   editorEnforceSceneOrder: 1
   editorManageLoadedScenes: 1
   editorEnforceLightingSceneTypes: 1
-  editorLightingCacheOutOfDate: 0
+  editorLightingCacheOutOfDate: 1
