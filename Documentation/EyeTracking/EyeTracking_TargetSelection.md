@@ -114,7 +114,7 @@ As mentioned before, it will only trigger if eye gaze targeting is currently the
 
 Here is an example from [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
 ).
-In this demo, there are two 3D holograms that start will turn depending on which part of the object is looked at: 
+In this demo, there are two 3D holograms that will turn depending on which part of the object is looked at: 
 If the user looks at the left side of the hologram, then that part will slowly move towards the front facing the user.
 If the right side is looked at, then that part will slowly move to the front. 
 This is a behavior that you may not want to have active at all times and also something that you may not want to accidentally trigger by a hand ray or head gaze. 
