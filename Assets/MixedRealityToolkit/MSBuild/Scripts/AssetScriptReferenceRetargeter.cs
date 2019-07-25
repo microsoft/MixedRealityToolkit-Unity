@@ -134,7 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 {
                     throw new InvalidDataException("AsmDef meta file must have changed, as we can no longer parse a guid out of it.");
                 }
-                guid = CycleGuidForward(guid);
                 dllGuids.Add($"{dllName}.dll", guid);
             }
 
@@ -496,7 +495,9 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 throw new FileNotFoundException("Could not find sample editor dll.meta template.");
             }
 
-            string metaFileTemplate = File.ReadAllText(editorMetaFile.FullName);
+            string editorMetaFileTemplate = File.ReadAllText(editorMetaFile.FullName);
+            string uapMetaFileTemplate = File.ReadAllText(uapMetaFile.FullName);
+            string standaloneMetaFileTemplate = File.ReadAllText(standaloneMetaFile.FullName);
 
             Dictionary<AssemblyInformation, FileInfo[]> mappings = new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins"))
                 .GetDirectories("*", SearchOption.AllDirectories)
@@ -512,33 +513,32 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 //Editor PDB is + 4
                 //Standalone PDB is +5
                 //UAP PDB is +6
-
+                string templateToUse = editorMetaFileTemplate;
                 foreach (FileInfo file in mapping.Value)
                 {
                     string dllGuid = mapping.Key.Guid;
-                    if (file.Extension.Equals(".dll"))
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("EditorPlayer"))
                     {
-                        dllGuid = CycleGuidForward(dllGuid);
+                        goto WriteMeta;
+                    }
 
-                        if (file.DirectoryName.EndsWith("EditorPlayer"))
-                        {
-                            goto WriteMeta;
-                        }
+                    dllGuid = CycleGuidForward(dllGuid);
 
-                        dllGuid = CycleGuidForward(dllGuid);
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("Standalone"))
+                    {
+                        templateToUse = standaloneMetaFileTemplate;
+                        goto WriteMeta;
+                    }
 
-                        if (file.DirectoryName.EndsWith("Standalone"))
-                        {
-                            goto WriteMeta;
-                        }
+                    dllGuid = CycleGuidForward(dllGuid);
 
-                        dllGuid = CycleGuidForward(dllGuid);
-
-                        if (file.DirectoryName.EndsWith("UAP"))
-                        {
-                            goto WriteMeta;
-                        }
-                    } // else .pdb
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("UAP"))
+                    {
+                        templateToUse = uapMetaFileTemplate;
+                        goto WriteMeta;
+                    }
 
                     if (file.DirectoryName.EndsWith("EditorPlayer"))
                     {
@@ -549,9 +549,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     if (file.DirectoryName.EndsWith("Standalone"))
                     {
+                        templateToUse = standaloneMetaFileTemplate;
                         goto WriteMeta;
                     }
 
+                    templateToUse = uapMetaFileTemplate;
                     dllGuid = CycleGuidForward(dllGuid);
 
                     // if (file.DirectoryName.EndsWith("UAP"))
@@ -559,7 +561,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     WriteMeta:
                     string metaFilePath = $"{file.FullName}.meta";
-                    File.WriteAllText(metaFilePath, ProcessMetaTemplate(metaFileTemplate, dllGuid, mapping.Key.ExecutionOrderEntries));
+                    File.WriteAllText(metaFilePath, ProcessMetaTemplate(templateToUse, dllGuid, mapping.Key.ExecutionOrderEntries));
                 }
             }
         }
