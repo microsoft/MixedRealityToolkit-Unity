@@ -179,20 +179,21 @@ Finally, we provide you with a solution that let's you treat eye-based input com
 This has three _advantages_:
 
 - You can make sure that the hologram is only reacting to the user's eye gaze.
-- This is independent from the currently active primary input. Hence, hence you can process multiple inputs at once.
+- This is independent from the currently active primary input. Hence, you can process multiple inputs at once. For example, combine fast eye targeting with hand gestures.
 - Several Unity events have already been set up to make it fast and convenient to handle and reuse existing behaviors from within the Unity Editor or via code.
 
-_Disadvantages:_
+There are also some _disadvantages:_
 
 - No elegant degradation: It only supports eye targeting. If eye tracking is not working, you require some additional fallback.
 
-Similar to the _BaseFocusHandler_, the _EyeTrackingTarget_ comes ready with several eye-gaze-specific Unity events that you can conveniently listen to either via the Unity Editor (see example below) or by using AddListener in code:
+Similar to the _BaseFocusHandler_, the _EyeTrackingTarget_ comes ready with several eye-gaze-specific Unity events that you can conveniently listen to either via the Unity Editor (see example below) or by using _AddListener()_ in code:
 
 - OnLookAtStart()
 - WhileLookingAtTarget()
 - OnLookAway()
 - OnDwell()
 - OnSelected()
+
 In the following, we walk you through a few examples for how to use _EyeTrackingTarget_.
 
 ### Example #1: Eye-supported smart notifications
