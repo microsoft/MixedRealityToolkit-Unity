@@ -72,12 +72,13 @@ Material:
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
-    - _FadeBeginDistance: 0.01
+    - _FadeBeginDistance: 0.06
     - _FadeCompleteDistance: 0.1
     - _FadeMinValue: 0.06
-    - _FluentLightIntensity: 0.825
+    - _FluentLightIntensity: 1
     - _HoverLight: 1
     - _HoverLightOpaque: 0
+    - _IgnoreZScale: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 14.8
     - _InstancedColor: 0
@@ -121,7 +122,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 1.4692683, g: 1.4692683, b: 1.4692683, a: 1}
+    - _Color: {r: 0.66226417, g: 0.66226417, b: 0.66226417, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
