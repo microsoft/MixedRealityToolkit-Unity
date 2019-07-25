@@ -11,7 +11,7 @@ Examples of the button prefabs under ``MixedRealityToolkit.SDK/Features/UX/Inter
 |:--- | :--- | :--- |
 | HoloLens 2's shell-style button with backplate which supports various visual feedback such as border light, proximity light, and compressed front plate | HoloLens 2's shell-style button without backplate  | HoloLens 2's shell-style button with circular shape  |
 |  ![PressableButtonHoloLens2_32x96](../Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2_32x96.png) **PressableButtonHoloLens2_32x96** | ![PressableButtonHoloLens2Bar3H](../Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2BarH.png) **PressableButtonHoloLens2Bar3H** | ![PressableButtonHoloLens2Bar3V](../Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2BarV.png) **PressableButtonHoloLens2Bar3V** |
-| Wide HoloLens 2's shell-style button | Horizontal HoloLens 2 button bar with shared backplate | Vertical HoloLens 2 button bar with shared backplate |
+| Wide HoloLens 2's shell-style button 32x96mm | Horizontal HoloLens 2 button bar with shared backplate | Vertical HoloLens 2 button bar with shared backplate |
 |  ![Radial](../Documentation/Images/Button/MRTK_Button_Radial.png) **Radial** | ![Checkbox](../Documentation/Images/Button/MRTK_Button_Checkbox.png) **Checkbox** | ![ToggleSwitch](../Documentation/Images/Button/MRTK_Button_ToggleSwitch.png) **ToggleSwitch** |
 | Radial button | Checkbox  | Toggle switch |
 |  ![ButtonHoloLens1](../Documentation/Images/Button/MRTK_Button_HoloLens1.png) **ButtonHoloLens1** | ![PressableRoundButton](../Documentation/Images/Button/MRTK_Button_Round.png) **PressableRoundButton** | ![Button](../Documentation/Images/Button/MRTK_Button_Base.png) **Button** |
