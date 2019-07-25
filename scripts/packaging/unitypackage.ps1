@@ -86,6 +86,9 @@ $packages = @{
     "Examples" = @(
         "Assets\MixedRealityToolkit.Examples"
     );
+    "Tools" = @(
+        "Assets\MixedRealityToolkit.Tools"
+    );
 }
 
 function GetPackageVersion() {
