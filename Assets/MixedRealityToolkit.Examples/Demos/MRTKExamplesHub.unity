@@ -135,16 +135,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 51683002}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.016001284, y: -0.07678762, z: 0.6877731}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.08582729, y: 0.027212381, z: -0.014226913}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1958878975}
   - {fileID: 750150937}
   - {fileID: 165353058}
   - {fileID: 1085934403}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 1740321125}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &98048294
 PrefabInstance:
@@ -2585,6 +2585,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1740321125}
+  - component: {fileID: 1740321126}
   m_Layer: 0
   m_Name: SceneContent
   m_TagString: Untagged
@@ -2604,9 +2605,18 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1552594808}
+  - {fileID: 51683003}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!362 &1740321126
+WorldAnchor:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740321124}
+  serializedVersion: 2
 --- !u!1 &1760472859
 GameObject:
   m_ObjectHideFlags: 0
@@ -2618,7 +2628,7 @@ GameObject:
   - component: {fileID: 1760472861}
   - component: {fileID: 1760472860}
   m_Layer: 0
-  m_Name: MixedRealityToolkit (Inactive)
+  m_Name: MixedRealityToolkit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2666,7 +2676,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1795484709
 Transform:
   m_ObjectHideFlags: 0
