@@ -1,6 +1,7 @@
 # Gestures
 
 Gestures are input events based on human hands. There are two types of devices that raise gesture input events in MRTK:
+
 - Windows Mixed Reality devices such as Hololens. This describes pinching motions ("Air Tap") and tap-and-hold gestures.
 
   For more information on Hololens gestures see the [Windows Mixed Reality Gestures documentation](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
@@ -22,6 +23,7 @@ Gesture events are received by implementing one of the gesture handler interface
 See [Example Scene](#example-scene) for an example implementation of a gesture event handler.
 
 When implementing the generic version, the *OnGestureCompleted* and *OnGestureUpdated* events can receive typed data of the following types:
+
 - `Vector2` - 2D position gesture. Produced by touch screens to inform of their [`deltaPosition`](https://docs.unity3d.com/ScriptReference/Touch-deltaPosition.html).
 - `Vector3` - 3D position gesture. Produced by HoloLens to inform of:
   - [`cumulativeDelta`](https://docs.unity3d.com/ScriptReference/XR.WSA.Input.ManipulationUpdatedEventArgs-cumulativeDelta.html) of a manipulation event
