@@ -68,6 +68,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             Assert.IsTrue(inputSystem.GazeProvider.GazePointer.IsInteractionEnabled, "Gaze cursor should be visible after select command");
         }
+
+        /// <summary>
+        /// Ensure that the gaze provider hit result is not null when looking at an object,
+        /// even when the hand is up
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestGazeProviderTargetNotNull()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.forward;
+
+            yield return null;
+
+            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object");
+
+            TestHand h = new TestHand(Handedness.Right);
+            yield return h.Show(Vector3.forward * 0.2f);
+            yield return null;
+
+            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object with hand raised");
+        }
     }
 }
 #endif
