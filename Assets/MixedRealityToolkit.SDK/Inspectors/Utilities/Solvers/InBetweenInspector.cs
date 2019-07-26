@@ -12,14 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
     {
         private SerializedProperty secondTrackedTargetTypeProperty;
         private SerializedProperty secondTransformOverrideProperty;
+        private SerializedProperty partwayOffsetProperty;
+
         private InBetween solverInBetween;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            secondTrackedTargetTypeProperty = serializedObject.FindProperty("trackedObjectForSecondTransform");
+            secondTrackedTargetTypeProperty = serializedObject.FindProperty("secondTrackedObjectType");
             secondTransformOverrideProperty = serializedObject.FindProperty("secondTransformOverride");
+            partwayOffsetProperty = serializedObject.FindProperty("partwayOffset");
 
             solverInBetween = target as InBetween;
         }
@@ -42,11 +45,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
             objectChanged = EditorGUI.EndChangeCheck();
 
+            EditorGUILayout.PropertyField(partwayOffsetProperty);
+
             serializedObject.ApplyModifiedProperties();
 
             if (Application.isPlaying && objectChanged)
             {
-                solverInBetween.AttachSecondTransformToNewTrackedObject();
+                //solverInBetween.AttachSecondTransformToNewTrackedObject();
             }
         }
     }

@@ -11,12 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     public class InBetween : Solver
     {
         [SerializeField]
-        [Tooltip("Distance along the center line the object will be located. 0.5 is halfway, 1.0 is at the second transform, 0.0 is at the first transform.")]
+        [Tooltip("Distance along the center line the object will be located. 0.5 is halfway, 1.0 is at the first transform, 0.0 is at the second transform.")]
         [Range(0f, 1f)]
         private float partwayOffset = 0.5f;
 
         /// <summary>
-        /// Distance along the center line the object will be located. 0.5 is halfway, 1.0 is at the second transform, 0.0 is at the first transform.
+        /// Distance along the center line the object will be located. 0.5 is halfway, 1.0 is at the first transform, 0.0 is at the second transform.
         /// </summary>
         public float PartwayOffset
         {
@@ -27,28 +27,44 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [SerializeField]
         [Tooltip("Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field.")]
         [HideInInspector]
-        private TrackedObjectType trackedObjectForSecondTransform = TrackedObjectType.Head;
+        private TrackedObjectType secondTrackedObjectType = TrackedObjectType.Head;
 
         /// <summary>
         /// Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field.
         /// </summary>
-        public TrackedObjectType TrackedObjectForSecondTransform
+        public TrackedObjectType SecondTrackedObjectType
         {
-            get { return trackedObjectForSecondTransform; }
+            get { return secondTrackedObjectType; }
             set
             {
-                trackedObjectForSecondTransform = value;
-                if (secondSolverHandler != null)
+                if (secondTrackedObjectType != value)
                 {
-                    secondSolverHandler.TrackedTargetType = value;
+                    secondTrackedObjectType = value;
+                    UpdateSecondSolverHandler();
                 }
             }
         }
 
         [SerializeField]
-        [Tooltip("This transform overrides any Tracked Object as the second point in the In Between.")]
+        [Tooltip("This transform overrides any Tracked Object as the second point for the In Between.")]
         [HideInInspector]
         private Transform secondTransformOverride = null;
+
+        /// <summary>
+        /// This transform overrides any Tracked Object as the second point for the In Between
+        /// </summary>
+        public Transform SecondTransformOverride
+        {
+            get { return secondTransformOverride; }
+            set
+            {
+                if (secondTransformOverride != value)
+                {
+                    secondTransformOverride = value;
+                    UpdateSecondSolverHandler();
+                }
+            }
+        }
 
         private SolverHandler secondSolverHandler;
 
@@ -62,6 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             // We need to get the secondSolverHandler ready before we tell them both to seek a tracked object.
             secondSolverHandler = gameObject.AddComponent<SolverHandler>();
             secondSolverHandler.UpdateSolvers = false;
+
             UpdateSecondSolverHandler();
         }
 
@@ -89,21 +106,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             if (secondSolverHandler != null)
             {
-                secondSolverHandler.TrackedTargetType = trackedObjectForSecondTransform;
+                secondSolverHandler.TrackedTargetType = secondTrackedObjectType;
 
-                if (trackedObjectForSecondTransform == TrackedObjectType.CustomOverride && secondTransformOverride != null)
+                if (secondTrackedObjectType == TrackedObjectType.CustomOverride && secondTransformOverride != null)
                 {
                     secondSolverHandler.SetTransformOverride(secondTransformOverride);
                 }
             }
-        }
-
-        /// <summary>
-        /// This should only be called from the SolverInBetweenEditor to cause the secondary SolverHandler to reattach this solver.
-        /// </summary>
-        public void AttachSecondTransformToNewTrackedObject()
-        {
-            UpdateSecondSolverHandler();
         }
     }
 }
