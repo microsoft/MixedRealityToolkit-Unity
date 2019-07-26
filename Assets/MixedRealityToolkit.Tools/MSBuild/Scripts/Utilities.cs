@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 const ushort PE32Plus = 0x20b;
 
                 // Read PE magic number from Standard Fields to determine format.
-                var peFormat = binaryReader.ReadUInt16();
+                ushort peFormat = binaryReader.ReadUInt16();
                 if (peFormat != PE32 && peFormat != PE32Plus)
                 {
                     return false;
@@ -330,8 +330,17 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Helper to replace tokens in text using StringBuilder.
         /// </summary>
-        public static string ReplaceTokens(string text, Dictionary<string, string> tokens)
+        public static string ReplaceTokens(string text, Dictionary<string, string> tokens, bool verifyAllTokensPresent = false)
         {
+            if (verifyAllTokensPresent)
+            {
+                string[] missingTokens = tokens.Keys.Where(t => !text.Contains(t)).ToArray();
+                if (missingTokens.Length > 0)
+                {
+                    throw new InvalidOperationException($"Token replacement failed, found tokens missing from the template: '{string.Join("; ", missingTokens)}'.");
+                }
+            }
+
             StringBuilder builder = new StringBuilder(text);
 
             foreach (KeyValuePair<string, string> token in tokens)

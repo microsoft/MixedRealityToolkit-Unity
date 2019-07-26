@@ -233,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     { suportedPlatformBuildConditionTemplate, string.Join("\r\n", supportedPlatformBuildConditions) }
                 };
 
-                projectFileTemplateText = Utilities.ReplaceTokens(projectFileTemplateText, tokens);
+                projectFileTemplateText = Utilities.ReplaceTokens(projectFileTemplateText, tokens, true);
             }
             else
             {
@@ -310,7 +310,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 {
                     if (dependency.Dependency.Type == PluginType.Native)
                     {
-                        //TODO Native plugins aren't yet supported
                         continue;
                     }
                     List<string> platformConditions = GetPlatformConditions(inEditor ? InEditorPlatforms : PlayerPlatforms, inEditor ? dependency.InEditorSupportedPlatforms : dependency.PlayerSupportedPlatforms);
