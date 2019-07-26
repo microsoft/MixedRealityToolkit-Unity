@@ -15,7 +15,7 @@ MRTK Examples Hub is a Unity scene that makes it easy to experience multiple sce
 <br/><br/><img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem4.png">Examples of loading HandInteractionExamples scene.
 <br/><br/><img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem5.png">You can load multiple scenes.
 
-4. To build and deply, simply build **DefaultManagerScene** with other scenes that are included in the Scene System's list. The inspector also makes it easy to add scenes to the Build Settings.
+4. To build and deploy, simply build **DefaultManagerScene** with other scenes that are included in the Scene System's list. The inspector also makes it easy to add scenes to the Build Settings.
 
 ## How MRTKExamplesHub loads a scene ##
 In the MRTKExamplesHub scene, you can find the ``ExamplesHubButton`` prefab. There is **FrontPlate** object in the prefab which contains ``Interactable``. Using Interactable's ``OnClick()`` and ``OnTouch()`` event, it triggers **LoadContentScene** script's **LoadContent()** function. In the **LoadContentScene** script's Inspector, you can define the scene name to load.
