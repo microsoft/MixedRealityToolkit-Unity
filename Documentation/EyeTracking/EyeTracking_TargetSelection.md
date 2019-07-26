@@ -322,28 +322,29 @@ public class HitBehaviorDestroyOnSelect : MonoBehaviour
 Hand rays take priority over head and eye gaze targeting. This means, if hand rays are enabled, the moment the hands come into view, the hand ray will act as the primary pointer. 
 However, there might be situations in which you want to use hand rays while still detecting whether a user is looking at a certain hologram. Easy! Essentially you require two steps:
 
-**1. Enable the hand ray**
+**1. Enable the hand ray:** 
 To enable the hand ray, go to _Mixed Reality Toolkit -> Input -> Pointers_. 
-In the eye tracking demo scenes, you should see the _EyeTrackingDemoPointerProfile_. 
+In the _EyeTrackingDemo-00-RootScene_ where the Mixed Reality Toolkit is configured once for all of the eye tracking demo scenes, you should see the _EyeTrackingDemoPointerProfile_. 
 You can either create a new _Input Profile_ from scratch or adapt the current eye tracking one:
 - **From scratch:** 
 In the _Pointers_ tab, select the _DefaultMixedRealityInputPointerProfile_ from the context menu. 
-This is the default pointer profile that already has the hand ray enabled!  
+This is the default pointer profile that already has the hand ray enabled! 
 To change the default cursor (an opaque white dot), simply clone the profile and create your own custom pointer profile. 
-Then replace the _DefaultCursor_ with _EyeGazeCursor_ under _Gaze Cursor Prefab_.  
+Then replace _DefaultCursor_ with _EyeGazeCursor_ under _Gaze Cursor Prefab_.  
     
 - **Based on the existing _EyeTrackingDemoPointerProfile_:** 
 Double-click the _EyeTrackingDemoPointerProfile_ and add the following entry under _Pointer Options_: 
-    - Controller Type: 'Articulated Hand', 'Windows Mixed Reality'
-    - Handedness: Any
-    - Pointer Prefab: DefaultControllerPointer
+    - **Controller Type:** 'Articulated Hand', 'Windows Mixed Reality'
+    - **Handedness:** Any
+    - **Pointer Prefab:** DefaultControllerPointer
 
 
-**2. Detect that a hologram is looked at**
-Use the [`EyeTrackingTarget`](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script to enable detecting that a hologram is looked at.  is independent from whether hands are the primary focus pointer or not. Based on the above setup about using [sfsw], all you have to do is to re-enable
+**2. Detect that a hologram is looked at:** 
+Use the [`EyeTrackingTarget`](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script to enable detecting that a hologram is looked at as described above. You can also take a look at the `FollowEyeGaze` sample script for inspiration as this is showing a hologram following your eye gaze (e.g., a cursor) whether hand rays are enabled or not. 
 
-When you start the eye tracking demo scenes now, you should see a ray coming from your hands now.
-In the eye tracking target selection demo, the semi-transparent circle is still following your eye gaze and the gems respond to whether they are looked at or not, while the top scene menu buttons use the primary input pointer (your hands) instead. 
+
+Now, when you start the eye tracking demo scenes, you should see a ray coming from your hands.
+For example, in the eye tracking target selection demo, the semi-transparent circle is still following your eye gaze and the gems respond to whether they are looked at or not, while the top scene menu buttons use the primary input pointer (your hands) instead. 
 
 
 ---
