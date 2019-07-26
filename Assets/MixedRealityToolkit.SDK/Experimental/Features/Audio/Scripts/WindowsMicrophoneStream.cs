@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-// todo: only support windows standalone and uwp builds
-
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -57,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
             GC.SuppressFinalize(this);
         }
 
-    #endregion IDisposable implementation
+        #endregion IDisposable implementation
 
         private float gain = 1.0f; // todo: what is a reasonable range?
 
@@ -70,7 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
 
             set
             {
-
                 if ((gain != value) &&
                     (WindowsMicrophoneStreamErrorCode.Success == (WindowsMicrophoneStreamErrorCode)MicSetGain(value)))
                 {
@@ -84,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// todo
         /// </summary>
+        /// <returns></returns>
         public WindowsMicrophoneStreamErrorCode Initialize(WindowsMicrophoneStreamType streamType)
         {
             if (initialized)
@@ -100,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// todo
         /// </summary>
+        /// <returns></returns>
         public WindowsMicrophoneStreamErrorCode Pause()
         {
             if (paused)
@@ -114,6 +113,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// todo
         /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="numChannels"></param>
+        /// <returns></returns>
+        public WindowsMicrophoneStreamErrorCode ReadAudioFrame(float[] buffer, int numChannels)
+        {
+            return (WindowsMicrophoneStreamErrorCode)MicGetFrame(buffer, buffer.Length, numChannels);
+        }
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        /// <returns></returns>
         public WindowsMicrophoneStreamErrorCode Resume()
         {
             if (!paused)
@@ -130,6 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// todo
         /// </summary>
+        /// <returns></returns>
         public WindowsMicrophoneStreamErrorCode StartRecording(string fileName, bool preview)
         {
             if (recording)
@@ -146,6 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// todo
         /// </summary>
+        /// <returns></returns>
         public WindowsMicrophoneStreamErrorCode StartStream(bool keepData, bool preview)
         {
             if (streaming)
@@ -154,12 +167,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
                 return WindowsMicrophoneStreamErrorCode.Success;
             }
 
-            return (WindowsMicrophoneStreamErrorCode)MicStartStream(keepData, preview, null);
+            return (WindowsMicrophoneStreamErrorCode)MicStartStream(keepData, preview);
         }
 
         /// <summary>
         /// todo
         /// </summary>
+        /// <returns></returns>
         public string StopRecording()
         {
             if (!recording)
@@ -178,6 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// todo
         /// </summary>
+        /// <returns></returns>
         public WindowsMicrophoneStreamErrorCode StopStream()
         {
             if (!streaming)
@@ -192,6 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         /// <summary>
         /// todo
         /// </summary>
+        /// <returns></returns>
         public WindowsMicrophoneStreamErrorCode Uninitialize()
         {
             if (!initialized)
@@ -203,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
             return (WindowsMicrophoneStreamErrorCode)MicDestroy();
         }
 
-        #region MicStream.dll methods
+#region MicStream.dll methods
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate void LiveMicCallback();
@@ -218,7 +234,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         private static extern int MicInitializeCustomRate(int category, int samplerate);
 
         [DllImport("MicStreamSelector", ExactSpelling = true)]
-
         private static extern int MicPause();
 
         [DllImport("MicStreamSelector", ExactSpelling = true)]
@@ -239,6 +254,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         [DllImport("MicStreamSelector", ExactSpelling = true)]
         private static extern int MicStopStream();
 
-        #endregion MicStream.dll methods
+#endregion MicStream.dll methods
     }
 }
