@@ -10,14 +10,10 @@ using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    /// <summary>
-    /// Utility class to load scenes through MRTK Scene System. If Scene Transition Service is enabled, it uses it.
-    /// Otherwise, it uses Scene System's LoadContent()
-    /// </summary>
-    public class LoadContentScene : MonoBehaviour
+	public class LoadContentScene : MonoBehaviour
 	{
-        [SerializeField]
-        private LoadSceneMode loadSceneMode = LoadSceneMode.Single;
+		[SerializeField]
+		private LoadSceneMode loadSceneMode = LoadSceneMode.Single;
         [SerializeField]
         private string contentName = null;
         [SerializeField]
