@@ -192,13 +192,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
+
+        // Stores currently attached hand if valid (only possible values Left, Right, or None)
+        protected Handedness currentTrackedHandedness = Handedness.None;
+
+        /// <summary>
+        /// Currently tracked hand or motion controller if applicable
+        /// </summary>
+        public Handedness CurrentTrackedHandedness
+        {
+            get
+            {
+                return currentTrackedHandedness;
+            }
+        }
+
         // Hidden GameObject managed by this component and attached as a child to the tracked target type (i.e head, hand etc)
         private GameObject trackingTarget;
 
         private float lastUpdateTime;
-
-        // Stores currently attached hand if valid (only possible values Left, Right, or None)
-        private Handedness attachedHandedness = Handedness.None;
 
         private IMixedRealityHandJointService HandJointService => handJointService ?? (handJointService = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>());
         private IMixedRealityHandJointService handJointService = null;
@@ -300,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         protected virtual void AttachToNewTrackedObject()
         {
-            this.attachedHandedness = Handedness.None;
+            this.currentTrackedHandedness = Handedness.None;
 
             Transform target = null;
             if (TrackedTargetType == TrackedObjectType.Head)
@@ -311,21 +323,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 if (this.TrackedHandness == Handedness.Both || this.TrackedHandness == Handedness.Any)
                 {
-                    this.attachedHandedness = Handedness.Left;
+                    this.currentTrackedHandedness = Handedness.Left;
                     target = GetMotionController(Handedness.Left);
                     if (target == null)
                     {
-                        this.attachedHandedness = Handedness.Right;
+                        this.currentTrackedHandedness = Handedness.Right;
                         target = GetMotionController(Handedness.Right);
                         if (target == null)
                         {
-                            this.attachedHandedness = Handedness.None;
+                            this.currentTrackedHandedness = Handedness.None;
                         }
                     }
                 }
                 else
                 {
-                    this.attachedHandedness = this.TrackedHandness;
+                    this.currentTrackedHandedness = this.TrackedHandness;
                     target = GetMotionController(this.TrackedHandness);
                 }
             }
@@ -333,24 +345,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 if (HandJointService != null)
                 {
-                    this.attachedHandedness = this.TrackedHandness;
-                    if (attachedHandedness == Handedness.Both || attachedHandedness == Handedness.Any)
+                    this.currentTrackedHandedness = this.TrackedHandness;
+                    if (currentTrackedHandedness == Handedness.Both || currentTrackedHandedness == Handedness.Any)
                     {
                         if (HandJointService.IsHandTracked(Handedness.Left))
                         {
-                            attachedHandedness = Handedness.Left;
+                            currentTrackedHandedness = Handedness.Left;
                         }
                         else if (HandJointService.IsHandTracked(Handedness.Right))
                         {
-                            attachedHandedness = Handedness.Right;
+                            currentTrackedHandedness = Handedness.Right;
                         }
                         else
                         {
-                            attachedHandedness = Handedness.None;
+                            currentTrackedHandedness = Handedness.None;
                         }
                     }
 
-                    target = HandJointService?.RequestJointTransform(this.TrackedHandJoint, attachedHandedness);
+                    target = HandJointService?.RequestJointTransform(this.TrackedHandJoint, currentTrackedHandedness);
                 }
             }
             else if (TrackedTargetType == TrackedObjectType.CustomOverride)
@@ -408,13 +420,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             // If we were tracking a particular hand, check that our transform is still valid
             // The HandJointService does not destroy it's own hand joint tracked GameObjects even when a hand is no longer tracked
             // Those HandJointService's GameObjects though are the parents of our tracked transform and thus will not be null/destroyed
-            if (this.TrackedTargetType == TrackedObjectType.HandJoint && this.attachedHandedness != Handedness.None)
+            if (this.TrackedTargetType == TrackedObjectType.HandJoint && this.currentTrackedHandedness != Handedness.None)
             {
                 bool trackingLeft = HandJointService.IsHandTracked(Handedness.Left);
                 bool trackingRight = HandJointService.IsHandTracked(Handedness.Right);
 
-                return (this.attachedHandedness == Handedness.Left && !trackingLeft) ||
-                    (this.attachedHandedness == Handedness.Right && !trackingRight);
+                return (this.currentTrackedHandedness == Handedness.Left && !trackingLeft) ||
+                    (this.currentTrackedHandedness == Handedness.Right && !trackingRight);
             }
 
             return false;
