@@ -25,6 +25,7 @@ In that PR the experimental code went into:
 The example scene went into:
 `MRTK.Examples/Experimental/HandTracking/Scenes/HandBasedMenuExample.unity`
 
+> [!NOTE]
 > We considered not having a single Experimental root folder and instead putting Experimental under say `MRTK.Examples/HandTracking/Scenes/Experimental/HandBasedMenuExample.unity`. We decided to go with folders at the base to make the experimental features easier to discover.
 
 ### Experimental Code should be in a special namespace

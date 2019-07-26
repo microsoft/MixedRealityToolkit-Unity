@@ -11,8 +11,7 @@ using Windows.UI.ViewManagement;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// Class that can launch and hide a system keyboard specifically for Windows Mixed Reality
-    /// devices (HoloLens 2, Windows Mixed Reality).
+    /// Class that can launch and hide a system keyboard specifically for HoloLens 2.
     /// 
     /// Implements a workaround for UWP TouchScreenKeyboard bug which prevents
     /// UWP keyboard from showing up again after it is closed.

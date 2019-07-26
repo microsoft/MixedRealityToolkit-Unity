@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI;
+using TMPro;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
@@ -19,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private MixedRealityKeyboard wmrKeyboard;
         private TouchScreenKeyboard touchscreenKeyboard;
         public static string keyboardText = "";
-        public TextMesh debugMessage;
+        public TextMeshPro debugMessage;
 
         private void Start()
         {
