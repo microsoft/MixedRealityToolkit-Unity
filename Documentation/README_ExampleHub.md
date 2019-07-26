@@ -23,7 +23,7 @@ In the MRTKExamplesHub scene, you can find the ``ExamplesHubButton`` prefab. The
 <br/><br/><img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem8.png" width="550">
 <br/><br/><img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem7.png" width="550">
 
-The script uses Scene System's LoadContent() function to load the scene. Please refer to the [Scene System](SceneSystem/SceneSystemSceneTypes.md) page for more details.
+The script uses Scene System's LoadContent() function to load the scene. Please refer to the [Scene System](SceneSystem/SceneSystemGetingStarted.md) page for more details.
 ```csharp
 MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode);
 ```
