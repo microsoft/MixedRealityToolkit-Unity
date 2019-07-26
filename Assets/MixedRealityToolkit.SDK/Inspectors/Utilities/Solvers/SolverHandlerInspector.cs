@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(SolverHandler))]
     [CanEditMultipleObjects]
-    public class SolverHandlerInspector : ControllerFinderInspector
+    public class SolverHandlerInspector : UnityEditor.Editor
     {
         private SerializedProperty trackedTargetProperty;
         private SerializedProperty trackedHandnessProperty;
@@ -20,10 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         private SerializedProperty updateSolversProperty;
         private SolverHandler solverHandler;
 
-        protected override void OnEnable()
+        protected void OnEnable()
         {
-            base.OnEnable();
-
             trackedTargetProperty = serializedObject.FindProperty("trackedTargetType");
             trackedHandnessProperty = serializedObject.FindProperty("trackedHandness");
             trackedHandJointProperty = serializedObject.FindProperty("trackedHandJoint");
@@ -38,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            EditorGUILayout.Space();
 
             bool trackedObjectChanged = false;
 
@@ -73,13 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             {
                 solverHandler.RefreshTrackedObject();
             }
-
-            /*
-            if (Application.isPlaying && additionalOffsetChanged)
-            {
-                solverHandler.AdditionalOffset = additionalOffsetProperty.vector3Value;
-                solverHandler.AdditionalRotation = additionalRotationProperty.vector3Value;
-            }*/
         }
     }
 }

@@ -19,17 +19,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public enum RaycastDirectionMode
         {
             /// <summary>
-            /// Cast from head in facing direction
+            /// Cast from Tracked Target in facing direction
             /// </summary>
-            CameraFacing = 0,
+            TrackedTargetForward = 0,
 
             /// <summary>
-            /// Cast from head to object position
+            /// Cast from Tracked Target position to this object's position
             /// </summary>
             ToObject,
 
             /// <summary>
-            /// Cast from head to linked solver position
+            /// Cast from Tracked Target Position to linked solver position
             /// </summary>
             ToLinkedPosition
         }
@@ -77,28 +77,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Max distance for raycast to check for surfaces")]
-        private float maxDistance = 3.0f;
+        private float maxRaycastDistance = 50.0f;
 
         /// <summary>
         /// Max distance for raycast to check for surfaces
         /// </summary>
-        public float MaxDistance
+        public float MaxRaycastDistance
         {
-            get { return maxDistance; }
-            set { maxDistance = value; }
+            get { return maxRaycastDistance; }
+            set { maxRaycastDistance = value; }
         }
 
         [SerializeField]
         [Tooltip("Closest distance to bring object")]
-        private float closeDistance = 0.5f;
+        private float closestDistance = 0.5f;
 
         /// <summary>
         /// Closest distance to bring object
         /// </summary>
-        public float CloseDistance
+        public float ClosestDistance
         {
-            get { return closeDistance; }
-            set { closeDistance = value; }
+            get { return closestDistance; }
+            set { closestDistance = value; }
         }
 
         [SerializeField]
@@ -227,11 +227,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Raycast direction. Can cast from head in facing direction, or cast from head to object position")]
-        private RaycastDirectionMode currentRaycastDirectionMode = RaycastDirectionMode.ToLinkedPosition;
+        [Tooltip("Raycast direction type. Default is forward direction of Tracked Target transform")]
+        private RaycastDirectionMode currentRaycastDirectionMode = RaycastDirectionMode.TrackedTargetForward;
 
         /// <summary>
-        /// Raycast direction. Can cast from head in facing direction, or cast from head to object position
+        /// Raycast direction type. Default is forward direction of Tracked Target transform
         /// </summary>
         public RaycastDirectionMode CurrentRaycastDirectionMode
         {
@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 switch (CurrentRaycastDirectionMode)
                 {
-                    case RaycastDirectionMode.CameraFacing:
+                    case RaycastDirectionMode.TrackedTargetForward:
                         endPoint = SolverHandler.TransformTarget.position + SolverHandler.TransformTarget.forward;
                         break;
 
@@ -331,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 Vector3 direction = Vector3.forward;
 
-                if (CurrentRaycastDirectionMode == RaycastDirectionMode.CameraFacing)
+                if (CurrentRaycastDirectionMode == RaycastDirectionMode.TrackedTargetForward)
                 {
                     if (SolverHandler.TransformTarget != null)
                     {
@@ -420,6 +420,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 case SceneQueryType.SphereCast:
                     SphereRaycastStepUpdate(ref this.currentRayStep);
                     break;
+                case SceneQueryType.SphereOverlap:
+                    Debug.LogError("Raycast mode set to SphereOverlap which is not valid for SurfaceMagnetism component. Disabling update solvers...");
+                    SolverHandler.UpdateSolvers = false;
+                    break;
             }
         }
 
@@ -433,7 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             RaycastHit result;
 
             // Do the cast!
-            isHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(rayStep, maxDistance, magneticSurfaces, out result);
+            isHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(rayStep, maxRaycastDistance, magneticSurfaces, out result);
 
             OnSurface = isHit;
 
@@ -441,9 +445,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3 hitDelta = result.point - rayStep.Origin;
             float length = hitDelta.magnitude;
 
-            if (length < closeDistance)
+            if (length < closestDistance)
             {
-                result.point = rayStep.Origin + rayStep.Direction * closeDistance;
+                result.point = rayStep.Origin + rayStep.Direction * closestDistance;
             }
 
             // Apply results
@@ -465,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             // Do the cast!
             float size = ScaleOverride > 0 ? ScaleOverride : transform.lossyScale.x * sphereSize;
-            isHit = MixedRealityRaycaster.RaycastSpherePhysicsStep(rayStep, size, maxDistance, magneticSurfaces, out result);
+            isHit = MixedRealityRaycaster.RaycastSpherePhysicsStep(rayStep, size, maxRaycastDistance, magneticSurfaces, out result);
 
             OnSurface = isHit;
 
@@ -473,9 +477,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3 hitDelta = result.point - rayStep.Origin;
             float length = hitDelta.magnitude;
 
-            if (length < closeDistance)
+            if (length < closestDistance)
             {
-                result.point = rayStep.Origin + rayStep.Direction * closeDistance;
+                result.point = rayStep.Origin + rayStep.Direction * closestDistance;
             }
 
             // Apply results
@@ -513,7 +517,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3[] normals;
             bool[] hits;
 
-            if (MixedRealityRaycaster.RaycastBoxPhysicsStep(rayStep, extents, transform.position, targetMatrix, maxDistance, magneticSurfaces, boxRaysPerEdge, orthographicBoxCast, out positions, out normals, out hits))
+            if (MixedRealityRaycaster.RaycastBoxPhysicsStep(rayStep, extents, transform.position, targetMatrix, maxRaycastDistance, magneticSurfaces, boxRaysPerEdge, orthographicBoxCast, out positions, out normals, out hits))
             {
                 Plane plane;
                 float distance;
@@ -533,7 +537,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 float boxSurfaceOffset = targetMatrix.MultiplyVector(new Vector3(0, 0, extents.z * 0.5f)).magnitude;
 
                 // Apply boxSurfaceOffset to ray direction and not surface normal direction to reduce sliding
-                GoalPosition = rayStep.Origin + rayStep.Direction * Mathf.Max(closeDistance, distance + surfaceRayOffset + boxSurfaceOffset + verticalCorrectionOffset) + plane.normal * (0 * boxSurfaceOffset + surfaceNormalOffset);
+                GoalPosition = rayStep.Origin + rayStep.Direction * Mathf.Max(closestDistance, distance + surfaceRayOffset + boxSurfaceOffset + verticalCorrectionOffset) + plane.normal * (0 * boxSurfaceOffset + surfaceNormalOffset);
                 GoalRotation = CalculateMagnetismOrientation(rayStep.Direction, plane.normal);
                 OnSurface = true;
             }

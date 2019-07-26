@@ -89,13 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             if (secondSolverHandler != null)
             {
-                if (secondTransformOverride != null)
+                secondSolverHandler.TrackedTargetType = trackedObjectForSecondTransform;
+
+                if (trackedObjectForSecondTransform == TrackedObjectType.CustomOverride && secondTransformOverride != null)
                 {
                     secondSolverHandler.SetTransformOverride(secondTransformOverride);
-                }
-                else
-                {
-                    secondSolverHandler.TrackedTargetType = trackedObjectForSecondTransform;
                 }
             }
         }
