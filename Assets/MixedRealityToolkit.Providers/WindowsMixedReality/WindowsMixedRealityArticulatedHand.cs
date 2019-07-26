@@ -131,6 +131,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             UpdateHandData(interactionSourceState);
 
+            MixedRealityInteractionMapping pointerMapping = null;
+            MixedRealityInteractionMapping grabMapping = null;
             for (int i = 0; i < Interactions?.Length; i++)
             {
                 switch (Interactions[i].InputType)
@@ -138,7 +140,67 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     case DeviceInputType.IndexFinger:
                         UpdateIndexFingerData(interactionSourceState, Interactions[i]);
                         break;
+                    case DeviceInputType.SpatialPointer:
+                        pointerMapping = Interactions[i];
+                        break;
+                    case DeviceInputType.SpatialGrip:
+                        grabMapping = Interactions[i];
+                        break;
                 }
+            }
+
+            if (pointerMapping != null && grabMapping != null)
+            {
+                MixedRealityPose currentPointerPose = new MixedRealityPose();
+                if (interactionSourceState.source.supportsPointing)
+                {
+                    Vector3 currentPointerPosition = new Vector3();
+                    Quaternion currentPointerRotation = new Quaternion();
+                    interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
+                    interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
+
+                    // We want the source to follow the Playspace, so fold in the playspace transform here to 
+                    // put the source pose into world space.
+                    currentPointerPose.Position = MixedRealityPlayspace.TransformPoint(currentPointerPosition);
+                    currentPointerPose.Rotation = MixedRealityPlayspace.Rotation * currentPointerRotation;
+
+                    // null out roll so we don't rotate objects around while manipulating them
+                    Vector3 eulerRot = currentPointerPose.Rotation.eulerAngles;
+                    eulerRot.Scale(new Vector3(1.0f, 1.0f, 0.0f));
+                    currentPointerPose.Rotation = Quaternion.Euler(eulerRot);
+                }
+
+                // TODO -> find a way to apply the roll of the hand wrist properly - currently this is in the wrong coord space
+                //switch (grabMapping.AxisType)
+                //{
+                //    case AxisType.SixDof:
+                //        {
+                //            Quaternion currentGripRotation = new Quaternion();
+
+                //            Vector3 rightHandVec = new Vector3();
+                //            interactionSourceState.sourcePose.TryGetRight(out rightHandVec, InteractionSourceNode.Grip);
+
+                //            Vector3 worldRight = MixedRealityPlayspace.Transform.right;
+
+                //            interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
+                //            Vector3 transformedGripRotationEuler = MixedRealityPlayspace.TransformDirection(currentGripRotation.eulerAngles);
+
+                //            Vector3 combinedRotationEuler = currentPointerPose.Rotation.eulerAngles;
+                //            combinedRotationEuler.z = transformedGripRotationEuler.z;
+                //            currentPointerPose.Rotation = Quaternion.Euler(combinedRotationEuler);
+                //        }
+                //        break;
+                //}
+
+                // Update the interaction data source
+                pointerMapping.PoseData = currentPointerPose;
+
+                // If our value changed raise it.
+                if (pointerMapping.Changed)
+                {
+                    // Raise input system Event if it enabled
+                    InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, pointerMapping.MixedRealityInputAction, currentPointerPose);
+                }     
             }
         }
 
