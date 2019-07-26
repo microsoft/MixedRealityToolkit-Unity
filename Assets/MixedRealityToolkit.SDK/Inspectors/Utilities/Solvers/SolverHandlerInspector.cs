@@ -11,22 +11,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
     [CanEditMultipleObjects]
     public class SolverHandlerInspector : ControllerFinderInspector
     {
-        private SerializedProperty trackedObjectProperty;
+        private SerializedProperty trackedTargetProperty;
+        private SerializedProperty trackedHandnessProperty;
         private SerializedProperty trackedHandJointProperty;
-        private SerializedProperty transformTargetProperty;
+        private SerializedProperty transformOverrideProperty;
         private SerializedProperty additionalOffsetProperty;
         private SerializedProperty additionalRotationProperty;
         private SerializedProperty updateSolversProperty;
         private SolverHandler solverHandler;
-        private readonly GUIContent trackedTransformGUIContent = new GUIContent("Tracked Transform");
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            trackedObjectProperty = serializedObject.FindProperty("trackedObjectToReference");
+            trackedTargetProperty = serializedObject.FindProperty("trackedTargetType");
+            trackedHandnessProperty = serializedObject.FindProperty("trackedHandness");
             trackedHandJointProperty = serializedObject.FindProperty("trackedHandJoint");
-            transformTargetProperty = serializedObject.FindProperty("transformTarget");
+            transformOverrideProperty = serializedObject.FindProperty("transformOverride");
             additionalOffsetProperty = serializedObject.FindProperty("additionalOffset");
             additionalRotationProperty = serializedObject.FindProperty("additionalRotation");
             updateSolversProperty = serializedObject.FindProperty("updateSolvers");
@@ -41,24 +42,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
             bool trackedObjectChanged = false;
 
-            if (transformTargetProperty.objectReferenceValue == null || Application.isPlaying)
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(trackedTargetProperty);
+
+            if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint ||
+                trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.MotionController)
             {
-                EditorGUI.BeginChangeCheck();
-                EditorGUILayout.PropertyField(trackedObjectProperty);
-                if (trackedObjectProperty.enumValueIndex == (int)TrackedObjectType.HandJointLeft ||
-                trackedObjectProperty.enumValueIndex == (int)TrackedObjectType.HandJointRight)
-                {
-                    EditorGUILayout.PropertyField(trackedHandJointProperty);
-                }
-                trackedObjectChanged = EditorGUI.EndChangeCheck();
+                EditorGUILayout.PropertyField(trackedHandnessProperty);
             }
 
-            EditorGUILayout.PropertyField(transformTargetProperty, trackedTransformGUIContent);
+            if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint)
+            {
+                EditorGUILayout.PropertyField(trackedHandJointProperty);
+            }
+            else if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.CustomOverride)
+            {
+                EditorGUILayout.PropertyField(transformOverrideProperty);
+            }
 
-            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(additionalOffsetProperty);
             EditorGUILayout.PropertyField(additionalRotationProperty);
-            bool additionalOffsetChanged = EditorGUI.EndChangeCheck();
+
+            trackedObjectChanged = EditorGUI.EndChangeCheck();
 
             EditorGUILayout.PropertyField(updateSolversProperty);
 
@@ -69,11 +74,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                 solverHandler.RefreshTrackedObject();
             }
 
+            /*
             if (Application.isPlaying && additionalOffsetChanged)
             {
                 solverHandler.AdditionalOffset = additionalOffsetProperty.vector3Value;
                 solverHandler.AdditionalRotation = additionalRotationProperty.vector3Value;
-            }
+            }*/
         }
     }
 }

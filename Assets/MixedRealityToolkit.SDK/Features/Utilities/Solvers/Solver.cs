@@ -159,16 +159,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         #region MonoBehaviour Implementation
 
-        protected virtual void OnValidate()
+        protected virtual void Awake()
         {
             if (SolverHandler == null)
             {
                 SolverHandler = GetComponent<SolverHandler>();
             }
-        }
 
-        protected virtual void Awake()
-        {
             if (updateLinkedTransform && SolverHandler == null)
             {
                 Debug.LogError("No SolverHandler component found on " + name + " when UpdateLinkedTransform was set to true! Disabling UpdateLinkedTransform.");

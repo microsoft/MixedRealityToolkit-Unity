@@ -136,12 +136,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handedness: 0
-  trackedObjectToReference: 3
+  trackedTargetType: 2
+  trackedHandness: 3
   trackedHandJoint: 2
+  transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0.1}
-  additionalRotation: {x: 0, y: 20, z: 0}
-  transformTarget: {fileID: 0}
+  additionalRotation: {x: 0, y: -20, z: 0}
   updateSolvers: 1
 --- !u!114 &4650336336052702773
 MonoBehaviour:

@@ -10,20 +10,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         Head = 0,
         /// <summary>
-        /// Calculates position and orientation from the left motion-tracked controller.
+        /// Calculates position and orientation from the motion-tracked controller.
         /// </summary>
-        MotionControllerLeft,
+        MotionController,
         /// <summary>
-        /// Calculates position and orientation from the right motion-tracked controller.
+        /// Calculates position and orientation from a tracked hand joint
         /// </summary>
-        MotionControllerRight,
+        HandJoint,
         /// <summary>
-        /// Calculates position and orientation from a tracked hand joint on the left hand.
+        /// Calculates position and orientation from a tracked hand joint
         /// </summary>
-        HandJointLeft,
-        /// <summary>
-        /// Calculates position and orientation from a tracked hand joint on the right hand.
-        /// </summary>
-        HandJointRight
+        CustomOverride,
     }
 }
