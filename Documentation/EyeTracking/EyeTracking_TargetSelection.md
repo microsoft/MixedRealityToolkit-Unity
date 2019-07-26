@@ -108,8 +108,7 @@ The required action to trigger the event is defined by `eventData.MixedRealityIn
 ### Eye-gaze-specific BaseEyeFocusHandler
 
 Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus input if it is _eye gaze_ and it is currently the primary input pointer.
-For this purpose, you would use the _BaseEyeFocusHandler_ which is specific to eye tracking and which derives from 
-the _FocusHandler_.
+For this purpose, you would use the [`BaseEyeFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.BaseEyeFocusHandler) which is specific to eye tracking and which derives from the [`BaseFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.BaseFocusHandler).
 As mentioned before, it will only trigger if eye gaze targeting is currently the primary pointer input (i.e., no hand ray is active). For more information, see [How to support eye gaze + hand gestures](EyeTracking_EyesAndHands.md).
 
 Here is an example from [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
@@ -118,7 +117,7 @@ In this demo, there are two 3D holograms that will turn depending on which part 
 If the user looks at the left side of the hologram, then that part will slowly move towards the front facing the user.
 If the right side is looked at, then that part will slowly move to the front. 
 This is a behavior that you may not want to have active at all times and also something that you may not want to accidentally trigger by a hand ray or head gaze. 
-Having the [OnLookAtRotateByEyeGaze.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotateByEyeGaze)
+Having the [`OnLookAtRotateByEyeGaze`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotateByEyeGaze)
 attached, a GameObject will rotate while being looked at.
 
 ```csharp
@@ -148,29 +147,13 @@ attached, a GameObject will rotate while being looked at.
     }
 ```
 
-The _BaseEyeFocusHandler_ provides more than only _OnEyeFocusStay_. Here is an overview of other events: 
+Check the API documentation for a complete list of available events of the [`BaseEyeFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.BaseEyeFocusHandler):
 
-```csharp 
-        /// <summary>
-        /// Triggered once the eye gaze ray *starts* intersecting with this target's collider.
-        /// </summary>
-        protected virtual void OnEyeFocusStart() { }
-
-        /// <summary>
-        /// Triggered *while* the eye gaze ray is intersecting with this target's collider.
-        /// </summary>
-        protected virtual void OnEyeFocusStay() { }
-
-        /// <summary>
-        /// Triggered once the eye gaze ray *stops* intersecting with this target's collider.
-        /// </summary>
-        protected virtual void OnEyeFocusStop() { }
-
-        /// <summary>
-        /// Triggered once the eye gaze ray has intersected with this target's collider for a specified amount of time.
-        /// </summary>
-        protected virtual void OnEyeFocusDwell() { }
-```
+    - **OnEyeFocusStart:** Triggered once the eye gaze ray *starts* intersecting with this target's collider.
+    - **OnEyeFocusStay:** Triggered *while* the eye gaze ray is intersecting with this target's collider.
+    - **OnEyeFocusStop:** Triggered once the eye gaze ray *stops* intersecting with this target's collider.
+    - **OnEyeFocusDwell:** Triggered once the eye gaze ray has intersected with this target's collider for a specified amount of time.
+    
 
 ## 2. Independent eye-gaze-specific EyeTrackingTarget
 
@@ -184,7 +167,9 @@ This has three _advantages_:
 
 There are also some _disadvantages:_
 
+- More effort to handle separate inputs individually.
 - No elegant degradation: It only supports eye targeting. If eye tracking is not working, you require some additional fallback.
+ 
 
 Similar to the _BaseFocusHandler_, the _EyeTrackingTarget_ comes ready with several eye-gaze-specific Unity events that you can conveniently listen to either via the Unity Editor (see example below) or by using _AddListener()_ in code:
 
@@ -202,18 +187,22 @@ In [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/Mixed
 you can find an example for _'smart attentive notifications'_ that react to your eye gaze. 
 These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility. While the user is reading the notification, the information keeps getting displayed crisp and clear. After reading it and looking away from the notification, the notification will automatically be dismissed and fades out. To achieve all this, there are a few generic behavior scripts that are not specific to eye tracking at all, such as:
 
-- [FaceUser.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FaceUser)
-- [ChangeSize.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeSize)
-- [BlendOut.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.BlendOut)
+- [`FaceUser`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FaceUser)
+- [`ChangeSize`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeSize)
+- [`BlendOut`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.BlendOut)
 
-The advantage of this approach is that the same scripts can be reused by various events. For example, a hologram may start facing the user based on a voice commands or after pressing a virtual button. To trigger these events, you can simply reference the methods that should be executed in the [`EyeTrackingTarget`](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script that is attached to your GameObject. For the example of the _'smart attentive notifications'_, the following happens:
+The advantage of this approach is that the same scripts can be reused by various events. For example, a hologram may start facing the user based on a voice commands or after pressing a virtual button. To trigger these events, you can simply reference the methods that should be executed in the [`EyeTrackingTarget`](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script that is attached to your GameObject. 
+
+For the example of the _'smart attentive notifications'_, the following happens:
 
 - **OnLookAtStart()**: The notification starts to...
     - *FaceUser.Engage:* ... turn toward the user.
     - *ChangeSize.Engage:* ... increase in size _(up to a specified maximum scale)_.
     - *BlendOut.Engage:* ... starts to blend in more _(after being at a more subtle idle state)_.  
 
+
 - **OnDwell()**: Informs the _BlendOut_ script that the notification has been looked at sufficiently.
+
 
 - **OnLookAway()**: The notification starts to...
     - *FaceUser.Disengage:* ... turn back to its original orientation.
@@ -261,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 }
 ```
 
-2. Add the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script to your target GameObject and reference the _RotateTarget()_ function in the UnityEvent trigger as shown the screenshot below:
+2. Add the [`EyeTrackingTarget`](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script to your target GameObject and reference the _RotateTarget()_ function in the UnityEvent trigger as shown the screenshot below:
 
 ![EyeTrackingTarget sample](../Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg)
 
