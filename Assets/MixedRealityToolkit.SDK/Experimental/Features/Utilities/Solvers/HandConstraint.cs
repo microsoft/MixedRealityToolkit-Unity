@@ -42,11 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
         [Header("Hand Constraint")]
         [SerializeField]
-        [Tooltip("Which part of the hand to move the solver towards.")]
+        [Tooltip("Which part of the hand to move the solver towards. The ulnar side of the hand is recommended for most situations.")]
         private SolverSafeZone safeZone = SolverSafeZone.UlnarSide;
 
         /// <summary>
-        /// Which part of the hand to move the tracked object towards.
+        /// Which part of the hand to move the tracked object towards. The ulnar side of the hand is recommended for most situations.
         /// </summary>
         public SolverSafeZone SafeZone
         {
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Additional offset to apply to the intersection point with the hand bounds along the intersection point normal.")]
-        private float safeZoneBuffer = 0.1f;
+        private float safeZoneBuffer = 0.15f;
 
         /// <summary>
         /// Additional offset to apply to the intersection point with the hand bounds.
@@ -65,19 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         {
             get { return safeZoneBuffer; }
             set { safeZoneBuffer = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Should the solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.")]
-        private bool autoTransitionBetweenHands = true;
-
-        /// <summary>
-        /// Should the solver automatically switch to tracking the primary hand? The primary hand is the hand in view the longest or last active.
-        /// </summary>
-        public bool AutoTransitionBetweenHands
-        {
-            get { return autoTransitionBetweenHands; }
-            set { autoTransitionBetweenHands = value; }
         }
 
         [SerializeField]
@@ -194,6 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         protected IMixedRealityHand trackedHand = null;
         protected List<IMixedRealityHand> handStack = new List<IMixedRealityHand>();
         protected HandBounds handBounds = null;
+        protected bool autoTransitionBetweenHands = false;
 
         private IMixedRealityInputSystem inputSystem = null;
         private readonly Quaternion handToWorldRotation = Quaternion.Euler(-90.0f, 0.0f, 180.0f);
@@ -497,6 +485,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         }
 
         #region MonoBehaviour Implementation
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            // Auto transition between hands if the solver is set to track either hand.
+            autoTransitionBetweenHands = SolverHandler.TrackedHandness == Handedness.Both || 
+                                         SolverHandler.TrackedHandness == Handedness.Other;
+        }
 
         protected override void OnEnable()
         {
