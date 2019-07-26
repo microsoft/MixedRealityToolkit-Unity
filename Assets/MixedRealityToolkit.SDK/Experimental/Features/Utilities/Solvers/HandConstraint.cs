@@ -178,8 +178,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             set { onLastHandLost = value; }
         }
 
-        protected IMixedRealityHand trackedHand = null;
-        protected List<IMixedRealityHand> handStack = new List<IMixedRealityHand>();
+        protected IMixedRealityController trackedHand = null;
+        protected List<IMixedRealityController> handStack = new List<IMixedRealityController>();
         protected HandBounds handBounds = null;
         protected bool autoTransitionBetweenHands = false;
 
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         public override void SolverUpdate()
         {
             // Determine the new active hand.
-            IMixedRealityHand newActivehand = null;
+            IMixedRealityController newActivehand = null;
 
             foreach (var hand in handStack)
             {
@@ -243,13 +243,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         /// </summary>
         /// <param name="hand">The hand to check against.</param>
         /// <returns>True if this hand should be used from tracking.</returns>
-        protected virtual bool IsHandActive(IMixedRealityHand hand)
+        protected virtual bool IsHandActive(IMixedRealityController hand)
         {
             // If transitioning between hands is not allowed, make sure the TrackedObjectType matches the hand.
             if (!autoTransitionBetweenHands)
             {
-                return SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint &&
-                    (SolverHandler.TrackedHandness == Handedness.Both || hand.ControllerHandedness == SolverHandler.TrackedHandness);
+                return (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint || 
+                        SolverHandler.TrackedTargetType == TrackedObjectType.MotionController)  &&
+                       (SolverHandler.TrackedHandness == Handedness.Both || 
+                        hand.ControllerHandedness == SolverHandler.TrackedHandness);
             }
 
             // Check to make sure none of the hand's pointer's a locked. We don't want to track a hand which is currently
@@ -367,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         /// </summary>
         /// <param name="hand">The hand to check against.</param>
         /// <returns>True, when hands are near each other.</returns>
-        protected virtual bool IsOppositeHandNear(IMixedRealityHand hand)
+        protected virtual bool IsOppositeHandNear(IMixedRealityController hand)
         {
             if (hand != null)
             {
@@ -394,11 +396,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         /// Swaps out the currently tracked hand while triggered appropriate events.
         /// </summary>
         /// <param name="hand">Which hand to track now.</param>
-        private void ChangeTrackedObjectType(IMixedRealityHand hand)
+        private void ChangeTrackedObjectType(IMixedRealityController hand)
         {
             if (hand != null)
             {
-                if (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint)
+                if (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint || 
+                    SolverHandler.TrackedTargetType == TrackedObjectType.MotionController)
                 {
                     if (SolverHandler.TrackedHandness != hand.ControllerHandedness)
                     {
@@ -425,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                 }
                 else
                 {
-                    Debug.LogWarning("Failed because TrackedTargetType is not of type HandJoint.");
+                    Debug.LogWarning("ChangeTrackedObjectType failed because TrackedTargetType is not of type HandJoint or MotionController.");
                 }
             }
             else
@@ -491,8 +494,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             base.Awake();
 
             // Auto transition between hands if the solver is set to track either hand.
-            autoTransitionBetweenHands = SolverHandler.TrackedHandness == Handedness.Both || 
-                                         SolverHandler.TrackedHandness == Handedness.Other;
+            autoTransitionBetweenHands = SolverHandler.TrackedHandness == Handedness.Both;
         }
 
         protected override void OnEnable()
@@ -520,7 +522,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         /// <inheritdoc />
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            var hand = eventData.Controller as IMixedRealityHand;
+            var hand = eventData.Controller;
 
             if (hand != null && !handStack.Contains(hand))
             {
@@ -536,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            var hand = eventData.Controller as IMixedRealityHand;
+            var hand = eventData.Controller;
 
             if (hand != null)
             {

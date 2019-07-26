@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         /// </summary>
         /// <param name="hand">The hand to check against.</param>
         /// <returns>True if this hand should be used from tracking.</returns>
-        protected override bool IsHandActive(IMixedRealityHand hand)
+        protected override bool IsHandActive(IMixedRealityController hand)
         {
             if (!base.IsHandActive(hand))
             {
@@ -69,25 +69,34 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
             MixedRealityPose palmPose;
 
-            if (hand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
+            var jointedHand = hand as IMixedRealityHand;
+
+            if (jointedHand != null)
             {
-                if (requireFlatHand)
+                if (jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
                 {
-                    // Check if the triangle's normal formed from the palm, to index, to ring finger tip roughly matches the palm normal.
-                    MixedRealityPose indexTipPose, ringTipPose;
-
-                    if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out indexTipPose) &&
-                        hand.TryGetJoint(TrackedHandJoint.RingTip, out ringTipPose))
+                    if (requireFlatHand)
                     {
-                        var handNormal = Vector3.Cross(indexTipPose.Position - palmPose.Position, 
-                                                       ringTipPose.Position - indexTipPose.Position).normalized;
-                        handNormal *= (hand.ControllerHandedness == Handedness.Right) ? 1.0f : -1.0f;
+                        // Check if the triangle's normal formed from the palm, to index, to ring finger tip roughly matches the palm normal.
+                        MixedRealityPose indexTipPose, ringTipPose;
 
-                        if (Vector3.Angle(palmPose.Up, handNormal) > flatHandThreshold)
+                        if (jointedHand.TryGetJoint(TrackedHandJoint.IndexTip, out indexTipPose) &&
+                            jointedHand.TryGetJoint(TrackedHandJoint.RingTip, out ringTipPose))
                         {
-                            return false;
+                            var handNormal = Vector3.Cross(indexTipPose.Position - palmPose.Position,
+                                                           ringTipPose.Position - indexTipPose.Position).normalized;
+                            handNormal *= (jointedHand.ControllerHandedness == Handedness.Right) ? 1.0f : -1.0f;
+
+                            if (Vector3.Angle(palmPose.Up, handNormal) > flatHandThreshold)
+                            {
+                                return false;
+                            }
                         }
                     }
+                }
+                else
+                {
+                    Debug.LogError("HandConstraintPalmUp requires controllers of type IMixedRealityHand to perform hand activation tests.");
                 }
 
                 return Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward) < facingThreshold;
