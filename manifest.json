@@ -1026,6 +1026,39 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Base.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Base.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Checkbox.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Checkbox.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Cube.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Cube.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Button/MRTK_Button_Custom1.png",
       "output": {
         "resource": {
@@ -1052,6 +1085,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Button/MRTK_Button_Custom3.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_HoloLens1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_HoloLens1.png"
         }
       },
       "is_incremental": false,
@@ -1125,6 +1169,94 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2BarH.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2BarH.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2BarV.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2BarV.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2Circular.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2Circular.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2Unplated.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2Unplated.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2_32x96.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2_32x96.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Radial.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Radial.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Round.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Round.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Button/MRTK_Button_SeeItSayIt.png",
       "output": {
         "resource": {
@@ -1173,6 +1305,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Button/MRTK_Button_Structure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_ToggleSwitch.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_ToggleSwitch.png"
         }
       },
       "is_incremental": false,
@@ -4913,7 +5056,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Button.html",
-          "hash": "qldISsRBLRisasRQrle35A=="
+          "hash": "W5IeyUWzV1c6vbItv5QxnA=="
         }
       },
       "is_incremental": false,
@@ -6472,7 +6615,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI.Styles.html",
-          "hash": "XemOeUEVAo5S9ZNioHT7Hg=="
+          "hash": "l9414/KHhBFBl8zMyqd4WQ=="
         }
       },
       "is_incremental": false,
@@ -6484,7 +6627,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI.html",
-          "hash": "/skcQFRf7Mv8mxy8aQsrIA=="
+          "hash": "jSi1RXoxtkVL5bCMc9BlRQ=="
         }
       },
       "is_incremental": false,
@@ -18056,10 +18199,11 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ConceptualDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 117,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
@@ -18068,16 +18212,15 @@
           "total_file_count": 1057,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 117,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
