@@ -98,6 +98,18 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 IsBuilding = false;
                 return false;
             }
+            
+            if (string.IsNullOrWhiteSpace(buildInfo.Configuration))
+            {
+                Debug.LogWarning("!!! buildInfo.Configuration is null or whitespace. Using 'master'");
+                buildInfo.Configuration = "master";
+            }
+
+            if (string.IsNullOrWhiteSpace(buildInfo.BuildPlatform))
+            {
+                Debug.LogWarning("!!! buildInfo.BuildPlatform is null or whitespace. Using 'x86'");
+                buildInfo.BuildPlatform = "x86";
+            }
 
             // Now that NuGet packages have been restored, we can run the actual build process.
             exitCode = await Run(msBuildPath, 
