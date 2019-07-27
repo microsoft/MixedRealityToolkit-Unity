@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [Tooltip("Manual override for FacedObjectToReference if you want to use a scene object. Leave empty if you want to use head, motion-tracked controllers, or motion-tracked hands.")]
         private Transform faceTarget;
 
-        private Transform FaceTarget
+        public Transform FaceTarget
         {
             get { return faceTarget; }
             set
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             UpdateWorkingRotationToGoal();
         }
 
-        private void TrackNewFaceTarget()
+        public void TrackNewFaceTarget()
         {
             transformTarget = SolverHandler.TransformTarget;
 
