@@ -8,10 +8,14 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
+#if WINDOWS_UWP
+using Windows.Graphics.Holographic;
+#endif // WINDOWS_UWP
+
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
     /// <summary>
-    /// Camera settings provider for use with the Unity AR Foundation system.
+    /// Camera settings provider for use with Windows Mixed Reality.
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityCameraSystem),
@@ -35,6 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
         #region IMixedRealityCameraSettings
 
+        private WindowsMixedRealityCameraSettingsProfile Profile => ConfigurationProfile as WindowsMixedRealityCameraSettingsProfile;
+
         /// <inheritdoc/>
         public override bool IsOpaque =>
 #if UNITY_WSA
@@ -42,6 +48,25 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 #else
             false;
 #endif
+
+#if WINDOWS_UWP
+        public override void ApplyConfiguration()
+        {
+            base.ApplyConfiguration();
+
+            if (Profile != null &&
+                Profile.RenderFromPVCameraForMixedRealityCapture &&
+                global::Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.Graphics.Holographic.HolographicDisplay", "TryGetViewConfiguration"))
+            {
+                // If the default display has configuration for a PhotoVideoCamera, we want to enable it
+                HolographicViewConfiguration viewConfiguration = HolographicDisplay.GetDefault()?.TryGetViewConfiguration(HolographicViewConfigurationKind.PhotoVideoCamera);
+                if (viewConfiguration != null)
+                {
+                    viewConfiguration.IsEnabled = true;
+                }
+            }
+        }
+#endif // WINDOWS_UWP
 
         #endregion IMixedRealityCameraSettings
     }
