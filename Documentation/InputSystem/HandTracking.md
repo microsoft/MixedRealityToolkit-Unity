@@ -168,7 +168,9 @@ public class MyHandMeshEventHandler : IMixedRealityHandMeshHandler
 
 There is currently a known issue with Master builds using the .NET backend. In .NET Native, `IInspectable` pointers cannot be marshaled from native to managed code using `Marshal.GetObjectForIUnknown`. The MRTK uses this to obtain the `SpatialCoordinateSystem` in order to recieve hand and eye data from the platform.
 
-We've provided DLL source as a workaround for this issue, in [the native Mixed Reality Toolkit repo](https://github.com/microsoft/MixedRealityToolkit/tree/master/DotNetNativeWorkaround). Please follow the instructions in the README there and copy the resulting binaries into a Plugins folder in your Unity assets. After that, the WindowsMixedRealityUtilities script provided in the MRTK will resolve the workaround for you.
+We've provided DLL source as a workaround for this issue, in [the native Mixed Reality Toolkit repo](https://github.com/microsoft/MixedRealityToolkit/tree/master/DotNetNativeWorkaround).
+Please follow the instructions in the README there and copy the resulting binaries into a Plugins folder in your Unity assets.
+After that, the WindowsMixedRealityUtilities script provided in the MRTK will resolve the workaround for you.
 
 If you want to create your own DLL or include this workaround in an existing one, the core of the workaround is:
 
