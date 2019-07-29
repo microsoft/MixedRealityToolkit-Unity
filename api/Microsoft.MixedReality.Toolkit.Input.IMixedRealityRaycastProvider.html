@@ -140,6 +140,60 @@ GameObject may use a different mechanism for raycasting, and with a custom imple
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityRaycastProvider_GraphicsRaycast_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityRaycastProvider.GraphicsRaycast*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityRaycastProvider_GraphicsRaycast_EventSystem_PointerEventData_LayerMask___" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityRaycastProvider.GraphicsRaycast(EventSystem,PointerEventData,LayerMask[])">GraphicsRaycast(EventSystem, PointerEventData, LayerMask[])</h4>
+  <div class="markdown level1 summary"><p>Performs a graphics raycast against the specified layerMasks.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">RaycastResult GraphicsRaycast(EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">EventSystem</span></td>
+        <td><span class="parametername">eventSystem</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">PointerEventData</span></td>
+        <td><span class="parametername">pointerEventData</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">LayerMask</span>[]</td>
+        <td><span class="parametername">layerMasks</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">RaycastResult</span></td>
+        <td><p>The RaycastResult of the raycast.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityRaycastProvider_Raycast_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityRaycastProvider.Raycast*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityRaycastProvider_Raycast_RayStep_LayerMask___Microsoft_MixedReality_Toolkit_Input_MixedRealityRaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityRaycastProvider.Raycast(RayStep,LayerMask[],Microsoft.MixedReality.Toolkit.Input.MixedRealityRaycastHit@)">Raycast(RayStep, LayerMask[], out MixedRealityRaycastHit)</h4>
   <div class="markdown level1 summary"><p>Performs a raycast using the specified <a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.RayStep.html">RayStep</a>.</p>
