@@ -241,6 +241,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Quaternion startObjectRotationFlatCameraSpace;
         private Quaternion hostWorldRotationOnManipulationStart;
 
+        private TransformScaleHandler scaleHandler;
+
         #endregion
 
         #region MonoBehaviour Functions
@@ -257,6 +259,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 hostTransform = transform;
             }
+
+            scaleHandler = this.GetComponent<TransformScaleHandler>();
         }
         #endregion MonoBehaviour Functions
 
@@ -595,6 +599,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             hostTransform.position = Vector3.Lerp(hostTransform.position, targetPosition, lerpAmount);
             // Currently the two hand rotation algorithm doesn't allow for lerping, but it should. Fix this.
             hostTransform.rotation = Quaternion.Lerp(hostTransform.rotation, targetRotationTwoHands, lerpAmount);
+
+            if (scaleHandler != null)
+            {
+                targetScale = scaleHandler.ClampScale(targetScale);
+            }
             hostTransform.localScale = Vector3.Lerp(hostTransform.localScale, targetScale, lerpAmount);
         }
 

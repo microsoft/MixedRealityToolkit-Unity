@@ -732,6 +732,73 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 TestUtilities.AssertAboutEqual(expectedData[i].scale, actualData[i].scale, $"Failed for scale of object for {actualData[i].manipDescription}");
             }
         }
+		
+		/// <summary>
+        /// This tests the minimum and maximum scaling for manipulation.
+        /// This test will scale a cube with two hand manipulation and ensure that
+        /// maximum and minimum scales are not exceeded.
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerMinMaxScale()
+        {
+            float initialScale =  0.2f;
+            float minScale = 0.5f;
+            float maxScale = 2f;
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * initialScale;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = initialObjectPosition;
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneAndTwoHanded;
+
+            var scaleHandler = testObject.EnsureComponent<TransformScaleHandler>();
+            scaleHandler.ScaleMinimum = minScale;
+            scaleHandler.ScaleMaximum = maxScale;
+
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
+            testObject.AddComponent<NearInteractionGrabbable>();
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            const int numHandSteps = 1;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            Vector3 leftGrabPosition = new Vector3(-0.1f, -0.1f, 1f); // grab the bottom left corner of the cube 
+            Vector3 rightGrabPosition = new Vector3(0.1f, -0.1f, 1f); // grab the bottom right corner of the cube 
+            TestHand leftHand = new TestHand(Handedness.Left);
+            TestHand rightHand = new TestHand(Handedness.Right);
+
+            // Hands grab object at initial positions
+            yield return leftHand.Show(initialHandPosition);
+            yield return leftHand.MoveTo(leftGrabPosition, numHandSteps);
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            yield return rightHand.Show(initialHandPosition);
+            yield return rightHand.MoveTo(rightGrabPosition, numHandSteps);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // No change to scale yet
+            Assert.AreEqual(Vector3.one * initialScale, testObject.transform.localScale);
+
+            // Move hands beyond max scale limit
+            yield return leftHand.MoveTo(new Vector3(-scaleHandler.ScaleMaximum, 0, 0) + leftGrabPosition, numHandSteps);
+            yield return rightHand.MoveTo(new Vector3(scaleHandler.ScaleMaximum, 0, 0) + rightGrabPosition, numHandSteps);
+
+            // Assert scale at max
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMaximum, testObject.transform.localScale);
+
+            // Move hands beyond min scale limit
+            yield return leftHand.MoveTo(new Vector3(scaleHandler.ScaleMinimum, 0, 0) + leftGrabPosition, numHandSteps);
+            yield return rightHand.MoveTo(new Vector3(-scaleHandler.ScaleMinimum, 0, 0) + rightGrabPosition, numHandSteps);
+
+            // Assert scale at min
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, testObject.transform.localScale);
+        }
     }
 }
 #endif
