@@ -59,10 +59,26 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         /// </summary>
         private WindowsMicrophoneStream micStream = null;
 
+#if UNITY_EDITOR
+        private Color defaultMaterialColor = Color.black;
+        private int defaultWireThickness = 0;
+#endif // UNITY_EDITOR
+
+
         private void Awake()
         {
             // We do not wish to play the ambient room sound from the audio source.
             gameObject.GetComponent<AudioSource>().volume = 0.0f;
+
+            if (VisibleMaterial != null)
+            {
+#if UNITY_EDITOR
+                defaultMaterialColor = VisibleMaterial.GetColor("_WireColor");
+                defaultWireThickness = VisibleMaterial.GetInt("_WireThickness");
+#endif // UNITY_EDITOR
+
+                VisibleMaterial.SetColor("_WireColor", Color.blue);
+            }
 
             micStream = new WindowsMicrophoneStream();
             micStream.Gain = 1.0f;
@@ -95,6 +111,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             // Uninitialize the microphone stream.
             micStream.Uninitialize();
             micStream = null;
+
+#if UNITY_EDITOR
+            if (VisibleMaterial != null)
+            {
+                VisibleMaterial.SetColor("_WireColor", defaultMaterialColor);
+                VisibleMaterial.SetInt("_WireThickness", defaultWireThickness);
+            }
+#endif // UNITY_EDITOR
         }
 
         private void OnDisable()
@@ -117,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             }
         }
 
-        private static int maxWireThickness = 700;
+        private static int maxWireThickness = 750;
 
         private void Update()
         {
@@ -125,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
 
             if (VisibleMaterial != null)
             {
-                // todo: this modifies the shader in the editor.... consider a different approach (ex: make a copy in the observer)
+                // Artificially increase the amplitude to make the visible effect more pronounced.
                 int wireThickness = (int)(averageAmplitude * 10 * maxWireThickness);
                 wireThickness = Mathf.Clamp(wireThickness, 0, maxWireThickness);
                 VisibleMaterial.SetInt("_WireThickness", wireThickness);
