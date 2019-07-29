@@ -1220,7 +1220,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             graphicEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
 
             // Graphics raycast
-            uiRaycastResult = EventSystem.current.Raycast(graphicEventData, prioritizedLayerMasks);
+            uiRaycastResult = InputSystem.RaycastProvider.GraphicsRaycast(EventSystem.current, graphicEventData, prioritizedLayerMasks);
             graphicEventData.pointerCurrentRaycast = uiRaycastResult;
 
             return (uiRaycastCamera.gameObject != null);

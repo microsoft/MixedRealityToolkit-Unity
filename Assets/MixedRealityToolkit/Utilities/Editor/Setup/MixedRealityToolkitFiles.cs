@@ -43,13 +43,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 foreach (string asset in importedAssets.Concat(movedAssets))
                 {
-                    string folder = asset.Replace("Assets", Application.dataPath);
+                    string folder = ResolveFullAssetsPath(asset);
                     TryRegisterModuleFolder(folder);
                 }
 
                 foreach (string asset in deletedAssets.Concat(movedFromAssetPaths))
                 {
-                    string folder = asset.Replace("Assets", Application.dataPath);
+                    string folder = ResolveFullAssetsPath(asset);
                     TryUnregisterModuleFolder(folder);
                 }
             }
@@ -58,6 +58,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private readonly static Dictionary<MixedRealityToolkitModuleType, HashSet<string>> mrtkFolders =
             new Dictionary<MixedRealityToolkitModuleType, HashSet<string>>();
         private readonly static Task searchForFoldersTask;
+
+        /// <summary>
+        /// Resolves the given asset to its full path if and only if the asset belongs to the
+        /// Assets folder (i.e. it is prefixed with "Assets/..."
+        /// </summary>
+        /// <remarks>
+        /// If not associated with the Assets folder, will return the path unchanged.
+        /// </remarks>
+        private static string ResolveFullAssetsPath(string path)
+        {
+            if (path.StartsWith("Assets"))
+            {
+                // asset.Substring(6) represents the characters after the "Assets" string.
+                return Application.dataPath + path.Substring(6);
+            }
+            return path;
+        }
 
         /// <summary>
         /// Returns a collection of MRTK directories found in the project.

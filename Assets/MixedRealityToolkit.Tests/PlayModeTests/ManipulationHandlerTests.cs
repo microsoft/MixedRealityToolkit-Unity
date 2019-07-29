@@ -18,6 +18,7 @@ using UnityEngine.TestTools;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -337,7 +338,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
                 // save relative pos grab point to object
-                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(pointer.Position);
+                Vector3 initialOffsetGrabToObjPivot = pointer.Position - testObject.transform.position;
+                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(manipHandler.GetPointerGrabPoint(pointer.PointerId));
 
                 // full circle
                 const int degreeStep = 360 / numCircleSteps;
@@ -345,7 +347,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 // rotating the pointer in a circle around "the user" 
                 for (int i = 1; i <= numCircleSteps; ++i)
                 {
-
                     // rotate main camera (user)
                     MixedRealityPlayspace.PerformTransformation(
                     p =>
@@ -361,10 +362,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     Vector3 newHandPosition = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialGrabPosition;
                     yield return hand.MoveTo(newHandPosition, numHandSteps);
 
-                    // make sure that the offset between grab point and object pivot hasn't changed while rotating
-                    Vector3 grabPoint = pointer.Position;
-                    Vector3 cornerRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
-                    TestUtilities.AssertAboutEqual(cornerRotated, grabPoint, "Grab point on object changed during rotation");
+                    if (type == ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter)
+                    {
+                        // make sure that the offset between hand and object centre hasn't changed while rotating
+                        Vector3 offsetRotated = pointer.Position - testObject.transform.position;
+                        TestUtilities.AssertAboutEqual(offsetRotated, initialOffsetGrabToObjPivot, $"Object offset changed during rotation using {type}");
+                    }
+                    else
+                    {
+                        // make sure that the offset between grab point and object pivot hasn't changed while rotating
+                        Vector3 grabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
+                        Vector3 cornerRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
+                        TestUtilities.AssertAboutEqual(cornerRotated, grabPoint, $"Grab point on object changed during rotation using {type}");
+                    }
                 }
 
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
@@ -563,6 +573,231 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return hand.Hide();
+        }
+
+        private class OriginOffsetTest
+        {
+            const int numSteps = 1;
+
+            public struct TestData
+            {
+                // transform data
+                public MixedRealityPose pose;
+                public Vector3 scale;
+
+                // used to print where error occurred
+                public string manipDescription;
+            }
+
+            public List<TestData> data = new List<TestData>();
+
+            /// <summary>
+            /// Manipulates the given testObject in a number of ways and records the output here
+            /// </summary>
+            /// <param name="testObject">An unrotated primitive cube at (0, 0, 1) with scale (0.2, 0.2, 0,2)</param>
+            public IEnumerator RecordTransformValues(GameObject testObject)
+            {
+                TestUtilities.PlayspaceToOriginLookingForward();
+
+                float testRotation = 45;
+                Quaternion testQuaternion = Quaternion.Euler(testRotation, testRotation, testRotation);
+
+                Vector3 leftHandNearPos = new Vector3(-0.1f, 0, 1);
+                Vector3 rightHandNearPos = new Vector3(0.1f, 0, 1);
+                Vector3 leftHandFarPos = new Vector3(-0.06f, -0.1f, 0.5f);
+                Vector3 rightHandFarPos = new Vector3(0.06f, -0.1f, 0.5f);
+                TestHand leftHand = new TestHand(Handedness.Left);
+                TestHand rightHand = new TestHand(Handedness.Right);
+
+                // One hand rotate near
+                yield return rightHand.MoveTo(rightHandNearPos, numSteps);
+                yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+                yield return rightHand.SetRotation(testQuaternion, numSteps);
+                RecordTransform(testObject.transform, "one hand rotate near");
+
+                // Two hand rotate/scale near
+                yield return rightHand.SetRotation(Quaternion.identity, numSteps);
+                yield return leftHand.MoveTo(leftHandNearPos, numSteps);
+                yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+                yield return rightHand.Move(new Vector3(0.2f, 0.2f, 0), numSteps);
+                yield return leftHand.Move(new Vector3(-0.2f, -0.2f, 0), numSteps);
+                RecordTransform(testObject.transform, "two hand rotate/scale near");
+
+                // Two hand rotate/scale far
+                yield return rightHand.MoveTo(rightHandNearPos, numSteps);
+                yield return leftHand.MoveTo(leftHandNearPos, numSteps);
+                yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+                yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+                yield return rightHand.MoveTo(rightHandFarPos, numSteps);
+                yield return leftHand.MoveTo(leftHandFarPos, numSteps);
+                yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+                yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+                yield return rightHand.Move(new Vector3(0.2f, 0.2f, 0), numSteps);
+                yield return leftHand.Move(new Vector3(-0.2f, -0.2f, 0), numSteps);
+                RecordTransform(testObject.transform, "two hand rotate/scale far");
+
+                // One hand rotate near
+                yield return rightHand.MoveTo(rightHandFarPos, numSteps);
+                yield return leftHand.MoveTo(leftHandFarPos, numSteps);
+                yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+                yield return leftHand.Hide();
+
+                MixedRealityPlayspace.PerformTransformation(
+                p =>
+                {
+                    p.position = MixedRealityPlayspace.Position;
+                    Vector3 rotatedFwd = Quaternion.AngleAxis(testRotation, Vector3.up) * Vector3.forward;
+                    p.LookAt(rotatedFwd);
+                });
+                yield return null;
+                
+                Vector3 newHandPosition = Quaternion.AngleAxis(testRotation, Vector3.up) * rightHandFarPos;
+                yield return rightHand.MoveTo(newHandPosition, numSteps);
+                RecordTransform(testObject.transform, "one hand rotate far");
+
+                yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+                yield return rightHand.Hide();
+            }
+
+            private void RecordTransform(Transform transform, string description)
+            {
+                data.Add(new TestData
+                {
+                    pose = new MixedRealityPose(transform.position, transform.rotation),
+                    scale = transform.localScale,
+                    manipDescription = description
+                });
+            }
+        }
+
+        /// <summary>
+        /// This test records the poses and scales of an object after various forms of manipulation,
+        /// once when the object origin is at the mesh centre and again when the origin is offset from the mesh.
+        /// The test then compares these poses and scales in order to ensure that they are about equal. 
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerOriginOffset()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneAndTwoHanded;
+
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
+            testObject.AddComponent<NearInteractionGrabbable>();
+
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = Vector3.forward;
+
+            // Collect data for unmodified cube
+            OriginOffsetTest expectedTest = new OriginOffsetTest();
+            yield return expectedTest.RecordTransformValues(testObject);
+
+            // Modify cube mesh so origin is offset from centre
+            Vector3 offset = Vector3.one * 5;
+
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.rotation = Quaternion.identity;
+            var mesh = testObject.GetComponent<MeshFilter>().mesh;
+            var vertices = mesh.vertices;
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i] += offset;
+            }
+            mesh.vertices = vertices;
+            mesh.RecalculateNormals();
+            testObject.GetComponent<BoxCollider>().center = offset;
+
+            testObject.transform.position = Vector3.forward - testObject.transform.TransformVector(offset);
+
+            // Collect data for modified cube
+            OriginOffsetTest actualTest = new OriginOffsetTest();
+            yield return actualTest.RecordTransformValues(testObject);
+
+            // Test that the results of both tests are equal
+            var expectedData = expectedTest.data;
+            var actualData = actualTest.data;
+            Assert.AreEqual(expectedData.Count, actualData.Count);
+
+            for (int i = 0; i < expectedData.Count; i++)
+            {
+                Vector3 transformedOffset = actualData[i].pose.Rotation * Vector3.Scale(offset, actualData[i].scale);
+                TestUtilities.AssertAboutEqual(expectedData[i].pose.Position, actualData[i].pose.Position + transformedOffset, $"Failed for position of object for {actualData[i].manipDescription}");
+                TestUtilities.AssertAboutEqual(expectedData[i].pose.Rotation, actualData[i].pose.Rotation, $"Failed for rotation of object for {actualData[i].manipDescription}");
+                TestUtilities.AssertAboutEqual(expectedData[i].scale, actualData[i].scale, $"Failed for scale of object for {actualData[i].manipDescription}");
+            }
+        }
+		
+		/// <summary>
+        /// This tests the minimum and maximum scaling for manipulation.
+        /// This test will scale a cube with two hand manipulation and ensure that
+        /// maximum and minimum scales are not exceeded.
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerMinMaxScale()
+        {
+            float initialScale =  0.2f;
+            float minScale = 0.5f;
+            float maxScale = 2f;
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * initialScale;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = initialObjectPosition;
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneAndTwoHanded;
+
+            var scaleHandler = testObject.EnsureComponent<TransformScaleHandler>();
+            scaleHandler.ScaleMinimum = minScale;
+            scaleHandler.ScaleMaximum = maxScale;
+
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
+            testObject.AddComponent<NearInteractionGrabbable>();
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            const int numHandSteps = 1;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            Vector3 leftGrabPosition = new Vector3(-0.1f, -0.1f, 1f); // grab the bottom left corner of the cube 
+            Vector3 rightGrabPosition = new Vector3(0.1f, -0.1f, 1f); // grab the bottom right corner of the cube 
+            TestHand leftHand = new TestHand(Handedness.Left);
+            TestHand rightHand = new TestHand(Handedness.Right);
+
+            // Hands grab object at initial positions
+            yield return leftHand.Show(initialHandPosition);
+            yield return leftHand.MoveTo(leftGrabPosition, numHandSteps);
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            yield return rightHand.Show(initialHandPosition);
+            yield return rightHand.MoveTo(rightGrabPosition, numHandSteps);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // No change to scale yet
+            Assert.AreEqual(Vector3.one * initialScale, testObject.transform.localScale);
+
+            // Move hands beyond max scale limit
+            yield return leftHand.MoveTo(new Vector3(-scaleHandler.ScaleMaximum, 0, 0) + leftGrabPosition, numHandSteps);
+            yield return rightHand.MoveTo(new Vector3(scaleHandler.ScaleMaximum, 0, 0) + rightGrabPosition, numHandSteps);
+
+            // Assert scale at max
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMaximum, testObject.transform.localScale);
+
+            // Move hands beyond min scale limit
+            yield return leftHand.MoveTo(new Vector3(scaleHandler.ScaleMinimum, 0, 0) + leftGrabPosition, numHandSteps);
+            yield return rightHand.MoveTo(new Vector3(-scaleHandler.ScaleMinimum, 0, 0) + rightGrabPosition, numHandSteps);
+
+            // Assert scale at min
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, testObject.transform.localScale);
         }
     }
 }
