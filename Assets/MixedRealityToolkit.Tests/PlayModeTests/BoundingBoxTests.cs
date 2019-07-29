@@ -119,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var bbox = InstantiateSceneAndDefaultBbox();
             yield return null;
             var bounds = bbox.GetComponent<BoxCollider>().bounds;
+            bbox.ScaleHandleColliderPadding = new Vector3(0.06f, 0.06f, 0.06f);
             Debug.Assert(bounds.center == new Vector3(0, 0, 1.5f));
             Debug.Assert(bounds.size == new Vector3(.5f, .5f, .5f));
 
