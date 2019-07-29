@@ -1,21 +1,29 @@
-﻿using Microsoft.MixedReality.Toolkit.Experimental.Audio;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Experimental.Audio;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
 {
+    /// <summary>
+    /// Demonstration class using <see cref="WindowsMicrophoneStream"/> to select the voice microphone and
+    /// adjust the spatial awareness mesh based on the amplitude of the user's voice.
+    /// </summary>
     [RequireComponent(typeof(AudioSource))]
-    public class AmbientSoundAmplitude : MonoBehaviour
+    public class MicrophoneAmplitudeDemo : MonoBehaviour
     {
-        // todo: replace with spatial observer :)
         [SerializeField]
-        [Tooltip("The text field in which to display the ambient sound amplitude.")]
-        private Text amplitudeDisplay = null;
-
-        private float averageAmplitude = 0.0f;
+        [Tooltip("Factor by which to boost the microphone amplitude when changing the mesh display.")]
+        [Range(0, 50)]
+        private int amplitudeBoostFactor = 10;
 
         private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+
+        /// <summary>
+        /// Instance of the spatial awareness system.
+        /// </summary>
         private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem
         {
             get
@@ -29,6 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         }
 
         private IMixedRealitySpatialAwarenessMeshObserver spatialMeshObserver = null;
+
+        /// <summary>
+        /// Instance of a spatial awareness mesh observer. Used to acquire the visible mesh material.
+        /// </summary>
         private IMixedRealitySpatialAwarenessMeshObserver SpatialMeshObserver
         {
             get
@@ -42,6 +54,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         }
 
         private Material visibleMaterial = null;
+
+        /// <summary>
+        /// The visuble mesh material in use by the spatial mesh observer.
+        /// </summary>
         private Material VisibleMaterial
         {
             get
@@ -55,15 +71,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Class providing microphone stream management support on Microsoft Windows based devices.
         /// </summary>
         private WindowsMicrophoneStream micStream = null;
 
-#if UNITY_EDITOR
+        /// <summary>
+        /// The average amplitude of the sound captured during the most recent microphone update.
+        /// </summary>
+        private float averageAmplitude = 0.0f;
+
+        #if UNITY_EDITOR
+        /// <summary>
+        /// Cached material values used to restore initial settings when running the demo in the editor.
+        /// </summary>
         private Color defaultMaterialColor = Color.black;
         private int defaultWireThickness = 0;
 #endif // UNITY_EDITOR
-
 
         private void Awake()
         {
@@ -73,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             if (VisibleMaterial != null)
             {
 #if UNITY_EDITOR
+                // Cache the initial material settings.
                 defaultMaterialColor = VisibleMaterial.GetColor("_WireColor");
                 defaultWireThickness = VisibleMaterial.GetInt("_WireThickness");
 #endif // UNITY_EDITOR
@@ -84,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             micStream.Gain = 1.0f;
 
             // Initialize the microphone stream.
-            WindowsMicrophoneStreamErrorCode result = micStream.Initialize(WindowsMicrophoneStreamType.RoomCapture);
+            WindowsMicrophoneStreamErrorCode result = micStream.Initialize(WindowsMicrophoneStreamType.HighQualityVoice);
             if (result != WindowsMicrophoneStreamErrorCode.Success)
             {
                 Debug.Log($"Failed to initialize the microphone stream. {result}");
@@ -113,6 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             micStream = null;
 
 #if UNITY_EDITOR
+            // Restore the initial material settings.
             if (VisibleMaterial != null)
             {
                 VisibleMaterial.SetColor("_WireColor", defaultMaterialColor);
@@ -145,12 +170,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
 
         private void Update()
         {
-            amplitudeDisplay.text = averageAmplitude.ToString("N4");
-
             if (VisibleMaterial != null)
             {
                 // Artificially increase the amplitude to make the visible effect more pronounced.
-                int wireThickness = (int)(averageAmplitude * 10 * maxWireThickness);
+                int wireThickness = (int)(averageAmplitude * amplitudeBoostFactor * maxWireThickness);
                 wireThickness = Mathf.Clamp(wireThickness, 0, maxWireThickness);
                 VisibleMaterial.SetInt("_WireThickness", wireThickness);
             }
