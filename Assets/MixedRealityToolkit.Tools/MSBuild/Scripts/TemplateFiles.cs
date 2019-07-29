@@ -144,8 +144,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <returns>The absolute file path for the platform template to use.</returns>
         public string GetTemplateFilePathForPlatform(string platform, string configuration)
         {
-            if (PlatformTemplates.TryGetValue($"{platform}.{configuration}.Template.props", out string templatePath)
-                || PlatformTemplates.TryGetValue($"{platform}.Configuration.Template.props", out templatePath))
+            if (PlatformTemplates.TryGetValue($"{platform}.{configuration}.Template.props.template", out string templatePath)
+                || PlatformTemplates.TryGetValue($"{platform}.Configuration.Template.props.template", out templatePath))
             {
                 return templatePath;
             }
