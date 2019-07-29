@@ -19,11 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     public class TemplateFiles
     {
         private const string TemplateFilesFolderName = "MSBuildTemplates";
-        private const string MSBuildSolutionTemplateName = "SolutionTemplate.sln";
-        private const string SDKProjectFileTemplateName = "SDKProjectTemplate.csproj";
-        private const string PlatformPropsTemplateName = "Platform.Configuration.Template.props";
-        private const string EditorPropsTemplateName = "Editor.InEditor.Template.props";
-        private const string SpecifcPlatformPropsTemplateRegex = @"[a-zA-Z]+\.[a-zA-Z]+\.Template\.props";
+        private const string MSBuildSolutionTemplateName = "SolutionTemplate.sln.template";
+        private const string SDKProjectFileTemplateName = "SDKProjectTemplate.csproj.template";
+        private const string PlatformPropsTemplateName = "Platform.Configuration.Template.props.template";
+        private const string EditorPropsTemplateName = "Editor.InEditor.Template.props.template";
+        private const string SpecifcPlatformPropsTemplateRegex = @"[a-zA-Z]+\.[a-zA-Z]+\.Template\.props.template";
         private const string PluginMetaFileTemplateRegex = @"Plugin\.([a-zA-Z]*)\.meta.template";
 
         private static TemplateFiles instance;
