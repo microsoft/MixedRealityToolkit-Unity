@@ -117,6 +117,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             }
         }
 
+        private static int maxWireThickness = 700;
+
         private void Update()
         {
             amplitudeDisplay.text = averageAmplitude.ToString("N4");
@@ -124,10 +126,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             if (VisibleMaterial != null)
             {
                 // todo: this modifies the shader in the editor.... consider a different approach (ex: make a copy in the observer)
-                VisibleMaterial.SetColor("_WireColor", Color.blue);
-
-                int wireThickness = (int)(averageAmplitude * 10 * 700);
-                wireThickness = Mathf.Clamp(wireThickness, 0, 700);
+                int wireThickness = (int)(averageAmplitude * 10 * maxWireThickness);
+                wireThickness = Mathf.Clamp(wireThickness, 0, maxWireThickness);
                 VisibleMaterial.SetInt("_WireThickness", wireThickness);
             }
         }

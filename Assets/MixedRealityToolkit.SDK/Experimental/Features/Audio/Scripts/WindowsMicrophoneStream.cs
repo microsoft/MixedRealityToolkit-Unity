@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         private bool hasBeenDisposed = false;
 
         /// <summary>
-        /// todo
+        /// Free all resources used by this class.
         /// </summary>
         public void Dispose()
         {
@@ -40,19 +40,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         }
 
         /// <summary>
-        /// todo
+        /// Free the resources used by this class.
         /// </summary>
-        /// <param name="disposing"></param>
+        /// <param name="disposing">
+        /// If true, frees both managed and native resources. If false, only frees native resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (hasBeenDisposed)
-            { /* Release cached managed resources */ }
+            if (hasBeenDisposed) { return; }
+
+            //  Release managed resources.
+            if (disposing)
+            {  }
 
             // Release native resources.
             Uninitialize();
 
             // Tell the system to not run the finalizer for this class.
             GC.SuppressFinalize(this);
+
+            hasBeenDisposed = true;
         }
 
         #endregion IDisposable implementation
@@ -60,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         private float gain = 1.0f; // todo: what is a reasonable range?
 
         /// <summary>
-        /// todo
+        /// Gets or sets the microphone stream's input gain.
         /// </summary>
         public float Gain
         {
@@ -79,9 +86,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         private bool initialized = false;
 
         /// <summary>
-        /// todo
+        /// Initializes the microphone stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A <see cref="WindowsMicrophoneStreamErrorCode"/> value indicating success or the
+        /// reason that the call failed.
+        /// </returns>
         public WindowsMicrophoneStreamErrorCode Initialize(WindowsMicrophoneStreamType streamType)
         {
             if (initialized)
@@ -96,9 +106,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         private bool paused = false;
 
         /// <summary>
-        /// todo
+        /// Pauses the microphone stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A <see cref="WindowsMicrophoneStreamErrorCode"/> value indicating success or the
+        /// reason that the call failed.
+        /// </returns>
         public WindowsMicrophoneStreamErrorCode Pause()
         {
             if (paused)
@@ -111,20 +124,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         }
 
         /// <summary>
-        /// todo
+        /// Reads data from the microphone stream.
         /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="numChannels"></param>
-        /// <returns></returns>
+        /// <param name="buffer"/>The buffer in which to plce the data.</param>
+        /// <param name="numChannels">The number of audio channels to read.</param>
+        /// <returns>
+        /// A <see cref="WindowsMicrophoneStreamErrorCode"/> value indicating success or the
+        /// reason that the call failed.
+        /// </returns>
         public WindowsMicrophoneStreamErrorCode ReadAudioFrame(float[] buffer, int numChannels)
         {
             return (WindowsMicrophoneStreamErrorCode)MicGetFrame(buffer, buffer.Length, numChannels);
         }
 
         /// <summary>
-        /// todo
+        /// Resumes the microphone stream
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A <see cref="WindowsMicrophoneStreamErrorCode"/> value indicating success or the
+        /// reason that the call failed.
+        /// </returns>
         public WindowsMicrophoneStreamErrorCode Resume()
         {
             if (!paused)
@@ -139,9 +158,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         private bool recording = false;
 
         /// <summary>
-        /// todo
+        /// Starts a recording of the microphone stream.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="fileName">The name of the file in which the data will be written.</param>
+        /// <param name="preview">
+        /// Indicates whether or not the microphone data is to be previewed using the default
+        /// audio device.
+        /// </param>
+        /// <returns>
+        /// A <see cref="WindowsMicrophoneStreamErrorCode"/> value indicating success or the
+        /// reason that the call failed.
+        /// </returns>
+        /// <remarks>
+        /// Files are created in the Music Library folder.
+        /// </remarks>
         public WindowsMicrophoneStreamErrorCode StartRecording(string fileName, bool preview)
         {
             if (recording)
@@ -156,9 +186,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         private bool streaming = false;
 
         /// <summary>
-        /// todo
+        /// Starts the microphone stream.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="keepData">
+        /// Indicates whether or not the microphone data should be retained if the application
+        /// becomes unresponsive.
+        /// </param>
+        /// <param name="preview">
+        /// Indicates whether or not the microphone data is to be previewed using the default
+        /// audio device.
+        /// </param>
+        /// <returns>
+        /// A <see cref="WindowsMicrophoneStreamErrorCode"/> value indicating success or the
+        /// reason that the call failed.
+        /// </returns>
+        /// <remarks>
+        /// When keepData is set to false, the application will always receive the latest
+        /// audio data from the microphone. Data received during any unresponsive periods
+        /// will be discarded.
+        /// </remarks>
         public WindowsMicrophoneStreamErrorCode StartStream(bool keepData, bool preview)
         {
             if (streaming)
@@ -171,9 +217,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         }
 
         /// <summary>
-        /// todo
+        /// Stops the recording.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The full path to the file containing the recorded microphone data./// </returns>
         public string StopRecording()
         {
             if (!recording)
@@ -190,9 +236,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         }
 
         /// <summary>
-        /// todo
+        /// Stops the microphone stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A <see cref="WindowsMicrophoneStreamErrorCode"/> value indicating success or the
+        /// reason that the call failed.
+        /// </returns>
         public WindowsMicrophoneStreamErrorCode StopStream()
         {
             if (!streaming)
@@ -205,9 +254,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
         }
 
         /// <summary>
-        /// todo
+        /// Uninitializes the microphone stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A <see cref="WindowsMicrophoneStreamErrorCode"/> value indicating success or the
+        /// reason that the call failed.
+        /// </returns>
         public WindowsMicrophoneStreamErrorCode Uninitialize()
         {
             if (!initialized)
