@@ -671,7 +671,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// 
+        /// This test records the poses and scales of an object after various forms of manipulation,
+        /// once when the object origin is at the mesh centre and again when the origin is offset from the mesh.
+        /// The test then compares these poses and scales in order to ensure that they are about equal. 
         /// </summary>
         [UnityTest]
         public IEnumerator ManipulationHandlerOriginOffset()
