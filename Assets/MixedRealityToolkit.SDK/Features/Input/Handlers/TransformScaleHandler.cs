@@ -6,7 +6,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Helper class containing move/rotate/scale related utility functions.
+    /// Component for setting the min/max scale values for ManipulationHandler
+    /// or BoundingBox
     /// <summary>
     public class TransformScaleHandler : MonoBehaviour
     {
