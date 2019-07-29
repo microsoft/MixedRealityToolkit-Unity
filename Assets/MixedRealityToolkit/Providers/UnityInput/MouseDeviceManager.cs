@@ -54,16 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return;
             }
 
-#if UNITY_EDITOR
-            if (UnityEditor.EditorWindow.focusedWindow != null)
-            {
-                UnityEditor.EditorWindow.focusedWindow.ShowNotification(new GUIContent("Press \"ESC\" to regain mouse control"));
-            }
-#endif
-
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-
             IMixedRealityInputSource mouseInputSource = null;
 
             MixedRealityRaycaster.DebugEnabled = true;
