@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Component for setting the min/max scale values for ManipulationHandler
     /// or BoundingBox
-    /// <summary>
+    /// </summary>
     public class TransformScaleHandler : MonoBehaviour
     {
         #region Properties
