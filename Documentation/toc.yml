@@ -172,6 +172,8 @@
     href: Contributing/BreakingChanges.md
 - name: Planning
   items:
+  - name: Process
+    href: PlanningProcess.md
   - name: Roadmap
     href: Contributing/Roadmap.md
 - name: Notice
