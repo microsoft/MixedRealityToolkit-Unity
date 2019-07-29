@@ -110,9 +110,9 @@ There are several options to activate the bounding box interface.</p>
 <li><em>Activate Manually</em>: Bounding Box does not become visible automatically. You can manually activate it through a script by accessing the boundingBox.Active property.</li>
 </ul>
 <p><strong>Scale Minimum</strong>
-The minimum allowed scale.</p>
+The minimum allowed scale. This property is deprecated and it is preferable to add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs"><code>TransformScaleHandler</code></a> script. If this script is added, the minimum scale will be taken from it instead of from BoundingBox.</p>
 <p><strong>Scale Maximum</strong>
-The maximum allowed scale.</p>
+The maximum allowed scale. This property is deprecated and it is preferable to add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs"><code>TransformScaleHandler</code></a> script. If this script is added, the maximum scale will be taken from it instead of from BoundingBox.</p>
 <p><strong>Box Display</strong>
 Various bounding box visualization options.</p>
 <p>If Flatten Axis is set to <em>Flatten Auto</em>, the script will disallow manipulation along the axis with the smallest extent. This results in a 2D bounding box, which is usually used for thin objects.</p>

@@ -917,7 +917,8 @@ Set this value with SetScaleLimits.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float ScaleMaximum { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for max scale&quot;)]
+public float ScaleMaximum { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -944,7 +945,8 @@ Set this value with SetScaleLimits.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float ScaleMinimum { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for min scale&quot;)]
+public float ScaleMinimum { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1345,7 +1347,8 @@ when used in conjunction with this MonoBehavior.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use a TransformScaleHandler script rather than setting min/max scale on BoundingBox directly&quot;)]
+public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

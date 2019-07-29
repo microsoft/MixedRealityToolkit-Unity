@@ -5044,7 +5044,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_BoundingBox.html",
-          "hash": "zzJCgi6S9ef864unzA3WAw=="
+          "hash": "/aaylx5z8lLRGjqeTxMv+A=="
         }
       },
       "is_incremental": false,
@@ -5128,7 +5128,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ManipulationHandler.html",
-          "hash": "Syx8oB50disGfufydkL/0Q=="
+          "hash": "UaProPi5y+uOPzzByZl2vg=="
         }
       },
       "is_incremental": false,
@@ -13107,7 +13107,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.BoundingBoxTests.html",
-          "hash": "oEgJDkSqdH2iwlTZlLZiRw=="
+          "hash": "aIri4278GNp/6TB60u5scw=="
         }
       },
       "is_incremental": false,
@@ -13287,7 +13287,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.html",
-          "hash": "FR2LZ63PAtNnhmex2U1vdA=="
+          "hash": "HJ1uxoDRCSuEciY2pQgWcg=="
         }
       },
       "is_incremental": false,
@@ -13659,7 +13659,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.html",
-          "hash": "o9uJwOB3cGqhymQd5A2ijg=="
+          "hash": "uvSubDDZTNlVC7x8e46RUg=="
         }
       },
       "is_incremental": false,
@@ -15059,6 +15059,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.TransformScaleHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.TransformScaleHandler.html",
+          "hash": "legXvXqbtBHr2C50w0wyVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.TypeRestriction.yml",
       "output": {
         ".html": {
@@ -15075,7 +15087,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "sboduPMBPJXGAMxkQo5Zfg=="
+          "hash": "qa777nzB+C1ZiaZE86I3/A=="
         }
       },
       "is_incremental": false,
@@ -18147,7 +18159,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "r0ZGIcxyYYSUlgNda9BhmQ=="
+          "hash": "Dragk5govFKI98L028g+CQ=="
         }
       },
       "is_incremental": false,
@@ -18206,16 +18218,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1057,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 117,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1058,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
