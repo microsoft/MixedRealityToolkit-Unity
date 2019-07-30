@@ -68,10 +68,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly string PersistentStateKey = "MRTK_ExtensionServiceWizard_State_Before_Recompilation";
         private static readonly string DefaultExtensionsFolder = "Assets/MixedRealityToolkit.Extensions";
         private static readonly string DefaultExtensionsFolderName = "MixedRealityToolkit.Extensions";
-        private static readonly string ServiceTemplatePath = "ExtensionTemplates/ExtensionScriptTemplate.txt";
-        private static readonly string InspectorTemplatePath = "ExtensionTemplates/ExtensionInspectorTemplate.txt";
-        private static readonly string InterfaceTemplatePath = "ExtensionTemplates/ExtensionInterfaceTemplate.txt";
-        private static readonly string ProfileTemplatePath = "ExtensionTemplates/ExtensionProfileTemplate.txt";
+        private static readonly string ServiceTemplatePath = "Assets/MixedRealityToolkit.Tools/ExtensionServiceCreator/Templates/ExtensionScriptTemplate.txt";
+        private static readonly string InspectorTemplatePath = "Assets/MixedRealityToolkit.Tools/ExtensionServiceCreator/Templates/ExtensionInspectorTemplate.txt";
+        private static readonly string InterfaceTemplatePath = "Assets/MixedRealityToolkit.Tools/ExtensionServiceCreator/Templates/ExtensionInterfaceTemplate.txt";
+        private static readonly string ProfileTemplatePath = "Assets/MixedRealityToolkit.Tools/ExtensionServiceCreator/Templates/ExtensionProfileTemplate.txt";
         private static readonly string ScriptExtension = ".cs";
         private static readonly string ProfileExtension = ".asset";
         private static readonly string ServiceNameSearchString = "#SERVICE_NAME#";
