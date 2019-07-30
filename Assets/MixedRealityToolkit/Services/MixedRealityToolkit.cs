@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <remarks>
         /// Systems can only be registered once by <see cref="Type"/>
         /// </remarks>
-        [Obsolete]
+        //[Obsolete]
         public IReadOnlyDictionary<Type, IMixedRealityService> ActiveSystems => new Dictionary<Type, IMixedRealityService>(activeSystems) as IReadOnlyDictionary<Type, IMixedRealityService>;
 
         private static readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityService"/>.
         /// </summary>
-        [Obsolete]
+        //[Obsolete]
         public IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices) as IReadOnlyList<Tuple<Type, IMixedRealityService>>;
 
 #endregion Mixed Reality runtime service registry
@@ -1132,7 +1132,7 @@ namespace Microsoft.MixedReality.Toolkit
             if (!CanGetService(interfaceType)) { return null; }
 
             IMixedRealityService service;
-            MixedRealityServiceRegistry.TryGetService(out service, serviceName);
+            MixedRealityServiceRegistry.TryGetService(interfaceType, out service, out _, serviceName);
             return service;
             // TODO: Troy
             /*
