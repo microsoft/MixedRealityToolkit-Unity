@@ -714,6 +714,64 @@ PrefabInstance:
       propertyPath: m_Name
       value: EyeCalibrationChecker
       objectReference: {fileID: 0}
+    - target: {fileID: 7304426202717140508, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647661571346163763, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7647661571346163763, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8854803465081329498, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8854803465081329498, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941753179112369455, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_text
+      value: Easiest way to get there? Simply <color=#FDFFB1>flip your visor up and
+        back down </color>and a notification should appear asking you to go through
+        the calibration. You can also start it from <color=#FDFFB1>Settings -> System
+        -> Calibration -> Run eye calibration</color>.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941753179112369455, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941753179112369455, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941753179112369455, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346336527260183894, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346336527260183894, guid: d7a95106a0331134db596f593a2d20e4,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7a95106a0331134db596f593a2d20e4, type: 3}
 --- !u!4 &4129137658667948281 stripped
