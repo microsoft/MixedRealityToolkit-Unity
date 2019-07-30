@@ -8,7 +8,7 @@ steps:
    $outDir = "$(Build.ArtifactStagingDirectory)\build"
    $logFile = New-Item -Path "$outDir\build\retargeting_log.log" -ItemType File -Force
    
-   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -batchmode -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.AssetScriptReferenceRetargeter.RetargetAssets -logFile $($logFile.FullName) -nographics -quit" -PassThru
+   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -batchmode -executeMethod Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.RetargetAssets -logFile $($logFile.FullName) -nographics -quit" -PassThru
    $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
    
    while (-not $proc.HasExited -and $ljob.HasMoreData)

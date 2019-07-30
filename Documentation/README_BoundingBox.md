@@ -42,10 +42,10 @@ There are several options to activate the bounding box interface.
 * *Activate Manually*: Bounding Box does not become visible automatically. You can manually activate it through a script by accessing the boundingBox.Active property.
 
 **Scale Minimum**
-The minimum allowed scale.
+The minimum allowed scale. This property is deprecated and it is preferable to add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script. If this script is added, the minimum scale will be taken from it instead of from BoundingBox.
 
 **Scale Maximum**
-The maximum allowed scale.
+The maximum allowed scale. This property is deprecated and it is preferable to add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script. If this script is added, the maximum scale will be taken from it instead of from BoundingBox.
  
 **Box Display**
 Various bounding box visualization options.

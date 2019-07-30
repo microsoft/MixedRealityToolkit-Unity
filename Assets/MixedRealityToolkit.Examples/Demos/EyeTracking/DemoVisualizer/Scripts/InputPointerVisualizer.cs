@@ -320,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                     }
                 }
             }
-            catch (MissingReferenceException exc)
+            catch (System.Exception exc)
             {
                 Debug.Log("[CustomVisualizer] Exception: " + exc);
             }

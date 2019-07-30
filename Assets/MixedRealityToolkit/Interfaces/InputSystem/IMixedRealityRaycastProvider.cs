@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -27,5 +28,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <returns>Whether or not the SphereCast hit something.</returns>
         bool SphereCast(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo);
+
+        /// <summary>
+        /// Performs a graphics raycast against the specified layerMasks.
+        /// </summary>
+        /// <returns>The RaycastResult of the raycast.</returns>
+        RaycastResult GraphicsRaycast(EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks);
     }
 }
