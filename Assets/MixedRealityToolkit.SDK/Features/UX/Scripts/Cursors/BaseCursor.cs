@@ -22,10 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
+
+                MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
                 return inputSystem;
             }
         }
@@ -320,11 +318,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
-            if (!InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
+            if (InputSystem != null)
             {
-                if (InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                if (!InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
                 {
-                    Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
+                    if (InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                    {
+                        Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
+                    }
                 }
             }
 
@@ -386,56 +387,64 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void UpdateCursorTransform()
         {
-            if (Pointer == null)
+            // Let's clean up the cursor in case the InputSystem changed.
+            if (InputSystem == null)
             {
-                Debug.LogError($"[BaseCursor.{name}] No Pointer has been assigned!");
-                return;
-            }
-
-            GameObject newTargetedObject = InputSystem.FocusProvider.GetFocusedObject(Pointer);
-            Vector3 lookForward;
-
-            // Normalize scale on before update
-            targetScale = Vector3.one;
-
-            // If no game object is hit, put the cursor at the default distance
-            if (newTargetedObject == null)
-            {
-                TargetedObject = null;
-                targetPosition = RayStep.GetPointByDistance(Pointer.Rays, defaultCursorDistance);
-                lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, defaultCursorDistance);
-                targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
+                DestroyImmediate(this.gameObject);
             }
             else
             {
-                // Update currently targeted object
-                TargetedObject = newTargetedObject;
-
-                if (Pointer.CursorModifier != null)
+                if (Pointer == null)
                 {
-                    Pointer.CursorModifier.GetModifiedTransform(this, out targetPosition, out targetRotation, out targetScale);
+                    Debug.LogError($"[BaseCursor.{name}] No Pointer has been assigned!");
+                    return;
+                }
+
+                GameObject newTargetedObject = InputSystem.FocusProvider.GetFocusedObject(Pointer);
+                Vector3 lookForward;
+
+                // Normalize scale on before update
+                targetScale = Vector3.one;
+
+                // If no game object is hit, put the cursor at the default distance
+                if (newTargetedObject == null)
+                {
+                    TargetedObject = null;
+                    targetPosition = RayStep.GetPointByDistance(Pointer.Rays, defaultCursorDistance);
+                    lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, defaultCursorDistance);
+                    targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
                 }
                 else
                 {
-                    // If no modifier is on the target, just use the hit result to set cursor position
-                    // Get the look forward by using distance between pointer origin and target position
-                    // (This may not be strictly accurate for extremely wobbly pointers, but it should produce usable results)
-                    float distanceToTarget = Vector3.Distance(Pointer.Rays[0].Origin, focusDetails.Point);
-                    lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, distanceToTarget);
-                    targetPosition = focusDetails.Point + (lookForward * surfaceCursorDistance);
-                    Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, lookRotationBlend);
-                    targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
+                    // Update currently targeted object
+                    TargetedObject = newTargetedObject;
+
+                    if (Pointer.CursorModifier != null)
+                    {
+                        Pointer.CursorModifier.GetModifiedTransform(this, out targetPosition, out targetRotation, out targetScale);
+                    }
+                    else
+                    {
+                        // If no modifier is on the target, just use the hit result to set cursor position
+                        // Get the look forward by using distance between pointer origin and target position
+                        // (This may not be strictly accurate for extremely wobbly pointers, but it should produce usable results)
+                        float distanceToTarget = Vector3.Distance(Pointer.Rays[0].Origin, focusDetails.Point);
+                        lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, distanceToTarget);
+                        targetPosition = focusDetails.Point + (lookForward * surfaceCursorDistance);
+                        Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, lookRotationBlend);
+                        targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
+                    }
                 }
+
+                float deltaTime = useUnscaledTime
+                    ? Time.unscaledDeltaTime
+                    : Time.deltaTime;
+
+                // Use the lerp times to blend the position to the target position
+                transform.position = Vector3.Lerp(transform.position, targetPosition, deltaTime / positionLerpTime);
+                transform.localScale = Vector3.Lerp(transform.localScale, targetScale, deltaTime / scaleLerpTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, deltaTime / rotationLerpTime);
             }
-
-            float deltaTime = useUnscaledTime
-                ? Time.unscaledDeltaTime
-                : Time.deltaTime;
-
-            // Use the lerp times to blend the position to the target position
-            transform.position = Vector3.Lerp(transform.position, targetPosition, deltaTime / positionLerpTime);
-            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, deltaTime / scaleLerpTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, deltaTime / rotationLerpTime);
         }
 
         /// <summary>

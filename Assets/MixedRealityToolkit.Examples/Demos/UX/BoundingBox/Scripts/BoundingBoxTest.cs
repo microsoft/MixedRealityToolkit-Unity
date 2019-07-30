@@ -34,10 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             get
             {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
+                MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
                 return inputSystem;
             }
         }

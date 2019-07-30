@@ -32,10 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         {
             get
             {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
+                MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
                 return inputSystem;
             }
         }

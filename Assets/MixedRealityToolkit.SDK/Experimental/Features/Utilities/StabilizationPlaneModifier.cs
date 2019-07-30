@@ -147,10 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             get
             {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
+                MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
                 return inputSystem;
             }
         }
