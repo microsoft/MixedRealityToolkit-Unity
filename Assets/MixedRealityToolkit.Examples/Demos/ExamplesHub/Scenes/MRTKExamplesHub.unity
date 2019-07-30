@@ -2786,6 +2786,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1740321125}
   - component: {fileID: 1740321126}
+  - component: {fileID: 1740321127}
   m_Layer: 0
   m_Name: SceneContent
   m_TagString: Untagged
@@ -2817,6 +2818,19 @@ WorldAnchor:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1740321124}
   serializedVersion: 2
+--- !u!114 &1740321127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740321124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae297274e2314cf4f871e37217183078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configProfile: {fileID: 11400000, guid: b5df82ea596774f4d88ab073112aafee, type: 2}
 --- !u!1 &1958878974
 GameObject:
   m_ObjectHideFlags: 0
