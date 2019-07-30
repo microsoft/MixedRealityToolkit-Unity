@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -30,6 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var result = MixedRealityRaycaster.RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
             hitInfo = new MixedRealityRaycastHit(result, physicsHit);
             return result;
+        }
+
+        /// <inheritdoc />
+        public RaycastResult GraphicsRaycast(EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks)
+        {
+            return eventSystem.Raycast(pointerEventData, layerMasks);
         }
     }
 }

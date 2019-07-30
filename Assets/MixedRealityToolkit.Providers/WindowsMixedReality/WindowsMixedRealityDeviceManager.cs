@@ -392,7 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     gestureRecognizer = new GestureRecognizer();
                 }
-                catch (UnityException ex)
+                catch (Exception ex)
                 {
                     Debug.LogWarning($"Failed to create gesture recognizer. OS version might not support it. Exception: {ex}");
                     gestureRecognizer = null;
@@ -432,7 +432,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     navigationGestureRecognizer = new GestureRecognizer();
                 }
-                catch (UnityException ex)
+                catch (Exception ex)
                 {
                     Debug.LogWarning($"Failed to create gesture recognizer. OS version might not support it. Exception: {ex}");
                     navigationGestureRecognizer = null;
