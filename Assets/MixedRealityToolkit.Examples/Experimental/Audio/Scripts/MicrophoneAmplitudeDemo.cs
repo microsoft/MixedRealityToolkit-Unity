@@ -15,6 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
     public class MicrophoneAmplitudeDemo : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("Gain to apply to the microphone input.")]
+        [Range(0, 10)]
+        private float inputGain = 1.0f;
+
+        [SerializeField]
         [Tooltip("Factor by which to boost the microphone amplitude when changing the mesh display.")]
         [Range(0, 50)]
         private int amplitudeBoostFactor = 10;
@@ -80,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         /// </summary>
         private float averageAmplitude = 0.0f;
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         /// <summary>
         /// Cached material values used to restore initial settings when running the demo in the editor.
         /// </summary>
@@ -105,13 +110,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             }
 
             micStream = new WindowsMicrophoneStream();
-            micStream.Gain = 1.0f;
+            if (micStream == null)
+            {
+                Debug.Log("Failed to create the Windows Microphone Stream object");
+            }
+
+            micStream.Gain = inputGain;
 
             // Initialize the microphone stream.
             WindowsMicrophoneStreamErrorCode result = micStream.Initialize(WindowsMicrophoneStreamType.HighQualityVoice);
             if (result != WindowsMicrophoneStreamErrorCode.Success)
             {
                 Debug.Log($"Failed to initialize the microphone stream. {result}");
+                return;
             }
 
             // Start the microphone stream.
@@ -125,6 +136,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
 
         private void OnDestroy()
         {
+            if (micStream == null) { return; }
+
             // Stop the microphone stream.
             WindowsMicrophoneStreamErrorCode result = micStream.StopStream();
             if (result != WindowsMicrophoneStreamErrorCode.Success)
@@ -148,6 +161,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
 
         private void OnDisable()
         {
+            if (micStream == null) { return; }
+
             // Pause the microphone stream.
             WindowsMicrophoneStreamErrorCode result = micStream.Pause();
             if (result != WindowsMicrophoneStreamErrorCode.Success)
@@ -158,6 +173,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
 
         private void OnEnable()
         {
+            if (micStream == null) { return; }
+
             // Resume the microphone stream.
             WindowsMicrophoneStreamErrorCode result = micStream.Resume();
             if (result != WindowsMicrophoneStreamErrorCode.Success)
@@ -170,6 +187,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
 
         private void Update()
         {
+            if (micStream == null) { return; }
+
+            // Update the gain, if changed.
+            if (micStream.Gain != inputGain)
+            {
+                micStream.Gain = inputGain;
+            }
+
             if (VisibleMaterial != null)
             {
                 // Artificially increase the amplitude to make the visible effect more pronounced.
@@ -181,6 +206,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
 
         private void OnAudioFilterRead(float[] buffer, int numChannels)
         {
+            if (micStream == null) { return; }
+
             // Read the microphone stream data.
             WindowsMicrophoneStreamErrorCode result = micStream.ReadAudioFrame(buffer, numChannels);
             if (result != WindowsMicrophoneStreamErrorCode.Success)
