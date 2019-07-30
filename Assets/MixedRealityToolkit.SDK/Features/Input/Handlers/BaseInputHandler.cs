@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Helper variable used to register/unregister handlers during play mode
         private bool isFocusRequiredRuntime = true;
 
-        private string prevInputSystemName;
+        private string previousInputSystemName;
 
         /// <summary>
         /// Is Focus required to receive input events on this GameObject?
@@ -50,21 +50,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected virtual void Update()
         {
-            if (InputSystem != null) {
-                string currName = InputSystem.ConfigurationProfile.name;
-                if (prevInputSystemName != currName)
-                {
-                    prevInputSystemName = currName;
+            if (InputSystem != null)
+            {
+                var currentInputSystemName = InputSystem.ConfigurationProfile.name;
 
-                    // Let's clean up first
+                if (previousInputSystemName != currentInputSystemName)
+                {
+                    previousInputSystemName = currentInputSystemName;
+
+                    // Let's clean up first.
                     UnregisterHandlers();
 
-                    // Then register the new input handlers
+                    // Then register the new input handlers.
                     RegisterHandlers();
                 }
             }
 
-            if(isFocusRequiredRuntime != isFocusRequired)
+            if (isFocusRequiredRuntime != isFocusRequired)
             {
                 isFocusRequiredRuntime = isFocusRequired;
 
