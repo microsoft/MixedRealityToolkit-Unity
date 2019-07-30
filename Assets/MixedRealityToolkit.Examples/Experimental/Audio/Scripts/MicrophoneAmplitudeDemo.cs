@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         private Material visibleMaterial = null;
 
         /// <summary>
-        /// The visuble mesh material in use by the spatial mesh observer.
+        /// The visible mesh material in use by the spatial mesh observer.
         /// </summary>
         private Material VisibleMaterial
         {
