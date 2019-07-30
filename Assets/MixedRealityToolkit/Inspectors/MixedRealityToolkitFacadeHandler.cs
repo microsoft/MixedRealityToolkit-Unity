@@ -95,7 +95,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             }
 
             servicesToSort.Clear();
+            servicesToSort.AddRange(MixedRealityServiceRegistry.GetAllServices());
 
+            // TODO: Troy
+            /*
             foreach (IMixedRealityService service in MixedRealityToolkit.Instance.ActiveSystems.Values)
             {
                 servicesToSort.Add(service);
@@ -104,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             foreach (Tuple<Type, IMixedRealityService> registeredService in MixedRealityToolkit.Instance.RegisteredMixedRealityServices)
             {
                 servicesToSort.Add(registeredService.Item2);
-            }
+            }*/
 
             servicesToSort.Sort(
                 delegate (IMixedRealityService s1, IMixedRealityService s2)

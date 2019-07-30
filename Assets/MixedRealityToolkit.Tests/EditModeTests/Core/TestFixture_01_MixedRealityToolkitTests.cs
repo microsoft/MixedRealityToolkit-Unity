@@ -55,8 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Tests
-            Assert.AreEqual(0, MixedRealityToolkit.Instance.ActiveSystems.Count);
-            Assert.AreEqual(0, MixedRealityToolkit.Instance.RegisteredMixedRealityServices.Count);
+            Assert.AreEqual(0, MixedRealityServiceRegistry.GetAllServices().Count);
         }
 
         #endregion Service Locator Tests

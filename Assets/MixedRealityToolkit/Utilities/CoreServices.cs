@@ -14,10 +14,10 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Utility class to easily access references to runtime Mixed Reality Toolkit Services
+    /// Utility class to easily access references to core runtime Mixed Reality Toolkit Services
     /// If deallocating and re-allocating a new system at runtime, ResetCacheReferences() should be used to get a proper reference
     /// </summary>
-    public static class ServiceCache
+    public static class CoreServices
     {
         /// <summary>
         /// Cached reference to the active instance of the input system.
@@ -109,6 +109,20 @@ namespace Microsoft.MixedReality.Toolkit
         public static void ResetCacheReferences()
         {
             serviceCache.Clear();
+        }
+
+        public static bool ResetCacheReference(Type serviceType)
+        {
+            if (serviceType is IMixedRealityService)
+            {
+                if (serviceCache.ContainsKey(serviceType))
+                {
+                    serviceCache.Remove(serviceType);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static Dictionary<Type, IMixedRealityService> serviceCache = new Dictionary<Type, IMixedRealityService>();

@@ -247,5 +247,36 @@ namespace Microsoft.MixedReality.Toolkit
                 out _,                  // The registrar out param is not used, it can be discarded.
                 name);
         }
+
+        /// <summary>
+        /// Returns readonly list of all services registered
+        /// </summary>
+        /// <returns>readonly list of all services registered</returns>
+        public static IReadOnlyCollection<IMixedRealityService> GetAllServices()
+        {
+            return GetAllServices(null);
+        }
+
+        /// <summary>
+        /// Returns readonly list of all services registered for given registrar
+        /// </summary>
+        /// <param name="registrar">Registrar object to filter sevices by</param>
+        /// <returns>readonly list of all services registered for given registrar, all services if parameter nul</returns>
+        public static IReadOnlyCollection<IMixedRealityService> GetAllServices(IMixedRealityServiceRegistrar registrar)
+        {
+            List<IMixedRealityService> results = new List<IMixedRealityService>();
+            foreach (var entry in registry.Values)
+            {
+                foreach(var tuple in entry)
+                {
+                    if (registrar == null || tuple.Value == registrar)
+                    {
+                        results.Add(tuple.Key);
+                    }
+                }
+            }
+
+            return results.AsReadOnly();
+        }
     }
 }
