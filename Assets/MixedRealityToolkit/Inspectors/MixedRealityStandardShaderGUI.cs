@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static string disableAlbedoMapName = "_DISABLE_ALBEDO_MAP";
             public static string albedoMapAlphaMetallicName = "_METALLIC_TEXTURE_ALBEDO_CHANNEL_A";
             public static string albedoMapAlphaSmoothnessName = "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A";
-            public static string propertiesComponentHelp = "Use the {0} component to control {1} properties.";
+            public static string propertiesComponentHelp = "Use the {0} component(s) to control {1} properties.";
             public static readonly string[] albedoAlphaModeNames = Enum.GetNames(typeof(AlbedoAlphaMode));
             public static GUIContent instancedColor = new GUIContent("Instanced Color", "Enable a Unique Color Per Instance");
             public static GUIContent albedo = new GUIContent("Albedo", "Albedo (RGB) and Transparency (Alpha)");
@@ -66,16 +66,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent vertexColors = new GUIContent("Vertex Colors", "Enable Vertex Color Tinting");
             public static GUIContent vertexExtrusion = new GUIContent("Vertex Extrusion", "Enable Vertex Extrusion Along the Vertex Normal");
             public static GUIContent vertexExtrusionValue = new GUIContent("Vertex Extrusion Value", "How Far to Extrude the Vertex Along the Vertex Normal");
-            public static GUIContent clippingPlane = new GUIContent("Clipping Plane", "Enable Clipping Against a Plane");
-            public static GUIContent clippingSphere = new GUIContent("Clipping Sphere", "Enable Clipping Against a Sphere");
-            public static GUIContent clippingBox = new GUIContent("Clipping Box", "Enable Clipping Against a Box");
+            public static GUIContent blendedClippingWidth = new GUIContent("Blended Clipping Width", "The Width of the Clipping Primitive Clip Fade Region on Non-Cutout Materials");
             public static GUIContent clippingBorder = new GUIContent("Clipping Border", "Enable a Border Along the Clipping Primitive's Edge");
             public static GUIContent clippingBorderWidth = new GUIContent("Width", "Width of the Clipping Border");
             public static GUIContent clippingBorderColor = new GUIContent("Color", "Interpolated Color of the Clipping Border");
             public static GUIContent nearPlaneFade = new GUIContent("Near Fade", "Objects Disappear (Turn to Black/Transparent) as the Camera (or Hover/Proximity Light) Nears Them");
             public static GUIContent nearLightFade = new GUIContent("Use Light", "A Hover or Proximity Light (Rather Than the Camera) Determines Near Fade Distance");
-            public static GUIContent fadeBeginDistance = new GUIContent("Fade Begin", "Distance From Camera to Begin Fade In");
-            public static GUIContent fadeCompleteDistance = new GUIContent("Fade Complete", "Distance From Camera When Fade is Fully In");
+            public static GUIContent fadeBeginDistance = new GUIContent("Fade Begin", "Distance From Camera (or Hover/Proximity Light) to Begin Fade In");
+            public static GUIContent fadeCompleteDistance = new GUIContent("Fade Complete", "Distance From Camera (or Hover/Proximity Light) When Fade is Fully In");
             public static GUIContent fadeMinValue = new GUIContent("Fade Min Value", "Clamps the Fade Amount to a Minimum Value");
             public static GUIContent hoverLight = new GUIContent("Hover Light", "Enable utilization of Hover Light(s)");
             public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Light Color for this Material");
@@ -117,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent stencilReference = new GUIContent("Stencil Reference", "Value to Compared Against (if Comparison is Anything but Always) and/or the Value to be Written to the Buffer (if Either Pass, Fail or ZFail is Set to Replace)");
             public static GUIContent stencilComparison = new GUIContent("Stencil Comparison", "Function to Compare the Reference Value to");
             public static GUIContent stencilOperation = new GUIContent("Stencil Operation", "What to do When the Stencil Test Passes");
+            public static GUIContent ignoreZScale = new GUIContent("Ignore Z Scale", "For Features That Use Object Scale (Round Corners, Border Light, etc.), Ignore the Z Scale of the Object");
         }
 
         protected MaterialProperty instancedColor;
@@ -149,9 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty vertexColors;
         protected MaterialProperty vertexExtrusion;
         protected MaterialProperty vertexExtrusionValue;
-        protected MaterialProperty clippingPlane;
-        protected MaterialProperty clippingSphere;
-        protected MaterialProperty clippingBox;
+        protected MaterialProperty blendedClippingWidth;
         protected MaterialProperty clippingBorder;
         protected MaterialProperty clippingBorderWidth;
         protected MaterialProperty clippingBorderColor;
@@ -200,6 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty stencilReference;
         protected MaterialProperty stencilComparison;
         protected MaterialProperty stencilOperation;
+        protected MaterialProperty ignoreZScale;
 
         protected override void FindProperties(MaterialProperty[] props)
         {
@@ -235,9 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             vertexColors = FindProperty("_VertexColors", props);
             vertexExtrusion = FindProperty("_VertexExtrusion", props);
             vertexExtrusionValue = FindProperty("_VertexExtrusionValue", props);
-            clippingPlane = FindProperty("_ClippingPlane", props);
-            clippingSphere = FindProperty("_ClippingSphere", props);
-            clippingBox = FindProperty("_ClippingBox", props);
+            blendedClippingWidth = FindProperty("_BlendedClippingWidth", props);
             clippingBorder = FindProperty("_ClippingBorder", props);
             clippingBorderWidth = FindProperty("_ClippingBorderWidth", props);
             clippingBorderColor = FindProperty("_ClippingBorderColor", props);
@@ -286,6 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             stencilReference = FindProperty("_StencilReference", props);
             stencilComparison = FindProperty(Styles.stencilComparisonName, props);
             stencilOperation = FindProperty(Styles.stencilOperationName, props);
+            ignoreZScale = FindProperty("_IgnoreZScale", props);
         }
 
         public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] props)
@@ -511,36 +508,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(vertexExtrusionValue, Styles.vertexExtrusionValue, 2);
             }
 
-            materialEditor.ShaderProperty(clippingPlane, Styles.clippingPlane);
-
-            if (PropertyEnabled(clippingPlane))
+            if ((RenderingMode)renderingMode.floatValue != RenderingMode.Opaque &&
+                (RenderingMode)renderingMode.floatValue != RenderingMode.TransparentCutout)
             {
-                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPlane), Styles.clippingPlane.text), EditorStyles.helpBox, new GUILayoutOption[0]);
+                materialEditor.ShaderProperty(blendedClippingWidth, Styles.blendedClippingWidth);
+                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPrimitive), "other clipping"), EditorStyles.helpBox, new GUILayoutOption[0]);
             }
 
-            materialEditor.ShaderProperty(clippingSphere, Styles.clippingSphere);
+            materialEditor.ShaderProperty(clippingBorder, Styles.clippingBorder);
 
-            if (PropertyEnabled(clippingSphere))
+            if (PropertyEnabled(clippingBorder))
             {
-                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingSphere), Styles.clippingSphere.text), EditorStyles.helpBox, new GUILayoutOption[0]);
-            }
-
-            materialEditor.ShaderProperty(clippingBox, Styles.clippingBox);
-
-            if (PropertyEnabled(clippingBox))
-            {
-                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingBox), Styles.clippingBox.text), EditorStyles.helpBox, new GUILayoutOption[0]);
-            }
-
-            if (PropertyEnabled(clippingPlane) || PropertyEnabled(clippingSphere) || PropertyEnabled(clippingBox))
-            {
-                materialEditor.ShaderProperty(clippingBorder, Styles.clippingBorder);
-                
-                if (PropertyEnabled(clippingBorder))
-                {
-                    materialEditor.ShaderProperty(clippingBorderWidth, Styles.clippingBorderWidth, 2);
-                    materialEditor.ShaderProperty(clippingBorderColor, Styles.clippingBorderColor, 2);
-                }
+                materialEditor.ShaderProperty(clippingBorderWidth, Styles.clippingBorderWidth, 2);
+                materialEditor.ShaderProperty(clippingBorderColor, Styles.clippingBorderColor, 2);
+                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPrimitive), "other clipping"), EditorStyles.helpBox, new GUILayoutOption[0]);
             }
 
             materialEditor.ShaderProperty(nearPlaneFade, Styles.nearPlaneFade);
@@ -725,6 +706,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // is still set even when the CompareFunction.Disabled is selected, but this does not seem to affect performance.
                 material.SetInt(Styles.stencilComparisonName, (int)CompareFunction.Disabled);
                 material.SetInt(Styles.stencilOperationName, (int)StencilOp.Keep);
+            }
+
+            if (ScaleRequired())
+            {
+                materialEditor.ShaderProperty(ignoreZScale, Styles.ignoreZScale);
             }
         }
 

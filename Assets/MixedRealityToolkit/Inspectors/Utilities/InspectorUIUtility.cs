@@ -38,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly string Emoji = "\u263A";
 
         public static readonly Texture HelpIcon = EditorGUIUtility.IconContent("_Help").image;
+        public static readonly Texture SuccessIcon = EditorGUIUtility.IconContent("Collab").image;
+        public static readonly Texture WarningIcon = EditorGUIUtility.IconContent("console.warnicon").image;
+        public static readonly Texture InfoIcon = EditorGUIUtility.IconContent("console.infoicon").image;
 
         /// <summary>
         /// A data container for managing scrolling lists or nested drawers in custom inspectors.
@@ -408,11 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void DrawDivider()
         {
-            GUIStyle styleHR = new GUIStyle(GUI.skin.box);
-            styleHR.stretchWidth = true;
-            styleHR.fixedHeight = 1;
-            styleHR.border = new RectOffset(1, 1, 1, 0);
-            GUILayout.Box("", styleHR);
+            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
         }
 
         /// <summary>
@@ -425,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="open"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static bool DrawSectionStart(string headerName, int indent, bool open = true, FontStyle style = FontStyle.Bold, bool toUpper = true, int size = 0)
+        public static bool DrawSectionFoldout(string headerName, bool open = true, FontStyle style = FontStyle.Bold, int size = 0)
         {
             GUIStyle sectionStyle = new GUIStyle(EditorStyles.foldout);
             sectionStyle.fontStyle = style;
@@ -434,30 +433,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 sectionStyle.fontSize = size;
                 sectionStyle.fixedHeight = size * 2;
             }
-            Color tColor = GUI.color;
-            GUI.color = MixedRealityInspectorUtility.SectionColor;
-
-            if (toUpper)
-            {
-                headerName = headerName.ToUpper();
-            }
 
             bool drawSection = false;
-            drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
-            EditorGUILayout.BeginVertical();
-            GUI.color = tColor;
-            EditorGUI.indentLevel = indent;
+
+            // To make foldout render properly, indent only this control
+            using (new EditorGUI.IndentLevelScope())
+            {
+                drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
+            }
 
             return drawSection;
-        }
-
-        /// <summary>
-        /// Draws section end (initiated by next Header attribute)
-        /// </summary>
-        public static void DrawSectionEnd(int indent)
-        {
-            EditorGUILayout.EndVertical();
-            EditorGUI.indentLevel = indent;
         }
 
         /// <summary>

@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             inputSimulationService.UserInputEnabled = false;
             ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(ArticulatedHandPose.GestureId.Open);
-            var handOpenPose = PlayModeTestUtilities.GenerateHandPose(ArticulatedHandPose.GestureId.Open, Handedness.Right, Vector3.forward * 0.1f);
+            var handOpenPose = PlayModeTestUtilities.GenerateHandPose(ArticulatedHandPose.GestureId.Open, Handedness.Right, Vector3.forward * 0.1f, Quaternion.identity);
             inputSimulationService.HandDataRight.Update(true, false, handOpenPose);
             yield return null;
             // Gaze cursor should not be visible
@@ -69,6 +69,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             inputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
             yield return null;
             Assert.IsTrue(inputSystem.GazeProvider.GazePointer.IsInteractionEnabled, "Gaze cursor should be visible after select command");
+        }
+
+        /// <summary>
+        /// Ensure that the gaze provider hit result is not null when looking at an object,
+        /// even when the hand is up
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestGazeProviderTargetNotNull()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.forward;
+
+            yield return null;
+
+            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object");
+
+            TestHand h = new TestHand(Handedness.Right);
+            yield return h.Show(Vector3.forward * 0.2f);
+            yield return null;
+
+            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object with hand raised");
         }
     }
 }

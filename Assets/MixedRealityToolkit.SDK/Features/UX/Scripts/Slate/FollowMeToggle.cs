@@ -6,31 +6,32 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    [RequireComponent(typeof(RadialView))]
     public class FollowMeToggle : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("An opional object for visualizing the carry mode state")]
+        [Tooltip("An opional object for visualizing the 'Follow Me' mode state")]
         private GameObject visualizationObject = null;
 
-        private Orbital orbital = null;
+        private RadialView radialView = null;
 
         private void Start()
         {
-            // Get Orbital Solver component
-            orbital = GetComponent<Orbital>();
+            // Get Radial Solver component
+            radialView = GetComponent<RadialView>();
         }
 
         public void ToggleFollowMeBehavior()
         {
-            if (orbital != null)
+            if (radialView != null)
             {
-                // Toggle Orbital Solver component
+                // Toggle Radial Solver component
                 // You can tweak the detailed positioning behavior such as offset, lerping time, orientation type in the Inspector panel
-                orbital.enabled = !orbital.enabled;
+                radialView.enabled = !radialView.enabled;
 
                 if(visualizationObject != null)
                 {
-                    visualizationObject.SetActive(orbital.enabled);
+                    visualizationObject.SetActive(radialView.enabled);
                 }
             }
 

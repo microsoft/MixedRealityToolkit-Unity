@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        protected SimulatedHand GetHandDevice(Handedness handedness)
+        public SimulatedHand GetHandDevice(Handedness handedness)
         {
             if (trackedHands.TryGetValue(handedness, out SimulatedHand controller))
             {

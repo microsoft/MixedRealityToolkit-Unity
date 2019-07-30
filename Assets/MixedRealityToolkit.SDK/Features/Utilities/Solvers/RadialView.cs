@@ -118,6 +118,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
+        [Tooltip("Ignore vertical movement and lock the Y position of the object")]
+        private bool useFixedVerticalPosition = false;
+
+        /// <summary>
+        /// Ignore vertical movement and lock the Y position of the object.
+        /// </summary>
+        public bool UseFixedVerticalPosition
+        {
+            get { return useFixedVerticalPosition; }
+            set { useFixedVerticalPosition = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Offset amount of the vertical position")]
+        private float fixedVerticalPosition = -0.4f;
+
+        /// <summary>
+        /// Offset amount of the vertical position.
+        /// </summary>
+        public float FixedVerticalPosition
+        {
+            get { return fixedVerticalPosition; }
+            set { fixedVerticalPosition = value; }
+        }
+
+        [SerializeField]
         [Tooltip("If true, element will orient to ReferenceDirection, otherwise it will orient to ref position.")]
         private bool orientToReferenceDirection = false;
 
@@ -196,11 +222,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 goalRotation.x = goalRotation.z = 0f;
             }
 
+            if (UseFixedVerticalPosition)
+            {
+                goalPosition.y = ReferencePoint.y + FixedVerticalPosition;
+            }
+
             GoalPosition = goalPosition;
             GoalRotation = goalRotation;
-
-            UpdateWorkingPositionToGoal();
-            UpdateWorkingRotationToGoal();
         }
 
         /// <summary>

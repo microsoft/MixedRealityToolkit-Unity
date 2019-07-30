@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public static class TestUtilities
     {
         const float vector3DistanceEpsilon = 0.01f;
+        const float quaternionAngleEpsilon = 0.01f;
 
         const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
@@ -153,6 +154,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 MixedRealityToolkit.ConfirmInitialized();
             }
 
+            // Todo: this condition shouldn't be here.
+            // It's here due to some edit mode tests initializing Mrtk instance in Edit mode, causing some of 
+            // event handler registration to live over tests and cause next tests to fail.
+            // Exact reason requires investigation.
+            if (Application.isPlaying)
+            {
+                BaseEventSystem.enableDanglingHandlerDiagnostics = true;
+            }
+
             // Tests
             Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
@@ -171,7 +181,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void ShutdownMixedRealityToolkit()
         {
             MixedRealityToolkit.SetInstanceInactive(MixedRealityToolkit.Instance);
-            MixedRealityPlayspace.Destroy();
+            if (Application.isPlaying)
+            {
+                MixedRealityPlayspace.Destroy();
+            }
+
+            BaseEventSystem.enableDanglingHandlerDiagnostics = false;
         }
 
         private static T GetDefaultMixedRealityProfile<T>() where T : BaseMixedRealityProfile
@@ -187,6 +202,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var dist = (actual - expected).magnitude;
             Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+        }
+
+        public static void AssertAboutEqual(Quaternion actual, Quaternion expected, string message)
+        {
+            var angle = Quaternion.Angle(actual, expected);
+            Debug.Assert(angle < quaternionAngleEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+        }
+
+        public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message)
+        {
+            var dist = (val1 - val2).magnitude;
+            Debug.Assert(dist >= vector3DistanceEpsilon, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+        }
+
+        public static void AssertNotAboutEqual(Quaternion val1, Quaternion val2, string message)
+        {
+            var angle = Quaternion.Angle(val1, val2);
+            Debug.Assert(angle >= quaternionAngleEpsilon, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
     }
 }
