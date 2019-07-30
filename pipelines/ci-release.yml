@@ -15,7 +15,7 @@ jobs:
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
-  - template: templates/common.yml
+  - template: templates/compilemsbuild.yml
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.SourcesDirectory)\NuGet'

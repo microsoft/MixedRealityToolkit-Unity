@@ -20,7 +20,7 @@ To get started with the Mixed Reality Toolkit you will need:
   when building for OpenVR.
 
 
-# MR Learning Base Module Tutortial 
+# MR Learning Base Module Tutorial 
 If you are new to MRTK, or MR development, we recommend you check out the [MR Learning Base Module](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2.
 
 
