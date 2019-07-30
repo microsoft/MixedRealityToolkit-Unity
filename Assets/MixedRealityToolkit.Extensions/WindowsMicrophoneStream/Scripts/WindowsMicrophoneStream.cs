@@ -8,6 +8,8 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
 {
+    #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+
     /// <summary>
     /// Allows the selection and control of a specific microphone type on Microsoft Windows platforms, including HoloLens.
     /// </summary>
@@ -308,4 +310,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Audio
 
 #endregion MicStream.dll methods
     }
+
+    #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 }

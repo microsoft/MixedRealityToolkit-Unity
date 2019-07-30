@@ -6,7 +6,8 @@
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Microsoft.MixedReality.Toolkit.WindowsMicStream"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
