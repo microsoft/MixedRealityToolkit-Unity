@@ -444,10 +444,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // This delay is purely for visual flow
             await Task.Delay(100);
-            string inspectorAsset = CreateTextAssetFromTemplate(InspectorTemplate);
-            WriteTextAssetToDisk(inspectorAsset, InspectorName, InspectorFolderPath);
-            if (Result == CreateResult.Error)
-                return;
+            if (UsesInspector)
+            {
+                string inspectorAsset = CreateTextAssetFromTemplate(InspectorTemplate);
+                WriteTextAssetToDisk(inspectorAsset, InspectorName, InspectorFolderPath);
+                if (Result == CreateResult.Error)
+                    return;
+            }
 
             // This delay is purely for visual flow
             await Task.Delay(100);
