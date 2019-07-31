@@ -30,7 +30,7 @@ By default, the observer is configured with an example model. This model was cre
 
 ### Windows Device Portal
 
-The Windows Device Portal <link> can be used to download the spatial mesh, as a .obj file, from a Microsoft HoloLens device.
+The [Windows Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal) can be used to download the spatial mesh, as a .obj file, from a Microsoft HoloLens device.
 
 1. Scan your environment
 1. Connect to your HoloLens using the Windows Device Portal
@@ -74,7 +74,7 @@ The observer does not attempt to find 3D model LODs when sending the meshes to t
 - [Mixed Reality Toolkit Profile configuration guide](..\MixedRealityConfigurationGuide.md) 
 - [Spatial Awareness](SpatialAwarenessGettingStarted.md)
 - [Configuring the Spatial Awareness Mesh Observer](ConfiguringSpatialAwarenessMeshObserver.md)
-- << device portal docs
+- [Using the Windows Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal)
 
 
 
