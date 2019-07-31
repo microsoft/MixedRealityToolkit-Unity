@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Extensions;
+using Microsoft.MixedReality.Toolkit;
 using UnityEngine;
 using UnityEditor;
 

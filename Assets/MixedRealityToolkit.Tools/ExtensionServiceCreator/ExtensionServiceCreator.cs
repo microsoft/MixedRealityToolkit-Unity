@@ -444,10 +444,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // This delay is purely for visual flow
             await Task.Delay(100);
-            string inspectorAsset = CreateTextAssetFromTemplate(InspectorTemplate);
-            WriteTextAssetToDisk(inspectorAsset, InspectorName, InspectorFolderPath);
-            if (Result == CreateResult.Error)
-                return;
+            if (UsesInspector)
+            {
+                string inspectorAsset = CreateTextAssetFromTemplate(InspectorTemplate);
+                WriteTextAssetToDisk(inspectorAsset, InspectorName, InspectorFolderPath);
+                if (Result == CreateResult.Error)
+                    return;
+            }
 
             // This delay is purely for visual flow
             await Task.Delay(100);
@@ -517,10 +520,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             try
             {
-                ScriptableObject profileInstance = ScriptableObject.CreateInstance(DefaultExtensionNamespace + "." + ProfileName);
+                ScriptableObject profileInstance = ScriptableObject.CreateInstance(Namespace + "." + ProfileName);
                 if (profileInstance == null)
                 {
-                    creationLog.Add("Couldn't create instance of profile class " + DefaultExtensionNamespace + "." + ProfileName + " - aborting");
+                    creationLog.Add("Couldn't create instance of profile class " + Namespace + "." + ProfileName + " - aborting");
                     Result = CreateResult.Error;
                     return;
                 }
@@ -587,7 +590,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             scriptContents = scriptContents.Replace(InterfaceNameSearchString, InterfaceName);
             scriptContents = scriptContents.Replace(ProfileNameSearchString, ProfileName);
             scriptContents = scriptContents.Replace(ProfileFieldNameSearchString, ProfileFieldName);
-            scriptContents = scriptContents.Replace(ExtensionNamespaceSearchString, DefaultExtensionNamespace);
+            scriptContents = scriptContents.Replace(ExtensionNamespaceSearchString, Namespace);
 
             List<string> platformValues = new List<string>();
             foreach (SupportedPlatforms platform in Enum.GetValues(typeof(SupportedPlatforms)))
