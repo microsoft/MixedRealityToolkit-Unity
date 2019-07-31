@@ -83,33 +83,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region paths
 
-        private string ExtensionsFolder
-        {
-            get
-            {
-                return MixedRealityToolkitFiles.MapModulePath(MixedRealityToolkitModuleType.Extensions);
-            }
-        }
-
-        private string ServiceTemplatePath
-        {
-            get => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionScriptTemplate.txt");
-        }
-
-        private string InspectorTemplatePath
-        {
-            get => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionInspectorTemplate.txt");
-        }
-
-        private string InterfaceTemplatePath
-        {
-            get => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionInterfaceTemplate.txt");
-        }
-
-        private string ProfileTemplatePath
-        {
-            get => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionProfileTemplate.txt");
-        }
+        private string ExtensionsFolder => MixedRealityToolkitFiles.MapModulePath(MixedRealityToolkitModuleType.Extensions);
+        private string ServiceTemplatePath => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionScriptTemplate.txt");
+        private string InspectorTemplatePath => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionInspectorTemplate.txt");
+        private string InterfaceTemplatePath => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionInterfaceTemplate.txt");
+        private string ProfileTemplatePath => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionProfileTemplate.txt");
         
         #endregion
 
