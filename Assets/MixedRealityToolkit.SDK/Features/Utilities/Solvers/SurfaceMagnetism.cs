@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
@@ -77,6 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Max distance for raycast to check for surfaces")]
+        [FormerlySerializedAs("maxDistance")]
         private float maxRaycastDistance = 50.0f;
 
         /// <summary>
@@ -88,14 +91,35 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set { maxRaycastDistance = value; }
         }
 
+        /// <summary>
+        /// Max distance for raycast to check for surfaces
+        /// </summary>
+        [Obsolete("Use MaxRaycastDistance instead")]
+        public float MaxDistance
+        {
+            get { return maxRaycastDistance; }
+            set { maxRaycastDistance = value; }
+        }
+
         [SerializeField]
         [Tooltip("Closest distance to bring object")]
+        [FormerlySerializedAs("closeDistance")]
         private float closestDistance = 0.5f;
 
         /// <summary>
         /// Closest distance to bring object
         /// </summary>
         public float ClosestDistance
+        {
+            get { return closestDistance; }
+            set { closestDistance = value; }
+        }
+
+        /// <summary>
+        /// Closest distance to bring object
+        /// </summary>
+        [Obsolete("Use ClosestDistance instead")]
+        public float CloseDistance
         {
             get { return closestDistance; }
             set { closestDistance = value; }

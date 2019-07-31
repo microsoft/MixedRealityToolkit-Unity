@@ -48,11 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             EditorGUILayout.PropertyField(partwayOffsetProperty);
 
             serializedObject.ApplyModifiedProperties();
-
-            if (Application.isPlaying && objectChanged)
-            {
-                //solverInBetween.AttachSecondTransformToNewTrackedObject();
-            }
         }
     }
 }

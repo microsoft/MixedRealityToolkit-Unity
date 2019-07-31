@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class SolverTests : BasePlayModeTests
     {
-        private const float DistanceThreshold = 2.5f;
+        private const float DistanceThreshold = 1.5f;
         private const float SolverUpdateWaitTime = 2.0f; //seconds
         /// <summary>
         /// Internal class used to store data for setup
@@ -74,11 +74,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return new WaitForSeconds(SolverUpdateWaitTime);
 
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, Vector3.zero), DistanceThreshold);
+            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, Camera.main.transform.position), DistanceThreshold);
 
             // Test orbital around custom override
             testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
-            testObjects.handler.SetTransformOverride(transformOverride.transform);
+            testObjects.handler.TransformOverride = transformOverride.transform;
 
             yield return new WaitForSeconds(SolverUpdateWaitTime);
 
@@ -112,6 +112,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Test orbital around left hand
             yield return TestHandSolver(testObjects.target, inputSimulationService, leftHandPos, Handedness.Left);
+
+            // Test orbital with both hands visible
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Left, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, leftHandPos);
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, rightHandPos);
+
+            // Give time for cube to float to hand
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            Vector3 handOrbitalPos = testObjects.target.transform.position;
+            Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, leftHandPos), DistanceThreshold);
         }
 
         /// <summary>
@@ -182,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testObjects = InstantiateTestSolver<InBetween>();
 
             testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
-            testObjects.handler.SetTransformOverride(leftPost.transform);
+            testObjects.handler.TransformOverride = leftPost.transform;
 
             InBetween inBetween = testObjects.solver as InBetween;
             Assert.IsNotNull(inBetween, "Solver cast to InBetween is null");

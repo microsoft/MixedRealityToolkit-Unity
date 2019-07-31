@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -40,12 +41,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             bool trackedObjectChanged = false;
 
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(trackedTargetProperty);
+
+            solverHandler.TrackedTargetType = (TrackedObjectType)EditorGUILayout.EnumPopup(new GUIContent("Tracked Target Type"), solverHandler.TrackedTargetType, null, false);
+            if (!SolverHandler.IsValidTrackedObjectType(solverHandler.TrackedTargetType))
+            {
+                InspectorUIUtility.DrawWarning(" Current Tracked Target Type value of \"" 
+                    + Enum.GetName(typeof(TrackedObjectType), solverHandler.TrackedTargetType) 
+                    + "\" is obsolete. Select MotionController or HandJoint values instead");
+            }
 
             if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint ||
                 trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.MotionController)
             {
                 EditorGUILayout.PropertyField(trackedHandnessProperty);
+                if (trackedHandnessProperty.enumValueIndex > (int)Handedness.Both)
+                {
+                    InspectorUIUtility.DrawWarning("Only Handedness values of None, Left, Right, and Both are valid");
+                }
             }
 
             if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint)

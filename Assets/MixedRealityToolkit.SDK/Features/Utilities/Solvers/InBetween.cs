@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
@@ -27,12 +29,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [SerializeField]
         [Tooltip("Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field.")]
         [HideInInspector]
+        [FormerlySerializedAs("trackedObjectForSecondTransform")]
         private TrackedObjectType secondTrackedObjectType = TrackedObjectType.Head;
 
         /// <summary>
         /// Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field.
         /// </summary>
         public TrackedObjectType SecondTrackedObjectType
+        {
+            get { return secondTrackedObjectType; }
+            set
+            {
+                if (secondTrackedObjectType != value)
+                {
+                    secondTrackedObjectType = value;
+                    UpdateSecondSolverHandler();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field.
+        /// </summary>
+        [Obsolete("Use SecondTrackedObjectType property instead")]
+        public TrackedObjectType TrackedObjectForSecondTransform
         {
             get { return secondTrackedObjectType; }
             set
@@ -110,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 if (secondTrackedObjectType == TrackedObjectType.CustomOverride && secondTransformOverride != null)
                 {
-                    secondSolverHandler.SetTransformOverride(secondTransformOverride);
+                    secondSolverHandler.TransformOverride = secondTransformOverride;
                 }
             }
         }

@@ -2,8 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
@@ -14,12 +16,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     {
         [SerializeField]
         [Tooltip("Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.")]
+        [FormerlySerializedAs("trackedObjectToReference")]
         private TrackedObjectType trackedTargetType = TrackedObjectType.Head;
 
         /// <summary>
         /// Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.
         /// </summary>
         public TrackedObjectType TrackedTargetType
+        {
+            get { return trackedTargetType; }
+            set
+            {
+                if (trackedTargetType != value && IsValidTrackedObjectType(value))
+                {
+                    trackedTargetType = value;
+                    RefreshTrackedObject();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.
+        /// </summary>
+        [Obsolete("Use TrackedTargetType instead")]
+        public TrackedObjectType TrackedObjectToReference
         {
             get { return trackedTargetType; }
             set
@@ -37,14 +57,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private Handedness trackedHandness = Handedness.Both;
 
         /// <summary>
-        /// If tracking hands or motion controllers, determines which hand(s) are valid attachments
+        /// If tracking hands or motion controllers, determines which hand(s) are valid attachments. Only None, Left, Right, & Both are valid
         /// </summary>
         public Handedness TrackedHandness
         {
             get { return trackedHandness; }
             set
             {
-                if (trackedHandness != value)
+                if (trackedHandness != value && IsValidHandedness(value))
                 {
                     trackedHandness = value;
                     RefreshTrackedObject();
@@ -75,6 +95,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [SerializeField]
         [Tooltip("Manual override for when TrackedTargetType is set to CustomOverride")]
         private Transform transformOverride;
+
+        /// <summary>
+        /// Manual override for when TrackedTargetType is set to CustomOverride
+        /// </summary>
+        public Transform TransformOverride
+        {
+            set
+            {
+                if (value != null && transformOverride != value)
+                {
+                    transformOverride = value;
+                    RefreshTrackedObject();
+                }
+            }
+        }
 
         [SerializeField]
         [Tooltip("Add an additional offset of the tracked object to base the solver on. Useful for tracking something like a halo position above your head or off the side of a controller.")]
@@ -192,13 +227,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
-
         // Stores currently attached hand if valid (only possible values Left, Right, or None)
         protected Handedness currentTrackedHandedness = Handedness.None;
 
         /// <summary>
         /// Currently tracked hand or motion controller if applicable
         /// </summary>
+        /// /// <remarks>
+        /// Only possible values Left, Right, or None
+        /// </remarks>
         public Handedness CurrentTrackedHandedness
         {
             get
@@ -240,6 +277,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             AltScale = new Vector3Smoothed(Vector3.one, 0.1f);
             DeltaTime = Time.deltaTime;
             lastUpdateTime = Time.realtimeSinceStartup;
+
+            if (!IsValidHandedness(trackedHandness))
+            {
+                Debug.LogError("Using invalid SolverHandler.TrackedHandness value. Defaulting to Handedness.Both");
+                TrackedHandness = Handedness.Both;
+            }
+
+            if (!IsValidTrackedObjectType(trackedTargetType))
+            {
+                Debug.LogError("Using Obsolete SolverHandler.TrackedTargetType. Defaulting to type Head");
+                TrackedTargetType = TrackedObjectType.Head;
+            }
         }
 
         private void Start()
@@ -292,15 +341,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             AttachToNewTrackedObject();
         }
 
-        public void SetTransformOverride(Transform target)
-        {
-            if (target != null)
-            {
-                this.transformOverride = target;
-                RefreshTrackedObject();
-            }
-        }
-
         protected virtual void DetachFromCurrentTrackedObject()
         {
             if (trackingTarget != null)
@@ -321,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
             else if (TrackedTargetType == TrackedObjectType.MotionController)
             {
-                if (this.TrackedHandness == Handedness.Both || this.TrackedHandness == Handedness.Any)
+                if (this.TrackedHandness == Handedness.Both)
                 {
                     this.currentTrackedHandedness = Handedness.Left;
                     target = GetMotionController(Handedness.Left);
@@ -346,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 if (HandJointService != null)
                 {
                     this.currentTrackedHandedness = this.TrackedHandness;
-                    if (currentTrackedHandedness == Handedness.Both || currentTrackedHandedness == Handedness.Any)
+                    if (currentTrackedHandedness == Handedness.Both)
                     {
                         if (HandJointService.IsHandTracked(Handedness.Left))
                         {
@@ -362,7 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         }
                     }
 
-                    target = HandJointService?.RequestJointTransform(this.TrackedHandJoint, currentTrackedHandedness);
+                    target = HandJointService.RequestJointTransform(this.TrackedHandJoint, currentTrackedHandedness);
                 }
             }
             else if (TrackedTargetType == TrackedObjectType.CustomOverride)
@@ -412,7 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Returns true if the solver handler's transform target is not valid
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true if not tracking valid hands and/or target, false otherwise</returns>
         private bool IsInvalidTracking()
         {
             if (this.trackingTarget == null) return true;
@@ -430,6 +470,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             return false;
+        }
+
+        public static bool IsValidHandedness(Handedness hand)
+        {
+            return hand < Handedness.Both;
+        }
+
+        public static bool IsValidTrackedObjectType(TrackedObjectType type)
+        {
+            return type == TrackedObjectType.Head || type >= TrackedObjectType.MotionController;
         }
 
     }

@@ -78,27 +78,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             EditorGUILayout.PropertyField(currentRaycastDirectionModeProperty);
             EditorGUILayout.PropertyField(raycastModeProperty);
 
-            if (raycastModeProperty.enumValueIndex != (int)SceneQueryType.SphereOverlap)
+            // Draw properties dependent on type of raycast direction mode selected
+            switch (raycastModeProperty.enumValueIndex)
             {
-                if (raycastModeProperty.enumValueIndex != (int)SceneQueryType.SimpleRaycast)
-                {
-                    if (raycastModeProperty.enumValueIndex == (int)SceneQueryType.BoxRaycast)
-                    {
-                        EditorGUILayout.PropertyField(boxRaysPerEdgeProperty);
-                        EditorGUILayout.PropertyField(orthographicBoxCastProperty);
-                        EditorGUILayout.PropertyField(maximumNormalVarianceProperty);
-                    }
-                    else if (raycastModeProperty.enumValueIndex == (int)SceneQueryType.SphereCast)
-                    {
-                        EditorGUILayout.PropertyField(sphereSizeProperty);
-                    }
-
-                    EditorGUILayout.PropertyField(volumeCastSizeOverrideProperty);
-                }
+                case (int)SceneQueryType.BoxRaycast:
+                    EditorGUILayout.PropertyField(boxRaysPerEdgeProperty);
+                    EditorGUILayout.PropertyField(orthographicBoxCastProperty);
+                    EditorGUILayout.PropertyField(maximumNormalVarianceProperty);
+                    break;
+                case (int)SceneQueryType.SphereCast:
+                    EditorGUILayout.PropertyField(sphereSizeProperty);
+                    break;
+                case (int)SceneQueryType.SphereOverlap:
+                    InspectorUIUtility.DrawWarning("SurfaceMagnetism does not support SphereOverlap raycast mode");
+                    break;
             }
-            else
+
+            if (raycastModeProperty.enumValueIndex != (int)SceneQueryType.SimpleRaycast &&
+                raycastModeProperty.enumValueIndex != (int)SceneQueryType.SphereOverlap)
             {
-                InspectorUIUtility.DrawWarning("SurfaceMagnetism does not support SphereOverlap raycast mode");
+                EditorGUILayout.PropertyField(volumeCastSizeOverrideProperty);
             }
 
             // Other properties
