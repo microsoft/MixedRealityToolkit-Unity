@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.UI.Editor
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(Interactable))]
@@ -32,7 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected bool hasProfileLayout;
 
-        protected List<InspectorUIUtility.ListSettings> listSettings;
         protected GUIStyle boxStyle;
         private SerializedProperty tempSettings;
         private const int ThemePropertiesBoxMargin = 30;
@@ -51,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             eventList = instance.Events;
 
             profileList = serializedObject.FindProperty("Profiles");
-            listSettings = InspectorUIUtility.AdjustListSettings(null, profileList.arraySize);
             showProfiles = EditorPrefs.GetBool(ShowProfilesPrefKey, showProfiles);
 
             SetupEventOptions();
@@ -288,7 +286,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             #region Profiles
 
             bool isProfilesOpen = InspectorUIUtility.DrawSectionFoldout("Profiles", showProfiles, FontStyle.Bold, InspectorUIUtility.TitleFontSize);
-
             if (showProfiles != isProfilesOpen)
             {
                 showProfiles = isProfilesOpen;
@@ -305,193 +302,121 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (showProfiles)
             {
+                // Render all profile items
                 for (int i = 0; i < profileList.arraySize; i++)
                 {
-                    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-
-                    // get profiles
-                    SerializedProperty sItem = profileList.GetArrayElementAtIndex(i);
-                    SerializedProperty gameObject = sItem.FindPropertyRelative("Target");
-                    string targetName = "Profile " + (i + 1);
-                    if (gameObject.objectReferenceValue != null)
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                     {
-                        targetName = gameObject.objectReferenceValue.name;
-                        validProfileCnt++;
-                    }
+                        SerializedProperty sItem = profileList.GetArrayElementAtIndex(i);
+                        SerializedProperty gameObject = sItem.FindPropertyRelative("Target");
 
-                    EditorGUILayout.BeginHorizontal();
-
-                        EditorGUILayout.PropertyField(gameObject, new GUIContent("Target", "Target gameObject for this theme properties to manipulate"));
-                        bool triggered = InspectorUIUtility.SmallButton(new GUIContent(InspectorUIUtility.Minus, "Remove Profile"), i, RemoveProfile);
-
-                        if (triggered)
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            continue;
-                        }
-
-                    EditorGUILayout.EndHorizontal();
-
-                    // get themes
-                    SerializedProperty themes = sItem.FindPropertyRelative("Themes");
-
-                    // make sure there are enough themes as dimensions
-                    if (themes.arraySize > dimensions.intValue)
-                    {
-                        // make sure there are not more themes than dimensions
-                        int cnt = themes.arraySize - 1;
-                        for (int j = cnt; j > dimensions.intValue - 1; j--)
-                        {
-                            themes.DeleteArrayElementAtIndex(j);
-                        }
-                    }
-
-                    // add themes when increasing dimensions
-                    if (themes.arraySize < dimensions.intValue)
-                    {
-                        int cnt = themes.arraySize;
-                        for (int j = cnt; j < dimensions.intValue; j++)
-                        {
-                            themes.InsertArrayElementAtIndex(themes.arraySize);
-                            SerializedProperty theme = themes.GetArrayElementAtIndex(themes.arraySize - 1);
-
-                            string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme");
-                            if (themeLocations.Length > 0)
+                            EditorGUILayout.PropertyField(gameObject, new GUIContent("Target", "Target gameObject for this theme properties to manipulate"));
+                            if (InspectorUIUtility.SmallButton(new GUIContent(InspectorUIUtility.Minus, "Remove Profile"), i, RemoveProfile))
                             {
-                                for (int k = 0; k < themeLocations.Length; k++)
-                                {
-                                    string path = AssetDatabase.GUIDToAssetPath(themeLocations[k]);
-                                    Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
-                                    if (defaultTheme != null)
-                                    {
-                                        theme.objectReferenceValue = defaultTheme;
-                                        break;
-                                    }
-                                }
+                                continue;
                             }
                         }
-                    }
 
-                    // Render all themes for current target
-                    for (int t = 0; t < themes.arraySize; t++)
-                    {
-                        SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
-                        string themeLabel = BuildThemeTitle(selectionMode, t);
+                        SerializedProperty themes = sItem.FindPropertyRelative("Themes");
+                        ValidateThemes(dimensions, themes);
 
-                        EditorGUILayout.PropertyField(themeItem, new GUIContent(themeLabel, "Theme properties for interaction feedback"));
-
-                        if (themeItem.objectReferenceValue != null && gameObject.objectReferenceValue)
+                        // Render all themes for current target
+                        for (int t = 0; t < themes.arraySize; t++)
                         {
-                            if (themeItem.objectReferenceValue.name == "DefaultTheme")
+                            SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
+                            string themeLabel = BuildThemeTitle(selectionMode, t);
+
+                            EditorGUILayout.PropertyField(themeItem, new GUIContent(themeLabel, "Theme properties for interaction feedback"));
+
+                            if (themeItem.objectReferenceValue != null && gameObject.objectReferenceValue)
                             {
-                                EditorGUILayout.BeginHorizontal();
+                                if (themeItem.objectReferenceValue.name == "DefaultTheme")
+                                {
+                                    EditorGUILayout.BeginHorizontal();
                                     InspectorUIUtility.DrawWarning("DefaultTheme should not be edited.  ");
-                                    bool newTheme = InspectorUIUtility.FlexButton(new GUIContent("Create Theme", "Create a new theme"), new int[] { i, t, 0 }, CreateTheme);
-                                    if (newTheme)
+                                    if (InspectorUIUtility.FlexButton(new GUIContent("Create Theme", "Create a new theme"), new int[] { i, t, 0 }, CreateTheme))
                                     {
                                         continue;
                                     }
-                                EditorGUILayout.EndHorizontal();
-                            }
-
-                            SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
-                            hadDefault.boolValue = true;
-                            string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
-                            bool hasPref = EditorPrefs.HasKey(prefKey);
-                            bool showSettings = EditorPrefs.GetBool(prefKey);
-                            if (!hasPref)
-                            {
-                                showSettings = true;
-                            }
-
-                            InspectorUIUtility.ListSettings settings = listSettings[i];
-                            bool show = InspectorUIUtility.DrawSectionFoldout(themeItem.objectReferenceValue.name + " (Click to edit)", showSettings, FontStyle.Normal);
-
-                            if (show != showSettings)
-                            {
-                                EditorPrefs.SetBool(prefKey, show);
-                                settings.Show = show;
-                            }
-
-                            if (show)
-                            {
-                                SerializedObject themeObj = new SerializedObject(themeItem.objectReferenceValue);
-                                SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
-                                themeObj.Update();
-
-                                GUILayout.Space(5);
-
-                                if (themeObjSettings.arraySize < 1)
-                                {
-                                    AddThemeProperty(new int[] { i, t, 0 });
+                                    EditorGUILayout.EndHorizontal();
                                 }
 
-                                int[] location = new int[] { i, t, 0 };
-                                State[] iStates = GetStates();
+                                SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
+                                hadDefault.boolValue = true;
 
-                                ThemeInspector.RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location, iStates, ThemePropertiesBoxMargin);
-                                InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), location, AddThemeProperty);
-                                ThemeInspector.RenderThemeStates(themeObjSettings, iStates, ThemePropertiesBoxMargin);
-
-                                themeObj.ApplyModifiedProperties();
-                            }
-                            listSettings[i] = settings;
-
-                            validProfileCnt++;
-                        }
-                        else
-                        {
-                            // show message about profile setup
-                            string themeMsg = "Assign a ";
-                            if (gameObject.objectReferenceValue == null)
-                            {
-                                themeMsg += "Target ";
-                            }
-
-                            if (themeItem.objectReferenceValue == null)
-                            {
-                                if (gameObject.objectReferenceValue == null)
+                                string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
+                                bool showSettingsPref = EditorPrefs.GetBool(prefKey, true);
+                                bool show = InspectorUIUtility.DrawSectionFoldout(themeItem.objectReferenceValue.name + " (Click to edit)", showSettingsPref, FontStyle.Normal);
+                                if (show != showSettingsPref)
                                 {
-                                    themeMsg += "and ";
+                                    EditorPrefs.SetBool(prefKey, show);
                                 }
-                                themeMsg += "Theme ";
-                            }
 
-                            themeMsg += "above to add visual effects";
-                            SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
-
-                            if (!hadDefault.boolValue && t == 0)
-                            {
-                                string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme");
-                                if (themeLocations.Length > 0)
+                                if (show)
                                 {
-                                    for (int j = 0; j < themeLocations.Length; j++)
+                                    SerializedObject themeObj = new SerializedObject(themeItem.objectReferenceValue);
+                                    SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
+                                    themeObj.Update();
+
+                                    GUILayout.Space(5);
+
+                                    if (themeObjSettings.arraySize < 1)
                                     {
-                                        string path = AssetDatabase.GUIDToAssetPath(themeLocations[0]);
-                                        Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
-                                        if (defaultTheme != null)
+                                        AddThemeProperty(new int[] { i, t, 0 });
+                                    }
+
+                                    int[] location = new int[] { i, t, 0 };
+                                    State[] iStates = GetStates();
+
+                                    ThemeInspector.RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location, iStates, ThemePropertiesBoxMargin);
+                                    InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), location, AddThemeProperty);
+                                    ThemeInspector.RenderThemeStates(themeObjSettings, iStates, ThemePropertiesBoxMargin);
+
+                                    themeObj.ApplyModifiedProperties();
+                                }
+
+                                validProfileCnt++;
+                            }
+                            else
+                            {
+                                // show message about profile setup
+                                const string themeMsg = "Assign a Target and/or Theme above to add visual effects";
+                                SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
+
+                                if (!hadDefault.boolValue && t == 0)
+                                {
+                                    string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme");
+                                    if (themeLocations.Length > 0)
+                                    {
+                                        for (int j = 0; j < themeLocations.Length; j++)
                                         {
-                                            themeItem.objectReferenceValue = defaultTheme;
-                                            break;
+                                            string path = AssetDatabase.GUIDToAssetPath(themeLocations[0]);
+                                            Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
+                                            if (defaultTheme != null)
+                                            {
+                                                themeItem.objectReferenceValue = defaultTheme;
+                                                break;
+                                            }
+                                        }
+
+                                        if (themeItem.objectReferenceValue != null)
+                                        {
+                                            hadDefault.boolValue = true;
                                         }
                                     }
-
-                                    if (themeItem.objectReferenceValue != null)
+                                    else
                                     {
-                                        hadDefault.boolValue = true;
+                                        InspectorUIUtility.DrawError("DefaultTheme missing from project!");
                                     }
                                 }
-                                else
-                                {
-                                    InspectorUIUtility.DrawError("DefaultTheme missing from project!");
-                                }
+                                InspectorUIUtility.DrawError(themeMsg);
                             }
-                            InspectorUIUtility.DrawError(themeMsg);
+
+                            themeCnt += themes.arraySize;
                         }
-
-                        themeCnt += themes.arraySize;
                     }
-
-                    EditorGUILayout.EndVertical();
                 }// profile for loop
 
                 if (GUILayout.Button(new GUIContent("Add Profile")))
@@ -571,6 +496,46 @@ namespace Microsoft.MixedReality.Toolkit.UI
             serializedObject.ApplyModifiedProperties();
         }
 
+        private static void ValidateThemes(SerializedProperty dimensions, SerializedProperty themes)
+        {
+            // make sure there are enough themes as dimensions
+            if (themes.arraySize > dimensions.intValue)
+            {
+                // make sure there are not more themes than dimensions
+                int cnt = themes.arraySize - 1;
+                for (int j = cnt; j > dimensions.intValue - 1; j--)
+                {
+                    themes.DeleteArrayElementAtIndex(j);
+                }
+            }
+
+            // add themes when increasing dimensions
+            if (themes.arraySize < dimensions.intValue)
+            {
+                int cnt = themes.arraySize;
+                for (int j = cnt; j < dimensions.intValue; j++)
+                {
+                    themes.InsertArrayElementAtIndex(themes.arraySize);
+                    SerializedProperty theme = themes.GetArrayElementAtIndex(themes.arraySize - 1);
+
+                    string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme");
+                    if (themeLocations.Length > 0)
+                    {
+                        for (int k = 0; k < themeLocations.Length; k++)
+                        {
+                            string path = AssetDatabase.GUIDToAssetPath(themeLocations[k]);
+                            Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
+                            if (defaultTheme != null)
+                            {
+                                theme.objectReferenceValue = defaultTheme;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private static string BuildThemeTitle(SelectionModes selectionMode, int themeIndex)
         {
             if (selectionMode == SelectionModes.Toggle)
@@ -601,8 +566,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             newTarget.objectReferenceValue = null;
 
             themes.ClearArray();
-
-            listSettings.Add(new InspectorUIUtility.ListSettings() { Show = false, Scroll = new Vector2() });
         }
 
         protected void RemoveProfile(int index, SerializedProperty prop = null)

@@ -9,7 +9,7 @@ using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.UI.Editor
 {
     /// <summary>
     /// Inspector for themes, and used by Interactable
@@ -51,6 +51,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             //base.OnInspectorGUI();
             serializedObject.Update();
 
+            boxStyle = InspectorUIUtility.Box(0);
+
+            GUILayout.BeginVertical(boxStyle);
+            bool hasStates = RenderStates();
+
+            GUILayout.EndVertical();
+            /*
             bool hasStates = false;
             if (layoutComplete || Event.current.type == EventType.Layout)
             {
@@ -60,14 +67,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 hasStates = RenderStates();
 
                 GUILayout.EndVertical();
-            }
+            }*/
 
             if (!hasStates)
             {
                 serializedObject.ApplyModifiedProperties();
                 return;
             }
-
 
             if (GetStates().Length < 1)
             {
@@ -80,8 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 AddThemeProperty(new int[] { 0 });
             }
 
-            if (layoutComplete || Event.current.type == EventType.Layout)
-            {
+            //if (layoutComplete || Event.current.type == EventType.Layout)
+            //{
 
                 RenderThemeSettings(settings, null, themeOptions, null, new int[] { 0, -1, 0 }, GetStates());
 
@@ -90,8 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // render a list of all the properties from the theme based on state
                 RenderThemeStates(settings, GetStates(), 0);
 
-                layoutComplete = true;
-            }
+                //layoutComplete = true;
+            //}
+            
 
             serializedObject.ApplyModifiedProperties();
         }

@@ -274,48 +274,59 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// A small button, good for a single icon like + or -
+        /// A small button, good for a single icon like + or - with single index callback events
         /// </summary>
-        /// <param name="label"></param>
+        /// <param name="label">content to place in the button</param>
         /// <param name="index"></param>
         /// <param name="callback"></param>
         /// <param name="prop"></param>
-        /// <returns></returns>
+        /// <returns>true if button selected, false otherwise</returns>
         public static bool SmallButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
-
-            GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
-            float smallButtonWidth = GUI.skin.button.CalcSize(new GUIContent(label)).x;
-
-            bool triggered = false;
-            if (GUILayout.Button(label, smallButton, GUILayout.Width(smallButtonWidth)))
+            if (SmallButton(label))
             {
                 callback(index, prop);
-                triggered = true;
+                return true;
             }
-            return triggered;
+
+            return false;
+        }
+
+        /// <summary>
+        /// A small button, good for a single icon like + or - with multi-index callback events
+        /// </summary>
+        /// <param name="label">content to place in the button</param>
+        /// <param name="indexArr"></param>
+        /// <param name="callback"></param>
+        /// <param name="prop"></param>
+        /// <returns>true if button selected, false otherwise</returns>
+        public static bool SmallButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
+        {
+            if (SmallButton(label))
+            {
+                callback(indexArr, prop);
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
         /// A small button, good for a single icon like + or -
         /// </summary>
-        /// <param name="label"></param>
-        /// <param name="indexArr"></param>
-        /// <param name="callback"></param>
-        /// <param name="prop"></param>
-        /// <returns></returns>
-        public static bool SmallButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
+        /// <param name="label">content to place in the button</param>
+        /// <returns>true if button selected, false otherwise</returns>
+        public static bool SmallButton(GUIContent label)
         {
             GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
             float smallButtonWidth = GUI.skin.button.CalcSize(label).x;
 
-            bool triggered = false;
             if (GUILayout.Button(label, smallButton, GUILayout.Width(smallButtonWidth)))
             {
-                callback(indexArr, prop);
-                triggered = true;
+                return true;
             }
-            return triggered;
+
+            return false;
         }
 
         /// <summary>
