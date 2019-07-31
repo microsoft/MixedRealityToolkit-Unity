@@ -20,7 +20,7 @@ To get started with the Mixed Reality Toolkit you will need:
   when building for OpenVR.
 
 
-# HoloLens 2 tutorials
+# Getting started tutorials
 If you are new to MRTK, or MR development, we recommend you check out the [Getting started tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2.
 
 
