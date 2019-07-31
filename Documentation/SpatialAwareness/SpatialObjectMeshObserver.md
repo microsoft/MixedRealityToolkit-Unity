@@ -14,7 +14,7 @@ To enable the spatial object mesh observer, you will need to configure the spati
 ![Add Spatatial Observer](../../Documentation/Images/SpatialAwareness/AddObserver.png)
 
 > {!NOTE]
-> For more details on configuring profiles, please see the [Mixed Reality Toolkit Profile configuration guide](..\MixedRealityConfigurationGuide.md) 
+> For more details on configuring profiles, please see the [Mixed Reality Toolkit Profile configuration guide](../MixedRealityConfigurationGuide.md) 
 
 2. Select the SpatialObjectMeshObserver 
 
@@ -70,8 +70,8 @@ The observer does not attempt to find 3D model LODs when sending the meshes to t
 
 ## See also
 
-- [Profiles](..\Profiles\Profiles.md)
-- [Mixed Reality Toolkit Profile configuration guide](..\MixedRealityConfigurationGuide.md) 
+- [Profiles](../Profiles/Profiles.md)
+- [Mixed Reality Toolkit Profile configuration guide](../MixedRealityConfigurationGuide.md) 
 - [Spatial Awareness](SpatialAwarenessGettingStarted.md)
 - [Configuring the Spatial Awareness Mesh Observer](ConfiguringSpatialAwarenessMeshObserver.md)
 - [Using the Windows Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal)
