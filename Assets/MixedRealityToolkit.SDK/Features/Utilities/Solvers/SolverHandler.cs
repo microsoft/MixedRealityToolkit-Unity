@@ -477,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         public static bool IsValidHandedness(Handedness hand)
         {
-            return hand < Handedness.Both;
+            return hand <= Handedness.Both;
         }
 
         public static bool IsValidTrackedObjectType(TrackedObjectType type)
