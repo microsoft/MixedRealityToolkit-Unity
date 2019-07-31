@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 #if SCENE_TRANSITIONS_ENABLED
 using Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions;
 #endif
@@ -19,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private LoadSceneMode loadSceneMode = LoadSceneMode.Single;
         [SerializeField]
-        private string contentName = null;
+        private SceneInfo contentScene = SceneInfo.Empty;
         [SerializeField]
         private bool loadOnStartup = false;
 
@@ -33,15 +34,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void LoadContent()
 		{
-			#if SCENE_TRANSITIONS_ENABLED
+#if SCENE_TRANSITIONS_ENABLED
 			ISceneTransitionService transitions = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
 			if (transitions.TransitionInProgress)
 				return;
 
-			transitions.DoSceneTransition(() => MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode));
-			#else
-			MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode);
-			#endif
-		}
+			transitions.DoSceneTransition(() => MixedRealityToolkit.SceneSystem.LoadContent(contentScene.Name, loadSceneMode));
+#else
+            MixedRealityToolkit.SceneSystem.LoadContent(contentScene.Name, loadSceneMode);
+            #endif
+        }
 	}
 }

@@ -9,7 +9,7 @@ public class ExamplesHubHomeButtonActivation : MonoBehaviour
     [Tooltip("Home button which brings the user back to examples hub")]
     private GameObject buttonHubHome = null;
 
-    void Start()
+    void OnEnable()
     {
         if (MixedRealityToolkit.IsSceneSystemEnabled == true)
         {
