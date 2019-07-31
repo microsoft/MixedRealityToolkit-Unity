@@ -65,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region static
 
+        private static readonly string DefaultExtensionsFolderName = "MixedRealityToolkit.Extensions";
         private static readonly string DefaultExtensionNamespace = "Microsoft.MixedReality.Toolkit.Extensions";
         private static readonly string PersistentStateKey = "MRTK_ExtensionServiceWizard_State_Before_Recompilation";
         private static readonly string ScriptExtension = ".cs";
@@ -82,16 +83,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region paths
 
-        private static readonly string DefaultExtensionsFolderName = "MixedRealityToolkit.Extensions";
-
-        private static readonly string DefaultExtensionsFolder = "Assets/MixedRealityToolkit.Extensions";
-
         private string ExtensionsFolder
         {
             get
             {
-                // todo
-                return "";
+                return MixedRealityToolkitFiles.MapModulePath(MixedRealityToolkitModuleType.Extensions);
             }
         }
 
@@ -308,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            if (!AssetDatabase.IsValidFolder(DefaultExtensionsFolder))
+            if (!AssetDatabase.IsValidFolder(ExtensionsFolder))
             {
                 AssetDatabase.CreateFolder("Assets", DefaultExtensionsFolderName);
                 AssetDatabase.Refresh();
@@ -364,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (ServiceFolderObject == null)
             {
-                ServiceFolderObject = (UnityEngine.Object)AssetDatabase.LoadAssetAtPath(DefaultExtensionsFolder, typeof(UnityEngine.Object));
+                ServiceFolderObject = (UnityEngine.Object)AssetDatabase.LoadAssetAtPath(ExtensionsFolder, typeof(UnityEngine.Object));
             }
 
             if (InspectorFolderObject == null && ServiceFolderObject != null)

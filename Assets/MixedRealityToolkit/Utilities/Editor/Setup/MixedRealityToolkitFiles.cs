@@ -247,6 +247,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return null;
         }
 
+        public static string MapModulePath(MixedRealityToolkitModuleType module)
+        {
+            if (mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
+            {
+                string path = modFolders
+                    .FirstOrDefault(t => Directory.Exists(t));
+                return path != null ? GetAssetDatabasePath(path) : null;
+            }
+            return null;
+        }
+
         private static readonly Dictionary<string, MixedRealityToolkitModuleType> moduleNameMap = new Dictionary<string, MixedRealityToolkitModuleType>()
         {
             { "", MixedRealityToolkitModuleType.Core },
