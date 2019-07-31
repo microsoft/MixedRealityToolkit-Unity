@@ -23,6 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         SDK,
         Examples,
         Tests,
+        Extensions,
+        Tools,
         // This module only exists for testing purposes, and is used in edit mode tests in conjunction
         // with MixedRealityToolkitFiles to ensure that this class is able to reason over MRTK
         // files that are placed outside of the root asset folder.
@@ -325,6 +327,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return null;
         }
 
+        public static string MapModulePath(MixedRealityToolkitModuleType module)
+        {
+            if (mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
+            {
+                string path = modFolders
+                    .FirstOrDefault(t => Directory.Exists(t));
+                return path != null ? GetAssetDatabasePath(path) : null;
+            }
+            return null;
+        }
+
         private static readonly Dictionary<string, MixedRealityToolkitModuleType> moduleNameMap = new Dictionary<string, MixedRealityToolkitModuleType>()
         {
             { "", MixedRealityToolkitModuleType.Core },
@@ -334,7 +347,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { "SDK", MixedRealityToolkitModuleType.SDK },
             { "Examples", MixedRealityToolkitModuleType.Examples },
             { "Tests", MixedRealityToolkitModuleType.Tests },
-
+            { "Extensions", MixedRealityToolkitModuleType.Extensions },
+            { "Tools", MixedRealityToolkitModuleType.Tools },
             // This module only exists for testing purposes, and is used in edit mode tests in conjunction
             // with MixedRealityToolkitFiles to ensure that this class is able to reason over MRTK
             // files that are placed outside of the root asset folder.
