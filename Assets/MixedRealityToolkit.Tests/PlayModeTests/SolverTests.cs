@@ -23,7 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class SolverTests : BasePlayModeTests
     {
         private const float DistanceThreshold = 1.5f;
-        private const float SolverUpdateWaitTime = 2.0f; //seconds
+        private const float SolverUpdateWaitTime = 1.0f; //seconds
+
         /// <summary>
         /// Internal class used to store data for setup
         /// </summary>
@@ -228,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return null;
         }
 
         private SetupData InstantiateTestSolver<T>() where T: Solver
