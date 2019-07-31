@@ -1513,7 +1513,7 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_EDITOR
         /// <summary>
         /// Static class whose constructor is called once on startup. Listens for editor events.
-        /// Removes the need for invidual instances to listen for events.
+        /// Removes the need for individual instances to listen for events.
         /// </summary>
         [InitializeOnLoad]
         private static class EditorEventListener
@@ -1528,7 +1528,6 @@ namespace Microsoft.MixedReality.Toolkit
                         case PlayModeStateChange.EnteredEditMode:
                             isApplicationQuitting = false;
                             break;
-
                         case PlayModeStateChange.ExitingEditMode:
                             isApplicationQuitting = false;
                             // Do a profile check
@@ -1541,7 +1540,6 @@ namespace Microsoft.MixedReality.Toolkit
                                 EditorGUIUtility.PingObject(Instance);
                             }
                             break;
-
                         default:
                             break;
                     }
@@ -1595,9 +1593,8 @@ namespace Microsoft.MixedReality.Toolkit
 
             RegisterInstance(this);
         }
-
 #endif // UNITY_EDITOR
 
-#endregion
+        #endregion
     }
 }

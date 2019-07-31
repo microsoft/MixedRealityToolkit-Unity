@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    internal static class MixedRealityPreferences
+    public static class MixedRealityPreferences
     {
         #region Lock Profile Preferences
 
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         #region Ignore startup settings prompt
 
         private static readonly GUIContent IgnoreContent = new GUIContent("Ignore settings prompt on startup", "Prevents settings dialog popup from showing on startup.\n\nThis setting applies to all projects using the Mixed Reality Toolkit.");
-        private const string IGNORE_KEY = "MixedRealityToolkit_Editor_IgnoreSettingsPrompts";
+        private const string IGNORE_KEY = "_MixedRealityToolkit_Editor_IgnoreSettingsPrompts";
         private static bool ignorePrefLoaded;
         private static bool ignoreSettingsPrompt;
 
@@ -63,6 +63,33 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         #endregion Ignore startup settings prompt
+
+        #region Run optimal configuration analysis on Play
+
+        private static readonly GUIContent RunOptimalConfigContent = new GUIContent("Run optimal configuration analysis on play", "Run optimal configuration analysis for current project and log warnings on entering play mode.\n\nThis setting applies to all projects using the Mixed Reality Toolkit.");
+        private const string RUN_OPTIMAL_CONFIG_KEY = "MixedRealityToolkit_Editor_RunOptimalConfig";
+        private static bool runOptimalConfigPrefLoaded;
+        private static bool runOptimalConfig;
+
+        /// <summary>
+        /// Should the settings prompt show on startup?
+        /// </summary>
+        public static bool RunOptimalConfiguration
+        {
+            get
+            {
+                if (!runOptimalConfigPrefLoaded)
+                {
+                    runOptimalConfig = EditorPrefs.GetBool(RUN_OPTIMAL_CONFIG_KEY, true);
+                    runOptimalConfigPrefLoaded = true;
+                }
+
+                return runOptimalConfig;
+            }
+            set => EditorPrefs.SetBool(RUN_OPTIMAL_CONFIG_KEY, runOptimalConfig = value);
+        }
+
+        #endregion Run optimal configuration analysis on Play
 
         [SettingsProvider]
         private static SettingsProvider Preferences()
@@ -110,6 +137,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (EditorGUI.EndChangeCheck())
                 {
                     EditorAssemblyReloadManager.LockReloadAssemblies = scriptLock;
+                }
+
+                EditorGUI.BeginChangeCheck();
+                runOptimalConfig = EditorGUILayout.Toggle(RunOptimalConfigContent, RunOptimalConfiguration);
+
+                // Save the preference
+                if (EditorGUI.EndChangeCheck())
+                {
+                    RunOptimalConfiguration = runOptimalConfig;
                 }
 
                 EditorGUIUtility.labelWidth = prevLabelWidth;
