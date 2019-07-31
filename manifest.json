@@ -15783,7 +15783,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.html",
-          "hash": "y6LRjBnMPjH25/Eg2RFF6Q=="
+          "hash": "an8AiyGohJVuK9QmnIZ7xA=="
         }
       },
       "is_incremental": false,
@@ -15795,7 +15795,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType.html",
-          "hash": "d6AZCgBSqt9QIFb0DvfadQ=="
+          "hash": "0hKNGACzW1EpY+XRXfsG3Q=="
         }
       },
       "is_incremental": false,
