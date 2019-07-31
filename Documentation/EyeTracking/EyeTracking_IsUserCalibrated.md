@@ -3,8 +3,9 @@
 ## To be or not to be eye calibrated
 
 If eye tracking is a fundamental part of your app experience, you may wish to ensure that the user's eye calibration is valid.
-The main reason for it to be invalid is that the user chose to skip the eye tracking calibration. 
-This page describes:
+The main reason for it to be invalid is that the user has chosen to skip the eye tracking calibration when putting on the device. 
+
+This page covers the following:
 - Describes how to detect that a user is eye calibrated
 - Provides a sample for how to trigger a user notification to instruct the user to go through the eye calibration
    - Automatically dismiss notification if eye calibration becomes valid

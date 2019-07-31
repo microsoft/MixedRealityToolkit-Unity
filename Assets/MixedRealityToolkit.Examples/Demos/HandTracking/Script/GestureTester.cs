@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using TMPro;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
@@ -142,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 {
                     renderer.material = material;
                 }
-                var text = indicator.GetComponentInChildren<TextMesh>();
+                var text = indicator.GetComponentInChildren<TextMeshPro>();
                 if (text)
                 {
                     text.text = label;

@@ -41,7 +41,7 @@ MonoBehaviour:
   rightMouseHandGesture: 0
   handGestureAnimationSpeed: 8
   holdStartDuration: 0.5
-  manipulationStartThreshold: 0.03
+  navigationStartThreshold: 0.03
   defaultHandDistance: 0.5
   handDepthMultiplier: 0.1
   handJitterAmount: 0

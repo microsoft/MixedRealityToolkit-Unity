@@ -4,8 +4,9 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Text3DSelawikLight
   m_Shader: {fileID: 4800000, guid: 80c006b91733f1a4991c49af89321ecd, type: 3}
   m_ShaderKeywords: _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT _HOVER_LIGHT
@@ -77,7 +78,7 @@ Material:
     - _ClippingPlaneBorderWidth: 0.025
     - _ColorMask: 15
     - _ColorWriteMask: 15
-    - _Cull: 2
+    - _Cull: 0
     - _CullMode: 2
     - _CustomMode: 0
     - _Cutoff: 0.5
